@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DevPlan">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias alias="searchVO" type="egovframework.let.tms.dev.service.DevPlanDefaultVO"/>
+	<typeAlias  alias="DevPlanVO" type="egovframework.let.tms.dev.service.DevPlanVO"/>
+	
+	<resultMap id="devPlanList" class="egovframework.let.tms.dev.service.DevPlanVO">
+	    <result property="pgId" column="PG_ID" columnIndex="1"/>
+	    <result property="planStartDt" column="PLAN_START_DT" columnIndex="2"/>
+	    <result property="planEndDt" column="PLAN_END_DT" columnIndex="3"/>
+	    <result property="devStartDt" column="DEV_START_DT" columnIndex="4"/>
+	    <result property="devEndDt" column="DEV_END_DT" columnIndex="5"/>
+	    <result property="enrollDt" column="ENROLL_DT" columnIndex="6"/>
+	    <result property="devEndYn" column="DEV_END_YN" columnIndex="7"/>
+	    <result property="firstTestResultYn" column="FIRST_TEST_RESULT_YN" columnIndex="8"/>
+	    <result property="secondTestResultYn" column="SECOND_TEST_RESULT_YN" columnIndex="9"/>
+	    <result property="thirdTestResultYn" column="THIRD_TEST_RESULT_YN" columnIndex="10"/>
+	</resultMap>
+	
+	<select id="DevPlanDAO.selectDevPlans" parameterClass="searchVO" resultMap="devPlanList" >
+		<![CDATA[
+			SELECT
+				PG_ID, PLAN_START_DT, PLAN_END_DT, DEV_START_DT, DEV_END_DT,
+				ENROLL_DT, DEV_END_YN, FIRST_TEST_RESULT_YN, SECOND_TEST_RESULT_YN, THIRD_TEST_RESULT_YN
+			FROM 
+				DEV_PLAN_TB
+		]]>
+			
+	</select>	
+	
+	<select id="DevPlanDAO.selectDevPlanListTotCnt" parameterClass="searchVO" resultClass="java.lang.Integer" >
+			<![CDATA[
+				SELECT COUNT(*) totcnt FROM (
+			SELECT
+				b.PG_ID
+				,(SELECT USER_NM FROM USER_TB WHERE USER_ID = b.USER_DEV_ID ) USER_DEV_ID
+				,b.PG_NAME
+				,b.SYS_GB
+				,b.TASK_GB
+				,b.USE_YN
+				,b.PJT_ID
+				,a.PLAN_START_DT
+				,a.PLAN_END_DT
+				,a.DEV_START_DT
+				,a.DEV_END_DT
+				,a.ENROLL_DT
+				,a.DEV_END_YN
+				,a.FIRST_TEST_RESULT_YN
+				,a.SECOND_TEST_RESULT_YN
+				,a.THIRD_TEST_RESULT_YN
+				
+			FROM DEV_PLAN_TB a
+			RIGHT OUTER JOIN PG_TB b
+			ON a.PG_ID = b.PG_ID
+			) as c
+			WHERE 1=1
+		]]>
+			
+			<!-- 개발자명으로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_DEV_ID = #searchByUserDevId#
+			</isNotEmpty>    
+			
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND PG_ID = #searchByPgId#
+			</isNotEmpty>    
+	</select>	
+	
+	<select id="devPlanDAO.selectDevResultList" parameterClass="searchVO" resultClass="egovMap">
+			<![CDATA[
+				SELECT * FROM (
+					SELECT
+						b.PG_ID
+						,(SELECT USER_NM FROM USER_TB WHERE USER_ID = b.USER_DEV_ID ) USER_DEV_ID
+						,b.PG_NAME
+						,b.SYS_GB
+						,b.TASK_GB
+						,b.USE_YN
+						,b.PJT_ID
+						,a.PLAN_START_DT
+						,a.PLAN_END_DT
+						,a.DEV_START_DT
+						,a.DEV_END_DT
+						,a.ENROLL_DT
+						,a.DEV_END_YN
+						,a.FIRST_TEST_RESULT_YN
+						,a.SECOND_TEST_RESULT_YN
+						,a.THIRD_TEST_RESULT_YN
+						
+					FROM DEV_PLAN_TB a
+					RIGHT OUTER JOIN PG_TB b
+					ON a.PG_ID = b.PG_ID
+					) as c
+					WHERE 1=1
+			]]>
+			
+			<!-- 개발자명으로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_DEV_ID = #searchByUserDevId#
+			</isNotEmpty>    
+			
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND PG_ID = #searchByPgId#
+			</isNotEmpty>    
+			        
+			ORDER BY PG_ID ASC
+			LIMIT #recordCountPerPage# OFFSET #firstIndex#
+	</select>
+	
+<!-- 
+	<resultMap id="tmplatDetail" class="egovframework.let.cop.com.service.TemplateInfVO">
+		<result property="tmplatId" column="TMPLAT_ID" columnIndex="1"/>
+		<result property="tmplatNm" column="TMPLAT_NM" columnIndex="2"/>
+		<result property="tmplatSeCode" column="TMPLAT_SE_CODE" columnIndex="3"/>
+		<result property="tmplatSeCodeNm" column="TMPLAT_SE_CODE_NM" columnIndex="4"/>
+		<result property="tmplatCours" column="TMPLAT_COURS" columnIndex="5"/>
+		<result property="useAt" column="USE_AT" columnIndex="6"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID" columnIndex="7"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM" columnIndex="8"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM" columnIndex="9"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID" columnIndex="10"/>
+		<result property="lastUpdusrNm" column="LAST_UPDUSR_NM" columnIndex="11"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM" columnIndex="12"/>
+	</resultMap> -->
+	
+	
+</sqlMap>
