@@ -15,7 +15,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- topmenu start -->
 <script type="text/javascript">
-<!--
+
     function getLastLink(baseMenuNo){
     	var tNode = new Array;
         for (var i = 0; i < document.menuListForm.tmp_menuNm.length; i++) {
@@ -25,6 +25,7 @@
             if (nValue[1]==baseMenuNo) {
                 if(nValue[5]!="dir" && nValue[5]!="" && nValue[5]!="/"){
                     //링크정보가 있으면 링크정보를 리턴한다.
+                    alert(nValue[5]);
                     return nValue[5];
                 }else{
                     //링크정보가 없으면 하위 메뉴중 첫번째 메뉴의 링크정보를 리턴한다.
@@ -46,7 +47,7 @@
         document.selectOne.submit();
         //document.location.href = "<c:url value='/j_spring_security_logout'/>";
     }
-//-->
+
 </script>
 <ul>
 	<c:forEach var="result" items="${list_headmenu}" varStatus="status">
@@ -56,7 +57,7 @@
         <li>등록된 메뉴가 없습니다.</li>
     </c:if>
 </ul>
-<!-- //topmenu end -->
+<!-- //topmenu end -->	
 <!-- menu list -->
     <form name="menuListForm" action="" method="post">
         <input type="hidden" id="baseMenuNo" name="baseMenuNo" value="<%=session.getAttribute("baseMenuNo")%>" />
