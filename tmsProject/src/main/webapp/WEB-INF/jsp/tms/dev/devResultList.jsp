@@ -150,15 +150,15 @@
               
               
               <colgroup>
-        				<col width="60"/> 
-        				<col width="60"/>
-        				<col width="80"/>
-        				<col width="100"/>
-        				<col width="50"/>
-        				<col width="80"/>
-        				<col width="80"/>
-        				<col width="10"/>
-        				<col width="10"/>
+        			<col width="10%" >
+                    <col width="10%" >  
+                    <col width="10%" >
+                    <col width="15%" >
+                    <col width="10%" >
+                    <col width="20%" >
+                    <col width="20%" >
+                    <col width="20%" >
+                    <col width="20%" >
         			</colgroup>
         			<tr>
         				<th align="center">시스템구분</th>
@@ -182,17 +182,20 @@
             				<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>
+            				<%-- <td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
+	            					<td align="center" class="listtd"><c:out value="${result.devEndDt}"/>&nbsp;</td> --%>
             				
             				<!--  계획일자가 등록되어 있는 경우에만 개발일자를 등록할 수 있음 -->
             				<c:choose>
 	            				<c:when test="${!empty result.planStartDt}">
+	            					
 		            				<td align="center" class="listtd"><input type="date" id="${result.pgId}DevStartDt" style="width:120px; height:15px;" value="<c:out value="${result.devStartDt}"/>"/>&nbsp;</td>
-		            				<td align="center" class="listtd"><input type="date" id="${result.pgId}DevEndDt" style="width:120px; height:15px;" value="<c:out value="${result.devEndDt}"/>"/>&nbsp;</td>
+		            				<td align="center" class="listtd"><input type="date" id="${result.pgId}DevEndDt" style="width:120px; height:15px;" value="<c:out value="${result.devEndDt}"/>"/>&nbsp;</td> 
 	           					</c:when>
 	            				
 	            				<c:otherwise>
-	            					<td align="center" class="listtd">&nbsp;</td>
-	            					<td align="center" class="listtd">&nbsp;</td>
+	            					<td align="center" class="listtd"></td>
+	            					<td align="center" class="listtd"></td>
 	            				</c:otherwise>
             				</c:choose>
             			</tr>

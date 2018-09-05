@@ -57,9 +57,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-	@SuppressWarnings("unchecked")
-	public List<DevPlanDefaultVO> selectDevPlans(DevPlanDefaultVO defaultVO) throws Exception {
-		return (List<DevPlanDefaultVO>) list("DevPlanDAO.selectDevPlans", defaultVO);
+	public List<?> selectDevPlans(DevPlanDefaultVO searchVO) throws Exception {
+		return list("devPlanDAO.selectDevPlans", searchVO);
 	}
 
 	/**

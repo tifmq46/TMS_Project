@@ -75,16 +75,8 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	 */
 
 	@Override
-	public Map<String,Object> selectDevPlans(DevPlanDefaultVO defaultVO) throws Exception {
-		List<DevPlanDefaultVO> result = devPlanDAO.selectDevPlans(defaultVO);
-		int cnt = devPlanDAO.selectDevPlanListTotCnt(defaultVO);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		map.put("resultList", result);
-		map.put("resultCnt", Integer.toString(cnt));
-		
-		return map;
+	public List<?> selectDevPlans(DevPlanDefaultVO searchVO) throws Exception {
+		return devPlanDAO.selectDevPlans(searchVO);
 		
 	}
 	/**
@@ -100,9 +92,8 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 		return vo;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<DevPlanDefaultVO> selectDevPlansByCode(DevPlanDefaultVO defaultVO) throws Exception{
-		return devPlanDAO.selectDevPlansByCode(defaultVO);
+	public List<?> selectDevPlansByCode(DevPlanDefaultVO searchVO) throws Exception{
+		return devPlanDAO.selectDevPlansByCode(searchVO);
 	}
 	
 	

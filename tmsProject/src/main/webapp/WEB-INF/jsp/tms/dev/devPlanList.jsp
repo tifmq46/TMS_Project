@@ -23,6 +23,27 @@
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
 
+<script type="text/javascript">
+
+function fn_egov_selectSysType(obj){
+	
+	var op = document.createElement('option');
+	op.text='Append'+1;
+	op.value='append'+1;
+	var task = document.getElementById('searchByTaskGb');
+	
+	if(obj.value == 'S1'){
+		alert("d");
+	}/* 
+    if (obj.value == 'TMPT01') {
+        document.getElementById('sometext').innerHTML = "게시판 템플릿은 CSS만 가능합니다.";
+    } else if (obj.value == '') {
+        document.getElementById('sometext').innerHTML = "";
+    } else {
+        document.getElementById('sometext').innerHTML = "템플릿은 JSP만 가능합니다.";
+    }        */
+}
+</script>
 
 <title>템플릿 목록</title>
 <style type="text/css">
@@ -50,11 +71,9 @@
                         <ul>
                             <li>HOME</li>
                             <li>&gt;</li>
-                            <li>내부서비스관리</li>
+                            <li>개발진척관리</li>
                             <li>&gt;</li>
-                            <li>내부업무개시판관리</li>
-                            <li>&gt;</li>
-                            <li><strong>개시판템플릿관리</strong></li>
+                            <li><strong>개발계획관리</strong></li>
                         </ul>
                     </div>
                 </div>
@@ -92,7 +111,62 @@
                     </form>
                 </div>
                 <!-- //검색 필드 박스 끝 --> --%>
-
+ 			<form:form commandName="searchVO" name="listForm" method="post" action="tms/dev/devPlanList.do">   
+                
+                <!-- 검색 필드 박스 시작 -->
+				<div id="search_field">
+					<div id="search_field_loc"><h2><strong>개발계획과관리</strong></h2></div>
+					<form action="form_action.jsp" method="post">
+					  	<fieldset><legend>조건정보 영역</legend>	  
+					  	<div class="sf_start">
+					  		<ul id="search_first_ul">
+					  		
+					  			<li>
+								    <label for="searchBySysGb">시스템구분</label>
+									<select name="searchBySysGb" id="searchBySysGb" onchange="fn_egov_selectSysType(this)">
+									    <option value="0" selected="selected">전체</option>
+									    <c:forEach var="resultS" items="${resultS}" varStatus="status">
+                                    		<option value='<c:out value="${resultS.code}"/>'><c:out value="${resultS.codeNm}"/></option>
+                                		</c:forEach>    
+									</select>						
+					  			</li>
+					  			<li>
+								    <label for="searchByTaskGb">업무구분</label>
+									<select name="searchByTaskGb" id="searchByTaskGb" >
+									    <option value="0" selected="selected">전체</option>
+									    <c:forEach var="resultT" items="${resultT}" varStatus="status">
+                                    		<option value='<c:out value="${resultT.code}"/>'><c:out value="${resultT.codeNm}"/></option>
+                                		</c:forEach>
+									</select>						
+					  			</li>
+					  			
+					  			<li><label for="searchByUserDevId">개발자명</label></li>
+					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" /></li>
+					  			
+					  		</ul>
+					  		<ul id="search_second_ul">
+					  			<li><label for="searchByPgId">화면ID</label></li>
+					  			<li><input type="text" name="searchByPgId" id="searchByPgId" /></li>
+					  			<li>
+									<div class="buttons" style="float:right;">
+										<a href="#"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+									    <a href="<c:url value='/uss/umt/user/EgovUserInsertView.do'/>" onclick="fnAddUserView(); return false;">등록</a>
+									</div>	  				  			
+					  			</li>
+					  			
+					  			<li>
+					  			<label>계획일자</label>
+								<input type="text" name="st_date" /><img src="images/calendar.gif" width="19" height="19" alt="" />
+					  			~ <input type="text" name="en_date" /><img src="images/calendar.gif" width="19" height="19" alt="" />
+					  			</li>
+					  			
+					  		</ul>			
+						</div>			
+						</fieldset>
+					</form>
+				</div>
+				<!-- //검색 필드 박스 끝 -->
+                
                 <div id="page_info"><div id="page_info_align"></div></div>                    
                 <!-- table add start -->
                 <div class="default_tablestyle">
@@ -100,25 +174,22 @@
                     <caption>게시판 템플릿 목록</caption>
                     <colgroup>
                     <col width="10%" >
-                    <col width="15%" >  
+                    <col width="10%" >  
                     <col width="10%" >
-                    <col width="32%" >
+                    <col width="15%" >
                     <col width="10%" >
-                    <col width="10%" >
+                    <col width="20%" >
+                    <col width="20%" >
                     </colgroup>
                     <thead>
                     <tr>
-                        <th scope="col" class="f_field" nowrap="nowrap">프로그램ID</th>
-                        <th scope="col" nowrap="nowrap">계획내용</th>
-                        <th scope="col" nowrap="nowrap">계획시작일자</th>
-                        <th scope="col" nowrap="nowrap">계획종료일자</th>
-                        <th scope="col" nowrap="nowrap">개발시작일자</th>
-                        <th scope="col" nowrap="nowrap">개발종료일자</th>
-                        <th scope="col" nowrap="nowrap">등록일자</th>
-                        <th scope="col" nowrap="nowrap">개발완료여부</th>
-                        <th scope="col" nowrap="nowrap">1차</th>
-                        <th scope="col" nowrap="nowrap">2차</th>
-                        <th scope="col" nowrap="nowrap">3차</th>
+                        <th align="center">시스템구분</th>
+        				<th align="center">업무구분</th>
+        				<th align="center">화면ID</th>
+        				<th align="center">화면명</th>
+        				<th align="center">개발자</th>
+        				<th align="center">계획시작일자</th>
+        				<th align="center">계획종료일자</th>
                     </tr>
                     </thead>
                     <tbody>                 
@@ -126,18 +197,13 @@
                     <c:forEach var="result" items="${resultList}" varStatus="status">
                     <!-- loop 시작 -->                                
                       <tr>
-                        <td nowrap="nowrap"><c:out value="${result.pgId}"/></td>
-                        <td nowrap="nowrap"><c:out value="${result.devPlanContent}"/></td>
-                        <td nowrap="nowrap"><c:out value="${result.planStartDt}"/></td>
-                         <td nowrap="nowrap"><c:out value="${result.planEndDt}"/></td>
-                        <td nowrap="nowrap"><c:out value="${result.devStartDt}"/></td> 
-                        <td nowrap="nowrap"><c:out value="${result.devEndDt}"/></td>  
-                        <td nowrap="nowrap"><c:out value="${result.enrollDt}"/></td>
-                        <td nowrap="nowrap"><c:out value="${result.devEndYn}"/></td>
-                        <td nowrap="nowrap"><c:out value="${result.firstTestResultYn}"/></td>
-                         <td nowrap="nowrap"><c:out value="${result.secondTestResultYn}"/></td>
-                        <td nowrap="nowrap"><c:out value="${result.thirdTestResultYn}"/></td> 
-                             
+                        <td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
+            				<td align="left" class="listtd"><c:out value="${result.pgName}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>
                       </tr>
                      </c:forEach>     
                      <c:if test="${fn:length(resultList) == 0}">
@@ -154,7 +220,8 @@
                        <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_tmplatInfo"  />
                     </ul>
                 </div>                          
-                <!-- //페이지 네비게이션 끝 -->  
+                <!-- //페이지 네비게이션 끝 --> 
+                </form:form> 
             </div>
             <!-- //content 끝 -->    
         </div>  

@@ -44,7 +44,7 @@ public interface DevPlanService {
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-	public Map<String, Object> selectDevPlans(DevPlanDefaultVO defaultVO) throws Exception;
+	public List<?> selectDevPlans(DevPlanDefaultVO searchVO) throws Exception;
 	
 	
 	/**
@@ -53,7 +53,7 @@ public interface DevPlanService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<DevPlanDefaultVO> selectDevPlansByCode(DevPlanDefaultVO defaultVO) throws Exception;
+	public List<?> selectDevPlansByCode(DevPlanDefaultVO searchVO) throws Exception;
 	
 	
 	/**
