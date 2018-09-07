@@ -25,7 +25,6 @@
             if (nValue[1]==baseMenuNo) {
                 if(nValue[5]!="dir" && nValue[5]!="" && nValue[5]!="/"){
                     //링크정보가 있으면 링크정보를 리턴한다.
-                    alert(nValue[5]);
                     return nValue[5];
                 }else{
                     //링크정보가 없으면 하위 메뉴중 첫번째 메뉴의 링크정보를 리턴한다.

@@ -49,7 +49,6 @@ function fn_MovePage(nodeNum) {
             <c:out value="${loginName}"/> 님</a></li>
             <li><a href="<c:url value='/uat/uia/actionLogout.do'/>">
             <img src="<c:url value='/images/leftmenu/logout.jpg' />" alt="로그아웃" /></a></li>
-            <li>최근접속:2011-10-12 13:24</li>
             </ul>
 	  	<%
 	  	}

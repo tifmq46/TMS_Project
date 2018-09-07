@@ -240,6 +240,6 @@ public class EgovProgrmManageServiceImpl extends EgovAbstractServiceImpl impleme
 	public ProgrmManageDtlVO selectRqesterEmail(ProgrmManageDtlVO vo) throws Exception{
        	return progrmManageDAO.selectRqesterEmail(vo);
 	}
-
+	
 
 }

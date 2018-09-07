@@ -62,7 +62,9 @@ function createTree(arrName, vYeobu, checkValue) {
 function getTreeArrayId(node) {
 	for (i=0; i<treeNodes.length; i++) {
 		var nodeValues = treeNodes[i].split("|");
-		if (nodeValues[0]==node) return i;
+		if (nodeValues[0]==node) {
+			return i;
+		}
 	}
 	return 0;
 }

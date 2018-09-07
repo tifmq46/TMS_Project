@@ -25,6 +25,11 @@
 <link href="<c:url value='/css/common.css'/>" rel="stylesheet" type="text/css" >
 </head>
 <body>
+<script language="javascript1.2" type="text/javaScript">
+	function searchFileNm() {
+	    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+	}
+</script>
 <noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>	
 <!-- 전체 레이어 시작 -->
 
@@ -41,7 +46,18 @@
 			<img src="<c:url value='/'/>images/index/img_maintitle.jpg" alt="표준프레임워크 경량환경 내부업무" />
 		<!-- //title 끝-->
 		</div>
-		
+		 <div class="sf_start">
+                            <ul id="search_second_ul">
+                                <li>
+                                    <div class="buttons" style="float:right;">
+                                    	 <input type="text" name="TmsProgrmFileNm_view" size="60" disabled="disabled">
+                                         <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+						        		 <img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" />검색</a>
+                                    </div>
+                                </li>
+                            </ul>           
+         </div>
+                   
 	</div>
 	<!-- //게시판 끝 -->
 	<!-- footer 시작 -->

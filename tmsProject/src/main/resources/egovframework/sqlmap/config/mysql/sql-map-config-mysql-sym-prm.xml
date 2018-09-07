@@ -5,4 +5,5 @@
 <sqlMapConfig>
 	<sqlMap resource="egovframework/sqlmap/let/sym/prm/EgovProgrmManage_SQL_Mysql.xml"/>
 	<sqlMap resource="egovframework/sqlmap/let/sym/prm/EgovProgrmManageDtl_SQL_Mysql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/let/sym/prm/TmsProgrmManage_SQL_Mysql.xml"/>
 </sqlMapConfig>

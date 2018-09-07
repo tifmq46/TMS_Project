@@ -162,5 +162,6 @@ public interface EgovProgrmManageService {
 	 * @exception Exception
 	 */
 	ProgrmManageDtlVO selectRqesterEmail(ProgrmManageDtlVO vo) throws Exception;
+	
 
 }
