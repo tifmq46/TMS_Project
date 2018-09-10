@@ -48,8 +48,11 @@
     }
 
 </script>
-<div class="nav_container" style="">
+<div class="nav_container" style="padding:0 20px;">
 	<ul>
+		<a class="navbar-brand" href="/pms/" style="padding-right:121.5px;  padding-left:0px; padding-top:0px; padding-bottom:0px;">
+      <strong style="font-size:18px; text-shadow:0 1px 0 #000000;">KCC PMS</strong>
+      </a>
 		<c:forEach var="result" items="${list_headmenu}" varStatus="status">
 	        <li><a href="#LINK" onclick="javascript:goMenuPage('<c:out value="${result.menuNo}"/>')"><c:out value="${result.menuNm}"/></a></li>  
 	    </c:forEach>
