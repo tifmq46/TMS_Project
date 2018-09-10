@@ -121,10 +121,10 @@ background-position: left center;padding-left:10px;padding-top:2px;letter-spacin
 .sf_start{padding-bottom:10px;padding-top:10px;}
 /* Layout */
 #wrap{margin-left:0px;width:100%;background: url("../images/body/background_sky.jpg") no-repeat left top transparent;height:59px;}
-#topnavi{float:left;background-color:#4d7496; width:100%;height:48px; border-bottom:4px solid #2a4053;}
-#topnavi ul{list-style-type:none;padding-top:17px;padding-left:0px;}
-#topnavi li{display:inline; height:48px; border-right:1px solid rgba(0, 0, 0, 0.2);}
-#topnavi a{color:white; font-size:13px; text-shadow: 0 1px 0 #000000; padding-top : 14px; padding-bottom: 14px; padding-left: 18px; padding-right: 18px;"}
+#topnavi{float:left;background-color:#0f438a; width:100%;height:40px;margin-top:10px;}
+#topnavi ul{list-style-type:none;padding-top:13px;padding-left:0px;}
+#topnavi li{display:inline;font-size:13px;color:#727272;font-weight:bold;padding-right:10px;padding-left:10px;}
+#topnavi a{color:#a7ccff;}
 #topnavi a:hover{color:#ffffff;}
 #container{float:left;width:1100px; margin-top:0px;min-height:440px; height:auto !important; height:440px;}
 #leftmenu{float:left;width:200px;min-height:440px; height:auto !important; height:100%; }
@@ -145,11 +145,11 @@ background-position: left center;padding-left:10px;padding-top:2px;letter-spacin
     padding: 0px 3px 3px 15px;height:10px;}
 .top{
    background: url("../images/leftmenu/leftmenu_top.gif") no-repeat scroll left top transparent;
-    padding: 0px 3px 3px 15px;height:10px;}	
+    padding: 0px 3px 3px 15px;height:10px;}   
 #nav ul{list-style-type:none;}
 #nav a{}
 #nav ul li{
-	background: url("../images/leftmenu/bl_depth01.gif") no-repeat 140px 8px;
+   background: url("../images/leftmenu/bl_depth01.gif") no-repeat 140px 8px;
     border-top: 1px solid #EAEAEA;
     padding: 4px 6px 1px;} 
 #nav ul li ul{border-top: 1px solid #EAEAEA;}
@@ -225,7 +225,7 @@ margin: 0; background-color:#f2f2f2;
 #login_title_div{clear:both;float:left;padding-top:20px;padding-bottom:10px;}
 #paging_div{clear:both;position:relative;width:650px;}
 #paging_div .paging_align{
-	clear: both;
+   clear: both;
     margin: 0 auto;
     padding-top: 16px;
     text-align: center;
@@ -251,14 +251,14 @@ margin: 0; background-color:#f2f2f2;
 #page_info{clear:both;width:800px;padding-top:20px;padding-bottom:3px;} 
 #page_info_align{float:right;}
 .default_tablestyle {
-	clear:both;
+   clear:both;
     color: #666666;
     float: left;
     line-height: 18px;
     padding-top: 4px;
 }
 .default_tablestyle table {
-	font-size:90%;
+   font-size:90%;
     table-layout: fixed;
     text-align: center;
     width: 800px;
