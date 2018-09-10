@@ -22,7 +22,7 @@
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <title>표준프레임워크 경량환경 내부업무템플릿</title>
-<link href="<c:url value='/css/common.css'/>" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 </head>
 <body>
 <script language="javascript1.2" type="text/javaScript">
@@ -38,7 +38,7 @@
 	<!-- //header 끝 -->	
 	<!-- container 시작 -->
 	<div id="main_container">
-		<!-- 프로그램리스트 검색 시작 -->
+		<%-- <!-- 프로그램리스트 검색 시작 -->
 		  <div>
          	<ul>
             	<li>
@@ -50,7 +50,7 @@
                 </li>	
             </ul>           
          </div> 
-        <!-- 프로그램리스트 검색 끝 --> 
+        <!-- 프로그램리스트 검색 끝 -->  --%>
                    
 	</div>
 	<!-- //게시판 끝 -->
