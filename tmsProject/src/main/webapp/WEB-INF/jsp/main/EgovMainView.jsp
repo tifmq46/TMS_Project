@@ -39,7 +39,7 @@
 	<!-- container 시작 -->
 	<div id="main_container">
 		<!-- 프로그램리스트 검색 시작 -->
-		 <%-- <div>
+		  <div>
          	<ul>
             	<li>
                 	<div>
@@ -49,7 +49,7 @@
                     </div>
                 </li>	
             </ul>           
-         </div> --%>
+         </div> 
         <!-- 프로그램리스트 검색 끝 --> 
                    
 	</div>
