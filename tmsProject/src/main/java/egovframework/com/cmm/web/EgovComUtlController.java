@@ -39,7 +39,6 @@ public class EgovComUtlController {
 	@RequestMapping(value = "/EgovPageLink.do")
 	public String moveToPage(@RequestParam("link") String linkPage, HttpSession session, @RequestParam(value = "baseMenuNo", required = false) String baseMenuNo) {
 		String link = linkPage;
-		System.out.println("link1 ================================================= " + link);
 		// service 사용하여 리턴할 결과값 처리하는 부분은 생략하고 단순 페이지 링크만 처리함
 		if (linkPage == null || linkPage.equals("")) {
 			link = "cmm/egovError";
@@ -48,7 +47,6 @@ public class EgovComUtlController {
 				link = link.substring(0, link.indexOf(","));
 			}
 		}
-		System.out.println("link2 ====================================================== " + link);
 		// 선택된 메뉴정보를 세션으로 등록한다.
 		if (baseMenuNo != null && !baseMenuNo.equals("") && !baseMenuNo.equals("null")) {
 			session.setAttribute("baseMenuNo", baseMenuNo);
