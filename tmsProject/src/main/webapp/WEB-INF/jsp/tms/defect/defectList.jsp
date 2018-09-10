@@ -88,17 +88,18 @@ function fn_egov_select_viewDefectInfo(pgId,defectIdSq){
 								    <label for="searchByTaskGb">업무구분&nbsp;</label>
 									<select name="searchByTaskGb" id="searchByTaskGb">
 									    <option value="0" selected="selected">전체</option>
-									    <option value="1">비승인</option>
+									    <c:forEach var="taskGb" items="${taskGb}" varStatus="status">
+									    	<option value="<c:out value="${taskGb.code}"/>"><c:out value="${taskGb.codeNm}" /></option>
+									    </c:forEach>
 									</select>						
 					  			</li> 			
 					  			<li>
 								    <label for="searchByDefectGb">결함유형구분</label>
 									<select name="searchByDefectGb" id="searchByDefectGb">
 									    <option value="0" selected="selected">전체</option>
-									    <option value="1">오류</option>
-									    <option value="2">개선</option>
-									    <option value="3">협의필요</option>
-									    <option value="4">기타</option>
+									    <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
+									    	<option value="<c:out value="${defectGb.code}"/>"><c:out value="${defectGb.codeNm}" /></option>
+									    </c:forEach>
 									</select>						
 					  			</li>
 					  			
@@ -106,11 +107,9 @@ function fn_egov_select_viewDefectInfo(pgId,defectIdSq){
 								    <label for="searchByDefectGb">조치상태구분</label>
 									<select name="searchByActionSt" id="searchByActionSt">
 									    <option value="0" selected="selected">전체</option>
-									    <option value="1">대기</option>
-									    <option value="2">조치중</option>
-									    <option value="3">조치완료</option>
-									    <option value="4">재요청</option>
-									    <option value="5">최종완료</option>
+									    <c:forEach var="actionSt" items="${actionSt}" varStatus="status">
+									    	<option value="<c:out value="${actionSt.code}"/>"><c:out value="${actionSt.codeNm}" /></option>
+									    </c:forEach>
 									</select>						
 					  			</li>
 					  			

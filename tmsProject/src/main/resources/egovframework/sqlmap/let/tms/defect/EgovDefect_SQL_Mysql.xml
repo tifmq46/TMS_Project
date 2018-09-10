@@ -93,9 +93,21 @@
         ]]>
     </select>
     
-    <select id="defectDAO.selectDefectGb" returnClass="">
+    <select id="defectDAO.selectDefectGb" resultClass="egovMap">
         <![CDATA[
-			        
+			SELECT CODE_NM, CODE FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'DEFGB'
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectActionSt" resultClass="egovMap">
+        <![CDATA[
+			SELECT CODE_NM, CODE FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'ACTST'        
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectTaskGb" resultClass="egovMap">
+        <![CDATA[
+			SELECT CODE_NM, CODE FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'TASKGB'   
         ]]>
     </select>
     

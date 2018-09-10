@@ -65,7 +65,14 @@ public class DefectController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
+		List<?> taskGbList = defectService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		
 		List<?> defectGbList = defectService.selectDefectGb();
+		model.addAttribute("defectGb", defectGbList);
+		
+		List<?> actionStList = defectService.selectActionSt();
+		model.addAttribute("actionSt", actionStList);
 		
 		return "tms/defect/defectList";
 	}

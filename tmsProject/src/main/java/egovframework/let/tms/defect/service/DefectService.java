@@ -12,7 +12,11 @@ public interface DefectService {
 	
 	public int selectDefectIdSq();
 	
+	public List<?> selectTaskGb();
+	
 	public List<?> selectDefectGb();
+	
+	public List<?> selectActionSt();
 	
 	public void insertDefect(DefectVO defectVO);
 	
