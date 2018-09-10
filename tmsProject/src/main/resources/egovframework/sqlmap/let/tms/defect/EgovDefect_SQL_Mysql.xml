@@ -3,6 +3,163 @@
 <sqlMap namespace="Defect">
     <typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 	<typeAlias  alias="DefectVO" type="egovframework.let.tms.defect.service.DefectVO"/>
+    <typeAlias  alias="DefectDefaultVO" type="egovframework.let.tms.defect.service.DefectDefaultVO" />
     
+    <resultMap id="defectList" class="egovframework.let.tms.defect.service.DefectVO">
+        <result property="defectIdSq" column="DEFECT_ID_SQ" columnIndex="1"/>
+        <result property="defectTitle" column="DEFECT_TITLE" columnIndex="2"/>
+        <result property="defectContent" column="DEFECT_CONTENT" columnIndex="3"/>
+        <result property="pgId" column="PG_ID" columnIndex="4"/>
+        <result property="userTestId" column="USER_TEST_ID" columnIndex="5"/>
+        <result property="defectGb" column="DEFECT_GB" columnIndex="6"/>
+        <result property="enrollDt" column="ENROLL_DT" columnIndex="7"/>
+        <result property="actionContent" column="ACTION_CONTENT" columnIndex="8"/>
+        <result property="actionSt" column="ACTION_ST" columnIndex="9"/>
+        <result property="actionDt" column="ACTION_DT" columnIndex="10"/>        
+        <result property="testscenarioId" column="TESTSCENARIO_ID" columnIndex="11"/>        
+    </resultMap>
+    <!--  
+    <select id="defectDAO.selectDefect" parameterClass="DefectDefaultVO" resultMap="defectList">
+    -->
+    <select id="defectDAO.selectDefect" parameterClass="DefectDefaultVO" resultClass="egovMap">
+        
+        <![CDATA[
+        	SELECT * FROM (
+        		SELECT
+        			D.DEFECT_ID_SQ,
+        			(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = P.TASK_GB) AS TASK_GB,
+        			D.PG_ID,
+        			P.PG_NM,
+        			D.DEFECT_TITLE,
+        			(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.DEFECT_GB) AS DEFECT_GB,
+        			(SELECT USER_TB.USER_NM FROM USER_TB WHERE D.USER_TEST_ID = USER_TB.USER_ID) AS USER_TEST_ID,
+        			D.ENROLL_DT,
+ 					(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST
+        		FROM DEFECT_TB AS D, PG_TB AS P
+        		WHERE D.PG_ID = P.PG_ID
+        		ORDER BY D.DEFECT_ID_SQ
+        	) as C
+        	WHERE 1=1
+        ]]>  
+        
+    </select>
     
-    </sqlMap>
+    <select id="defectDAO.selectDefectTotCnt" parameterClass="DefectDefaultVO" resultClass="java.lang.Integer">
+        <![CDATA[
+			SELECT COUNT(*) totcnt FROM (
+				SELECT
+					*
+				FROM DEFECT_TB
+				) as c
+				WHERE 1=1
+		]]>
+        
+    </select>
+    
+    <select id="defectDAO.selectOneDefect" parameterClass="DefectVO" resultClass="egovMap">
+        <![CDATA[
+        SELECT * FROM (
+        	SELECT 
+        		D.DEFECT_ID_SQ,
+        		D.DEFECT_TITLE,
+        		D.DEFECT_CONTENT,
+        		D.PG_ID,
+        		(SELECT USER_TB.USER_NM FROM USER_TB WHERE D.USER_TEST_ID = USER_TB.USER_ID) AS USER_TEST_ID,
+        		(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.DEFECT_GB) AS DEFECT_GB,
+        		D.ENROLL_DT,
+        		D.ACTION_CONTENT,
+        		(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST,
+        		D.ACTION_DT,
+        		D.TESTSCENARIO_ID,
+        		(SELECT USER_TB.USER_NM FROM USER_TB WHERE P.USER_DEV_ID = USER_TB.USER_ID) AS USER_DEV_ID,
+        		P.PG_NM,
+        		P.SYS_GB,
+        		(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = P.TASK_GB) AS TASK_GB,
+        		P.USE_YN,
+        		P.PJT_ID
+        	FROM DEFECT_TB AS D, PG_TB AS P
+        	WHERE D.PG_ID = P.PG_ID AND D.DEFECT_ID_SQ = #defectIdSq# AND P.PG_ID = #pgId#
+        	) as C
+        	WHERE 1=1
+        ]]>        
+    </select>
+    
+    <select id="defectDAO.selectDefectIdSq" resultClass="java.lang.Integer">
+        <![CDATA[
+        	SELECT DEFECT_ID_SQ
+        	FROM DEFECT_TB
+        	ORDER BY DEFECT_ID_SQ DESC
+        	LIMIT 1;
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectDefectGb" resultClass="egovMap">
+        <![CDATA[
+			SELECT CODE_NM, CODE FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'DEFGB'
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectActionSt" resultClass="egovMap">
+        <![CDATA[
+			SELECT CODE_NM, CODE FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'ACTST'        
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectTaskGb" resultClass="egovMap">
+        <![CDATA[
+			SELECT CODE_NM, CODE FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'TASKGB'   
+        ]]>
+    </select>
+    
+    <insert id="defectDAO.insertDefect" parameterClass="DefectVO">
+        <![CDATA[
+        	INSERT INTO DEFECT_TB
+        	(DEFECT_ID_SQ, DEFECT_TITLE, DEFECT_CONTENT, PG_ID, USER_TEST_ID, DEFECT_GB, ENROLL_DT)
+        	VALUES
+        	(#defectIdSq#, #defectTitle#, #defectContent#, #pgId#, #userTestId#, #defectGb#, SYSDATE()
+        	)
+        ]]>
+    </insert>
+    
+	<update id="defectDAO.updateDefect" parameterClass="DefectVO">
+	   <![CDATA[
+	   	UPDATE DEFECT_TB 
+	   	SET
+	   		DEFECT_TITLE = #defectTitle#,
+	   		DEFECT_CONTENT = #defectContent#,
+	   		USER_TEST_ID = (SELECT USER_ID FROM USER_TB WHERE USER_NM = #userTestId#),
+	   		DEFECT_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #defectGb#),
+	   		ACTION_CONTENT = #actionContent#,
+	   		ACTION_ST = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #actionSt#),
+	   		ACTION_DT = SYSDATE()
+	   	WHERE DEFECT_ID_SQ = #defectIdSq#
+	   ]]>   
+	</update>
+	
+	<update id="defectDAO.setDefectIdSq">
+	    <![CDATA[
+	    ALTER TABLE DEFECT_TB AUTO_INCREMENT=1;
+	    ]]>
+	</update>
+	
+	<update id="defectDAO.setDefectIdSqInfo">
+	    <![CDATA[
+	    SET @COUNT=0;
+	    ]]>
+	</update>
+	
+	<update id="defectDAO.setDefectIdSqImpl">
+		<![CDATA[
+		UPDATE DEFECT_TB SET DEFECT_TB.DEFECT_ID_SQ = @COUNT:=@COUNT+1
+		WHERE 1=1;	
+		]]>	    
+	</update>
+	
+	<delete id="defectDAO.deleteDefect" parameterClass="DefectVO">
+	    <![CDATA[
+	    DELETE FROM DEFECT_TB
+	    WHERE DEFECT_ID_SQ = #defectIdSq#
+	   ]]>
+	</delete>
+	
+</sqlMap>
