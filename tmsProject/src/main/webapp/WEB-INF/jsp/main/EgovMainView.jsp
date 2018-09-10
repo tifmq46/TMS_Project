@@ -34,10 +34,7 @@
 <!-- 전체 레이어 시작 -->
 
 <div id="wrap">
-	<!-- header 시작 -->
-	<div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
-	<%// <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>%>
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
 	<!-- //header 끝 -->	
 	<!-- container 시작 -->
 	<div id="main_container">
@@ -46,17 +43,19 @@
 			<img src="<c:url value='/'/>images/index/img_maintitle.jpg" alt="표준프레임워크 경량환경 내부업무" />
 		<!-- //title 끝-->
 		</div>
-		 <div class="sf_start">
-                            <ul id="search_second_ul">
-                                <li>
-                                    <div class="buttons" style="float:right;">
-                                    	 <input type="text" name="TmsProgrmFileNm_view" size="60" disabled="disabled">
-                                         <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
-						        		 <img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" />검색</a>
-                                    </div>
-                                </li>
-                            </ul>           
+		<!-- 프로그램리스트 검색 시작 -->
+		 <div>
+         	<ul>
+            	<li>
+                	<div>
+                    	<input type="text" name="TmsProgrmFileNm_view" size="20" disabled="disabled">
+                    	<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" />검색</a>
+                    </div>
+                </li>
+            </ul>           
          </div>
+        <!-- 프로그램리스트 검색 끝 -->
                    
 	</div>
 	<!-- //게시판 끝 -->
