@@ -38,13 +38,8 @@
 	<!-- //header 끝 -->	
 	<!-- container 시작 -->
 	<div id="main_container">
-		<!-- title 시작 -->
-		<div id="mainview_title_img">
-			<img src="<c:url value='/'/>images/index/img_maintitle.jpg" alt="표준프레임워크 경량환경 내부업무" />
-		<!-- //title 끝-->
-		</div>
 		<!-- 프로그램리스트 검색 시작 -->
-		 <div>
+		 <%-- <div>
          	<ul>
             	<li>
                 	<div>
@@ -52,10 +47,10 @@
                     	<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" />검색</a>
                     </div>
-                </li>
+                </li>	
             </ul>           
-         </div>
-        <!-- 프로그램리스트 검색 끝 -->
+         </div> --%>
+        <!-- 프로그램리스트 검색 끝 --> 
                    
 	</div>
 	<!-- //게시판 끝 -->

@@ -121,10 +121,10 @@ background-position: left center;padding-left:10px;padding-top:2px;letter-spacin
 .sf_start{padding-bottom:10px;padding-top:10px;}
 /* Layout */
 #wrap{margin-left:0px;width:100%;background: url("../images/body/background_sky.jpg") no-repeat left top transparent;height:59px;}
-#topnavi{float:left;background-color:#0f438a; width:100%;height:40px;margin-top:10px;}
-#topnavi ul{list-style-type:none;padding-top:13px;padding-left:0px;}
-#topnavi li{display:inline;font-size:13px;color:#727272;font-weight:bold;padding-right:10px;padding-left:10px;}
-#topnavi a{color:#a7ccff;}
+#topnavi{float:left;background-color:#4d7496; width:100%;height:48px; border-bottom:4px solid #2a4053;}
+#topnavi ul{list-style-type:none;padding-top:17px;padding-left:0px;}
+#topnavi li{display:inline; height:48px; border-right:1px solid rgba(0, 0, 0, 0.2);}
+#topnavi a{color:white; font-size:13px; text-shadow: 0 1px 0 #000000; padding-top : 14px; padding-bottom: 14px; padding-left: 18px; padding-right: 18px;"}
 #topnavi a:hover{color:#ffffff;}
 #container{float:left;width:1100px; margin-top:0px;min-height:440px; height:auto !important; height:440px;}
 #leftmenu{float:left;width:200px;min-height:440px; height:auto !important; height:100%; }
