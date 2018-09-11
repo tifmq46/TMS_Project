@@ -64,7 +64,7 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb) {
 	opener.document.all.TmsProgrmFileNm_pg_nm.value = pg_nm;
 	opener.document.all.TmsProgrmFileNm_sys_gb.value = sys_gb;
 	opener.document.all.TmsProgrmFileNm_task_gb.value = task_gb;
-    window.close();
+	window.close();
 }
 //-->
 </script>
