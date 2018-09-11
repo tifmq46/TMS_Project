@@ -24,7 +24,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 
 <title>로그인정책 목록조회</title>
 
@@ -51,8 +51,7 @@ function searchFileNm() {
 
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
     <!-- //header 끝 -->
     <!-- container 시작 -->
     <div id="container">
@@ -129,8 +128,8 @@ function searchFileNm() {
 					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" size="13" style="text-align:center;"/>&nbsp;</li>
 					  			<li>
 					  			<label>&nbsp;&nbsp;&nbsp;등록일자</label>
-								<input type="text" name="st_date" size="15" style="text-align:center;"/><img src="images/calendar.gif" width="19" height="19" alt="" />
-					  			&nbsp;~&nbsp; <input type="text" name="en_date" size="15" style="text-align:center;"/><img src="images/calendar.gif" width="19" height="19" alt="" />
+								<input type="text" name="st_date" size="15" style="text-align:center;"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+					  			&nbsp;~&nbsp; <input type="text" name="en_date" size="15" style="text-align:center;"/><img src="<c:url value='/'/>images/calendar.gif"  width="19" height="19" alt="" />
 					  			</li>
 					  		</ul>
 					  		<br/>

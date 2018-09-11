@@ -8,7 +8,7 @@ import egovframework.let.cop.bbs.service.BoardVO;
 import egovframework.let.cop.bbs.service.EgovBBSManageService;
 import egovframework.let.sym.mnu.mpm.service.EgovMenuManageService;
 import egovframework.let.sym.mnu.mpm.service.MenuManageVO;
-
+import egovframework.let.sym.prm.service.TmsProgrmManageService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -50,6 +50,10 @@ public class EgovMainController {
 	/** EgovMenuManageService */
 	@Resource(name = "meunManageService")
     private EgovMenuManageService menuManageService;
+	
+	/** EgovProgrmManageService */
+	@Resource(name = "TmsProgrmManageService")
+	private TmsProgrmManageService TmsProgrmManageService;
 
 	/**
 	 * 메인 페이지에서 각 업무 화면으로 연계하는 기능을 제공한다.
@@ -76,7 +80,7 @@ public class EgovMainController {
 	public String getMgtMainPage(HttpServletRequest request, ModelMap model)
 	  throws Exception{
 
-		// 공지사항 메인 컨텐츠 조회 시작 ---------------------------------
+		/*// 공지사항 메인 컨텐츠 조회 시작 ---------------------------------
 		BoardVO boardVO = new BoardVO();
 		boardVO.setPageUnit(10);
 		boardVO.setPageSize(10);
@@ -111,10 +115,11 @@ public class EgovMainController {
 		boardVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		boardVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		model.addAttribute("bbsList", bbsMngService.selectBoardArticles(boardVO, "BBSA02").get("resultList"));
+		model.addAttribute("bbsList", bbsMngService.selectBoardArticles(boardVO, "BBSA02").get("resultList"));*/
 
 		// 업무게시판 메인컨텐츠 조회 끝 -----------------------------------
-
+		// 프로젝트 정보 조회 시작 -------------------------------	
+		
 		return "main/EgovMainView";
 	}
 

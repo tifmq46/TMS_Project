@@ -38,7 +38,7 @@
 	<!-- //header 끝 -->	
 	<!-- container 시작 -->
 	<div id="main_container">
-	     <!-- 프로그램리스트 검색 시작 -->
+	     <%-- <!-- 프로그램리스트 검색 시작 -->
 		  <div>
          	<ul>
             	<li>
@@ -54,8 +54,8 @@
                 </li>	
             </ul>           
          </div> 
-        <!-- 프로그램리스트 검색 끝 --> 
-        <div class="container" style="padding:0 0 0 20px;">
+        <!-- 프로그램리스트 검색 끝 -->  --%>
+        <div class="container" style="padding:0 15px; 0 15px;">
 	    	<div class="page-title">
 	    			<b style="font-size:14px;"><i class="icon-bar-chart"></i>&nbsp;프로젝트 상세</b>
 	    	</div>
@@ -69,7 +69,67 @@
 	    			</li> -->
 	    		</ul>
 	    	</div>
-    	</div>                
+    	</div>
+    	
+    <div class="row mt30">
+    	<div id="myBsnsList" class="col-md-6">
+    		<div class="widget">
+    			<div class="widget-header">
+    				<div class="header-name" style="margin:10px;">
+	    				<i class="icon-reorder">
+	    					프로젝트 정보
+	    				</i>
+    				</div>
+    			</div>
+    			<div class="widget-content box">
+    				<table class="table table-search-head table-size-th4">
+    					<tbody>
+    						<tr class="last">
+    							<th>프로젝트 명</th>
+    							<td id="empName" name="empName" align="center" valign="middle">TMS</td>
+    						</tr>
+    						<tr class="last">
+    						    <th>프로젝트 분류</th>
+    						    <td align="center" valign="middle">사업개선</td>
+    						    <th>프로젝트 상태</th>
+    						    <td align="center" valign="middle">진행</td>
+    						</tr>
+    						<tr class="last">
+    						    <th>부서</th>
+    						    <td align="center" valign="middle">개발부서</td>
+    						    <th>PM</th>
+    						    <td align="center" valign="middle">장현우</td>
+    						</tr>
+    						<tr class="last">
+    						    <th>계획시작일</th>
+    						    <td align="center" valign="middle">2018-06-04</td>
+    						    <th>계획완료일</th>
+    						    <td align="center" valign="middle">2018-09-21</td>
+    						</tr>
+    						<tr class="last">
+    						    <th>시작일</th>
+    						    <td align="center" valign="middle">2018-06-04</td>
+    						    <th>완료일</th>
+    						    <td align="center" valign="middle">진행중</td>
+    						</tr>
+    						<tr class="last">
+    						    <th>중요도</th>
+    						    <td align="center" valign="middle">100</td>
+    						    <th>금액</th>
+    						    <td align="center" valign="middle">$10,000,000</td>
+    						</tr>
+    						<tr class="last">
+    							<th>프로젝트 설명</th>
+    							<td id="empName" name="empName" align="center" valign="middle">Test Management System</td>
+    						</tr>
+    						
+    					</tbody>
+    				</table>
+    				
+    			</div>
+    		</div>    	
+    	</div>
+    </div>	                
 	</div>
 	<!-- //게시판 끝 -->
 	<!-- footer 시작 -->
