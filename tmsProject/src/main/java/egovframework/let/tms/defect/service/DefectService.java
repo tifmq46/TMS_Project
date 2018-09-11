@@ -18,6 +18,8 @@ public interface DefectService {
 	
 	public List<?> selectActionSt();
 	
+	public List<?> selectUser();
+	
 	public void insertDefect(DefectVO defectVO);
 	
 	public int updateDefect(DefectVO defectVO);

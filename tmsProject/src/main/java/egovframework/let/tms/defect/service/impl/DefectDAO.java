@@ -60,4 +60,8 @@ public class DefectDAO extends EgovAbstractDAO{
 	public List<?> selectTaskGb() {
 		return list("defectDAO.selectTaskGb");
 	}
+	
+	public List<?> selectUser() {
+		return list("defectDAO.selectUser");
+	}
 }

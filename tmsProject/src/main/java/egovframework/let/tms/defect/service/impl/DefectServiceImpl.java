@@ -94,5 +94,12 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 		// TODO Auto-generated method stub
 		return defectDAO.selectTaskGb();
 	}
+
+
+	@Override
+	public List<?> selectUser() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectUser();
+	}
 	
 }

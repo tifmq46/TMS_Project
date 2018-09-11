@@ -115,14 +115,24 @@ function fn_egov_delete_deleteDefect() {
 					        <th width="12.5%" height="23" class="" nowrap >결함유형
 					        </th>
 					        <td width="12.5%" nowrap >
-					          <input name="defectGb" size="5"  value="<c:out value="${defectOne.defectGb}"/>"  maxlength="40" title="결함유형"
-					          style="text-align:center; width:90%;" /> 
+					          <select name="defectGb" id="defectGb" style="width:95%; text-align-last:center;">
+									    <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
+									    	<option value="<c:out value="${defectGb.code}"/>"
+									    	<c:if test="${defectOne.defectGb eq defectGb.codeNm}">selected="selected"</c:if>
+									    	><c:out value="${defectGb.codeNm}" /></option>
+									    </c:forEach>
+							</select>
 					        </td>
 					         <th width="12.5%" height="23" class="" nowrap >테스터
 					        </th>
 					        <td width="12.5%" nowrap >
-					          <input name="userTestId" type="text" size="10" value="<c:out value="${defectOne.userTestId}"/>"  maxlength="40" title="테스터"  
-					           style="text-align:center; width:80%;"/> 
+					           <select name="userTestId" id="userTestId" style="width:85%; text-align-last:center;">
+									    <c:forEach var="userList" items="${userList}" varStatus="status">
+									    	<option value="<c:out value="${userList.userId}"/>"
+									    	<c:if test="${defectOne.userTestId eq userList.userNm}">selected="selected"</c:if>
+									    	><c:out value="${userList.userNm}" /></option>
+									    </c:forEach>
+							</select>
 					        </td>
 					         <th width="12.5%" height="23" nowrap >개발자
 					        </th>
@@ -148,8 +158,14 @@ function fn_egov_delete_deleteDefect() {
 					         <th width="12.5%" height="23" nowrap >조치상태
 					        </th>
 					        <td width="12.5%" nowrap >
-					          <input name="actionSt" type="text" size="10"  value="<c:out value="${defectOne.actionSt}"/>"  maxlength="40" title="조치상태"  
-					           style="text-align:center; width:90%;"/> 
+					          <select name="actionSt" id="actionSt" style="width:95%; text-align-last:center;">
+									    <c:forEach var="actionSt" items="${actionSt}" varStatus="status">
+									    	<option value="<c:out value="${actionSt.code}"/>"
+									    	<c:if test="${defectOne.actionSt eq actionSt.codeNm}">selected="selected"</c:if>
+									    	><c:out value="${actionSt.codeNm}" /></option>
+									    </c:forEach>
+									    <option value=""></option>
+							</select>
 					        </td>
 					         <th width="12.5%" height="23" nowrap >조치일자
 					        </th>

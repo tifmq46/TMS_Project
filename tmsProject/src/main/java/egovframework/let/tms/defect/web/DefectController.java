@@ -83,6 +83,13 @@ public class DefectController {
 		int defectIdSq = defectService.selectDefectIdSq();
 		defectIdSq = defectIdSq + 1;
 		model.addAttribute("defectIdSq", defectIdSq);
+		
+		List<?> defectGbList = defectService.selectDefectGb();
+		model.addAttribute("defectGb", defectGbList);
+		
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
 		return "tms/defect/defectRegist";
 	}
 	/** 결함 등록 */
@@ -98,6 +105,16 @@ public class DefectController {
 		System.out.println("@@@@@@@@@@@@@@@@@@@"+defectVO.toString());
 		List<?> list = defectService.selectOneDefect(defectVO);
 		model.addAttribute("defectOne", list);
+		
+		List<?> defectGbList = defectService.selectDefectGb();
+		model.addAttribute("defectGb", defectGbList);
+		
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
+		List<?> actionStList = defectService.selectActionSt();
+		model.addAttribute("actionSt", actionStList);
+		
 		return "tms/defect/defectListOne";
 	}
 	
