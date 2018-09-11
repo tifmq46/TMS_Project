@@ -58,8 +58,12 @@ function selectProgramListSearch() {
 /* ********************************************************
  * 프로그램목록 선택 처리 함수
  ******************************************************** */ 
-function choisProgramListSearch(vFileNm) { 
-	opener.document.all.TmsProgrmFileNm_view.value = vFileNm;
+function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb) { 
+	opener.document.all.TmsProgrmFileNm_pg_id.value = pg_id;
+	opener.document.all.TmsProgrmFileNm_user_dev_id.value = user_dev_id;
+	opener.document.all.TmsProgrmFileNm_pg_nm.value = pg_nm;
+	opener.document.all.TmsProgrmFileNm_sys_gb.value = sys_gb;
+	opener.document.all.TmsProgrmFileNm_task_gb.value = task_gb;
     window.close();
 }
 //-->
@@ -122,7 +126,7 @@ function choisProgramListSearch(vFileNm) {
 			    <td nowrap="nowrap"><c:out value="${result.SYS_GB}"/></td>
 			    <td nowrap="nowrap"><c:out value="${result.TASK_GB}"/></td>
 			    <td nowrap="nowrap">
-			        <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.PG_ID}"/>'); return false;">
+			        <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.PG_ID}"/>','<c:out value="${result.USER_DEV_ID}"/>','<c:out value="${result.PG_NM}"/>','<c:out value="${result.SYS_GB}"/>','<c:out value="${result.TASK_GB}"/>'); return false;">
 			      <c:out value="${result.PG_ID}"/></a></span></td>
 			    <td nowrap="nowrap"><c:out value="${result.PG_NM}"/></td>
 			    <td nowrap="nowrap"><c:out value="${result.USER_DEV_ID}"/></td>

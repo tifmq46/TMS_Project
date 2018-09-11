@@ -27,9 +27,9 @@ public class TmsProgrmManageVO{
 	/** 프로그램한글명 */
 	private String PG_NM;
 	/** URL */
-	private int SYS_GB;
+	private String SYS_GB;
 	/** 프로그램설명	 */	
-	private int TASK_GB;
+	private String TASK_GB;
 	
 	private String USE_YN;
 	
@@ -59,19 +59,19 @@ public class TmsProgrmManageVO{
 		PG_NM = pG_NM;
 	}
 
-	public int getSYS_GB() {
+	public String getSYS_GB() {
 		return SYS_GB;
 	}
 
-	public void setSYS_GB(int sYS_GB) {
+	public void setSYS_GB(String sYS_GB) {
 		SYS_GB = sYS_GB;
 	}
 
-	public int getTASK_GB() {
+	public String getTASK_GB() {
 		return TASK_GB;
 	}
 
-	public void setTASK_GB(int tASK_GB) {
+	public void setTASK_GB(String tASK_GB) {
 		TASK_GB = tASK_GB;
 	}
 
