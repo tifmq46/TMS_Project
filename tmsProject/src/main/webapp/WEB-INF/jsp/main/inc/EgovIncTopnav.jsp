@@ -13,6 +13,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 <!-- topmenu start -->
 <script type="text/javascript">
 
@@ -50,17 +51,23 @@
 </script>
 <div class="nav_container" style="padding:0 20px;">
 	<ul>
-		<a class="navbar-brand" href="/pms/" style="padding-right:121.5px;  padding-left:0px; padding-top:0px; padding-bottom:0px;">
-      <strong style="font-size:18px; text-shadow:0 1px 0 #000000;">KCC PMS</strong>
-      </a>
+	    <a href="<c:url value='/'/>uat/uia/actionMain.do" style="float:left; border-right:1px solid rgba(0, 0, 0, 0.21); padding-top:15px; padding-bottom:16px; padding-left:18px;">
+		    <strong style="font-size:18px; text-shadow:0 1px 0 #000000; margin-right:125px;">KCC TMS</strong>
+		    <i class="icon-reorder"></i>
+	    </a>
 		<c:forEach var="result" items="${list_headmenu}" varStatus="status">
-	        <li><a href="#LINK" onclick="javascript:goMenuPage('<c:out value="${result.menuNo}"/>')"><c:out value="${result.menuNm}"/></a></li>  
+	        <li><a href="#LINK" style="padding-top:18px; float:left; padding-bottom:18px; padding-left:18px;" onclick="javascript:goMenuPage('<c:out value="${result.menuNo}"/>')"><c:out value="${result.menuNm}"/></a></li>  
 	    </c:forEach>
+	     <a href="<c:url value='/'/>uat/uia/actionMain.do" style="float:right; border-left:1px solid rgba(0, 0, 0, 0.21); padding-top:18px; padding-bottom:18px; padding-left:18px;">
+		    <li style="font-size:13px; text-shadow:0 1px 0 #000000;">사업지원그룹 ㅣ 사원 ㅣ 장현우</li>
+	    </a>
+	    
 	    <c:if test="${fn:length(list_headmenu) == 0 }">
 	        <li>등록된 메뉴가 없습니다.</li>
 	    </c:if>
 	</ul>
 </div>
+
 <!-- //topmenu end -->	
 <!-- menu list -->
     <form name="menuListForm" action="" method="post">

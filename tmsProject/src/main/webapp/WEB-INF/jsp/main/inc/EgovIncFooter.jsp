@@ -13,5 +13,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-<div id="mopaslogo"><img src="<c:url value='/'/>images/footer/img_mopas_gray.gif" alt="안전행정부 로고" /></div>
-<div id="copyright">(우)100-775 서울특별시 중구 청계천로 (무교동 77번지) 14 NIA빌딩. COPYRIGHT(C)2011 MINISTRY OF SECURITY AND PUBLIC ADMINISTRATOR. ALL RIGHT RESERVED</div>
+<div id="mopaslogo"><img style="width:119	px; height:34px;" src="<c:url value='/'/>images/footer/kcc.png" alt="kcc 로고" /></div>
+<div id="copyright">(T)02-6090-7800 서울 강서구 공항대로 665 KCC오토타워. COPYRIGHTS 1967-2017 KCC I&C ALL RIGHTS RESERVED.</div>

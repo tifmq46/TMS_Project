@@ -22,14 +22,14 @@
 		<![CDATA[
 			SELECT 
 				  PG_ID   AS "PG_ID"
-				, USER_DEV_ID AS "USER_DEV_ID"
+				, (SELECT USER_NM FROM USER_TB WHERE USER_ID = USER_DEV_ID) AS "USER_DEV_ID"
 				, PG_NM  AS "PG_NM" 
-				, SYS_GB        AS "SYS_GB" 
-				, TASK_GB              AS "TASK_GB"
+				, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = SYS_GB) AS "SYS_GB" 
+				, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = TASK_GB) AS "TASK_GB"
 				, USE_YN              AS "USE_YN"
 				, PJT_ID              AS "PJT_ID"
-			FROM PG_TB
-			WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%')
+			FROM LETTCCMMNDETAILCODE, PG_TB
+			WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%') AND SYS_GB = CODE
 			LIMIT  #recordCountPerPage# OFFSET #firstIndex#
 		 ]]>
 	</select> 
@@ -38,8 +38,8 @@
 	<select id="TmsProgrmManageDAO.selectProgrmListTotCnt_S" parameterClass="comDefaultVO" resultClass="int">
 		<![CDATA[
 		SELECT COUNT(*) AS totcnt
-		  FROM PG_TB
-		 WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%')
+		  FROM LETTCCMMNDETAILCODE A, PG_TB B
+		 WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%') AND SYS_GB = CODE
 		]]>
 	</select>
 

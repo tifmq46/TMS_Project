@@ -77,7 +77,6 @@ public class TmsProgrmManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "uat/uia/EgovLoginUsr";
 		}
-		System.out.println("여기까지옴ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
 		// 내역 조회
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -102,5 +101,8 @@ public class TmsProgrmManageController {
 		return "sym/prm/TmsFileNmSearch";
 
 	}
+	
+	
+	
 
 }
