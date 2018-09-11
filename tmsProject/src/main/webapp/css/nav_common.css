@@ -250,47 +250,6 @@ margin: 0; background-color:#f2f2f2;
 
 #page_info{clear:both;width:800px;padding-top:20px;padding-bottom:3px;} 
 #page_info_align{float:right;}
-.default_tablestyle {
-   clear:both;
-    color: #666666;
-    float: left;
-    line-height: 18px;
-    padding-top: 4px;
-}
-.default_tablestyle table {
-   font-size:90%;
-    table-layout: fixed;
-    text-align: center;
-    width: 800px;
-}
-.default_tablestyle table th {
-    border-bottom: 1px solid #81B1D5;
-    border-top: 2px solid #81B1D5;
-    color:#0f438a;
-    height: 26px;
-}
-.default_tablestyle table td {
-    border-bottom: 1px solid #dddddd;
-    line-height: 28px;
-    overflow: hidden;
-    padding-left: 0px;
-    white-space: nowrap;
-    width: 100%;
-}
-.default_tablestyle a {
-    color: #666666;
-}
-.default_tablestyle a:link, a:visited {
-    color: #666666;
-}
-.default_tablestyle a:hover {
-    color: #1F58B1;
-    text-decoration: underline;
-}
-.default_tablestyle .align_left_text {
-    float: left;
-    padding-left: 3px;
-}
 .modify_user table{clear:both; width:800px;    border: 1px solid #dddddd;
     line-height: 28px;
     overflow: hidden;
@@ -376,6 +335,18 @@ b{font-weight: 1000;}
 		padding:0 15px 20px 15px;
 		border:1.2px solid #ddd;
 		border-radius: 5px;
+		margin-right: 50px;
+		float:left;
+}
+#recentBsnsList{
+		width: 45% !important;
+		position: relative;
+		min-height: 1px;
+		padding:0 15px 20px 15px;
+		border:1.2px solid #ddd;
+		border-radius: 5px;
+		margin:0 !important;
+		float:left;
 }
 .widget-header{
 	display: inline-block;
@@ -429,4 +400,46 @@ b{font-weight: 1000;}
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+.default_tablestyle {
+   clear:both;
+    color: #666666;
+    float: left;
+    line-height: 18px;
+    padding-top: 4px;
+}
+.default_tablestyle table {
+   font-size:90%;
+    table-layout: fixed;
+    text-align: center;
+    width:100%;
+ 
+}
+.default_tablestyle table th {
+    border-bottom: 1px solid #81B1D5;
+    border-top: 2px solid #81B1D5;
+    color:#0f438a;
+    height: 26px;
+}
+.default_tablestyle table td {
+    border-bottom: 1px solid #dddddd;
+    line-height: 28px;
+    overflow: hidden;
+    padding-left: 0px;
+    white-space: nowrap;
+
+}
+.default_tablestyle a {
+    color: #666666;
+}
+.default_tablestyle a:link, a:visited {
+    color: #666666;
+}
+.default_tablestyle a:hover {
+    color: #1F58B1;
+    text-decoration: underline;
+}
+.default_tablestyle .align_left_text {
+    padding-left: 3px;
 }

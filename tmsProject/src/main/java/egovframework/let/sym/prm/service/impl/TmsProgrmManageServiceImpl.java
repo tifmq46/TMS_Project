@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.let.sym.prm.service.TmsProgrmManageService;
+import egovframework.let.sym.prm.service.TmsProjectManageVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 /**
@@ -59,6 +60,11 @@ public class TmsProgrmManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param vo ProgrmManageVO
 	 * @exception Exception
 	 */
+	@Override
+	public TmsProjectManageVO selectProject() throws Exception {
+		// TODO Auto-generated method stub
+		return TmsProgrmManageDAO.selectProject();
+	}
 	
 	
 

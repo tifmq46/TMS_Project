@@ -76,7 +76,6 @@
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
-	    				<i class="icon-reorder">
 	    					프로젝트 정보
 	    				</i>
     				</div>
@@ -86,7 +85,7 @@
     					<tbody>
     						<tr class="last">
     							<th>프로젝트 명</th>
-    							<td id="empName" name="empName" align="center" valign="middle">TMS</td>
+    							<td id="empName" name="empName" align="center" valign="middle">${tmsProjectManageVO.PJT_ID}</td>
     						</tr>
     						<tr class="last">
     						    <th>프로젝트 분류</th>
@@ -122,13 +121,108 @@
     							<th>프로젝트 설명</th>
     							<td id="empName" name="empName" align="center" valign="middle">Test Management System</td>
     						</tr>
-    						
     					</tbody>
     				</table>
     				
     			</div>
-    		</div>    	
+    		</div>
     	</div>
+    	<div id="recentBsnsList" class="col-md-6">
+    		<div class="widget">
+    			<div class="widget-header">
+    				<div class="header-name" style="margin:10px;">
+	    					프로젝트 멤버
+	    				</i>
+    				</div>
+    			</div>
+    			<div class="widget-content default_tablestyle">
+    				<table class="table table-search-head table-size-th4">
+			    					<caption>프로젝트 멤버</caption>
+			            <colgroup>
+			            <col width="25%" >
+			            <col width="25%" >
+			            <col width="10%" >
+			            <col width="10%" >
+			            <col width="10%" >
+			            <col width="10%" >
+			            <col width="10%" > 
+			            </colgroup>
+			            <thead>
+			            <tr>
+			                <th scope="col" class="f_field" nowrap="nowrap">이름</th>
+			                <th scope="col" nowrap="nowrap">팀명</th>
+			                <th scope="col" nowrap="nowrap">대기</th>
+			                <th scope="col" nowrap="nowrap">조치중</th>
+			                <th scope="col" nowrap="nowrap">조치완료</th>
+			                <th scope="col" nowrap="nowrap">재요청</th>
+			                <th scope="col" nowrap="nowrap">최종완료</th>
+			            </tr>
+			            </thead>
+			            <tbody>                 
+			            
+			            <%-- <c:forEach var="result" items="${list_progrmmanage}" varStatus="status">
+			            <!-- loop 시작 -->                                
+			              <tr>
+						    <td nowrap="nowrap"><c:out value="${result.SYS_GB}"/></td>
+						    <td nowrap="nowrap"><c:out value="${result.TASK_GB}"/></td>
+						    <td nowrap="nowrap">
+						        <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.PG_ID}"/>','<c:out value="${result.USER_DEV_ID}"/>','<c:out value="${result.PG_NM}"/>','<c:out value="${result.SYS_GB}"/>','<c:out value="${result.TASK_GB}"/>'); return false;">
+						      <c:out value="${result.PG_ID}"/></a></span></td>
+						    <td nowrap="nowrap"><c:out value="${result.PG_NM}"/></td>
+						    <td nowrap="nowrap"><c:out value="${result.USER_DEV_ID}"/></td>
+			              </tr>
+			            </c:forEach> --%>
+			            <tr>
+						    <td nowrap="nowrap">장현우</td>
+						    <td nowrap="nowrap">사업지원그룹</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+			              </tr>
+			              <tr>
+						    <td nowrap="nowrap">방주이</td>
+						    <td nowrap="nowrap">사업지원그룹</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+			              </tr>
+			              <tr>
+						    <td nowrap="nowrap">김이수</td>
+						    <td nowrap="nowrap">사업지원그룹</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+			              </tr>
+			              <tr>
+						    <td nowrap="nowrap">윤인아</td>
+						    <td nowrap="nowrap">사업지원그룹</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+			              </tr>
+			              <tr>
+						    <td nowrap="nowrap">조현우</td>
+						    <td nowrap="nowrap">사업지원그룹</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+			              </tr>
+			            </tbody> 
+    				</table>
+    			</div>
+    		</div>    	    	
+    	</div>
+    	
     </div>	                
 	</div>
 	<!-- //게시판 끝 -->

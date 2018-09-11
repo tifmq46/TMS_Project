@@ -20,15 +20,22 @@ package egovframework.let.sym.prm.service;
 
 public class TmsProjectManageVO{
 
-	String PJD_ID;
+	String PJT_ID;
 
-	public String getPJD_ID() {
-		return PJD_ID;
+	public String getPJT_ID() {
+		return PJT_ID;
 	}
 
-	public void setPJD_ID(String pJD_ID) {
-		PJD_ID = pJD_ID;
+	public void setPJT_ID(String pJT_ID) {
+		PJT_ID = pJT_ID;
 	}
+
+	@Override
+	public String toString() {
+		return "TmsProjectManageVO [PJT_ID=" + PJT_ID + "]";
+	}
+
+	
 	
 	
 

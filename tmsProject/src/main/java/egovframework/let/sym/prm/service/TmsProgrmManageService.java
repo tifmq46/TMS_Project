@@ -43,7 +43,12 @@ public interface TmsProgrmManageService {
 	 * @param vo ProgrmManageVO
 	 * @exception Exception
 	 */
-	
-	
+	 
+	TmsProjectManageVO selectProject() throws Exception;
+	/**
+	 * 프로젝트 정보를 조회
+	 * @param vo TmsProjectManageVO
+	 * @exception Exception
+	 */
 
 }

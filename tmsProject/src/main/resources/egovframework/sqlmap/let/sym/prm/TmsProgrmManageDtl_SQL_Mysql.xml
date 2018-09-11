@@ -6,6 +6,7 @@
 	<typeAlias  alias="comDefaultVO" type="egovframework.com.cmm.ComDefaultVO"/>
 	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 	<typeAlias  alias="TmsProgrmManageVO" type="egovframework.let.sym.prm.service.TmsProgrmManageVO"/>
+	<typeAlias  alias="TmsProjectManageVO" type="egovframework.let.sym.prm.service.TmsProjectManageVO"/>
 
     <!-- 프로그램목록 관리 -->
 	<resultMap id="TmsProgrmManage"       class="egovframework.let.sym.prm.service.TmsProgrmManageVO">
@@ -17,7 +18,11 @@
 		<result property="USE_YN"             column="USE_YN"             columnIndex="5"/>
 		<result property="PJT_ID"             column="PJT_ID"             columnIndex="5"/>
 	</resultMap> 
-
+ <!-- 프로젝트 정보 관리 -->
+	<resultMap id="TmsProjectManageVO"       class="egovframework.let.sym.prm.service.TmsProjectManageVO">
+		<result property="PJT_ID"    column="PJT_ID"    columnIndex="1"/>
+	</resultMap> 
+	
 	<select id="TmsProgrmManageDAO.selectProgrmList_D" parameterClass="comDefaultVO" resultMap="TmsProgrmManage">
 		<![CDATA[
 			SELECT 
@@ -42,6 +47,14 @@
 		 WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%') AND SYS_GB = CODE
 		]]>
 	</select>
+	<!-- 프로그램 정보 조회 -->
+	<select id="TmsProgrmManageDAO.selectProject" resultMap="TmsProjectManageVO">
+		<![CDATA[
+			SELECT 
+				  PJT_ID   AS "PJT_ID"
+			FROM PJT_TB
+		 ]]>
+	</select> 
 
 	
 </sqlMap>                            

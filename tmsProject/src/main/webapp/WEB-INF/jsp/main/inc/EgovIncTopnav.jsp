@@ -74,7 +74,6 @@
 	  	    <c:set var="loginName" value="<%= loginVO.getName()%>"/>
             KCC정보통신 ㅣ <c:out value="${loginName}"/> 님</li>
             <div class="dropdown-content" style="float:left;">
-            
 		    	<a href="<c:url value='/uat/uia/actionLogout.do'/>">로그아웃</a>
 		    </div>
 	  	<%
