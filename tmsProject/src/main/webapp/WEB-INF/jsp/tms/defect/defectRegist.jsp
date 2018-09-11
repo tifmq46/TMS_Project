@@ -101,7 +101,7 @@
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
-					          <input id="TmsProgrmFileNm_view" name="pgId" type="text" size="10" value=""  maxlength="40" title="화면ID"  
+					          <input id="TmsProgrmFileNm_pg_id" name="pgId" type="text" size="10" value=""  maxlength="40" title="화면ID"  
 					           style="text-align:center; width:80%;" readonly="readonly"/> 
 					          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
@@ -110,7 +110,7 @@
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
-					          <input type="text" size="10" value=""  maxlength="40" title="화면명" 
+					          <input id="TmsProgrmFileNm_pg_nm" type="text" size="10" value=""  maxlength="40" title="화면명" 
 					          style="text-align:center; width:90%;" readonly="readonly"/> 
 					        </td>
 					       </tr>
@@ -120,7 +120,7 @@
 					        <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
-					          <input type="text" size="5" value=""  maxlength="40" title="업무구분" 
+					          <input id="TmsProgrmFileNm_task_gb" type="text" size="5" value=""  maxlength="40" title="업무구분" 
 					          style="text-align:center; width:90%;" readonly="readonly"/> 
 					          &nbsp;
 					        </td>
@@ -128,7 +128,7 @@
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
-					          <input type="text" size="10" value=""  maxlength="40" title="개발자" 
+					          <input id="TmsProgrmFileNm_user_dev_id" type="text" size="10" value=""  maxlength="40" title="개발자" 
 					          style="text-align:center; width:90%;" readonly="readonly"/> 
 					          &nbsp;
 					        </td>
@@ -191,7 +191,7 @@
 					      
                         </table>
                     </div>
-
+					<input id="TmsProgrmFileNm_sys_gb" name="TmsProgrmFileNm_sys_gb" type="hidden" /> 
 
                     <!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
