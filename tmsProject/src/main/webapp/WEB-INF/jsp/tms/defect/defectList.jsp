@@ -36,7 +36,9 @@ function fn_egov_select_viewDefectInfo(pgId,defectIdSq){
 	document.defectVO.defectIdSq.value = defectIdSq;
     document.defectVO.submit();
 }
-
+function searchFileNm() {
+    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+}
 </script>
 
 </head>
@@ -83,11 +85,16 @@ function fn_egov_select_viewDefectInfo(pgId,defectIdSq){
 					  	<div class="sf_start">
 					  		<ul id="search_first_ul">
 					  			<li><label for="searchByPgId">화면ID</label></li>
-					  			<li><input type="text" name="searchByPgId" id="searchByPgId" size="10"/></li>
-					  			<li>&nbsp;
+					  			<li>
+					  			<input id="TmsProgrmFileNm_view" name="searchByPgId" type="text" size="10" value="" style="text-align:center;" maxlength="40" title="화면ID"  
+					           onchange="javaScript:selectPg(); return false;"/> 
+					          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
+					  			</li>
+					  			<li>
 								    <label for="searchByTaskGb">업무구분&nbsp;</label>
-									<select name="searchByTaskGb" id="searchByTaskGb">
-									    <option value="0" selected="selected">전체</option>
+									<select name="searchByTaskGb" id="searchByTaskGb" style="width:12%;text-align-last:center;">
+									    <option value="0" selected="selected" >전체</option>
 									    <c:forEach var="taskGb" items="${taskGb}" varStatus="status">
 									    	<option value="<c:out value="${taskGb.code}"/>"><c:out value="${taskGb.codeNm}" /></option>
 									    </c:forEach>
@@ -95,7 +102,7 @@ function fn_egov_select_viewDefectInfo(pgId,defectIdSq){
 					  			</li> 			
 					  			<li>
 								    <label for="searchByDefectGb">결함유형구분</label>
-									<select name="searchByDefectGb" id="searchByDefectGb">
+									<select name="searchByDefectGb" id="searchByDefectGb" style="width:10%;text-align-last:center;">
 									    <option value="0" selected="selected">전체</option>
 									    <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
 									    	<option value="<c:out value="${defectGb.code}"/>"><c:out value="${defectGb.codeNm}" /></option>
@@ -105,7 +112,7 @@ function fn_egov_select_viewDefectInfo(pgId,defectIdSq){
 					  			
 					  			<li>
 								    <label for="searchByDefectGb">조치상태구분</label>
-									<select name="searchByActionSt" id="searchByActionSt">
+									<select name="searchByActionSt" id="searchByActionSt" style="width:10%;text-align-last:center;">
 									    <option value="0" selected="selected">전체</option>
 									    <c:forEach var="actionSt" items="${actionSt}" varStatus="status">
 									    	<option value="<c:out value="${actionSt.code}"/>"><c:out value="${actionSt.codeNm}" /></option>
@@ -117,12 +124,14 @@ function fn_egov_select_viewDefectInfo(pgId,defectIdSq){
 					  		
 					  		<ul id="search_second_ul">
 								<li><label for="searchByUserTestId">테스터명</label>&nbsp;&nbsp;</li>
-								<li><input type="text" name="searchByUserTestId" id="searchByUserTestId" size="10"/></li>
-					  			<li><label for="searchByUserDevId">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개발자명</label>&nbsp;</li>
-					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" size="10"/>&nbsp;</li>
-					  			<label>&nbsp;등록일자</label>
-								<input type="text" name="st_date" size="15"/><img src="images/calendar.gif" width="19" height="19" alt="" />
-					  			&nbsp;~&nbsp; <input type="text" name="en_date" size="15"/><img src="images/calendar.gif" width="19" height="19" alt="" />
+								<li><input type="text" name="searchByUserTestId" id="searchByUserTestId" size="10" style="text-align:center;"/></li>
+					  			<li><label for="searchByUserDevId">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개발자명</label>&nbsp;</li>
+					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" size="13" style="text-align:center;"/>&nbsp;</li>
+					  			<li>
+					  			<label>&nbsp;&nbsp;&nbsp;등록일자</label>
+								<input type="text" name="st_date" size="15" style="text-align:center;"/><img src="images/calendar.gif" width="19" height="19" alt="" />
+					  			&nbsp;~&nbsp; <input type="text" name="en_date" size="15" style="text-align:center;"/><img src="images/calendar.gif" width="19" height="19" alt="" />
+					  			</li>
 					  		</ul>
 					  		<br/>
 					  		<ul id="search_third_ul">

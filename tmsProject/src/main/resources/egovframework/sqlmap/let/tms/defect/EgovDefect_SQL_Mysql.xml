@@ -111,6 +111,12 @@
         ]]>
     </select>
     
+    <select id="defectDAO.selectUser" resultClass="egovMap">
+        <![CDATA[
+        	SELECT USER_NM, USER_ID FROM USER_TB
+        ]]>
+    </select>
+    
     <insert id="defectDAO.insertDefect" parameterClass="DefectVO">
         <![CDATA[
         	INSERT INTO DEFECT_TB

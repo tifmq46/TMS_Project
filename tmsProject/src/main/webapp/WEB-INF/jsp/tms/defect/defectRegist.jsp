@@ -27,11 +27,17 @@
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <script type="text/javascript" src="<c:url value='/js/showModalDialog.js'/>" ></script>
 <script type="text/javascript">
-
+	
+	
     function fn_egov_insert_addDefectImpl(){
     	document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
         document.defectVO.submit();
     }
+ 
+    function searchFileNm() {
+	    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+	}
+    
     
     <!-- 
     function fn_egov_select_viewDefect(){
@@ -95,17 +101,17 @@
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
-					          <input id="pgId" name="pgId" type="text" size="10" value=""  maxlength="40" title="화면ID"  
-					           style="text-align:center; width:80%;"/> 
-					          <a href="#LINK" onclick="fn_egov_inqire_bbsInf();" style="selector-dummy: expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />"
-					                    width="15" height="15" align="middle" alt="새창" /></a>
+					          <input id="TmsProgrmFileNm_view" name="pgId" type="text" size="10" value=""  maxlength="40" title="화면ID"  
+					           style="text-align:center; width:80%;" readonly="readonly"/> 
+					          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
 					        </td>
 					         <th width="16.6%" height="23" class="required_text" nowrap >화면명
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
 					          <input type="text" size="10" value=""  maxlength="40" title="화면명" 
-					          style="text-align:center; width:90%;" /> 
+					          style="text-align:center; width:90%;" readonly="readonly"/> 
 					        </td>
 					       </tr>
 					       
@@ -115,7 +121,7 @@
 					        </th>
 					        <td width="16.6%" nowrap >
 					          <input type="text" size="5" value=""  maxlength="40" title="업무구분" 
-					          style="text-align:center; width:90%;" /> 
+					          style="text-align:center; width:90%;" readonly="readonly"/> 
 					          &nbsp;
 					        </td>
 					         <th width="16.6%" height="23" class="required_text" nowrap >개발자
@@ -123,15 +129,19 @@
 					        </th>
 					        <td width="16.6%" nowrap >
 					          <input type="text" size="10" value=""  maxlength="40" title="개발자" 
-					          style="text-align:center; width:90%;" /> 
+					          style="text-align:center; width:90%;" readonly="readonly"/> 
 					          &nbsp;
 					        </td>
 					         <th width="16.6%" height="23" class="required_text" nowrap >테스터
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
-					          <input id="userTestId" name="userTestId" type="text" size="10" value=""  maxlength="40" title="테스터"
-					          style="text-align:center; width:90%;"/> 
+					          <select name="userTestId" id="userTestId" style="width:90%; text-align-last:center;">
+									    <option value="0" selected="selected">선택</option>
+									    <c:forEach var="userList" items="${userList}" varStatus="status">
+									    	<option value="<c:out value="${userList.userId}"/>"><c:out value="${userList.userNm}" /></option>
+									    </c:forEach>
+								</select>
 					        </td>
 					       </tr>
 					       
@@ -146,9 +156,12 @@
 					       <th width="16.6%" height="23" class="required_text" nowrap >결함유형
 					        </th>
 					        <td width="16.6%" nowrap>
-					          <input id="defectGb" name="defectGb" type="text" value=""  maxlength="40" title="결함유형"
-					          style="text-align:center; width:90%;"/> 
-					          &nbsp;
+									<select name="defectGb" id="defectGb" style="width:90%; text-align-last:center;">
+									    <option value="0" selected="selected">선택</option>
+									    <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
+									    	<option value="<c:out value="${defectGb.code}"/>"><c:out value="${defectGb.codeNm}" /></option>
+									    </c:forEach>
+									</select>
 					        </td>
 					        
 					       </tr>
