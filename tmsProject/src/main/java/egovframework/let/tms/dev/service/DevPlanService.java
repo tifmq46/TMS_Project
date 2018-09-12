@@ -44,7 +44,7 @@ public interface DevPlanService {
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-	public Map<String, Object> selectDevPlans(DevPlanDefaultVO defaultVO) throws Exception;
+	public List<?> selectDevPlans(DevPlanDefaultVO searchVO) throws Exception;
 	
 	
 	/**
@@ -53,7 +53,7 @@ public interface DevPlanService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<DevPlanDefaultVO> selectDevPlansByCode(DevPlanDefaultVO defaultVO) throws Exception;
+	public List<?> selectDevPlansByCode(DevPlanDefaultVO searchVO) throws Exception;
 	
 	
 	/**
@@ -68,5 +68,30 @@ public interface DevPlanService {
 	public int selectDevPlanListTotCnt(DevPlanDefaultVO searchVO)throws Exception;
 	
 	public List<?> selectDevResultList(DevPlanDefaultVO searchVO) throws Exception;
+	
+	/**
+	 * 개발결과에 대한 상세정보를 조회한다.
+	 * @param vo - 조회할 정보가 담긴 DevPlanVO
+	 * @return 조회한 글
+	 * @exception Exception
+	 */
+	public DevPlanDefaultVO selectDevResult(DevPlanDefaultVO defaultVO) throws Exception; 
+	
+
+	/**
+	 * 개발결과를 수정한다.
+	 * @param vo - 수정할 정보가 담긴 DevPlanVO
+	 * @return void형
+	 * @exception Exception
+	 */
+	public void updateDevResult(DevPlanVO vo) throws Exception;
+
+	/**
+	 * 개발결과를 삭제한다.
+	 * @param vo - 삭제할 정보가 담긴 DevPlanVO
+	 * @return void형
+	 * @exception Exception
+	 */
+	public void deleteDevResult(DevPlanVO vo) throws Exception;
 
 }

@@ -27,9 +27,12 @@ public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
 	/** 화면ID로 검색 */
 	private String searchByPgId = "";
 	
-	/** 계획일자로 검색*/
+	/** 계획일자로 검색(시작)*/
 	private Date searchByPlanStartDt;
 	
+	/** 계획일자로 검색(종료)*/
+	private Date searchByPlanEndDt;
+
 	/** 검색사용여부 */
 	private String searchUseYn = "";
 
@@ -90,6 +93,14 @@ public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
 
 	public void setSearchByPlanStartDt(Date searchByPlanStartDt) {
 		this.searchByPlanStartDt = searchByPlanStartDt;
+	}
+	
+	public Date getSearchByPlanEndDt() {
+		return searchByPlanEndDt;
+	}
+
+	public void setSearchByPlanEndDt(Date searchByPlanEndDt) {
+		this.searchByPlanEndDt = searchByPlanEndDt;
 	}
 	
 	public int getFirstIndex() {

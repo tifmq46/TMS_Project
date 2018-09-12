@@ -51,6 +51,7 @@ public class EgovComUtlController {
 		if (baseMenuNo != null && !baseMenuNo.equals("") && !baseMenuNo.equals("null")) {
 			session.setAttribute("baseMenuNo", baseMenuNo);
 		}
+		System.out.println("link ============================================ " + link);
 		return link;
 	}
 

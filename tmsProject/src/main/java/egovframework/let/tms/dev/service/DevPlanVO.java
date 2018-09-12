@@ -3,6 +3,8 @@ package egovframework.let.tms.dev.service;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @SuppressWarnings("serial")
 public class DevPlanVO implements Serializable{
 	
@@ -11,18 +13,23 @@ public class DevPlanVO implements Serializable{
 	private String pgId;
 	
 	/**  계획시작일자 */
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date planStartDt;
 	
 	/**  계획완료일자 */
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date planEndDt;
 	
 	/**  개발시작일자 */
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date devStartDt;
 	
 	/**  개발완료일자 */
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date devEndDt;
 	
 	/**  등록일자 */
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date enrollDt;
 	
 	/**  개발완료여부 */

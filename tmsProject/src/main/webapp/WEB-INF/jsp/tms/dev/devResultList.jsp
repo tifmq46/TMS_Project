@@ -29,10 +29,11 @@
 <title>로그인정책 목록조회</title>
 
 <script type="text/javaScript" language="javascript" defer="defer">
-<!--
-
-
--->
+function fn_searchList(pageNo){
+    document.listForm.pageIndex.value = pageNo;
+    document.listForm.action = "<c:url value='/tms/dev/devResultList.do'/>";
+    document.listForm.submit();
+}
 </script>
 
 </head>
@@ -90,7 +91,7 @@
                 
               
              <form:form commandName="searchVO" name="listForm" method="post" action="tms/dev/devPlanList.do">   
-                
+                <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
                 <!-- 검색 필드 박스 시작 -->
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발결과관리</strong></h2></div>
@@ -122,15 +123,14 @@
 					  			<li><input type="text" name="searchByPgId" id="searchByPgId" /></li>
 					  			<li>
 									<div class="buttons" style="float:right;">
-										<a href="#"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-									    <a href="<c:url value='/uss/umt/user/EgovUserInsertView.do'/>" onclick="fnAddUserView(); return false;">등록</a>
+										<a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
 									</div>	  				  			
 					  			</li>
 					  			
 					  			<li>
-					  			<label>계획일자</label>
-								<input type="text" name="st_date" /><img src="images/calendar.gif" width="19" height="19" alt="" />
-					  			~ <input type="text" name="en_date" /><img src="images/calendar.gif" width="19" height="19" alt="" />
+					  			<label>개발일자</label>
+								<input type="date" name="devStartDt" /><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+					  			~ <input type="date" name="devEndDt" /><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
 					  			</li>
 					  			
 					  		</ul>			
@@ -150,15 +150,16 @@
               
               
               <colgroup>
-        				<col width="60"/> 
-        				<col width="60"/>
-        				<col width="80"/>
-        				<col width="100"/>
-        				<col width="50"/>
-        				<col width="80"/>
-        				<col width="80"/>
-        				<col width="10"/>
-        				<col width="10"/>
+        			<col width="70" >
+                    <col width="60" >  
+                    <col width="10%" >
+                    <col width="20%" >
+                    <col width="40" >
+                    <col width="90" >
+                    <col width="90" >
+                    <col width="90" >
+                    <col width="90" >
+                    <col width="80" >
         			</colgroup>
         			<tr>
         				<th align="center">시스템구분</th>
@@ -170,6 +171,7 @@
         				<th align="center">계획종료일자</th>
 			        	<th align="center">개발시작일자</th>
         				<th align="center">개발종료일자</th>
+        				<th align="center">등록</th>
         			</tr>
         			
         			<c:forEach var="result" items="${resultList}" varStatus="status">
@@ -177,24 +179,40 @@
             			<tr>
             				<td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
-            				<td align="left" class="listtd"><c:out value="${result.pgName}"/>&nbsp;</td>
+            				<td align="center" class="listtd">
+            					<a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>">
+                                <c:out value="${result.pgId}"/></a>
+                            </td>
+            				<td align="left" class="listtd"><c:out value="${result.pgNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.devEndDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd">
+            				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
+            				<a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >등록</a> 
+            				</div>
+            				<!-- <input type="button" value="등록" class="buttons"
+            				onclick=""
+            				/> -->
+            				</td>
+            				<%-- <td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
+	            					<td align="center" class="listtd"><c:out value="${result.devEndDt}"/>&nbsp;</td> --%>
             				
             				<!--  계획일자가 등록되어 있는 경우에만 개발일자를 등록할 수 있음 -->
-            				<c:choose>
+            				<%-- <c:choose>
 	            				<c:when test="${!empty result.planStartDt}">
+	            					
 		            				<td align="center" class="listtd"><input type="date" id="${result.pgId}DevStartDt" style="width:120px; height:15px;" value="<c:out value="${result.devStartDt}"/>"/>&nbsp;</td>
-		            				<td align="center" class="listtd"><input type="date" id="${result.pgId}DevEndDt" style="width:120px; height:15px;" value="<c:out value="${result.devEndDt}"/>"/>&nbsp;</td>
+		            				<td align="center" class="listtd"><input type="date" id="${result.pgId}DevEndDt" style="width:120px; height:15px;" value="<c:out value="${result.devEndDt}"/>"/>&nbsp;</td> 
 	           					</c:when>
 	            				
 	            				<c:otherwise>
-	            					<td align="center" class="listtd">&nbsp;</td>
-	            					<td align="center" class="listtd">&nbsp;</td>
+	            					<td align="center" class="listtd"></td>
+	            					<td align="center" class="listtd"></td>
 	            				</c:otherwise>
-            				</c:choose>
+            				</c:choose> --%>
             			</tr>
         			</c:forEach>
               
@@ -203,14 +221,14 @@
            </div>
 
                 <!-- 페이지 네비게이션 시작 -->
-                <c:if test="${!empty loginPolicyVO.pageIndex }">
+                <%-- <c:if test="${!empty loginPolicyVO.pageIndex }"> --%>
                     <div id="paging_div">
                         <ul class="paging_align">
                        <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage" />
                         </ul>
                     </div>
                 <!-- //페이지 네비게이션 끝 -->
-                </c:if>
+                <%-- </c:if> --%>
 
 
 
