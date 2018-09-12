@@ -25,11 +25,37 @@
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 </head>
 <body>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script language="javascript1.2" type="text/javaScript">
 	function searchFileNm() {
 	    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
 	}
+	$(function(){
+		$('#category1').change(function() {
+			$.ajax({
+				type:"POST",
+				url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
+				data : {searchData : this.value},
+				async: false,
+				dataType : 'json',
+				success : function(selectTaskGbSearch){
+					$("#category2").find("option").remove().end().append("<option value=''>선택하세요</option>");
+					$.each(selectTaskGbSearch, function(i){
+						(JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
+					$("#category2").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+					});
+				},
+				error : function(request,status,error){
+					alert("에러");
+					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+				}
+			});
+		})
+	})
+	
 </script>
+
 <noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>	
 <!-- 전체 레이어 시작 -->
 
@@ -38,7 +64,7 @@
 	<!-- //header 끝 -->	
 	<!-- container 시작 -->
 	<div id="main_container">
-	     <%-- <!-- 프로그램리스트 검색 시작 -->
+	    <!-- 프로그램리스트 검색 시작 -->
 		  <div>
          	<ul>
             	<li>
@@ -54,7 +80,7 @@
                 </li>	
             </ul>           
          </div> 
-        <!-- 프로그램리스트 검색 끝 -->  --%>
+        <!-- 프로그램리스트 검색 끝 --> 
         <div class="container" style="padding:0 15px; 0 15px;">
 	    	<div class="page-title">
 	    			<b style="font-size:14px;"><i class="icon-bar-chart"></i>&nbsp;프로젝트 상세</b>
@@ -226,6 +252,36 @@
     </div>	                
 	</div>
 	<!-- //게시판 끝 -->
+	<!-- 공통코드 셀렉트박스 시작 -->
+        <div id="search_field">
+					<div id="search_field_loc"><h2><strong>공통코드관리</strong></h2></div>
+					<form action="form_action.jsp" method="post">
+					  	<fieldset><legend>조건정보 영역</legend>	  
+					  	<div class="sf_start">
+					  		<ul id="search_first_ul">
+					  			<li>
+								    <label for="searchByTaskGb">시스템구분&nbsp;</label>
+									<select name="category1" id="category1" style="width:12%;text-align-last:center;">
+									    <option value="0" selected="selected" >전체</option>
+									    <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
+									    	<option value="<c:out value="${sysGb.SYS_GB}"/>"><c:out value="${sysGb.SYS_GB}" /></option>
+									    </c:forEach>
+									</select>						
+					  			</li> 			
+					  			 <li>
+								    <label for="searchByDefectGb">업무구분</label>
+									<select name="category2" id="category2" style="width:15%;text-align-last:center;">
+									    <option value="">선택하세요</option>
+									</select>						
+					  			</li>
+					  		</ul>
+						</div>			
+						</fieldset>
+					</form>
+				</div>
+				<!-- //검색 필드 박스 끝 -->
+        
+        <!-- 공통코드 셀렉트박스 끝 -->
 	<!-- footer 시작 -->
 	<div id="footer"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncFooter" /></div>
 	<!-- //footer 끝 -->

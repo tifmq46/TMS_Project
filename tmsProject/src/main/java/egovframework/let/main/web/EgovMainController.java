@@ -1,5 +1,6 @@
 package egovframework.let.main.web;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -118,10 +119,17 @@ public class EgovMainController {
 
 		// 업무게시판 메인컨텐츠 조회 끝 -----------------------------------
 		// 프로젝트 정보 조회 시작 -------------------------------	
-		
 		TmsProjectManageVO tmsProjectManageVO = TmsProgrmManageService.selectProject();
 		System.out.println("tmsProjectManageVO================" + tmsProjectManageVO);
 		model.addAttribute("tmsProjectManageVO", tmsProjectManageVO);
+		// 프로젝트 정보 조회 끝 -------------------------------
+		
+		// 공통코드 부분 시작 -------------------------------	
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		
 		return "main/EgovMainView";
 	}
 

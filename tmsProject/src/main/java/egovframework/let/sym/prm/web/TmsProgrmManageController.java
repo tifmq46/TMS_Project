@@ -1,31 +1,21 @@
 package egovframework.let.sym.prm.web;
 
 import java.util.List;
-import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
-import egovframework.com.cmm.LoginVO;
-import egovframework.let.sym.prm.service.EgovProgrmManageService;
-import egovframework.let.sym.prm.service.ProgrmManageDtlVO;
-import egovframework.let.sym.prm.service.ProgrmManageVO;
 import egovframework.let.sym.prm.service.TmsProgrmManageService;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
-import javax.annotation.Resource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
-//import egovframework.let.ems.service.EgovSndngMailRegistService;
-//import egovframework.let.ems.service.SndngMailVO;
 
 /**
  * 프로그램목록 관리및 변경을 처리하는 비즈니스 구현 클래스
@@ -102,7 +92,16 @@ public class TmsProgrmManageController {
 
 	}
 	
+	@RequestMapping(value = "/sym/prm/TaskGbSearch.do")
+	@ResponseBody
+	public List<?> selectTaskGbSearch(String searchData,ModelMap model) throws Exception {
+		// 0. Spring Security 사용자권한 처리
+		
+		List<?> selectTaskGbSearch = TmsProgrmManageService.selectTaskGbSearch(searchData);
+		model.addAttribute("selectTaskGbSearch", selectTaskGbSearch);
 	
-	
+		return selectTaskGbSearch;
+
+	}
 
 }

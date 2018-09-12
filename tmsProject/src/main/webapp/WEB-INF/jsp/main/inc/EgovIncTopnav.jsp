@@ -84,7 +84,7 @@
 	    
 	    
 	    <c:if test="${fn:length(list_headmenu) == 0 }">
-	        <li>등록된 메뉴가 없습니다.</li>
+	        <!-- <li>등록된 메뉴가 없습니다.</li> -->
 	    </c:if>
 	</ul>
 </div>

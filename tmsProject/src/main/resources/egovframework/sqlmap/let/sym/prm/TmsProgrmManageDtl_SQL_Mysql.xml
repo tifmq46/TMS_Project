@@ -7,6 +7,7 @@
 	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 	<typeAlias  alias="TmsProgrmManageVO" type="egovframework.let.sym.prm.service.TmsProgrmManageVO"/>
 	<typeAlias  alias="TmsProjectManageVO" type="egovframework.let.sym.prm.service.TmsProjectManageVO"/>
+	<typeAlias  alias="TmsCommonManageVO" type="egovframework.let.sym.prm.service.TmsCommonManageVO"/>
 
     <!-- 프로그램목록 관리 -->
 	<resultMap id="TmsProgrmManage"       class="egovframework.let.sym.prm.service.TmsProgrmManageVO">
@@ -22,6 +23,7 @@
 	<resultMap id="TmsProjectManageVO"       class="egovframework.let.sym.prm.service.TmsProjectManageVO">
 		<result property="PJT_ID"    column="PJT_ID"    columnIndex="1"/>
 	</resultMap> 
+	
 	
 	<select id="TmsProgrmManageDAO.selectProgrmList_D" parameterClass="comDefaultVO" resultMap="TmsProgrmManage">
 		<![CDATA[
@@ -54,7 +56,25 @@
 				  PJT_ID   AS "PJT_ID"
 			FROM PJT_TB
 		 ]]>
+	</select>
+	
+	<!-- 시스템구분 조회 -->
+	<select id="TmsProgrmManageDAO.selectSysGb" resultClass="TmsProgrmManageVO">
+			SELECT CODE_NM AS "SYS_GB" FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'SYSGB'
+	</select>
+	
+	<!-- 업무구분 조회 -->
+	<select id="TmsProgrmManageDAO.selectTaskGb" resultClass="TmsProgrmManageVO">
+			SELECT CODE_NM AS "TASK_GB" FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'TASKGB'
+	</select>  
+	
+	<!-- 업무구분 조회 -->
+	<select id="TmsProgrmManageDAO.selectTaskGbSearch" resultClass="TmsProgrmManageVO">
+		SELECT CODE_NM AS "TASK_GB"
+		FROM LETTCCMMNDETAILCODE
+		WHERE PARENT = (SELECT CODE
+		FROM LETTCCMMNDETAILCODE
+		WHERE CODE_NM = (SELECT CODE_NM  FROM LETTCCMMNDETAILCODE WHERE binary(CODE_NM)= #searchData#))
 	</select> 
 
-	
 </sqlMap>                            
