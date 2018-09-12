@@ -22,38 +22,88 @@
 	    <result property="thirdTestResultYn" column="THIRD_TEST_RESULT_YN" columnIndex="10"/>
 	</resultMap>
 	
+	<resultMap id="devPlanOne" class="egovframework.let.tms.dev.service.DevPlanDefaultVO">
+	    <result property="pgId" column="PG_ID" columnIndex="1"/>
+	    <result property="planStartDt" column="PLAN_START_DT" columnIndex="2"/>
+	    <result property="planEndDt" column="PLAN_END_DT" columnIndex="3"/>
+	</resultMap>
+	
+	<resultMap id="devResultOne" class="egovframework.let.tms.dev.service.DevPlanDefaultVO">
+	    <result property="pgId" column="PG_ID" columnIndex="1"/>
+	    <result property="planStartDt" column="PLAN_START_DT" columnIndex="2"/>
+	    <result property="planEndDt" column="PLAN_END_DT" columnIndex="3"/>
+	    <result property="devStartDt" column="DEV_START_DT" columnIndex="4"/>
+	    <result property="devEndDt" column="DEV_END_DT" columnIndex="5"/>
+	</resultMap>
+	
 	<select id="devPlanDAO.selectDevPlans" parameterClass="searchVO" resultClass="egovMap">
 			<![CDATA[
 				SELECT * FROM (
 					SELECT
 						b.PG_ID
 						,(SELECT USER_NM FROM USER_TB WHERE USER_ID = b.USER_DEV_ID ) USER_DEV_ID
-						,b.PG_NAME
+						,b.PG_NM
 						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.SYS_GB) SYS_GB
 						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.TASK_GB) TASK_GB
 						,a.PLAN_START_DT
 						,a.PLAN_END_DT
 						
 					FROM DEV_PLAN_TB a
-					RIGHT OUTER JOIN PG_TB b
+					INNER JOIN PG_TB b
 					ON a.PG_ID = b.PG_ID
 					) as c
 					WHERE 1=1
 			]]>
 			
-			<!-- 개발자명으로 검색 -->
-			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID = #searchByUserDevId#
-			</isNotEmpty>    
-			
+			<!-- 화면ID로 검색 -->
+			<!-- <isEqual prepend="AND" property="searchCondition" compareValue="1">
+                PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
+            </isEqual>
+             -->
 			<!-- 화면ID로 검색 -->
 			<isNotEmpty property="searchByPgId">
-			    AND PG_ID = #searchByPgId#
-			</isNotEmpty>    
+			    AND PG_ID LIKE CONCAT ('%', #searchByPgId#, '%')
+			</isNotEmpty> 
+			
+			<!-- 개발자명으로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_DEV_ID LIKE CONCAT ('%', #searchByUserDevId#, '%')
+			</isNotEmpty>
+			
+			<!-- 계획시작일로 검색 -->
+			<isNotEmpty property="planStartDt">
+			    <isNotEmpty property="planEndDt">
+			        AND PLAN_START_DT BETWEEN DATE(#planStartDt#) AND DATE(#planEndDt#)
+			    </isNotEmpty>
+			</isNotEmpty>
 			        
 			ORDER BY PG_ID ASC
 			LIMIT #recordCountPerPage# OFFSET #firstIndex#
+			
+			
 	</select>
+	
+	
+	<select id="DevPlanDAO.selectDevPlan" parameterClass="searchVO" resultMap="devPlanOne" >
+		<![CDATA[
+			select 
+				PG_ID, 
+				PLAN_START_DT,
+				PLAN_END_DT 
+				FROM DEV_PLAN_TB WHERE PG_ID = #pgId#
+			
+				]]>				
+	</select> 
+	
+	<insert id="DevPlanDAO.insertDevPlan" parameterClass="DevPlanVO" >
+		<![CDATA[
+			INSERT INTO DEV_PLAN_TB
+				(PG_ID, PLAN_START_DT, PLAN_END_DT,ENROLL_DT)
+			VALUES
+			( #pgId#, #planStartDt#, #planEndDt#, SYSDATE()
+			 )			
+		]]>
+	</insert>
 	
 	<!-- <select id="DevPlanDAO.selectDevPlans" parameterClass="searchVO" resultClass="egovMap" >
 		<![CDATA[
@@ -91,7 +141,7 @@
 			SELECT
 				b.PG_ID
 				,(SELECT USER_NM FROM USER_TB WHERE USER_ID = b.USER_DEV_ID ) USER_DEV_ID
-				,b.PG_NAME
+				,b.PG_NM
 				,b.SYS_GB
 				,b.TASK_GB
 				,b.USE_YN
@@ -111,7 +161,8 @@
 			ON a.PG_ID = b.PG_ID
 			) as c
 			WHERE 1=1
-		]]>
+			
+			]]>
 			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
@@ -130,7 +181,7 @@
 					SELECT
 						b.PG_ID
 						,(SELECT USER_NM FROM USER_TB WHERE USER_ID = b.USER_DEV_ID ) USER_DEV_ID
-						,b.PG_NAME
+						,b.PG_NM
 						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.SYS_GB) SYS_GB
 						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.TASK_GB) TASK_GB
 						,b.USE_YN
@@ -146,27 +197,92 @@
 						,a.THIRD_TEST_RESULT_YN
 						
 					FROM DEV_PLAN_TB a
-					RIGHT OUTER JOIN PG_TB b
+					INNER JOIN PG_TB b
 					ON a.PG_ID = b.PG_ID
 					) as c
 					WHERE 1=1
 			]]>
 			
-			<!-- 개발자명으로 검색 -->
-			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID = #searchByUserDevId#
-			</isNotEmpty>    
-			
 			<!-- 화면ID로 검색 -->
 			<isNotEmpty property="searchByPgId">
-			    AND PG_ID = #searchByPgId#
-			</isNotEmpty>    
+			    AND PG_ID LIKE CONCAT ('%', #searchByPgId#, '%')
+			</isNotEmpty> 
+			
+			<!-- 개발자명으로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_DEV_ID LIKE CONCAT ('%', #searchByUserDevId#, '%')
+			</isNotEmpty>
+			
+			<!-- 계획시작일로 검색 -->
+			<isNotEmpty property="devStartDt">
+			    <isNotEmpty property="devEndDt">
+			        AND DEV_START_DT BETWEEN DATE(#devStartDt#) AND DATE(#devEndDt#)
+			    </isNotEmpty>
+			</isNotEmpty>
 			        
 			ORDER BY PG_ID ASC
 			LIMIT #recordCountPerPage# OFFSET #firstIndex#
 	</select>
 	
+	<update id="DevPlanDAO.updateDevPlan" parameterClass="DevPlanVO">
+        <![CDATA[
+            UPDATE DEV_PLAN_TB 
+               SET PLAN_START_DT=#planStartDt#
+                 , PLAN_END_DT=#planEndDt#
+             WHERE PG_ID=#pgId#
+        ]]>
+    </update>
 	
+	
+	<delete id="DevPlanDAO.deleteDevPlan">
+        <![CDATA[
+            DELETE FROM DEV_PLAN_TB 
+             WHERE PG_ID=#pgId#
+        ]]>
+    </delete>
+    
+	
+	<select id="DevPlanDAO.selectDevResult" parameterClass="searchVO" resultMap="devResultOne" >
+		<![CDATA[
+			select 
+				PG_ID, 
+				PLAN_START_DT,
+				PLAN_END_DT,
+				DEV_START_DT, 
+				DEV_END_DT 
+				FROM DEV_PLAN_TB WHERE PG_ID = #pgId#
+			
+				]]>				
+	</select> 
+    
+<!-- 	
+	<insert id="DevPlanDAO.insertDevResult" parameterClass="DevPlanVO" >
+		<![CDATA[
+			INSERT INTO DEV_PLAN_TB
+				(PG_ID, PLAN_START_DT, PLAN_END_DT,DEV_START_DT, DEV_END_DT, ENROLL_DT)
+			VALUES
+			( #pgId#, #planStartDt#, #planEndDt#, #devStartDt#, #devEndDt#, '2018-09-09'
+			 )			
+		]]>
+	</insert>
+	 -->
+	<update id="DevPlanDAO.updateDevResult" parameterClass="DevPlanVO">
+        <![CDATA[
+            UPDATE DEV_PLAN_TB 
+               SET DEV_START_DT=#devStartDt#
+                 , DEV_END_DT=#devEndDt#
+             WHERE PG_ID=#pgId#
+        ]]>
+    </update>
+    
+	<update id="DevPlanDAO.deleteDevResult" parameterClass="DevPlanVO">
+        <![CDATA[
+            UPDATE DEV_PLAN_TB 
+               SET DEV_START_DT=NULL
+                 , DEV_END_DT=NULL
+             WHERE PG_ID=#pgId#
+        ]]>
+    </update>
 	
 <!-- 
 	<resultMap id="tmplatDetail" class="egovframework.let.cop.com.service.TemplateInfVO">

@@ -17,6 +17,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -42,6 +43,18 @@ function fn_egov_selectSysType(obj){
     } else {
         document.getElementById('sometext').innerHTML = "템플릿은 JSP만 가능합니다.";
     }        */
+}
+
+function fn_egov_insert_addDevPlan(){    
+    document.frm.action = "<c:url value='/tms/dev/addDevPlan.do'/>";
+    document.frm.submit();
+}
+
+function fn_searchList(pageNo){
+
+    document.listForm.pageIndex.value = pageNo;
+    document.listForm.action = "<c:url value='/tms/dev/devPlans.do'/>";
+    document.listForm.submit();
 }
 </script>
 
@@ -77,46 +90,17 @@ function fn_egov_selectSysType(obj){
                         </ul>
                     </div>
                 </div>
-                <%-- <!-- 검색 필드 박스 시작 -->
-                <div id="search_field">
-                    <div id="search_field_loc"><h2><strong>개시판템플릿목록</strong></h2></div>
-                    <form name="frm" action ="<c:url value='/tms/dev/selectDevPlans.do'/>" method="post">
-                        <input type="hidden" name="pgId" value="" />
-                        <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-                        <input type="submit" id="invisible" class="invisible"/>
-                        
-                        <fieldset><legend>조건정보 영역</legend>    
-                        <div class="sf_start">
-                            <ul id="search_first_ul">
-                                <li>
-                                    <select name="searchCnd" title="검색조건" class="select">
-                                       <option value="0" <c:if test="${searchVO.searchCnd == '0'}">selected="selected"</c:if> >템플릿명</option>
-                                       <option value="1" <c:if test="${searchVO.searchCnd == '1'}">selected="selected"</c:if> >템플릿구분</option>   
-                                    </select>
-                                </li>
-                                <li>
-                                    <input name="searchWrd" title="검색어" type="text" size="35" value='<c:out value="${searchVO.searchWrd}"/>'  maxlength="35" onkeypress="press(event);"> 
-                                </li>       
-                            </ul>
-                            <ul id="search_second_ul">
-                                <li>
-                                    <div class="buttons" style="float:right;">
-                                        <a href="<c:url value='/tms/dev/selectDevPlans.do'/>" onclick="javascript:fn_egov_select_tmplatInfo('1'); return false;" ><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                                        <a href="<c:url value='/tms/dev/selectDevPlan.do'/>" onclick="javascript:fn_egov_insert_addTmplatInfo(); return false;" >등록</a>
-                                    </div>                              
-                                </li>
-                            </ul>           
-                        </div>          
-                        </fieldset>
-                    </form>
-                </div>
-                <!-- //검색 필드 박스 끝 --> --%>
- 			<form:form commandName="searchVO" name="listForm" method="post" action="tms/dev/devPlanList.do">   
+ 
+ 			
                 
                 <!-- 검색 필드 박스 시작 -->
+                <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="<c:url value='tms/dev/devPlanList.do'/>" >   
+				 
+                <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
+				
 				<div id="search_field">
-					<div id="search_field_loc"><h2><strong>개발계획과관리</strong></h2></div>
-					<form action="form_action.jsp" method="post">
+					<div id="search_field_loc"><h2><strong>개발계획관리</strong></h2></div>
+					
 					  	<fieldset><legend>조건정보 영역</legend>	  
 					  	<div class="sf_start">
 					  		<ul id="search_first_ul">
@@ -146,24 +130,26 @@ function fn_egov_selectSysType(obj){
 					  		</ul>
 					  		<ul id="search_second_ul">
 					  			<li><label for="searchByPgId">화면ID</label></li>
-					  			<li><input type="text" name="searchByPgId" id="searchByPgId" /></li>
+					  			<li><input type="text" name="searchByPgId" id="searchByPgId" value='${devPlanVO.searchByPgId}'/></li>
 					  			<li>
 									<div class="buttons" style="float:right;">
-										<a href="#"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-									    <a href="<c:url value='/uss/umt/user/EgovUserInsertView.do'/>" onclick="fnAddUserView(); return false;">등록</a>
+										<a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+									    <a href="<c:url value='/tms/dev/addDevPlan.do'/>" onclick="javascript:fn_egov_insert_addDevPlan(); return false;" >등록</a>
 									</div>	  				  			
 					  			</li>
 					  			
 					  			<li>
 					  			<label>계획일자</label>
-								<input type="text" name="st_date" /><img src="images/calendar.gif" width="19" height="19" alt="" />
-					  			~ <input type="text" name="en_date" /><img src="images/calendar.gif" width="19" height="19" alt="" />
+								<input type="date" name="planStartDt" /><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+					  			~ <input type="date" name="planEndDt" /><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
 					  			</li>
 					  			
-					  		</ul>			
+					  		</ul>	
+					  		
+					  				
 						</div>			
 						</fieldset>
-					</form>
+			
 				</div>
 				<!-- //검색 필드 박스 끝 -->
                 
@@ -199,8 +185,12 @@ function fn_egov_selectSysType(obj){
                       <tr>
                         <td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
-            				<td align="left" class="listtd"><c:out value="${result.pgName}"/>&nbsp;</td>
+            				<td align="center" class="listtd">
+            					<a href="<c:url value='/tms/dev/selectDevPlan.do'/>?pgId=<c:out value='${result.pgId}'/>">
+                                <c:out value="${result.pgId}"/></a>
+                             </td>
+            				<%-- <td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td> --%>
+            				<td align="left" class="listtd"><c:out value="${result.pgNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>
@@ -220,7 +210,10 @@ function fn_egov_selectSysType(obj){
                        <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_tmplatInfo"  />
                     </ul>
                 </div>                          
-                <!-- //페이지 네비게이션 끝 --> 
+                <!-- //페이지 네비게이션 끝 -->
+                
+               
+                
                 </form:form> 
             </div>
             <!-- //content 끝 -->    

@@ -1,8 +1,6 @@
 package egovframework.let.tms.dev.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -38,13 +36,15 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	
 	@Override
 	public void insertDevPlan(DevPlanVO vo) throws Exception {
-		LOGGER.debug(vo.toString());
+		/*LOGGER.debug(vo.toString());
 
-		/** ID Generation Service */
+		*//** ID Generation Service *//*
 		//String id = egovIdGnrService.getNextStringId();
 		vo.setPgId(vo.getPgId());
 		LOGGER.debug(vo.toString());
 
+		devPlanDAO.insertDevPlan(vo);*/
+		
 		devPlanDAO.insertDevPlan(vo);
 	}
 
@@ -65,9 +65,7 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	 */
 	@Override
 	public DevPlanDefaultVO selectDevPlan(DevPlanDefaultVO defaultVO) throws Exception {
-		DevPlanDefaultVO vo = devPlanDAO.selectDevPlan(defaultVO);
-
-		return vo;
+		return (DevPlanDefaultVO)devPlanDAO.selectDevPlan(defaultVO);
 	}
 	
 	/**
@@ -85,11 +83,11 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	
 	public DevPlanDefaultVO selectDevPlanPreview(DevPlanDefaultVO defaultVO) throws Exception{
 		
-		DevPlanDefaultVO vo = new DevPlanDefaultVO();
+		//DevPlanDefaultVO vo = new DevPlanDefaultVO();
 		
-		vo = devPlanDAO.selectDevPlanPreview(defaultVO);
+		//vo = devPlanDAO.selectDevPlanPreview(defaultVO);
 		
-		return vo;
+		return defaultVO;
 	}
 	
 	public List<?> selectDevPlansByCode(DevPlanDefaultVO searchVO) throws Exception{
@@ -107,6 +105,24 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	@Override
 	public List<?> selectDevResultList(DevPlanDefaultVO searchVO) throws Exception {
 		return devPlanDAO.selectDevResultList(searchVO);
+	}
+
+
+	@Override
+	public void updateDevResult(DevPlanVO vo) throws Exception {
+		devPlanDAO.updateDevResult(vo);
+		
+	}
+
+	@Override
+	public void deleteDevResult(DevPlanVO vo) throws Exception {
+		devPlanDAO.deleteDevResult(vo);
+		
+	}
+
+	@Override
+	public DevPlanDefaultVO selectDevResult(DevPlanDefaultVO defaultVO) throws Exception {
+		return (DevPlanDefaultVO)devPlanDAO.selectDevResult(defaultVO);
 	}
 	
 }
