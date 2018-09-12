@@ -12,6 +12,7 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ page import ="egovframework.com.cmm.LoginVO" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 <!-- topmenu start -->
@@ -49,6 +50,8 @@
     }
 
 </script>
+<fieldset><legend>조건정보 영역</legend>
+	
 <div class="nav_container" style="padding:0 20px;">
 	<ul>
 	    <a href="<c:url value='/'/>uat/uia/actionMain.do" style="float:left; border-right:1px solid rgba(0, 0, 0, 0.21); padding-top:15px; padding-bottom:16px; padding-left:18px;">
@@ -58,16 +61,34 @@
 		<c:forEach var="result" items="${list_headmenu}" varStatus="status">
 	        <li><a href="#LINK" style="padding-top:18px; float:left; padding-bottom:18px; padding-left:18px;" onclick="javascript:goMenuPage('<c:out value="${result.menuNo}"/>')"><c:out value="${result.menuNm}"/></a></li>  
 	    </c:forEach>
-	     <a href="<c:url value='/'/>uat/uia/actionMain.do" style="float:right; border-left:1px solid rgba(0, 0, 0, 0.21); padding-top:18px; padding-bottom:18px; padding-left:18px;">
-		    <li style="font-size:13px; text-shadow:0 1px 0 #000000;">사업지원그룹 ㅣ 사원 ㅣ 장현우</li>
-	    </a>
+	     <div class="dropdown" style="float:right; border-left:1px solid rgba(0, 0, 0, 0.21); padding-top:18px; padding-bottom:18px; padding-left:18px;">
+		    <li style="color:white; font-size:13px; text-shadow:0 1px 0 #000000;">
+		<%
+        LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
+        if(loginVO == null){
+        %>
+       
+	  	<%
+        }else{
+	  	%>
+	  	    <c:set var="loginName" value="<%= loginVO.getName()%>"/>
+            KCC정보통신 ㅣ <c:out value="${loginName}"/> 님</li>
+            <div class="dropdown-content" style="float:left;">
+		    	<a href="<c:url value='/uat/uia/actionLogout.do'/>">로그아웃</a>
+		    </div>
+	  	<%
+	  	} 
+        %>
+		    
+	    </div>
+	    
 	    
 	    <c:if test="${fn:length(list_headmenu) == 0 }">
-	        <li>등록된 메뉴가 없습니다.</li>
+	        <!-- <li>등록된 메뉴가 없습니다.</li> -->
 	    </c:if>
 	</ul>
 </div>
-
+ </fieldset>
 <!-- //topmenu end -->	
 <!-- menu list -->
     <form name="menuListForm" action="" method="post">

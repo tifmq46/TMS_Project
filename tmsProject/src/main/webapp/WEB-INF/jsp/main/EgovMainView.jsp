@@ -25,11 +25,37 @@
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 </head>
 <body>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script language="javascript1.2" type="text/javaScript">
 	function searchFileNm() {
 	    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
 	}
+	$(function(){
+		$('#category1').change(function() {
+			$.ajax({
+				type:"POST",
+				url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
+				data : {searchData : this.value},
+				async: false,
+				dataType : 'json',
+				success : function(selectTaskGbSearch){
+					$("#category2").find("option").remove().end().append("<option value=''>선택하세요</option>");
+					$.each(selectTaskGbSearch, function(i){
+						(JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
+					$("#category2").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+					});
+				},
+				error : function(request,status,error){
+					alert("에러");
+					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+				}
+			});
+		})
+	})
+	
 </script>
+
 <noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>	
 <!-- 전체 레이어 시작 -->
 
@@ -38,7 +64,7 @@
 	<!-- //header 끝 -->	
 	<!-- container 시작 -->
 	<div id="main_container">
-	     <!-- 프로그램리스트 검색 시작 -->
+	    <!-- 프로그램리스트 검색 시작 -->
 		  <div>
          	<ul>
             	<li>
@@ -55,7 +81,7 @@
             </ul>           
          </div> 
         <!-- 프로그램리스트 검색 끝 --> 
-        <div class="container" style="padding:0 0 0 20px;">
+        <div class="container" style="padding:0 15px; 0 15px;">
 	    	<div class="page-title">
 	    			<b style="font-size:14px;"><i class="icon-bar-chart"></i>&nbsp;프로젝트 상세</b>
 	    	</div>
@@ -69,9 +95,193 @@
 	    			</li> -->
 	    		</ul>
 	    	</div>
-    	</div>                
+    	</div>
+    	
+    <div class="row mt30">
+    	<div id="myBsnsList" class="col-md-6">
+    		<div class="widget">
+    			<div class="widget-header">
+    				<div class="header-name" style="margin:10px;">
+	    					프로젝트 정보
+	    				</i>
+    				</div>
+    			</div>
+    			<div class="widget-content box">
+    				<table class="table table-search-head table-size-th4">
+    					<tbody>
+    						<tr class="last">
+    							<th>프로젝트 명</th>
+    							<td id="empName" name="empName" align="center" valign="middle">${tmsProjectManageVO.PJT_ID}</td>
+    						</tr>
+    						<tr class="last">
+    						    <th>프로젝트 분류</th>
+    						    <td align="center" valign="middle">사업개선</td>
+    						    <th>프로젝트 상태</th>
+    						    <td align="center" valign="middle">진행</td>
+    						</tr>
+    						<tr class="last">
+    						    <th>부서</th>
+    						    <td align="center" valign="middle">개발부서</td>
+    						    <th>PM</th>
+    						    <td align="center" valign="middle">장현우</td>
+    						</tr>
+    						<tr class="last">
+    						    <th>계획시작일</th>
+    						    <td align="center" valign="middle">2018-06-04</td>
+    						    <th>계획완료일</th>
+    						    <td align="center" valign="middle">2018-09-21</td>
+    						</tr>
+    						<tr class="last">
+    						    <th>시작일</th>
+    						    <td align="center" valign="middle">2018-06-04</td>
+    						    <th>완료일</th>
+    						    <td align="center" valign="middle">진행중</td>
+    						</tr>
+    						<tr class="last">
+    						    <th>중요도</th>
+    						    <td align="center" valign="middle">100</td>
+    						    <th>금액</th>
+    						    <td align="center" valign="middle">$10,000,000</td>
+    						</tr>
+    						<tr class="last">
+    							<th>프로젝트 설명</th>
+    							<td id="empName" name="empName" align="center" valign="middle">Test Management System</td>
+    						</tr>
+    					</tbody>
+    				</table>
+    				
+    			</div>
+    		</div>
+    	</div>
+    	<div id="recentBsnsList" class="col-md-6">
+    		<div class="widget">
+    			<div class="widget-header">
+    				<div class="header-name" style="margin:10px;">
+	    					프로젝트 멤버
+	    				</i>
+    				</div>
+    			</div>
+    			<div class="widget-content default_tablestyle">
+    				<table class="table table-search-head table-size-th4">
+			    					<caption>프로젝트 멤버</caption>
+			            <colgroup>
+			            <col width="25%" >
+			            <col width="25%" >
+			            <col width="10%" >
+			            <col width="10%" >
+			            <col width="10%" >
+			            <col width="10%" >
+			            <col width="10%" > 
+			            </colgroup>
+			            <thead>
+			            <tr>
+			                <th scope="col" class="f_field" nowrap="nowrap">이름</th>
+			                <th scope="col" nowrap="nowrap">팀명</th>
+			                <th scope="col" nowrap="nowrap">대기</th>
+			                <th scope="col" nowrap="nowrap">조치중</th>
+			                <th scope="col" nowrap="nowrap">조치완료</th>
+			                <th scope="col" nowrap="nowrap">재요청</th>
+			                <th scope="col" nowrap="nowrap">최종완료</th>
+			            </tr>
+			            </thead>
+			            <tbody>                 
+			            
+			            <%-- <c:forEach var="result" items="${list_progrmmanage}" varStatus="status">
+			            <!-- loop 시작 -->                                
+			              <tr>
+						    <td nowrap="nowrap"><c:out value="${result.SYS_GB}"/></td>
+						    <td nowrap="nowrap"><c:out value="${result.TASK_GB}"/></td>
+						    <td nowrap="nowrap">
+						        <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.PG_ID}"/>','<c:out value="${result.USER_DEV_ID}"/>','<c:out value="${result.PG_NM}"/>','<c:out value="${result.SYS_GB}"/>','<c:out value="${result.TASK_GB}"/>'); return false;">
+						      <c:out value="${result.PG_ID}"/></a></span></td>
+						    <td nowrap="nowrap"><c:out value="${result.PG_NM}"/></td>
+						    <td nowrap="nowrap"><c:out value="${result.USER_DEV_ID}"/></td>
+			              </tr>
+			            </c:forEach> --%>
+			            <tr>
+						    <td nowrap="nowrap">장현우</td>
+						    <td nowrap="nowrap">사업지원그룹</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+			              </tr>
+			              <tr>
+						    <td nowrap="nowrap">방주이</td>
+						    <td nowrap="nowrap">사업지원그룹</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+			              </tr>
+			              <tr>
+						    <td nowrap="nowrap">김이수</td>
+						    <td nowrap="nowrap">사업지원그룹</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+			              </tr>
+			              <tr>
+						    <td nowrap="nowrap">윤인아</td>
+						    <td nowrap="nowrap">사업지원그룹</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+			              </tr>
+			              <tr>
+						    <td nowrap="nowrap">조현우</td>
+						    <td nowrap="nowrap">사업지원그룹</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap">0</td>
+			              </tr>
+			            </tbody> 
+    				</table>
+    			</div>
+    		</div>    	    	
+    	</div>
+    	
+    </div>	                
 	</div>
 	<!-- //게시판 끝 -->
+	<!-- 공통코드 셀렉트박스 시작 -->
+        <div id="search_field">
+					<div id="search_field_loc"><h2><strong>공통코드관리</strong></h2></div>
+					<form action="form_action.jsp" method="post">
+					  	<fieldset><legend>조건정보 영역</legend>	  
+					  	<div class="sf_start">
+					  		<ul id="search_first_ul">
+					  			<li>
+								    <label for="searchByTaskGb">시스템구분&nbsp;</label>
+									<select name="category1" id="category1" style="width:12%;text-align-last:center;">
+									    <option value="0" selected="selected" >전체</option>
+									    <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
+									    	<option value="<c:out value="${sysGb.SYS_GB}"/>"><c:out value="${sysGb.SYS_GB}" /></option>
+									    </c:forEach>
+									</select>						
+					  			</li> 			
+					  			 <li>
+								    <label for="searchByDefectGb">업무구분</label>
+									<select name="category2" id="category2" style="width:15%;text-align-last:center;">
+									    <option value="">선택하세요</option>
+									</select>						
+					  			</li>
+					  		</ul>
+						</div>			
+						</fieldset>
+					</form>
+				</div>
+				<!-- //검색 필드 박스 끝 -->
+        
+        <!-- 공통코드 셀렉트박스 끝 -->
 	<!-- footer 시작 -->
 	<div id="footer"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncFooter" /></div>
 	<!-- //footer 끝 -->

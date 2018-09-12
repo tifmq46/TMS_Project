@@ -1,16 +1,7 @@
 package egovframework.let.main.web;
 
+import java.util.List;
 import java.util.Map;
-
-import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.LoginVO;
-import egovframework.let.cop.bbs.service.BoardVO;
-import egovframework.let.cop.bbs.service.EgovBBSManageService;
-import egovframework.let.sym.mnu.mpm.service.EgovMenuManageService;
-import egovframework.let.sym.mnu.mpm.service.MenuManageVO;
-
-import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +12,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+
+import egovframework.com.cmm.ComDefaultVO;
+import egovframework.com.cmm.LoginVO;
+import egovframework.let.cop.bbs.service.EgovBBSManageService;
+import egovframework.let.sym.mnu.mpm.service.EgovMenuManageService;
+import egovframework.let.sym.mnu.mpm.service.MenuManageVO;
+import egovframework.let.sym.prm.service.TmsProgrmManageService;
+import egovframework.let.sym.prm.service.TmsProjectManageVO;
+import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 
 /**
  * 템플릿 메인 페이지 컨트롤러 클래스(Sample 소스)
@@ -50,6 +50,10 @@ public class EgovMainController {
 	/** EgovMenuManageService */
 	@Resource(name = "meunManageService")
     private EgovMenuManageService menuManageService;
+	
+	/** EgovProgrmManageService */
+	@Resource(name = "TmsProgrmManageService")
+	private TmsProgrmManageService TmsProgrmManageService;
 
 	/**
 	 * 메인 페이지에서 각 업무 화면으로 연계하는 기능을 제공한다.
@@ -73,10 +77,10 @@ public class EgovMainController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping(value = "/cmm/main/mainPage.do")
-	public String getMgtMainPage(HttpServletRequest request, ModelMap model)
+	public String getMgtMainPage(HttpServletRequest request, ModelMap model, @ModelAttribute("TmsProjectManageVO") TmsProjectManageVO TmsProjectManageVO)
 	  throws Exception{
 
-		// 공지사항 메인 컨텐츠 조회 시작 ---------------------------------
+		/*// 공지사항 메인 컨텐츠 조회 시작 ---------------------------------
 		BoardVO boardVO = new BoardVO();
 		boardVO.setPageUnit(10);
 		boardVO.setPageSize(10);
@@ -111,10 +115,21 @@ public class EgovMainController {
 		boardVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		boardVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		model.addAttribute("bbsList", bbsMngService.selectBoardArticles(boardVO, "BBSA02").get("resultList"));
+		model.addAttribute("bbsList", bbsMngService.selectBoardArticles(boardVO, "BBSA02").get("resultList"));*/
 
 		// 업무게시판 메인컨텐츠 조회 끝 -----------------------------------
-
+		// 프로젝트 정보 조회 시작 -------------------------------	
+		TmsProjectManageVO tmsProjectManageVO = TmsProgrmManageService.selectProject();
+		System.out.println("tmsProjectManageVO================" + tmsProjectManageVO);
+		model.addAttribute("tmsProjectManageVO", tmsProjectManageVO);
+		// 프로젝트 정보 조회 끝 -------------------------------
+		
+		// 공통코드 부분 시작 -------------------------------	
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		
 		return "main/EgovMainView";
 	}
 

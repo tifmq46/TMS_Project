@@ -5,7 +5,7 @@ import java.util.List;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.let.sym.prm.service.ProgrmManageDtlVO;
 import egovframework.let.sym.prm.service.ProgrmManageVO;
-
+import egovframework.let.sym.prm.service.TmsProjectManageVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 
 import org.springframework.stereotype.Repository;
@@ -50,6 +50,26 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
     public int selectProgrmListTotCnt(ComDefaultVO vo) {
         return (Integer)select("TmsProgrmManageDAO.selectProgrmListTotCnt_S", vo);
     }
+
+	public TmsProjectManageVO selectProject() {
+		// TODO Auto-generated method stub
+		return (TmsProjectManageVO)select("TmsProgrmManageDAO.selectProject");
+	}
+
+	public List<?> selectSysGb() {
+		// TODO Auto-generated method stub
+		return list("TmsProgrmManageDAO.selectSysGb");
+	}
+	
+	public List<?> selectTaskGb() {
+		// TODO Auto-generated method stub
+		return list("TmsProgrmManageDAO.selectTaskGb");
+	}
+
+	public List<?> selectTaskGbSearch(String searchData) {
+		// TODO Auto-generated method stub
+		return list("TmsProgrmManageDAO.selectTaskGbSearch",searchData);
+	}
 
 	
 }

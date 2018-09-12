@@ -21,19 +21,19 @@ package egovframework.let.sym.prm.service;
 public class TmsProgrmManageVO{
 
 	/** 프로그램파일명 */
-	private String PG_ID;
+	private String PG_ID="";
 	/** 프로그램저장경로 */
-	private String USER_DEV_ID;
+	private String USER_DEV_ID="";
 	/** 프로그램한글명 */
-	private String PG_NM;
+	private String PG_NM="";
 	/** URL */
-	private String SYS_GB;
+	private String SYS_GB="";
 	/** 프로그램설명	 */	
-	private String TASK_GB;
+	private String TASK_GB="";
 	
-	private String USE_YN;
+	private String USE_YN="";
 	
-	private String PJT_ID;
+	private String PJT_ID="";
 
 	public String getPG_ID() {
 		return PG_ID;
