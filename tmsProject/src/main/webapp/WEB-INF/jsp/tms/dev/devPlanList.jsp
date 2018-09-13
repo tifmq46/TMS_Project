@@ -23,7 +23,7 @@
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
-
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 
 
@@ -47,17 +47,44 @@ function fn_egov_selectSysType(obj){
     }        */
 }
 
+
 function fn_egov_insert_addDevPlan(){    
     document.frm.action = "<c:url value='/tms/dev/addDevPlan.do'/>";
     document.frm.submit();
 }
 
 function fn_searchList(pageNo){
-
     document.listForm.pageIndex.value = pageNo;
     document.listForm.action = "<c:url value='/tms/dev/devPlans.do'/>";
     document.listForm.submit();
 }
+
+$(function(){
+	$('#bbb').change(function() {
+		alert("여기옴");
+		alert(document.listForm.bbb.value);
+		/* document.listForm.searchBySysGb.value = document.listForm.bbb.value; */
+		$.ajax({
+			type:"POST",
+			url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
+			data : {searchData : this.value},
+			async: false,
+			dataType : 'json',
+			success : function(selectTaskGbSearch){
+				$("#searchByTaskGb").find("option").remove().end().append("<option value=''>선택하세요</option>");
+				$.each(selectTaskGbSearch, function(i){
+					(JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
+				$("#searchByTaskGb").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+				});
+			},
+			error : function(request,status,error){
+				alert("에러");
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+			}
+		});
+	})
+})
 </script>
 
 <title>템플릿 목록</title>
@@ -95,9 +122,9 @@ function fn_searchList(pageNo){
  			
                 
                 <!-- 검색 필드 박스 시작 -->
-                <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="<c:url value='tms/dev/devPlanList.do'/>" >   
+                <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="<c:url value='/tms/dev/devPlanList.do'/>" >   
 				 
-                <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
+                <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 				
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발계획관리</strong></h2></div>
@@ -108,21 +135,32 @@ function fn_searchList(pageNo){
 					  		
 					  			<li>
 								    <label for="searchBySysGb">시스템구분</label>
-									<select name="searchBySysGb" id="searchBySysGb" onchange="fn_egov_selectSysType(this)">
+									<%-- <select name="searchBySysGb" id="searchBySysGb" onchange="fn_egov_selectSysType(this)">
 									    <option value="0" selected="selected">전체</option>
 									    <c:forEach var="resultS" items="${resultS}" varStatus="status">
                                     		<option value='<c:out value="${resultS.code}"/>'><c:out value="${resultS.codeNm}"/></option>
                                 		</c:forEach>    
-									</select>						
+									</select> --%>
+									<select name="bbb" id="bbb" style="width:12%;text-align-last:center;">
+									   <option value="" selected="selected" >전체</option>
+									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
+									    	<option value="<c:out value="${sysGb.SYS_GB}"/>"><c:out value="${sysGb.SYS_GB}" /></option>
+									    </c:forEach>
+									</select>
+									
+									<input type="hidden" name="searchBySysGb" id="searchBySysGb" value="">						
 					  			</li>
 					  			<li>
 								    <label for="searchByTaskGb">업무구분</label>
-									<select name="searchByTaskGb" id="searchByTaskGb" >
+									<%-- <select name="searchByTaskGb" id="searchByTaskGb" >
 									    <option value="0" selected="selected">전체</option>
 									    <c:forEach var="resultT" items="${resultT}" varStatus="status">
                                     		<option value='<c:out value="${resultT.code}"/>'><c:out value="${resultT.codeNm}"/></option>
                                 		</c:forEach>
-									</select>						
+									</select> --%>
+									<!-- <select name="searchByTaskGb" id="searchByTaskGb" style="width:15%;text-align-last:center;">
+									   <option value="">선택하세요</option>
+									</select>		 -->				
 					  			</li>
 					  			
 					  			<li><label for="searchByUserDevId">개발자명</label></li>

@@ -26,7 +26,7 @@
 </head>
 <body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-<script language="javascript1.2" type="text/javaScript">
+<script type="text/javaScript">
 	function searchFileNm() {
 	    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
 	}

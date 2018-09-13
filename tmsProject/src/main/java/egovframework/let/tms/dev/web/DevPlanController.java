@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
@@ -25,6 +26,7 @@ import egovframework.let.cop.com.service.TemplateInf;
 import egovframework.let.cop.com.service.TemplateInfVO;
 import egovframework.let.sec.ram.service.AuthorManage;
 import egovframework.let.sec.ram.service.AuthorManageVO;
+import egovframework.let.sym.prm.service.TmsProgrmManageService;
 import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.dev.service.DevPlanService;
 import egovframework.let.tms.dev.service.DevPlanVO;
@@ -53,6 +55,10 @@ public class DevPlanController {
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
 	
+	/** EgovProgrmManageService */
+	@Resource(name = "TmsProgrmManageService")
+	private TmsProgrmManageService TmsProgrmManageService;
+	
 	/**
 	 * 글 목록을 조회한다. (pageing)
 	 * @param searchVO - 조회할 정보가 담긴 DevPlanDefaultVO
@@ -63,7 +69,7 @@ public class DevPlanController {
 	
 	@RequestMapping(value = "/tms/dev/devPlans.do")
 	public String selectDevPlans(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
-		
+		System.out.println("여기는 옴ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -79,25 +85,30 @@ public class DevPlanController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
 		//공통코드(시스템, 업무구분)
-		ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
+		/*ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
 		codeVO.setCodeId("SYSGB");
-		List<?> resultS = cmmUseService.selectCmmCodeDetail(codeVO);
+		List<?> resultS = cmmUseService.selectCmmCodeDetail(codeVO);*/
 		
-		codeVO.setCodeId("TASKGB");
-		List<?> resultT = cmmUseService.selectCmmCodeDetail(codeVO);
+		/*codeVO.setCodeId("TASKGB");
+		List<?> resultT = cmmUseService.selectCmmCodeDetail(codeVO);*/
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
 		
 		List<?> devList = devPlanService.selectDevPlans(searchVO);
 		model.addAttribute("resultList", devList);
-		model.addAttribute("resultS", resultS);
-		model.addAttribute("resultT", resultT);
+		//model.addAttribute("resultS", resultS);
+		//model.addAttribute("resultT", resultT);
 		
 		int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-		System.out.println("ㅎ");
 		return "tms/dev/devPlanList";
 	}
+	
+	
 	
 	/**
 	 * 계획을 상세 조회한다.
