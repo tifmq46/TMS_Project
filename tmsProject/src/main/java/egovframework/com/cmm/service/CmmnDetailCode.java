@@ -31,6 +31,8 @@ public class CmmnDetailCode implements Serializable {
 	 * 코드ID명
 	 */
 	private String codeIdNm = "";
+	
+	private String Parent ="";
 
 	/*
 	 * 코드
@@ -66,14 +68,26 @@ public class CmmnDetailCode implements Serializable {
 	 * codeId attribute 를 리턴한다.
 	 * @return String
 	 */
-	public String getCodeId() {
-		return codeId;
+	
+	
+
+	public String getParent() {
+		return Parent;
+	}
+
+	public void setParent(String parent) {
+		Parent = parent;
 	}
 
 	/**
 	 * codeId attribute 값을 설정한다.
 	 * @param codeId String
 	 */
+
+	public String getCodeId() {
+		return codeId;
+	}
+	
 	public void setCodeId(String codeId) {
 		this.codeId = codeId;
 	}

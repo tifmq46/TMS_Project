@@ -55,7 +55,7 @@
 <div class="nav_container" style="padding:0 20px;">
 	<ul>
 	    <a href="<c:url value='/'/>uat/uia/actionMain.do" style="float:left; border-right:1px solid rgba(0, 0, 0, 0.21); padding-top:15px; padding-bottom:16px; padding-left:18px;">
-		    <strong style="font-size:18px; text-shadow:0 1px 0 #000000; margin-right:125px;">KCC TMS</strong>
+		    <strong style="font-size:18px; text-shadow:0 1px 0 #000000; margin-right:75px;">KCC TMS</strong>
 		    <i class="icon-reorder"></i>
 	    </a>
 		<c:forEach var="result" items="${list_headmenu}" varStatus="status">

@@ -80,4 +80,19 @@ public class TmsProgrmManageServiceImpl extends EgovAbstractServiceImpl implemen
 		// TODO Auto-generated method stub
 		return TmsProgrmManageDAO.selectTaskGbSearch(searchData);
 	}
+	@Override
+	public List<?> selectUserList() throws Exception {
+		// TODO Auto-generated method stub
+		return TmsProgrmManageDAO.selectUserList();
+	}
+	@Override
+	public List<?> TmsCommonCodeListSearch(ComDefaultVO searchVO) {
+		// TODO Auto-generated method stub
+		return TmsProgrmManageDAO.TmsCommonCodeListSearch(searchVO);
+	}
+	@Override
+	public int TmsCommonCodeListSearchTotCnt(ComDefaultVO searchVO) {
+		// TODO Auto-generated method stub
+		return TmsProgrmManageDAO.TmsCommonCodeListSearchTotCnt(searchVO);
+	}
 }

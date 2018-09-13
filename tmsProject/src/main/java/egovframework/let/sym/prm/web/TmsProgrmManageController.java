@@ -67,6 +67,7 @@ public class TmsProgrmManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "uat/uia/EgovLoginUsr";
 		}
+		System.out.println("searchVO ================== "+searchVO);
 		// 내역 조회
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -101,6 +102,40 @@ public class TmsProgrmManageController {
 		model.addAttribute("selectTaskGbSearch", selectTaskGbSearch);
 	
 		return selectTaskGbSearch;
+
+	}
+	
+	@RequestMapping(value = "/sym/prm/TmsCommonCodeListSearch.do")
+	public String TmsCommonCodeListSearch(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) throws Exception {
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "uat/uia/EgovLoginUsr";
+		}
+		// 내역 조회
+		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+		paginationInfo.setPageSize(searchVO.getPageSize());
+
+		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+		List<?> TmsCommonCodeListSearch = TmsProgrmManageService.TmsCommonCodeListSearch(searchVO);
+		model.addAttribute("TmsCommonCodeListSearch", TmsCommonCodeListSearch);
+		
+		System.out.println("TmsCommonCodeListSearch ======================= " + TmsCommonCodeListSearch);
+
+		int totCnt = TmsProgrmManageService.TmsCommonCodeListSearchTotCnt(searchVO);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+
+		return "sym/prm/TmsCommonCodeListSearch";
 
 	}
 

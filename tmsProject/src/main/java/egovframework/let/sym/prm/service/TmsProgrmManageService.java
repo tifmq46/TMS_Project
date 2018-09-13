@@ -63,4 +63,12 @@ public interface TmsProgrmManageService {
 	 * @exception Exception
 	 */
 	List<?> selectTaskGbSearch(String searchData) throws Exception;
+	/**
+	 * 
+	 * @param vo TmsProjectManageVO
+	 * @exception Exception
+	 */
+	List<?> selectUserList() throws Exception;
+	List<?> TmsCommonCodeListSearch(ComDefaultVO searchVO);
+	int TmsCommonCodeListSearchTotCnt(ComDefaultVO searchVO);
 }
