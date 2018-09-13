@@ -61,6 +61,7 @@ function fn_searchList(pageNo){
 
 $(function(){
 	$('#bbb').change(function() {
+		
 		alert("여기옴");
 		alert(document.listForm.bbb.value);
 		/* document.listForm.searchBySysGb.value = document.listForm.bbb.value; */
@@ -71,10 +72,11 @@ $(function(){
 			async: false,
 			dataType : 'json',
 			success : function(selectTaskGbSearch){
-				$("#searchByTaskGb").find("option").remove().end().append("<option value=''>선택하세요</option>");
+				$("#searchBySysGb").val($("#bbb").val());
+				$("#ddd").find("option").remove().end().append("<option value=''>선택하세요</option>");
 				$.each(selectTaskGbSearch, function(i){
 					(JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
-				$("#searchByTaskGb").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+				$("#ddd").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
 				});
 			},
 			error : function(request,status,error){
@@ -148,7 +150,7 @@ $(function(){
 									    </c:forEach>
 									</select>
 									
-									<input type="hidden" name="searchBySysGb" id="searchBySysGb" value="">						
+									<input type="text" name="searchBySysGb" id="searchBySysGb" value="4">						
 					  			</li>
 					  			<li>
 								    <label for="searchByTaskGb">업무구분</label>
@@ -158,9 +160,10 @@ $(function(){
                                     		<option value='<c:out value="${resultT.code}"/>'><c:out value="${resultT.codeNm}"/></option>
                                 		</c:forEach>
 									</select> --%>
-									<!-- <select name="searchByTaskGb" id="searchByTaskGb" style="width:15%;text-align-last:center;">
+									 <select name="ddd" id="ddd" style="width:15%;text-align-last:center;">
 									   <option value="">선택하세요</option>
-									</select>		 -->				
+									</select>		 
+									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value="5">						
 					  			</li>
 					  			
 					  			<li><label for="searchByUserDevId">개발자명</label></li>
