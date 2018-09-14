@@ -24,7 +24,7 @@
 <head>
 
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>공통상세코드 수정</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
@@ -59,7 +59,6 @@ function fn_egov_modify_CmmnDetailCode(form){
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
     <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
     <!-- //header 끝 --> 
     <!-- container 시작 -->
@@ -104,13 +103,17 @@ function fn_egov_modify_CmmnDetailCode(form){
 						    <th width="20%" height="23" class="required_text" scope="row" nowrap >코드<img src="${ImgUrl}/required.gif" alt="필수"  width="15" height="15"></th>
 						    <td width="80%" nowrap="nowrap"><c:out value='${cmmnDetailCode.code}'/></td>
 						  </tr>
+						  <tr> 
+						    <th width="20%" height="23" class="required_text" scope="row" nowrap >부모코드　</th>
+						    <td width="80%" nowrap="nowrap"><c:out value='${cmmnDetailCode.parent}'/></td>
+						  </tr>
 						  <tr>
 						    <th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="codeNm">코드명</label><img src="${ImgUrl}/required.gif" alt="필수"  width="15" height="15"></th>          
 						    <td width="80%" nowrap="nowrap">
 						      <form:input  path="codeNm" size="60" maxlength="60" id="codeNm"/>
 						      <form:errors path="codeNm"/>
 						    </td>    
-						  </tr> 
+						  </tr>
 						  <tr> 
 						    <th height="23" class="required_text" scope="row" ><label for="codeDc">코드설명</label><img src="${ImgUrl}/required.gif" alt="필수"  width="15" height="15"></th>
 						    <td>

@@ -26,14 +26,39 @@ public class TmsLoginVO implements Serializable{
 	private String EMPLYR_ID;
 	/** 기관 */
 	private String ORGNZT_ID;
-	/** 역할 */
-	private String ROLE;
 	/** 이름 */
 	private String USER_NM;
 	/** 비밀번호 */
 	private String PASSWORD;
+	
+	private String CONFIRM_PASSWORD;
 	/** 역할코드 */
 	private String ESNTL_ID;
+	
+	private String EMAIL_ADRES;
+	
+	private String EMPLYR_STTUS_CODE;
+	
+	
+	
+	public String getCONFIRM_PASSWORD() {
+		return CONFIRM_PASSWORD;
+	}
+	public void setCONFIRM_PASSWORD(String cONFIRM_PASSWORD) {
+		CONFIRM_PASSWORD = cONFIRM_PASSWORD;
+	}
+	public String getEMAIL_ADRES() {
+		return EMAIL_ADRES;
+	}
+	public void setEMAIL_ADRES(String eMAIL_ADRES) {
+		EMAIL_ADRES = eMAIL_ADRES;
+	}
+	public String getEMPLYR_STTUS_CODE() {
+		return EMPLYR_STTUS_CODE;
+	}
+	public void setEMPLYR_STTUS_CODE(String eMPLYR_STTUS_CODE) {
+		EMPLYR_STTUS_CODE = eMPLYR_STTUS_CODE;
+	}
 	public String getEMPLYR_ID() {
 		return EMPLYR_ID;
 	}
@@ -45,12 +70,6 @@ public class TmsLoginVO implements Serializable{
 	}
 	public void setORGNZT_ID(String oRGNZT_ID) {
 		ORGNZT_ID = oRGNZT_ID;
-	}
-	public String getROLE() {
-		return ROLE;
-	}
-	public void setROLE(String rOLE) {
-		ROLE = rOLE;
 	}
 	public String getUSER_NM() {
 		return USER_NM;
@@ -73,12 +92,13 @@ public class TmsLoginVO implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
 	@Override
 	public String toString() {
-		return "TmsLoginVO [EMPLYR_ID=" + EMPLYR_ID + ", ORGNZT_ID=" + ORGNZT_ID + ", ROLE=" + ROLE + ", USER_NM="
-				+ USER_NM + ", PASSWORD=" + PASSWORD + ", ESNTL_ID=" + ESNTL_ID + "]";
+		return "TmsLoginVO [EMPLYR_ID=" + EMPLYR_ID + ", ORGNZT_ID=" + ORGNZT_ID + ", USER_NM=" + USER_NM
+				+ ", PASSWORD=" + PASSWORD + ", ESNTL_ID=" + ESNTL_ID + ", EMAIL_ADRES=" + EMAIL_ADRES
+				+ ", EMPLYR_STTUS_CODE=" + EMPLYR_STTUS_CODE + "]";
 	}
-
 	
 	
 }

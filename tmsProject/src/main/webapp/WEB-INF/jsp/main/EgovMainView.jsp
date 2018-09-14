@@ -11,7 +11,6 @@
     since    : 2011.08.31 
 --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
@@ -201,7 +200,7 @@
 			            <!-- loop 시작 -->                                
 			              <tr>
 						    <td nowrap="nowrap"><i class="fas fa-user"></i><c:out value="${userList.USER_NM}"/></td>
-						    <td nowrap="nowrap"><c:out value="${userList.ROLE}"/></td>
+						    <td nowrap="nowrap"><c:if test="${userList.ESNTL_ID eq 'USRCNFRM_00000000000'}">관리자</c:if><c:if test="${userList.ESNTL_ID eq 'USRCNFRM_00000000001'}">PL</c:if><c:if test="${userList.ESNTL_ID eq 'USRCNFRM_00000000002'}">개발자</c:if></td>
 						    <td nowrap="nowrap"><c:out value="0"/></td>
 						    <td nowrap="nowrap"><c:out value="0"/></td>
 						    <td nowrap="nowrap"><c:out value="0"/></td>

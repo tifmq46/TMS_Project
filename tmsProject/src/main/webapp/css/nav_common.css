@@ -128,7 +128,7 @@ background-position: left center;padding-left:10px;padding-top:2px;letter-spacin
 #topnavi ul > a:hover{color:#ffffff;}
 #container{float:left;width:1100px; margin-top:0px;min-height:440px; height:auto !important; height:440px;}
 #leftmenu{float:left;width:228px;min-height:440px; height:auto !important; height:100%; }
-#content{float:left;min-height:441px; height:auto !important; height:441px;padding-left:15px;padding-bottom:10px; border-left:1px solid #dddddd; width:600px; }
+#content{float:left;min-height:441px; height:auto !important; height:441px;padding-left:15px;padding-bottom:10px; border-left:1px solid #dddddd; width:800px; }
 #footer{clear:both;width:100%;font-size:100%;border-top:2px solid #dddddd;}
 #mopaslogo{float:left;padding-top:10px;padding-left:10px;}
 #copyright{float:left;font-size:90%;padding-top:20px;padding-left:20px; letter-spacing: -1px;}
@@ -229,7 +229,7 @@ margin: 0; background-color:#f2f2f2;
     margin: 0 auto;
     padding-top: 16px;
     text-align: center;
-    width: 650px;}
+    width: 800px;}
 .paging_align .first{border:medium none;padding:0px;}
 .paging_align li{display:inline;border-right:1px solid #dddddd;padding-left:3px;padding-right:10px; vertical-align:middle;}
 .paging_align li a{color:#666666;}

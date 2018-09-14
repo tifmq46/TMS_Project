@@ -21,7 +21,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <script type="text/javascript">
     function press(event) {
@@ -58,7 +58,6 @@
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
     <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>      
     <!-- //header 끝 --> 
     <!-- container 시작 -->
@@ -83,7 +82,7 @@
                 </div>
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
-                    <div id="search_field_loc"><h2><strong>개시판템플릿목록</strong></h2></div>
+                    <div id="search_field_loc"><h2><strong>게시판템플릿목록</strong></h2></div>
                     <form name="frm" action ="<c:url value='/cop/com/selectTemplateInfs.do'/>" method="post">
                         <input type="hidden" name="tmplatId" value="" />
                         <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
@@ -115,25 +114,25 @@
                     </form>
                 </div>
                 <!-- //검색 필드 박스 끝 -->
-                <button class="btn btn-default" data-target="#layerpop" data-toggle="modal">모달출력버튼</button><br/>
+                <button class="btn btn-default" data-target="#layerpop" data-toggle="modal"><!-- 모달출력버튼 --></button><br/>
 					<div class="modal fade" id="layerpop" >
 					  <div class="modal-dialog">
 					    <div class="modal-content">
 					      <!-- header -->
 					      <div class="modal-header">
 					        <!-- 닫기(x) 버튼 -->
-					        <button type="button" class="close" data-dismiss="modal">×</button>
+					        <button type="button" class="close" data-dismiss="modal"><!-- × --></button>
 					        <!-- header title -->
-					        <h4 class="modal-title">Header</h4>
+					        <h4 class="modal-title"><!-- Header --></h4>
 					      </div>
 					      <!-- body -->
 					      <div class="modal-body">
-					            Body
+					            <!-- Body -->
 					      </div>
 					      <!-- Footer -->
 					      <div class="modal-footer">
-					        Footer
-					        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					        <!-- Footer -->
+					        <button type="button" class="btn btn-default" data-dismiss="modal"><!-- 닫기 --></button>
 					      </div>
 					    </div>
 					  </div>

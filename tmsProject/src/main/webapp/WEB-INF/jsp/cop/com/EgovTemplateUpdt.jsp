@@ -22,7 +22,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="templateInf" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
@@ -86,7 +86,6 @@
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
     <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
     <!-- //header 끝 --> 
     <!-- container 시작 -->

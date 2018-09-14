@@ -83,7 +83,6 @@
 	<select id="TmsProgrmManageDAO.selectUserList" resultClass="TmsLoginVO">
 		SELECT EMPLYR_ID
 		, ORGNZT_ID
-		, ROLE
 		, USER_NM
 		, PASSWORD 
 		, ESNTL_ID 

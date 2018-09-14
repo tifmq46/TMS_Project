@@ -48,7 +48,6 @@ function fn_egov_regist_CmmnDetailCode(form){
         if(!validateCmmnDetailCode(form)){          
             return;
         }else{
-        	alert()
             form.cmd.value = "Regist";
             form.submit();
         }
@@ -127,8 +126,8 @@ function fn_egov_get_CodeId(form){
 						  <tr> 
 						    <th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="code">부모코드　</label></th>
 						    <td width="80%" nowrap="nowrap">
-						      <form:input  id="TmsCommonCode_code_id" path="code" size="15" maxlength="15" disabled="disabled"/>
-						      <form:errors path="code"/>
+						      <form:input id="TmsCommonCode_code_id" name="parent" path="parent" size="15" maxlength="15" disabled="disabled"/>
+						      <form:errors path="parent"/>
 						      <a href="<c:url value='/sym/prm/TmsCommonCodeListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                		  <img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" />검색</a>
 						    </td>
