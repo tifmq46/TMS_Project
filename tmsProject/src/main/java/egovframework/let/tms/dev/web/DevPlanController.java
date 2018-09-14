@@ -70,6 +70,7 @@ public class DevPlanController {
 	@RequestMapping(value = "/tms/dev/devPlans.do")
 	public String selectDevPlans(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
 		System.out.println("searchVO = " + searchVO.getSearchBySysGb());
+		System.out.println("searchVO = " + searchVO.getSearchByTaskGb());
 		System.out.println("여기는 옴ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));

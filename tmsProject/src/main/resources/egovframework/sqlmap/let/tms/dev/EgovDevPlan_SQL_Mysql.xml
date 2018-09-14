@@ -61,9 +61,13 @@
             </isEqual>
              -->
             <!-- 시스템구분으로 검색 -->
-			<!-- <isNotEmpty property="searchByTaskGb">
+			 <isNotEmpty property="searchByTaskGb">
 			    AND TASK_GB = #searchByTaskGb#
-			</isNotEmpty>  -->
+			</isNotEmpty> 
+			
+			 <isNotEmpty property="searchBySysGb">
+			    AND SYS_GB = #searchBySysGb#
+			</isNotEmpty> 
              
              
 			<!-- 화면ID로 검색 -->

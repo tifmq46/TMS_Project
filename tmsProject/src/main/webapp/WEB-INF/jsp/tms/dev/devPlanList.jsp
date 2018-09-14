@@ -77,6 +77,7 @@ $(function(){
 				$.each(selectTaskGbSearch, function(i){
 					(JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
 				$("#ddd").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+				
 				});
 			},
 			error : function(request,status,error){
@@ -85,6 +86,12 @@ $(function(){
 
 			}
 		});
+	})
+})
+$(function(){
+	$('#ddd').change(function() {
+		
+		$("#searchByTaskGb").val($("#ddd").val());
 	})
 })
 </script>
@@ -150,7 +157,7 @@ $(function(){
 									    </c:forEach>
 									</select>
 									
-									<input type="text" name="searchBySysGb" id="searchBySysGb" value="4">						
+									<input type="hidden" name="searchBySysGb" id="searchBySysGb" value="">						
 					  			</li>
 					  			<li>
 								    <label for="searchByTaskGb">업무구분</label>
@@ -163,7 +170,7 @@ $(function(){
 									 <select name="ddd" id="ddd" style="width:15%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 									</select>		 
-									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value="5">						
+									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value="">						
 					  			</li>
 					  			
 					  			<li><label for="searchByUserDevId">개발자명</label></li>
