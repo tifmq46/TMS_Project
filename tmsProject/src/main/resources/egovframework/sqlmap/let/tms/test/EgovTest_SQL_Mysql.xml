@@ -1,6 +1,629 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
 <sqlMap namespace="Test">
-    <typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
-	<typeAlias  alias="TestVO" type="egovframework.let.tms.test.service.TestVO"/>
-    </sqlMap>
+    <typeAlias  alias="egovMap" 		type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="TestCaseVO" 		type="egovframework.let.tms.test.service.TestCaseVO"/>
+	<typeAlias  alias="TestScenarioVO" 	type="egovframework.let.tms.test.service.TestScenarioVO"/>
+	<typeAlias  alias="TestDefaultVO" 	type="egovframework.let.tms.test.service.TestDefaultVO"/>
+	
+	<resultMap id="testCaseVO" class="egovframework.let.tms.test.service.TestCaseVO">
+	    <result property="testcaseId" column="TESTCASE_ID" columnIndex="1"/>
+	    <result property="testcaseContent" column="TESTCASE_CONTENT" columnIndex="2"/>
+	    <result property="testcaseGb" column="TESTCASE_GB" columnIndex="3"/>
+	    <result property="pgId" column="PG_ID" columnIndex="4"/>
+	    <result property="taskGb" column="TASK_GB" columnIndex="5"/>
+	    <result property="userId" column="USER_ID" columnIndex="6"/>
+	    <result property="enrollDt" column="ENROLL_DT" columnIndex="7"/>
+	    <result property="precondition" column="PRECONDITION" columnIndex="8"/>
+	    <result property="firstTestResultYn" column="FIRST_TEST_RESULT_YN" columnIndex="9"/>
+	    <result property="secondTestResultYn" column="SECOND_TEST_RESULT_YN" columnIndex="10"/>
+	    <result property="thirdTestResultYn" column="THIRD_TEST_RESULT_YN" columnIndex="11"/>
+	    <result property="completeYn" column="COMPLETE_YN" columnIndex="12"/>
+	    <result property="completeDt" column="COMPLETE_DT" columnIndex="13"/>
+	    
+	</resultMap>
+	
+	<resultMap id="testCaseVoMap" class="java.util.HashMap">
+	    <result property="testcaseId" column="TESTCASE_ID" columnIndex="1"/>
+	    <result property="testcaseContent" column="TESTCASE_CONTENT" columnIndex="2"/>
+	    <result property="testcaseGbNm" column="TESTCASE_GB_NM" columnIndex="3"/>
+	    <result property="pgId" column="PG_ID" columnIndex="4"/>
+	    <result property="taskGbNm" column="TASK_GB_NM" columnIndex="5"/>
+	    <result property="userId" column="USER_ID" columnIndex="6"/>
+	    <result property="enrollDt" column="ENROLL_DT" columnIndex="7"/>
+	    <result property="precondition" column="PRECONDITION" columnIndex="8"/>
+  	    <result property="pgNm" column="PG_NM" columnIndex="9"/>
+  	    <result property="userNm" column="USER_NM" columnIndex="10"/>
+  	    <result property="testcaseGbCode" column="TESTCASE_GB_CODE" columnIndex="11"/>
+  	    <result property="scenarioCnt" column="SCENARIO_CNT" columnIndex="12"/>
+  	    <result property="pCnt" column="P_CNT" columnIndex="13"/>
+   	    <result property="completeYn" column="COMPLETE_YN" columnIndex="14"/>
+	    <result property="completeDt" column="COMPLETE_DT" columnIndex="15"/>
+   	    <result property="taskGbCode" column="TASK_GB_CODE" columnIndex="16"/>
+   	    <result property="firstTestResultYn" column="FIRST_TEST_RESULT_YN" columnIndex="17"/>
+   	    <result property="secondTestResultYn" column="SECOND_TEST_RESULT_YN" columnIndex="18"/>
+   	    <result property="thirdTestResultYn" column="THIRD_TEST_RESULT_YN" columnIndex="19"/>
+	</resultMap>
+	
+	<resultMap id="testScenarioVO" class="egovframework.let.tms.test.service.TestScenarioVO">
+	    <result property="testscenarioId" column="TESTSCENARIO_ID" columnIndex="1"/>
+	    <result property="testscenarioOrd" column="TESTSCENARIO_ORD" columnIndex="2"/>
+	    <result property="testscenarioContent" column="TESTSCENARIO_CONTENT" columnIndex="3"/>
+	    <result property="testcaseId" column="TESTCASE_ID" columnIndex="4"/>
+	    <result property="userTestId" column="USER_TEST_ID" columnIndex="5"/>
+	    <result property="testCondition" column="TEST_CONDITION" columnIndex="6"/>
+	    <result property="expectedResult" column="EXPECTED_RESULT" columnIndex="7"/>
+	    <result property="enrollDt" column="ENROLL_DT" columnIndex="8"/>
+	    <result property="testResultYn" column="TEST_RESULT_YN" columnIndex="9"/>
+	    <result property="testDt" column="TEST_DT" columnIndex="10"/>
+	    <result property="testResultContent" column="TEST_RESULT_CONTENT" columnIndex="11"/>
+	</resultMap>
+	
+	<resultMap id="testCaseStatsMap" class="java.util.HashMap">
+	    <result property="totCnt" column="TOT_CNT" columnIndex="1"/>
+	    <result property="yCnt" column="Y_CNT" columnIndex="2"/>
+	</resultMap>
+	
+	<resultMap id="testCaseCurrentMap" class="java.util.HashMap">
+	    <result property="totCnt" column="TOT_CNT" columnIndex="1"/>
+	    <result property="yCnt" column="Y_CNT" columnIndex="2"/>
+	    <result property="nCnt" column="N_CNT" columnIndex="3"/>
+	</resultMap>
+	
+	<insert id="TestDAO.insertTestCase" parameterClass="TestCaseVO">
+	    
+	    INSERT INTO TESTCASE_TB
+	    
+		    ( TESTCASE_ID
+		    ,TESTCASE_CONTENT
+		    ,TESTCASE_GB
+		    ,TASK_GB
+		    ,USER_ID
+		    ,ENROLL_DT
+		    ,PRECONDITION 
+		    
+		    <!-- 화면ID 값이 있을 경우에만 입력 -->
+			<isNotEmpty property="pgId">
+			   ,PG_ID
+			</isNotEmpty>
+			
+			)
+	    
+	    	VALUES(
+	    		 #testcaseId#
+	    		,#testcaseContent#
+	    		,#testcaseGb#
+	    		,#taskGb#
+	    		,#userId#
+	    		,now()
+	    		,#precondition#
+	    		
+	    	<!-- 화면ID 값이 있을 경우에만 입력 -->
+			<isNotEmpty property="pgId">
+			   	,#pgId#
+			</isNotEmpty>	
+	    	)
+	</insert>
+	
+	<insert id="TestDAO.insertTestScenario" parameterClass="TestScenarioVO">
+	    
+	    INSERT INTO TESTSCENARIO_TB
+	    
+	    	( TESTSCENARIO_ID
+	    	,TESTSCENARIO_ORD
+	    	,TESTSCENARIO_CONTENT
+	    	,TESTCASE_ID
+	    	,USER_TEST_ID
+	    	,TEST_CONDITION
+	    	,EXPECTED_RESULT
+	    	,ENROLL_DT )
+	    	
+	    	VALUES(
+	    		 #testscenarioId#
+	    		,#testscenarioOrd#
+	    		,#testscenarioContent#
+	    		,#testcaseId#
+	    		,#userTestId#
+	    		,#testCondition#
+	    		,#expectedResult#
+	    		,now()
+	    	)
+	</insert>
+	
+	
+	<update id="TestDAO.updateTestCase" parameterClass="TestCaseVO">
+	    
+	    UPDATE TESTCASE_TB
+	    SET
+	    	 PRECONDITION = #precondition#
+	    	, TESTCASE_CONTENT = #testcaseContent#
+	    	, FIRST_TEST_RESULT_YN = #firstTestResultYn#
+	    	, SECOND_TEST_RESULT_YN = #secondTestResultYn#
+	    	
+    		<!-- 3차 테스트 완료시 최종완료여부와 최종완료일자 등록 -->
+    		
+			 <isNotEmpty property="thirdTestResultYn">
+      			, THIRD_TEST_RESULT_YN = #thirdTestResultYn#
+    			<isEqual property="thirdTestResultYn" compareValue="Y">
+    			     , COMPLETE_YN = 'Y'
+    				 , COMPLETE_DT = now()
+    			</isEqual>
+        	</isNotEmpty>
+				WHERE TESTCASE_ID = #testcaseId#
+	    
+	</update>
+	
+	<update id="TestDAO.updateTestScenario" parameterClass="TestScenarioVO">
+	    
+	    UPDATE TESTSCENARIO_TB
+	    SET
+	    	TESTSCENARIO_ORD = #testscenarioOrd#
+	    	,TEST_RESULT_YN = #testResultYn#
+	    	,TESTSCENARIO_CONTENT = #testscenarioContent#
+	    	,EXPECTED_RESULT = #expectedResult#
+	    	,TEST_RESULT_CONTENT = #testResultContent#
+	    	,TEST_DT = #testDt#
+	    
+		WHERE TESTSCENARIO_ID = #testscenarioId#
+	    
+	</update>
+	
+	<delete id="TestDAO.deleteTestCase" parameterClass="java.lang.String" >
+	    
+		DELETE
+		FROM TESTCASE_TB
+		WHERE TESTCASE_ID = #testcaseId#
+	    
+	</delete>
+	
+	
+	<delete id="TestDAO.deleteTestScenario" parameterClass="java.lang.String" >
+	    
+		DELETE
+		FROM TESTSCENARIO_TB
+		WHERE TESTSCENARIO_ID = #testscenarioId#
+	    
+	</delete>
+	
+	
+	
+	
+	
+	<select id="TestDAO.selectTestCase" parameterClass="java.lang.String" resultMap="testCaseVoMap" >
+		<![CDATA[
+		
+				SELECT 
+					   	  a. TESTCASE_ID
+						, a.TESTCASE_CONTENT
+						, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TESTCASE_GB ) AS TESTCASE_GB_NM
+						, a.TESTCASE_GB AS TESTCASE_GB_CODE
+						, a.PG_ID
+						, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
+						, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
+						, a.TASK_GB AS TASK_GB_CODE
+						, ( SELECT USER_NM FROM USER_TB WHERE USER_ID = a.USER_ID ) AS USER_NM
+						, a.USER_ID
+						, a.ENROLL_DT
+						, a.PRECONDITION
+						, a.FIRST_TEST_RESULT_YN 
+						, a.SECOND_TEST_RESULT_YN 
+						, a.THIRD_TEST_RESULT_YN 
+						, ( SELECT COUNT(*) FROM TESTSCENARIO_TB WHERE TESTCASE_ID = a.TESTCASE_ID ) AS SCENARIO_CNT
+						, ( SELECT COUNT(*) FROM TESTSCENARIO_TB WHERE TESTCASE_ID = a.TESTCASE_ID AND TEST_RESULT_YN = 'P' ) AS P_CNT
+						, a.COMPLETE_YN
+						, a.COMPLETE_DT
+						
+					FROM TESTCASE_TB AS a
+					WHERE TESTCASE_ID = #testcaseId#
+			
+		]]>
+			
+	</select>	
+	
+	<select id="TestDAO.selectTestCaseListTotCnt" parameterClass="TestDefaultVO" resultClass="java.lang.Integer" >
+			<![CDATA[
+				SELECT COUNT(*) totcnt 
+					FROM (
+						SELECT * FROM (
+							SELECT 
+							  a. TESTCASE_ID
+							, a.TESTCASE_CONTENT
+							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TESTCASE_GB ) AS TESTCASE_GB_NM
+							, a.TESTCASE_GB AS TESTCASE_GB_CODE
+							, a.PG_ID
+							, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
+							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
+							, a.TASK_GB AS TASK_GB_CODE
+							, ( SELECT USER_NM FROM USER_TB WHERE USER_ID = a.USER_ID ) AS USER_NM
+							, a.USER_ID
+							, a.ENROLL_DT
+							, a.PRECONDITION
+							, a.FIRST_TEST_RESULT_YN 
+							, a.SECOND_TEST_RESULT_YN 
+							, a.THIRD_TEST_RESULT_YN 
+							, ( SELECT COUNT(*) FROM TESTSCENARIO_TB WHERE TESTCASE_ID = a.TESTCASE_ID ) AS SCENARIO_CNT
+							, ( SELECT COUNT(*) FROM TESTSCENARIO_TB WHERE TESTCASE_ID = a.TESTCASE_ID AND TEST_RESULT_YN = 'P' ) AS P_CNT
+							, a.COMPLETE_YN
+							, a.COMPLETE_DT
+							
+							FROM TESTCASE_TB AS a
+							WHERE TESTCASE_GB = #searchByTestcaseGb#
+						) AS b
+						WHERE 1=1
+		]]>
+			<!-- 테스트케이스 ID로 검색 -->
+			<isNotEmpty property="searchByTestcaseId">
+			    AND TESTCASE_ID = #searchByTestcaseId#
+			</isNotEmpty>    
+			
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND PG_ID = #searchByPgId#
+			</isNotEmpty>
+			
+			<!-- 업무구분으로 검색 -->
+			<isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB_CODE = #searchByTaskGb#
+			</isNotEmpty> 
+			
+			<!-- 완료여부로 검색 -->
+			<isNotEmpty property="searchByResultYn">
+			    AND COMPLETE_YN = #searchByResultYn#
+			</isNotEmpty> 
+			
+			<![CDATA[          
+			) AS c
+			]]>
+	</select>	
+	
+	
+	<select id="TestDAO.selectTestCaseList" parameterClass="TestDefaultVO" resultClass="egovMap">
+			<![CDATA[
+				SELECT * FROM (
+					SELECT 
+						a. TESTCASE_ID
+						, a.TESTCASE_CONTENT
+						, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TESTCASE_GB ) AS TESTCASE_GB_NM
+						, a.TESTCASE_GB AS TESTCASE_GB_CODE
+						, a.PG_ID
+						, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
+						, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
+						, a.TASK_GB AS TASK_GB_CODE
+						, ( SELECT USER_NM FROM USER_TB WHERE USER_ID = a.USER_ID ) AS USER_NM
+						, a.USER_ID
+						, a.ENROLL_DT
+						, a.PRECONDITION
+						, a.FIRST_TEST_RESULT_YN 
+						, a.SECOND_TEST_RESULT_YN 
+						, a.THIRD_TEST_RESULT_YN 
+						, ( SELECT COUNT(*) FROM TESTSCENARIO_TB WHERE TESTCASE_ID = a.TESTCASE_ID ) AS SCENARIO_CNT
+						, ( SELECT COUNT(*) FROM TESTSCENARIO_TB WHERE TESTCASE_ID = a.TESTCASE_ID AND TEST_RESULT_YN = 'P' ) AS P_CNT
+						, a.COMPLETE_YN
+						, a.COMPLETE_DT
+						
+						FROM TESTCASE_TB AS a
+						WHERE TESTCASE_GB = #searchByTestcaseGb#
+						) AS b
+						WHERE 1=1
+			]]>
+			
+			<!-- 테스트케이스 ID로 검색 -->
+			<isNotEmpty property="searchByTestcaseId">
+			    AND TESTCASE_ID = #searchByTestcaseId#
+			</isNotEmpty>    
+			
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND PG_ID = #searchByPgId#
+			</isNotEmpty> 
+			
+			<!-- 업무구분으로 검색 -->
+			<isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB_CODE = #searchByTaskGb#
+			</isNotEmpty> 
+			
+			<!-- 완료여부로 검색 -->
+			<isNotEmpty property="searchByResultYn">
+			    AND COMPLETE_YN = #searchByResultYn#
+			</isNotEmpty> 
+			
+			ORDER BY ENROLL_DT ASC
+			LIMIT #recordCountPerPage# OFFSET #firstIndex#
+	</select>
+	
+	
+	
+	<!-- 테스트 시나리오 가져오기 -->
+	<select id="TestDAO.selectTestScenario" parameterClass="java.lang.String" resultMap="testScenarioVO" >
+		<![CDATA[
+		
+				SELECT 
+						TESTSCENARIO_ID
+						,TESTSCENARIO_ORD
+						,TESTSCENARIO_CONTENT
+						,TESTCASE_ID
+						, (SELECT USER_NM FROM USER_TB WHERE USER_ID = USER_TEST_ID) AS USER_TEST_ID
+						,TEST_CONDITION
+						,EXPECTED_RESULT
+						,ENROLL_DT
+						,TEST_RESULT_YN
+						,TEST_DT
+						,TEST_RESULT_CONTENT 
+						
+					FROM TESTSCENARIO_TB
+					WHERE TESTSCENARIO_ID = #testscenarioId#
+		]]>
+	</select>	
+	
+	
+	
+	
+	
+	<!-- 테스트 시나리오 목록 -->
+	<select id="TestDAO.selectTestScenarioList" parameterClass="java.lang.String" resultClass="egovMap">
+			<![CDATA[
+				SELECT 
+					
+						TESTSCENARIO_ID
+						,TESTSCENARIO_ORD
+						,TESTSCENARIO_CONTENT
+						,TESTCASE_ID
+						, (SELECT USER_NM FROM USER_TB WHERE USER_ID = USER_TEST_ID) AS USER_TEST_ID
+						,TEST_CONDITION
+						,EXPECTED_RESULT
+						,ENROLL_DT
+						,TEST_RESULT_YN
+						,TEST_DT
+						,TEST_RESULT_CONTENT 
+						
+					FROM TESTSCENARIO_TB
+					WHERE TESTCASE_ID = #testcaseId#
+			
+			ORDER BY TESTSCENARIO_ORD ASC
+			]]>
+			
+	</select>
+
+
+
+
+	<!-- 테스트 시나리오 목록 개수 -->
+	<select id="TestDAO.selectTestScenarioListTotCnt" parameterClass="java.lang.String" resultClass="java.lang.Integer" >
+			<![CDATA[
+				SELECT COUNT(*) totcnt 
+					FROM (
+					SELECT 
+
+						TESTSCENARIO_ID
+						,TESTSCENARIO_ORD
+						,TESTSCENARIO_CONTENT
+						,TESTCASE_ID
+						, (SELECT USER_NM FROM USER_TB WHERE USER_ID = USER_TEST_ID) AS USER_TEST_ID
+						,TEST_CONDITION
+						,EXPECTED_RESULT
+						,ENROLL_DT
+						,TEST_RESULT_YN
+						,TEST_DT
+						,TEST_RESULT_CONTENT 
+						
+					FROM TESTSCENARIO_TB AS a 
+					WHERE TESTCASE_ID = #testcaseId#
+		
+			) AS b
+			
+			]]>
+	</select>
+	
+	
+	
+	<select id="TestDAO.selectTestCaseStats" parameterClass="java.lang.String" resultMap="testCaseStatsMap">
+	    
+	    <![CDATA[
+		SELECT 
+			 ( SELECT COUNT(*) FROM ( SELECT * FROM TESTCASE_TB WHERE TESTCASE_GB = #testcaseGb# ) AS b ) AS TOT_CNT
+		   , ( SELECT COUNT(*) FROM ( SELECT * FROM TESTCASE_TB WHERE TESTCASE_GB = #testcaseGb# AND COMPLETE_YN = 'Y' ) AS c ) AS Y_CNT
+		]]>
+	</select>
+	
+	<select id="TestDAO.selectTestCaseStatsListByTaskGb" resultClass="egovMap">
+	    
+	    <![CDATA[
+		 SELECT X.CODE AS TASK_GB_CODE, X.CODE_NM AS TASK_GB_NM, Y.TESTCASE_TOT_CNT, Y.TESTCASE_Y_CNT 
+		 FROM 
+			 ( SELECT CODE, CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'TASKGB' ) AS X
+				LEFT OUTER JOIN
+			 ( SELECT TASK_GB, COUNT(*) AS TESTCASE_TOT_CNT,  COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS TESTCASE_Y_CNT
+				FROM (
+							SELECT *
+							FROM TESTCASE_TB
+							WHERE TESTCASE_GB = 'TC1'
+							) AS b
+			   GROUP BY TASK_GB ) AS Y
+				ON X.CODE = Y.TASK_GB
+				
+		]]>
+	</select>
+	
+	
+	
+	<select id="TestDAO.selectTestCurrent" parameterClass="TestDefaultVO" resultClass="egovMap">
+	
+		<![CDATA[		
+				SELECT 
+						A.PG_ID
+						, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB ) AS TASK_GB_NM
+						, A.TASK_GB AS TASK_GB_CODE
+						, B.TESTCASE_GB
+						, B.TESTCASE_ID
+						, B.TESTCASE_CONTENT
+						, ( SELECT USER_NM FROM USER_TB WHERE USER_ID = B.USER_ID ) AS USER_NM
+						, B.ENROLL_DT
+						, B.COMPLETE_DT
+						, B.FIRST_TEST_RESULT_YN
+						, B.SECOND_TEST_RESULT_YN
+						, B.THIRD_TEST_RESULT_YN
+						, B.COMPLETE_YN
+						FROM PG_TB AS A
+						LEFT OUTER JOIN
+						TESTCASE_TB AS B
+						ON A.PG_ID = B.PG_ID
+						WHERE 1=1
+			]]>			
+						
+			<!-- 테스트케이스 ID로 검색 -->
+			<isNotEmpty property="searchByTestcaseId">
+			    AND TESTCASE_ID = #searchByTestcaseId#
+			</isNotEmpty>    
+			
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND PG_ID = #searchByPgId#
+			</isNotEmpty> 
+			
+			<!-- 업무구분으로 검색 -->
+			<isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB_CODE = #searchByTaskGb#
+			</isNotEmpty> 
+			
+			<!-- 완료여부로 검색 -->
+			<isNotEmpty property="searchByResultYn">
+			    AND COMPLETE_YN = #searchByResultYn#
+			</isNotEmpty> 
+			
+			<!-- 작성자로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_NM = #searchByUserDevId#
+			</isNotEmpty> 
+			
+			<!-- 테스트케이스 구분으로 검색 -->
+			<isNotEmpty property="searchByTestcaseGb">
+			    AND TESTCASE_GB = #searchByTestcaseGb#
+			</isNotEmpty> 
+			
+			ORDER BY ENROLL_DT ASC
+			LIMIT #recordCountPerPage# OFFSET #firstIndex#
+		
+	</select>
+	
+	<select id="TestDAO.selectTestCurrentTotCnt" parameterClass="TestDefaultVO" resultClass="java.lang.Integer" >
+			<![CDATA[
+				SELECT COUNT(*) totcnt 
+					FROM (
+						SELECT * FROM (
+							SELECT 
+								A.PG_ID
+								, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB ) AS TASK_GB_NM
+								, A.TASK_GB AS TASK_GB_CODE
+								, B.TESTCASE_GB
+								, B.TESTCASE_ID
+								, B.TESTCASE_CONTENT
+								, ( SELECT USER_NM FROM USER_TB WHERE USER_ID = B.USER_ID ) AS USER_NM
+								, B.ENROLL_DT
+								, B.COMPLETE_DT
+								, B.FIRST_TEST_RESULT_YN
+								, B.SECOND_TEST_RESULT_YN
+								, B.THIRD_TEST_RESULT_YN
+								, B.COMPLETE_YN
+							FROM PG_TB AS A
+							LEFT OUTER JOIN
+							TESTCASE_TB AS B
+							ON A.PG_ID = B.PG_ID
+							) AS C
+						WHERE 1=1
+		]]>
+		<!-- 테스트케이스 ID로 검색 -->
+			<isNotEmpty property="searchByTestcaseId">
+			    AND TESTCASE_ID = #searchByTestcaseId#
+			</isNotEmpty>    
+			
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND PG_ID = #searchByPgId#
+			</isNotEmpty> 
+			
+			<!-- 업무구분으로 검색 -->
+			<isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB_CODE = #searchByTaskGb#
+			</isNotEmpty> 
+			
+			<!-- 완료여부로 검색 -->
+			<isNotEmpty property="searchByResultYn">
+			    AND COMPLETE_YN = #searchByResultYn#
+			</isNotEmpty> 
+			
+			<!-- 작성자로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_NM = #searchByUserDevId#
+			</isNotEmpty> 
+			
+			<!-- 테스트케이스 구분으로 검색 -->
+			<isNotEmpty property="searchByTestcaseGb">
+			    AND TESTCASE_GB = #searchByTestcaseGb#
+			</isNotEmpty> 
+			
+			<![CDATA[          
+			) AS D
+			]]>
+	</select>	
+	
+	<select id="TestDAO.selectTestCurrentCnt" parameterClass="TestDefaultVO" resultMap="testCaseCurrentMap" >
+			<![CDATA[
+				SELECT COUNT(*) TOT_CNT , COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT, COUNT(IF(COMPLETE_YN='N',1,NULL)) AS N_CNT 
+					FROM (
+						SELECT * FROM (
+							SELECT 
+								A.PG_ID
+								, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB ) AS TASK_GB_NM
+								, A.TASK_GB AS TASK_GB_CODE
+								, B.TESTCASE_GB
+								, B.TESTCASE_ID
+								, B.TESTCASE_CONTENT
+								, ( SELECT USER_NM FROM USER_TB WHERE USER_ID = B.USER_ID ) AS USER_NM
+								, B.ENROLL_DT
+								, B.COMPLETE_DT
+								, B.FIRST_TEST_RESULT_YN
+								, B.SECOND_TEST_RESULT_YN
+								, B.THIRD_TEST_RESULT_YN
+								, B.COMPLETE_YN
+							FROM PG_TB AS A
+							LEFT OUTER JOIN
+							TESTCASE_TB AS B
+							ON A.PG_ID = B.PG_ID
+							) AS C
+						WHERE 1=1
+		]]>
+		<!-- 테스트케이스 ID로 검색 -->
+			<isNotEmpty property="searchByTestcaseId">
+			    AND TESTCASE_ID = #searchByTestcaseId#
+			</isNotEmpty>    
+			
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND PG_ID = #searchByPgId#
+			</isNotEmpty> 
+			
+			<!-- 업무구분으로 검색 -->
+			<isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB_CODE = #searchByTaskGb#
+			</isNotEmpty> 
+			
+			<!-- 완료여부로 검색 -->
+			<isNotEmpty property="searchByResultYn">
+			    AND COMPLETE_YN = #searchByResultYn#
+			</isNotEmpty> 
+			
+			<!-- 작성자로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_NM = #searchByUserDevId#
+			</isNotEmpty> 
+			
+			<!-- 테스트케이스 구분으로 검색 -->
+			<isNotEmpty property="searchByTestcaseGb">
+			    AND TESTCASE_GB = #searchByTestcaseGb#
+			</isNotEmpty> 
+			
+			<![CDATA[          
+			) AS D
+			]]>
+	</select>	
+</sqlMap>
