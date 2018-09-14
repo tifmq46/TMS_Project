@@ -31,14 +31,18 @@
 <script type="text/javascript">
 
 
-function fn_egov_select_viewDefectInfo(pgId,defectIdSq){
-	document.defectVO.pgId.value = pgId;
-	document.defectVO.defectIdSq.value = defectIdSq;
-    document.defectVO.submit();
+function fn_searchList(pageNo){
+    document.listForm.pageIndex.value = pageNo;
+    document.listForm.action = "<c:url value='/tms/defect/selectDefect.do'/>";
+    document.listForm.submit();
 }
+
 function searchFileNm() {
     window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
 }
+
+
+
 </script>
 
 </head>
@@ -75,7 +79,7 @@ function searchFileNm() {
      
               
              <form:form commandName="searchVO" name="listForm" method="post" action="tms/defect/defectList.do">   
-                
+                <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
                 <!-- 검색 필드 박스 시작 -->
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>결함관리</strong></h2></div>
@@ -86,36 +90,35 @@ function searchFileNm() {
 					  		<ul id="search_first_ul">
 					  			<li><label for="searchByPgId">화면ID</label></li>
 					  			<li>
-					  			<input id="TmsProgrmFileNm_view" name="searchByPgId" type="text" size="10" value="" style="text-align:center;" maxlength="40" title="화면ID"  
-					           onchange="javaScript:selectPg(); return false;"/> 
+					  			<input id="TmsProgrmFileNm_pg_id" name="searchByPgId" type="text" size="10" value="" style="text-align:center;" maxlength="40" title="화면ID"/> 
 					          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
 					  			</li>
 					  			<li>
 								    <label for="searchByTaskGb">업무구분&nbsp;</label>
 									<select name="searchByTaskGb" id="searchByTaskGb" style="width:12%;text-align-last:center;">
-									    <option value="0" selected="selected" >전체</option>
+									    <option value="" selected="selected" >전체</option>
 									    <c:forEach var="taskGb" items="${taskGb}" varStatus="status">
-									    	<option value="<c:out value="${taskGb.code}"/>"><c:out value="${taskGb.codeNm}" /></option>
+									    	<option value="<c:out value="${taskGb.codeNm}"/>"><c:out value="${taskGb.codeNm}" /></option>
 									    </c:forEach>
 									</select>						
 					  			</li> 			
 					  			<li>
 								    <label for="searchByDefectGb">결함유형구분</label>
 									<select name="searchByDefectGb" id="searchByDefectGb" style="width:10%;text-align-last:center;">
-									    <option value="0" selected="selected">전체</option>
+									    <option value="" selected="selected">전체</option>
 									    <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
-									    	<option value="<c:out value="${defectGb.code}"/>"><c:out value="${defectGb.codeNm}" /></option>
+									    	<option value="<c:out value="${defectGb.codeNm}"/>"><c:out value="${defectGb.codeNm}" /></option>
 									    </c:forEach>
 									</select>						
 					  			</li>
 					  			
 					  			<li>
-								    <label for="searchByDefectGb">조치상태구분</label>
+								    <label for="searchByActionSt">조치상태구분</label>
 									<select name="searchByActionSt" id="searchByActionSt" style="width:10%;text-align-last:center;">
-									    <option value="0" selected="selected">전체</option>
+									    <option value="" selected="selected">전체</option>
 									    <c:forEach var="actionSt" items="${actionSt}" varStatus="status">
-									    	<option value="<c:out value="${actionSt.code}"/>"><c:out value="${actionSt.codeNm}" /></option>
+									    	<option value="<c:out value="${actionSt.codeNm}"/>"><c:out value="${actionSt.codeNm}" /></option>
 									    </c:forEach>
 									</select>						
 					  			</li>
@@ -128,16 +131,16 @@ function searchFileNm() {
 					  			<li><label for="searchByUserDevId">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개발자명</label>&nbsp;</li>
 					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" size="13" style="text-align:center;"/>&nbsp;</li>
 					  			<li>
-					  			<label>&nbsp;&nbsp;&nbsp;등록일자</label>
-								<input type="text" name="st_date" size="15" style="text-align:center;"/><img src="images/calendar.gif" width="19" height="19" alt="" />
-					  			&nbsp;~&nbsp; <input type="text" name="en_date" size="15" style="text-align:center;"/><img src="images/calendar.gif" width="19" height="19" alt="" />
+					  			<label>&nbsp;&nbsp;등록일자</label>
+								<input type="date" name="searchByStartDt" size="15" style="text-align:center;"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+					  			~<input type="date" name="searchByEndDt" size="15" style="text-align:center;"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
 					  			</li>
 					  		</ul>
 					  		<br/>
 					  		<ul id="search_third_ul">
 					  			<li>
 									<div class="buttons" style="float:right;">
-										<a href="#"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+									 <a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
 									    <a href="<c:url value='/tms/defect/insertDefect.do'/>">등록</a>
 									</div>	  				  			
 					  			</li>
@@ -196,8 +199,7 @@ function searchFileNm() {
             				<td align="center" class="listtd"><c:out value="${result.pgNm}"/></td>
             				
             				<td align="center" class="listtd">
-            				<a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>"
-            				onclick="javaScript:fn_egov_select_viewDefectInfo(${result.pgId},${result.defectIdSq}); return false;">
+            				<a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>">
             				<c:out value="${result.defectTitle}"/>
             				</a>
             				</td>
@@ -238,15 +240,20 @@ function searchFileNm() {
               
            </div>
 
+			<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
+			<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
+			<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
+			<input id="TmsProgrmFileNm_user_dev_id" type="hidden" /> 
+
                 <!-- 페이지 네비게이션 시작 -->
-                <c:if test="${!empty loginPolicyVO.pageIndex }">
+               <%--  <c:if test="${!empty loginPolicyVO.pageIndex }"> --%>
                     <div id="paging_div">
                         <ul class="paging_align">
                        <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage" />
                         </ul>
                     </div>
                 <!-- //페이지 네비게이션 끝 -->
-                </c:if>
+               <%--  </c:if> --%>
 
 
 
