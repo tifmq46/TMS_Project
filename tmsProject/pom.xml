@@ -232,6 +232,19 @@
 			<artifactId>quartz-jboss</artifactId>
 			<version>2.1.7</version>
 		</dependency>
+		
+		<!-- 파일 업로드 처리를 위한 라이브러리 -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+ 
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
 
 	</dependencies>
 

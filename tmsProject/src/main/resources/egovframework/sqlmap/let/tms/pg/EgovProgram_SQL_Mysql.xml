@@ -2,7 +2,150 @@
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
 <sqlMap namespace="Program">
     <typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+    <typeAlias  alias="searchVO1" type="egovframework.let.tms.pg.service.ProgramDefaultVO"/>
 	<typeAlias  alias="ProgramVO" type="egovframework.let.tms.pg.service.ProgramVO"/>
     
+	<!-- return 결과물을 의미 -->
+	<resultMap id="PgList" class="egovframework.let.tms.pg.service.ProgramVO">
+	    <result property="PG_ID" column="PG_ID" columnIndex="1"/>
+	    <result property="PG_NM" column="PG_NM" columnIndex="2"/>
+	    <result property="USER_DEV_ID" column="USER_DEV_ID" columnIndex="3"/>
+	    <result property="SYS_GB" column="SYS_GB" columnIndex="4"/>
+	    <result property="TASK_GB" column="TASK_GB" columnIndex="5"/>
+	    <result property="USE_YN" column="USE_YN" columnIndex="6"/>
+	</resultMap>
+	
+	<resultMap id="PgCurrent" class="egovframework.let.tms.pg.service.PgCurrentVO">
+	    <result property="PG_ID" column="PG_ID" columnIndex="1"/>
+	    <result property="PG_NM" column="PG_NM" columnIndex="2"/>
+	    <result property="USER_DEV_ID" column="USER_DEV_ID" columnIndex="3"/>
+	    <result property="DEV_END_DT" column="DEV_END_DT" columnIndex="4"/>
+	    <result property="DEV_END_YN" column="DEV_END_YN" columnIndex="5"/>
+	    <result property="SECOND_TEST_RESULT_YN" column="SECOND_TEST_RESULT_YN" columnIndex="6"/>
+	    <result property="THIRD_TEST_RESULT_YN" column="THIRD_TEST_RESULT_YN" columnIndex="7"/>
+	</resultMap>
+		
+	
+	
+	<select id="ProgramDAO.selectPgList" parameterClass="searchVO1" resultMap="PgList" >
+		<![CDATA[
+			SELECT
+				PG_ID, PG_NM, USER_DEV_ID, SYS_GB, TASK_GB, USE_YN
+			FROM 
+				PG_TB
+			WHERE 
+				1=1
+		]]>
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
+			</isNotEmpty>  
+			
+			<!-- 시스템구분으로 검색 -->
+			<!-- <isNotEmpty property="searchBySysGb">			    
+			    AND SYS_GB LIKE CONCAT('%' , #searchBySysGb#, '%')
+			</isNotEmpty> -->
+			
+			<!-- 업무구분으로 검색 -->
+			<!-- <isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB LIKE CONCAT('%' , #searchByTaskGb#, '%')
+			</isNotEmpty> -->
+			
+			<!-- 개발자명으로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+			</isNotEmpty> 
+	</select>	
+	
+	<!-- 조회 검색 -->
+
+	
+	
+	
+	<select id="ProgramDAO.selectPgListTotCnt" parameterClass="searchVO1" resultClass="java.lang.Integer" >
+			<![CDATA[
+				SELECT COUNT(*) totcnt 
+				FROM PG_TB
+				WHERE 1=1
+			]]>
+			
+		
+	</select>	
+	
+	<!-- 프로그램현황 조회 -->
+	<select id="ProgramDAO.selectPgCurrentList" resultMap="PgCurrent" >
+		<![CDATA[
+			SELECT
+				a.PG_ID, a.PG_NM, a.USER_DEV_ID, b.DEV_END_DT, b.DEV_END_YN, b.SECOND_TEST_RESULT_YN, b.THIRD_TEST_RESULT_YN
+			FROM 
+				PG_TB a, DEV_PLAN_TB b
+			WHERE
+				a.PG_ID = b.PG_ID 
+		]]>
+			
+	</select>
+	
+	<!-- 상세 조회 -->
+	<select id="ProgramDAO.selectProgramInf" parameterClass="ProgramVO" resultMap="PgList">
+		<![CDATA[
+			SELECT
+				PG_ID, PG_NM, USER_DEV_ID, SYS_GB, TASK_GB, USE_YN
+			FROM 
+				PG_TB
+			WHERE
+				PG_ID = #PG_ID#
+		]]>
+			
+	</select>
+	
+	
+	
+	<!-- 삽입 -->
+	<insert id="ProgramDAO.insertPg" parameterClass="ProgramVO" >
+		<![CDATA[
+		    INSERT 
+		      INTO  PG_TB
+		         (  PG_ID
+		         ,  USER_DEV_ID
+		         ,  PG_NM
+		         ,  SYS_GB
+		         ,  TASK_GB
+		         ,  USE_YN
+		         ,  PJT_ID
+		         ) 
+		    VALUES  
+		         (  #PG_ID#
+		         ,  #USER_DEV_ID#
+		         ,  #PG_NM#
+		         ,  #SYS_GB#
+		         ,  #TASK_GB#
+		         ,  #USE_YN#
+		         ,  #PJT_ID#
+		         ) 
+		]]>
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="ProgramDAO.updatePg" parameterClass="ProgramVO">
+ 		<![CDATA[
+			UPDATE PG_TB SET 
+				USER_DEV_ID = #USER_DEV_ID#, 
+				PG_NM = #PG_NM#,
+				SYS_GB = #SYS_GB#,
+				TASK_GB = #TASK_GB#,
+				USE_YN = #USE_YN#				
+			WHERE PG_ID = #PG_ID#
+ 		]]>
+ 	</update>
+ 	
+	<!-- 삭제 -> 사용여부 변경 -->
+	<update id="ProgramDAO.deletePg" parameterClass="ProgramVO">
+ 		<![CDATA[
+			UPDATE PG_TB SET 				
+				USE_YN = 'N'				
+			WHERE PG_ID = #PG_ID#
+ 		]]>
+ 	</update>
+	
     
-    </sqlMap>
+</sqlMap>
