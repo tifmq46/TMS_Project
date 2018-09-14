@@ -83,7 +83,7 @@
                 <div id="search_field">
                     <div id="search_field_loc"><h2><strong>결함등록</strong></h2></div>
                 </div>
-				<form:form commandName="defectVO" name="defectVO" method="post" >
+				<form:form commandName="defectVO" name="defectVO" enctype="multipart/form-data" method="post" >
 					<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 					<input type="hidden" name="param_trgetType" value="" />
 
@@ -181,17 +181,14 @@
 					       <tr>
 					       <th width="16.6%" height="23" class="required_text" nowrap >다운로드
 					        </th>
-					        <td width="16.6%" nowrap >
-					          <input type="text" size="10" value=""  maxlength="40" title="버튼"/> 
-					        </td>
-					        <td width="66.8%" nowrap colspan="4">
-					          <input type="text" size="10" value=""  maxlength="40" title="이미지"/> 
+					        <td width="83.4%" colspan="5" nowrap >
+								<input type="file" name="fileImg" title="다운로드"/>
 					        </td>
 					       </tr>
 					      
                         </table>
                     </div>
-					<input id="TmsProgrmFileNm_sys_gb" name="TmsProgrmFileNm_sys_gb" type="hidden" /> 
+					<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
 
                     <!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">

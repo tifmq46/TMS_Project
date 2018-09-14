@@ -1,6 +1,7 @@
 package egovframework.let.tms.defect.service;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DefectService {
 	
@@ -20,9 +21,26 @@ public interface DefectService {
 	
 	public List<?> selectUser();
 	
+	public List<?> searchDefect(DefectDefaultVO searchVO);
+	
+	public int selectActionComplete();
+	
+	public int selectActionNotComplete();
+	
 	public void insertDefect(DefectVO defectVO);
 	
 	public int updateDefect(DefectVO defectVO);
 	
 	public int deleteDefect(DefectVO defectVO);
+	
+	public void insertDefectImageMap(Map<String, Object> hmap);
+	
+	public Map<String, Object> selectDefectImg(String defectIdSq);
+	
+	public Map<String, Object> downloadDefectImg(String defectIdSq);
+	
+	public DefectFileVO selectDefectImgOne(int defectIdSq);
+	
+	public void deleteDefectImg(int defectIdSq);
+	
 }
