@@ -22,7 +22,7 @@
 <head>
 
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>공통상세코드 상세조회</title>
 <script type="text/javaScript" language="javascript">
@@ -70,7 +70,6 @@ function fnDelete(){
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
     <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
     <!-- //header 끝 --> 
     <!-- container 시작 -->
@@ -116,7 +115,11 @@ function fnDelete(){
 						  <tr>
 						    <th width="20%" height="23" class="required_text" scope="row" nowrap >코드명<img src="${ImgUrl}/required.gif" alt="필수"  width="15" height="15"></th>          
 						    <td>${result.codeNm}</td>    
-						  </tr> 
+						  </tr>
+						  <tr>
+						    <th width="20%" height="23" class="required_text" scope="row" nowrap >부모코드명　</th>          
+						    <td>${result.parent}</td>    
+						  </tr>
 						  <tr> 
 						    <th height="23" class="required_text" scope="row" ><label for="codeDc">코드설명</label><img src="${ImgUrl}/required.gif" alt="필수"  width="15" height="15"></th>
 						    <td><textarea class="textarea"  cols="75" rows="14"  style="width:450px;" id="codeDc">${result.codeDc}</textarea></td>

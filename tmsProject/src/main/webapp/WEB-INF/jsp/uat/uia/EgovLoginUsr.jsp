@@ -117,7 +117,6 @@ function fnInit() {
                         <div class="user_login">
                         <form:form id="loginForm" name="loginForm" method="post">
                             <fieldset><legend>조건정보 영역</legend>
-                                
                                 <div class="user_login_ultop">
                                     <ul>
                                         <li>
@@ -129,9 +128,13 @@ function fnInit() {
                                             <input type="password" class="input_style" maxlength="25" title="비밀번호를 입력하세요." id="password" name="password" 
                                                onkeydown="javascript:if (event.keyCode == 13) { actionLogin(); }"/>
                                         </li>
+                                       <%--  <li style="margin-left:10px;">
+                                        	<a href="<c:url value='/uat/uia/viewAddUsr.do'/>">회원가입</a>
+                                        </li> --%>
                                         <li>
                                             <input type="checkbox" name="checkId" title="로그인ID 저장여부" onclick="javascript:saveid(this.form);" id="checkId" />ID저장
                                         </li>
+                                       
                                     </ul>
                                     <input type="image" alt="로그인" onclick="javascript:actionLogin()" src="<c:url value='/'/>images/login/btn_login.gif"  />
                                 </div>

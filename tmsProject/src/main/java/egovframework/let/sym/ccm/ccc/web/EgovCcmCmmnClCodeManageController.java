@@ -84,7 +84,7 @@ public class EgovCcmCmmnClCodeManageController {
     		||cmmnClCode.getClCode().equals("")) {
     		return "/cmm/sym/ccm/EgovCcmCmmnClCodeRegist";
     	}
-
+    	System.out.println("parent ====================== " + cmmnClCode.getParent());
         beanValidator.validate(cmmnClCode, bindingResult);
 		if (bindingResult.hasErrors()){
     		return "/cmm/sym/ccm/EgovCcmCmmnClCodeRegist";

@@ -27,7 +27,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 <meta http-equiv="content-language" content="ko">
 <link href="<c:url value='/'/>css/popup.css" rel="stylesheet" type="text/css" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <title>프로그램파일명 검색</title>
 <style type="text/css">
 	h1 {font-size:12px;}

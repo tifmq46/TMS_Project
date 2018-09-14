@@ -24,12 +24,15 @@
 <head>
 
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>공통상세코드 등록</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="cmmnDetailCode" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
+function searchFileNm() {
+    window.open("<c:url value='/sym/prm/TmsCommonCodeListSearch.do'/>",'','width=800,height=600');
+}
 <!--
 /* ********************************************************
  * 목록 으로 가기
@@ -66,7 +69,6 @@ function fn_egov_get_CodeId(form){
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
     <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
     <!-- //header 끝 --> 
     <!-- container 시작 -->
@@ -121,11 +123,22 @@ function fn_egov_get_CodeId(form){
 						      <form:errors path="code"/>
 						    </td>
 						  </tr>
+						  <tr> 
+						    <th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="code">부모코드　</label></th>
+						    <td width="80%" nowrap="nowrap">
+						      <form:input id="TmsCommonCode_code_id" name="parent" path="parent" size="15" maxlength="15" disabled="disabled"/>
+						      <form:errors path="parent"/>
+						      <a href="<c:url value='/sym/prm/TmsCommonCodeListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+	                		  <img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" />검색</a>
+						    </td>
+						    
+						  </tr>
 						  <tr>
 						    <th width="20%" height="23" class="required_text" scope="row" nowrap ><label for="codeNm">코드명</label><img src="${ImgUrl}/required.gif" alt="필수"  width="15" height="15"></th>          
 						    <td width="80%" nowrap="nowrap">
 						      <form:input  path="codeNm" size="60" maxlength="60" id="codeNm"/>
 						      <form:errors path="codeNm"/>
+						      
 						    </td>    
 						  </tr> 
 						  <tr> 

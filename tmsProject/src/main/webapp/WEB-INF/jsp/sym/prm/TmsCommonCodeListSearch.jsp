@@ -32,6 +32,8 @@
 <style type="text/css">
 	h1 {font-size:12px;}
 	caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
+	
+
 </style>
 <script language="javascript1.2"  type="text/javaScript"> 
 <!--
@@ -40,7 +42,7 @@
  ******************************************************** */
 function linkPage(pageNo){
 	document.progrmManageForm.pageIndex.value = pageNo;
-	document.progrmManageForm.action = "<c:url value='/sym/prm/EgovProgramListSearch.do'/>";
+	document.progrmManageForm.action = "<c:url value='/sym/prm/TmsCommonCodeListSearch.do'/>";
    	document.progrmManageForm.submit();
 }
 
@@ -49,35 +51,32 @@ function linkPage(pageNo){
  ******************************************************** */ 
 function selectProgramListSearch() { 
 	document.progrmManageForm.pageIndex.value = 1;
-	document.progrmManageForm.action = "<c:url value='/sym/prm/EgovProgramListSearch.do'/>";
+	document.progrmManageForm.action = "<c:url value='/sym/prm/TmsCommonCodeListSearch.do'/>";
 	document.progrmManageForm.submit();
 }
 
 /* ********************************************************
  * 프로그램목록 선택 처리 함수
  ******************************************************** */ 
-function choisProgramListSearch(vFileNm) { 
-	eval("opener.document.all."+opener.document.all.tmp_SearchElementName.value).value = vFileNm;
-	if(opener.document.all.progrmFileNm_view){
-		opener.document.all.progrmFileNm_view.value = vFileNm;
-	}
-    window.close();
+function choisProgramListSearch(code_id) { 
+	opener.document.all.TmsCommonCode_code_id.value = code_id;
+	window.close();
 }
 //-->
 </script>
 </head>
 <body> 
-<form name="progrmManageForm" action ="<c:url value='/sym/prm/EgovProgramListSearch.do'/>" method="post">
+<form name="progrmManageForm" action ="<c:url value='/sym/prm/TmsCommonCodeListSearch.do'/>" method="post">
 <input type="submit" id="invisible" class="invisible"/>
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
     <!-- 검색 필드 박스 시작 -->
     <div id="search_field">
-        <div id="search_field_loc" class="h_title">프로그램파일명 검색</div>
+        <div id="search_field_loc" class="h_title">코드명 검색</div>
             <fieldset><legend>조건정보 영역</legend>    
             <div class="sf_start">
                 <ul id="search_first_ul">
                     <li>
-                        <label for="searchKeyword">프로그램파일명 : </label>
+                        <label for="searchKeyword">코드명 : </label>
                         <input id="searchKeyword" name="searchKeyword" type="text" size="30" value=""  maxlength="60" title="검색조건">
                     </li>       
                 </ul>
@@ -100,24 +99,27 @@ function choisProgramListSearch(vFileNm) {
         <table width="100%" summary="프로그램파일명 검색목록으로 프로그램파일명 프로그램명으로 구성됨">
             <caption>프로그램파일명 검색</caption>
             <colgroup>
-            <col width="50%" >
-            <col width="50%" >  
+            <col width="30%" >
+            <col width="30%" >
+            <col width="40%" >
             </colgroup>
             <thead>
             <tr>
-                <th scope="col" class="f_field" nowrap="nowrap">프로그램파일명</th>
-                <th scope="col" nowrap="nowrap">프로그램명</th>
+                <th scope="col" class="f_field" nowrap="nowrap">코드ID</th>
+                <th scope="col" nowrap="nowrap">코드</th>
+                <th scope="col" nowrap="nowrap">코드명</th>
             </tr>
             </thead>
             <tbody>                 
             
-            <c:forEach var="result" items="${list_progrmmanage}" varStatus="status">
+            <c:forEach var="result" items="${TmsCommonCodeListSearch}" varStatus="status">
             <!-- loop 시작 -->                                
               <tr>
+			    <td nowrap="nowrap"><c:out value="${result.CODE_ID}"/></td>
 			    <td nowrap="nowrap">
-			        <span class="link"><a href="#LINK" onclick="choisProgramListSearch('<c:out value="${result.progrmFileNm}"/>'); return false;">
-			      <c:out value="${result.progrmFileNm}"/></a></span></td>
-			    <td nowrap="nowrap"><c:out value="${result.progrmKoreanNm}"/></td>
+			         <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.CODE}"/>'); return false;">
+			         <c:out value="${result.CODE}"/></a></span></td> 
+			    <td nowrap="nowrap"><c:out value="${result.CODE_NM}"/></td>
               </tr>
             </c:forEach>
             </tbody> 

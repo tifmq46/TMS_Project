@@ -132,7 +132,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 
                 return "/cmm/sym/ccm/EgovCcmCmmnDetailCodeRegist";
     	} else if (sCmd.equals("Regist")) {
-
+    		System.out.println("여길로온다ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
 	        beanValidator.validate(cmmnDetailCode, bindingResult);
 			if (bindingResult.hasErrors()){
 	    		CmmnClCodeVO searchClCodeVO;

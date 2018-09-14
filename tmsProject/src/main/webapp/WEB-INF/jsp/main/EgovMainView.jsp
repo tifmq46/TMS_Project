@@ -11,7 +11,6 @@
     since    : 2011.08.31 
 --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
@@ -111,41 +110,41 @@
     					<tbody>
     						<tr class="last">
     							<th>프로젝트 명</th>
-    							<td id="empName" name="empName" align="center" valign="middle">${tmsProjectManageVO.PJT_ID}</td>
+    							<td id="empName" name="empName" align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.PJT_ID}</td>
     						</tr>
     						<tr class="last">
     						    <th>프로젝트 분류</th>
-    						    <td align="center" valign="middle">사업개선</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">사업개선</td>
     						    <th>프로젝트 상태</th>
-    						    <td align="center" valign="middle">진행</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">진행</td>
     						</tr>
     						<tr class="last">
     						    <th>부서</th>
-    						    <td align="center" valign="middle">개발부서</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">개발부서</td>
     						    <th>PM</th>
-    						    <td align="center" valign="middle">장현우</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">장현우</td>
     						</tr>
     						<tr class="last">
     						    <th>계획시작일</th>
-    						    <td align="center" valign="middle">2018-06-04</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">2018-06-04</td>
     						    <th>계획완료일</th>
-    						    <td align="center" valign="middle">2018-09-21</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">2018-09-21</td>
     						</tr>
     						<tr class="last">
     						    <th>시작일</th>
-    						    <td align="center" valign="middle">2018-06-04</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">2018-06-04</td>
     						    <th>완료일</th>
-    						    <td align="center" valign="middle">진행중</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">진행중</td>
     						</tr>
     						<tr class="last">
     						    <th>중요도</th>
-    						    <td align="center" valign="middle">100</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">100</td>
     						    <th>금액</th>
-    						    <td align="center" valign="middle">$10,000,000</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">$10,000,000</td>
     						</tr>
     						<tr class="last">
     							<th>프로젝트 설명</th>
-    							<td id="empName" name="empName" align="center" valign="middle">Test Management System</td>
+    							<td id="empName" name="empName" align="left" style="padding-left:60px;" valign="middle">Test Management System</td>
     						</tr>
     					</tbody>
     				</table>
@@ -153,16 +152,15 @@
     			</div>
     		</div>
     	</div>
-    	<div id="recentBsnsList" class="col-md-6">
+    	<div id="recentBsnsList" class="col-md-6" style="height:241px;">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
 	    					프로젝트 멤버
-	    				</i>
     				</div>
     			</div>
-    			<div class="widget-content default_tablestyle">
-    				<table class="table table-search-head table-size-th4">
+    			<div class="widget-content default_tablestyle" style="height:212px; overflow:auto; ">
+    				<table width="100%" cellspacing="0" cellpadding="0" class="table table-search-head table-size-th4">
 			    					<caption>프로젝트 멤버</caption>
 			            <colgroup>
 			            <col width="25%" >
@@ -176,7 +174,7 @@
 			            <thead>
 			            <tr>
 			                <th scope="col" class="f_field" nowrap="nowrap">이름</th>
-			                <th scope="col" nowrap="nowrap">팀명</th>
+			                <th scope="col" nowrap="nowrap">역할</th>
 			                <th scope="col" nowrap="nowrap">대기</th>
 			                <th scope="col" nowrap="nowrap">조치중</th>
 			                <th scope="col" nowrap="nowrap">조치완료</th>
@@ -198,51 +196,18 @@
 						    <td nowrap="nowrap"><c:out value="${result.USER_DEV_ID}"/></td>
 			              </tr>
 			            </c:forEach> --%>
-			            <tr>
-						    <td nowrap="nowrap">장현우</td>
-						    <td nowrap="nowrap">사업지원그룹</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-			              </tr>
+			             <c:forEach var="userList" items="${userList}" varStatus="status">
+			            <!-- loop 시작 -->                                
 			              <tr>
-						    <td nowrap="nowrap">방주이</td>
-						    <td nowrap="nowrap">사업지원그룹</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
+						    <td nowrap="nowrap"><i class="fas fa-user"></i><c:out value="${userList.USER_NM}"/></td>
+						    <td nowrap="nowrap"><c:if test="${userList.ESNTL_ID eq 'USRCNFRM_00000000000'}">관리자</c:if><c:if test="${userList.ESNTL_ID eq 'USRCNFRM_00000000001'}">PL</c:if><c:if test="${userList.ESNTL_ID eq 'USRCNFRM_00000000002'}">개발자</c:if></td>
+						    <td nowrap="nowrap"><c:out value="0"/></td>
+						    <td nowrap="nowrap"><c:out value="0"/></td>
+						    <td nowrap="nowrap"><c:out value="0"/></td>
+						    <td nowrap="nowrap"><c:out value="0"/></td>
+						    <td nowrap="nowrap"><c:out value="0"/></td>
 			              </tr>
-			              <tr>
-						    <td nowrap="nowrap">김이수</td>
-						    <td nowrap="nowrap">사업지원그룹</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-			              </tr>
-			              <tr>
-						    <td nowrap="nowrap">윤인아</td>
-						    <td nowrap="nowrap">사업지원그룹</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-			              </tr>
-			              <tr>
-						    <td nowrap="nowrap">조현우</td>
-						    <td nowrap="nowrap">사업지원그룹</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-						    <td nowrap="nowrap">0</td>
-			              </tr>
+			            </c:forEach> 
 			            </tbody> 
     				</table>
     			</div>

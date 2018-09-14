@@ -20,7 +20,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>공통상세코드 목록</title>
 <script type="text/javaScript" language="javascript">
@@ -77,7 +77,6 @@ function fnDelete(){
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
     <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
     <!-- //header 끝 --> 
     <!-- container 시작 -->
@@ -125,7 +124,7 @@ function fnDelete(){
                             </ul>
                             <ul id="search_second_ul">
                                 <li>
-                                    <div class="buttons" style="position:absolute;left:870px;top:185px;">
+                                    <div class="buttons" style="float:right;">
                                         <a href="#noscript" onclick="fnSearch(); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
                                         <a href="#noscript" onclick="fnRegist(); return false;">등록</a>
                                     </div>                              

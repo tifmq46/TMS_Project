@@ -58,6 +58,17 @@ public class  CmmnClCode implements Serializable {
      */
     private String lastUpdusrId   = "";
 
+    private String Parent = "";
+    
+    
+	public String getParent() {
+		return Parent;
+	}
+
+	public void setParent(String parent) {
+		Parent = parent;
+	}
+
 	/**
 	 * clCode attribute 를 리턴한다.
 	 * @return String

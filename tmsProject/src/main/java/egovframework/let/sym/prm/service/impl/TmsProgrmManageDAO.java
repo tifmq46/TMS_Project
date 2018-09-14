@@ -70,6 +70,19 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
 		// TODO Auto-generated method stub
 		return list("TmsProgrmManageDAO.selectTaskGbSearch",searchData);
 	}
-
+	
+	public List<?> selectUserList() {
+		// TODO Auto-generated method stub
+		return list("TmsProgrmManageDAO.selectUserList");
+	}
+	
+	public List<?> TmsCommonCodeListSearch(ComDefaultVO searchVO) {
+		// TODO Auto-generated method stub
+		return list("TmsProgrmManageDAO.TmsCommonCodeListSearch",searchVO);
+	}
+	
+	public int TmsCommonCodeListSearchTotCnt(ComDefaultVO vo) {
+        return (Integer)select("TmsProgrmManageDAO.TmsCommonCodeListSearchTotCnt", vo);
+    }
 	
 }

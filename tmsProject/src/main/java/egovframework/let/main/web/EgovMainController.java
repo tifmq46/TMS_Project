@@ -120,7 +120,6 @@ public class EgovMainController {
 		// 업무게시판 메인컨텐츠 조회 끝 -----------------------------------
 		// 프로젝트 정보 조회 시작 -------------------------------	
 		TmsProjectManageVO tmsProjectManageVO = TmsProgrmManageService.selectProject();
-		System.out.println("tmsProjectManageVO================" + tmsProjectManageVO);
 		model.addAttribute("tmsProjectManageVO", tmsProjectManageVO);
 		// 프로젝트 정보 조회 끝 -------------------------------
 		
@@ -129,7 +128,12 @@ public class EgovMainController {
 		model.addAttribute("sysGb", sysGbList);
 		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
+		// 공통코드 끝 시작 -------------------------------	
 		
+		// 유저 부분 시작 -------------------------------	
+		List<?> userList = TmsProgrmManageService.selectUserList();
+		model.addAttribute("userList", userList);
+		// 유저 부분 끝 -------------------------------	
 		return "main/EgovMainView";
 	}
 
@@ -188,5 +192,7 @@ public class EgovMainController {
 
       	return "main/inc/EgovIncLeftmenu";
     }
+    
+   
 
 }

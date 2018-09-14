@@ -4,6 +4,7 @@ import java.util.Map;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.TmsLoginVO;
 import egovframework.let.uat.uia.service.EgovLoginService;
 import egovframework.let.utl.sim.service.EgovClntInfo;
 
@@ -141,7 +142,7 @@ public class EgovLoginController {
 		// 2. 메인 페이지 이동
 		return "forward:/cmm/main/mainPage.do";
 	}
-
+	
 	/**
 	 * 로그아웃한다.
 	 * @return String
@@ -153,6 +154,50 @@ public class EgovLoginController {
 
 		return "redirect:/j_spring_security_logout";
 	}
+	
+	
+	 @RequestMapping(value="/uat/uia/viewAddUsr.do")
+	    public String ViewAddUsr(ModelMap model) throws Exception {
+		 	System.out.println("여기까지옴1ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
+	    	//LoginVO user = EgovUserDetailsHelper.isAuthenticated()? (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser():null;
+	    	//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	    	if(EgovUserDetailsHelper.isAuthenticated()){
+	    		//인증된 경우 처리할 사항 추가 ...
+	    		model.addAttribute("lastLogoutDateTime", "로그아웃 타임: 2011-11-10 11:30");
+	    		//최근 로그아웃 시간 등에 대한 확보 후 메인 컨텐츠로 활용
+	    	}
+	    	System.out.println("여기까지옴2ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
+	      	return "uat/uia/ViewTmsAddUsr";
+	    }
+	 
+	 @RequestMapping(value="/uat/uia/addUsr.do")
+	    public String addUsr(@ModelAttribute("TmsLoginVO") TmsLoginVO TmsloginVO, ModelMap model) throws Exception {
+
+	    	//LoginVO user = EgovUserDetailsHelper.isAuthenticated()? (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser():null;
+	    	//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	    	if(EgovUserDetailsHelper.isAuthenticated()){
+	    		//인증된 경우 처리할 사항 추가 ...
+	    		model.addAttribute("lastLogoutDateTime", "로그아웃 타임: 2011-11-10 11:30");
+	    		//최근 로그아웃 시간 등에 대한 확보 후 메인 컨텐츠로 활용
+	    	}
+	    	System.out.println("dasdasdas = " + TmsloginVO.getEMPLYR_ID());
+	      	return "uat/uia/EgovLoginUsr";
+	    }
+	 @RequestMapping(value="/uat/uia/checkId.do")
+	    public String checkId(@ModelAttribute("TmsLoginVO") TmsLoginVO TmsloginVO, ModelMap model) throws Exception {
+
+	    	//LoginVO user = EgovUserDetailsHelper.isAuthenticated()? (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser():null;
+	    	//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	    	if(EgovUserDetailsHelper.isAuthenticated()){
+	    		//인증된 경우 처리할 사항 추가 ...
+	    		model.addAttribute("lastLogoutDateTime", "로그아웃 타임: 2011-11-10 11:30");
+	    		//최근 로그아웃 시간 등에 대한 확보 후 메인 컨텐츠로 활용
+	    	}
+	    	System.out.println("dasdasdas = " + TmsloginVO.getEMPLYR_ID());
+	      	return "uat/uia/EgovLoginUsr";
+	    }
+	 
+	 
 }
 
 class RequestWrapperForSecurity extends HttpServletRequestWrapper {

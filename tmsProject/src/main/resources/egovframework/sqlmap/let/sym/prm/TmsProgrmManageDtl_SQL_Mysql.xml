@@ -8,6 +8,8 @@
 	<typeAlias  alias="TmsProgrmManageVO" type="egovframework.let.sym.prm.service.TmsProgrmManageVO"/>
 	<typeAlias  alias="TmsProjectManageVO" type="egovframework.let.sym.prm.service.TmsProjectManageVO"/>
 	<typeAlias  alias="TmsCommonManageVO" type="egovframework.let.sym.prm.service.TmsCommonManageVO"/>
+	<typeAlias  alias="TmsLoginVO" type="egovframework.com.cmm.TmsLoginVO"/>
+	<typeAlias  alias="CommonCodeVO" type="egovframework.com.cmm.CommonCodeVO"/>
 
     <!-- 프로그램목록 관리 -->
 	<resultMap id="TmsProgrmManage"       class="egovframework.let.sym.prm.service.TmsProgrmManageVO">
@@ -76,5 +78,42 @@
 		FROM LETTCCMMNDETAILCODE
 		WHERE CODE_NM = (SELECT CODE_NM  FROM LETTCCMMNDETAILCODE WHERE binary(CODE_NM)= #searchData#))
 	</select> 
+	
+	<!-- 사용자 조회 -->
+	<select id="TmsProgrmManageDAO.selectUserList" resultClass="TmsLoginVO">
+		SELECT EMPLYR_ID
+		, ORGNZT_ID
+		, USER_NM
+		, PASSWORD 
+		, ESNTL_ID 
+		FROM LETTNEMPLYRINFO
+		ORDER BY ESNTL_ID
+	</select>
+	
+	<!-- 공통코드 조회 -->
+	<select id="TmsProgrmManageDAO.TmsCommonCodeListSearch" parameterClass="comDefaultVO" resultClass="CommonCodeVO">
+		
+			SELECT  A.CODE_ID AS "CODE_ID"
+			     ,  A.CODE AS "CODE"
+			     ,  A.CODE_NM AS "CODE_NM"
+			  FROM  LETTCCMMNDETAILCODE A
+			     ,  LETTCCMMNCODE       B
+			 WHERE 	B.USE_AT  = 'Y' AND binary(A.CODE_NM) like  CONCAT('%', #searchKeyword#, '%')
+			   AND  A.CODE_ID = B.CODE_ID
+			   LIMIT  #recordCountPerPage# OFFSET #firstIndex#
+			   
+		
+	</select>
+	
+	<!-- 공통코드수 조회 -->
+	<select id="TmsProgrmManageDAO.TmsCommonCodeListSearchTotCnt"  parameterClass="comDefaultVO" resultClass="int">
+		
+			SELECT  COUNT(*) totcnt 
+			  FROM  LETTCCMMNDETAILCODE A
+			     ,  LETTCCMMNCODE       B
+			 WHERE 	B.USE_AT  = 'Y' AND binary(A.CODE_NM) like  CONCAT('%', #searchKeyword#, '%')
+			   AND  A.CODE_ID = B.CODE_ID
+	
+	</select>
 
 </sqlMap>                            
