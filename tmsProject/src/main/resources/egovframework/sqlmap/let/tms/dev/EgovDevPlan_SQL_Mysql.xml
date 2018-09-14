@@ -37,7 +37,7 @@
 			SELECT
 				b.PG_ID
 				,(SELECT USER_NM FROM USER_TB WHERE USER_ID = b.USER_DEV_ID ) USER_DEV_ID
-				,b.PG_NAME
+				,b.PG_NM
 				,b.SYS_GB
 				,b.TASK_GB
 				,b.USE_YN
@@ -76,7 +76,7 @@
 					SELECT
 						b.PG_ID
 						,(SELECT USER_NM FROM USER_TB WHERE USER_ID = b.USER_DEV_ID ) USER_DEV_ID
-						,b.PG_NAME
+						,b.PG_NM
 						,b.SYS_GB
 						,b.TASK_GB
 						,b.USE_YN

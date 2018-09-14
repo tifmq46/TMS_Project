@@ -1,6 +1,6 @@
 <%--
-  Class Name : EgovTemplateUpdt.jsp
-  Description : 템플릿 속성 수정화면
+  Class Name : EgovTemplateRegist.jsp
+  Description : 템플릿 속성 등록화면
   Modification Information
  
       수정일         수정자                   수정내용
@@ -26,31 +26,20 @@
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="templateInf" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
-    function fn_egov_update_tmplatInfo() {
-        if (!validateTemplateInf(document.templateInf)){
-            return;
-        }
-        
-        if (confirm('<spring:message code="common.update.msg" />')) {
-            document.templateInf.action = "<c:url value='/cop/com/updateTemplateInf.do'/>";
-            document.templateInf.submit();
-        }
+    
+    
+    function fn_egov_select_tmplatInfo(){
+        document.pgVO.action = "<c:url value='/cop/com/selectTemplateInfs.do'/>";
+        document.pgVO.submit();  
     }
     
-    function fn_egov_select_tmplatInfo() {
-        document.templateInf.action = "<c:url value='/cop/com/selectTemplateInfs.do'/>";
-        document.templateInf.submit();  
-    }
+    function fn_egov_regist_tmplatInfo(){
+    	alert("d");
+        document.programVO.action = "<c:url value='/tms/pg/Pgupdate.do'/>";
+        document.programVO.submit();
     
-    function fn_egov_selectTmplatType(obj) {
-        if (obj.value == 'TMPT01') {
-            document.getElementById('sometext').innerHTML = "게시판 템플릿은 CSS만 가능합니다.";
-        } else if (obj.value == '') {
-            document.getElementById('sometext').innerHTML = "";
-        } else {
-            document.getElementById('sometext').innerHTML = "템플릿은 JSP만 가능합니다.";
-        }       
-    }
+	}
+
 
     function fn_egov_previewTmplat() {
         var frm = document.templateInf;
@@ -58,7 +47,6 @@
         var url = frm.tmplatCours.value;
 
         var target = "";
-        var width = "";
 
         if (frm.tmplatSeCode.value == 'TMPT01') {
             target = "<c:url value='/cop/bbs/previewBoardList.do'/>";
@@ -72,7 +60,7 @@
         }
     }
 </script>
-<title>템플릿 정보수정</title>
+<title>템플릿 등록</title>
 
 <style type="text/css">
     h1 {font-size:12px;}
@@ -81,7 +69,7 @@
 
 
 </head>
-<body onload="fn_egov_selectTmplatType(document.templateInf.tmplatSeCode)">
+<body >
 <noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>    
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
@@ -101,71 +89,107 @@
                         <ul>
                             <li>HOME</li>
                             <li>&gt;</li>
-                            <li>내부서비스관리</li>
+                            <li>프로그램 관리</li>
                             <li>&gt;</li>
-                            <li>내부업무개시판관리</li>
-                            <li>&gt;</li>
-                            <li><strong>템플릿 정보수정</strong></li>
+                            <li><strong>프로그램 상세</strong></li>
                         </ul>
                     </div>
                 </div>
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
-                    <div id="search_field_loc"><h2><strong>템플릿 정보수정</strong></h2></div>
+                    <div id="search_field_loc"><h2><strong>프로그램 상세</strong></h2></div>
                 </div>
-                <form:form commandName="templateInf" name="templateInf" method="post" >
-                    <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>" />
-                    <input name="tmplatNm" type="hidden" value='<c:out value="${TemplateInfVO.tmplatNm}"/>' />
+                <form:form commandName="programVO" id="programVO" name="programVO" method="post" >
 
                     <div class="modify_user" >
                         <table >
                           <tr> 
-                            <th width="20%" height="23" class="required_text" nowrap ><spring:message code="cop.tmplatNm" /></th>
+                            <th width="20%" height="23" class="required_text" nowrap >
+                                <label for="tmplatNm">
+                                    	화면ID
+                                </label>    
+                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+                            </th>
                             <td width="80%" nowrap="nowrap">
-                              <input name="tmplatId" type="hidden" size="60" value='<c:out value="${TemplateInfVO.tmplatId}"/>'  maxlength="60" >
-                              <c:out value="${TemplateInfVO.tmplatNm}"/>
-                              <br/><form:errors path="tmplatId" />   
+                              <input id="PG_ID" name="PG_ID" type="text" size="60"  maxlength="60" style="width:100%" id="PG_ID"  title="화면ID"
+                               value="<c:out value='${programVO.PG_ID}'/>" >
+                              <br/> 
+                            </td>
+                          </tr>
+                          <tr> 
+                            <th width="20%" height="23" class="required_text" nowrap >
+                                <label for="tmplatNm">
+                                    	화면명
+                                </label>    
+                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+                            </th>
+                            <td width="80%" nowrap="nowrap">
+                              <input id="PG_NM" name="PG_NM" type="text" size="60"  maxlength="60" style="width:100%" title="화면ID"
+                               value="<c:out value='${programVO.PG_NM}'/>" >
+                              <br/>
                             </td>
                           </tr>
                           <tr> 
                             <th height="23" class="required_text" >
-                                <label for="tmplatSeCode">
-                                    <spring:message code="cop.tmplatSeCode" />
+                                <label for="tmplatSeCode">  
+                                    	시스템구분
                                 </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="tmplatSeCode" name="tmplatSeCode" class="select" onchange="fn_egov_selectTmplatType(this)">
+                            <select id="SYS_GB" name="SYS_GB" class="select" id="SYS_GB" title="시스템구분" >
                                    <option selected value=''>--선택하세요--</option>
-                                <c:forEach var="result" items="${resultList}" varStatus="status">
-                                    <option value='<c:out value="${result.code}"/>' <c:if test="${TemplateInfVO.tmplatSeCode == result.code}">selected="selected"</c:if> ><c:out value="${result.codeNm}"/></option>
-                                </c:forEach>    
+                                   <option <c:if test="${programVO.SYS_GB == '철도1'}"> selected</c:if> value="철도1"><c:out value="철도1"/></option>
+                                   <option <c:if test="${programVO.SYS_GB == '철도2'}"> selected</c:if> value="철도2"><c:out value="철도2"/></option>
+                                <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
+                                    <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
+                                </c:forEach>  --%>   
                             </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
-                            <br/><form:errors path="tmplatSeCode" /> 
+                               <br/>
+                            </td>
+                          </tr> 
+                          <tr> 
+                            <th height="23" class="required_text" >
+                                <label for="tmplatSeCode">  
+                                    	업무구분
+                                </label>    
+                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+                            </th>
+                            <td>
+                            <select id="TASK_GB" name="TASK_GB" class="select" onchange="fn_egov_selectTmplatType(this)" id="TASK_GB" title="업무구분">
+                                   <option selected value=''>--선택하세요--</option>
+                                   <option <c:if test="${programVO.TASK_GB == '철도1'}"> selected</c:if> value="철도1"><c:out value="철도1"/></option>
+                                   <option <c:if test="${programVO.TASK_GB == '철도2'}"> selected</c:if> value="철도2"><c:out value="철도2"/></option>
+                                <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
+                                    <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
+                                </c:forEach>   --%>  
+                            </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
+                               <br/>
                             </td>
                           </tr> 
                           <tr> 
                             <th width="20%" height="23" class="required_text" nowrap >
-                                <label for="tmplatCours">
-                                    <spring:message code="cop.tmplatCours" />
+                                <label for="tmplatCours">   
+                                    	개발자
                                 </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="tmplatCours" name="tmplatCours" type="text" size="60" value='<c:out value="${TemplateInfVO.tmplatCours}"/>' maxlength="60" style="width:100%">
-                              <br/><form:errors path="tmplatCours" /> 
+                              <input id="USER_DEV_ID" name="USER_DEV_ID" type="text" size="60"  maxlength="60" style="width:100%" title="개발자"
+                                value="<c:out value='${programVO.USER_DEV_ID}'/>" >
+                              <br/>
                             </td>
                           </tr>
                           <tr> 
                             <th width="20%" height="23" class="required_text" nowrap >
                                 <label> 
-                                    <spring:message code="cop.useAt" />
+                                    	사용여부
                                 </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
-                            <td width="80%" nowrap="nowrap">
-                                Y : <input type="radio" name="useAt" class="radio2" value="Y"  <c:if test="${TemplateInfVO.useAt == 'Y'}"> checked="checked"</c:if> >&nbsp;
-                                N : <input type="radio" name="useAt" class="radio2" value="N" <c:if test="${TemplateInfVO.useAt == 'N'}"> checked="checked"</c:if> >
+                            <td width="80%" nowrap="nowrap" >
+                                Y : <input type="radio" id="USE_YN" name="USE_YN" id="USE_YN" class="radio2" value="Y" <c:if test="${programVO.USE_YN == 'Y'}"> checked="checked"</c:if> >&nbsp;
+                                N : <input type="radio" id="USE_YN" name="USE_YN" id="USE_YN" class="radio2" value="N" <c:if test="${programVO.USE_YN == 'N'}"> checked="checked"</c:if> >                            
                             </td>
                           </tr>  
                         </table>
@@ -178,16 +202,11 @@
                       <table border="0" cellspacing="0" cellpadding="0" align="center">
                         <tr> 
                           <td>
-                              <a href="#LINK" onclick="javascript:fn_egov_update_tmplatInfo(); return false;"><spring:message code="button.save" /></a>
+                              <a onclick="javaScript:fn_egov_regist_tmplatInfo(); return false;">수정</a> 
                           </td>
-                          <td width="10"></td>
                           <td>
-                              <a href="<c:url value='/cop/com/selectTemplateInfs.do'/>" onclick="javascript:fn_egov_select_tmplatInfo(); return false;"><spring:message code="button.list" /></a>
-                          </td>
-                          <td width="10"></td>
-                          <td>
-                              <a href="#LINK" onclick="javascript:fn_egov_previewTmplat(); return false;" ><spring:message code="cop.preview" /></a>
-                          </td>  
+                              <a href="<c:url value='/tms/pg/PgManage.do'/>" >목록</a>
+                          </td>                       
                         </tr>
                       </table>
                     </div>
