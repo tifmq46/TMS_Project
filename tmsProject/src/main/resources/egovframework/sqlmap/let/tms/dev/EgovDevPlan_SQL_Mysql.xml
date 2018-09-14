@@ -44,6 +44,7 @@
 						,(SELECT USER_NM FROM USER_TB WHERE USER_ID = b.USER_DEV_ID ) USER_DEV_ID
 						,b.PG_NM
 						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.SYS_GB) AS SYS_GB
+						,SYS_GB AS SYS_CD
 						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.TASK_GB) TASK_GB
 						,a.PLAN_START_DT
 						,a.PLAN_END_DT
@@ -61,9 +62,13 @@
             </isEqual>
              -->
             <!-- 시스템구분으로 검색 -->
-			<!-- <isNotEmpty property="searchByTaskGb">
-			    AND TASK_GB = #searchByTaskGb#
-			</isNotEmpty>  -->
+			<isNotEmpty property="searchBySysGb">
+			    AND SYS_GB = #searchBySysGb# 
+			</isNotEmpty>
+			
+			<isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB = #searchByTaskGb# 
+			</isNotEmpty>
              
              
 			<!-- 화면ID로 검색 -->
