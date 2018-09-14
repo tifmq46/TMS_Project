@@ -9,10 +9,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <%-- <validator:javascript formName="devPlanVo" staticJavascript="false" xhtml="true" cdata="false"/> --%>
 <script type="text/javascript">
+function searchFileNm() {
+    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+}
 
 function fn_egov_regist_devPlan(){
    /*  if (!validateBoardMaster(document.boardMaster)){
@@ -43,7 +46,6 @@ function fn_egov_regist_devPlan(){
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
     <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
     <!-- //header 끝 --> 
     <!-- container 시작 -->
@@ -72,6 +74,8 @@ function fn_egov_regist_devPlan(){
                     <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>" />
 
                     <div class="modify_user" >
+                    <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+                      <img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" />검색</a>
                         <table >
                         
                          <tr> 
@@ -81,8 +85,9 @@ function fn_egov_regist_devPlan(){
                             </th>
                              <td width="30%" nowrap colspan="3">
                              
-                              <input name="pgId" type="text" size="50" value="${pgId}" maxlength="60"  id="pgId"  title="시스템구분">
-                              
+                              <input name="pgNm" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_pg_nm"  >
+                               <input type="hidden" name="pgId" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_pg_id"  >
+                                <input type="hidden" name="pgId" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_user_dev_id"  >
                               <a href="#LINK" style="selector-dummy: expression(this.hideFocus=false);">
                             <img src="<c:url value='/images/img_search.gif' />" 
                             width="15" height="15" align="middle" alt="새창"/></a>
@@ -98,6 +103,8 @@ function fn_egov_regist_devPlan(){
                             </td> 
                           </tr>
                          
+                         
+                         
                           <tr> 
                              <th width="20%" height="23" class="required_text" nowrap >
                                 <label >시스템구분</label>    
@@ -111,7 +118,7 @@ function fn_egov_regist_devPlan(){
                                     		<option value='<c:out value="${resultS.code}"/>'><c:out value="${resultS.codeNm}"/></option>
                                 		</c:forEach>    
 									</select>	 --%>
-									
+							<input name="pgId" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_sys_gb"  >
 									
                             </td>
                             <th width="20%" height="23" class="required_text" nowrap >
@@ -119,13 +126,14 @@ function fn_egov_regist_devPlan(){
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="30%">
-                            	<select name="searchByTaskGb" id="searchByTaskGb" >
+                            	<%-- <select name="searchByTaskGb" id="searchByTaskGb" >
 									<option value="0" selected="selected">전체</option>
 									   <c:forEach var="resultT" items="${resultT}" varStatus="status">
                                     		<option value='<c:out value="${resultT.code}"/>'><c:out value="${resultT.codeNm}"/></option>
                                 		</c:forEach>
 								</select>
-									&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
+									&nbsp;&nbsp;&nbsp;<span id="sometext"></span> --%>
+									<input name="pgId" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_task_gb"  >
                             </td>
                           </tr>
                           
