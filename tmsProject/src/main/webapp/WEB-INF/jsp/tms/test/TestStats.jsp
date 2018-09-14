@@ -137,13 +137,13 @@ window.onload = function() {
                  <div class="progess_bar_section" >
                  
                       	<strong>단위테스트 진행률   </strong>
-                      	
+  <%--                     	
                       	<div style="float:right;">
 	                      	<c:set var="tc1_yCnt" value="${testCaseStatsMapTC1.yCnt}"></c:set>
 	                      	<c:set var="tc1_totCnt" value="${testCaseStatsMapTC1.totCnt}"></c:set>
 	                      	<fmt:parseNumber var="value1" value="${(tc1_yCnt/tc1_totCnt)*100}" integerOnly="true" />
 	                      	<strong><c:out value="${tc1_yCnt}"></c:out>&nbsp;/&nbsp;<c:out value="${tc1_totCnt}"></c:out></strong>
-						</div>
+						</div> --%>
 					<%-- 	
 						<div>
 						<c:out value=" ${value1}"></c:out>%
