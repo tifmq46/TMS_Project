@@ -85,9 +85,9 @@ public class DevPlanController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
 		//공통코드(시스템, 업무구분)
-		/*ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
+		ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
 		codeVO.setCodeId("SYSGB");
-		List<?> resultS = cmmUseService.selectCmmCodeDetail(codeVO);*/
+		List<?> resultS = cmmUseService.selectCmmCodeDetail(codeVO);
 		
 		/*codeVO.setCodeId("TASKGB");
 		List<?> resultT = cmmUseService.selectCmmCodeDetail(codeVO);*/
@@ -98,12 +98,17 @@ public class DevPlanController {
 		
 		List<?> devList = devPlanService.selectDevPlans(searchVO);
 		model.addAttribute("resultList", devList);
-		//model.addAttribute("resultS", resultS);
+		model.addAttribute("resultS", resultS);
 		//model.addAttribute("resultT", resultT);
 		
 		int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
+		
+		System.out.println("=======");
+		System.out.println(searchVO.getPgId());
+		System.out.println("=======");
+		
 		
 		return "tms/dev/devPlanList";
 	}
