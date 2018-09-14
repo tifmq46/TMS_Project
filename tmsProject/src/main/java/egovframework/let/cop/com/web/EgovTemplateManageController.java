@@ -65,6 +65,7 @@ public class EgovTemplateManageController {
 	 * @param model
 	 * @return
 	 * @throws Exception
+	 * 
 	 */
 	@RequestMapping("/cop/com/selectTemplateInfs.do")
 	public String selectTemplateInfs(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO, ModelMap model) throws Exception {
