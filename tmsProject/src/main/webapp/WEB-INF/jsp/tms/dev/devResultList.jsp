@@ -171,7 +171,7 @@ function fn_searchList(pageNo){
         				<th align="center">계획종료일자</th>
 			        	<th align="center">개발시작일자</th>
         				<th align="center">개발종료일자</th>
-        				<th align="center">등록</th>
+        				<th align="center"></th>
         			</tr>
         			
         			<c:forEach var="result" items="${resultList}" varStatus="status">
