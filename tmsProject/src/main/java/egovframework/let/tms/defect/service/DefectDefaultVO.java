@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @SuppressWarnings("serial")
 public class DefectDefaultVO extends DefectVO implements Serializable{
@@ -15,25 +16,30 @@ public class DefectDefaultVO extends DefectVO implements Serializable{
 	private String searchKeyword = "";
 	
 	/** 프로그램(화면) 아이디로 검색*/
-	private String searchByPgId = "";
+	private String searchByPgId;
 	
 	/** 업무구분으로 검색*/
-	private int searchByTaskGb = 0;
+	private String searchByTaskGb;
 	
 	/** 결함구분으로 검색*/
-	private int searchByDefectGb = 0;
+	private String searchByDefectGb;
 	
 	/** 조치상태로 검색*/
-	private int searchByActionSt = 0;
+	private String searchByActionSt;
 	
 	/** 테스터아이디로 검색 */
-	private String searchByUserTestId = "";
+	private String searchByUserTestId;
 	
 	/** 개발자아이디로 검색*/
-	private String searchByUserDevId = "";
+	private String searchByUserDevId;
 	
 	/** 등록일자로 검색*/
-	private Date searchByEnrollDt;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date searchByStartDt;
+	
+	/** 끝 일자로 검색*/
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date searchByEndDt;
 	
 	/** 검색사용여부 */
 	private String searchUseYn = "";
@@ -80,27 +86,27 @@ public class DefectDefaultVO extends DefectVO implements Serializable{
 		this.searchByPgId = searchByPgId;
 	}
 
-	public int getSearchByTaskGb() {
+	public String getSearchByTaskGb() {
 		return searchByTaskGb;
 	}
 
-	public void setSearchByTaskGb(int searchByTaskGb) {
+	public void setSearchByTaskGb(String searchByTaskGb) {
 		this.searchByTaskGb = searchByTaskGb;
 	}
 
-	public int getSearchByDefectGb() {
+	public String getSearchByDefectGb() {
 		return searchByDefectGb;
 	}
 
-	public void setSearchByDefectGb(int searchByDefectGb) {
+	public void setSearchByDefectGb(String searchByDefectGb) {
 		this.searchByDefectGb = searchByDefectGb;
 	}
 
-	public int getSearchByActionSt() {
+	public String getSearchByActionSt() {
 		return searchByActionSt;
 	}
 
-	public void setSearchByActionSt(int searchByActionSt) {
+	public void setSearchByActionSt(String searchByActionSt) {
 		this.searchByActionSt = searchByActionSt;
 	}
 
@@ -120,12 +126,20 @@ public class DefectDefaultVO extends DefectVO implements Serializable{
 		this.searchByUserDevId = searchByUserDevId;
 	}
 
-	public Date getSearchByEnrollDt() {
-		return searchByEnrollDt;
+	public Date getSearchByStartDt() {
+		return searchByStartDt;
 	}
 
-	public void setSearchByEnrollDt(Date searchByEnrollDt) {
-		this.searchByEnrollDt = searchByEnrollDt;
+	public void setSearchByStartDt(Date searchByStartDt) {
+		this.searchByStartDt = searchByStartDt;
+	}
+
+	public Date getSearchByEndDt() {
+		return searchByEndDt;
+	}
+
+	public void setSearchByEndDt(Date searchByEndDt) {
+		this.searchByEndDt = searchByEndDt;
 	}
 
 	public String getSearchUseYn() {

@@ -4,7 +4,8 @@
     <typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 	<typeAlias  alias="DefectVO" type="egovframework.let.tms.defect.service.DefectVO"/>
     <typeAlias  alias="DefectDefaultVO" type="egovframework.let.tms.defect.service.DefectDefaultVO" />
-    
+	<typeAlias  alias="DefectFileVO" type="egovframework.let.tms.defect.service.DefectFileVO"/>
+	
     <resultMap id="defectList" class="egovframework.let.tms.defect.service.DefectVO">
         <result property="defectIdSq" column="DEFECT_ID_SQ" columnIndex="1"/>
         <result property="defectTitle" column="DEFECT_TITLE" columnIndex="2"/>
@@ -18,6 +19,12 @@
         <result property="actionDt" column="ACTION_DT" columnIndex="10"/>        
         <result property="testscenarioId" column="TESTSCENARIO_ID" columnIndex="11"/>        
     </resultMap>
+    
+    <resultMap id="defectImg" class="java.util.HashMap" >
+        <result property="FILE_IMG" column="FILE_IMG" jdbcType="BLOB" javaType="[B"/>
+        <result property="FILE_NM" column="FILE_NM" />
+    </resultMap>
+    
     <!--  
     <select id="defectDAO.selectDefect" parameterClass="DefectDefaultVO" resultMap="defectList">
     -->
@@ -34,14 +41,38 @@
         			(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.DEFECT_GB) AS DEFECT_GB,
         			(SELECT USER_TB.USER_NM FROM USER_TB WHERE D.USER_TEST_ID = USER_TB.USER_ID) AS USER_TEST_ID,
         			D.ENROLL_DT,
- 					(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST
+ 					(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST,
+ 					(SELECT USER_TB.USER_NM FROM USER_TB WHERE P.USER_DEV_ID = USER_TB.USER_ID) AS USER_DEV_ID
         		FROM DEFECT_TB AS D, PG_TB AS P
         		WHERE D.PG_ID = P.PG_ID
         		ORDER BY D.DEFECT_ID_SQ
         	) as C
         	WHERE 1=1
         ]]>  
-        
+		<isNotEmpty property="searchByPgId" >
+                AND PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
+        </isNotEmpty>        
+		<isNotEmpty property="searchByUserTestId" >
+                AND USER_TEST_ID LIKE CONCAT('%' , #searchByUserTestId#, '%')
+        </isNotEmpty>    
+        <isNotEmpty property="searchByUserDevId" >
+                AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+        </isNotEmpty>
+        <isNotEmpty property="searchByTaskGb" >
+                AND TASK_GB LIKE CONCAT('%' , #searchByTaskGb#, '%')
+        </isNotEmpty>
+        <isNotEmpty property="searchByDefectGb" >
+                AND DEFECT_GB LIKE CONCAT('%' , #searchByDefectGb#, '%')
+        </isNotEmpty>
+        <isNotEmpty property="searchByActionSt" >
+                AND ACTION_ST LIKE CONCAT('%' , #searchByActionSt#, '%')
+        </isNotEmpty>
+        <isNotEmpty property="searchByStartDt" >
+            <isNotEmpty property="searchByEndDt">
+                AND ENROLL_DT BETWEEN DATE(#searchByStartDt#) AND DATE(#searchByEndDt#)+1
+            </isNotEmpty>
+        </isNotEmpty>
+         
     </select>
     
     <select id="defectDAO.selectDefectTotCnt" parameterClass="DefectDefaultVO" resultClass="java.lang.Integer">
@@ -117,26 +148,87 @@
         ]]>
     </select>
     
+    <select id="defectDAO.selectActionComplete" resultClass="java.lang.Integer">
+        <![CDATA[
+				SELECT COUNT(*)
+				FROM DEFECT_TB
+				WHERE ACTION_ST='A5'
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectActionNotComplete" resultClass="java.lang.Integer">
+        <![CDATA[
+       			SELECT COUNT(*)
+				FROM DEFECT_TB
+				WHERE ACTION_ST!='A5'
+        ]]>
+        
+    </select>
+    
+    <select id="defectDAO.selectDefectImg" parameterClass="java.lang.String" resultClass="java.util.HashMap">
+        	<![CDATA[
+        		SELECT FILE_IMG, FILE_NM
+        		FROM FILE_TB
+        		WHERE DEFECT_ID_SQ = #defectIdSq#
+        	]]>
+    </select>
+    
+    <select id="defectDAO.downloadDefectImg" parameterClass="java.lang.String" resultMap="defectImg">
+		<![CDATA[
+			SELECT FILE_IMG, FILE_NM
+			FROM FILE_TB
+			WHERE DEFECT_ID_SQ = #defectIdSq#
+		]]>        
+    </select>
+    
+    <select id="defectDAO.selectDefectImgOne" parameterClass="java.lang.Integer" resultClass="DefectFileVO">
+        <![CDATA[
+        	SELECT FILE_ID_SQ AS fileIdSq, DEFECT_ID_SQ AS defectIdSq, FILE_NM AS fileNm, 
+        		FILE_SIZE AS fileSize, FILE_ENROLL_DT AS fileEnrollDt
+        	FROM FILE_TB
+        	WHERE DEFECT_ID_SQ = #defectIdSq#
+        ]]>
+    </select>
+    
     <insert id="defectDAO.insertDefect" parameterClass="DefectVO">
         <![CDATA[
         	INSERT INTO DEFECT_TB
-        	(DEFECT_ID_SQ, DEFECT_TITLE, DEFECT_CONTENT, PG_ID, USER_TEST_ID, DEFECT_GB, ENROLL_DT)
+        	(DEFECT_ID_SQ, DEFECT_TITLE, DEFECT_CONTENT, PG_ID, USER_TEST_ID, DEFECT_GB, ENROLL_DT, ACTION_ST)
         	VALUES
-        	(#defectIdSq#, #defectTitle#, #defectContent#, #pgId#, #userTestId#, #defectGb#, SYSDATE()
+        	(#defectIdSq#, #defectTitle#, #defectContent#, #pgId#, #userTestId#, #defectGb#, SYSDATE(), 'A1'
         	)
         ]]>
     </insert>
     
+	<insert id="defectDAO.insertDefectMap" parameterClass="java.util.HashMap">
+		<![CDATA[
+			INSERT INTO DEFECT_TB
+        	(DEFECT_ID_SQ, DEFECT_TITLE, DEFECT_CONTENT, PG_ID, USER_TEST_ID, DEFECT_GB, ENROLL_DT, ACTION_ST)
+        	VALUES
+        	(#DEFECT_ID_SQ#, #DEFECT_TITLE#, #DEFECT_CONTENT#, #PG_ID#, #USER_TEST_ID#, #DEFECT_GB#, SYSDATE(), 'A1'
+        	)
+		]]>   
+	</insert>
+		
+	<insert id="defectDAO.insertDefectImageMap" parameterClass="java.util.HashMap">
+	    <![CDATA[
+	    	INSERT INTO FILE_TB
+	    	(DEFECT_ID_SQ, FILE_IMG, FILE_NM, FILE_SIZE, FILE_ENROLL_DT)
+	    	VALUES
+	    	(#DEFECT_ID_SQ#, #FILE_IMG#, #FILE_NM#, #FILE_SIZE#, SYSDATE())
+	    ]]>
+	</insert>
+	
 	<update id="defectDAO.updateDefect" parameterClass="DefectVO">
 	   <![CDATA[
 	   	UPDATE DEFECT_TB 
 	   	SET
 	   		DEFECT_TITLE = #defectTitle#,
 	   		DEFECT_CONTENT = #defectContent#,
-	   		USER_TEST_ID = (SELECT USER_ID FROM USER_TB WHERE USER_NM = #userTestId#),
-	   		DEFECT_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #defectGb#),
+	   		USER_TEST_ID = #userTestId#,
+	   		DEFECT_GB = #defectGb#,
 	   		ACTION_CONTENT = #actionContent#,
-	   		ACTION_ST = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #actionSt#),
+	   		ACTION_ST = #actionSt#,
 	   		ACTION_DT = SYSDATE()
 	   	WHERE DEFECT_ID_SQ = #defectIdSq#
 	   ]]>   
@@ -163,9 +255,30 @@
 	
 	<delete id="defectDAO.deleteDefect" parameterClass="DefectVO">
 	    <![CDATA[
-	    DELETE FROM DEFECT_TB
-	    WHERE DEFECT_ID_SQ = #defectIdSq#
+	    	DELETE FROM DEFECT_TB
+	    	WHERE DEFECT_ID_SQ = #defectIdSq#;
 	   ]]>
 	</delete>
+	
+	<delete id="defectDAO.deleteDefectImg" parameterClass="java.lang.Integer">
+	    <![CDATA[
+	    	DELETE FROM FILE_TB
+	    	WHERE DEFECT_ID_SQ = #defectIdSq#
+	    ]]>
+	</delete>
+	
+	<update id="defectDAO.setDefectFileSq">
+	    <![CDATA[
+	    ALTER TABLE FILE_TB AUTO_INCREMENT=1;
+	    ]]>
+	</update>
+	
+	<update id="defectDAO.setDefectFileSqImpl">
+		<![CDATA[
+		UPDATE FILE_TB SET FILE_TB.FILE_ID_SQ = @COUNT:=@COUNT+1
+		WHERE 1=1;	
+		]]>	    
+	</update>
+	
 	
 </sqlMap>

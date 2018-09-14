@@ -19,6 +19,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -32,6 +33,11 @@
         document.frm.action = "<c:url value='/tms/defect/selectDefectCurrent.do'/>";
         document.frm.submit();      
     }
+
+    function searchFileNm() {
+        window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+    }
+
 
 </script>
 </head>
@@ -69,43 +75,46 @@
               
              <form:form commandName="searchVO" name="listForm" method="post" action="tms/defect/defectList.do">   
                 
-                <!-- 검색 필드 박스 시작 -->
+              <!-- 검색 필드 박스 시작 -->
 				<div id="search_field">
-					<div id="search_field_loc"><h2><strong>결함처리현황</strong></h2></div>
+					<div id="search_field_loc"><h2><strong>결함관리</strong></h2></div>
 					
 					<form action="form_action.jsp" method="post">
 					  	<fieldset><legend>조건정보 영역</legend>	  
 					  	<div class="sf_start">
 					  		<ul id="search_first_ul">
 					  			<li><label for="searchByPgId">화면ID</label></li>
-					  			<li><input type="text" name="searchByPgId" id="searchByPgId" size="10"/></li>
-					  			<li>&nbsp;
+					  			<li>
+					  			<input id="TmsProgrmFileNm_pg_id" name="searchByPgId" type="text" size="10" value="" style="text-align:center;" maxlength="40" title="화면ID"/> 
+					          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
+					  			</li>
+					  			<li>
 								    <label for="searchByTaskGb">업무구분&nbsp;</label>
-									<select name="searchByTaskGb" id="searchByTaskGb">
-									    <option value="0" selected="selected">전체</option>
-									    <option value="1">비승인</option>
+									<select name="searchByTaskGb" id="searchByTaskGb" style="width:12%;text-align-last:center;">
+									    <option value="" selected="selected" >전체</option>
+									    <c:forEach var="taskGb" items="${taskGb}" varStatus="status">
+									    	<option value="<c:out value="${taskGb.codeNm}"/>"><c:out value="${taskGb.codeNm}" /></option>
+									    </c:forEach>
 									</select>						
 					  			</li> 			
 					  			<li>
 								    <label for="searchByDefectGb">결함유형구분</label>
-									<select name="searchByDefectGb" id="searchByDefectGb">
-									    <option value="0" selected="selected">전체</option>
-									    <option value="1">오류</option>
-									    <option value="2">개선</option>
-									    <option value="3">협의필요</option>
-									    <option value="4">기타</option>
+									<select name="searchByDefectGb" id="searchByDefectGb" style="width:10%;text-align-last:center;">
+									    <option value="" selected="selected">전체</option>
+									    <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
+									    	<option value="<c:out value="${defectGb.codeNm}"/>"><c:out value="${defectGb.codeNm}" /></option>
+									    </c:forEach>
 									</select>						
 					  			</li>
 					  			
 					  			<li>
-								    <label for="searchByDefectGb">조치상태구분</label>
-									<select name="searchByActionSt" id="searchByActionSt">
-									    <option value="0" selected="selected">전체</option>
-									    <option value="1">대기</option>
-									    <option value="2">조치중</option>
-									    <option value="3">조치완료</option>
-									    <option value="4">재요청</option>
-									    <option value="5">최종완료</option>
+								    <label for="searchByActionSt">조치상태구분</label>
+									<select name="searchByActionSt" id="searchByActionSt" style="width:10%;text-align-last:center;">
+									    <option value="" selected="selected">전체</option>
+									    <c:forEach var="actionSt" items="${actionSt}" varStatus="status">
+									    	<option value="<c:out value="${actionSt.codeNm}"/>"><c:out value="${actionSt.codeNm}" /></option>
+									    </c:forEach>
 									</select>						
 					  			</li>
 					  			
@@ -113,19 +122,21 @@
 					  		
 					  		<ul id="search_second_ul">
 								<li><label for="searchByUserTestId">테스터명</label>&nbsp;&nbsp;</li>
-								<li><input type="text" name="searchByUserTestId" id="searchByUserTestId" size="10"/></li>
-					  			<li><label for="searchByUserDevId">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개발자명</label>&nbsp;</li>
-					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" size="10"/>&nbsp;</li>
-					  			<label>&nbsp;등록일자</label>
-								<input type="text" name="st_date" size="15"/><img src="images/calendar.gif" width="19" height="19" alt="" />
-					  			&nbsp;~&nbsp; <input type="text" name="en_date" size="15"/><img src="images/calendar.gif" width="19" height="19" alt="" />
+								<li><input type="text" name="searchByUserTestId" id="searchByUserTestId" size="10" style="text-align:center;"/></li>
+					  			<li><label for="searchByUserDevId">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개발자명</label>&nbsp;</li>
+					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" size="13" style="text-align:center;"/>&nbsp;</li>
+					  			<li>
+					  			<label>&nbsp;&nbsp;등록일자</label>
+								<input type="date" name="searchByStartDt" size="15" style="text-align:center;"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+					  			~<input type="date" name="searchByEndDt" size="15" style="text-align:center;"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+					  			</li>
 					  		</ul>
 					  		<br/>
 					  		<ul id="search_third_ul">
 					  			<li>
 									<div class="buttons" style="float:right;">
-										<a href="#"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-									    <a href="<c:url value='/tms/defect/selectDefectCurrent.do'/>" onclick="fn_egov_select_viewDefect(); return false;">전체보기</a>
+									 <a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+									    <a href="<c:url value='/tms/defect/insertDefect.do'/>">등록</a>
 									</div>	  				  			
 					  			</li>
 					  			
@@ -137,17 +148,19 @@
 				<!-- //검색 필드 박스 끝 -->
                 
                 
-                <table width="80% border="0"cellpadding="0" cellspacing="20" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
+                <table width="80% border="0" cellpadding="0" cellspacing="10" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
                  <caption style="visibility:hidden">총 건수, 완료건수, 미완료, 진행률 표시하는 테이블</caption>
                  
                  <tr>
-                 	<td align="center">총 : </td>
+                 	<td align="center">총 : <c:out value="${actionTotCnt}"/> </td>
                  	<td align="center"></td>
-                 	<td align="center">완료 : </td>
+                 	<td align="center">완료 : <c:out value="${actionComplete}"/></td>
                  	<td align="center"></td>
-                 	<td align="center">미완료 : </td>
+                 	<td align="center">미완료 : <c:out value="${actionNotComplete}"/></td>
                  	<td align="center"></td>
-                 	<td align="center">진행률 : </td>
+                 	<td align="center">진행률 :<fmt:parseNumber var="actionProgression" integerOnly="true" value="${actionComplete / actionTotCnt * 100}"/>
+                 	${actionProgression}%
+                 	</td>
                  	<td align="center"></td>
                  	
                  </tr>        
@@ -225,16 +238,19 @@
               </table>        
               
            </div>
-
+<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
+			<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
+			<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
+			<input id="TmsProgrmFileNm_user_dev_id" type="hidden" /> 
                 <!-- 페이지 네비게이션 시작 -->
-                <c:if test="${!empty loginPolicyVO.pageIndex }">
+                <%-- <c:if test="${!empty loginPolicyVO.pageIndex }"> --%>
                     <div id="paging_div">
                         <ul class="paging_align">
                        <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage" />
                         </ul>
                     </div>
                 <!-- //페이지 네비게이션 끝 -->
-                </c:if>
+                <%-- </c:if> --%>
 
 
 

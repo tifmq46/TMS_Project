@@ -3,6 +3,7 @@ package egovframework.let.tms.defect.service;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 public class DefectVO{
 
@@ -44,7 +45,36 @@ public class DefectVO{
 	public int getDefectIdSq() {
 		return defectIdSq;
 	}
+	
+	/** 파일 테이블*/
+	/** 결함 아이디는 결함테이블 사용*/
+	
+	/** 파일 번호(시퀀스) */
+	private int fileIdSq;
+	
+	/** 파일명 */
+	private String fileNm;
+	
+	/** 파일 사이즈 */
+	private int fileSize;
+	
+	/** 파일 이미지(blob)*/
+	private MultipartFile fileImg;
+	
+//	private byte[] fileImg;
+	
+	private String fileImgByte;
 
+	public String getFileImgByte() {
+		return fileImgByte;
+	}
+
+	public void setFileImgByte(String fileImgByte) {
+		this.fileImgByte = fileImgByte;
+	}
+
+	/** 파일 등록일자 == 결함등록일자? */
+	
 	public void setDefectIdSq(int defectIdSq) {
 		this.defectIdSq = defectIdSq;
 	}
@@ -129,12 +159,57 @@ public class DefectVO{
 		this.testscenarioId = testscenarioId;
 	}
 
+	/** 파일 테이블 */
+
+	public int getFileIdSq() {
+		return fileIdSq;
+	}
+
+	public void setFileIdSq(int fileIdSq) {
+		this.fileIdSq = fileIdSq;
+	}
+
+	public String getFileNm() {
+		return fileNm;
+	}
+
+	public void setFileNm(String fileNm) {
+		this.fileNm = fileNm;
+	}
+
+	public int getFileSize() {
+		return fileSize;
+	}
+
+	public void setFileSize(int fileSize) {
+		this.fileSize = fileSize;
+	}
+
+	public MultipartFile getFileImg() {
+		return fileImg;
+	}
+
+	public void setFileImg(MultipartFile fileImg) {
+		this.fileImg = fileImg;
+	}
+
 	@Override
 	public String toString() {
 		return "DefectVO [defectIdSq=" + defectIdSq + ", defectTitle=" + defectTitle + ", defectContent="
 				+ defectContent + ", pgId=" + pgId + ", userTestId=" + userTestId + ", defectGb=" + defectGb
 				+ ", enrollDt=" + enrollDt + ", actionContent=" + actionContent + ", actionSt=" + actionSt
-				+ ", actionDt=" + actionDt + ", testscenarioId=" + testscenarioId + "]";
+				+ ", actionDt=" + actionDt + ", testscenarioId=" + testscenarioId + ", fileIdSq=" + fileIdSq
+				+ ", fileNm=" + fileNm + ", fileSize=" + fileSize + ", fileImg=" + fileImg + "]";
 	}
+
+//	public byte[] getFileImg() {
+//		return fileImg;
+//	}
+//
+//	public void setFileImg(byte[] fileImg) {
+//		this.fileImg = fileImg;
+//	}
+
+	
 	
 }

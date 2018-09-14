@@ -1,20 +1,18 @@
 package egovframework.let.tms.defect.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
 import egovframework.let.tms.defect.service.DefectDefaultVO;
+import egovframework.let.tms.defect.service.DefectFileVO;
 import egovframework.let.tms.defect.service.DefectVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 
 @Repository("defectDAO")
 public class DefectDAO extends EgovAbstractDAO{
 	
-	/*@SuppressWarnings("unchecked")
-	public List<DefectDefaultVO> selectDefect(DefectDefaultVO searchVO) {
-		return (List<DefectDefaultVO>) list("defectDAO.selectDefect", searchVO);
-	}*/
 	public List<?> selectDefect(DefectDefaultVO searchVO) {
 		return list("defectDAO.selectDefect", searchVO);
 	}
@@ -63,5 +61,48 @@ public class DefectDAO extends EgovAbstractDAO{
 	
 	public List<?> selectUser() {
 		return list("defectDAO.selectUser");
+	}
+	
+	public List<?> searchDefect(DefectDefaultVO searchVO) {
+		return list("defectDAO.searchDefect", searchVO);
+	}
+	
+	public int selectActionComplete() {
+		return (int) select("defectDAO.selectActionComplete");
+	}
+	
+	public int selectActionNotComplete() {
+		return (int) select("defectDAO.selectActionNotComplete");
+	}
+	
+	public void insertDefectImageMap(Map<String, Object> hmap){
+		if(hmap.get("status").toString().equals("0")) { // 결함등록시 추가
+			insert("defectDAO.insertDefectMap", hmap);
+			insert("defectDAO.insertDefectImageMap", hmap);
+		} else { // 결함수정시 추가
+			System.out.println("!@#2");
+			update("defectDAO.insertDefectImageMap", hmap);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> selectDefectImg(String defectIdSq) {
+		return (Map<String, Object>) select("defectDAO.selectDefectImg", defectIdSq);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> downloadDefectImg(String defectIdSq) {
+		return (Map<String, Object>) select("defectDAO.downloadDefectImg", defectIdSq);
+	}
+	
+	public DefectFileVO selectDefectImgOne(int defectIdSq) {
+		return (DefectFileVO) select("defectDAO.selectDefectImgOne", defectIdSq);
+	}
+	
+	public void deleteDefectImg(int defectIdSq){
+		delete("defectDAO.deleteDefectImg", defectIdSq);
+		update("defectDAO.setDefectFileSq");
+		update("defectDAO.setDefectIdSqInfo");
+		update("defectDAO.setDefectFileSqImpl");
 	}
 }

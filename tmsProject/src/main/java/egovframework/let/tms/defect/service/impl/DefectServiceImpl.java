@@ -1,12 +1,14 @@
 package egovframework.let.tms.defect.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import egovframework.let.tms.defect.service.DefectDefaultVO;
+import egovframework.let.tms.defect.service.DefectFileVO;
 import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.defect.service.DefectVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -101,5 +103,62 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 		// TODO Auto-generated method stub
 		return defectDAO.selectUser();
 	}
-	
+
+
+	@Override
+	public List<?> searchDefect(DefectDefaultVO searchVO) {
+		// TODO Auto-generated method stub
+		return defectDAO.searchDefect(searchVO);
+	}
+
+
+	@Override
+	public int selectActionComplete() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectActionComplete();
+	}
+
+
+	@Override
+	public int selectActionNotComplete() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectActionNotComplete();
+	}
+
+
+	@Override
+	public Map<String, Object> selectDefectImg(String defectIdSq) {
+		// TODO Auto-generated method stub
+		return defectDAO.selectDefectImg(defectIdSq);
+	}
+
+
+	@Override
+	public void insertDefectImageMap(Map<String, Object> hmap) {
+		defectDAO.insertDefectImageMap(hmap);
+		
+	}
+
+
+	@Override
+	public Map<String, Object> downloadDefectImg(String defectIdSq) {
+		// TODO Auto-generated method stub
+		return defectDAO.downloadDefectImg(defectIdSq);
+	}
+
+
+	@Override
+	public DefectFileVO selectDefectImgOne(int defectIdSq) {
+		// TODO Auto-generated method stub
+		return defectDAO.selectDefectImgOne(defectIdSq);
+	}
+
+
+	@Override
+	public void deleteDefectImg(int defectIdSq) {
+		// TODO Auto-generated method stub
+		defectDAO.deleteDefectImg(defectIdSq);
+	}
+
+
 }
