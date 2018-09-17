@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page import="egovframework.com.cmm.service.EgovProperties" %> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -25,7 +26,6 @@ function fn_egov_regist_devPlan(){
     /* if (confirm('<spring:message code="common.regist.msg" />')) { */
     	
         form = document.devPlanVO;
-    	alert(form.pgId.value);
         form.action = "<c:url value='/tms/dev/insertDevPlan.do'/>";
         form.submit();
     //}
@@ -71,11 +71,11 @@ function fn_egov_regist_devPlan(){
                     <div id="search_field_loc"><h2><strong>개발계획 등록</strong></h2></div>
                 </div>
                 <form:form commandName="devPlanVO" name="devPlanVO" method="post" >
+               
                     <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>" />
 
                     <div class="modify_user" >
-                    <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
-                      <img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" />검색</a>
+                    
                         <table >
                         
                          <tr> 
@@ -86,18 +86,13 @@ function fn_egov_regist_devPlan(){
                              <td width="30%" nowrap colspan="3">
                              
                               <input name="pgNm" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_pg_nm"  >
+                              
+                              
                                <input type="hidden" name="pgId" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_pg_id"  >
-                                <input type="hidden" name="pgId" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_user_dev_id"  >
-                              <a href="#LINK" style="selector-dummy: expression(this.hideFocus=false);">
-                            <img src="<c:url value='/images/img_search.gif' />" 
-                            width="15" height="15" align="middle" alt="새창"/></a>
+                                 <input type="hidden" name="userDevId" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_user_dev_id"  > 
+                              <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+                      <img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" />화면검색</a>
                             <br/><form:errors path="pgId" /> 
-                             <%-- <form:input path="pdId" /> --%>
-                              <%-- <form:hidden path="pdId"  />
-                             &nbsp;<a href="#LINK" style="selector-dummy: expression(this.hideFocus=false);">
-                             <img src="<c:url value='/images/img_search.gif' />"
-                                        width="15" height="15" align="middle" alt="새창" /></a>
-                             <br/><form:errors path="pdId" /> --%>
                              
                              
                             </td> 
@@ -112,13 +107,8 @@ function fn_egov_regist_devPlan(){
                             </th>
                             
                             <td>
-                            <%-- <select name="searchBySysGb" id="searchBySysGb" onchange="fn_egov_selectSysType(this)">
-									    <option value="0" selected="selected">전체</option>
-									    <c:forEach var="resultS" items="${resultS}" varStatus="status">
-                                    		<option value='<c:out value="${resultS.code}"/>'><c:out value="${resultS.codeNm}"/></option>
-                                		</c:forEach>    
-									</select>	 --%>
-							<input name="pgId" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_sys_gb"  >
+                            
+							<input name="sysGb" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_sys_gb"  readonly>
 									
                             </td>
                             <th width="20%" height="23" class="required_text" nowrap >
@@ -133,7 +123,7 @@ function fn_egov_regist_devPlan(){
                                 		</c:forEach>
 								</select>
 									&nbsp;&nbsp;&nbsp;<span id="sometext"></span> --%>
-									<input name="pgId" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_task_gb"  >
+									<input name="taskGb" type="text" size="50" maxlength="60"  id="TmsProgrmFileNm_task_gb"  readonly>
                             </td>
                           </tr>
                           

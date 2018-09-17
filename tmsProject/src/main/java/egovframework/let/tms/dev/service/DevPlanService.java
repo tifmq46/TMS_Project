@@ -36,7 +36,7 @@ public interface DevPlanService {
 	 * @return 조회한 글
 	 * @exception Exception
 	 */
-	public DevPlanDefaultVO selectDevPlan(DevPlanDefaultVO defaultVO) throws Exception; 
+	public List<?> selectDevPlan(DevPlanDefaultVO defaultVO) throws Exception; 
 
 	/**
 	 * 개발계획 목록을 조회한다.
@@ -75,7 +75,7 @@ public interface DevPlanService {
 	 * @return 조회한 글
 	 * @exception Exception
 	 */
-	public DevPlanDefaultVO selectDevResult(DevPlanDefaultVO defaultVO) throws Exception; 
+	public List<?> selectDevResult(DevPlanDefaultVO defaultVO) throws Exception; 
 	
 
 	/**

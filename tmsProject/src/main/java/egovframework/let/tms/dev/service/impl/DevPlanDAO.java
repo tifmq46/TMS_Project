@@ -47,8 +47,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	 * @return 조회한 글
 	 * @exception Exception
 	 */
-	public DevPlanDefaultVO selectDevPlan(DevPlanDefaultVO defaultVO) throws Exception {
-		return (DevPlanDefaultVO)select("DevPlanDAO.selectDevPlan", defaultVO);
+	public List<?> selectDevPlan(DevPlanDefaultVO defaultVO) throws Exception {
+		return list("DevPlanDAO.selectDevPlan", defaultVO);
 	}
 
 	/**
@@ -87,8 +87,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	 * @return 조회한 글
 	 * @exception Exception
 	 */
-	public DevPlanDefaultVO selectDevResult(DevPlanDefaultVO defaultVO) throws Exception {
-		return (DevPlanDefaultVO)select("DevPlanDAO.selectDevResult", defaultVO);
+	public List<?> selectDevResult(DevPlanDefaultVO defaultVO) throws Exception {
+		return list("DevPlanDAO.selectDevResult", defaultVO);
 	}
 	
 	

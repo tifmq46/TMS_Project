@@ -27,27 +27,6 @@
 <script type="text/javascript">
 
 
-
-function fn_egov_selectSysType(obj){
-	
-	var op = document.createElement('option');
-	op.text='Append'+1;
-	op.value='append'+1;
-	var task = document.getElementById('searchByTaskGb');
-	
-	if(obj.value == 'S1'){
-		alert("d");
-	}/* 
-    if (obj.value == 'TMPT01') {
-        document.getElementById('sometext').innerHTML = "게시판 템플릿은 CSS만 가능합니다.";
-    } else if (obj.value == '') {
-        document.getElementById('sometext').innerHTML = "";
-    } else {
-        document.getElementById('sometext').innerHTML = "템플릿은 JSP만 가능합니다.";
-    }        */
-}
-
-
 function fn_egov_insert_addDevPlan(){    
     document.frm.action = "<c:url value='/tms/dev/addDevPlan.do'/>";
     document.frm.submit();
@@ -89,7 +68,7 @@ $(function(){
 	})
 </script>
 
-<title>템플릿 목록</title>
+<title>개발계획관리</title>
 <style type="text/css">
     h1 {font-size:12px;}
     caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
@@ -137,12 +116,6 @@ $(function(){
 					  		
 					  			<li>
 								    <label >시스템구분</label>
-									<%-- <select name="bbb" id="bbb" >
-									    <option value="0" selected="selected">전체</option>
-									    <c:forEach var="resultS" items="${resultS}" varStatus="status">
-                                    		<option value='<c:out value="${resultS.code}"/>'><c:out value="${resultS.codeNm}"/></option>
-                                		</c:forEach>    
-									</select>  --%>
 									<select name="bbb" id="bbb" style="width:12%;text-align-last:center;">
 									   <option value="" selected="selected" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
@@ -203,6 +176,7 @@ $(function(){
                     <col width="10%" >
                     <col width="20%" >
                     <col width="20%" >
+                    <col width="20%" >
                     </colgroup>
                     <thead>
                     <tr>
@@ -213,6 +187,7 @@ $(function(){
         				<th align="center">개발자</th>
         				<th align="center">계획시작일자</th>
         				<th align="center">계획종료일자</th>
+        				<th align="center">소요일수</th>
                     </tr>
                     </thead>
                     <tbody>                 
@@ -231,6 +206,7 @@ $(function(){
             				<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.dayDiff}"/>&nbsp;</td>
                       </tr>
                      </c:forEach>     
                      <c:if test="${fn:length(resultList) == 0}">

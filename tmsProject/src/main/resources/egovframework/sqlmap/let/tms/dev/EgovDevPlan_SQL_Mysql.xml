@@ -48,6 +48,7 @@
 						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.TASK_GB) TASK_GB
 						,a.PLAN_START_DT
 						,a.PLAN_END_DT
+						,(select DATEDIFF(a.PLAN_END_DT, a.PLAN_START_DT )+1 )as dayDiff
 						
 					FROM DEV_PLAN_TB a
 					INNER JOIN PG_TB b
@@ -56,11 +57,6 @@
 					WHERE 1=1
 			]]>
 			
-			<!-- 화면ID로 검색 -->
-			<!-- <isEqual prepend="AND" property="searchCondition" compareValue="1">
-                PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
-            </isEqual>
-             -->
             <!-- 시스템구분으로 검색 -->
 			<isNotEmpty property="searchBySysGb">
 			    AND SYS_GB = #searchBySysGb# 
@@ -95,13 +91,24 @@
 	</select>
 	
 	
-	<select id="DevPlanDAO.selectDevPlan" parameterClass="searchVO" resultMap="devPlanOne" >
+	<select id="DevPlanDAO.selectDevPlan" parameterClass="searchVO" resultClass="egovMap" >
 		<![CDATA[
-			select 
-				PG_ID, 
-				PLAN_START_DT,
-				PLAN_END_DT 
-				FROM DEV_PLAN_TB WHERE PG_ID = #pgId#
+			SELECT * FROM (
+					SELECT
+						b.PG_ID
+						,(SELECT USER_NM FROM USER_TB WHERE USER_ID = b.USER_DEV_ID ) USER_DEV_ID
+						,b.PG_NM
+						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.SYS_GB) AS SYS_GB
+						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.TASK_GB) TASK_GB
+						,a.PLAN_START_DT
+						,a.PLAN_END_DT
+						,(select DATEDIFF(a.PLAN_END_DT, a.PLAN_START_DT )+1 )as dayDiff
+						
+					FROM DEV_PLAN_TB a
+					INNER JOIN PG_TB b
+					ON a.PG_ID = b.PG_ID
+					where a.PG_ID = #pgId#
+					)AS one
 			
 				]]>				
 	</select> 
@@ -214,6 +221,15 @@
 					WHERE 1=1
 			]]>
 			
+			<!-- 시스템구분으로 검색 -->
+			<isNotEmpty property="searchBySysGb">
+			    AND SYS_GB = #searchBySysGb# 
+			</isNotEmpty>
+			
+			<isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB = #searchByTaskGb# 
+			</isNotEmpty>
+			
 			<!-- 화면ID로 검색 -->
 			<isNotEmpty property="searchByPgId">
 			    AND PG_ID LIKE CONCAT ('%', #searchByPgId#, '%')
@@ -253,15 +269,26 @@
     </delete>
     
 	
-	<select id="DevPlanDAO.selectDevResult" parameterClass="searchVO" resultMap="devResultOne" >
+	<select id="DevPlanDAO.selectDevResult" parameterClass="searchVO" resultClass="egovMap">
 		<![CDATA[
-			select 
-				PG_ID, 
-				PLAN_START_DT,
-				PLAN_END_DT,
-				DEV_START_DT, 
-				DEV_END_DT 
-				FROM DEV_PLAN_TB WHERE PG_ID = #pgId#
+			SELECT * FROM (
+					SELECT
+						b.PG_ID
+						,(SELECT USER_NM FROM USER_TB WHERE USER_ID = b.USER_DEV_ID ) USER_DEV_ID
+						,b.PG_NM
+						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.SYS_GB) AS SYS_GB
+						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.TASK_GB) TASK_GB
+						,a.PLAN_START_DT
+						,a.PLAN_END_DT
+						,(select DATEDIFF(a.PLAN_END_DT, a.PLAN_START_DT )+1 )as dayDiff
+						,a.DEV_START_DT
+						,a.DEV_END_DT
+						
+					FROM DEV_PLAN_TB a
+					INNER JOIN PG_TB b
+					ON a.PG_ID = b.PG_ID
+					where a.PG_ID = #pgId#
+					)AS resultOne
 			
 				]]>				
 	</select> 

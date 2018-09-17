@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <%-- <validator:javascript formName="devPlanVo" staticJavascript="false" xhtml="true" cdata="false"/> --%>
 <script type="text/javascript">
@@ -47,7 +47,7 @@ function fn_result_delete() {
 }
 	
 </script>
-<title>계발계획 등록</title>
+<title>계발결과 등록</title>
 
 <style type="text/css">
     h1 {font-size:12px;}
@@ -61,7 +61,6 @@ function fn_result_delete() {
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
     <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
     <!-- //header 끝 --> 
     <!-- container 시작 -->
@@ -78,70 +77,61 @@ function fn_result_delete() {
                             <li>&gt;</li>
                             <li>개발진척관리</li>
                             <li>&gt;</li>
-                            <li><strong>개발계획관리</strong></li>
+                            <li><strong>개발결과관리</strong></li>
                         </ul>
                     </div>
                 </div>
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
-                    <div id="search_field_loc"><h2><strong>개발계획 수정</strong></h2></div>
+                    <div id="search_field_loc"><h2><strong>개발결과 등록</strong></h2></div>
                 </div>
                 <form:form commandName="devPlanVO" name="devPlanVO" method="post" >
+                <c:forEach var="result" items="${result}" varStatus="status">
                     <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>" />
                     <%-- <input name="pgId" type="hidden" value='<c:out value="${DevPlanDefaultVO.pgId}"/>' /> --%>
 
                     <div class="modify_user" >
                         <table >
                           <tr> 
-                             <%-- <th width="20%" height="23" class="required_text" nowrap >
+                           
+                           
+                            <th width="20%" height="23" class="required_text" nowrap>
+                                <label for="pgId">화면ID</label>    
+                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+                            </th>
+                             <td >
+                             
+                             <input name="pgId" type="text" size="50" value='<c:out value="${result.pgId}"/>' 
+                              	maxlength="60"  id="pgId"  title="화면ID" readonly>
+                              </td> 
+                              <th width="20%" height="23" class="required_text" >
+                                <label for="pgNm">화면명</label>    
+                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+                            </th>
+                              <td >
+                             
+                              <input name="pgNm" type="text" size="50" value='<c:out value="${result.pgNm}"/>' 
+                              	maxlength="60"  id="pgNm"  title="화면명" readonly>
+                              </td> 
+                        </tr>
+                        <tr> 
+                             <th width="20%" height="23" class="required_text" nowrap >
                                 <label >시스템구분</label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             
                             <td>
-                            <select name="searchBySysGb" id="searchBySysGb" onchange="fn_egov_selectSysType(this)">
-									    <option value="0" selected="selected">전체</option>
-									    <c:forEach var="resultS" items="${resultS}" varStatus="status">
-                                    		<option value='<c:out value="${resultS.code}"/>'><c:out value="${resultS.codeNm}"/></option>
-                                		</c:forEach>    
-									</select>	
+                            
+							<input name="sysGb" type="text" size="50" maxlength="60"  id="sysGb"  value='<c:out value="${result.sysGb}"/>' readonly>
+									
                             </td>
                             <th width="20%" height="23" class="required_text" nowrap >
                                 <label>업무구분</label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="30%">
-                            	<select name="searchByTaskGb" id="searchByTaskGb" >
-									<option value="0" selected="selected">전체</option>
-									   <c:forEach var="resultT" items="${resultT}" varStatus="status">
-                                    		<option value='<c:out value="${resultT.code}"/>'><c:out value="${resultT.codeNm}"/></option>
-                                		</c:forEach>
-								</select>
-									&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
-                            </td> --%>
-                          </tr>
-                          
-                           <tr> 
-                            <th width="20%" height="23" class="required_text" >
-                                <label for="pgId">화면명</label>    
-                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
-                            </th>
-                             <td width="30%" nowrap colspan="3">
-                             
-                              <input name="pgId" type="text" size="60" value='<c:out value="${DevPlanDefaultVO.pgId}"/>' 
-                              	maxlength="60"  id="pgId"  title="시스템구분">
-                              
-                              <br/><form:errors path="pgId" /> 
-                            
-                             <%-- <form:input path="pdId" /> --%>
-                              <%-- <form:hidden path="pdId"  />
-                             &nbsp;<a href="#LINK" style="selector-dummy: expression(this.hideFocus=false);">
-                             <img src="<c:url value='/images/img_search.gif' />"
-                                        width="15" height="15" align="middle" alt="새창" /></a>
-                             <br/><form:errors path="pdId" /> --%>
-                             
-                             
-                            </td> 
+                        		<input name="taskGb" type="text" size="50" maxlength="60"  id="taskGb" value='<c:out value="${result.taskGb}"/>'  readonly>
+                            </td>
                           </tr>
                          
                           <tr> 
@@ -151,7 +141,7 @@ function fn_result_delete() {
                             </th>
                             <td>
                             
-                            <input type="date" name="planStartDt" id="planStartDt" value="<fmt:formatDate value="${DevPlanDefaultVO.planStartDt}" pattern="yyyy-MM-dd" />"/>
+                            <input type="date" name="planStartDt" id="planStartDt" value="<fmt:formatDate value="${result.planStartDt}" pattern="yyyy-MM-dd" />" readonly/>
                             <img src="images/calendar.gif"  width="19" height="19" alt="" />
                             </td>
                             <th width="20%" height="23" class="required_text" nowrap >
@@ -159,7 +149,7 @@ function fn_result_delete() {
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <input type="date" name="planEndDt" id="planEndDt" value="<fmt:formatDate value="${DevPlanDefaultVO.planEndDt}" pattern="yyyy-MM-dd" />"/>
+                            <input type="date" name="planEndDt" id="planEndDt" value="<fmt:formatDate value="${result.planEndDt}" pattern="yyyy-MM-dd" />"  readonly/>
                             <img src="images/calendar.gif" width="19" height="19" alt="" />
                             </td>
                             
@@ -172,7 +162,7 @@ function fn_result_delete() {
                             </th>
                             <td>
                             
-                            <input type="date" name="devStartDt" id="devStartDt" value="<fmt:formatDate value="${DevPlanDefaultVO.devStartDt}" pattern="yyyy-MM-dd" />"/>
+                            <input type="date" name="devStartDt" id="devStartDt" value="<fmt:formatDate value="${result.devStartDt}" pattern="yyyy-MM-dd" />" />
                             <img src="images/calendar.gif"  width="19" height="19" alt="" />
                             </td>
                             <th width="20%" height="23" class="required_text" nowrap >
@@ -180,7 +170,7 @@ function fn_result_delete() {
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <input type="date" name="devEndDt" id="devEndDt" value="<fmt:formatDate value="${DevPlanDefaultVO.devEndDt}" pattern="yyyy-MM-dd" />"/>
+                            <input type="date" name="devEndDt" id="devEndDt" value="<fmt:formatDate value="${result.devEndDt}" pattern="yyyy-MM-dd" />"/>
                             <img src="images/calendar.gif" width="19" height="19" alt="" />
                             </td>
                             
@@ -218,9 +208,9 @@ function fn_result_delete() {
                     </tr>
                     </table>
                     </div>
-                                         
+                               </c:forEach>          
                 </form:form>
-
+				
             </div>  
             <!-- //content 끝 -->    
     </div>  
