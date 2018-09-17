@@ -115,5 +115,16 @@
 			   AND  A.CODE_ID = B.CODE_ID
 	
 	</select>
+	
+	<!-- 프로젝트 생성 -->
+	<insert id="TmsProgrmManageDAO.insertProject"  parameterClass="TmsProjectManageVO">
+			<![CDATA[
+            INSERT INTO PJT_TB
+        	(EMPLYR_ID, ORGNZT_ID, USER_NM, PASSWORD, EMPLYR_STTUS_CODE, ESNTL_ID,EMAIL_ADRES)
+        	VALUES
+        	(#EMPLYR_ID#,'ORGNZT_0000000000000', #USER_NM#, #PASSWORD#,'P',#ESNTL_ID#,#EMAIL_ADRES#
+        	)
+			]]>
+	</insert>
 
 </sqlMap>                            

@@ -138,5 +138,20 @@ public class TmsProgrmManageController {
 		return "sym/prm/TmsCommonCodeListSearch";
 
 	}
+	
+	 @RequestMapping(value="/sym/prm/insertProjectView.do")
+	    public String insertProjectView(ModelMap model)throws Exception {
+
+	      	return "tms/pjt/PjtInsert";
+	    }
+	    
+	    @RequestMapping(value="/sym/prm/insertProject.do")
+	    public String insertProject(ModelMap model)throws Exception {
+
+	    	TmsProgrmManageService.insertProject();
+	    	
+	    	
+	      	return "/cmm/main/mainPage.do";
+	    }
 
 }

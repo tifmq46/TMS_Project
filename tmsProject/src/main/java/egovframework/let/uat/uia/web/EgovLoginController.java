@@ -1,16 +1,7 @@
 package egovframework.let.uat.uia.web;
 
+import java.util.List;
 import java.util.Map;
-
-import egovframework.com.cmm.EgovMessageSource;
-import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.TmsLoginVO;
-import egovframework.let.uat.uia.service.EgovLoginService;
-import egovframework.let.utl.sim.service.EgovClntInfo;
-
-import egovframework.rte.fdl.cmmn.trace.LeaveaTrace;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +14,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.TmsLoginVO;
+import egovframework.let.uat.uia.service.EgovLoginService;
+import egovframework.let.uat.uia.service.TmsLoginService;
+import egovframework.let.utl.sim.service.EgovClntInfo;
+import egovframework.rte.fdl.cmmn.trace.LeaveaTrace;
+import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 
 /**
  * 일반 로그인, 인증서 로그인을 처리하는 컨트롤러 클래스
@@ -48,6 +50,10 @@ public class EgovLoginController {
 	/** EgovLoginService */
 	@Resource(name = "loginService")
 	private EgovLoginService loginService;
+	
+	/** EgovLoginService */
+	@Resource(name = "tmsLoginService")
+	private TmsLoginService tmsLoginService;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -173,28 +179,23 @@ public class EgovLoginController {
 	 @RequestMapping(value="/uat/uia/addUsr.do")
 	    public String addUsr(@ModelAttribute("TmsLoginVO") TmsLoginVO TmsloginVO, ModelMap model) throws Exception {
 
-	    	//LoginVO user = EgovUserDetailsHelper.isAuthenticated()? (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser():null;
-	    	//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	    	if(EgovUserDetailsHelper.isAuthenticated()){
-	    		//인증된 경우 처리할 사항 추가 ...
-	    		model.addAttribute("lastLogoutDateTime", "로그아웃 타임: 2011-11-10 11:30");
-	    		//최근 로그아웃 시간 등에 대한 확보 후 메인 컨텐츠로 활용
-	    	}
-	    	System.out.println("dasdasdas = " + TmsloginVO.getEMPLYR_ID());
+	    	
+		 tmsLoginService.addUsr(TmsloginVO);
 	      	return "uat/uia/EgovLoginUsr";
 	    }
+	 
 	 @RequestMapping(value="/uat/uia/checkId.do")
-	    public String checkId(@ModelAttribute("TmsLoginVO") TmsLoginVO TmsloginVO, ModelMap model) throws Exception {
-
-	    	//LoginVO user = EgovUserDetailsHelper.isAuthenticated()? (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser():null;
-	    	//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	    	if(EgovUserDetailsHelper.isAuthenticated()){
-	    		//인증된 경우 처리할 사항 추가 ...
-	    		model.addAttribute("lastLogoutDateTime", "로그아웃 타임: 2011-11-10 11:30");
-	    		//최근 로그아웃 시간 등에 대한 확보 후 메인 컨텐츠로 활용
-	    	}
-	    	System.out.println("dasdasdas = " + TmsloginVO.getEMPLYR_ID());
-	      	return "uat/uia/EgovLoginUsr";
+	 @ResponseBody
+	    public String checkId(@ModelAttribute("TmsLoginVO") TmsLoginVO TmsloginVO, String EMPLYR_ID, ModelMap model) throws Exception {
+		 
+		 TmsloginVO.setEMPLYR_ID(EMPLYR_ID);
+		 String Id = tmsLoginService.searchId(TmsloginVO);
+		 if(Id==null)
+		 {
+			 return "notHave";
+		 }else{
+			 return "have";
+		 }
 	    }
 	 
 	 

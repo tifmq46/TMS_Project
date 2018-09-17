@@ -217,6 +217,9 @@
     </div>	                
 	</div>
 	<!-- //게시판 끝 -->
+	<!-- 프로젝트 생성 시작 -->
+	<a href="<c:url value='/sym/mms/insertProjectView.do'/>">회원가입</a>
+	<!-- 프로젝트 생성 끝 -->
 	<!-- 공통코드 셀렉트박스 시작 -->
         <div id="search_field">
 					<div id="search_field_loc"><h2><strong>공통코드관리</strong></h2></div>
