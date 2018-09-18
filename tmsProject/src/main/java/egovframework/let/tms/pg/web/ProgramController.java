@@ -6,11 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -33,7 +30,7 @@ import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import egovframework.let.tms.pg.service.ProgramService;
 import egovframework.let.tms.pg.service.ProgramVO;
-
+import egovframework.let.sym.prm.service.TmsProgrmManageService;
 
 @Controller
 public class ProgramController {
@@ -51,18 +48,22 @@ public class ProgramController {
 	protected DefaultBeanValidator beanValidator;
 	
 	
+	/** EgovProgrmManageService */
+	@Resource(name = "TmsProgrmManageService")
+	private TmsProgrmManageService TmsProgrmManageService;
+	
+	
 	/**
 	 * 글 목록을 조회한다. (pageing)
-	 * @param searchVO - 조회할 정보가 담긴 DevPlanDefaultVO
+	 * @param searchVO - 조회할 정보가 담긴 ProgramDefaultVO
 	 * @param model
-	 * @return "DevPlanList"
+	 * @return "PgList"
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/pg/PgManage.do")
 	public String selectPgList(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
-		//System.out.println("여기까지옴ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
-		//System.out.println("searchVO1 =========================== "+ searchVO.getSearchByPgId());
-		//System.out.println("--manage--");
+		
+		System.out.println("searchVO = " + searchVO.getPageIndex());
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -78,15 +79,76 @@ public class ProgramController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		List<?> PgList = ProgramService.selectPgList(searchVO);
+		//List<?> PgList = ProgramService.selectPgList(searchVO);
 		model.addAttribute("resultList", PgList);
 
 		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
+		
+		System.out.println("current--"+totCnt);
+		
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
+		
+		
+		
 
 		return "tms/pg/PgManage";
 	}
-	
+	/*
+	@RequestMapping(value = "/tms/pg/PgPage.do")
+	public String selectPage(@RequestParam("fon") String fon, @ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+		System.out.println("페이지-"+fon);
+		//System.out.println("--manage--"); 
+		int index_page = Integer.parseInt(fon);
+		searchVO.setPageIndex(index_page);
+		
+		// 공통코드 부분 시작 -------------------------------	
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		// 공통코드 끝 시작 -------------------------------		
+		
+		
+		*//** EgovPropertyService.sample *//*
+		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+
+		*//** pageing setting *//*
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+		paginationInfo.setPageSize(searchVO.getPageSize());
+
+		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+		System.out.println("--"+paginationInfo.getRecordCountPerPage());
+		//List<?> PgList = ProgramService.selectPgList(searchVO);
+		//model.addAttribute("resultList", PgList);
+
+		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
+		System.out.println("---"+totCnt);
+		paginationInfo.setTotalRecordCount(totCnt);
+		paginationInfo.setPageSize(10);
+		paginationInfo.setCurrentPageNo(index_page);
+		model.addAttribute("paginationInfo", paginationInfo);
+		
+		model.addAttribute("index",searchVO.getPageIndex());
+		model.addAttribute("size", searchVO.getPageSize());
+		
+		System.out.println("----"+searchVO.getPageIndex());
+		System.out.println("----"+searchVO.getPageSize());
+		return "tms/pg/PgManage";
+	}*/
+	/**
+	 * 글 상세정보을 조회한다. 
+	 * @param searchVO - 조회할 정보가 담긴 ProgramDefaultVO
+	 * @param model
+	 * @return "programVO"
+	 * @exception Exception
+	 */
 	@RequestMapping("/tms/pg/selectPgInf.do")
 	public String selectTemplateInf(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
@@ -101,20 +163,11 @@ public class ProgramController {
 	}
 	
 	/**
-	 * 글을 조회한다.
-	 * @param sampleVO - 조회할 정보가 담긴 VO
-	 * @param searchVO - 목록 조회조건 정보가 담긴 VO
-	 * @param status
+	 * 프로그램 현황을 조회한다.
+	 * @param ProgramDefaultVO - 조회할 정보가 담긴 VO
 	 * @return @ModelAttribute("sampleVO") - 조회한 정보
 	 * @exception Exception
 	 */
-	
-	/*public ProgramVO selectDevPlan(ProgramVO devPlanVO, @ModelAttribute("searchVO") ProgramDefaultVO searchVO) throws Exception {
-		return ProgramService.selectDevPlan(devPlanVO);
-	}*/
-	
-	
-	
 	@RequestMapping(value = "/tms/pg/PgCurrent.do")
 	public String selectDevResultList(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
@@ -136,13 +189,19 @@ public class ProgramController {
 		//List<?> PgList = ProgramService.selectPgList(searchVO);
 		model.addAttribute("resultList", PgList);
 
-		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
+		int totCnt = ProgramService.selectPgCurrentTotCnt(searchVO);
+		
+		System.out.println("current--"+totCnt);
+		
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
 		return "tms/pg/PgCurrent";
 	}
 	
+	/**
+	 * 프로그램 정보를 등록한다.	 
+	 */	
 	@RequestMapping(value = "/tms/pg/PgInsert.do")
 	public String registerPgList(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
@@ -153,7 +212,7 @@ public class ProgramController {
 	@RequestMapping(value = "/tms/pg/Pginsert.do")
 	public String insertPgList(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
-			programVO.setPJT_ID("PJT001");
+			programVO.setPJT_ID("1");
 			/*
 			System.out.println(""+programVO.getPG_ID());
 			System.out.println(""+programVO.getPG_NM());			
@@ -190,6 +249,9 @@ public class ProgramController {
 		
 	}
 	
+	/**
+	 * 프로그램 정보를 수정한다.	 
+	 */	
 	@RequestMapping(value = "/tms/pg/Pgupdate.do")
 	public String insertPgUpdate(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
@@ -221,9 +283,12 @@ public class ProgramController {
 		
 	}
 	
+	/**
+	 * 프로그램 사용여부를 수정한다.	 
+	 */	
 	@RequestMapping(value = "/tms/pg/deletePg.do")
 	public String insertPgDelete(@RequestParam("del") String del, @ModelAttribute("searchVO1") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
-			System.out.println("---여기다!"+del);
+			//System.out.println("---여기다!"+del);
 		
 			String[] strDelCodes = del.split(";");
 			for (int i = 0; i < strDelCodes.length; i++) {
@@ -231,8 +296,6 @@ public class ProgramController {
 				vo.setPG_ID(strDelCodes[i]);
 				ProgramService.deletePg(vo);
 				
-				//authorManage.setAuthorCode(strAuthorCodes[i]);
-				//egovAuthorManageService.deleteAuthor(authorManage);
 			}
 			
 			ProgramService.deletePg(programVO);
@@ -262,7 +325,9 @@ public class ProgramController {
 		
 	}
 	
-
+	/**
+	 * 프로그램 현황을 엑섹파일로 출력한다.	 
+	 */	
 	@RequestMapping(value = "/tms/pg/ExelWrite.do")
 	public String ExelWrite(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
@@ -310,25 +375,23 @@ public class ProgramController {
 		
 		
 	}
+	
+	/**
+	 * 엑셀파일을 업로드한다.
+	 * 	 */	
 	@RequestMapping(value = "/tms/pg/fileupload.do")
 	public String upload(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model, MultipartFile uploadfile) throws Exception{
 		
 	       
 	    		  
 		//MultipartFile uploadfile
-
+		/*
 		System.out.println("---");
 		System.out.println("---1"+uploadfile.getContentType());
 		System.out.println("---2"+uploadfile.getName());
 		System.out.println("---3"+uploadfile.getOriginalFilename());
 	    System.out.println("---4"+uploadfile.hashCode());
 	    System.out.println("---5"+uploadfile.toString());
-		/*
-	    System.out.println(uploadfile.getContentType());
-	    System.out.println(uploadfile.getName());
-	    System.out.println(uploadfile.getOriginalFilename());
-	    System.out.println(uploadfile.hashCode());
-	    System.out.println(uploadfile.toString());
 		*/
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -357,7 +420,9 @@ public class ProgramController {
 	}
 	
 	
-	
+	/**
+	 * 엑셀파일 출력메소드
+	 * 	 */	
 	public void xlsWiter(List<PgCurrentVO> list) {
 		// 워크북 생성
 		HSSFWorkbook workbook = new HSSFWorkbook();
@@ -539,14 +604,18 @@ public class ProgramController {
 		}
 	}
 	
+	/**
+	 * 업로드된 엑셀파일을 등록한다.
+	 * 	 */	
     @RequestMapping(value = "/tms/pg/requestupload.do")
     public String requestupload1(MultipartHttpServletRequest mtfRequest, @ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
     	    	
+    	//System.out.println("여기다!!!4");
         String src = mtfRequest.getParameter("src");
         System.out.println("src value : " + src);
         MultipartFile mf = mtfRequest.getFile("file");
 
-        String path = "C:\\image\\";
+        String path = "C:\\TMS_upload\\";
 
         File folder = new File(path);
         if(!folder.exists()){
@@ -572,7 +641,26 @@ public class ProgramController {
             e.printStackTrace();
         }
         
-        /** EgovPropertyService.sample */
+        
+        //엑셀파일 등록
+		//CustomerExcelReader excelReader = new CustomerExcelReader();
+		List<ProgramVO> xlsxList = xlsxToCustomerVoList(safeFile);
+		
+		ProgramVO vo;
+		
+		try {
+			for (int i = 0; i < xlsxList.size(); i++) {
+				vo = xlsxList.get(i);
+				ProgramService.insertPg(vo);
+				
+				model.addAttribute("result", "등록 성공!");
+			}       			
+		}catch(Exception e) {
+			model.addAttribute("result", "등록 실패!");
+		}
+        
+
+		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
@@ -592,9 +680,19 @@ public class ProgramController {
 		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-
-        return "/tms/pg/PgManage";
+	
+		
+		return "/tms/pg/ExcelFileNmSearch";
     }
+    
+	@RequestMapping(value = "/tms/pg/ExcelFileListSearch.do")
+	public String selectExcelFileListSearch(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+		
+		//System.out.println("여기다!333");
+
+		return "/tms/pg/ExcelFileNmSearch";
+
+	}
 
 	@RequestMapping(value = "/tms/pg/ExelRegister.do")
 	public String ExelRegister(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
@@ -730,9 +828,17 @@ public class ProgramController {
 										vo.setUSE_YN(value);										
 										break;
 										
-									case 6: // 프로젝트 id
-										vo.setPJT_ID(value);										
-										break;										
+									case 6: // 프로젝트 id			
+										if(value.contains("."))
+										{
+											String[] str = value.split(".");
+											System.out.println("ㅁㅁㅁ"+str[0]);
+											vo.setPJT_ID(str[0]);										
+											break;
+										}else {
+											vo.setPJT_ID(value);										
+											break;
+										}			
 		
 									default:
 										break;

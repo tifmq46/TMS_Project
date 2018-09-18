@@ -34,8 +34,42 @@
 			FROM 
 				PG_TB
 			WHERE 
-				1=1
+				1=1			
 		]]>
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
+			</isNotEmpty>  
+			
+			<!-- 시스템구분으로 검색 -->
+			<!-- <isNotEmpty property="searchBySysGb">			    
+			    AND SYS_GB LIKE CONCAT('%' , #searchBySysGb#, '%')
+			</isNotEmpty> -->
+			
+			<!-- 업무구분으로 검색 -->
+			<!-- <isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB LIKE CONCAT('%' , #searchByTaskGb#, '%')
+			</isNotEmpty> -->
+			
+			<!-- 개발자명으로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+			</isNotEmpty> 
+			LIMIT 
+				#recordCountPerPage# OFFSET #firstIndex#
+	</select>	
+	
+	<!-- 조회 검색 -->
+
+	
+	
+	
+	<select id="ProgramDAO.selectPgListTotCnt" parameterClass="searchVO1" resultClass="java.lang.Integer" >
+			<![CDATA[
+				SELECT COUNT(*) totcnt 
+				FROM PG_TB
+				WHERE 1=1
+			]]>
 			<!-- 화면ID로 검색 -->
 			<isNotEmpty property="searchByPgId">
 			    AND PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
@@ -57,21 +91,6 @@
 			</isNotEmpty> 
 	</select>	
 	
-	<!-- 조회 검색 -->
-
-	
-	
-	
-	<select id="ProgramDAO.selectPgListTotCnt" parameterClass="searchVO1" resultClass="java.lang.Integer" >
-			<![CDATA[
-				SELECT COUNT(*) totcnt 
-				FROM PG_TB
-				WHERE 1=1
-			]]>
-			
-		
-	</select>	
-	
 	<!-- 프로그램현황 조회 -->
 	<select id="ProgramDAO.selectPgCurrentList" resultMap="PgCurrent" >
 		<![CDATA[
@@ -81,9 +100,25 @@
 				PG_TB a, DEV_PLAN_TB b
 			WHERE
 				a.PG_ID = b.PG_ID 
+			LIMIT 
+				#recordCountPerPage# OFFSET #firstIndex#
 		]]>
 			
 	</select>
+	<!-- 프로그램현황 수 확인 -->
+	<select id="ProgramDAO.selectPgCurrentTotCnt" parameterClass="searchVO1" resultClass="java.lang.Integer" >
+			<![CDATA[
+			SELECT
+				COUNT(*) totcnt 
+			FROM 
+				PG_TB a, DEV_PLAN_TB b
+			WHERE
+				a.PG_ID = b.PG_ID 
+			]]>
+			
+		
+	</select>
+	
 	
 	<!-- 상세 조회 -->
 	<select id="ProgramDAO.selectProgramInf" parameterClass="ProgramVO" resultMap="PgList">

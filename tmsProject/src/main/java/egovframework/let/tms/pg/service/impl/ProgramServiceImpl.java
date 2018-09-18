@@ -79,6 +79,13 @@ public class ProgramServiceImpl extends EgovAbstractServiceImpl implements Progr
 	public int selectPgListTotCnt(ProgramDefaultVO searchVO) {
 		return ProgramDAO.selectPgListTotCnt(searchVO);
 	}
+	
+	@Override
+	public int selectPgCurrentTotCnt(ProgramDefaultVO searchVO) {
+		return ProgramDAO.selectPgCurrentTotCnt(searchVO);
+	}
+	
+	
 	@Override
 	public List<?> selectPgCurrentList(ProgramDefaultVO searchVO) throws Exception {
 		return ProgramDAO.selectPgCurrentList(searchVO);

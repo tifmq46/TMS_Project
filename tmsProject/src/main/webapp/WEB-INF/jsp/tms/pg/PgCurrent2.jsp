@@ -102,8 +102,8 @@ function load() {
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
-    <!-- //header 끝 -->
+    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>      
+    <!-- //header 끝 --> 
     <!-- container 시작 -->
     <div id="container">
         <!-- 좌측메뉴 시작 -->
@@ -154,43 +154,51 @@ function load() {
 				</div>
 				<!-- //검색 필드 박스 끝 -->
                 
-                <div id="page_info"><div id="page_info_align"></div></div>                    
-                <!-- table add start -->
-                <div class="default_tablestyle">
-        		<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
-        			<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
-        			<colgroup>
-        				<col width="25"/> 
-        				<col width="25"/>
-        				<col width="30"/>
-        				<col width="50"/>
-        				<col width="20"/>
-        				<col width="50"/>
-        				<col width="30"/>
-        			</colgroup>
-        			<tr>
-        				<th align="center">프로그램ID</th>
-        				<th align="center">프로그램명</th>
-        				<th align="center">개발자</th>
-        				<th align="center">개발완료일자</th>
-        				<th align="center">개발여부</th>
-        				<th align="center">PL확인</th>
-        				<th align="center">단위테스트</th>
-        			</tr>
+                <div id="page_info"><div id="page_info_align"></div></div>    
+                	<div class="default_tablestyle">
+        			<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
+        				<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
+        				<colgroup>
+        					<col width="25"/>
+        					<col width="25"/> 
+        					<col width="25"/>
+        					<col width="30"/>
+        					<col width="50"/>
+        					<col width="20"/>
+        					<col width="50"/>
+        					<col width="30"/>
+        				</colgroup>
+        				<tr>
+        					<th scope="col" class="f_field" nowrap="nowrap"><input type="checkbox" name="checkAll" class="check2" onclick="fncCheckAll()" title="전체선택"></th>
+        					<th align="center">NO</th>
+        					<th align="center">화면ID</th>
+        					<th align="center">화면명</th>
+        					<th align="center">시스템구분</th>
+        					<th align="center">업무구분</th>
+        					<th align="center">개발자</th>
+        					<th align="center">사용여부</th>
+        				</tr>
         			
-        			<c:forEach var="result" items="${resultList}" varStatus="status">
-            			<tr>
-            				<td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
-            				<td align="center" class="listtd"><c:out value="${result.PG_NM}"/></td>
-            				<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.DEV_END_DT}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.DEV_END_YN}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.SECOND_TEST_RESULT_YN}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.THIRD_TEST_RESULT_YN}"/>&nbsp;</td>
-            			</tr>
-        			</c:forEach>
-        		</table>  		
-                </div>
+        				<c:forEach var="result" items="${resultList}" varStatus="status">
+            				<tr>
+            					<td align="center" class="listtd" nowrap="nowrap"><input type="checkbox" name="delYn" class="check2" title="선택"><input type="hidden" name="checkId" value="<c:out value="${result.PG_ID}"/>" /></td>
+            					<td align="center" class="listtd"><c:out value="${((index-1) * size) + status.count}"/></td>
+            					<td align="center" class="listtd">         							
+            						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?PG_ID=<c:out value='${result.PG_ID}'/>">
+                                		<c:out value="${result.PG_ID}"/>
+                            		</a></td>
+            					<td align="center" class="listtd"><c:out value="${result.PG_NM}"/></td>
+            					<td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
+            					<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
+            					<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
+            					<td align="center" class="listtd"><c:out value="${result.USE_YN}"/>&nbsp;</td>
+            				</tr>
+        				</c:forEach>
+        			</table>  		
+        			  
+        		</div>
+        		
+        		
                 <!-- 페이지 네비게이션 시작 -->
                 <div id="paging_div">
                     <ul class="paging_align">
