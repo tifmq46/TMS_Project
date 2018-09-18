@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.let.sym.prm.service.TmsProgrmManageService;
+import egovframework.let.sym.prm.service.TmsProjectManageVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -62,6 +63,7 @@ public class TmsProgrmManageController {
 	@RequestMapping(value = "/sym/prm/TmsProgramListSearch.do")
 	public String selectProgrmListSearch(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
+		System.out.println("searchVO = " + searchVO);
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
@@ -146,12 +148,12 @@ public class TmsProgrmManageController {
 	    }
 	    
 	    @RequestMapping(value="/sym/prm/insertProject.do")
-	    public String insertProject(ModelMap model)throws Exception {
-
-	    	TmsProgrmManageService.insertProject();
+	    public String insertProject(@ModelAttribute("TmsProjectManageVO") TmsProjectManageVO TmsProjectManageVO, ModelMap model)throws Exception {
+	    	System.out.println("여기 옴@@@@@@@@@@@@@@@@2");
+	    	TmsProgrmManageService.insertProject(TmsProjectManageVO);
 	    	
 	    	
-	      	return "/cmm/main/mainPage.do";
+	      	return "redirect:/cmm/main/mainPage.do";
 	    }
 
 }

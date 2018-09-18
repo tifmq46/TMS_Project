@@ -85,9 +85,9 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
         return (Integer)select("TmsProgrmManageDAO.TmsCommonCodeListSearchTotCnt", vo);
     }
 
-	public void insertProject() {
-			insert("TmsProgrmManageDAO.insertProject");
-		return;
+	public Object insertProject(TmsProjectManageVO tmsProjectManageVO) {
+		insert("TmsProgrmManageDAO.insertProject",tmsProjectManageVO);
+		return null;
 	}
 	
 }

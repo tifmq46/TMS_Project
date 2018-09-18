@@ -29,7 +29,7 @@
 
 function checkForm() {
 	
-		document.TmsProjectVO.submit();
+		document.TmsProjectManageVO.submit();
 	
 }
 			
@@ -111,7 +111,7 @@ function checkForm() {
 						      <input id="PJT_PM" name="PJT_PM" size="30"  maxlength="30" title="메뉴명" />
 						    </td>
 						  </tr>
-						  <tr> 
+						   <tr> 
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">계획시작일</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						          &nbsp;
@@ -138,7 +138,7 @@ function checkForm() {
 						          &nbsp;
 						          <input type="date" name="PJT_END_DT" size="40"  maxlength="30" title="관련이미지명"/>
 						    </td>
-						  </tr>
+						  </tr>  
 						  <tr> 
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">금액</label></th>
 						    <td width="35%" nowrap="nowrap">

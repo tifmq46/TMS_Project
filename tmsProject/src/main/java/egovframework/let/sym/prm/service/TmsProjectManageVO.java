@@ -3,6 +3,8 @@ package egovframework.let.sym.prm.service;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 /** 
  * 프로그램목록 처리를 위한 VO 클래스르를 정의한다
  * @author 개발환경 개발팀 이용
@@ -39,12 +41,16 @@ public class TmsProjectManageVO implements Serializable{
 	/** 역할코드 */
 	private int PJT_PRICE;
 	
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date DEV_START_DT;
 	
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date DEV_END_DT;
 	
+	@DateTimeFormat(pattern="yyyy-MM-dd")	
 	private Date PJT_START_DT;
 	
+	@DateTimeFormat(pattern="yyyy-MM-dd")	
 	private Date PJT_END_DT;
 	
 	private String PJT_CONTENT;
@@ -137,13 +143,19 @@ public class TmsProjectManageVO implements Serializable{
 		PJT_CONTENT = pJT_CONTENT;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	@Override
 	public String toString() {
-		return "TmsProjectVO [PJT_ID=" + PJT_ID + ", PJT_NM=" + PJT_NM + ", PJT_TYPE=" + PJT_TYPE + ", PJT_ST=" + PJT_ST
-				+ ", PJT_PM=" + PJT_PM + ", PJT_PRICE=" + PJT_PRICE + ", DEV_START_DT=" + DEV_START_DT + ", DEV_END_DT="
-				+ DEV_END_DT + ", PJT_START_DT=" + PJT_START_DT + ", PJT_END_DT=" + PJT_END_DT + ", PJT_CONTENT="
-				+ PJT_CONTENT + "]";
+		return "TmsProjectManageVO [PJT_ID=" + PJT_ID + ", PJT_NM=" + PJT_NM + ", PJT_TYPE=" + PJT_TYPE + ", PJT_ST="
+				+ PJT_ST + ", PJT_PM=" + PJT_PM + ", PJT_PRICE=" + PJT_PRICE + ", DEV_START_DT=" + DEV_START_DT
+				+ ", DEV_END_DT=" + DEV_END_DT + ", PJT_START_DT=" + PJT_START_DT + ", PJT_END_DT=" + PJT_END_DT
+				+ ", PJT_CONTENT=" + PJT_CONTENT + "]";
 	}
+
+	
 	
 	
 	

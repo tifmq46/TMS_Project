@@ -97,7 +97,7 @@
     	</div>
     	
     <div class="row mt30">
-    	<div id="myBsnsList" class="col-md-6">
+    	<div id="myBsnsList" class="col-md-6" style="height: 241px;">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
@@ -108,43 +108,37 @@
     			<div class="widget-content box">
     				<table class="table table-search-head table-size-th4">
     					<tbody>
-    						<tr class="last">
+    						 <tr class="last">
     							<th>프로젝트 명</th>
-    							<td id="empName" name="empName" align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.PJT_ID}</td>
+    							<td id="empName" name="empName" align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.PJT_NM}</td>
     						</tr>
     						<tr class="last">
-    						    <th>프로젝트 분류</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">사업개선</td>
+    						    <th>사업 유형</th>
+    						    <td align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.PJT_TYPE}</td>
     						    <th>프로젝트 상태</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">진행</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.PJT_ST}</td>
     						</tr>
     						<tr class="last">
-    						    <th>부서</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">개발부서</td>
     						    <th>PM</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">장현우</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.PJT_PM}</td>
+    						    <th>가격</th>
+    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatNumber value="${tmsProjectManageVO.PJT_PRICE}" pattern="#,###"/>원</td>
     						</tr>
     						<tr class="last">
     						    <th>계획시작일</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">2018-06-04</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.DEV_START_DT}" pattern="yyyy-MM-dd" /></td>
     						    <th>계획완료일</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">2018-09-21</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.DEV_END_DT}" pattern="yyyy-MM-dd" /></td>
     						</tr>
     						<tr class="last">
-    						    <th>시작일</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">2018-06-04</td>
-    						    <th>완료일</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">진행중</td>
-    						</tr>
-    						<tr class="last">
-    						    <th>중요도</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">100</td>
-    						    <th>금액</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">$10,000,000</td>
+    						    <th>개발시작일</th>
+    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.PJT_START_DT}" pattern="yyyy-MM-dd" /></td>
+    						    <th>개발완료일</th>
+    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.PJT_END_DT}" pattern="yyyy-MM-dd" /></td>
     						</tr>
     						<tr class="last">
     							<th>프로젝트 설명</th>
-    							<td id="empName" name="empName" align="left" style="padding-left:60px;" valign="middle">Test Management System</td>
+    							<td id="empName" name="empName" align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.PJT_CONTENT}</td>
     						</tr>
     					</tbody>
     				</table>
@@ -184,18 +178,6 @@
 			            </thead>
 			            <tbody>                 
 			            
-			            <%-- <c:forEach var="result" items="${list_progrmmanage}" varStatus="status">
-			            <!-- loop 시작 -->                                
-			              <tr>
-						    <td nowrap="nowrap"><c:out value="${result.SYS_GB}"/></td>
-						    <td nowrap="nowrap"><c:out value="${result.TASK_GB}"/></td>
-						    <td nowrap="nowrap">
-						        <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.PG_ID}"/>','<c:out value="${result.USER_DEV_ID}"/>','<c:out value="${result.PG_NM}"/>','<c:out value="${result.SYS_GB}"/>','<c:out value="${result.TASK_GB}"/>'); return false;">
-						      <c:out value="${result.PG_ID}"/></a></span></td>
-						    <td nowrap="nowrap"><c:out value="${result.PG_NM}"/></td>
-						    <td nowrap="nowrap"><c:out value="${result.USER_DEV_ID}"/></td>
-			              </tr>
-			            </c:forEach> --%>
 			             <c:forEach var="userList" items="${userList}" varStatus="status">
 			            <!-- loop 시작 -->                                
 			              <tr>
@@ -218,7 +200,7 @@
 	</div>
 	<!-- //게시판 끝 -->
 	<!-- 프로젝트 생성 시작 -->
-	<a href="<c:url value='/sym/mms/insertProjectView.do'/>">회원가입</a>
+	<a href="<c:url value='/sym/prm/insertProjectView.do'/>">이거 건들지 말것</a>
 	<!-- 프로젝트 생성 끝 -->
 	<!-- 공통코드 셀렉트박스 시작 -->
         <div id="search_field">
