@@ -273,5 +273,16 @@ public class DevPlanController {
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/tms/dev/selectDevResult.do";
 	}
+	
+	@RequestMapping(value = "/tms/dev/devStats.do")
+	public String devStats(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
+		
+		/*개발기간*/
+		
+		List<?> devPeriod = devPlanService.selectDevPeriod();
+		model.addAttribute("resultP", devPeriod);
+		
+		return "/tms/dev/devStats";
+	}
 		
 }

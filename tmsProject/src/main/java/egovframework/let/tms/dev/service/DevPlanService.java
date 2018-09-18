@@ -93,5 +93,10 @@ public interface DevPlanService {
 	 * @exception Exception
 	 */
 	public void deleteDevResult(DevPlanVO vo) throws Exception;
+	
+	/**
+	 * 개발통계 기간 조회
+	 */
+	public List<?> selectDevPeriod() throws Exception;
 
 }

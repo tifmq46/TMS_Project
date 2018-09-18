@@ -113,6 +113,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		update("DevPlanDAO.deleteDevResult", vo);
 	}
 
-	
+	public List<?> selectDevPeriod() throws Exception{
+		return list("DevPlanDAO.selectDevPeriod");
+	}
 	
 }

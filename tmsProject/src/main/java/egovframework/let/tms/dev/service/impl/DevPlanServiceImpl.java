@@ -124,5 +124,10 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<?> selectDevResult(DevPlanDefaultVO defaultVO) throws Exception {
 		return devPlanDAO.selectDevResult(defaultVO);
 	}
+
+	@Override
+	public List<?> selectDevPeriod() throws Exception {
+		return devPlanDAO.selectDevPeriod();
+	}
 	
 }
