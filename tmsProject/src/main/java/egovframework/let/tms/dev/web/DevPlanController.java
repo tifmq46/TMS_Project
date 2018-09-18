@@ -1,7 +1,7 @@
 package egovframework.let.tms.dev.web;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -11,8 +11,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
@@ -22,10 +20,6 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovCmmUseService;
-import egovframework.let.cop.com.service.TemplateInf;
-import egovframework.let.cop.com.service.TemplateInfVO;
-import egovframework.let.sec.ram.service.AuthorManage;
-import egovframework.let.sec.ram.service.AuthorManageVO;
 import egovframework.let.sym.prm.service.TmsProgrmManageService;
 import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.dev.service.DevPlanService;
@@ -85,12 +79,6 @@ public class DevPlanController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
 		//공통코드(시스템, 업무구분)
-		ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
-		codeVO.setCodeId("SYSGB");
-		List<?> resultS = cmmUseService.selectCmmCodeDetail(codeVO);
-		
-		/*codeVO.setCodeId("TASKGB");
-		List<?> resultT = cmmUseService.selectCmmCodeDetail(codeVO);*/
 		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
 		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
@@ -98,18 +86,11 @@ public class DevPlanController {
 		
 		List<?> devList = devPlanService.selectDevPlans(searchVO);
 		model.addAttribute("resultList", devList);
-		model.addAttribute("resultS", resultS);
-		//model.addAttribute("resultT", resultT);
 		
 		int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-		
-		System.out.println("=======");
-		System.out.println(searchVO.getPgId());
-		System.out.println("=======");
-		
-		
+
 		return "tms/dev/devPlanList";
 	}
 	
@@ -126,9 +107,9 @@ public class DevPlanController {
 		
 		//O vo = new DevPlanDefaultVO();
 				
-		DevPlanDefaultVO vo = devPlanService.selectDevPlan(searchVO);
+		List<?> vo = devPlanService.selectDevPlan(searchVO);
 
-		model.addAttribute("DevPlanDefaultVO", vo);
+		model.addAttribute("result", vo);
 
 		return "/tms/dev/devPlanUpdt";
 	}
@@ -236,6 +217,19 @@ public class DevPlanController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
+		//공통코드(시스템, 업무구분)
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		
+		System.out.println("----------------------업무구분값");
+		System.out.println(searchVO.getSearchBySysGb());
+		System.out.println(searchVO.getSearchByTaskGb());
+				
+		List<?> devList = devPlanService.selectDevPlans(searchVO);
+		model.addAttribute("resultList", devList);
+		
 		List<?> devResultList = devPlanService.selectDevResultList(searchVO);
 		model.addAttribute("resultList", devResultList);
 		
@@ -249,9 +243,9 @@ public class DevPlanController {
 	@RequestMapping(value = "/tms/dev/selectDevResult.do")
 	public String selectDevResult(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
 		
-		DevPlanDefaultVO vo = devPlanService.selectDevResult(searchVO);
+		List<?> vo = devPlanService.selectDevResult(searchVO);
 
-		model.addAttribute("DevPlanDefaultVO", vo);
+		model.addAttribute("result", vo);
 
 		return "/tms/dev/devResultUpdt";
 	}
@@ -278,6 +272,17 @@ public class DevPlanController {
 		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/tms/dev/selectDevResult.do";
+	}
+	
+	@RequestMapping(value = "/tms/dev/devStats.do")
+	public String devStats(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
+		
+		/*개발기간*/
+		
+		List<?> devPeriod = devPlanService.selectDevPeriod();
+		model.addAttribute("resultP", devPeriod);
+		
+		return "/tms/dev/devStats";
 	}
 		
 }

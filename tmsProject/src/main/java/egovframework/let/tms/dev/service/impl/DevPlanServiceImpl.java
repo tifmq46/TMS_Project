@@ -64,8 +64,8 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	 * 상세 정보 조회
 	 */
 	@Override
-	public DevPlanDefaultVO selectDevPlan(DevPlanDefaultVO defaultVO) throws Exception {
-		return (DevPlanDefaultVO)devPlanDAO.selectDevPlan(defaultVO);
+	public List<?> selectDevPlan(DevPlanDefaultVO defaultVO) throws Exception {
+		return devPlanDAO.selectDevPlan(defaultVO);
 	}
 	
 	/**
@@ -121,8 +121,13 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	}
 
 	@Override
-	public DevPlanDefaultVO selectDevResult(DevPlanDefaultVO defaultVO) throws Exception {
-		return (DevPlanDefaultVO)devPlanDAO.selectDevResult(defaultVO);
+	public List<?> selectDevResult(DevPlanDefaultVO defaultVO) throws Exception {
+		return devPlanDAO.selectDevResult(defaultVO);
+	}
+
+	@Override
+	public List<?> selectDevPeriod() throws Exception {
+		return devPlanDAO.selectDevPeriod();
 	}
 	
 }
