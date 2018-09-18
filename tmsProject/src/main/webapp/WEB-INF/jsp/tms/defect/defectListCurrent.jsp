@@ -25,7 +25,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 
 <script type="text/javascript">
    
@@ -155,10 +155,11 @@
                  	<td align="center"></td>
                  	<td align="center">완료 : <c:out value="${actionComplete}"/></td>
                  	<td align="center"></td>
-                 	<td align="center">미완료 : <c:out value="${actionNotComplete}"/></td>
+                 	<td align="center">미완료 : <c:out value="${actionTotCnt - actionComplete}"/></td>
                  	<td align="center"></td>
-                 	<td align="center">진행률 :<fmt:parseNumber var="actionProgression" integerOnly="true" value="${actionComplete / actionTotCnt * 100}"/>
-                 	${actionProgression}%
+                 	<fmt:parseNumber var="actionProgression" integerOnly="true" value="${actionComplete / actionTotCnt * 100}"/>
+                 	<%-- ${actionProgression}% --%>
+                 	<td align="center">진행률 : <div class="progress"><div class="progress-bar" style="width:${actionProgression}%"> <strong><c:out value=" ${actionProgression}"></c:out>%</strong></div></div>
                  	</td>
                  	<td align="center"></td>
                  	

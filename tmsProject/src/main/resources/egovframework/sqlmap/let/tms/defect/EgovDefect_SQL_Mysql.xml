@@ -39,12 +39,12 @@
         			P.PG_NM,
         			D.DEFECT_TITLE,
         			(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.DEFECT_GB) AS DEFECT_GB,
-        			(SELECT USER_TB.USER_NM FROM USER_TB WHERE D.USER_TEST_ID = USER_TB.USER_ID) AS USER_TEST_ID,
+        			(SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_ID,
         			D.ENROLL_DT,
  					(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST,
- 					(SELECT USER_TB.USER_NM FROM USER_TB WHERE P.USER_DEV_ID = USER_TB.USER_ID) AS USER_DEV_ID
+ 					(SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID
         		FROM DEFECT_TB AS D, PG_TB AS P
-        		WHERE D.PG_ID = P.PG_ID
+        		WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y'
         		ORDER BY D.DEFECT_ID_SQ
         	) as C
         	WHERE 1=1
@@ -75,7 +75,7 @@
          
     </select>
     
-    <select id="defectDAO.selectDefectTotCnt" parameterClass="DefectDefaultVO" resultClass="java.lang.Integer">
+    <select id="defectDAO.selectDefectTotCnt" resultClass="java.lang.Integer">
         <![CDATA[
 			SELECT COUNT(*) totcnt FROM (
 				SELECT
@@ -95,14 +95,14 @@
         		D.DEFECT_TITLE,
         		D.DEFECT_CONTENT,
         		D.PG_ID,
-        		(SELECT USER_TB.USER_NM FROM USER_TB WHERE D.USER_TEST_ID = USER_TB.USER_ID) AS USER_TEST_ID,
+        		(SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_ID,
         		(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.DEFECT_GB) AS DEFECT_GB,
         		D.ENROLL_DT,
         		D.ACTION_CONTENT,
         		(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST,
         		D.ACTION_DT,
         		D.TESTSCENARIO_ID,
-        		(SELECT USER_TB.USER_NM FROM USER_TB WHERE P.USER_DEV_ID = USER_TB.USER_ID) AS USER_DEV_ID,
+        		(SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID,
         		P.PG_NM,
         		P.SYS_GB,
         		(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = P.TASK_GB) AS TASK_GB,
@@ -117,10 +117,12 @@
     
     <select id="defectDAO.selectDefectIdSq" resultClass="java.lang.Integer">
         <![CDATA[
-        	SELECT DEFECT_ID_SQ
-        	FROM DEFECT_TB
-        	ORDER BY DEFECT_ID_SQ DESC
-        	LIMIT 1;
+        	SELECT COUNT(*) totcnt FROM(
+        		SELECT DEFECT_ID_SQ
+        		FROM DEFECT_TB
+        		ORDER BY DEFECT_ID_SQ DESC)
+        	AS c
+        	WHERE 1=1
         ]]>
     </select>
     
@@ -144,7 +146,7 @@
     
     <select id="defectDAO.selectUser" resultClass="egovMap">
         <![CDATA[
-        	SELECT USER_NM, USER_ID FROM USER_TB
+        	SELECT USER_NM, EMPLYR_ID FROM LETTNEMPLYRINFO
         ]]>
     </select>
     
@@ -154,15 +156,6 @@
 				FROM DEFECT_TB
 				WHERE ACTION_ST='A5'
         ]]>
-    </select>
-    
-    <select id="defectDAO.selectActionNotComplete" resultClass="java.lang.Integer">
-        <![CDATA[
-       			SELECT COUNT(*)
-				FROM DEFECT_TB
-				WHERE ACTION_ST!='A5'
-        ]]>
-        
     </select>
     
     <select id="defectDAO.selectDefectImg" parameterClass="java.lang.String" resultClass="java.util.HashMap">
@@ -187,6 +180,153 @@
         		FILE_SIZE AS fileSize, FILE_ENROLL_DT AS fileEnrollDt
         	FROM FILE_TB
         	WHERE DEFECT_ID_SQ = #defectIdSq#
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectDefectIdSqToFileTb" parameterClass="java.lang.Integer" resultClass="java.lang.Integer">
+        <![CDATA[
+        SELECT COUNT(*) FROM (
+        	SELECT FILE_ID_SQ
+        	FROM FILE_TB
+        	WHERE DEFECT_ID_SQ = #defectIdSq#
+        ) AS c
+        WHERE 1=1        
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectDefectStats" resultClass="java.util.HashMap">
+        <![CDATA[
+        SELECT
+			(SELECT COUNT(*) FROM DEFECT_TB AS D, PG_TB AS P WHERE D.PG_ID=P.PG_ID AND P.USE_YN ='Y') AS actionStAll,
+			(SELECT COUNT(*) FROM DEFECT_TB AS D, PG_TB AS P WHERE D.PG_ID=P.PG_ID AND P.USE_YN ='Y' AND ACTION_ST = 'A1') AS actionStA1,
+			(SELECT COUNT(*) FROM DEFECT_TB AS D, PG_TB AS P WHERE D.PG_ID=P.PG_ID AND P.USE_YN ='Y' AND ACTION_ST = 'A2') AS actionStA2,
+			(SELECT COUNT(*) FROM DEFECT_TB AS D, PG_TB AS P WHERE D.PG_ID=P.PG_ID AND P.USE_YN ='Y' AND ACTION_ST = 'A3') AS actionStA3,
+			(SELECT COUNT(*) FROM DEFECT_TB AS D, PG_TB AS P WHERE D.PG_ID=P.PG_ID AND P.USE_YN ='Y' AND ACTION_ST = 'A4') AS actionStA4,
+			(SELECT COUNT(*) FROM DEFECT_TB AS D, PG_TB AS P WHERE D.PG_ID=P.PG_ID AND P.USE_YN ='Y' AND ACTION_ST = 'A5') AS actionStA5
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectUserId" resultClass="egovMap">
+        <![CDATA[
+        	SELECT DISTINCT P.USER_DEV_ID
+			FROM DEFECT_TB AS D, PG_TB AS P
+			WHERE P.PG_ID = D.PG_ID
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectPjtMember" resultClass="egovMap">
+        <![CDATA[
+        	SELECT A.EMPLYR_ID AS emplyrId, A.ESNTL_ID AS esntlId,A.USER_NM as userNm,
+				IFNULL(B.actionStA1,0) AS actionStA1, IFNULL(B.actionStA2,0) AS actionStA2, IFNULL(B.actionStA3,0) AS actionStA3, IFNULL(B.actionStA4,0) AS actionStA4, IFNULL(B.actionStA5,0) AS actionStA5
+			FROM LETTNEMPLYRINFO AS A LEFT JOIN
+				(SELECT 
+					U.EMPLYR_ID,
+					COUNT(CASE WHEN ACTION_ST='A1' THEN 1 END) AS actionStA1,
+					COUNT(CASE WHEN ACTION_ST='A2' THEN 1 END) AS actionStA2,
+					COUNT(CASE WHEN ACTION_ST='A3' THEN 1 END) AS actionStA3,
+					COUNT(CASE WHEN ACTION_ST='A4' THEN 1 END) AS actionStA4,
+					COUNT(CASE WHEN ACTION_ST='A5' THEN 1 END) AS actionStA5
+				FROM LETTNEMPLYRINFO AS U, PG_TB AS P, DEFECT_TB AS D
+				WHERE U.EMPLYR_ID = P.USER_DEV_ID AND P.USE_YN = 'Y' AND D.PG_ID = P.PG_ID
+				GROUP BY U.EMPLYR_ID)
+			AS B
+			ON A.EMPLYR_ID = B.EMPLYR_ID
+			ORDER BY esntlId
+			]]>
+    </select>
+    
+    <select id="defectDAO.selectTaskByActionProgression" resultClass="egovMap">
+        <![CDATA[
+		SELECT CODE AS taskGb, CODE_NM AS taskNm, IFNULL(B.TASK_TOT_CNT,0) AS taskTotCnt, IFNULL(B.TASK_A5_CNT,0) AS taskA5Cnt
+		FROM LETTCCMMNDETAILCODE AS A LEFT JOIN 
+			(SELECT (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE=TASK_GB) AS TASK_NM,	TASK_GB,
+	 		COUNT(TASK_GB) AS TASK_TOT_CNT, COUNT(CASE WHEN ACTION_ST='A5' THEN 1 END) AS TASK_A5_CNT
+			FROM PG_TB AS P, DEFECT_TB AS D
+			WHERE P.PG_ID = D.PG_ID AND P.USE_YN = 'Y'
+			GROUP BY TASK_GB
+			) AS B ON B.TASK_GB = A.CODE
+		WHERE A.CODE_ID = 'TASKGB'
+		ORDER BY taskTotCnt DESC, taskA5Cnt DESC
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectTaskByDefectGbCnt" resultClass="egovMap">
+        <![CDATA[
+        SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(D1CNT,0) AS defectGbD1, IFNULL(D2CNT,0) AS defectGbD2, IFNULL(D3CNT,0) AS defectGbD3, IFNULL(D4CNT,0) AS defectGbD4
+		FROM LETTCCMMNDETAILCODE AS A LEFT JOIN
+			(SELECT P.TASK_GB,COUNT(CASE WHEN DEFECT_GB='D1' THEN 1 END) AS D1CNT, 
+			 COUNT(CASE WHEN DEFECT_GB='D2' THEN 1 END) AS D2CNT, 
+			 COUNT(CASE WHEN DEFECT_GB='D3' THEN 1 END) AS D3CNT, 
+			 COUNT(CASE WHEN DEFECT_GB='D4' THEN 1 END) AS D4CNT
+			FROM PG_TB AS P, DEFECT_TB AS D
+			WHERE P.PG_ID = D.PG_ID AND P.USE_YN = 'Y'
+			GROUP BY P.TASK_GB
+		) AS B ON A.CODE = B.TASK_GB
+		WHERE A.CODE_ID='TASKGB'
+
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectTaskByActionStCnt" resultClass="egovMap">
+        <![CDATA[
+        	SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, 
+				IFNULL(B.ACTIONSTALL,0) AS actionStAll, IFNULL(B.ACTIONSTA1,0) AS actionStA1, IFNULL(B.ACTIONSTA2,0) AS actionStA2, IFNULL(B.ACTIONSTA3,0) AS actionStA3, IFNULL(B.ACTIONSTA4,0) AS actionStA4, IFNULL(B.ACTIONSTA5,0) AS actionStA5
+			FROM LETTCCMMNDETAILCODE AS A LEFT JOIN
+				(SELECT TASK_GB,
+					COUNT(*) AS ACTIONSTALL,
+					COUNT(CASE WHEN ACTION_ST='A1' THEN 1 END) AS ACTIONSTA1,
+					COUNT(CASE WHEN ACTION_ST='A2' THEN 1 END) AS ACTIONSTA2,
+					COUNT(CASE WHEN ACTION_ST='A3' THEN 1 END) AS ACTIONSTA3,
+					COUNT(CASE WHEN ACTION_ST='A4' THEN 1 END) AS ACTIONSTA4,
+					COUNT(CASE WHEN ACTION_ST='A5' THEN 1 END) AS ACTIONSTA5
+				FROM PG_TB AS P, DEFECT_TB AS D
+				WHERE P.PG_ID = D.PG_ID AND P.USE_YN = 'Y'
+				GROUP BY TASK_GB)
+			AS B ON A.CODE = B.TASK_GB
+			WHERE A.CODE_ID='TASKGB'
+			ORDER BY actionStAll DESC
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectDayByDefectCnt" resultClass="egovMap">
+        <![CDATA[
+			SELECT A.DAYS AS days, IFNULL(B.ENROLL_DT_CNT,0) AS enrollDtCnt, IFNULL(C.ACTION_A5_CNT,0) AS actionDtCnt
+			FROM (SELECT DATE_SUB(CURDATE(), INTERVAL N.NO DAY) AS DAYS
+				FROM NUMBERS AS N
+				WHERE N.NO<7
+			) AS A LEFT JOIN (SELECT ENROLL_DT, COUNT(*) AS ENROLL_DT_CNT
+				FROM DEFECT_TB, PG_TB
+				WHERE DEFECT_TB.PG_ID = PG_TB.PG_ID AND PG_TB.USE_YN = 'Y'
+				GROUP BY ENROLL_DT 
+			) AS B ON A.DAYS = B.ENROLL_DT
+			LEFT JOIN (SELECT ACTION_DT, COUNT(*) AS ACTION_A5_CNT
+				FROM DEFECT_TB, PG_TB
+				WHERE DEFECT_TB.PG_ID = PG_TB.PG_ID AND PG_TB.USE_YN = 'Y' AND ACTION_ST='A5'
+				GROUP BY ACTION_DT 
+			) AS C ON A.DAYS = C.ACTION_DT
+			ORDER BY days ASC
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectMonthByDefectCnt" resultClass="egovMap">
+        <![CDATA[
+        	SELECT A.MONTHS AS months, IFNULL(ENROLL_MONTH_DT_CNT,0) AS enrollMonthDtCnt, IFNULL(ACTION_A5_CNT,0) AS actionMonthDtCnt
+			FROM
+				(SELECT MONTH(DATE_SUB(CURDATE(), INTERVAL N.NO MONTH)) AS MONTHS
+				FROM NUMBERS AS N
+				WHERE N.NO<6
+			) AS A LEFT JOIN
+				(SELECT MONTH(ENROLL_DT) AS ENROLL_MONTH_DT, COUNT(*) AS ENROLL_MONTH_DT_CNT
+				FROM DEFECT_TB, PG_TB
+				WHERE DEFECT_TB.PG_ID = PG_TB.PG_ID AND PG_TB.USE_YN = 'Y'
+				GROUP BY MONTH(ENROLL_DT)
+			) AS B ON A.MONTHS = B.ENROLL_MONTH_DT
+			LEFT JOIN ( SELECT MONTH(ACTION_DT) AS ACTION_MONTH_DT, COUNT(*) AS ACTION_A5_CNT
+				FROM DEFECT_TB, PG_TB
+				WHERE DEFECT_TB.PG_ID = PG_TB.PG_ID AND PG_TB.USE_YN = 'Y' AND ACTION_ST ='A5'
+				GROUP BY MONTH(ACTION_DT) 
+			) AS C ON A.MONTHS = C.ACTION_MONTH_DT
+			ORDER BY months ASC
         ]]>
     </select>
     

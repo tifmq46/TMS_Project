@@ -53,10 +53,10 @@ public class DefectVO{
 	private int fileIdSq;
 	
 	/** 파일명 */
-	private String fileNm;
+	private String fileNm = "";
 	
 	/** 파일 사이즈 */
-	private int fileSize;
+	private int fileSize = 0;
 	
 	/** 파일 이미지(blob)*/
 	private MultipartFile fileImg;

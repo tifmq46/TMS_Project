@@ -1,5 +1,6 @@
 package egovframework.let.tms.defect.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,9 +37,9 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 
 
 	@Override
-	public int selectDefectTotCnt(DefectDefaultVO searchVO) {
+	public int selectDefectTotCnt() {
 		// TODO Auto-generated method stub
-		return defectDAO.selectDefectTotCnt(searchVO);
+		return defectDAO.selectDefectTotCnt();
 	}
 
 
@@ -160,5 +161,57 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 		defectDAO.deleteDefectImg(defectIdSq);
 	}
 
+
+	@Override
+	public int selectDefectIdSqToFileTb(int defectIdSq) {
+		// TODO Auto-generated method stub
+		return defectDAO.selectDefectIdSqToFileTb(defectIdSq);
+	}
+
+
+	@Override
+	public HashMap<String, Object> selectDefectStats() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectDefectStats();
+	}
+
+
+	@Override
+	public List<?> selectPjtMember() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectPjtMember();
+	}
+
+
+	@Override
+	public List<?> selectTaskByActionProgression() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectTaskByActionProgression();
+	}
+
+
+	@Override
+	public List<?> selectTaskByDefectGbCnt() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectTaskByDefectGbCnt();
+	}
+
+
+	@Override
+	public List<?> selectTaskByActionStCnt() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectTaskByActionStCnt();
+	}
+
+
+	@Override
+	public List<?> selectDayByDefectCnt() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectDayByDefectCnt();
+	}
+	
+	public List<?> selectMonthByDefectCnt(){
+		return defectDAO.selectMonthByDefectCnt();
+	}
 
 }

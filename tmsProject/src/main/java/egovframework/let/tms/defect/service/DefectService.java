@@ -1,5 +1,6 @@
 package egovframework.let.tms.defect.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,7 +8,7 @@ public interface DefectService {
 	
 	public List<?> selectDefect(DefectDefaultVO searchVO) throws Exception;;
 	
-	public int selectDefectTotCnt(DefectDefaultVO searchVO) throws Exception;;
+	public int selectDefectTotCnt() throws Exception;;
 	
 	public List<?> selectOneDefect(DefectVO defectVO) throws Exception;;	
 	
@@ -43,4 +44,19 @@ public interface DefectService {
 	
 	public void deleteDefectImg(int defectIdSq);
 	
+	public int selectDefectIdSqToFileTb(int defectIdSq);
+	
+	public HashMap<String, Object> selectDefectStats();
+	
+	public List<?> selectPjtMember();
+	
+	public List<?> selectTaskByActionProgression();
+	
+	public List<?> selectTaskByDefectGbCnt();
+	
+	public List<?> selectTaskByActionStCnt();
+	
+	public List<?> selectDayByDefectCnt();
+	
+	public List<?> selectMonthByDefectCnt();
 }

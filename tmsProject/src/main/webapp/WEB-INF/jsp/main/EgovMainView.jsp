@@ -178,16 +178,28 @@
 			            </thead>
 			            <tbody>                 
 			            
-			             <c:forEach var="userList" items="${userList}" varStatus="status">
+			            <%-- <c:forEach var="result" items="${list_progrmmanage}" varStatus="status">
 			            <!-- loop 시작 -->                                
 			              <tr>
-						    <td nowrap="nowrap"><i class="fas fa-user"></i><c:out value="${userList.USER_NM}"/></td>
-						    <td nowrap="nowrap"><c:if test="${userList.ESNTL_ID eq 'USRCNFRM_00000000000'}">관리자</c:if><c:if test="${userList.ESNTL_ID eq 'USRCNFRM_00000000001'}">PL</c:if><c:if test="${userList.ESNTL_ID eq 'USRCNFRM_00000000002'}">개발자</c:if></td>
-						    <td nowrap="nowrap"><c:out value="0"/></td>
-						    <td nowrap="nowrap"><c:out value="0"/></td>
-						    <td nowrap="nowrap"><c:out value="0"/></td>
-						    <td nowrap="nowrap"><c:out value="0"/></td>
-						    <td nowrap="nowrap"><c:out value="0"/></td>
+						    <td nowrap="nowrap"><c:out value="${result.SYS_GB}"/></td>
+						    <td nowrap="nowrap"><c:out value="${result.TASK_GB}"/></td>
+						    <td nowrap="nowrap">
+						        <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.PG_ID}"/>','<c:out value="${result.USER_DEV_ID}"/>','<c:out value="${result.PG_NM}"/>','<c:out value="${result.SYS_GB}"/>','<c:out value="${result.TASK_GB}"/>'); return false;">
+						      <c:out value="${result.PG_ID}"/></a></span></td>
+						    <td nowrap="nowrap"><c:out value="${result.PG_NM}"/></td>
+						    <td nowrap="nowrap"><c:out value="${result.USER_DEV_ID}"/></td>
+			              </tr>
+			            </c:forEach> --%>
+			             <c:forEach var="pjtMemberList" items="${pjtMemberList}" varStatus="status">
+			            <!-- loop 시작 -->                                
+			              <tr>
+						    <td nowrap="nowrap"><i class="fas fa-user"></i><c:out value="${pjtMemberList.userNm}"/></td>
+						    <td nowrap="nowrap"><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000000'}">관리자</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000001'}">PL</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000002'}">개발자</c:if></td>
+						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA1 }"/></td>
+						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA2 }"/></td>
+						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA3 }"/></td>
+						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA4 }"/></td>
+						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA5 }"/></td>
 			              </tr>
 			            </c:forEach> 
 			            </tbody> 

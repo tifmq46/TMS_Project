@@ -22,7 +22,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <title>게시판 사용등록</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <script type="text/javascript" src="<c:url value='/js/showModalDialog.js'/>" ></script>
@@ -58,8 +58,7 @@
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header_mainsize"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
     <!-- //header 끝 --> 
     <!-- container 시작 -->
     <div id="container">
@@ -139,7 +138,7 @@
 					          <select name="userTestId" id="userTestId" style="width:90%; text-align-last:center;">
 									    <option value="0" selected="selected">선택</option>
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
-									    	<option value="<c:out value="${userList.userId}"/>"><c:out value="${userList.userNm}" /></option>
+									    	<option value="<c:out value="${userList.emplyrId}"/>"><c:out value="${userList.userNm}" /></option>
 									    </c:forEach>
 								</select>
 					        </td>

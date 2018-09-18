@@ -83,7 +83,7 @@ public class DefectController {
 		List<?> list = defectService.selectDefect(searchVO);
 		model.addAttribute("defectList", list);
 		
-		int totCnt = defectService.selectDefectTotCnt(searchVO);
+		int totCnt = defectService.selectDefectTotCnt();
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
@@ -166,25 +166,23 @@ public class DefectController {
 		return "tms/defect/defectListOne";
 	}
 	
-	/** 결함조치 수정(저장)
-	 * @throws Exception */
+	/** 결함조치 수정*/
 	@RequestMapping("/tms/defect/updateDefect.do")
-	public String updateDefect(MultipartHttpServletRequest mtpRequest,@ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) throws Exception{
+	public String updateDefect(HttpServletRequest request,@ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) throws Exception{
+		int result = defectService.updateDefect(defectVO);
+		MultipartHttpServletRequest mtpRequest = (MultipartHttpServletRequest) request;
 		MultipartFile defectFileImg = mtpRequest.getFile("fileImg");
-		if(defectFileImg.getOriginalFilename() == "") {
-			int result = defectService.updateDefect(defectVO);
-		}
-		else {
-				int result = defectService.updateDefect(defectVO);
-				Map<String, Object> hmap = new HashMap<String, Object>();
-				hmap.put("FILE_IMG", defectFileImg.getBytes());
-				hmap.put("FILE_SIZE",defectFileImg.getSize());
-				hmap.put("FILE_NM", defectFileImg.getOriginalFilename());
-				hmap.put("DEFECT_ID_SQ", defectVO.getDefectIdSq());
-				hmap.put("status", 1);
-				defectService.insertDefectImageMap(hmap);
-			}
 		
+		if(defectService.selectDefectIdSqToFileTb(defectVO.getDefectIdSq()) == 0 && defectFileImg.getSize() != 0) {
+			Map<String, Object> hmap = new HashMap<String, Object>();
+			hmap.put("FILE_IMG", defectFileImg.getBytes());
+			hmap.put("FILE_SIZE",defectFileImg.getSize());
+			hmap.put("FILE_NM", defectFileImg.getOriginalFilename());
+			hmap.put("DEFECT_ID_SQ", defectVO.getDefectIdSq());
+			hmap.put("status", 1);
+			defectService.insertDefectImageMap(hmap);
+		}
+
 		List<?> list = defectService.selectOneDefect(defectVO);
 		model.addAttribute("defectOne", list);
 		
@@ -201,15 +199,12 @@ public class DefectController {
 		model.addAttribute("defectImgOne", defectImgOne);
 		
 		return "tms/defect/defectListOne";
-	}
+	}	
 	
 	/** 결함조치 삭제 */
 	@RequestMapping("/tms/defect/deleteDefect.do")
 	public String deleteDefect(@ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) {
 		int result = defectService.deleteDefect(defectVO);
-		
-		
-		
 		return "redirect:/tms/defect/selectDefect.do";
 	}
 	
@@ -234,7 +229,7 @@ public class DefectController {
 		List<?> list = defectService.selectDefect(searchVO);
 		
 		model.addAttribute("defectList", list);
-		int totCnt = defectService.selectDefectTotCnt(searchVO);
+		int totCnt = defectService.selectDefectTotCnt();
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
@@ -249,11 +244,9 @@ public class DefectController {
 		
 		
 		int actionComplete = defectService.selectActionComplete();
-		int actionNotComplete = defectService.selectActionNotComplete();
 		
 		model.addAttribute("actionTotCnt",totCnt);
 		model.addAttribute("actionComplete",actionComplete);
-		model.addAttribute("actionNotComplete",actionNotComplete);
 		
 		return "tms/defect/defectListCurrent";
 	}
@@ -277,7 +270,6 @@ public class DefectController {
 		String defectIdSq = request.getParameter("defectIdSq");
 		Map<String, Object> map = defectService.downloadDefectImg(defectIdSq);
 		String fileNm = (String)map.get("FILE_NM");
-//		fileNm = new String(fileNm.getBytes("KSC5601"),"8859_1");
 		SerialBlob blob = new javax.sql.rowset.serial.SerialBlob((byte[]) map.get("FILE_IMG"));
 		InputStream inStream = blob.getBinaryStream();
 		response.setContentType("application/octet-stream");
@@ -297,13 +289,6 @@ public class DefectController {
 	     
 	    response.getOutputStream().flush();
 	    response.getOutputStream().close();
-
-
-//		response.setContentLength(fileByte.length);
-//		response.setHeader("Content-Disposition", "attachment; fileName=\""+ URLEncoder.encode(fileNm,"UTF-8")+"\";");
-//		response.setHeader("Content-Transfer-Encoding", "binary");
-//		response.getOutputStream().write(fileByte);
-		
 	}
 	
 	/** 파일 이미지 삭제
@@ -328,4 +313,33 @@ public class DefectController {
 		return "tms/defect/defectListOne";
 	}
 	
+	/** 결함처리통계 */
+	@RequestMapping("/tms/defect/selectDefectStats.do")
+	public String selectDefectStats(ModelMap model) throws Exception {
+		
+		HashMap<String, Object> map = defectService.selectDefectStats();
+		model.addAttribute("defectStats",map);
+		
+		// 일자별 결함 등록 건수, 조치건수
+		List<?> dayByDefectCnt = defectService.selectDayByDefectCnt();
+		model.addAttribute("dayByDefectCnt", dayByDefectCnt);
+		
+		// 월별 결함 등록건수, 조치건수
+		List<?> monthByDefectCnt = defectService.selectMonthByDefectCnt();
+		model.addAttribute("monthByDefectCnt", monthByDefectCnt);
+		
+		// 업무별 조치율
+		List<?> taskByActionProgression = defectService.selectTaskByActionProgression();
+		model.addAttribute("taskByActionProgression", taskByActionProgression);
+		
+		// 업무별 상태별 결함건수
+		List<?> taskByActionStCnt = defectService.selectTaskByActionStCnt();
+		model.addAttribute("taskByActionStCnt", taskByActionStCnt);
+		
+		// 업무별 유형별 결함 건수
+		List<?> taskByDefectGbCnt = defectService.selectTaskByDefectGbCnt();
+		model.addAttribute("taskByDefectGbCnt", taskByDefectGbCnt);
+		
+		return "tms/defect/defectStats";
+	}
 }
