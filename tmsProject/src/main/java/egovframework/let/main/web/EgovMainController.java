@@ -20,6 +20,7 @@ import egovframework.let.sym.mnu.mpm.service.EgovMenuManageService;
 import egovframework.let.sym.mnu.mpm.service.MenuManageVO;
 import egovframework.let.sym.prm.service.TmsProgrmManageService;
 import egovframework.let.sym.prm.service.TmsProjectManageVO;
+import egovframework.let.tms.defect.service.DefectService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 
 /**
@@ -55,6 +56,9 @@ public class EgovMainController {
 	@Resource(name = "TmsProgrmManageService")
 	private TmsProgrmManageService TmsProgrmManageService;
 
+	/** DefectService */
+	@Resource (name = "defectService")
+	private DefectService defectService;
 	/**
 	 * 메인 페이지에서 각 업무 화면으로 연계하는 기능을 제공한다.
 	 *
@@ -130,10 +134,11 @@ public class EgovMainController {
 		model.addAttribute("taskGb", taskGbList);
 		// 공통코드 끝 시작 -------------------------------	
 		
-		// 유저 부분 시작 -------------------------------	
-		List<?> userList = TmsProgrmManageService.selectUserList();
-		model.addAttribute("userList", userList);
-		// 유저 부분 끝 -------------------------------	
+		// 프로젝트 멤버 부분 시작 --------------------------
+		List<?> pjtMemberList = defectService.selectPjtMember();
+		model.addAttribute("pjtMemberList", pjtMemberList);
+		// 프로젝트 멤버 부분 끝 ----------------------------
+		
 		return "main/EgovMainView";
 	}
 

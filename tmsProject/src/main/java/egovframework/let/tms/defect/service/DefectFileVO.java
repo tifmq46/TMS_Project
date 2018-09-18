@@ -3,10 +3,13 @@ package egovframework.let.tms.defect.service;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 public class DefectFileVO {
 	
-	private int fileIdSq;
+	private MultipartFile fileImg;
+	
+	private int fileIdSq = 0;
 	
 	private int defectIdSq;
 	
@@ -55,6 +58,14 @@ public class DefectFileVO {
 
 	public void setFileEnrollDt(Date fileEnrollDt) {
 		this.fileEnrollDt = fileEnrollDt;
+	}
+
+	public MultipartFile getFileImg() {
+		return fileImg;
+	}
+
+	public void setFileImg(MultipartFile fileImg) {
+		this.fileImg = fileImg;
 	}
 
 	@Override

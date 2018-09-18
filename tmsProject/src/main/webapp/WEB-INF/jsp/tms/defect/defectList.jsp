@@ -198,7 +198,8 @@ function searchFileNm() {
             				<td align="center" class="listtd"><c:out value="${result.pgNm}"/></td>
             				
             				<td align="center" class="listtd">
-            				<a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>">
+            				<a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>"
+            				title="<c:out value="${result.defectTitle}"/>">
             				<c:out value="${result.defectTitle}"/>
             				</a>
             				</td>

@@ -1,5 +1,6 @@
 package egovframework.let.tms.defect.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,8 @@ public class DefectDAO extends EgovAbstractDAO{
 		return list("defectDAO.selectDefect", searchVO);
 	}
 	
-	public int selectDefectTotCnt(DefectDefaultVO searchVO) {
-		return (int) select("defectDAO.selectDefectTotCnt", searchVO);
+	public int selectDefectTotCnt() {
+		return (int) select("defectDAO.selectDefectTotCnt");
 	}
 	
 	public int selectDefectIdSq(){
@@ -81,7 +82,7 @@ public class DefectDAO extends EgovAbstractDAO{
 			insert("defectDAO.insertDefectImageMap", hmap);
 		} else { // 결함수정시 추가
 			System.out.println("!@#2");
-			update("defectDAO.insertDefectImageMap", hmap);
+			insert("defectDAO.insertDefectImageMap", hmap);
 		}
 	}
 	
@@ -104,5 +105,43 @@ public class DefectDAO extends EgovAbstractDAO{
 		update("defectDAO.setDefectFileSq");
 		update("defectDAO.setDefectIdSqInfo");
 		update("defectDAO.setDefectFileSqImpl");
+	}
+	
+	/** 파일 시퀀스 반환*/
+	public int selectDefectIdSqToFileTb(int defectIdSq){
+		return (int) select("defectDAO.selectDefectIdSqToFileTb", defectIdSq);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> selectDefectStats(){
+		return (HashMap<String, Object>) select("defectDAO.selectDefectStats");
+	}
+	
+	public List<?> selectUserId(){
+		return list("defectDAO.selectUserId");
+	}
+	
+	public List<?> selectPjtMember(){
+		return list("defectDAO.selectPjtMember");
+	}
+	
+	public List<?> selectTaskByActionProgression() {
+		return list("defectDAO.selectTaskByActionProgression");
+	}
+	
+	public List<?> selectTaskByDefectGbCnt() {
+		return list("defectDAO.selectTaskByDefectGbCnt");
+	}
+	
+	public List<?> selectTaskByActionStCnt(){
+		return list("defectDAO.selectTaskByActionStCnt");
+	}
+	
+	public List<?> selectDayByDefectCnt(){
+		return list("defectDAO.selectDayByDefectCnt");
+	}
+	
+	public List<?> selectMonthByDefectCnt(){
+		return list("defectDAO.selectMonthByDefectCnt");
 	}
 }
