@@ -1,5 +1,6 @@
 package egovframework.let.main.web;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -79,7 +80,7 @@ public class EgovMainController {
 	@RequestMapping(value = "/cmm/main/mainPage.do")
 	public String getMgtMainPage(HttpServletRequest request, ModelMap model, @ModelAttribute("TmsProjectManageVO") TmsProjectManageVO TmsProjectManageVO)
 	  throws Exception{
-
+		System.out.println("프로젝트 인설트 후 옴");
 		/*// 공지사항 메인 컨텐츠 조회 시작 ---------------------------------
 		BoardVO boardVO = new BoardVO();
 		boardVO.setPageUnit(10);
@@ -192,6 +193,8 @@ public class EgovMainController {
 
       	return "main/inc/EgovIncLeftmenu";
     }
+    
+   
     
    
 

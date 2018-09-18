@@ -23,7 +23,7 @@ public class TmsLoginVO implements Serializable{
 	 */
 	private static final long serialVersionUID = -8274004534207618049L;
 	/** 아이디 */
-	private String EMPLYR_ID;
+	private String EMPLYR_ID = null;
 	/** 기관 */
 	private String ORGNZT_ID;
 	/** 이름 */

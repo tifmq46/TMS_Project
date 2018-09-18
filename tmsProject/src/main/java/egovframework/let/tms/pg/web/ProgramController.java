@@ -63,6 +63,7 @@ public class ProgramController {
 		//System.out.println("여기까지옴ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
 		//System.out.println("searchVO1 =========================== "+ searchVO.getSearchByPgId());
 		//System.out.println("--manage--");
+		System.out.println(searchVO);
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));

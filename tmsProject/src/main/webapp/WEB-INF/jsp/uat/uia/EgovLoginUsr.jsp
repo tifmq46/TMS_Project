@@ -128,9 +128,9 @@ function fnInit() {
                                             <input type="password" class="input_style" maxlength="25" title="비밀번호를 입력하세요." id="password" name="password" 
                                                onkeydown="javascript:if (event.keyCode == 13) { actionLogin(); }"/>
                                         </li>
-                                       <%--  <li style="margin-left:10px;">
+                                        <li style="margin-left:10px;">
                                         	<a href="<c:url value='/uat/uia/viewAddUsr.do'/>">회원가입</a>
-                                        </li> --%>
+                                        </li> 
                                         <li>
                                             <input type="checkbox" name="checkId" title="로그인ID 저장여부" onclick="javascript:saveid(this.form);" id="checkId" />ID저장
                                         </li>

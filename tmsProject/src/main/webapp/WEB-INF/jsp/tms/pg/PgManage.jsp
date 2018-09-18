@@ -26,9 +26,13 @@
 
 <c:if test="${anonymous == 'true'}"><c:set var="prefix" value="/anonymous"/></c:if>
 <script type="text/javascript" src="<c:url value='/js/EgovBBSMng.js' />" ></script>
+
 <c:choose>
 <c:when test="${preview == 'true'}">
 <script type="text/javascript">
+function linkPage1(pageNo){
+	alert("asd");
+}
 <!--
     function press(event) {
     }
@@ -37,6 +41,7 @@
     }
     
     function fn_egov_select_noticeList(pageNo) {
+    	alert("일루옴");
     }
     
     function fn_egov_inqire_notice(nttId, bbsId) {      
@@ -67,6 +72,12 @@
 </c:when>
 <c:otherwise>
 <script type="text/javascript">
+function linkPage1(pageNo){
+	alert(pageNo);
+	document.frm.pageIndex.value = 1;
+	document.frm.action = "<c:url value='/tms/pg/PgManage.do'/>";
+	document.frm.submit();
+}
 <!--
 	function fn_egov_select(){
 		alert("d1");
@@ -411,7 +422,7 @@
                 <!-- 페이지 네비게이션 시작 -->
                 <div id="paging_div">
                     <ul class="paging_align">
-                        <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_noticeList" />  
+                        <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage1" />  
                     </ul>
                 </div>                          
                 <!-- //페이지 네비게이션 끝 -->  

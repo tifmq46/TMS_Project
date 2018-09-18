@@ -18,14 +18,9 @@
 		<result property="PG_NM"  column="PG_NM"  columnIndex="3"/>
 		<result property="SYS_GB"        column="SYS_GB"        columnIndex="4"/>
 		<result property="TASK_GB"             column="TASK_GB"             columnIndex="5"/>
-		<result property="USE_YN"             column="USE_YN"             columnIndex="5"/>
-		<result property="PJT_ID"             column="PJT_ID"             columnIndex="5"/>
+		<result property="USE_YN"             column="USE_YN"             columnIndex="6"/>
+		<result property="PJT_ID"             column="PJT_ID"             columnIndex="7"/>
 	</resultMap> 
- <!-- 프로젝트 정보 관리 -->
-	<resultMap id="TmsProjectManageVO"       class="egovframework.let.sym.prm.service.TmsProjectManageVO">
-		<result property="PJT_ID"    column="PJT_ID"    columnIndex="1"/>
-	</resultMap> 
-	
 	
 	<select id="TmsProgrmManageDAO.selectProgrmList_D" parameterClass="comDefaultVO" resultMap="TmsProgrmManage">
 		<![CDATA[
@@ -52,10 +47,20 @@
 		]]>
 	</select>
 	<!-- 프로그램 정보 조회 -->
-	<select id="TmsProgrmManageDAO.selectProject" resultMap="TmsProjectManageVO">
+	<select id="TmsProgrmManageDAO.selectProject" resultClass="TmsProjectManageVO">
 		<![CDATA[
 			SELECT 
-				  PJT_ID   AS "PJT_ID"
+				  PJT_ID,
+				  PJT_NM,
+				  PJT_TYPE,
+				  PJT_ST,
+				  PJT_PM,
+				  PJT_PRICE,
+				  DEV_START_DT,
+				  DEV_END_DT,
+				  PJT_START_DT,
+				  PJT_END_DT,
+				  PJT_CONTENT
 			FROM PJT_TB
 		 ]]>
 	</select>
@@ -115,5 +120,16 @@
 			   AND  A.CODE_ID = B.CODE_ID
 	
 	</select>
+	
+	<!-- 프로젝트 생성 -->
+	<insert id="TmsProgrmManageDAO.insertProject"  parameterClass="TmsProjectManageVO">
+			<![CDATA[
+            INSERT INTO PJT_TB
+        	(PJT_ID, PJT_NM, PJT_TYPE, PJT_ST, PJT_PM, PJT_PRICE, DEV_START_DT, DEV_END_DT, PJT_START_DT, PJT_END_DT, PJT_CONTENT)
+        	VALUES
+        	(#PJT_ID#,#PJT_NM#, #PJT_TYPE#, #PJT_ST#, #PJT_PM#, #PJT_PRICE#,#DEV_START_DT#,#DEV_END_DT#,#PJT_START_DT#,#PJT_END_DT#,#PJT_CONTENT#
+        	)
+			]]>
+	</insert>
 
 </sqlMap>                            

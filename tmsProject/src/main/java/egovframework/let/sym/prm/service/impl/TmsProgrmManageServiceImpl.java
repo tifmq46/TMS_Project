@@ -95,4 +95,11 @@ public class TmsProgrmManageServiceImpl extends EgovAbstractServiceImpl implemen
 		// TODO Auto-generated method stub
 		return TmsProgrmManageDAO.TmsCommonCodeListSearchTotCnt(searchVO);
 	}
+
+	@Override
+	public Object insertProject(TmsProjectManageVO tmsProjectManageVO) throws Exception {
+		// TODO Auto-generated method stub
+		TmsProgrmManageDAO.insertProject(tmsProjectManageVO);
+		return null;
+	}
 }

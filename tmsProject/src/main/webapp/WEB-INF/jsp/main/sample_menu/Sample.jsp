@@ -17,15 +17,14 @@
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <title>표준프레임워크 경량환경 내부업무템플릿</title>
-<link href="css/common.css" rel="stylesheet" type="text/css" >
+<link href="css/nav_common.css" rel="stylesheet" type="text/css" >
 </head>
 <body>
 <noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>	
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
 	<!-- header 시작 -->
-	<div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
-	<div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>		
+	<div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>		
 	<!-- //header 끝 -->	
 	<!-- container 시작 -->
 	<div id="container">
@@ -47,7 +46,7 @@
 				</div>
 				<!-- 검색 필드 박스 시작 -->
 				<div id="search_field">
-					<div id="search_field_loc"><h2><strong>샘플화면(기능별 생성)</strong></h2></div>
+					<div id="search_field_loc"><h2><strong>근태관리</strong></h2></div>
 					<form action="form_action.jsp" method="post">
 					  	<fieldset><legend>조건정보 영역</legend>	  
 					  	<div class="sf_start">

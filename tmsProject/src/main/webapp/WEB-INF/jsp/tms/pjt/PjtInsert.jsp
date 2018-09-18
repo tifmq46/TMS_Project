@@ -28,64 +28,10 @@
 <script type="text/javascript">
 
 function checkForm() {
-	if($('#result').html() == '중복된 아이디입니다.')
-	{
-		alert("아이디가 중복되었습니다.")
-	}else if($('#EMPLYR_ID').val().length<4){
-		alert("아이디를 4글자 이상 입력하십시오.");
-	}else if($('#PASSWORD').val() != $('#CONFIRM_PASSWORD').val()){
-		alert("비밀번호가 맞지 않습니다.");
-	}else if($.trim($('#PASSWORD').val())=="" || $.trim($('#CONFIRM_PASSWORD').val())=="" || $.trim($('#USER_NM').val())=="" || $.trim($('#ESNTL_ID').val())==""){
-		alert("모든 값을 입력해주십시오.")
-	}else{
-		document.TmsLoginVO.submit();
-	}
 	
+		document.TmsProjectManageVO.submit();
 	
 }
-
-$(document).on('keyup','#CONFIRM_PASSWORD',function(){
-		  var pw1 = $('#PASSWORD').val();
-		  var pw2 = this.value;
-		  if(pw1!=pw2){
-			  $("#CONFIRM_PASSWORD_SPAN").css('color','red');
-			  $("#CONFIRM_PASSWORD_SPAN").text("동일한 암호를 입력하세요.");
-		  }
-		  else{
-			  $("#CONFIRM_PASSWORD_SPAN").css('color','blue');
-			  $("#CONFIRM_PASSWORD_SPAN").text("암호가 확인되었습니다.");
-		  }
-	
-});
-
-$(document).on('keyup','#EMPLYR_ID',function(){
-	if(this.value.length <4)
-		{
-			$("#result").css('color','red');
-			$("#result").text("4글자 이상 입력하십시오.");
-		}
-	else
-		{
-			$.ajax({
-				data : {EMPLYR_ID : this.value},
-				url : "<c:url value='/uat/uia/checkId.do'/>",
-				success : function(Id){
-					if(Id == "notHave")
-						{
-							$("#result").css('color','blue');
-							$("#result").text("사용가능한 아이디입니다.");
-						}
-					else
-						{
-							$("#result").css('color','red');
-							$("#result").text("중복된 아이디입니다.");
-						}
-								
-					
-				}
-			})
-		}
-});
 			
 </script>
 </head>
@@ -118,59 +64,93 @@ $(document).on('keyup','#EMPLYR_ID',function(){
                 </div>
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
-                    <div id="search_field_loc"><h2><strong>회원가입</strong></h2></div>
+                    <div id="search_field_loc"><h2><strong>프로젝트 생성</strong></h2></div>
                 </div>
-                <form name="TmsLoginVO" method="post" action ="<c:url value='/uat/uia/addUsr.do'/>">
+                <form name="TmsProjectManageVO" method="post" action ="<c:url value='/sym/prm/insertProject.do'/>">
                     <div class="modify_user" >
-                        <table summary="회원가입 화면">
+                        <table summary="프로젝트 생성 화면">
 						  <tr> 
-						    <th width="15%" height="23" class="required_text" scope="row"><label for="menuNo">회원ID</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
+						    <th width="15%" height="23" class="required_text" scope="row"><label for="menuNo">프로젝트ID</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="50%" nowrap="nowrap">
 						      &nbsp;
-						      <input id="EMPLYR_ID" name="EMPLYR_ID" size="20" maxlength="20" title="메뉴No"/>
+						      <input id="PJT_ID" name="PJT_ID" size="20" maxlength="20" title="메뉴No"/>
 						      <span style="padding-left:10px;"id="result"></span>
 						    </td>
 						  </tr>
 						  <tr>
-						    <th width="15%" height="23" class="required_text" scope="row"><label for="menuOrdr">회원이름</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
+						    <th width="15%" height="23" class="required_text" scope="row"><label for="menuOrdr">프로젝트명</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						      &nbsp;
-						      <input id="USER_NM" name="USER_NM" size="20"  maxlength="20" title="메뉴순서" />
+						      <input id="PJT_NM" name="PJT_NM" size="20"  maxlength="20" title="메뉴순서" />
 						    </td>
 						  </tr>  
 						  <tr> 
-						    <th width="15%" height="23" class="required_text" scope="row"><label for="menuNm">비밀번호</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
+						    <th width="15%" height="23" class="required_text" scope="row"><label for="menuNm">사업유형</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						      &nbsp;
-						      <input type="password" name="PASSWORD" id="PASSWORD" size="30"  maxlength="30" title="메뉴명" />
-						      <span style="padding-left:10px;" id="PASSWORD_SPAN"></span>
+						      <input name="PJT_TYPE" id="PJT_TYPE" size="30"  maxlength="30" title="메뉴명" />
 						    </td>
 						  </tr>
+						  
 						  <tr>
-						     <th width="15%" height="23" class="required_text" scope="row"><label for="menuNm">비밀번호 확인</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
+						    <th width="15%" height="23" class="required_text" scope="row"><label for="upperMenuId">프로젝트 상태</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						      &nbsp;
-						      <input type="password" id="CONFIRM_PASSWORD" name="CONFIRM_PASSWORD" size="30"  maxlength="30" title="메뉴명" />
-						      <span style="padding-left:10px;"id="CONFIRM_PASSWORD_SPAN"></span>
-						    </td>
-						  </tr>
-						  <tr>
-						    <th width="15%" height="23" class="required_text" scope="row"><label for="upperMenuId">역할</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
-						    <td width="35%" nowrap="nowrap">
-						      &nbsp;
-						        <select id="ESNTL_ID" name='ESNTL_ID'>
+						        <select id="PJT_ST" name='PJT_ST'>
 								  <option value='' selected>-- 선택 --</option>
-								  <option value='USRCNFRM_00000000000'>관리자</option>
-								  <option value='USRCNFRM_00000000001'>업무PL</option>
-								  <option value='USRCNFRM_00000000002'>개발자</option>
+								  <option value='대기'>대기</option>
+								  <option value='진행중'>진행중</option>
+								  <option value='종료'>종료</option>
 								</select>
 						    </td>
 						  </tr>
-						  <tr> 
-						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">이메일　</label></th>
+						  <tr>
+						     <th width="15%" height="23" class="required_text" scope="row"><label for="menuNm">PM</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
+						    <td width="35%" nowrap="nowrap">
+						      &nbsp;
+						      <input id="PJT_PM" name="PJT_PM" size="30"  maxlength="30" title="메뉴명" />
+						    </td>
+						  </tr>
+						   <tr> 
+						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">계획시작일</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						          &nbsp;
-						          <input name="EMAIL_ADRES" size="40"  maxlength="30" title="관련이미지명"/>
+						          <input type="date" name="DEV_START_DT" size="40"  maxlength="30" title="관련이미지명"/>
+						    </td>
+						  </tr>
+						  <tr> 
+						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">계획종료일</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
+						    <td width="35%" nowrap="nowrap">
+						          &nbsp;
+						          <input type="date" name="DEV_END_DT" size="40"  maxlength="30" title="관련이미지명"/>
+						    </td>
+						  </tr>
+						  <tr> 
+						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">프로젝트 시작일</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
+						    <td width="35%" nowrap="nowrap">
+						          &nbsp;
+						          <input type="date" name="PJT_START_DT" size="40"  maxlength="30" title="관련이미지명"/>
+						    </td>
+						  </tr>
+						  <tr> 
+						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">프로젝트 종료일</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
+						    <td width="35%" nowrap="nowrap">
+						          &nbsp;
+						          <input type="date" name="PJT_END_DT" size="40"  maxlength="30" title="관련이미지명"/>
+						    </td>
+						  </tr>  
+						  <tr> 
+						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">금액</label></th>
+						    <td width="35%" nowrap="nowrap">
+						          &nbsp;
+						          <input name="PJT_PRICE" size="40"  maxlength="30" title="관련이미지명"/>
+						    </td>
+						  </tr>
+						  <tr> 
+						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">프로젝트 설명</label></th>
+						    <td width="35%" nowrap="nowrap">
+						          &nbsp;
+						          <input name="PJT_CONTENT" size="40"  maxlength="30" title="관련이미지명"/>
 						    </td>
 						  </tr>
                         </table>
