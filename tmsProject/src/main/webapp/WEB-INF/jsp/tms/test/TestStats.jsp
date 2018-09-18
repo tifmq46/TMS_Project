@@ -26,7 +26,7 @@
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 
-<link href="<c:url value='/'/>css/test/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <link href="<c:url value='/'/>css/test/chartist.min.css" rel="stylesheet" type="text/css" >
 <title>테스트 통계</title>
 <script type="text/javascript" src="<c:url value='/js/chartist.min.js' />" ></script>
@@ -38,14 +38,6 @@ function fn_egov_select_testCaseList(pageNo){
     document.listForm.action = "<c:url value='/tms/test/selectTestCaseList.do'/>";
     document.listForm.submit();  
 }
-
-
-function updateTestScenario(){
-	
-	 document.updateForm.action = "<c:url value='/tms/test/updateTestScenarioImpl.do'/>";
-	 document.updateForm.submit();  
-}
-
 
 window.onload = function() {
 	
@@ -108,8 +100,7 @@ window.onload = function() {
 
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
     <!-- //header 끝 -->
     <!-- container 시작 -->
     <div id="container">
@@ -137,61 +128,47 @@ window.onload = function() {
                  <div class="progess_bar_section" >
                  
                       	<strong>단위테스트 진행률   </strong>
-  <%--                     	
+                      	
                       	<div style="float:right;">
-	                      	<c:set var="tc1_yCnt" value="${testCaseStatsMapTC1.yCnt}"></c:set>
-	                      	<c:set var="tc1_totCnt" value="${testCaseStatsMapTC1.totCnt}"></c:set>
-	                      	<fmt:parseNumber var="value1" value="${(tc1_yCnt/tc1_totCnt)*100}" integerOnly="true" />
+	                      	<fmt:parseNumber var="tc1_yCnt" value="${testCaseStatsMapTC1.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
+	                      	<fmt:parseNumber var="tc1_totCnt" value="${testCaseStatsMapTC1.totCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
+	                      	<fmt:parseNumber var="value1" value="${(tc1_yCnt/tc1_totCnt)*100}" type="number"  integerOnly="true" />
 	                      	<strong><c:out value="${tc1_yCnt}"></c:out>&nbsp;/&nbsp;<c:out value="${tc1_totCnt}"></c:out></strong>
-						</div> --%>
-					<%-- 	
-						<div>
-						<c:out value=" ${value1}"></c:out>%
-						</div> --%>
+						</div>
 						
-                      	 <div class="progress">
-                      	 
+                      	<div class="progress">
 						    <div class="progress-bar" style="width:${value1}%"> <strong><c:out value=" ${value1}"></c:out>%</strong></div>
-						  </div>
+						</div>
 						  
-						  <div style="float:right;">
+						<div style="float:right;">
 							  <img src="<c:url value='/images/tms/icon_pop_blue.gif' />" width="10" height="10" alt="yCnt"/>&nbsp;완료건수
 							  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;등록건수
-						  </div>
-					</div>
+						</div>
+				</div>
                  
                  <div class="progess_bar_section" >
                  
+                		<strong>통합테스트 진행률  </strong>
+                 
                  		<div style="float:right;">
-	                      	<c:set var="tc2_yCnt" value="${testCaseStatsMapTC2.yCnt}"></c:set>
-	                      	<c:set var="tc2_totCnt" value="${testCaseStatsMapTC2.totCnt}"></c:set>
-	                      	<fmt:parseNumber var="value2" value="${(tc2_yCnt/tc2_totCnt)*100}" integerOnly="true" />
+                      		<fmt:parseNumber var="tc2_yCnt" value="${testCaseStatsMapTC2.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
+	                      	<fmt:parseNumber var="tc2_totCnt" value="${testCaseStatsMapTC2.totCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
+	                      	<fmt:parseNumber var="value2" value="${(tc2_yCnt/tc2_totCnt)*100}" type="number" integerOnly="true" />
 	                      	<strong><c:out value="${tc2_yCnt}"></c:out>&nbsp;/&nbsp;<c:out value="${tc2_totCnt}"></c:out></strong>
 						</div>
                  
-                      	<strong>통합테스트 진행률  </strong>
+                      	
                       	<div class="progress">
 						    <div class="progress-bar" style="width:${value2}%"><strong><c:out value=" ${value2}"></c:out>% </strong> </div>
-						 </div>
-						 <div style="float:right;">
+						</div>
+						
+						<div style="float:right;">
 							  <img src="<c:url value='/images/tms/icon_pop_blue.gif' />" width="10" height="10" alt="yCnt"/>&nbsp;완료건수
 							  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;등록건수
-						 </div>
+						</div>
                  </div>
                     
                  <div class="progess_bar_section" >
-                 <%-- 
-                      	<strong>업무별 단위테스트 진행률 </strong>
-                      	
-                      	<c:forEach var="result" items="${tcStatsByTaskGb}">
-                      	<div class="bar_scope">
-                      		<c:out value="${result.taskGbNm}"></c:out>
-                      			<div class="progress">
-								    <div class="progress-bar" style="width:${(result.testcaseYCnt/result.testcaseTotCnt)*100}%"><strong><c:out value=" ${(result.testcaseYCnt/result.testcaseTotCnt)*100}"></c:out>%</strong> </div>
-								 </div>
-						</div>		 
-                      	</c:forEach>
-                      	 --%>
                       	
 					    <span><strong>업무별 단위테스트 진행률</strong></span>
 					    <div class="ct-chart ct-perfect-fourth"></div>
@@ -201,20 +178,6 @@ window.onload = function() {
 						 </div>
                  </div>   
                    
-                   
-                   
-                   
-
-                <!-- 페이지 네비게이션 시작 -->
-                <c:if test="${!empty loginPolicyVO.pageIndex }">
-                    <div id="paging_div">
-                        <ul class="paging_align">
-                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage" />
-                        </ul>
-                    </div>
-                <!-- //페이지 네비게이션 끝 -->
-                </c:if>
-
             </div>
             <!-- //content 끝 -->
             

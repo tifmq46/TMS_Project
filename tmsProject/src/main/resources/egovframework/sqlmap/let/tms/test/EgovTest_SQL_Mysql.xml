@@ -60,14 +60,14 @@
 	</resultMap>
 	
 	<resultMap id="testCaseStatsMap" class="java.util.HashMap">
-	    <result property="totCnt" column="TOT_CNT" columnIndex="1"/>
-	    <result property="yCnt" column="Y_CNT" columnIndex="2"/>
+	    <result property="totCnt" column="TOT_CNT" columnIndex="1" javaType="int" jdbcType="NUMERIC" />
+	    <result property="yCnt" column="Y_CNT" columnIndex="2" javaType="int" jdbcType="NUMERIC"/>
 	</resultMap>
 	
 	<resultMap id="testCaseCurrentMap" class="java.util.HashMap">
-	    <result property="totCnt" column="TOT_CNT" columnIndex="1"/>
-	    <result property="yCnt" column="Y_CNT" columnIndex="2"/>
-	    <result property="nCnt" column="N_CNT" columnIndex="3"/>
+	    <result property="totCnt" column="TOT_CNT" columnIndex="1" javaType="int" jdbcType="NUMERIC"/>
+	    <result property="yCnt" column="Y_CNT" columnIndex="2" javaType="int" jdbcType="NUMERIC"/>
+	    <result property="nCnt" column="N_CNT" columnIndex="3" javaType="int" jdbcType="NUMERIC"/>
 	</resultMap>
 	
 	<insert id="TestDAO.insertTestCase" parameterClass="TestCaseVO">
@@ -93,8 +93,8 @@
 	    		 #testcaseId#
 	    		,#testcaseContent#
 	    		,#testcaseGb#
-	    		,#taskGb#
-	    		,#userId#
+	    		,(SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #taskGb#)
+	    		,(SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM =  #userId#)
 	    		,now()
 	    		,#precondition#
 	    		
@@ -201,7 +201,7 @@
 						, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
 						, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
 						, a.TASK_GB AS TASK_GB_CODE
-						, ( SELECT USER_NM FROM USER_TB WHERE USER_ID = a.USER_ID ) AS USER_NM
+						, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = a.USER_ID ) AS USER_NM
 						, a.USER_ID
 						, a.ENROLL_DT
 						, a.PRECONDITION
@@ -234,7 +234,7 @@
 							, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
 							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
 							, a.TASK_GB AS TASK_GB_CODE
-							, ( SELECT USER_NM FROM USER_TB WHERE USER_ID = a.USER_ID ) AS USER_NM
+							, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = a.USER_ID ) AS USER_NM
 							, a.USER_ID
 							, a.ENROLL_DT
 							, a.PRECONDITION
@@ -289,7 +289,7 @@
 						, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
 						, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
 						, a.TASK_GB AS TASK_GB_CODE
-						, ( SELECT USER_NM FROM USER_TB WHERE USER_ID = a.USER_ID ) AS USER_NM
+						, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = a.USER_ID ) AS USER_NM
 						, a.USER_ID
 						, a.ENROLL_DT
 						, a.PRECONDITION
@@ -342,7 +342,7 @@
 						,TESTSCENARIO_ORD
 						,TESTSCENARIO_CONTENT
 						,TESTCASE_ID
-						, (SELECT USER_NM FROM USER_TB WHERE USER_ID = USER_TEST_ID) AS USER_TEST_ID
+						, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = USER_TEST_ID) AS USER_TEST_ID
 						,TEST_CONDITION
 						,EXPECTED_RESULT
 						,ENROLL_DT
@@ -368,7 +368,7 @@
 						,TESTSCENARIO_ORD
 						,TESTSCENARIO_CONTENT
 						,TESTCASE_ID
-						, (SELECT USER_NM FROM USER_TB WHERE USER_ID = USER_TEST_ID) AS USER_TEST_ID
+						, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = USER_TEST_ID) AS USER_TEST_ID
 						,TEST_CONDITION
 						,EXPECTED_RESULT
 						,ENROLL_DT
@@ -398,7 +398,7 @@
 						,TESTSCENARIO_ORD
 						,TESTSCENARIO_CONTENT
 						,TESTCASE_ID
-						, (SELECT USER_NM FROM USER_TB WHERE USER_ID = USER_TEST_ID) AS USER_TEST_ID
+						, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = USER_TEST_ID) AS USER_TEST_ID
 						,TEST_CONDITION
 						,EXPECTED_RESULT
 						,ENROLL_DT
@@ -448,65 +448,132 @@
 	
 	<select id="TestDAO.selectTestCurrent" parameterClass="TestDefaultVO" resultClass="egovMap">
 	
-		<![CDATA[		
-				SELECT 
-						A.PG_ID
-						, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB ) AS TASK_GB_NM
-						, A.TASK_GB AS TASK_GB_CODE
-						, B.TESTCASE_GB
-						, B.TESTCASE_ID
-						, B.TESTCASE_CONTENT
-						, ( SELECT USER_NM FROM USER_TB WHERE USER_ID = B.USER_ID ) AS USER_NM
-						, B.ENROLL_DT
-						, B.COMPLETE_DT
-						, B.FIRST_TEST_RESULT_YN
-						, B.SECOND_TEST_RESULT_YN
-						, B.THIRD_TEST_RESULT_YN
-						, B.COMPLETE_YN
-						FROM PG_TB AS A
-						LEFT OUTER JOIN
-						TESTCASE_TB AS B
-						ON A.PG_ID = B.PG_ID
-						WHERE 1=1
-			]]>			
+	  <!-- 단위테스트 현황 -->
+	    <isNotEqual property="searchByTestcaseGb" compareValue="TC2">
+			        
+			        <![CDATA[	
+					SELECT * FROM(	
+							SELECT 
+								A.PG_ID
+								, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB ) AS TASK_GB_NM
+								, A.TASK_GB AS TASK_GB_CODE
+								, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = B.TESTCASE_GB ) AS TESTCASE_GB_NM
+								, B.TESTCASE_GB
+								, B.TESTCASE_ID
+								, B.TESTCASE_CONTENT
+								, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = B.USER_ID ) AS USER_NM
+								, B.ENROLL_DT
+								, B.COMPLETE_DT
+								, B.FIRST_TEST_RESULT_YN
+								, B.SECOND_TEST_RESULT_YN
+								, B.THIRD_TEST_RESULT_YN
+								, B.COMPLETE_YN
+								FROM PG_TB AS A
+								LEFT OUTER JOIN
+								TESTCASE_TB AS B
+								ON A.PG_ID = B.PG_ID
+							) AS C
+								WHERE 1=1
+					]]>			
+								
+					<!-- 테스트케이스 ID로 검색 -->
+					<isNotEmpty property="searchByTestcaseId">
+					    AND TESTCASE_ID = #searchByTestcaseId#
+					</isNotEmpty>    
+					
+					<!-- 화면ID로 검색 -->
+					<isNotEmpty property="searchByPgId">
+					    AND PG_ID = #searchByPgId#
+					</isNotEmpty> 
+					
+					<!-- 업무구분으로 검색 -->
+					<isNotEmpty property="searchByTaskGb">
+					    AND TASK_GB_CODE = #searchByTaskGb#
+					</isNotEmpty> 
+					
+					<!-- 완료여부로 검색 -->
+					<isNotEmpty property="searchByResultYn">
+					    AND COMPLETE_YN = #searchByResultYn#
+					</isNotEmpty> 
+					
+					<!-- 작성자로 검색 -->
+					<isNotEmpty property="searchByUserDevId">
+					    AND USER_NM = #searchByUserDevId#
+					</isNotEmpty> 
+					
+					ORDER BY ENROLL_DT ASC
+					LIMIT #recordCountPerPage# OFFSET #firstIndex#
+    		</isNotEqual>
+	    
+	    
+	 <!--   통합 테스트 현황 -->
+	    <isEqual property="searchByTestcaseGb" compareValue="TC2">
+    		<![CDATA[
+				SELECT * FROM (
+					SELECT 
+						a. TESTCASE_ID
+						, a.TESTCASE_CONTENT
+						, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TESTCASE_GB ) AS TESTCASE_GB_NM
+						, a.TESTCASE_GB
+						, a.PG_ID
+						, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
+						, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
+						, a.TASK_GB AS TASK_GB_CODE
+						, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = a.USER_ID ) AS USER_NM
+						, a.USER_ID
+						, a.ENROLL_DT
+						, a.PRECONDITION
+						, a.FIRST_TEST_RESULT_YN 
+						, a.SECOND_TEST_RESULT_YN 
+						, a.THIRD_TEST_RESULT_YN 
+						, a.COMPLETE_YN
+						, a.COMPLETE_DT
 						
-			<!-- 테스트케이스 ID로 검색 -->
-			<isNotEmpty property="searchByTestcaseId">
-			    AND TESTCASE_ID = #searchByTestcaseId#
-			</isNotEmpty>    
+						FROM TESTCASE_TB AS a
+						WHERE TESTCASE_GB = 'TC2'
+						) AS b
+						WHERE 1=1
+			]]>
 			
-			<!-- 화면ID로 검색 -->
-			<isNotEmpty property="searchByPgId">
-			    AND PG_ID = #searchByPgId#
-			</isNotEmpty> 
-			
-			<!-- 업무구분으로 검색 -->
-			<isNotEmpty property="searchByTaskGb">
-			    AND TASK_GB_CODE = #searchByTaskGb#
-			</isNotEmpty> 
-			
-			<!-- 완료여부로 검색 -->
-			<isNotEmpty property="searchByResultYn">
-			    AND COMPLETE_YN = #searchByResultYn#
-			</isNotEmpty> 
-			
-			<!-- 작성자로 검색 -->
-			<isNotEmpty property="searchByUserDevId">
-			    AND USER_NM = #searchByUserDevId#
-			</isNotEmpty> 
-			
-			<!-- 테스트케이스 구분으로 검색 -->
-			<isNotEmpty property="searchByTestcaseGb">
-			    AND TESTCASE_GB = #searchByTestcaseGb#
-			</isNotEmpty> 
-			
-			ORDER BY ENROLL_DT ASC
-			LIMIT #recordCountPerPage# OFFSET #firstIndex#
+					<!-- 테스트케이스 ID로 검색 -->
+					<isNotEmpty property="searchByTestcaseId">
+					    AND TESTCASE_ID = #searchByTestcaseId#
+					</isNotEmpty>    
+					
+					<!-- 화면ID로 검색 -->
+					<isNotEmpty property="searchByPgId">
+					    AND PG_ID = #searchByPgId#
+					</isNotEmpty> 
+					
+					<!-- 업무구분으로 검색 -->
+					<isNotEmpty property="searchByTaskGb">
+					    AND TASK_GB_CODE = #searchByTaskGb#
+					</isNotEmpty> 
+					
+					<!-- 완료여부로 검색 -->
+					<isNotEmpty property="searchByResultYn">
+					    AND COMPLETE_YN = #searchByResultYn#
+					</isNotEmpty> 
+					
+					<!-- 작성자로 검색 -->
+					<isNotEmpty property="searchByUserDevId">
+					    AND USER_NM = #searchByUserDevId#
+					</isNotEmpty> 
+					
+					ORDER BY ENROLL_DT ASC
+					LIMIT #recordCountPerPage# OFFSET #firstIndex#
+	        
+		</isEqual>
+	    
+		
 		
 	</select>
 	
 	<select id="TestDAO.selectTestCurrentTotCnt" parameterClass="TestDefaultVO" resultClass="java.lang.Integer" >
-			<![CDATA[
+			
+		<!-- 단위테스트 현황 -->
+	    <isNotEqual property="searchByTestcaseGb" compareValue="TC2">
+	        	<![CDATA[
 				SELECT COUNT(*) totcnt 
 					FROM (
 						SELECT * FROM (
@@ -517,7 +584,7 @@
 								, B.TESTCASE_GB
 								, B.TESTCASE_ID
 								, B.TESTCASE_CONTENT
-								, ( SELECT USER_NM FROM USER_TB WHERE USER_ID = B.USER_ID ) AS USER_NM
+								, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = B.USER_ID ) AS USER_NM
 								, B.ENROLL_DT
 								, B.COMPLETE_DT
 								, B.FIRST_TEST_RESULT_YN
@@ -532,41 +599,101 @@
 						WHERE 1=1
 		]]>
 		<!-- 테스트케이스 ID로 검색 -->
-			<isNotEmpty property="searchByTestcaseId">
-			    AND TESTCASE_ID = #searchByTestcaseId#
-			</isNotEmpty>    
-			
-			<!-- 화면ID로 검색 -->
-			<isNotEmpty property="searchByPgId">
-			    AND PG_ID = #searchByPgId#
-			</isNotEmpty> 
-			
-			<!-- 업무구분으로 검색 -->
-			<isNotEmpty property="searchByTaskGb">
-			    AND TASK_GB_CODE = #searchByTaskGb#
-			</isNotEmpty> 
-			
-			<!-- 완료여부로 검색 -->
-			<isNotEmpty property="searchByResultYn">
-			    AND COMPLETE_YN = #searchByResultYn#
-			</isNotEmpty> 
-			
-			<!-- 작성자로 검색 -->
-			<isNotEmpty property="searchByUserDevId">
-			    AND USER_NM = #searchByUserDevId#
-			</isNotEmpty> 
-			
-			<!-- 테스트케이스 구분으로 검색 -->
-			<isNotEmpty property="searchByTestcaseGb">
-			    AND TESTCASE_GB = #searchByTestcaseGb#
-			</isNotEmpty> 
+					<isNotEmpty property="searchByTestcaseId">
+					    AND TESTCASE_ID = #searchByTestcaseId#
+					</isNotEmpty>    
+					
+					<!-- 화면ID로 검색 -->
+					<isNotEmpty property="searchByPgId">
+					    AND PG_ID = #searchByPgId#
+					</isNotEmpty> 
+					
+					<!-- 업무구분으로 검색 -->
+					<isNotEmpty property="searchByTaskGb">
+					    AND TASK_GB_CODE = #searchByTaskGb#
+					</isNotEmpty> 
+					
+					<!-- 완료여부로 검색 -->
+					<isNotEmpty property="searchByResultYn">
+					    AND COMPLETE_YN = #searchByResultYn#
+					</isNotEmpty> 
+					
+					<!-- 작성자로 검색 -->
+					<isNotEmpty property="searchByUserDevId">
+					    AND USER_NM = #searchByUserDevId#
+					</isNotEmpty> 
 			
 			<![CDATA[          
 			) AS D
 			]]>
+	     </isNotEqual>  
+	        
+	     <!-- 통합 테스트 현황 -->
+	    <isEqual property="searchByTestcaseGb" compareValue="TC2">
+	        <![CDATA[
+				SELECT COUNT(*) totcnt 
+					FROM (
+						SELECT * FROM (
+							SELECT 
+							  a. TESTCASE_ID
+							, a.TESTCASE_CONTENT
+							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TESTCASE_GB ) AS TESTCASE_GB_NM
+							, a.TESTCASE_GB
+							, a.PG_ID
+							, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
+							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
+							, a.TASK_GB AS TASK_GB_CODE
+							, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = a.USER_ID ) AS USER_NM
+							, a.USER_ID
+							, a.ENROLL_DT
+							, a.PRECONDITION
+							, a.FIRST_TEST_RESULT_YN 
+							, a.SECOND_TEST_RESULT_YN 
+							, a.THIRD_TEST_RESULT_YN 
+							, a.COMPLETE_YN
+							, a.COMPLETE_DT
+							
+							FROM TESTCASE_TB AS a
+							WHERE TESTCASE_GB = 'TC2'
+						) AS b
+						WHERE 1=1
+		]]>
+					<!-- 테스트케이스 ID로 검색 -->
+					<isNotEmpty property="searchByTestcaseId">
+					    AND TESTCASE_ID = #searchByTestcaseId#
+					</isNotEmpty>    
+					
+					<!-- 화면ID로 검색 -->
+					<isNotEmpty property="searchByPgId">
+					    AND PG_ID = #searchByPgId#
+					</isNotEmpty> 
+					
+					<!-- 업무구분으로 검색 -->
+					<isNotEmpty property="searchByTaskGb">
+					    AND TASK_GB_CODE = #searchByTaskGb#
+					</isNotEmpty> 
+					
+					<!-- 완료여부로 검색 -->
+					<isNotEmpty property="searchByResultYn">
+					    AND COMPLETE_YN = #searchByResultYn#
+					</isNotEmpty> 
+					
+					<!-- 작성자로 검색 -->
+					<isNotEmpty property="searchByUserDevId">
+					    AND USER_NM = #searchByUserDevId#
+					</isNotEmpty> 
+			
+			<![CDATA[          
+			) AS c
+			]]>
+        </isEqual>
+	        
 	</select>	
 	
 	<select id="TestDAO.selectTestCurrentCnt" parameterClass="TestDefaultVO" resultMap="testCaseCurrentMap" >
+			
+		<!-- 단위테스트 현황 -->
+	    <isNotEqual property="searchByTestcaseGb" compareValue="TC2">
 			<![CDATA[
 				SELECT COUNT(*) TOT_CNT , COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT, COUNT(IF(COMPLETE_YN='N',1,NULL)) AS N_CNT 
 					FROM (
@@ -578,7 +705,7 @@
 								, B.TESTCASE_GB
 								, B.TESTCASE_ID
 								, B.TESTCASE_CONTENT
-								, ( SELECT USER_NM FROM USER_TB WHERE USER_ID = B.USER_ID ) AS USER_NM
+								, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = B.USER_ID ) AS USER_NM
 								, B.ENROLL_DT
 								, B.COMPLETE_DT
 								, B.FIRST_TEST_RESULT_YN
@@ -592,38 +719,97 @@
 							) AS C
 						WHERE 1=1
 		]]>
-		<!-- 테스트케이스 ID로 검색 -->
-			<isNotEmpty property="searchByTestcaseId">
-			    AND TESTCASE_ID = #searchByTestcaseId#
-			</isNotEmpty>    
-			
-			<!-- 화면ID로 검색 -->
-			<isNotEmpty property="searchByPgId">
-			    AND PG_ID = #searchByPgId#
-			</isNotEmpty> 
-			
-			<!-- 업무구분으로 검색 -->
-			<isNotEmpty property="searchByTaskGb">
-			    AND TASK_GB_CODE = #searchByTaskGb#
-			</isNotEmpty> 
-			
-			<!-- 완료여부로 검색 -->
-			<isNotEmpty property="searchByResultYn">
-			    AND COMPLETE_YN = #searchByResultYn#
-			</isNotEmpty> 
-			
-			<!-- 작성자로 검색 -->
-			<isNotEmpty property="searchByUserDevId">
-			    AND USER_NM = #searchByUserDevId#
-			</isNotEmpty> 
-			
-			<!-- 테스트케이스 구분으로 검색 -->
-			<isNotEmpty property="searchByTestcaseGb">
-			    AND TESTCASE_GB = #searchByTestcaseGb#
-			</isNotEmpty> 
+					<!-- 테스트케이스 ID로 검색 -->
+					<isNotEmpty property="searchByTestcaseId">
+					    AND TESTCASE_ID = #searchByTestcaseId#
+					</isNotEmpty>    
+					
+					<!-- 화면ID로 검색 -->
+					<isNotEmpty property="searchByPgId">
+					    AND PG_ID = #searchByPgId#
+					</isNotEmpty> 
+					
+					<!-- 업무구분으로 검색 -->
+					<isNotEmpty property="searchByTaskGb">
+					    AND TASK_GB_CODE = #searchByTaskGb#
+					</isNotEmpty> 
+					
+					<!-- 완료여부로 검색 -->
+					<isNotEmpty property="searchByResultYn">
+					    AND COMPLETE_YN = #searchByResultYn#
+					</isNotEmpty> 
+					
+					<!-- 작성자로 검색 -->
+					<isNotEmpty property="searchByUserDevId">
+					    AND USER_NM = #searchByUserDevId#
+					</isNotEmpty> 
 			
 			<![CDATA[          
 			) AS D
 			]]>
+		</isNotEqual>	
+		
+   	    <!-- 통합 테스트 현황 -->
+	    <isEqual property="searchByTestcaseGb" compareValue="TC2">
+	        <![CDATA[
+				SELECT COUNT(*) TOT_CNT , COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT, COUNT(IF(COMPLETE_YN='N',1,NULL)) AS N_CNT 
+					FROM (
+						SELECT * FROM (
+							SELECT 
+							  a. TESTCASE_ID
+							, a.TESTCASE_CONTENT
+							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TESTCASE_GB ) AS TESTCASE_GB_NM
+							, a.TESTCASE_GB
+							, a.PG_ID
+							, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
+							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
+							, a.TASK_GB AS TASK_GB_CODE
+							, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = a.USER_ID ) AS USER_NM
+							, a.USER_ID
+							, a.ENROLL_DT
+							, a.PRECONDITION
+							, a.FIRST_TEST_RESULT_YN 
+							, a.SECOND_TEST_RESULT_YN 
+							, a.THIRD_TEST_RESULT_YN 
+							, a.COMPLETE_YN
+							, a.COMPLETE_DT
+							
+							FROM TESTCASE_TB AS a
+							WHERE TESTCASE_GB = 'TC2'
+						) AS b
+						WHERE 1=1
+		]]>
+					<!-- 테스트케이스 ID로 검색 -->
+					<isNotEmpty property="searchByTestcaseId">
+					    AND TESTCASE_ID = #searchByTestcaseId#
+					</isNotEmpty>    
+					
+					<!-- 화면ID로 검색 -->
+					<isNotEmpty property="searchByPgId">
+					    AND PG_ID = #searchByPgId#
+					</isNotEmpty> 
+					
+					<!-- 업무구분으로 검색 -->
+					<isNotEmpty property="searchByTaskGb">
+					    AND TASK_GB_CODE = #searchByTaskGb#
+					</isNotEmpty> 
+					
+					<!-- 완료여부로 검색 -->
+					<isNotEmpty property="searchByResultYn">
+					    AND COMPLETE_YN = #searchByResultYn#
+					</isNotEmpty> 
+					
+					<!-- 작성자로 검색 -->
+					<isNotEmpty property="searchByUserDevId">
+					    AND USER_NM = #searchByUserDevId#
+					</isNotEmpty> 
+			
+			<![CDATA[          
+			) AS c
+			]]>
+	    </isEqual>    
+	        
+	        
+			
 	</select>	
 </sqlMap>

@@ -154,8 +154,9 @@ public class TestDAO extends EgovAbstractDAO{
 	 * @return HashMap<String,Object>
 	 * @exception Exception
 	 */
-	public HashMap<String,Object> selectTestCaseStats(String testcaseGb) throws Exception {
-		return  (HashMap<String, Object>) select("TestDAO.selectTestCaseStats", testcaseGb);
+	@SuppressWarnings("unchecked")
+	public HashMap<String,Integer> selectTestCaseStats(String testcaseGb) throws Exception {
+		return  (HashMap<String, Integer>) select("TestDAO.selectTestCaseStats", testcaseGb);
 	}
 	
 	

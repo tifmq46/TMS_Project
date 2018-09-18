@@ -31,7 +31,7 @@ public class TestDefaultVO extends TestCaseVO implements Serializable{
 	private String searchByTestcaseId = "";
 	
 	/** 테스트케이스 구분으로 검색 */
-	private String searchByTestcaseGb = "";
+	private String searchByTestcaseGb = "TC1";
 	
 	/** 완료여부로 검색 */
 	private String searchByResultYn = "";

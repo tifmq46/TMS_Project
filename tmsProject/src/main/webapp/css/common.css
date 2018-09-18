@@ -357,3 +357,44 @@ width:0px;
 height:0px;
 visibility: hidden;
 }    
+
+.tmsTestButton {
+	padding-bottom:10px;
+	padding-top:10px;
+	width:800px;
+	margin-bottom: 30px;
+}
+
+.progress {
+    display: -ms-flexbox;
+    display: flex;
+    height: 1rem;
+    overflow: hidden;
+    font-size: .75rem;
+    background-color: #e9ecef;
+    border-radius: .25rem;
+    margin: 10px;
+}
+
+.progress-bar {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #007bff;
+    transition: width .6s ease;
+}
+
+
+.progess_bar_section{
+	margin:60px;
+}
+
+.bar_scope {
+	margin:10px;
+}
