@@ -310,15 +310,16 @@ public class TestController {
 	public String selectTestStats(ModelMap model) throws Exception {
 		
 		//단위 테스트 통계
-		HashMap<String, Object> testCaseStatsMapTC1 = testService.selectTestCaseStats("TC1");
+		HashMap<String, Integer> testCaseStatsMapTC1 = testService.selectTestCaseStats("TC1");
 		model.addAttribute("testCaseStatsMapTC1", testCaseStatsMapTC1);
 		
 		//통합 테스트 통계
-		HashMap<String, Object> testCaseStatsMapTC2 = testService.selectTestCaseStats("TC2");
+		HashMap<String, Integer> testCaseStatsMapTC2 = testService.selectTestCaseStats("TC2");
 		model.addAttribute("testCaseStatsMapTC2", testCaseStatsMapTC2);
 		
 		List<?> tcStatsByTaskGb = testService.selectTestCaseStatsListByTaskGb();
 		model.addAttribute("tcStatsByTaskGb", JSONArray.fromObject(tcStatsByTaskGb));
+		
 		
 		return "tms/test/TestStats";
 	}
@@ -374,6 +375,7 @@ public class TestController {
 		//테스트 현황 목록 개수 가져오기
 		int totCnt = testService.selectTestCurrentTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
 		
 		//테스트 현황 총 개수, 완료 개수, 미완료 개수 가져오기
 		HashMap<String, Object> selectTestCurrentCnt = testService.selectTestCurrentCnt(searchVO);

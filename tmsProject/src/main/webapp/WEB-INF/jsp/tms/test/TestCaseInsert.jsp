@@ -24,7 +24,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/test/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>테스트케이스 등록</title>
 
@@ -36,7 +36,9 @@ function insertTestCaseImpl(){
     document.insertForm.submit();  
 }
 
-
+function searchFileNm() {
+    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+}
 
 </script>
 
@@ -50,8 +52,7 @@ function insertTestCaseImpl(){
 
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
     <!-- //header 끝 -->
     <!-- container 시작 -->
     <div id="container">
@@ -128,8 +129,9 @@ function insertTestCaseImpl(){
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td colspan="3">
-                                <form:input title="게시판명입력" path="pgId" size="60" cssStyle="width:50%" />
-                           		<img src="<c:url value='/images/img_search.gif' />" alt="search" />
+                                <form:input title="게시판명입력" path="pgId" id="TmsProgrmFileNm_pg_id"  size="60" cssStyle="width:50%" />
+                           		<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+	                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
                             </td>
                           </tr>
                           <tr>
@@ -140,10 +142,10 @@ function insertTestCaseImpl(){
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
                                 
-	                                 <select name="taskGb" id="taskGb">
+	                                 <select name="taskGb" id="TmsProgrmFileNm_task_gb">
 										<option value="">없음</option>
 										<c:forEach var="cmCode" items="${taskGbCode}">
-										<option value="${cmCode.code}">${cmCode.codeNm}</option>
+										<option value="${cmCode.codeNm}">${cmCode.codeNm}</option>
 										</c:forEach>
 									</select>
                                 </td>
@@ -151,11 +153,11 @@ function insertTestCaseImpl(){
                            <tr>
                               <th width="20%" height="23" class="required_text" nowrap >
                                     <label for="userId"> 
-                                    	<spring:message code="tms.test.userDevId" />
+                                    	<spring:message code="tms.test.userWriterId" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
-                                    <form:input title="게시판명입력" path="userId" size="30" cssStyle="width:50%" value="iayun"/>
+                                    <form:input title="게시판명입력" path="userId" id="TmsProgrmFileNm_user_dev_id" size="30" cssStyle="width:50%"/>
                                 </td>
                           </tr>
                           <tr> 
@@ -169,7 +171,8 @@ function insertTestCaseImpl(){
                                <form:textarea title="게시판소개입력" path="precondition" cols="75" rows="4" cssStyle="width:100%" />
                             </td>
                           </tr>
-                        
+                         	<form:hidden path=""  id="TmsProgrmFileNm_sys_gb"/>
+                         	<form:hidden path=""  id="TmsProgrmFileNm_pg_nm"/>
                        </table>
                     </div>
              	

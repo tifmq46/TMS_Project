@@ -24,7 +24,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/test/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>단위테스트케이스 목록 조회</title>
 
@@ -37,11 +37,8 @@ function fn_egov_select_testCaseList(pageNo){
     document.listForm.submit();  
 }
 
-
-function selectTaskGbBySysGb() {
-	 	document.listForm.pageIndex.value = pageNo; 
-	    document.listForm.action = "<c:url value='/tms/test/selectTestCaseList.do?testcaseGb=TC1'/>";
-	    document.listForm.submit(); 
+function searchFileNm() {
+    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
 }
 
 </script>
@@ -56,8 +53,7 @@ function selectTaskGbBySysGb() {
 
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
     <!-- //header 끝 -->
     <!-- container 시작 -->
     <div id="container">
@@ -94,10 +90,13 @@ function selectTaskGbBySysGb() {
 					  		<ul id="search_first_ul">
 					  		
 					  			<li><label for="searchByTestcaseId"><spring:message code="tms.test.testcaseId" /></label></li>
-					  			<li><input type="text" name="searchByTestcaseId" id="searchByTestcaseId" /><img src="<c:url value='/images/img_search.gif' />" alt="search" /></li>
+					  			<li><input type="text" name="searchByTestcaseId" id="searchByTestcaseId" /></li>
 					  			
 					  			<li><label for="searchByPgId"><spring:message code="tms.test.pgId" /></label></li>
-					  			<li><input type="text" name="searchByPgId" id="searchByPgId" /><img src="<c:url value='/images/img_search.gif' />" alt="search" /></li>
+					  			<li><input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id"  />
+					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+	                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
+					  			</li>
 					  			
 					  		</ul>	
 					  		
@@ -125,24 +124,11 @@ function selectTaskGbBySysGb() {
 					  			</li>
 					  			
 					  			
-					  			<%-- 
-					  			<li><label for="searchBySysGb">시스템구분</label></li>
-					  			<li>
-									
-									<select name="searchBySysGb" id="searchBySysGb" onChange="selectTaskGbBySysGb()">
-										<option value="0">전체</option>
-										<c:forEach var="cmCode" items="${sysGbCode}">
-										<option value="${cmCode.code}">${cmCode.codeNm}</option>
-										</c:forEach>
-									</select>							
-					  			</li>
-					  			 --%>
-					  			
 					  			<li>
 									<div class="buttons" style="float:right;">
 									    
                                         <a href="<c:url value='/tms/test/selectTestCaseList.do'/>" onclick="fn_egov_select_testCaseList('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
-<spring:message code="button.inquire" /></a>
+										<spring:message code="button.inquire" /></a>
 									    
 									    <a href= "<c:url value="/tms/test/insertTestCase.do" />" ><spring:message code="button.create" /></a>
 									    
@@ -154,7 +140,7 @@ function selectTaskGbBySysGb() {
 					  				
 						</div>			
 						</fieldset>
-					</form>
+ 					</form:form>
 				</div>
 				<!-- //검색 필드 박스 끝 -->
                 
@@ -166,7 +152,7 @@ function selectTaskGbBySysGb() {
                 <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
               
               
-              <colgroup>
+             		 <colgroup>
         				<col width="60"/> 
         				<col width="60"/>
         				<col width="60"/>
@@ -178,7 +164,7 @@ function selectTaskGbBySysGb() {
         			<tr>
         				<th align="center"><spring:message code="tms.test.pgId" /></th>
         				<th align="center"><spring:message code="tms.test.taskGb" /></th>
-        				<th align="center"><spring:message code="tms.test.userDevId" /></th>
+        				<th align="center"><spring:message code="tms.test.userWriterId" /></th>
         				<th align="center"><spring:message code="tms.test.testcaseId" /></th>
         				<th align="center"><spring:message code="tms.test.testcaseContent" /></th>
 			        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>
@@ -204,19 +190,17 @@ function selectTaskGbBySysGb() {
             			</tr>
         			</c:forEach>
               </table>        
-              
            </div>
 
-                <!-- 페이지 네비게이션 시작 -->
-                <c:if test="${!empty loginPolicyVO.pageIndex }">
-                    <div id="paging_div">
-                        <ul class="paging_align">
-                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage" />
-                        </ul>
-                    </div>
-                <!-- //페이지 네비게이션 끝 -->
-                </c:if>
- 		</form:form>
+                 <!-- 페이지 네비게이션 시작 -->
+                <div id="paging_div">
+                    <ul class="paging_align">
+                       <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_testCaseList"  />
+                    </ul>
+                </div>                          
+                <!-- //페이지 네비게이션 끝 -->  
+ 		
+ 		
             </div>
             <!-- //content 끝 -->
         </div>

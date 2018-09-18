@@ -24,7 +24,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/test/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>테스트케이스 목록 조회</title>
 
@@ -59,8 +59,7 @@ function updateTestCase(){
 
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
     <!-- //header 끝 -->
     <!-- container 시작 -->
     <div id="container">
@@ -253,18 +252,30 @@ function updateTestCase(){
 
   					 <div id="border" class="modify_user" >
                         <table>
+                        	<colgroup>
+		        				<col width="40"/> 
+		        				<col width="40"/>
+		        				<col width="180"/>
+		        				<col width="100"/>
+		        				<col width="180"/>
+		        				<col width="120"/>
+		        				<col width="60"/>
+	        				</colgroup>
+                        
                             <tr>
-                                <th width="15%" height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testscenarioId" /></label>
+                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testscenarioIdSrt" /></label>
                                 </th>
-                                <th width="5%" height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testscenarioOrd" /></label>
+                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.ord" /></label>
                                 </th>
-                                <th width="30%" height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
+                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
                                 </th>
-                                <th width="20%" height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testCondition" /></label>
+                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testCondition" /></label>
                                 </th>
-                                <th width="20%" height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.expectedResult" /></label>
+                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.expectedResult" /></label>
                                 </th>
-                                <th width="25%" height="23"  nowrap="nowrap" colspan="2"><label for="nttSj"><spring:message code="tms.test.resultYn" /></label>
+                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testResultYn" /></label>
+                                </th>
+                                <th height="23"  nowrap="nowrap" colspan="2"><label for="nttSj"><spring:message code="tms.test.resultYn" /></label>
                                 </th>
                             </tr>
                             
@@ -285,6 +296,7 @@ function updateTestCase(){
 		            				<td align="center" class="listtd"><c:out value="${result.testscenarioContent}"/>&nbsp;</td>
 		            				<td align="center" class="listtd"><c:out value="${result.testCondition}"/>&nbsp;</td>
 		            				<td align="center" class="listtd"><c:out value="${result.expectedResult}"/>&nbsp;</td>
+		            				<td align="center" class="listtd"><c:out value="${result.testResultContent}"/>&nbsp;</td>
 		            				<td align="center" class="listtd"><c:out value="${result.userTestId}"/>&nbsp;</td>
 		            				<td align="center" class="listtd"><c:out value="${result.testResultYn}"/>&nbsp;</td>
 		            			</tr>

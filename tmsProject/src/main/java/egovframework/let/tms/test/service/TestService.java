@@ -119,7 +119,7 @@ public interface TestService {
 	 * @exception Exception
 	 */
 	
-	public HashMap<String,Object> selectTestCaseStats(String testcaseGb)throws Exception;
+	public HashMap<String, Integer> selectTestCaseStats(String testcaseGb)throws Exception;
 	
 	
 	/**

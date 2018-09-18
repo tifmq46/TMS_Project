@@ -130,7 +130,7 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 	}
 	
 	@Override
-	public HashMap<String,Object> selectTestCaseStats(String testcaseGb)throws Exception{
+	public HashMap<String, Integer> selectTestCaseStats(String testcaseGb)throws Exception{
 		return testDAO.selectTestCaseStats(testcaseGb);
 	}
 	

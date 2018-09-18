@@ -24,7 +24,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/test/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>통합테스트케이스 목록 조회</title>
 
@@ -51,8 +51,7 @@ function fn_egov_select_testCaseList(pageNo){
 
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
     <!-- //header 끝 -->
     <!-- container 시작 -->
     <div id="container">
@@ -87,7 +86,7 @@ function fn_egov_select_testCaseList(pageNo){
 					  		<ul id="search_first_ul">
 					  		
 					  			<li><label for="searchByTestcaseId"><spring:message code="tms.test.testcaseId" /></label></li>
-					  			<li><input type="text" name="searchByTestcaseId" id="searchByTestcaseId" /><img src="<c:url value='/images/img_search.gif' />" alt="search" /></li>
+					  			<li><input type="text" name="searchByTestcaseId" id="searchByTestcaseId" /></li>
 					  			
 					  			<li><label for="searchByTaskGb"><spring:message code="tms.test.taskGb" /></label></li>
 					  			
@@ -124,7 +123,7 @@ function fn_egov_select_testCaseList(pageNo){
 					  		
 						</div>			
 						</fieldset>
-					</form>
+ 					</form:form>
 				</div>
 				<!-- //검색 필드 박스 끝 -->
                 
@@ -146,7 +145,7 @@ function fn_egov_select_testCaseList(pageNo){
         			</colgroup>
         			<tr>
         				<th align="center"><spring:message code="tms.test.taskGb" /></th>
-        				<th align="center"><spring:message code="tms.test.userDevId" /></th>
+        				<th align="center"><spring:message code="tms.test.userWriterId" /></th>
         				<th align="center"><spring:message code="tms.test.testcaseId" /></th>
         				<th align="center"><spring:message code="tms.test.testcaseContent" /></th>
 			        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>
@@ -157,7 +156,7 @@ function fn_egov_select_testCaseList(pageNo){
         			
             			<tr>
             				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.userId}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
             				<td align="center" class="listtd">
 	            				<a href= "<c:url value='/tms/test/selectTestCase.do?testcaseId=${result.testcaseId}'/>">
 	            				<strong><c:out value="${result.testcaseId}"/></strong>
@@ -171,19 +170,18 @@ function fn_egov_select_testCaseList(pageNo){
             			</tr>
         			</c:forEach>
               </table>        
-              
            </div>
-
-                <!-- 페이지 네비게이션 시작 -->
-                <c:if test="${!empty loginPolicyVO.pageIndex }">
-                    <div id="paging_div">
-                        <ul class="paging_align">
-                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage" />
-                        </ul>
-                    </div>
-                <!-- //페이지 네비게이션 끝 -->
-                </c:if>
- 		</form:form>
+ 		
+ 		                 <!-- 페이지 네비게이션 시작 -->
+                <div id="paging_div">
+                    <ul class="paging_align">
+                       <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_testCaseList"  />
+                    </ul>
+                </div>                          
+                <!-- //페이지 네비게이션 끝 -->  
+ 		
+ 		
+ 		
             </div>
             <!-- //content 끝 -->
         </div>
