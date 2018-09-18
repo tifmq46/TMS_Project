@@ -1,29 +1,28 @@
 <%--
-  Class Name : EgovNoticeList.jsp
-  Description : 게시물 목록화면
+  Class Name : EgovTemplateList.jsp
+  Description : 템플릿 목록화면
   Modification Information
  
       수정일         수정자                   수정내용
     -------    --------    ---------------------------
-     2009.03.19   이삼섭              최초 생성
+     2009.03.18   이삼섭              최초 생성
      2011.08.31   JJY       경량환경 버전 생성
  
     author   : 공통서비스 개발팀 이삼섭
-    since    : 2009.03.19
+    since    : 2009.03.18
 --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ page import="egovframework.com.cmm.service.EgovProperties" %>    
+<%@ page import="egovframework.com.cmm.service.EgovProperties" %>  
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<c:set var="ImgUrl" value="/images/egovframework/cop/bbs/"/>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
-
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <c:if test="${anonymous == 'true'}"><c:set var="prefix" value="/anonymous"/></c:if>
 <script type="text/javascript" src="<c:url value='/js/EgovBBSMng.js' />" ></script>
 
@@ -35,16 +34,22 @@ function linkPage1(pageNo){
 }
 <!--
     function press(event) {
+		if (event.keyCode==13) {
+        	fn_egov_select_bbsUseInfs('1');
+    	}
     }
 
     function fn_egov_addNotice() {
     }
     
     function fn_egov_select_noticeList(pageNo) {
-    	alert("일루옴");
+    	document.frm.pageIndex.value = pageNo; 
+        document.frm.action = "<c:url value='/tms/pg/PgManage.do'/>";
+        document.frm.submit();
     }
     
-    function fn_egov_inqire_notice(nttId, bbsId) {      
+    function fn_egov_inqire_notice(nttId, bbsId) {    
+    	
     }
 //-->
     function press(event) {
@@ -71,29 +76,56 @@ function linkPage1(pageNo){
 </script>
 </c:when>
 <c:otherwise>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 function linkPage1(pageNo){
 	alert(pageNo);
-	document.frm.pageIndex.value = 1;
+	document.frm.pageIndex.value = pageNo;
 	document.frm.action = "<c:url value='/tms/pg/PgManage.do'/>";
-	document.frm.submit();
+   	document.frm.submit();
 }
-<!--
-	function fn_egov_select(){
-		alert("d1");
-		
+
+	
+	$(function(){
+		$('#category1').change(function() {
+			$.ajax({
+				type:"POST",
+				url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
+				data : {searchData : this.value},
+				async: false,
+				dataType : 'json',
+				success : function(selectTaskGbSearch){
+					$("#category2").find("option").remove().end().append("<option value=''>선택하세요</option>");
+					$.each(selectTaskGbSearch, function(i){
+						(JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
+					$("#category2").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+					});
+				},
+				error : function(request,status,error){
+					alert("에러");
+					alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+			});
+		})
+	})
+
+	
+	
+	function searchExcelFileNm() {
+    	window.open("<c:url value='/tms/pg/ExcelFileListSearch.do'/>",'','width=800,height=600');
+	}
+
+	function Pg_select(pageNo){
+		alert(pageNo);
+		//document.frm.pageIndex.value = pageNo;
+		//document.frm.fon.value = pageNo;
+		alert(document.frm.pageIndex);
     	document.frm.action = "<c:url value='/tms/pg/PgManage.do'/>";
     	document.frm.submit();
 	}
-	function fn_excel_enroll(){
-		alert("d7");
 	
-		document.frm.action = "<c:url value='/tms/pg/ExelRegister.do'/>";
-		document.frm.submit();
-	}	
-	
-	function fncAuthorDeleteList() {
-		
+	function Pg_DeleteList(pageNo) {
+		document.frm.pageIndex.value = pageNo;
 		var checkField = document.frm.delYn;
         var checkId = document.frm.checkId;
         var returnValue = "";
@@ -133,15 +165,10 @@ function linkPage1(pageNo){
             alert("조회된 결과가 없습니다.");
         }
 		
-        alert("d2"+returnBoolean);
         document.frm.del.value = returnValue;
 		
-		
-		
-        		alert("d4");
-            	document.frm.action = "<c:url value='/tms/pg/deletePg.do'/>";
-            	
-            	document.frm.submit();
+        document.frm.action = "<c:url value='/tms/pg/deletePg.do'/>";
+        document.frm.submit();
     	
 	}
 	function fncCheckAll() {
@@ -171,8 +198,6 @@ function linkPage1(pageNo){
 	
 
 	function fncSelect_Info() {
-		alert("d");
-		
     	/* document.frm.PgID.value = aaa; */
     	document.frm.action = "<c:url value='/tms/pg/selectPgInf.do'/>";
     	document.frm.submit();     
@@ -182,29 +207,10 @@ function linkPage1(pageNo){
             fn_egov_select_noticeList('1');
         }
     }
-    function file_upload() {
-		alert("upload");
-		
-		var fm  = document.fileForm;     
-	    var fnm = fm.uploadFile;
-	    var ext = fnm.value;
-
-	    if( !(ext.substr(ext.length-3) == 'xlsx' ) )
-	    {
-	    	alert("xlsx 파일만 등록할 수 있습니다.");
-	       	return false;
-	    }
-		
-    	/* document.frm.PgID.value = aaa; */
-    	document.fileForm.action = "<c:url value='/tms/pg/requestupload.do'/>";
-    	document.fileForm.submit();     
-	}
     
     
     function fncManageChecked() {
     	
-    	alert("d2");
-
         var checkField = document.frm.delYn;
         var checkId = document.frm.checkId;
         var returnValue = "";
@@ -244,32 +250,28 @@ function linkPage1(pageNo){
             alert("조회된 결과가 없습니다.");
         }
 		
-        alert("d2"+returnBoolean);
         document.frm.del.value = returnValue;
 
         return returnBoolean;
     }
     
-//-->
+
 </script>
 </c:otherwise>
 </c:choose>
-<title><c:out value="${brdMstrVO.bbsNm}"/> 목록</title>
 
+<title>템플릿 목록</title>
 <style type="text/css">
     h1 {font-size:12px;}
     caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
 </style>
-
 </head>
-
 <body>
-<noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>    
+<noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
-    <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
+     <!-- header 시작 -->
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
     <!-- //header 끝 --> 
     <!-- container 시작 -->
     <div id="container">
@@ -283,73 +285,80 @@ function linkPage1(pageNo){
                         <ul>
                             <li>HOME</li>
                             <li>&gt;</li>
-                            <li>프로그램 관리</li>
+                            <li>개발진척관리</li>
                             <li>&gt;</li>
-                            <li><strong>프로그램 관리</strong></li>
+                            <li><strong>개발계획관리</strong></li>
                         </ul>
                     </div>
                 </div>
+ 
+ 			
                 
-                
-                
+                <!-- 검색 필드 박스 시작 -->
+                <form:form commandName="searchVO1" name="frm" id="frm" method="post" action="<c:url value='/tms/pg/PgCurrent.do'/>" >   
+				 
+                <input type="hidden" name="pageIndex" value="<c:out value='${searchVO1.pageIndex}'/>"/>
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
                     <div id="search_field_loc"><h2><strong>프로그램 관리</strong></h2></div>
-					<form id="frm" name="frm" method="post">
+					
 						<input type="hidden" name="bbsId" value="<c:out value='${boardVO.bbsId}'/>" />
 						<input type="hidden" name="nttId"  value="0" />
 						<input type="hidden" name="bbsTyCode" value="<c:out value='${brdMstrVO.bbsTyCode}'/>" />
 						<input type="hidden" name="bbsAttrbCode" value="<c:out value='${brdMstrVO.bbsAttrbCode}'/>" />
 						<input type="hidden" name="authFlag" value="<c:out value='${brdMstrVO.authFlag}'/>" />
 						<input name="pageIndex" type="hidden" value="<c:out value='${searchVO1.pageIndex}'/>"/>
-						<input type="hidden" id="del" name="del" value="javascript:fncManageChecked()" />
+						<input type="hidden" id="del" name="del" value="fncManageChecked()" />
+						<input type="hidden" id="fon" name="fon" />
                         <input type="submit" value="실행" onclick="fn_egov_select_noticeList('1'); return false;" id="invisible" class="invisible" />
                         
                         <fieldset><legend>조건정보 영역</legend>    
                         
                         
                         	<div class="default_tablestyle" style=" width:100%">
-                                <table border="0" style=" width:100%">
-    								<tr>
-        								<td class="a1">화면ID</td>
-        								<td>
-        									<!-- <a href="#noscript" onclick="fn_egov_select_noticeList('1'); return false;"> -->
-        								    <input type="text" id="searchByPgId" name="searchByPgId" style=" width:70%" value="<c:out value='${searchVO1.searchByPgId}'/>"> 
-        								    <img src="<c:url value='/images/img_search.gif' />" alt="search" /></a></td>        								  								
-        								<td class="a1">시스템 구분</td>
-        								<td>
-        									<select id="searchBySysGb" name="searchBySysGb" >
-        										<option value="<c:out value='${searchVO1.searchByTaskGb}'/>"></option>
-  												<option value="<c:out value='${searchVO1.searchByTaskGb}'/>">aaa</option>
-  												<option value="<c:out value='${searchVO1.searchByTaskGb}'/>">bbb</option>
-  												<option value="<c:out value='${searchVO1.searchByTaskGb}'/>">ccc</option>
-											</select>
-        								</td>        								
-        								<td class="a1">업무 구분</td>
-        								<td>
-        									<select id="searchByTaskGb" name="searchByTaskGb" >
-        										<option value="<c:out value='${searchVO1.searchByTaskGb}'/>"></option>
-  												<option value="<c:out value='${searchVO1.searchByTaskGb}'/>">aaa</option>
-  												<option value="<c:out value='${searchVO1.searchByTaskGb}'/>">bbb</option>
-  												<option value="<c:out value='${searchVO1.searchByTaskGb}'/>">ccc</option>
-											</select>
-        								</td>
-        								<td class="a1">개발자</td>
-        								<td>
-        									<input type="text" id="searchByUserDevId" name="searchByUserDevId" style=" width:90%" value="<c:out value='${searchVO1.searchByUserDevId}'/>"> 
-        								</td>
-    								</tr>
-								</table>
+
+					  		<ul id="search_first_ul">					  		
+					  			<li><label for="searchByPgId">화면ID</label></li>
+					  			<li><input type="text" name="searchByPgId" id="searchByPgId" value="<c:out value='${searchVO1.searchByPgId}'/>"/></li>
+					  					
+					  			<li><label for="searchByUserDevId">개발자명</label></li>
+					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" value="<c:out value='${searchVO1.searchByUserDevId}'/>"/></li>
+					  			
+                     	
+                        	
+                        	
+                        	
+                        	</ul>
+                        	<%-- 
+                        	<ul id="search_first_ul">	
+					  			<li>
+								    <label for="searchByTaskGb">시스템구분&nbsp;</label>
+									<select name="category1" id="category1" style="width:12%;text-align-last:center;">
+									    <option value="" selected="selected" >전체</option>
+									    <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
+									    	<option value="<c:out value="${sysGb.SYS_GB}"/>"><c:out value="${sysGb.SYS_GB}" /></option>
+									    </c:forEach>
+									</select>						
+					  			</li> 			
+					  			 <li>
+								    <label for="searchByDefectGb">업무구분</label>
+									<select name="category2" id="category2" style="width:15%;text-align-last:center;">
+									    <option value="">선택하세요</option>
+									</select>						
+					  			</li>                           	
+                        	
+                        	</ul>
+                        	 --%>
 							</div>
 							  
                             <div class="default_tablestyle"  style=" width:100%"> 
                             	<ul id="search_second_ul"  style=" width:100%">                            
                             		<li>
                             			<div class="buttons" style="float:right;">                              			
-                                    		<a href="#Link" onclick="fn_egov_select(); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                                    		<a href="#LINK" onclick="javascript:fncAuthorDeleteList(); return false;">삭제</a>
+                                    		<a href="#Link" onclick="Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+                                    		<a href="#LINK" onclick="Pg_DeleteList(); return false;">삭제</a>
                                     		<a href="<c:url value='/tms/pg/PgInsert.do'/>" >등록</a>
-                                    		<a href="#LINK" onclick="javascript:fn_excel_enroll(); return false;">엑셀등록</a>
+                                    		<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀등록</a>
                                     	</div>
                                 	</li>
                             	</ul>
@@ -360,9 +369,8 @@ function linkPage1(pageNo){
                         
                            
                         </fieldset>
-                    
+                 	</div>
                 	<!-- //검색 필드 박스 끝 -->
-                
                 
                 	<div id="page_info"><div id="page_info_align"></div></div>    
                 	<div class="default_tablestyle">
@@ -379,7 +387,7 @@ function linkPage1(pageNo){
         					<col width="30"/>
         				</colgroup>
         				<tr>
-        					<th scope="col" class="f_field" nowrap="nowrap"><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fncCheckAll()" title="전체선택"></th>
+        					<th scope="col" class="f_field" nowrap="nowrap"><input type="checkbox" name="checkAll" class="check2" onclick="fncCheckAll()" title="전체선택"></th>
         					<th align="center">NO</th>
         					<th align="center">화면ID</th>
         					<th align="center">화면명</th>
@@ -392,7 +400,7 @@ function linkPage1(pageNo){
         				<c:forEach var="result" items="${resultList}" varStatus="status">
             				<tr>
             					<td align="center" class="listtd" nowrap="nowrap"><input type="checkbox" name="delYn" class="check2" title="선택"><input type="hidden" name="checkId" value="<c:out value="${result.PG_ID}"/>" /></td>
-            					<td align="center" class="listtd"><c:out value="${(paginationInfo.totalRecordCount+1 - ((searchVO1.pageIndex-1) * searchVO1.pageSize + status.count))}"/></td>
+            					<td align="center" class="listtd"><c:out value="1"/></td>
             					<td align="center" class="listtd">         							
             						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?PG_ID=<c:out value='${result.PG_ID}'/>">
                                 		<c:out value="${result.PG_ID}"/>
@@ -405,28 +413,21 @@ function linkPage1(pageNo){
             				</tr>
         				</c:forEach>
         			</table>  		
-        		
+        			  
         			</div>
         		
-                	</form>    
-                	 
-					<form id="fileForm" name="fileForm" method="post" enctype="multipart/form-data">
-        				<input type="file" name="file" />
-        				<a href="#LINK" onclick="javascript:file_upload(); return false;">전송</a>
-    				</form>
-
-  	
-                </div>
-                
-
+        		
                 <!-- 페이지 네비게이션 시작 -->
                 <div id="paging_div">
                     <ul class="paging_align">
-                        <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage1" />  
+                       <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_tmplatInfo"  />
                     </ul>
                 </div>                          
-                <!-- //페이지 네비게이션 끝 -->  
-
+                <!-- //페이지 네비게이션 끝 -->
+                
+               
+                
+                </form:form> 
             </div>
             <!-- //content 끝 -->    
         </div>  

@@ -145,8 +145,8 @@
                             <td>
                             <select id="SYS_GB" name="SYS_GB" class="select" onchange="fn_egov_selectTmplatType(this)" id="SYS_GB" title="시스템구분">
                                    <option selected value=''>--선택하세요--</option>
-                                   <option value="철도1"><c:out value="철도1"/></option>
-                                   <option value="철도2"><c:out value="철도2"/></option>
+                                   <option value="S1"><c:out value="S1"/></option>
+                                   <option value="S2"><c:out value="S2"/></option>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>  --%>   
@@ -164,8 +164,8 @@
                             <td>
                             <select id="TASK_GB" name="TASK_GB" class="select" onchange="fn_egov_selectTmplatType(this)" id="TASK_GB" title="업무구분">
                                    <option selected value=''>--선택하세요--</option>
-                                   <option value="철도1"><c:out value="철도1"/></option>
-                                   <option value="철도2"><c:out value="철도2"/></option>
+                                   <option value="T1"><c:out value="T1"/></option>
+                                   <option value="T2"><c:out value="T2"/></option>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>   --%>  

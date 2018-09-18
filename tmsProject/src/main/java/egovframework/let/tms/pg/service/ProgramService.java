@@ -56,6 +56,7 @@ public interface ProgramService {
 	 */
 	int selectPgListTotCnt(ProgramDefaultVO searchVO);
 
+	int selectPgCurrentTotCnt(ProgramDefaultVO searchVO);
 
 	List<?> selectPgCurrentList(ProgramDefaultVO searchVO) throws Exception;
 	

@@ -75,6 +75,10 @@ public class ProgramDAO extends EgovAbstractDAO{
 	public int selectPgListTotCnt(ProgramDefaultVO searchVO) {
 		return (Integer) select("ProgramDAO.selectPgListTotCnt", searchVO);
 	}
+	
+	public int selectPgCurrentTotCnt(ProgramDefaultVO searchVO) {
+		return (Integer) select("ProgramDAO.selectPgCurrentTotCnt", searchVO);
+	}
 
 	public List<?> selectPgCurrentList(ProgramDefaultVO searchVO) throws Exception {
 		return list("ProgramDAO.selectPgCurrentList", searchVO);
