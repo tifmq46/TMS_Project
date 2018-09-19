@@ -38,10 +38,21 @@
 <script language="javascript1.2"  type="text/javaScript"> 
 <!--
 /* ********************************************************
+ * 검색 엔터키 함수
+ ******************************************************** */
+function Enter_Remove(){ // input 에서 enter 입력시 다음에 있는 button이 호출되는 현상때문에 
+    // 엔터키의 코드는 13입니다.
+	if(event.keyCode == 13){
+		selectProgramListSearch();
+	}
+}
+
+/* ********************************************************
  * 페이징 처리 함수
  ******************************************************** */
 function linkPage(pageNo){
 	document.progrmManageForm.pageIndex.value = pageNo;
+	document.progrmManageForm.searchKeyword.value = '${searchVO.searchKeyword}';
 	document.progrmManageForm.action = "<c:url value='/sym/prm/TmsProgramListSearch.do'/>";
    	document.progrmManageForm.submit();
 }
@@ -72,16 +83,16 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb) {
 <body> 
 <form name="progrmManageForm" action ="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" method="post">
 <input type="submit" id="invisible" class="invisible"/>
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
     <!-- 검색 필드 박스 시작 -->
-    <div id="search_field">
+    <div id="search_field" style="width:100%">
         <div id="search_field_loc" class="h_title">프로그램명 검색</div>
             <fieldset><legend>조건정보 영역</legend>    
             <div class="sf_start">
                 <ul id="search_first_ul">
                     <li>
                         <label for="searchKeyword">프로그램명 : </label>
-                        <input id="searchKeyword" name="searchKeyword" type="text" size="30" value=""  maxlength="60" title="검색조건">
+                        <input id="searchKeyword" name="searchKeyword" type="text" size="30" value="${searchVO.searchKeyword}" onkeydown="return Enter_Remove();" maxlength="60" title="검색조건">
                     </li>       
                 </ul>
                 <ul id="search_second_ul">
@@ -137,13 +148,13 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb) {
     </div>
 
     <!-- 페이지 네비게이션 시작 -->
-    <div id="paging_div">
-        <ul class="paging_align">
+    <div id="paging_div" style="width:100%">
+        <ul class="paging_align" style="width:100%">
             <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage"/>
         </ul>
     </div>                          
     <!-- //페이지 네비게이션 끝 -->  
-
+	
 </form>
 </body>
 </html>

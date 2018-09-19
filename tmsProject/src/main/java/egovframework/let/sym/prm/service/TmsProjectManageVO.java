@@ -39,7 +39,7 @@ public class TmsProjectManageVO implements Serializable{
 	
 	private String PJT_PM;
 	/** 역할코드 */
-	private int PJT_PRICE;
+	private int PJT_PRICE = 0;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date DEV_START_DT;

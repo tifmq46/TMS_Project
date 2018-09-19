@@ -28,9 +28,21 @@
 <script type="text/javascript">
 
 function checkForm() {
-	
-		document.TmsProjectManageVO.submit();
-	
+	if($.trim($('#PJT_ID').val())=="" || $.trim($('#PJT_NM').val())=="" || $.trim($('#PJT_TYPE').val())=="" || $.trim($('#PJT_ST').val())=="" || $.trim($('#PJT_PM').val())=="" || $.trim($('#DEV_START_DT').val())=="" || $.trim($('#DEV_END_DT').val())=="" || $.trim($('#PJT_START_DT').val())=="" || $.trim($('#PJT_END_DT').val())=="" || $.trim($('#PJT_PRICE').val())==""){
+		alert("모든 값을 입력해주십시오.");
+	}else if($('#DEV_START_DT').val() > $('#DEV_END_DT').val()){
+		alert("계획종료일이 계획시작일보다 빠릅니다.");
+	}else if($('#PJT_START_DT').val() > $('#PJT_END_DT').val()){
+		alert("개발종료일이 개발시작일보다 빠릅니다.");
+	}else if(isNaN($('#PJT_PRICE').val())){
+		alert("금액은 숫자로 입력하십시오.");
+	}else if($('#PJT_PRICE').val() < 0 ){
+		alert("가격은 0이상 입력하십시오.")
+	}
+		
+	else{
+		document.TmsProjectManageVO.submit();;
+	}
 }
 			
 </script>
@@ -40,7 +52,7 @@ function checkForm() {
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>       
+    <div id="topnavi" style="margin:0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>       
     <!-- //header 끝 --> 
    <!-- container 시작 -->
     <div id="container">
@@ -48,17 +60,13 @@ function checkForm() {
         <div id="leftmenu"><c:import url="/sym/mms/EgovMainMenuLeft.do" /></div>
         <!-- //좌측메뉴 끝 -->
             <!-- 현재위치 네비게이션 시작 -->
-            <div id="content">
+            <div id="content" style="width:800px;">
                 <div id="cur_loc">
                     <div id="cur_loc_align">
                         <ul>
                             <li>HOME</li>
                             <li>&gt;</li>
-                            <li>내부시스템관리</li>
-                            <li>&gt;</li>
-                            <li>메뉴관리</li>
-                            <li>&gt;</li>
-                            <li><strong>메뉴목록관리</strong></li>
+                            <li><strong>프로젝트생성</strong></li>
                         </ul>
                     </div>
                 </div>
@@ -73,7 +81,7 @@ function checkForm() {
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="menuNo">프로젝트ID</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="50%" nowrap="nowrap">
 						      &nbsp;
-						      <input id="PJT_ID" name="PJT_ID" size="20" maxlength="20" title="메뉴No"/>
+						      <input id="PJT_ID" name="PJT_ID" size="30" maxlength="30" title="메뉴No"/>
 						      <span style="padding-left:10px;"id="result"></span>
 						    </td>
 						  </tr>
@@ -81,14 +89,14 @@ function checkForm() {
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="menuOrdr">프로젝트명</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						      &nbsp;
-						      <input id="PJT_NM" name="PJT_NM" size="20"  maxlength="20" title="메뉴순서" />
+						      <input id="PJT_NM" name="PJT_NM" size="30"  maxlength="30" title="메뉴순서" />
 						    </td>
 						  </tr>  
 						  <tr> 
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="menuNm">사업유형</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						      &nbsp;
-						      <input name="PJT_TYPE" id="PJT_TYPE" size="30"  maxlength="30" title="메뉴명" />
+						      <input name="PJT_TYPE" id="PJT_TYPE" size="20"  maxlength="20" title="메뉴명" />
 						    </td>
 						  </tr>
 						  
@@ -108,49 +116,49 @@ function checkForm() {
 						     <th width="15%" height="23" class="required_text" scope="row"><label for="menuNm">PM</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						      &nbsp;
-						      <input id="PJT_PM" name="PJT_PM" size="30"  maxlength="30" title="메뉴명" />
+						      <input id="PJT_PM" name="PJT_PM" size="20"  maxlength="20" title="메뉴명" />
 						    </td>
 						  </tr>
 						   <tr> 
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">계획시작일</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						          &nbsp;
-						          <input type="date" name="DEV_START_DT" size="40"  maxlength="30" title="관련이미지명"/>
+						          <input style="margin-right:3px;" type="date" id="DEV_START_DT" name="DEV_START_DT" size="40"  maxlength="30" title="관련이미지명"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
 						    </td>
 						  </tr>
 						  <tr> 
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">계획종료일</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						          &nbsp;
-						          <input type="date" name="DEV_END_DT" size="40"  maxlength="30" title="관련이미지명"/>
+						          <input style="margin-right:3px;" type="date" id="DEV_END_DT" name="DEV_END_DT" size="40"  maxlength="30" title="관련이미지명"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
 						    </td>
 						  </tr>
 						  <tr> 
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">프로젝트 시작일</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						          &nbsp;
-						          <input type="date" name="PJT_START_DT" size="40"  maxlength="30" title="관련이미지명"/>
+						          <input style="margin-right:3px;" type="date" id="PJT_START_DT" name="PJT_START_DT" size="40"  maxlength="30" title="관련이미지명"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
 						    </td>
 						  </tr>
 						  <tr> 
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">프로젝트 종료일</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						          &nbsp;
-						          <input type="date" name="PJT_END_DT" size="40"  maxlength="30" title="관련이미지명"/>
+						          <input style="margin-right:3px;" type="date" id="PJT_END_DT" name="PJT_END_DT" size="40"  maxlength="30" title="관련이미지명"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
 						    </td>
 						  </tr>  
 						  <tr> 
-						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">금액</label></th>
+						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">금액</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						          &nbsp;
-						          <input name="PJT_PRICE" size="40"  maxlength="30" title="관련이미지명"/>
+						          <input id="PJT_PRICE" name="PJT_PRICE" size="20"  maxlength="20" title="관련이미지명" placeholder="숫자만 입력하십시오."/>
 						    </td>
 						  </tr>
 						  <tr> 
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">프로젝트 설명</label></th>
 						    <td width="35%" nowrap="nowrap">
 						          &nbsp;
-						          <input name="PJT_CONTENT" size="40"  maxlength="30" title="관련이미지명"/>
+						          <textarea name="PJT_CONTENT" title="관련이미지명" cols="50" rows="7"/></textarea>
 						    </td>
 						  </tr>
                         </table>

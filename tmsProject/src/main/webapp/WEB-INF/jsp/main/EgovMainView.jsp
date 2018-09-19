@@ -95,18 +95,24 @@
 	    		</ul>
 	    	</div>
     	</div>
-    	
+   	
     <div class="row mt30">
-    	<div id="myBsnsList" class="col-md-6" style="height: 241px;">
+    <!-- 프로젝트 생성 시작 -->
+	<c:if test="${tmsProjectManageVO.PJT_ID == null }">
+		<a href="<c:url value='/sym/prm/insertProjectView.do'/>">프로젝트 생성</a>
+	</c:if>
+	
+	<!-- 프로젝트 생성 끝 -->
+     <c:if test="${tmsProjectManageVO.PJT_ID != null }">
+    	<div class="myBsnsList" class="col-md-6" style="height: 241px; margin-bottom:20px;">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
 	    					프로젝트 정보
-	    				</i>
     				</div>
     			</div>
     			<div class="widget-content box">
-    				<table class="table table-search-head table-size-th4">
+    				<table class="table table-search-head table-size-th4" style="height:215px;">
     					<tbody>
     						 <tr class="last">
     							<th>프로젝트 명</th>
@@ -146,7 +152,8 @@
     			</div>
     		</div>
     	</div>
-    	<div id="recentBsnsList" class="col-md-6" style="height:241px;">
+    	</c:if>
+    	<div class="recentBsnsList" class="col-md-6" style="height:241px; margin-bottom:20px !important	; ">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
@@ -193,7 +200,7 @@
 			             <c:forEach var="pjtMemberList" items="${pjtMemberList}" varStatus="status">
 			            <!-- loop 시작 -->                                
 			              <tr>
-						    <td nowrap="nowrap"><i class="fas fa-user"></i><c:out value="${pjtMemberList.userNm}"/></td>
+						    <td id="icl" nowrap="nowrap"  style="color:blue;"><i class="icon-user" style="font-size: 2em; color: rgb(80, 80, 80)"></i>　<c:out value="${pjtMemberList.userNm}"/></td>
 						    <td nowrap="nowrap"><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000000'}">관리자</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000001'}">PL</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000002'}">개발자</c:if></td>
 						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA1 }"/></td>
 						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA2 }"/></td>
@@ -208,13 +215,55 @@
     		</div>    	    	
     	</div>
     	
+    	<div class="myBsnsList" class="col-md-6" style="height:241px; margin-bottom:20px !important	;">
+    		<div class="widget">
+    			<div class="widget-header">
+    				<div class="header-name" style="margin:10px;">
+	    					프로젝트 진행상태
+    				</div>
+    			</div>
+    			
+    		</div>    	    	
+    	</div>
+    	
+    	<div class="recentBsnsList" class="col-md-6" style="height:241px; margin-bottom:20px !important	;">
+    		<div class="widget">
+    			<div class="widget-header">
+    				<div class="header-name" style="margin:10px;">
+	    					결함 진행상태
+    				</div>
+    			</div>
+    			
+    		</div>    	    	
+    	</div>
+    	
+    	<div class="myBsnsList" class="col-md-6" style="height:241px; margin-bottom:20px !important	;">
+    		<div class="widget">
+    			<div class="widget-header">
+    				<div class="header-name" style="margin:10px;">
+	    					테스트 진행상태
+    				</div>
+    			</div>
+    			
+    		</div>    	    	
+    	</div>
+    	
+    	<div class="recentBsnsList" class="col-md-6" style="height:241px; margin-bottom:20px !important	;">
+    		<div class="widget">
+    			<div class="widget-header">
+    				<div class="header-name" style="margin:10px;">
+	    					조치 진행상태
+    				</div>
+    			</div>
+    			
+    		</div>    	    	
+    	</div>
+    	
     </div>	                
 	</div>
 	<!-- //게시판 끝 -->
-	<!-- 프로젝트 생성 시작 -->
-	<a href="<c:url value='/sym/prm/insertProjectView.do'/>">이거 건들지 말것</a>
-	<!-- 프로젝트 생성 끝 -->
-	<!-- 공통코드 셀렉트박스 시작 -->
+	
+	<%-- <!-- 공통코드 셀렉트박스 시작 -->
         <div id="search_field">
 					<div id="search_field_loc"><h2><strong>공통코드관리</strong></h2></div>
 					<form action="form_action.jsp" method="post">
@@ -243,7 +292,7 @@
 				</div>
 				<!-- //검색 필드 박스 끝 -->
         
-        <!-- 공통코드 셀렉트박스 끝 -->
+        <!-- 공통코드 셀렉트박스 끝 --> --%>
 	<!-- footer 시작 -->
 	<div id="footer"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncFooter" /></div>
 	<!-- //footer 끝 -->

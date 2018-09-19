@@ -155,33 +155,10 @@
 	
 	<select id="DevPlanDAO.selectDevPlanListTotCnt" parameterClass="searchVO" resultClass="java.lang.Integer" >
 			<![CDATA[
-				SELECT COUNT(*) totcnt FROM (
-			SELECT
-				b.PG_ID
-				,(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = b.USER_DEV_ID ) USER_DEV_ID
-				,b.PG_NM
-				,b.SYS_GB
-				,b.TASK_GB
-				,b.USE_YN
-				,b.PJT_ID
-				,a.PLAN_START_DT
-				,a.PLAN_END_DT
-				,a.DEV_START_DT
-				,a.DEV_END_DT
-				,a.ENROLL_DT
-				,a.DEV_END_YN
-				,a.FIRST_TEST_RESULT_YN
-				,a.SECOND_TEST_RESULT_YN
-				,a.THIRD_TEST_RESULT_YN
-				
-			FROM DEV_PLAN_TB a
-			RIGHT OUTER JOIN PG_TB b
-			ON a.PG_ID = b.PG_ID
-			) as c
-			WHERE 1=1
-			
+				SELECT COUNT(*) AS totcnt
+		  FROM DEV_PLAN_TB A , PG_TB B
+			WHERE A.PG_ID = B.PG_ID
 			]]>
-			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
 			    AND USER_DEV_ID = #searchByUserDevId#
@@ -189,8 +166,18 @@
 			
 			<!-- 화면ID로 검색 -->
 			<isNotEmpty property="searchByPgId">
-			    AND PG_ID = #searchByPgId#
-			</isNotEmpty>    
+			    AND B.PG_ID = #searchByPgId#
+			</isNotEmpty> 
+			
+			<!-- 시스템구분으로 검색 -->
+			<isNotEmpty property="searchBySysGb">
+			    AND B.SYS_GB = #searchBySysGb#
+			</isNotEmpty>   
+			
+			<!-- 업무구분으로 검색 -->
+			<isNotEmpty property="searchByTaskGb">
+			    AND B.TASK_GB = #searchByTaskGb#
+			</isNotEmpty>   
 	</select>	
 	
 	<select id="devPlanDAO.selectDevResultList" parameterClass="searchVO" resultClass="egovMap">
