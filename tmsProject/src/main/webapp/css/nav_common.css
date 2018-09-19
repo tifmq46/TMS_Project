@@ -126,7 +126,7 @@ background-position: left center;padding-left:10px;padding-top:2px;letter-spacin
 #topnavi ul > a{color:#ffffff; text-shadow:0 1px 0 #000000; border-right:1px solid rgba(0, 0, 0, 0.2); padding-top:17px; padding-bottom:18px; padding-left:18px; padding-right:18px;}
 #topnavi li > a{color:#ffffff; text-shadow:0 1px 0 #000000; border-right:1px solid rgba(0, 0, 0, 0.2); padding-top:17px; padding-bottom:18px; padding-left:18px; padding-right:18px;}
 #topnavi ul > a:hover{color:#ffffff;}
-#container{float:left;width:1100px; margin-top:0px;min-height:440px; height:auto !important; height:440px;}
+#container{float:left;width:100%; margin-top:0px;min-height:440px; height:auto !important; height:440px;}
 #leftmenu{float:left;width:228px;min-height:440px; height:auto !important; height:100%; }
 #content{float:left;min-height:441px; height:auto !important; height:441px;padding-left:15px;padding-bottom:10px; border-left:1px solid #dddddd; width:800px; }
 #footer{clear:both;width:100%;font-size:100%;border-top:2px solid #dddddd;}

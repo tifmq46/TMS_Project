@@ -99,4 +99,8 @@ public interface DevPlanService {
 	 */
 	public List<?> selectDevPeriod() throws Exception;
 
+	public void insertWeek(int i);
+
+	public void deleteWeek()throws Exception;
+
 }

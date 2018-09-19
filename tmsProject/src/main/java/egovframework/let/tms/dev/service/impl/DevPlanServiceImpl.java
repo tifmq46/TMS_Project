@@ -129,5 +129,16 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<?> selectDevPeriod() throws Exception {
 		return devPlanDAO.selectDevPeriod();
 	}
+
+	@Override
+	public void insertWeek(int i) {
+		devPlanDAO.insertWeek(i);
+		
+	}
+
+	@Override
+	public void deleteWeek() throws Exception {
+		devPlanDAO.deleteWeek();
+	}
 	
 }
