@@ -336,6 +336,25 @@
 				]]>				
 	</select> 
 	
+	<insert id="DevPlanDAO.insertWeek" parameterClass="java.lang.Integer" >
+		<![CDATA[
+			INSERT INTO TEST
+				(weekyear)
+			VALUES
+			(#i#)			
+		]]>
+	</insert>
+	
+	<delete id="DevPlanDAO.deleteWeek">
+        <![CDATA[
+            DELETE FROM TEST
+        ]]>
+    </delete>
+    
+	
+	
+	
+	
 <!-- 
 	<resultMap id="tmplatDetail" class="egovframework.let.cop.com.service.TemplateInfVO">
 		<result property="tmplatId" column="TMPLAT_ID" columnIndex="1"/>
