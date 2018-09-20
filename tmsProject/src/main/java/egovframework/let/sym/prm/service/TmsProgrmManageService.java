@@ -1,5 +1,6 @@
 package egovframework.let.sym.prm.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
@@ -72,4 +73,6 @@ public interface TmsProgrmManageService {
 	List<?> TmsCommonCodeListSearch(ComDefaultVO searchVO);
 	int TmsCommonCodeListSearchTotCnt(ComDefaultVO searchVO);
 	Object insertProject(TmsProjectManageVO tmsProjectManageVO) throws Exception;
+	List<?> selectTestList();
+	List<?>[] selectProgrmList1(List<?> testList);
 }

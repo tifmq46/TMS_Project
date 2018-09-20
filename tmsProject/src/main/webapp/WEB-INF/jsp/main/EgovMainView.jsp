@@ -222,6 +222,47 @@
 	    					프로젝트 진행상태
     				</div>
     			</div>
+    			<div class="widget-content default_tablestyle" style="height:212px; overflow:auto; ">
+    				<table width="100%" cellspacing="0" cellpadding="0" class="table table-search-head table-size-th4">
+			    					<caption>프로젝트 멤버</caption>
+			            <colgroup>
+			            <col width="100%" >
+			           
+			            </colgroup>
+			            <thead>
+			            <tr>
+			                <th scope="col" class="f_field" nowrap="nowrap">이름</th>
+			                <th scope="col" nowrap="nowrap">역할</th>
+			                <th scope="col" nowrap="nowrap">대기</th>
+			                <th scope="col" nowrap="nowrap">조치중</th>
+			                <th scope="col" nowrap="nowrap">조치완료</th>
+			                <th scope="col" nowrap="nowrap">재요청</th>
+			                <th scope="col" nowrap="nowrap">최종완료</th>
+			            </tr>
+			            </thead>
+			            <tbody>                 
+			            
+			            <%-- <c:forEach var="result" items="${list_progrmmanage}" varStatus="status">
+			            <!-- loop 시작 -->                                
+			              <tr>
+						    <td nowrap="nowrap"><c:out value="${result.SYS_GB}"/></td>
+						    <td nowrap="nowrap"><c:out value="${result.TASK_GB}"/></td>
+						    <td nowrap="nowrap">
+						        <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.PG_ID}"/>','<c:out value="${result.USER_DEV_ID}"/>','<c:out value="${result.PG_NM}"/>','<c:out value="${result.SYS_GB}"/>','<c:out value="${result.TASK_GB}"/>'); return false;">
+						      <c:out value="${result.PG_ID}"/></a></span></td>
+						    <td nowrap="nowrap"><c:out value="${result.PG_NM}"/></td>
+						    <td nowrap="nowrap"><c:out value="${result.USER_DEV_ID}"/></td>
+			              </tr>
+			            </c:forEach> --%>
+			             <c:forEach var="testList1" items="${testList1}" varStatus="status">
+			            <!-- loop 시작 -->                                
+			              <tr>
+						    <td nowrap="nowrap"><c:out value="${testList1}"/></td>
+			              </tr>
+			            </c:forEach> 
+			            </tbody> 
+    				</table>
+    			</div>
     			
     		</div>    	    	
     	</div>

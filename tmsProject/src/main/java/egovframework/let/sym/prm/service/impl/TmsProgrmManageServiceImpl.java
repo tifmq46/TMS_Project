@@ -1,5 +1,6 @@
 package egovframework.let.sym.prm.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -101,5 +102,15 @@ public class TmsProgrmManageServiceImpl extends EgovAbstractServiceImpl implemen
 		// TODO Auto-generated method stub
 		TmsProgrmManageDAO.insertProject(tmsProjectManageVO);
 		return null;
+	}
+	@Override
+	public List<?> selectTestList() {
+		
+		return TmsProgrmManageDAO.selectTestList();
+	}
+	@Override
+	public List<?>[] selectProgrmList1(List<?> testList) {
+		// TODO Auto-generated method stub
+		return TmsProgrmManageDAO.selectProgrmList1(testList);
 	}
 }
