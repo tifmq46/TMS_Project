@@ -30,41 +30,52 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <title>프로그램파일명 검색</title>
 <style type="text/css">
-	h1 {font-size:12px;}
-	caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
-	
+   h1 {font-size:12px;}
+   caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
+   
 
 </style>
 <script language="javascript1.2"  type="text/javaScript"> 
 <!--
 /* ********************************************************
+ * 검색 엔터키 함수
+ ******************************************************** */
+function Enter_Remove(){ // input 에서 enter 입력시 다음에 있는 button이 호출되는 현상때문에 
+    // 엔터키의 코드는 13입니다.
+   if(event.keyCode == 13){
+      selectProgramListSearch();
+   }
+}
+
+/* ********************************************************
  * 페이징 처리 함수
  ******************************************************** */
 function linkPage(pageNo){
-	document.progrmManageForm.pageIndex.value = pageNo;
-	document.progrmManageForm.action = "<c:url value='/sym/prm/TmsProgramListSearch.do'/>";
-   	document.progrmManageForm.submit();
+   document.progrmManageForm.pageIndex.value = pageNo;
+   document.progrmManageForm.searchKeyword.value = '${searchVO.searchKeyword}';
+   document.progrmManageForm.action = "<c:url value='/sym/prm/TmsProgramListSearch.do'/>";
+      document.progrmManageForm.submit();
 }
 
 /* ********************************************************
  * 조회 처리 함수
  ******************************************************** */ 
 function selectProgramListSearch() { 
-	document.progrmManageForm.pageIndex.value = 1;
-	document.progrmManageForm.action = "<c:url value='/sym/prm/TmsProgramListSearch.do'/>";
-	document.progrmManageForm.submit();
+   document.progrmManageForm.pageIndex.value = 1;
+   document.progrmManageForm.action = "<c:url value='/sym/prm/TmsProgramListSearch.do'/>";
+   document.progrmManageForm.submit();
 }
 
 /* ********************************************************
  * 프로그램목록 선택 처리 함수
  ******************************************************** */ 
 function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb) { 
-	opener.document.all.TmsProgrmFileNm_pg_id.value = pg_id;
-	opener.document.all.TmsProgrmFileNm_user_dev_id.value = user_dev_id;
-	opener.document.all.TmsProgrmFileNm_pg_nm.value = pg_nm;
-	opener.document.all.TmsProgrmFileNm_sys_gb.value = sys_gb;
-	opener.document.all.TmsProgrmFileNm_task_gb.value = task_gb;
-	window.close();
+   opener.document.all.TmsProgrmFileNm_pg_id.value = pg_id;
+   opener.document.all.TmsProgrmFileNm_user_dev_id.value = user_dev_id;
+   opener.document.all.TmsProgrmFileNm_pg_nm.value = pg_nm;
+   opener.document.all.TmsProgrmFileNm_sys_gb.value = sys_gb;
+   opener.document.all.TmsProgrmFileNm_task_gb.value = task_gb;
+   window.close();
 }
 //-->
 </script>
@@ -72,16 +83,16 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb) {
 <body> 
 <form name="progrmManageForm" action ="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" method="post">
 <input type="submit" id="invisible" class="invisible"/>
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
     <!-- 검색 필드 박스 시작 -->
-    <div id="search_field">
+    <div id="search_field" style="width:100%">
         <div id="search_field_loc" class="h_title">프로그램명 검색</div>
             <fieldset><legend>조건정보 영역</legend>    
             <div class="sf_start">
                 <ul id="search_first_ul">
                     <li>
                         <label for="searchKeyword">프로그램명 : </label>
-                        <input id="searchKeyword" name="searchKeyword" type="text" size="30" value=""  maxlength="60" title="검색조건">
+                        <input id="searchKeyword" name="searchKeyword" type="text" size="30" value="${searchVO.searchKeyword}" onkeydown="return Enter_Remove();" maxlength="60" title="검색조건">
                     </li>       
                 </ul>
                 <ul id="search_second_ul">
@@ -123,13 +134,13 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb) {
             <c:forEach var="result" items="${list_progrmmanage}" varStatus="status">
             <!-- loop 시작 -->                                
               <tr>
-			    <td nowrap="nowrap"><c:out value="${result.SYS_GB}"/></td>
-			    <td nowrap="nowrap"><c:out value="${result.TASK_GB}"/></td>
-			    <td nowrap="nowrap">
-			        <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.PG_ID}"/>','<c:out value="${result.USER_DEV_ID}"/>','<c:out value="${result.PG_NM}"/>','<c:out value="${result.SYS_GB}"/>','<c:out value="${result.TASK_GB}"/>'); return false;">
-			      <c:out value="${result.PG_ID}"/></a></span></td>
-			    <td nowrap="nowrap"><c:out value="${result.PG_NM}"/></td>
-			    <td nowrap="nowrap"><c:out value="${result.USER_DEV_ID}"/></td>
+             <td nowrap="nowrap"><c:out value="${result.SYS_GB}"/></td>
+             <td nowrap="nowrap"><c:out value="${result.TASK_GB}"/></td>
+             <td nowrap="nowrap">
+                 <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.PG_ID}"/>','<c:out value="${result.USER_DEV_ID}"/>','<c:out value="${result.PG_NM}"/>','<c:out value="${result.SYS_GB}"/>','<c:out value="${result.TASK_GB}"/>'); return false;">
+               <c:out value="${result.PG_ID}"/></a></span></td>
+             <td nowrap="nowrap"><c:out value="${result.PG_NM}"/></td>
+             <td nowrap="nowrap"><c:out value="${result.USER_DEV_ID}"/></td>
               </tr>
             </c:forEach>
             </tbody> 
@@ -137,14 +148,13 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb) {
     </div>
 
     <!-- 페이지 네비게이션 시작 -->
-    <div id="paging_div">
-        <ul class="paging_align">
+    <div id="paging_div" style="width:100%">
+        <ul class="paging_align" style="width:100%">
             <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage"/>
         </ul>
     </div>                          
     <!-- //페이지 네비게이션 끝 -->  
-
+   
 </form>
 </body>
 </html>
-

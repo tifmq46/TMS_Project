@@ -50,7 +50,6 @@ function file_upload() {
 		alert("xlsx 파일만 업로드 하실 수 있습니다!");
 	    return;
 	}
-	alert("등록되었습니다.");
 	  
 	document.progrmManageForm.action = "<c:url value='/tms/pg/requestupload.do'/>";
 	document.progrmManageForm.submit();   
@@ -82,11 +81,19 @@ function test() {
 	}
 }
 
+function test3() {
+	if(document.progrmManageForm.test.value == "true") {
+		alert("등록이 성공했습니다!")
+	}else {
+		alert("등록이 실패했습니다!")
+	}
+}
 
 </script>
 <title>엑셀파일 등록</title>
 
 <style type="text/css">
+
     h1 {font-size:12px;}
     caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
 </style>
@@ -96,8 +103,9 @@ function test() {
 <body>
 <form id="progrmManageForm" name="progrmManageForm" action ="<c:url value='/sym/prm/EgovProgramListSearch.do'/>" method="post" enctype="multipart/form-data">
 <input type="submit" id="invisible" class="invisible"/>
+<input type="submit" id="test" class="invisible"/>
     <!-- 검색 필드 박스 시작 -->
-    <div id="search_field">
+    <div id="search_field" style="width:100%">
         <div id="search_field_loc" class="h_title">엑셀파일 등록</div>
             <fieldset><legend>조건정보 영역</legend>    
             <div class="sf_start">
@@ -105,7 +113,7 @@ function test() {
                     <li>
                         <input type="file" name="file" />
                         <div class="buttons" style="float:right;">                     	
-                        	<a href="#LINK" onclick="javascript:file_upload(); return false;">등록 </a>
+                        	<a href="#LINK" onclick="javascript:file_upload(); test3(); return false;">저장 </a>
                         	<font id="fon" >${result}</font> 
                         	<input type="hidden" id="change" name="change" value="<c:out value='${result}'/>" onclick="test(); return false;">
                         </div>

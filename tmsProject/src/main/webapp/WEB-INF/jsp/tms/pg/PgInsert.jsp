@@ -117,8 +117,8 @@
                             <td>
                             <select id="SYS_GB" name="SYS_GB" class="select" id="SYS_GB" title="시스템구분">
                                    <option selected value=''>--선택하세요--</option>
-                                   <option value="S1"><c:out value="S1"/></option>
-                                   <option value="S2"><c:out value="S2"/></option>
+                                   <option value="열차"><c:out value="열차"/></option>
+                                   <option value="기차"><c:out value="기차"/></option>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>  --%>   

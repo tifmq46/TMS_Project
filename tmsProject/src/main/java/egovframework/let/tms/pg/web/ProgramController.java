@@ -666,9 +666,11 @@ public class ProgramController {
 				ProgramService.insertPg(vo);
 				
 				model.addAttribute("result", "true");
+				model.addAttribute("result2", "true");
 			}       			
 		}catch(Exception e) {
 			model.addAttribute("result", "false");
+			model.addAttribute("result2", "false");
 		}
         
 

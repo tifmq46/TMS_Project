@@ -34,7 +34,6 @@
     }
     
     function fn_egov_regist_tmplatInfo(){
-    	alert("d");
         document.programVO.action = "<c:url value='/tms/pg/Pgupdate.do'/>";
         document.programVO.submit();
     
@@ -201,7 +200,7 @@
                       <table border="0" cellspacing="0" cellpadding="0" align="center">
                         <tr> 
                           <td>
-                              <a onclick="javaScript:fn_egov_regist_tmplatInfo(); return false;">수정</a> 
+                              <a onclick="javaScript:fn_egov_regist_tmplatInfo(); return false;">저장</a> 
                           </td>
                           <td>
                               <a href="<c:url value='/tms/pg/PgManage.do'/>" >목록</a>

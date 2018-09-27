@@ -58,7 +58,7 @@
 			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
-			    AND a.USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+			    AND a.USER_DEV_ID IN (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT('%' , #searchByUserDevId#, '%'))
 			</isNotEmpty> 
 			LIMIT 
 				#recordCountPerPage# OFFSET #firstIndex#
@@ -91,7 +91,7 @@
 			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+			    AND USER_DEV_ID IN (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT('%' , #searchByUserDevId#, '%'))
 			</isNotEmpty> 
 	</select>	
 	
@@ -168,7 +168,7 @@
 		         ) 
 		    VALUES  
 		         (  #PG_ID#
-		         ,  #USER_DEV_ID#
+		         ,  (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT(#USER_DEV_ID#))
 		         ,  #PG_NM#
 		         ,  #SYS_GB#
 		         ,  #TASK_GB#
@@ -182,7 +182,7 @@
 	<update id="ProgramDAO.updatePg" parameterClass="ProgramVO">
  		<![CDATA[
 			UPDATE PG_TB SET 
-				USER_DEV_ID = #USER_DEV_ID#, 
+				USER_DEV_ID = (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT(#USER_DEV_ID#)), 
 				PG_NM = #PG_NM#,
 				SYS_GB = #SYS_GB#,
 				TASK_GB = #TASK_GB#,
@@ -194,8 +194,7 @@
 	<!-- 삭제 -> 사용여부 변경 -->
 	<update id="ProgramDAO.deletePg" parameterClass="ProgramVO">
  		<![CDATA[
-			UPDATE PG_TB SET 				
-				USE_YN = 'N'				
+			DELETE FROM PG_TB
 			WHERE PG_ID = #PG_ID#
  		]]>
  	</update>
