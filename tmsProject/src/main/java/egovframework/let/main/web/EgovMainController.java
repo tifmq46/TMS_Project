@@ -166,11 +166,29 @@ public class EgovMainController {
 			System.out.println("이름:"+names[j]); 
 		}        
 		
-		int k =38;
+		//int k =38;
 		int k1 =38;
-		String val[] = new String[6];
-		HashMap<String, String> ta = new HashMap<String,String>();
-		HashMap<String, String> tb = new HashMap<String,String>();
+		
+		//String hm = hm+k;
+		
+		HashMap<String, String> hm1 = new HashMap<String,String>();
+		HashMap<String, String> hm2 = new HashMap<String,String>();
+		HashMap<String, String> hm3 = new HashMap<String,String>();
+		HashMap<String, String> hm4 = new HashMap<String,String>();
+		
+		/*for(int i=0; i<firstVal; i++){
+			HashMap<String, String> hmi = new HashMap<String,String>();			
+		}*/
+		
+		int k[] = new int[4];
+		@SuppressWarnings("unchecked")
+		HashMap<String,String>[] rrr = new HashMap[4];
+		ArrayList<HashMap<String, String>> al = new ArrayList <HashMap<String,String>>();
+		
+		for(int i=0; i<firstVal; i++){
+			k[i]=38;
+		}
+		
 		String t, t2;
 		
 		for(int i=0; i<r1.size();i++){
@@ -178,30 +196,41 @@ public class EgovMainController {
 			//System.out.println("-----------------"+r1.get(i));
 			String temp = r1.get(i).get("BN").toString();
 			
-			if(names[0].equals(temp)){
-				t = (String.format("%s",r1.get(i).get("B"+k)));
-				System.out.println(t);
+			for(int j=0; j<firstVal; j++){
+				if(names[j].equals(temp)){
+					t = (String.format("%s",r1.get(i).get("B"+k[j])));
+					
+					hm1.put("BN", names[j]);
+					hm1.put("B"+k[j], t);
+					
+					System.out.println("맵: "+ hm1);
+					System.out.println("앞 리스트 :"+al);
+					
+					if(hm1.containsKey("B43")){
+						System.out.println("><><><");
+						al.add(j,hm1);
+					}
+					System.out.println("j========" + j);
+					System.out.println("뒤 리스트 :"+al);
+					System.out.println("----");
+					
+					k[j] +=1;
+					
+				}
 				
-				ta.put("BN", names[0]);
-				ta.put("B"+k, t);
-				k+=1;
-			}else if(names[1].equals(temp)){
-				t = (String.format("%s",r1.get(i).get("B"+k1)));
-				System.out.println(t);
+				r2.addAll(al);
 				
-				tb.put("BN", names[1]);
-				tb.put("B"+k1, t);
-				k1+=1;
 			}
 		}
-
-		r2.add(ta);
-		r2.add(tb);
+		//r2.addAll(al);
+		
+		//r2.add(rrr[0]);
+		//r2.add(hm2);
 		
 		System.out.println("====="+r2);
 		
 		model.addAttribute("testList1", r1);
-		model.addAttribute("kk", val);
+		
 		model.addAttribute("r2", r2);
 		
 		return "main/EgovMainView";
