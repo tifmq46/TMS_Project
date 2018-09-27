@@ -1,5 +1,7 @@
 package egovframework.let.tms.defect.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,4 +61,20 @@ public interface DefectService {
 	public List<?> selectDayByDefectCnt();
 	
 	public List<?> selectMonthByDefectCnt();
+	
+	public List<String> selectTaskByStats(String taskGbList);
+	
+	public List<String> selectTaskGbByDefect();
+	
+	public List<String> selectPgIdByDefect();
+	
+	public List<String> selectPgByStats(String pgIdList);
+	
+	public List<String> selectUserTestIdByDefect();
+	
+	public List<String> selectUserTestByStats(String userTestList);
+	
+	public List<String> selectUserDevIdByDefect();
+	
+	public List<String> selectUserDevByStats(String userDevList);
 }

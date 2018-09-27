@@ -1,5 +1,7 @@
 package egovframework.let.tms.defect.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -143,5 +145,45 @@ public class DefectDAO extends EgovAbstractDAO{
 	
 	public List<?> selectMonthByDefectCnt(){
 		return list("defectDAO.selectMonthByDefectCnt");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> selectTaskByStats(String taskGbList) {
+		return (List<String>) list("defectDAO.selectTaskByStats", taskGbList);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> selectTaskGbByDefect() {
+		return (List<String>) list("defectDAO.selectTaskGbByDefect");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> selectPgIdByDefect() {
+		return (List<String>) list("defectDAO.selectPgIdByDefect");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> selectPgByStats(String pgIdList) {
+		return (List<String>) list("defectDAO.selectPgByStats", pgIdList);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> selectUserTestIdByDefect(){
+		return (List<String>) list("defectDAO.selectUserTestIdByDefect");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> selectUserTestByStats(String userTestList) {
+		return (List<String>) list("defectDAO.selectUserTestByStats", userTestList);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> selectUserDevIdByDefect(){
+		return (List<String>) list("defectDAO.selectUserDevIdByDefect");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> selectUserDevByStats(String userDevList) {
+		return (List<String>) list("defectDAO.selectUserDevByStats", userDevList);
 	}
 }

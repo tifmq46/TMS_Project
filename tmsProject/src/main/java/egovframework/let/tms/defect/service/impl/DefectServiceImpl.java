@@ -1,5 +1,7 @@
 package egovframework.let.tms.defect.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -212,6 +214,62 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 	
 	public List<?> selectMonthByDefectCnt(){
 		return defectDAO.selectMonthByDefectCnt();
+	}
+
+
+	@Override
+	public List<String> selectTaskByStats(String taskGbList) {
+		// TODO Auto-generated method stub
+		return defectDAO.selectTaskByStats(taskGbList);
+	}
+
+
+	@Override
+	public List<String> selectTaskGbByDefect() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectTaskGbByDefect();
+	}
+
+
+	@Override
+	public List<String> selectPgIdByDefect() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectPgIdByDefect();
+	}
+
+
+	@Override
+	public List<String> selectPgByStats(String pgIdList) {
+		// TODO Auto-generated method stub
+		return defectDAO.selectPgByStats(pgIdList);
+	}
+
+
+	@Override
+	public List<String> selectUserTestIdByDefect() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectUserTestIdByDefect();
+	}
+
+
+	@Override
+	public List<String> selectUserTestByStats(String userTestList) {
+		// TODO Auto-generated method stub
+		return defectDAO.selectUserTestByStats(userTestList);
+	}
+
+
+	@Override
+	public List<String> selectUserDevIdByDefect() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectUserDevIdByDefect();
+	}
+
+
+	@Override
+	public List<String> selectUserDevByStats(String userDevList) {
+		// TODO Auto-generated method stub
+		return defectDAO.selectUserDevByStats(userDevList);
 	}
 
 }

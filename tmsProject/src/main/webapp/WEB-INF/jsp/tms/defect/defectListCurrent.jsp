@@ -159,7 +159,9 @@
                  	<td align="center"></td>
                  	<fmt:parseNumber var="actionProgression" integerOnly="true" value="${actionComplete / actionTotCnt * 100}"/>
                  	<%-- ${actionProgression}% --%>
-                 	<td align="center">진행률 : <div class="progress"><div class="progress-bar" style="width:${actionProgression}%"> <strong><c:out value=" ${actionProgression}"></c:out>%</strong></div></div>
+                 	<td align="center">진행률 : </td>
+                 	<td>
+                 	<div class="progress"><div class="progress-bar" style="width:${actionProgression}%"> <strong><c:out value=" ${actionProgression}"></c:out>%</strong></div></div>
                  	</td>
                  	<td align="center"></td>
                  	

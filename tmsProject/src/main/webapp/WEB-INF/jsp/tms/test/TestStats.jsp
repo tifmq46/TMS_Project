@@ -167,7 +167,7 @@ window.onload = function() {
 							  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;등록건수
 						</div>
                  </div>
-                    
+                    	
                  <div class="progess_bar_section" >
                       	
 					    <span><strong>업무별 단위테스트 진행률</strong></span>
