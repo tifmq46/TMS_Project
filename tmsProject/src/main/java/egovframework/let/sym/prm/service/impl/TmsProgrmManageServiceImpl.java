@@ -109,8 +109,8 @@ public class TmsProgrmManageServiceImpl extends EgovAbstractServiceImpl implemen
 		return TmsProgrmManageDAO.selectTestList();
 	}
 	@Override
-	public List<?>[] selectProgrmList1(List<?> testList) {
+	public List<HashMap<String, String>> selectProgrmList1(int a) {
 		// TODO Auto-generated method stub
-		return TmsProgrmManageDAO.selectProgrmList1(testList);
+		return TmsProgrmManageDAO.selectProgrmList1(a);
 	}
 }

@@ -141,7 +141,7 @@
 	
 	<!-- 공통코드수 조회 -->
 	<select id="TmsProgrmManageDAO.selectTestList1" parameterClass="java.lang.Integer" resultClass="java.util.HashMap" remapResults="true">
-			SELECT SUM(A#i#) AS week#i# FROM
+			SELECT O.NAME AS BN, SUM(A#i#) AS B#i# FROM
 (
    SELECT IFNULL(X.USER_NM, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = Y.USER_DEV_ID)) AS NAME
          ,IFNULL(CASE WHEN X.W = #i# THEN X.CNT END,0) AS A#i#

@@ -1,9 +1,11 @@
 package egovframework.let.main.web;
 
-import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -142,17 +144,78 @@ public class EgovMainController {
 		// 프로젝트 멤버 부분 끝 ----------------------------
 		
 		List<?> testList = TmsProgrmManageService.selectTestList();
-		List<?>[] testList1 = TmsProgrmManageService.selectProgrmList1(testList);
-		System.out.println("testList0 ========================================== " + testList1[0]);
-		System.out.println("testList1 ========================================== " + testList1[1]);
-		System.out.println("testList2 ========================================== " + testList1[2]);
-		System.out.println("testList3 ========================================== " + testList1[3]);
-		System.out.println("testList4 ========================================== " + testList1[4]);
-		System.out.println("testList5 ========================================== " + testList1[5]);
 		
-		model.addAttribute("testList1", testList1);
+		List<HashMap<String,String>> r1 = new ArrayList <HashMap<String,String>>();
+		List<HashMap<String,String>> r2 = new ArrayList <HashMap<String,String>>();
+		
+		//r1 = TmsProgrmManageService.selectProgrmList1(38);
+		for(int i=38; i<44;i++){
+			r1.addAll(TmsProgrmManageService.selectProgrmList1(i));
+		}
+		
+		System.out.println("====tttt====="+r1);
+		
 
+		System.out.println(r1.size());
+		int firstVal = r1.size()/6;
+		String[] names = new String[firstVal];
+		String[] names2 = new String[firstVal];
 		
+		for(int j=0; j<firstVal;j++){
+			names[j] = r1.get(j).get("BN").toString();
+			System.out.println("이름:"+names[j]); 
+		}        
+		
+		int k =0;
+		String val[] = new String[6];
+		HashMap<String, String> ta = new HashMap<String,String>();
+		HashMap<String, String> tb = new HashMap<String,String>();
+		String t, t2;
+		for(int i=0; i<r1.size();i++){
+			
+			//System.out.println("-----------------"+r1.get(i));
+			String temp = r1.get(i).get("BN").toString();
+			
+			if(names[0].equals(temp)){
+				/*t = (String.format("%s",r1.get(i).get("B38")));
+				t2 = (String.format("%s",r1.get(i).get("B39")));
+				System.out.println(t);
+				
+				t1.put("B38", t);
+				t1.put("B39", t2);*/
+				//k++;
+				//r2.add(r1.get(i));
+				//val[k]= (String.format("%s",r1.get(i)));
+				//k++;
+			}
+			
+		}
+		// r2.add(t1);
+		ta.put("BN", "방주이");
+		ta.put("B38", "0");
+		ta.put("B39", "6");
+		ta.put("B40", "2");
+		
+		tb.put("BN", "장현우");
+		tb.put("B38", "5");
+		tb.put("B39", "1");
+		tb.put("B40", "2");
+		
+		r2.add(ta);
+		r2.add(tb);
+		
+		for(int i=0; i<val.length;i++){
+			//System.out.print("배열:"+val[i]);
+		}
+		
+		//List<String> r2 = new ArrayList <String>(Arrays.asList(val));
+		
+		
+			System.out.println("====="+r2);
+		
+		model.addAttribute("testList1", r1);
+		model.addAttribute("kk", val);
+		model.addAttribute("r2", r2);
 		
 		return "main/EgovMainView";
 	}
