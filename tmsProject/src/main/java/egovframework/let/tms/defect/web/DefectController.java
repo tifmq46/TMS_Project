@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +42,7 @@ import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.defect.service.DefectVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import net.sf.json.JSONArray;
 
 @Controller
 public class DefectController {
@@ -162,6 +165,7 @@ public class DefectController {
 		
 		DefectFileVO defectImgOne = defectService.selectDefectImgOne(defectVO.getDefectIdSq());
 		model.addAttribute("defectImgOne", defectImgOne);
+		
 		
 		return "tms/defect/defectListOne";
 	}
@@ -313,7 +317,7 @@ public class DefectController {
 		return "tms/defect/defectListOne";
 	}
 	
-	/** 결함처리통계 */
+	/** 결함처리통계(그래프) */
 	@RequestMapping("/tms/defect/selectDefectStats.do")
 	public String selectDefectStats(ModelMap model) throws Exception {
 		
@@ -330,11 +334,12 @@ public class DefectController {
 		
 		// 업무별 조치율
 		List<?> taskByActionProgression = defectService.selectTaskByActionProgression();
-		model.addAttribute("taskByActionProgression", taskByActionProgression);
+//		model.addAttribute("taskByActionProgression", taskByActionProgression);
+		model.addAttribute("taskByActionProgression", JSONArray.fromObject(taskByActionProgression));
 		
 		// 업무별 상태별 결함건수
 		List<?> taskByActionStCnt = defectService.selectTaskByActionStCnt();
-		model.addAttribute("taskByActionStCnt", taskByActionStCnt);
+		model.addAttribute("taskByActionStCnt", JSONArray.fromObject(taskByActionStCnt));
 		
 		// 업무별 유형별 결함 건수
 		List<?> taskByDefectGbCnt = defectService.selectTaskByDefectGbCnt();
@@ -342,4 +347,39 @@ public class DefectController {
 		
 		return "tms/defect/defectStats";
 	}
+	
+	@RequestMapping("/tms/defect/selectDefectStatsList.do")
+	public String selectDefectStatsList(ModelMap model){
+		List<String> taskGbList = defectService.selectTaskGbByDefect();
+		List<String> taskGbByStats = new ArrayList<String>();
+		for(int i=0; i<taskGbList.size(); i++) {
+			taskGbByStats.addAll(defectService.selectTaskByStats(taskGbList.get(i).toString()));
+		}
+		System.out.println("###########"+taskGbByStats);
+		
+		List<String> pgIdList = defectService.selectPgIdByDefect();
+		List<String> pgIdByStats = new ArrayList<String>();
+		for (int i=0; i<pgIdList.size(); i++) {
+			pgIdByStats.addAll(defectService.selectPgByStats(pgIdList.get(i).toString()));
+		}
+
+		List<String> userTestList = defectService.selectUserTestIdByDefect();
+		List<String> userTestByStats = new ArrayList<String>();
+		for (int i=0; i<userTestList.size(); i++) {
+			userTestByStats.addAll(defectService.selectUserTestByStats(userTestList.get(i).toString()));
+		}
+
+		List<String> userDevList = defectService.selectUserDevIdByDefect();
+		List<String> userDevByStats = new ArrayList<String>();
+		for (int i=0; i<userDevList.size(); i++) {
+			userDevByStats.addAll(defectService.selectUserDevByStats(userDevList.get(i).toString()));
+		}
+		
+		model.addAttribute("taskGbByStats",taskGbByStats);
+		model.addAttribute("pgIdByStats",pgIdByStats);
+		model.addAttribute("userTestByStats",userTestByStats);
+		model.addAttribute("userDevByStats",userDevByStats);
+		return "tms/defect/defectStatsList";
+	}
+	
 }
