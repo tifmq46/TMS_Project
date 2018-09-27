@@ -1,6 +1,7 @@
 package egovframework.let.main.web;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -149,6 +150,9 @@ public class EgovMainController {
 		System.out.println("testList3 ========================================== " + testList1[3]);
 		System.out.println("testList4 ========================================== " + testList1[4]);
 		System.out.println("testList5 ========================================== " + testList1[5]);
+		
+		
+		
 		
 		model.addAttribute("testList1", testList1);
 

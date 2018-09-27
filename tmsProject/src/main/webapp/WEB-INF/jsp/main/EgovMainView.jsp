@@ -75,6 +75,7 @@
 	                	<input type="text" id="TmsProgrmFileNm_pg_nm" size="20" disabled="disabled">
 	                	<input type="text" id="TmsProgrmFileNm_sys_gb" size="20" disabled="disabled">
 	                	<input type="text" id="TmsProgrmFileNm_task_gb" size="20" disabled="disabled">
+	                	<input type="text" id="TmsProgrmFileNm_user_real_id" size="20" disabled="disabled">
                     </div>
                 </li>	
             </ul>           
@@ -248,18 +249,20 @@
 			            </thead>
 			            <tbody>                 
 			            
-				            <c:forEach var="t1" items="${testList1}" varStatus="status">
+				        <c:forEach var="testList1" items="${testList1}" varStatus="status">
+				        <c:if test="${status.index eq 0}">
 			            <!-- loop 시작 -->                                
 			              <tr>
-			              	<td nowrap="nowrap"><c:out value="${status.count}"/></td>
-						    <td nowrap="nowrap"><c:out value="${t1.week38}"/></td>
-						    <td nowrap="nowrap"><c:out value="${t1.week39}"/></td>
-						    <td nowrap="nowrap"><c:out value="${t1.week40}"/></td>
-						    <td nowrap="nowrap"><c:out value="${t1.week41}"/></td>
-						    <td nowrap="nowrap"><c:out value="${t1.week42}"/></td>
-						    <td nowrap="nowrap"><c:out value="${t1.week43}"/></td>
+			              	<td nowrap="nowrap"><c:out value="1"/></td>
+						    <td nowrap="nowrap"><c:out value="${testList1}"/></td>
+						    <td nowrap="nowrap"><c:out value="${testList1[0].week39}"/></td>
+						    <td nowrap="nowrap"><c:out value="2"/></td>
+						    <td nowrap="nowrap"><c:out value="3"/></td>
+						    <td nowrap="nowrap"><c:out value="4"/></td>
+						    <td nowrap="nowrap"><c:out value="5"/></td>
 			              </tr>
-			            </c:forEach> 
+			            </c:if>
+			            </c:forEach>  
 			            </tbody> 
     				</table>
     			</div>
