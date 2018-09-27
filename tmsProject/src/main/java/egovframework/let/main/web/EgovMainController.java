@@ -181,8 +181,6 @@ public class EgovMainController {
 		}*/
 		
 		int k[] = new int[4];
-		@SuppressWarnings("unchecked")
-		HashMap<String,String>[] rrr = new HashMap[4];
 		ArrayList<HashMap<String, String>> al = new ArrayList <HashMap<String,String>>();
 		
 		for(int i=0; i<firstVal; i++){
@@ -198,27 +196,29 @@ public class EgovMainController {
 			
 			for(int j=0; j<firstVal; j++){
 				if(names[j].equals(temp)){
+					
 					t = (String.format("%s",r1.get(i).get("B"+k[j])));
 					
 					hm1.put("BN", names[j]);
 					hm1.put("B"+k[j], t);
+					
+					
 					
 					System.out.println("맵: "+ hm1);
 					System.out.println("앞 리스트 :"+al);
 					
 					if(hm1.containsKey("B43")){
 						System.out.println("><><><");
-						al.add(j,hm1);
+						//hm2.putAll(hm1);
+						al.add(j, hm1);
+						System.out.println("뒤 리스트 :"+al);
 					}
-					System.out.println("j========" + j);
-					System.out.println("뒤 리스트 :"+al);
-					System.out.println("----");
 					
 					k[j] +=1;
 					
 				}
 				
-				r2.addAll(al);
+				//r2.addAll(al);
 				
 			}
 		}
