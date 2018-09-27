@@ -91,7 +91,7 @@ function load() {
 }
 </script>
 
-<title>템플릿 목록</title>
+<title>프로그램현황</title>
 <style type="text/css">
     h1 {font-size:12px;}
     caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
@@ -116,9 +116,9 @@ function load() {
                         <ul>
                             <li>HOME</li>
                             <li>&gt;</li>
-                            <li>개발진척관리</li>
+                            <li>프로그램관리</li>
                             <li>&gt;</li>
-                            <li><strong>개발계획관리</strong></li>
+                            <li><strong>프로그램현황</strong></li>
                         </ul>
                     </div>
                 </div>
@@ -126,12 +126,12 @@ function load() {
  			
                 
                 <!-- 검색 필드 박스 시작 -->
-                <form:form commandName="searchVO1" name="frm" id="frm" method="post" action="<c:url value='/tms/pg/PgCurrent.do'/>" >   
+                <form:form commandName="searchVO" name="frm" id="frm" method="post" action="<c:url value='/tms/pg/PgCurrent.do'/>" >   
 				 
-                <input type="hidden" name="pageIndex" value="<c:out value='${searchVO1.pageIndex}'/>"/>
+                <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 				
 				<div id="search_field">
-					<div id="search_field_loc"><h2><strong>개발계획관리</strong></h2></div>
+					<div id="search_field_loc"><h2><strong>프로그램현황</strong></h2></div>
 					
 					  	<fieldset><legend>조건정보 영역</legend>	  
 					  	<div class="sf_start">
@@ -160,13 +160,13 @@ function load() {
         		<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
         			<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
         			<colgroup>
-        				<col width="25"/> 
-        				<col width="25"/>
-        				<col width="30"/>
+        				<col width="40"/> 
         				<col width="50"/>
+        				<col width="30"/>
+        				<col width="40"/>
         				<col width="20"/>
-        				<col width="50"/>
-        				<col width="30"/>
+        				<col width="20"/>
+        				<col width="20"/>
         			</colgroup>
         			<tr>
         				<th align="center">프로그램ID</th>

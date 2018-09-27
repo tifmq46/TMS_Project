@@ -28,7 +28,7 @@
 <meta http-equiv="content-language" content="ko">
 <link href="<c:url value='/'/>css/popup.css" rel="stylesheet" type="text/css" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
-<title>프로그램파일명 검색</title>
+<title>엑셀파일명 검색</title>
 <style type="text/css">
 	h1 {font-size:12px;}
 	caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
@@ -74,6 +74,15 @@ function fn_excel_enroll(){
 	document.frm.submit();
 }
 
+function test() {
+	if(document.progrmManageForm.change.value == "true") {
+		alert("등록이 성공했습니다!")
+	}else {
+		alert("등록이 실패했습니다!")
+	}
+}
+
+
 </script>
 <title>엑셀파일 등록</title>
 
@@ -84,7 +93,7 @@ function fn_excel_enroll(){
 
 
 </head>
-<body >
+<body>
 <form id="progrmManageForm" name="progrmManageForm" action ="<c:url value='/sym/prm/EgovProgramListSearch.do'/>" method="post" enctype="multipart/form-data">
 <input type="submit" id="invisible" class="invisible"/>
     <!-- 검색 필드 박스 시작 -->
@@ -96,8 +105,9 @@ function fn_excel_enroll(){
                     <li>
                         <input type="file" name="file" />
                         <div class="buttons" style="float:right;">                     	
-                        	<a href="#LINK" onclick="javascript:file_upload(); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />등록 </a>
+                        	<a href="#LINK" onclick="javascript:file_upload(); return false;">등록 </a>
                         	<font id="fon" >${result}</font> 
+                        	<input type="hidden" id="change" name="change" value="<c:out value='${result}'/>" onclick="test(); return false;">
                         </div>
                     </li>       
                 </ul>

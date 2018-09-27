@@ -22,7 +22,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="templateInf" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
@@ -39,36 +39,9 @@
     
 	}
 
-    function fn_egov_selectTmplatType(obj){
-        if (obj.value == 'TMPT01') {
-            document.getElementById('sometext').innerHTML = "게시판 템플릿은 CSS만 가능합니다.";
-        } else if (obj.value == '') {
-            document.getElementById('sometext').innerHTML = "";
-        } else {
-            document.getElementById('sometext').innerHTML = "템플릿은 JSP만 가능합니다.";
-        }       
-    }
 
-    function fn_egov_previewTmplat() {
-        var frm = document.templateInf;
-        
-        var url = frm.tmplatCours.value;
-
-        var target = "";
-
-        if (frm.tmplatSeCode.value == 'TMPT01') {
-            target = "<c:url value='/cop/bbs/previewBoardList.do'/>";
-            width = "1024";
-        } else {
-            alert('<spring:message code="cop.tmplatCours" /> 지정 후 선택해 주세요.');
-        }
-
-        if (target != "") {
-            window.open(target + "?searchWrd="+url, "preview", "width=" + width + "px, height=500px;");
-        }
-    }
 </script>
-<title>템플릿 등록</title>
+<title>프로그램등록</title>
 
 <style type="text/css">
     h1 {font-size:12px;}
@@ -82,8 +55,7 @@
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
     <!-- //header 끝 --> 
     <!-- container 시작 -->
     <div id="container">
@@ -143,7 +115,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="SYS_GB" name="SYS_GB" class="select" onchange="fn_egov_selectTmplatType(this)" id="SYS_GB" title="시스템구분">
+                            <select id="SYS_GB" name="SYS_GB" class="select" id="SYS_GB" title="시스템구분">
                                    <option selected value=''>--선택하세요--</option>
                                    <option value="S1"><c:out value="S1"/></option>
                                    <option value="S2"><c:out value="S2"/></option>
@@ -162,7 +134,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="TASK_GB" name="TASK_GB" class="select" onchange="fn_egov_selectTmplatType(this)" id="TASK_GB" title="업무구분">
+                            <select id="TASK_GB" name="TASK_GB" class="select" id="TASK_GB" title="업무구분">
                                    <option selected value=''>--선택하세요--</option>
                                    <option value="T1"><c:out value="T1"/></option>
                                    <option value="T2"><c:out value="T2"/></option>

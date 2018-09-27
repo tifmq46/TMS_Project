@@ -56,8 +56,9 @@ public interface ProgramService {
 	 */
 	int selectPgListTotCnt(ProgramDefaultVO searchVO);
 
-	int selectPgCurrentTotCnt(ProgramDefaultVO searchVO);
+	int selectPgCurrentTotCnt();
 
-	List<?> selectPgCurrentList(ProgramDefaultVO searchVO) throws Exception;
+	List<?> selectPgCurrentList(PgCurrentVO searchVO) throws Exception;
 	
+	List<?> selectPgCurrentExcelList() throws Exception;
 }

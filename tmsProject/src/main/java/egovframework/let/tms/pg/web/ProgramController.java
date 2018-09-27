@@ -9,9 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -61,9 +65,9 @@ public class ProgramController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/pg/PgManage.do")
-	public String selectPgList(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+	public String selectPgList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
-		System.out.println("searchVO = " + searchVO.getPageIndex());
+		System.out.println("시스템 = " + searchVO.getSearchBySysGb());
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -89,59 +93,25 @@ public class ProgramController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
+		// 공통코드 부분 시작 -------------------------------	
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
 		
+		System.out.println(searchVO.getSearchBySysGb());
+		System.out.println(searchVO.getSearchByTaskGb());
+		if(!searchVO.getSearchBySysGb().isEmpty()) {
+			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
+			model.addAttribute("taskGb2", taskGbList2);
+		}
+		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		
+		// 공통코드 끝 시작 -------------------------------	
 		
 
 		return "tms/pg/PgManage";
 	}
-	/*
-	@RequestMapping(value = "/tms/pg/PgPage.do")
-	public String selectPage(@RequestParam("fon") String fon, @ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
-		System.out.println("페이지-"+fon);
-		//System.out.println("--manage--"); 
-		int index_page = Integer.parseInt(fon);
-		searchVO.setPageIndex(index_page);
-		
-		// 공통코드 부분 시작 -------------------------------	
-		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
-		model.addAttribute("sysGb", sysGbList);
-		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
-		model.addAttribute("taskGb", taskGbList);
-		// 공통코드 끝 시작 -------------------------------		
-		
-		
-		*//** EgovPropertyService.sample *//*
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-		*//** pageing setting *//*
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
-
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-
-		System.out.println("--"+paginationInfo.getRecordCountPerPage());
-		//List<?> PgList = ProgramService.selectPgList(searchVO);
-		//model.addAttribute("resultList", PgList);
-
-		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
-		System.out.println("---"+totCnt);
-		paginationInfo.setTotalRecordCount(totCnt);
-		paginationInfo.setPageSize(10);
-		paginationInfo.setCurrentPageNo(index_page);
-		model.addAttribute("paginationInfo", paginationInfo);
-		
-		model.addAttribute("index",searchVO.getPageIndex());
-		model.addAttribute("size", searchVO.getPageSize());
-		
-		System.out.println("----"+searchVO.getPageIndex());
-		System.out.println("----"+searchVO.getPageSize());
-		return "tms/pg/PgManage";
-	}*/
 	/**
 	 * 글 상세정보을 조회한다. 
 	 * @param searchVO - 조회할 정보가 담긴 ProgramDefaultVO
@@ -169,7 +139,7 @@ public class ProgramController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/pg/PgCurrent.do")
-	public String selectDevResultList(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+	public String selectDevResultList(@ModelAttribute("searchVO") PgCurrentVO searchVO, ModelMap model) throws Exception {
 		
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -189,7 +159,7 @@ public class ProgramController {
 		//List<?> PgList = ProgramService.selectPgList(searchVO);
 		model.addAttribute("resultList", PgList);
 
-		int totCnt = ProgramService.selectPgCurrentTotCnt(searchVO);
+		int totCnt = ProgramService.selectPgCurrentTotCnt();
 		
 		System.out.println("current--"+totCnt);
 		
@@ -203,14 +173,14 @@ public class ProgramController {
 	 * 프로그램 정보를 등록한다.	 
 	 */	
 	@RequestMapping(value = "/tms/pg/PgInsert.do")
-	public String registerPgList(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+	public String registerPgList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
 		
 		
 		return "tms/pg/PgInsert";
 	}
 	@RequestMapping(value = "/tms/pg/Pginsert.do")
-	public String insertPgList(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
+	public String insertPgList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
 			programVO.setPJT_ID("1");
 			/*
@@ -253,7 +223,7 @@ public class ProgramController {
 	 * 프로그램 정보를 수정한다.	 
 	 */	
 	@RequestMapping(value = "/tms/pg/Pgupdate.do")
-	public String insertPgUpdate(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
+	public String insertPgUpdate(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
 		
 			ProgramService.updatePg(programVO);
@@ -287,8 +257,8 @@ public class ProgramController {
 	 * 프로그램 사용여부를 수정한다.	 
 	 */	
 	@RequestMapping(value = "/tms/pg/deletePg.do")
-	public String insertPgDelete(@RequestParam("del") String del, @ModelAttribute("searchVO1") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
-			//System.out.println("---여기다!"+del);
+	public String insertPgDelete(@RequestParam("del") String del, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
+			System.out.println("---여기다!"+del);
 		
 			String[] strDelCodes = del.split(";");
 			for (int i = 0; i < strDelCodes.length; i++) {
@@ -329,19 +299,20 @@ public class ProgramController {
 	 * 프로그램 현황을 엑섹파일로 출력한다.	 
 	 */	
 	@RequestMapping(value = "/tms/pg/ExelWrite.do")
-	public String ExelWrite(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
+	public String ExelWrite(@ModelAttribute("searchVO") PgCurrentVO searchVO, ModelMap model) throws Exception {
 
 		// 엑셀로 쓸 데이터 생성		
 		List<PgCurrentVO> list = new ArrayList<PgCurrentVO>();
 		
 		// 엑셀 리스트 생성
-		List<?> excelList = ProgramService.selectPgCurrentList(searchVO);
+		List<?> excelList = ProgramService.selectPgCurrentExcelList();
 		
 		// 엑셀 데이터에 엑셀 리스트 추가
 		for(int i=0; i<excelList.size(); i++)
 		{
 			PgCurrentVO excel = (PgCurrentVO) excelList.get(i);
 			list.add(excel);
+			
 		}
 		//xlsx 파일 쓰기
 		xlsxWiter(list);	
@@ -365,7 +336,7 @@ public class ProgramController {
 		//List<?> PgList = ProgramService.selectPgList(searchVO);
 		model.addAttribute("resultList", PgList);
 
-		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
+		int totCnt = ProgramService.selectPgCurrentTotCnt();
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
@@ -380,7 +351,7 @@ public class ProgramController {
 	 * 엑셀파일을 업로드한다.
 	 * 	 */	
 	@RequestMapping(value = "/tms/pg/fileupload.do")
-	public String upload(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model, MultipartFile uploadfile) throws Exception{
+	public String upload(@ModelAttribute("searchVO") PgCurrentVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model, MultipartFile uploadfile) throws Exception{
 		
 	       
 	    		  
@@ -433,25 +404,22 @@ public class ProgramController {
 		// 쎌 생성
 		HSSFCell cell;
 		
+		
+		
 		// 헤더 정보 구성
 		cell = row.createCell(0);
 		cell.setCellValue("프로그램ID");
-		
+
 		cell = row.createCell(1);
 		cell.setCellValue("프로그램명");
-		
 		cell = row.createCell(2);
 		cell.setCellValue("개발자");
-		
 		cell = row.createCell(3);
 		cell.setCellValue("개발완료일자");
-		
 		cell = row.createCell(4);
 		cell.setCellValue("개발여부");
-		
 		cell = row.createCell(5);
 		cell.setCellValue("PL확인");
-		
 		cell = row.createCell(6);
 		cell.setCellValue("단위테스트");
 		
@@ -460,12 +428,15 @@ public class ProgramController {
 		for(int rowIdx=0; rowIdx < list.size(); rowIdx++) {
 			vo = list.get(rowIdx);
 			
+			
+			
 			// 행 생성
 			row = sheet.createRow(rowIdx+1);
 			
 			
 			cell = row.createCell(0);
 			cell.setCellValue(vo.getPG_ID());
+			
 			
 			cell = row.createCell(1);
 			cell.setCellValue(vo.getPG_NM());
@@ -484,7 +455,6 @@ public class ProgramController {
 			
 			cell = row.createCell(6);
 			cell.setCellValue(vo.getTHIRD_TEST_RESULT_YN());
-			
 		}
 		
 		// 입력된 내용 파일로 쓰기
@@ -520,27 +490,59 @@ public class ProgramController {
 		// 쎌 생성
 		XSSFCell cell;
 		
+		
+		Font defaultFont = workbook.createFont();        
+		defaultFont.setFontHeightInPoints((short) 11); 
+		defaultFont.setFontName("맑은 고딕");
+
+		//제목 스타일 
+		CellStyle HeadStyle = workbook.createCellStyle(); 
+		HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
+		HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index); 
+		HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
+		HeadStyle.setFont(defaultFont);
+
+		//본문 스타일 
+		CellStyle BodyStyle = workbook.createCellStyle(); 
+		BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		BodyStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		BodyStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setFont(defaultFont);   
+
+
+		
+		
 		// 헤더 정보 구성
 		cell = row.createCell(0);
 		cell.setCellValue("프로그램ID");
-		
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+
 		cell = row.createCell(1);
 		cell.setCellValue("프로그램명");
-		
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		cell = row.createCell(2);
 		cell.setCellValue("개발자");
-		
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		cell = row.createCell(3);
 		cell.setCellValue("개발완료일자");
-		
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		cell = row.createCell(4);
 		cell.setCellValue("개발여부");
-		
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		cell = row.createCell(5);
 		cell.setCellValue("PL확인");
-		
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		cell = row.createCell(6);
 		cell.setCellValue("단위테스트");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		
 		// 리스트의 size 만큼 row를 생성
 		PgCurrentVO vo;
@@ -552,26 +554,36 @@ public class ProgramController {
 			
 			cell = row.createCell(0);
 			cell.setCellValue(vo.getPG_ID());
-			
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+
 			cell = row.createCell(1);
 			cell.setCellValue(vo.getPG_NM());
-			
+			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(2);
 			cell.setCellValue(vo.getUSER_DEV_ID());
-			
+			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(3);
 			cell.setCellValue(vo.getDEV_END_DT());
-			
+			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(4);
 			cell.setCellValue(vo.getDEV_END_YN());
-			
+			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(5);
 			cell.setCellValue(vo.getSECOND_TEST_RESULT_YN());
-			
+			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(6);
 			cell.setCellValue(vo.getTHIRD_TEST_RESULT_YN());
-			
+			cell.setCellStyle(BodyStyle); // 본문스타일 
 		}
+		/** 3. 컬럼 Width */ 
+		for (int i = 0; i <  list.size(); i++){ 
+			sheet.autoSizeColumn(i); 
+			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
+		}
+
+		
+		
+		
 		
 		// 입력된 내용 파일로 쓰기
 		File folder = new File("C:\\TMS\\TMS_통계자료");
@@ -608,7 +620,7 @@ public class ProgramController {
 	 * 업로드된 엑셀파일을 등록한다.
 	 * 	 */	
     @RequestMapping(value = "/tms/pg/requestupload.do")
-    public String requestupload1(MultipartHttpServletRequest mtfRequest, @ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+    public String requestupload1(MultipartHttpServletRequest mtfRequest, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
     	    	
     	//System.out.println("여기다!!!4");
         String src = mtfRequest.getParameter("src");
@@ -653,10 +665,10 @@ public class ProgramController {
 				vo = xlsxList.get(i);
 				ProgramService.insertPg(vo);
 				
-				model.addAttribute("result", "등록 성공!");
+				model.addAttribute("result", "true");
 			}       			
 		}catch(Exception e) {
-			model.addAttribute("result", "등록 실패!");
+			model.addAttribute("result", "false");
 		}
         
 
@@ -686,7 +698,7 @@ public class ProgramController {
     }
     
 	@RequestMapping(value = "/tms/pg/ExcelFileListSearch.do")
-	public String selectExcelFileListSearch(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+	public String selectExcelFileListSearch(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
 		//System.out.println("여기다!333");
 
@@ -695,17 +707,17 @@ public class ProgramController {
 	}
 
 	@RequestMapping(value = "/tms/pg/ExelRegister.do")
-	public String ExelRegister(@ModelAttribute("searchVO1") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+	public String ExelRegister(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 				
 		//CustomerExcelReader excelReader = new CustomerExcelReader();
 		List<ProgramVO> xlsxList = xlsxToCustomerVoList("C:\\image\\test.xlsx");
 		
 		ProgramVO vo;
-		
+		/*
 		for (int i = 0; i < xlsxList.size(); i++) {
 			vo = xlsxList.get(i);
 			ProgramService.insertPg(vo);
-		}
+		}*/
 		
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -831,12 +843,11 @@ public class ProgramController {
 									case 6: // 프로젝트 id			
 										if(value.contains("."))
 										{
-											String[] str = value.split(".");
-											System.out.println("ㅁㅁㅁ"+str[0]);
-											vo.setPJT_ID(str[0]);										
+											String[] str = value.split("\\.");
+											vo.setPJT_ID(""+str[0]);										
 											break;
 										}else {
-											vo.setPJT_ID(value);										
+											vo.setPJT_ID(""+value);										
 											break;
 										}			
 		
@@ -873,7 +884,7 @@ public class ProgramController {
 	}
 	
 	/**
-	 * XLSX 파일을 분석하여 List<CustomerVo> 객체로 반환
+	 * XLSX 파일을 분석하여 List<ProgramVO> 객체로 반환
 	 * @param filePath
 	 * @return
 	 */
@@ -967,9 +978,16 @@ public class ProgramController {
 										break;
 										
 									case 6: // 프로젝트 id
-										vo.setPJT_ID(value);										
-										break;										
-		
+										if(value.contains("."))
+										{
+											System.out.println("프로젝트1-"+value);
+											String[] txtArr = value.split("\\.");
+											System.out.println("프로젝트2-"+txtArr[0]);
+											vo.setPJT_ID(txtArr[0]);										
+											break;										
+										}else {
+											vo.setPJT_ID(value);	
+										}
 									default:
 										break;
 									}

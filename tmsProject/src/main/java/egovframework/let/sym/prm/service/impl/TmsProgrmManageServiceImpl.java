@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.let.sym.prm.service.TmsProgrmManageService;
 import egovframework.let.sym.prm.service.TmsProjectManageVO;
+import egovframework.let.tms.pg.service.ProgramDefaultVO;
+import egovframework.let.tms.pg.service.ProgramVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 /**
@@ -75,6 +77,12 @@ public class TmsProgrmManageServiceImpl extends EgovAbstractServiceImpl implemen
 		// TODO Auto-generated method stub
 		return TmsProgrmManageDAO.selectTaskGb();
 	}
+	@Override
+	public List<?> selectTaskGb2(ProgramDefaultVO searchVO) throws Exception {
+		// TODO Auto-generated method stub
+		return TmsProgrmManageDAO.selectTaskGb2(searchVO);
+	}
+	
 	@Override
 	public List<?> selectTaskGbSearch(String searchData) throws Exception {
 		// TODO Auto-generated method stub

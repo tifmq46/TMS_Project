@@ -2,8 +2,9 @@
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
 <sqlMap namespace="Program">
     <typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
-    <typeAlias  alias="searchVO1" type="egovframework.let.tms.pg.service.ProgramDefaultVO"/>
+    <typeAlias  alias="ProgramDefaultVO" type="egovframework.let.tms.pg.service.ProgramDefaultVO"/>
 	<typeAlias  alias="ProgramVO" type="egovframework.let.tms.pg.service.ProgramVO"/>
+	<typeAlias  alias="PgCurrentVO" type="egovframework.let.tms.pg.service.PgCurrentVO"/>
     
 	<!-- return 결과물을 의미 -->
 	<resultMap id="PgList" class="egovframework.let.tms.pg.service.ProgramVO">
@@ -27,33 +28,37 @@
 		
 	
 	
-	<select id="ProgramDAO.selectPgList" parameterClass="searchVO1" resultMap="PgList" >
+	<select id="ProgramDAO.selectPgList" parameterClass="ProgramDefaultVO" resultMap="PgList" >
 		<![CDATA[
 			SELECT
-				PG_ID, PG_NM, USER_DEV_ID, SYS_GB, TASK_GB, USE_YN
+				a.PG_ID, 
+				a.PG_NM, 
+				(SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE a.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID,
+				a.SYS_GB, 
+				a.TASK_GB, 
+				a.USE_YN
 			FROM 
-				PG_TB
+				PG_TB a
 			WHERE 
 				1=1			
 		]]>
 			<!-- 화면ID로 검색 -->
 			<isNotEmpty property="searchByPgId">
-			    AND PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
+			    AND a.PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
 			</isNotEmpty>  
 			
 			<!-- 시스템구분으로 검색 -->
-			<!-- <isNotEmpty property="searchBySysGb">			    
-			    AND SYS_GB LIKE CONCAT('%' , #searchBySysGb#, '%')
-			</isNotEmpty> -->
+			<isNotEmpty property="searchBySysGb">
+			    AND a.SYS_GB = #searchBySysGb# 
+			</isNotEmpty>
 			
-			<!-- 업무구분으로 검색 -->
-			<!-- <isNotEmpty property="searchByTaskGb">
-			    AND TASK_GB LIKE CONCAT('%' , #searchByTaskGb#, '%')
-			</isNotEmpty> -->
+			<isNotEmpty property="searchByTaskGb">
+			    AND a.TASK_GB = #searchByTaskGb#
+			</isNotEmpty>
 			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+			    AND a.USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
 			</isNotEmpty> 
 			LIMIT 
 				#recordCountPerPage# OFFSET #firstIndex#
@@ -64,7 +69,7 @@
 	
 	
 	
-	<select id="ProgramDAO.selectPgListTotCnt" parameterClass="searchVO1" resultClass="java.lang.Integer" >
+	<select id="ProgramDAO.selectPgListTotCnt" parameterClass="ProgramDefaultVO" resultClass="java.lang.Integer" >
 			<![CDATA[
 				SELECT COUNT(*) totcnt 
 				FROM PG_TB
@@ -76,14 +81,13 @@
 			</isNotEmpty>  
 			
 			<!-- 시스템구분으로 검색 -->
-			<!-- <isNotEmpty property="searchBySysGb">			    
-			    AND SYS_GB LIKE CONCAT('%' , #searchBySysGb#, '%')
-			</isNotEmpty> -->
+			<isNotEmpty property="searchBySysGb">
+			    AND SYS_GB = #searchBySysGb# 
+			</isNotEmpty>
 			
-			<!-- 업무구분으로 검색 -->
-			<!-- <isNotEmpty property="searchByTaskGb">
-			    AND TASK_GB LIKE CONCAT('%' , #searchByTaskGb#, '%')
-			</isNotEmpty> -->
+			<isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB = #searchByTaskGb# 
+			</isNotEmpty>
 			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
@@ -92,7 +96,7 @@
 	</select>	
 	
 	<!-- 프로그램현황 조회 -->
-	<select id="ProgramDAO.selectPgCurrentList" resultMap="PgCurrent" >
+	<select id="ProgramDAO.selectPgCurrentList" parameterClass="PgCurrentVO" resultMap="PgCurrent" >
 		<![CDATA[
 			SELECT
 				a.PG_ID, a.PG_NM, a.USER_DEV_ID, b.DEV_END_DT, b.DEV_END_YN, b.SECOND_TEST_RESULT_YN, b.THIRD_TEST_RESULT_YN
@@ -105,8 +109,22 @@
 		]]>
 			
 	</select>
+	
+	<!-- 프로그램현황 조회(엑셀 다운용) -->
+	<select id="ProgramDAO.selectPgCurrentExcelList" resultMap="PgCurrent" >
+		<![CDATA[
+			SELECT
+				a.PG_ID, a.PG_NM, a.USER_DEV_ID, b.DEV_END_DT, b.DEV_END_YN, b.SECOND_TEST_RESULT_YN, b.THIRD_TEST_RESULT_YN
+			FROM 
+				PG_TB a, DEV_PLAN_TB b
+			WHERE
+				a.PG_ID = b.PG_ID 
+		]]>
+			
+	</select>
+	
 	<!-- 프로그램현황 수 확인 -->
-	<select id="ProgramDAO.selectPgCurrentTotCnt" parameterClass="searchVO1" resultClass="java.lang.Integer" >
+	<select id="ProgramDAO.selectPgCurrentTotCnt" resultClass="java.lang.Integer" >
 			<![CDATA[
 			SELECT
 				COUNT(*) totcnt 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import egovframework.let.tms.pg.service.PgCurrentVO;
 import egovframework.let.tms.pg.service.ProgramDefaultVO;
 import egovframework.let.tms.pg.service.ProgramVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
@@ -76,12 +77,15 @@ public class ProgramDAO extends EgovAbstractDAO{
 		return (Integer) select("ProgramDAO.selectPgListTotCnt", searchVO);
 	}
 	
-	public int selectPgCurrentTotCnt(ProgramDefaultVO searchVO) {
-		return (Integer) select("ProgramDAO.selectPgCurrentTotCnt", searchVO);
+	public int selectPgCurrentTotCnt() {
+		return (Integer) select("ProgramDAO.selectPgCurrentTotCnt");
 	}
 
-	public List<?> selectPgCurrentList(ProgramDefaultVO searchVO) throws Exception {
+	public List<?> selectPgCurrentList(PgCurrentVO searchVO) throws Exception {
 		return list("ProgramDAO.selectPgCurrentList", searchVO);
 	}
 	
+	public List<?> selectPgCurrentExcelList() throws Exception {
+		return list("ProgramDAO.selectPgCurrentExcelList");
+	}
 }

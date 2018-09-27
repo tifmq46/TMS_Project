@@ -19,10 +19,10 @@ public class ProgramDefaultVO implements Serializable{
 	private String searchKeyword = "";
 
 	/** 시스템구분으로 검색 */
-	private int searchBySysGb = 0;
+	private String searchBySysGb = "";
 	
 	/** 업무구분으로 검색 */
-	private int searchByTaskGb = 0;
+	private String searchByTaskGb = "";
 	
 	/** 개발자명으로 검색  */
 	private String searchByUserDevId = "";
@@ -63,19 +63,19 @@ public class ProgramDefaultVO implements Serializable{
 		this.del = del;
 	}
 	
-	public int getSearchBySysGb() {
+	public String getSearchBySysGb() {
 		return searchBySysGb;
 	}
 
-	public void setSearchBySysGb(int searchBySysGb) {
+	public void setSearchBySysGb(String searchBySysGb) {
 		this.searchBySysGb = searchBySysGb;
 	}
 
-	public int getSearchByTaskGb() {
+	public String getSearchByTaskGb() {
 		return searchByTaskGb;
 	}
 
-	public void setSearchByTaskGb(int searchByTaskGb) {
+	public void setSearchByTaskGb(String searchByTaskGb) {
 		this.searchByTaskGb = searchByTaskGb;
 	}
 

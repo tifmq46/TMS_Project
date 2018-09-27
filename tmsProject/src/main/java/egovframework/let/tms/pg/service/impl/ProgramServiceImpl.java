@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import egovframework.let.tms.pg.service.PgCurrentVO;
 import egovframework.let.tms.pg.service.ProgramDefaultVO;
 import egovframework.let.tms.pg.service.ProgramService;
 import egovframework.let.tms.pg.service.ProgramVO;
@@ -81,14 +82,19 @@ public class ProgramServiceImpl extends EgovAbstractServiceImpl implements Progr
 	}
 	
 	@Override
-	public int selectPgCurrentTotCnt(ProgramDefaultVO searchVO) {
-		return ProgramDAO.selectPgCurrentTotCnt(searchVO);
+	public int selectPgCurrentTotCnt() {
+		return ProgramDAO.selectPgCurrentTotCnt();
 	}
 	
 	
 	@Override
-	public List<?> selectPgCurrentList(ProgramDefaultVO searchVO) throws Exception {
+	public List<?> selectPgCurrentList(PgCurrentVO searchVO) throws Exception {
 		return ProgramDAO.selectPgCurrentList(searchVO);
+	}
+	
+	@Override
+	public List<?> selectPgCurrentExcelList() throws Exception {
+		return ProgramDAO.selectPgCurrentExcelList();
 	}
 	
 }
