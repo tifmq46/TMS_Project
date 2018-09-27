@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +69,7 @@ public class DefectController {
 	 */
 	@RequestMapping("/tms/defect/selectDefect.do")
 	public String selectDefect(@ModelAttribute("searchVO") DefectDefaultVO searchVO, ModelMap model) throws Exception {
-
+	
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -78,15 +79,29 @@ public class DefectController {
 		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
 		paginationInfo.setPageSize(searchVO.getPageSize());
-
+		System.out.println("defect1-"+searchVO.getSearchByStartDt());
+		
 		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
+		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
+
+		if(searchVO.getSearchByStartDt() != null) {
+			String ST_date=formatter.format(searchVO.getSearchByStartDt());
+			model.addAttribute("ST_date", ST_date);
+		}
+		
+		if(searchVO.getSearchByEndDt() != null) {
+			String EN_date=formatter.format(searchVO.getSearchByEndDt());
+			model.addAttribute("EN_date", EN_date);			
+		}
+		
 		List<?> list = defectService.selectDefect(searchVO);
 		model.addAttribute("defectList", list);
 		
-		int totCnt = defectService.selectDefectTotCnt();
+		int totCnt = defectService.selectDefectTotCnt(searchVO);
+		//System.out.println("defect2-"+totCnt);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
@@ -230,10 +245,22 @@ public class DefectController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
+		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
+		
+		if(searchVO.getSearchByStartDt() != null) {
+			String ST_date=formatter.format(searchVO.getSearchByStartDt());
+			model.addAttribute("ST_date", ST_date);
+		}
+		
+		if(searchVO.getSearchByEndDt() != null) {
+			String EN_date=formatter.format(searchVO.getSearchByEndDt());
+			model.addAttribute("EN_date", EN_date);			
+		}
+		
 		List<?> list = defectService.selectDefect(searchVO);
 		
 		model.addAttribute("defectList", list);
-		int totCnt = defectService.selectDefectTotCnt();
+		int totCnt = defectService.selectDefectTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		

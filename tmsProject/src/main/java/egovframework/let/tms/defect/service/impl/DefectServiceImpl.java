@@ -39,9 +39,9 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 
 
 	@Override
-	public int selectDefectTotCnt() {
+	public int selectDefectTotCnt(DefectDefaultVO searchVO) {
 		// TODO Auto-generated method stub
-		return defectDAO.selectDefectTotCnt();
+		return defectDAO.selectDefectTotCnt(searchVO);
 	}
 
 
@@ -99,7 +99,6 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 		// TODO Auto-generated method stub
 		return defectDAO.selectTaskGb();
 	}
-
 
 	@Override
 	public List<?> selectUser() {

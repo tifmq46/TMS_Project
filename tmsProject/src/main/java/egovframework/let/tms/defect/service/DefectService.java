@@ -10,7 +10,7 @@ public interface DefectService {
 	
 	public List<?> selectDefect(DefectDefaultVO searchVO) throws Exception;;
 	
-	public int selectDefectTotCnt() throws Exception;;
+	public int selectDefectTotCnt(DefectDefaultVO searchVO) throws Exception;;
 	
 	public List<?> selectOneDefect(DefectVO defectVO) throws Exception;;	
 	
