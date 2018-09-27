@@ -18,8 +18,8 @@ public class DefectDAO extends EgovAbstractDAO{
 		return list("defectDAO.selectDefect", searchVO);
 	}
 	
-	public int selectDefectTotCnt() {
-		return (int) select("defectDAO.selectDefectTotCnt");
+	public int selectDefectTotCnt(DefectDefaultVO searchVO) {
+		return (int) select("defectDAO.selectDefectTotCnt", searchVO);
 	}
 	
 	public int selectDefectIdSq(){
@@ -58,6 +58,9 @@ public class DefectDAO extends EgovAbstractDAO{
 	
 	public List<?> selectTaskGb() {
 		return list("defectDAO.selectTaskGb");
+	}
+	public List<?> selectTaskGb2() {
+		return list("defectDAO.selectTaskGb2");
 	}
 	
 	public List<?> selectUser() {
