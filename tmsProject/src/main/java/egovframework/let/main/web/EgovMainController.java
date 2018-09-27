@@ -166,52 +166,39 @@ public class EgovMainController {
 			System.out.println("이름:"+names[j]); 
 		}        
 		
-		int k =0;
+		int k =38;
+		int k1 =38;
 		String val[] = new String[6];
 		HashMap<String, String> ta = new HashMap<String,String>();
 		HashMap<String, String> tb = new HashMap<String,String>();
 		String t, t2;
+		
 		for(int i=0; i<r1.size();i++){
 			
 			//System.out.println("-----------------"+r1.get(i));
 			String temp = r1.get(i).get("BN").toString();
 			
 			if(names[0].equals(temp)){
-				/*t = (String.format("%s",r1.get(i).get("B38")));
-				t2 = (String.format("%s",r1.get(i).get("B39")));
+				t = (String.format("%s",r1.get(i).get("B"+k)));
 				System.out.println(t);
 				
-				t1.put("B38", t);
-				t1.put("B39", t2);*/
-				//k++;
-				//r2.add(r1.get(i));
-				//val[k]= (String.format("%s",r1.get(i)));
-				//k++;
+				ta.put("BN", names[0]);
+				ta.put("B"+k, t);
+				k+=1;
+			}else if(names[1].equals(temp)){
+				t = (String.format("%s",r1.get(i).get("B"+k1)));
+				System.out.println(t);
+				
+				tb.put("BN", names[1]);
+				tb.put("B"+k1, t);
+				k1+=1;
 			}
-			
 		}
-		// r2.add(t1);
-		ta.put("BN", "방주이");
-		ta.put("B38", "0");
-		ta.put("B39", "6");
-		ta.put("B40", "2");
-		
-		tb.put("BN", "장현우");
-		tb.put("B38", "5");
-		tb.put("B39", "1");
-		tb.put("B40", "2");
-		
+
 		r2.add(ta);
 		r2.add(tb);
 		
-		for(int i=0; i<val.length;i++){
-			//System.out.print("배열:"+val[i]);
-		}
-		
-		//List<String> r2 = new ArrayList <String>(Arrays.asList(val));
-		
-		
-			System.out.println("====="+r2);
+		System.out.println("====="+r2);
 		
 		model.addAttribute("testList1", r1);
 		model.addAttribute("kk", val);

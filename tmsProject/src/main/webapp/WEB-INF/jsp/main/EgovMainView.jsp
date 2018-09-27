@@ -225,16 +225,10 @@
     			<div class="widget-content default_tablestyle" style="height:212px; overflow:auto; ">
     				<table width="100%" cellspacing="0" cellpadding="0" class="table table-search-head table-size-th4">
 			    					<caption>통계</caption>
-			            <colgroup>
-			            <col width="25%" >
-			            <col width="10%" >
-			            <col width="10%" >
-			            <col width="10%" >
-			            <col width="10%" >
-			            <col width="10%" > 
-			            </colgroup>
+			            
 			            <thead>
 			            <tr>
+			            <th scope="col" nowrap="nowrap">이름</th>
 			                <th scope="col" nowrap="nowrap">38주</th>
 			                <th scope="col" nowrap="nowrap">39주</th>
 			                <th scope="col" nowrap="nowrap">40주</th>
@@ -268,6 +262,11 @@
 			            	<td>${r2.BN}</td>
 			            	<td>${r2.B38}</td>
 			            	<td>${r2.B39}</td>
+			            	<td>${r2.B40}</td>
+			            	<td>${r2.B41}</td>
+			            	<td>${r2.B42}</td>
+			            	<td>${r2.B43}</td>
+			            	
 			            	  </tr> 
 			            </c:forEach> 
 			          
