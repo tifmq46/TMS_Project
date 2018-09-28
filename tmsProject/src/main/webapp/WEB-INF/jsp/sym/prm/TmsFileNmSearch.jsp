@@ -30,9 +30,9 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <title>프로그램파일명 검색</title>
 <style type="text/css">
-	h1 {font-size:12px;}
-	caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
-	
+   h1 {font-size:12px;}
+   caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
+   
 
 </style>
 <script language="javascript1.2"  type="text/javaScript"> 
@@ -42,9 +42,9 @@
  ******************************************************** */
 function Enter_Remove(){ // input 에서 enter 입력시 다음에 있는 button이 호출되는 현상때문에 
     // 엔터키의 코드는 13입니다.
-	if(event.keyCode == 13){
-		selectProgramListSearch();
-	}
+   if(event.keyCode == 13){
+      selectProgramListSearch();
+   }
 }
 
 /* ********************************************************
@@ -61,9 +61,9 @@ function linkPage(pageNo){
  * 조회 처리 함수
  ******************************************************** */ 
 function selectProgramListSearch() { 
-	document.progrmManageForm.pageIndex.value = 1;
-	document.progrmManageForm.action = "<c:url value='/sym/prm/TmsProgramListSearch.do'/>";
-	document.progrmManageForm.submit();
+   document.progrmManageForm.pageIndex.value = 1;
+   document.progrmManageForm.action = "<c:url value='/sym/prm/TmsProgramListSearch.do'/>";
+   document.progrmManageForm.submit();
 }
 
 /* ********************************************************
@@ -159,4 +159,3 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb,user_real
 </form>
 </body>
 </html>
-

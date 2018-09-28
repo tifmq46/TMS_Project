@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import egovframework.let.tms.pg.service.PgCurrentVO;
 import egovframework.let.tms.pg.service.ProgramDefaultVO;
 import egovframework.let.tms.pg.service.ProgramVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
@@ -14,7 +15,7 @@ public class ProgramDAO extends EgovAbstractDAO{
 	/**
 	 * 개발계획을 등록한다.
 	 * @param vo - 등록할 정보가 담긴 DevPlanVO
-	 * @return 등록 결과
+	 * @return등 등록 결과
 	 * @exception Exception
 	 */
 	public void insertPg(ProgramVO vo) throws Exception {
@@ -76,12 +77,15 @@ public class ProgramDAO extends EgovAbstractDAO{
 		return (Integer) select("ProgramDAO.selectPgListTotCnt", searchVO);
 	}
 	
-	public int selectPgCurrentTotCnt(ProgramDefaultVO searchVO) {
-		return (Integer) select("ProgramDAO.selectPgCurrentTotCnt", searchVO);
+	public int selectPgCurrentTotCnt() {
+		return (Integer) select("ProgramDAO.selectPgCurrentTotCnt");
 	}
 
-	public List<?> selectPgCurrentList(ProgramDefaultVO searchVO) throws Exception {
+	public List<?> selectPgCurrentList(ProgramVO searchVO) throws Exception {
 		return list("ProgramDAO.selectPgCurrentList", searchVO);
 	}
 	
+	public List<?> selectPgCurrentExcelList(ProgramDefaultVO searchVO) throws Exception {
+		return list("ProgramDAO.selectPgCurrentExcelList", searchVO);
+	}
 }

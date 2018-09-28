@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.let.sym.prm.service.TmsProjectManageVO;
+import egovframework.let.tms.pg.service.ProgramDefaultVO;
+import egovframework.let.tms.pg.service.ProgramVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 /**
  * 프로그램 목록관리및 프로그램변경관리에 대한 DAO 클래스를 정의한다.
@@ -65,6 +67,11 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
 	public List<?> selectTaskGb() {
 		// TODO Auto-generated method stub
 		return list("TmsProgrmManageDAO.selectTaskGb");
+	}
+	
+	public List<?> selectTaskGb2(ProgramDefaultVO searchVO) {
+		// TODO Auto-generated method stub
+		return list("TmsProgrmManageDAO.selectTaskGb2", searchVO);
 	}
 
 	public List<?> selectTaskGbSearch(String searchData) {

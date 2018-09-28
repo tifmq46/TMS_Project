@@ -23,83 +23,135 @@
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
+<c:if test="${anonymous == 'true'}"><c:set var="prefix" value="/anonymous"/></c:if>
+<script type="text/javascript" src="<c:url value='/js/EgovBBSMng.js' />" ></script>
+
+<c:choose>
+<c:when test="${preview == 'true'}">
+<script type="text/javascript">
+<!--
+    function press(event) {
+		if (event.keyCode==13) {
+        	fn_egov_select_bbsUseInfs('1');
+    	}
+    }
+
+    function fn_egov_addNotice() {
+    }
+    
+    function fn_egov_select_noticeList(pageNo) {
+    	document.frm.pageIndex.value = pageNo; 
+        document.frm.action = "<c:url value='/tms/pg/PgManage.do'/>";
+        document.frm.submit();
+    }
+    
+    function fn_egov_inqire_notice(nttId, bbsId) {    
+    	
+    }
+//-->
+    function press(event) {
+        if (event.keyCode==13) {
+            fn_egov_select_bbsUseInfs('1');
+        }
+    }
+
+    function fn_egov_select_bbsUseInfs(pageNo){
+        document.frm.pageIndex.value = pageNo; 
+        document.frm.action = "<c:url value='/cop/com/selectBBSUseInfs.do'/>";
+        document.frm.submit();
+    }
+    function fn_egov_insert_addbbsUseInf(){
+    	alert("'C://TMS_통계자료//프로그램현황.xlsx'이 다운되었습니다.");
+        document.frm.action = "<c:url value='/tms/pg/ExelWrite.do'/>";
+        document.frm.submit();      
+    }
+    function fn_egov_select_bbsUseInf(bbsId, trgetId){
+        document.frm.bbsId.value = bbsId;
+        document.frm.trgetId.value = trgetId;
+        document.frm.action = "<c:url value='/cop/com/selectBBSUseInf.do'/>";
+        document.frm.submit();
+    }
+</script>
+</c:when>
+<c:otherwise>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 
+	$(function(){
+	   $('#bbb').change(function() {
+	      $.ajax({
+	         
+	         type:"POST",
+	         url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
+	         data : {searchData : this.value},
+	         async: false,
+	         dataType : "json",
+	         success : function(selectTaskGbSearch){
+	        	 $("#searchBySysGb").val($("#bbb").val());
+	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
+	            $.each(selectTaskGbSearch, function(i){
+	               (JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
+	            $("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+	            });
+	            
+	         },
+	         error : function(request,status,error){
+	            alert("에러");
+	            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 
+	         }
+	      });
+	   })
+	})
 
-function fn_egov_insert_addbbsUseInf(){
-	alert("'C://TMS_통계자료//프로그램현황.xlsx'이 다운되었습니다.");
-    document.frm.action = "<c:url value='/tms/pg/ExelWrite.do'/>";
-    document.frm.submit();      
-}
-
-function fn_file(){
-	alert("dd");
-    document.uploadfile.action = "<c:url value='/tms/pg/fileupload.do'/>";
-    document.uploadfile.submit();
-}
-function test() { 
-	//document.uploadfile_nm.file.select(); 
-	//alert(document.selection.createRange().text); 
-	document.getElementById('filetext').value=document.selection.createRange().text.toString();
-
-
-	document.getElementById('uploadfile').value=document.selection.createRange().text.toString();
-	alert(document.selection.createRange().text.toString());
-}
-function getRealPath(obj){
-	  obj.select();
-
-	 
-
-	  document.selection.createRange().text.toString();
-
-	  //document.selection.createRangeCollection()[0].text.toString();
-	  document.upimage.real_path.value = document.selection.createRangeCollection()[0].text.toString();
-
-}
-function load() {
-    if(!(File && FileReader && FileList && Blob)) {
-        alert("Not Supported File API");
+	
+	function setting() {
+		document.frm.searchBySysGb.value = document.frm.bbb.value;
+		document.frm.searchByTaskGb.value = document.frm.task.value;
+		
+	}
+	
+	function Pg_select(pageNo){
+		//alert(pageNo);
+		document.frm.pageIndex.value = pageNo;
+		//document.frm.searchByTaskGb.value = document.frm.task.value;
+		//document.frm.fon.value = pageNo;
+    	document.frm.action = "<c:url value='/tms/pg/PgCurrent.do'/>";
+    	document.frm.submit();
+	}
+	
+	function fncSelect_Info() {
+    	/* document.frm.PgID.value = aaa; */
+    	document.frm.action = "<c:url value='/tms/pg/selectPgInf.do'/>";
+    	document.frm.submit();     
+	}
+    function press(event) {
+        if (event.keyCode==13) {
+            fn_egov_select_noticeList('1');
+        }
     }
- 
-    document.getElementById("inputFile").onchange = function () {
-        var file = this.files[0];
-        var name = file.name;
-        var size = file.size;
-        var reader = new FileReader();
- 
-        reader.onload = function () {
-            var aBuf = this.result; // ArrayBuffer
-            var dView = new DataView(aBuf);
- 
-            var validFlag = dView.getUint8(0);
-            var year = dView.getUint8(1);
-            var month = dView.getUint8(2);
-            var day = dView.getUint8(3);
-            var numRecords = dView.getInt32(4, true);
-            var numHeaders = dView.getInt16(8, true);
- 
- 
-        };
- 
-        var blob = file.slice(0, 1000);
-        alert(reader.readAsArrayBuffer(blob));
-        
-    };
-}
+    function fn_egov_insert_addbbsUseInf(){
+    	alert("'C://TMS_통계자료//프로그램현황.xlsx'이 다운되었습니다.");
+        document.frm.action = "<c:url value='/tms/pg/ExelWrite.do'/>";
+        document.frm.submit();      
+    }
+    
+    
 </script>
+</c:otherwise>
+</c:choose>
 
-<title>템플릿 목록</title>
+<title>프로그램현황</title>
 <style type="text/css">
     h1 {font-size:12px;}
     caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
 </style>
 </head>
 <body>
-<noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
+
 <!-- 전체 레이어 시작 -->
+
+
 <div id="wrap">
     <!-- header 시작 -->
     <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
@@ -114,94 +166,149 @@ function load() {
                 <div id="cur_loc">
                     <div id="cur_loc_align">
                         <ul>
-                            <li>HOME</li>
-                            <li>&gt;</li>
-                            <li>개발진척관리</li>
-                            <li>&gt;</li>
-                            <li><strong>개발계획관리</strong></li>
+							<li>HOME</li>
+							<li>&gt;</li>
+							<li>프로그램관리</li>
+							<li>&gt;</li>
+							<li><strong>프로그램현황</strong></li>
                         </ul>
                     </div>
                 </div>
- 
- 			
                 
-                <!-- 검색 필드 박스 시작 -->
-                <form:form commandName="searchVO1" name="frm" id="frm" method="post" action="<c:url value='/tms/pg/PgCurrent.do'/>" >   
-				 
-                <input type="hidden" name="pageIndex" value="<c:out value='${searchVO1.pageIndex}'/>"/>
+                
+                <form name="frm" id="frm" action ="<c:url value='/tms/pg/PgManage.do'/>" method="post">
+				<input type="submit" id="invisible" class="invisible"/>
+				<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 				
-				<div id="search_field">
-					<div id="search_field_loc"><h2><strong>개발계획관리</strong></h2></div>
+							<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
+			<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
+			<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
+			<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
+				
+                <!-- 검색 필드 박스 시작 -->
+                <div id="search_field">
+                    <div id="search_field_loc"><h2><strong>프로그램 현황</strong></h2></div>
 					
-					  	<fieldset><legend>조건정보 영역</legend>	  
-					  	<div class="sf_start">
-					  		<ul id="search_first_ul">
+						<input type="hidden" id="del" name="del" value="fncManageChecked()" />
+						<input type="hidden" id="fon" name="fon" />
+                        <input type="submit" value="실행" onclick="fn_egov_select_noticeList('1'); return false;" id="invisible" class="invisible" />
+                        
+                        <fieldset><legend>조건정보 영역</legend>    
+                        
+                        
+                        	<div class="default_tablestyle" style=" width:100%">
+
+					  		<ul id="search_first_ul">					  		
+					  			<li><label for="searchByPgId">화면ID</label></li>
+					  			<li><input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+					  				<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+	                				<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a></li>
+					  					
+					  			<li><label for="searchByUserDevId">개발자명</label></li>
+					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" value="<c:out value='${searchVO.searchByUserDevId}'/>"/></li>
 					  		
+                        	
+                        	</ul>
+                        	
+                        	<ul id="search_first_ul">	
 					  			<li>
-                                    <div class="buttons" style="float:right;">
-                                        <a href="<c:url value='/tms/pg/ExelWrite.do'/>" onclick="fn_egov_insert_addbbsUseInf(); return false;">엑셀</a>
-                                        <!-- a href="#LINK" onclick="fnInitAll(); return false;">초기화</a-->
-                                    </div>                              
-                                </li>
+								    <label >시스템구분</label>
+									<select name="bbb" id="bbb" style="width:12%;text-align-last:center;">
+									   <option value="" >전체</option>
+									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
+									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${searchVO.searchBySysGb == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
+									    </c:forEach>
+									</select>
+									
+									<input type="hidden" name="searchBySysGb" id="searchBySysGb" value=""/>					
+					  			</li>
 					  			
-					  		</ul>
-					  		
-					  		
-					  				
-						</div>			
-						</fieldset>
-			
-				</div>
-				<!-- //검색 필드 박스 끝 -->
-                
-                <div id="page_info"><div id="page_info_align"></div></div>                    
-                <!-- table add start -->
-                <div class="default_tablestyle">
-        		<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
-        			<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
-        			<colgroup>
-        				<col width="25"/> 
-        				<col width="25"/>
-        				<col width="30"/>
-        				<col width="50"/>
-        				<col width="20"/>
-        				<col width="50"/>
-        				<col width="30"/>
-        			</colgroup>
-        			<tr>
-        				<th align="center">프로그램ID</th>
-        				<th align="center">프로그램명</th>
-        				<th align="center">개발자</th>
-        				<th align="center">개발완료일자</th>
-        				<th align="center">개발여부</th>
-        				<th align="center">PL확인</th>
-        				<th align="center">단위테스트</th>
-        			</tr>
+					  			
+					  			<li>
+								    <label for="searchByTaskGb">업무구분</label>
+									<select name="task" id="task" style="width:15%;text-align-last:center;">
+									   <option value="">선택하세요</option>
+					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
+									    		<option value="<c:out value="${taskGb.TASK_GB}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb.TASK_GB}">selected="selected"</c:if> ><c:out value="${taskGb.TASK_GB}" /></option>
+									    	</c:forEach>								   
+									</select>				
+									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value=""/>
+					  			</li>                     	
+
+
+                       
+							</ul> 	
+							</div>
+							  
+                            <div class="default_tablestyle"  style=" width:100%"> 
+                            	<ul id="search_second_ul"  style=" width:100%">                            
+                            		<li>
+                            			<div class="buttons" style="float:right;">                              			
+                                    		<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+											<a href="<c:url value='/tms/pg/ExelWrite.do'/>" onclick="setting();fn_egov_insert_addbbsUseInf(); return false;">엑셀</a>
+                                    	</div>
+                                	</li>
+                            	</ul>
+                            
+                            </div>
+                        
+                        
+                        
+                           
+                        </fieldset>
+                 	</div>
+                	<!-- //검색 필드 박스 끝 -->
+
+
+                	<div id="page_info"><div id="page_info_align"></div></div>    
+                	<div class="default_tablestyle">
+        			<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
+        				<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
+        				<colgroup>
+        					<col width="20"/> 
+        					<col width="25"/>
+        					<col width="40"/>
+        					<col width="30"/>
+        					<col width="20"/>
+        					<col width="20"/>
+        					<col width="20"/>
+        				</colgroup>
+        				<tr>
+        					<th align="center">NO</th>
+        					<th align="center">화면ID</th>
+        					<th align="center">화면명</th>
+        					<th align="center">시스템구분</th>
+        					<th align="center">업무구분</th>
+        					<th align="center">개발자</th>
+        					<th align="center">사용여부</th>
+        				</tr>
         			
-        			<c:forEach var="result" items="${resultList}" varStatus="status">
-            			<tr>
-            				<td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
-            				<td align="center" class="listtd"><c:out value="${result.PG_NM}"/></td>
-            				<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.DEV_END_DT}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.DEV_END_YN}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.SECOND_TEST_RESULT_YN}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.THIRD_TEST_RESULT_YN}"/>&nbsp;</td>
-            			</tr>
-        			</c:forEach>
-        		</table>  		
-                </div>
-                <!-- 페이지 네비게이션 시작 -->
-                <div id="paging_div">
-                    <ul class="paging_align">
-                       <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_tmplatInfo"  />
-                    </ul>
-                </div>                          
-                <!-- //페이지 네비게이션 끝 -->
-                
-               
-                
-                </form:form> 
+        				<c:forEach var="result" items="${resultList}" varStatus="status">
+            				<tr>
+            					<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+            					<td align="center" class="listtd">         							
+            						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?PG_ID=<c:out value='${result.PG_ID}'/>">
+                                		<strong><c:out value="${result.PG_ID}"/><strong>
+                            		</a></td>
+            					<td align="center" class="listtd"><c:out value="${result.PG_NM}"/></td>
+            					<td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
+            					<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
+            					<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
+            					<td align="center" class="listtd"><c:out value="${result.USE_YN}"/>&nbsp;</td>
+            				</tr>
+        				</c:forEach>
+        			</table>  		
+        			  
+        			</div>
+	</form>
+    <!-- 페이지 네비게이션 시작 -->
+    <div id="paging_div">
+        <ul class="paging_align">
+            <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="Pg_select"/>
+        </ul>
+    </div>                          
+    <!-- //페이지 네비게이션 끝 -->  
+    
             </div>
             <!-- //content 끝 -->    
         </div>  
@@ -211,5 +318,6 @@ function load() {
         <!-- //footer 끝 -->
     </div>
     <!-- //전체 레이어 끝 -->
- </body>
+
+</body>
 </html>

@@ -22,9 +22,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="templateInf" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
     
     
@@ -38,37 +39,36 @@
         document.programVO.submit();
     
 	}
+    
+	$(function(){
+		   $('#SYS_GB').change(function() {
+		      $.ajax({
+		         type:"POST",
+		         url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
+		         data : {searchData : this.value},
+		         async: false,
+		         dataType : "json",
+		         success : function(selectTaskGbSearch){
+		        	 $("#searchBySysGb").val($("#SYS_GB").val());
+		            $("#TASK_GB").find("option").remove().end().append("<option value=''>선택하세요</option>");
+		            $.each(selectTaskGbSearch, function(i){
+		               (JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
+		            $("#TASK_GB").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+		            });
+		            
+		         },
+		         error : function(request,status,error){
+		            alert("에러");
+		            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 
-    function fn_egov_selectTmplatType(obj){
-        if (obj.value == 'TMPT01') {
-            document.getElementById('sometext').innerHTML = "게시판 템플릿은 CSS만 가능합니다.";
-        } else if (obj.value == '') {
-            document.getElementById('sometext').innerHTML = "";
-        } else {
-            document.getElementById('sometext').innerHTML = "템플릿은 JSP만 가능합니다.";
-        }       
-    }
+		         }
+		      });
+		   })
+		})
 
-    function fn_egov_previewTmplat() {
-        var frm = document.templateInf;
-        
-        var url = frm.tmplatCours.value;
 
-        var target = "";
-
-        if (frm.tmplatSeCode.value == 'TMPT01') {
-            target = "<c:url value='/cop/bbs/previewBoardList.do'/>";
-            width = "1024";
-        } else {
-            alert('<spring:message code="cop.tmplatCours" /> 지정 후 선택해 주세요.');
-        }
-
-        if (target != "") {
-            window.open(target + "?searchWrd="+url, "preview", "width=" + width + "px, height=500px;");
-        }
-    }
 </script>
-<title>템플릿 등록</title>
+<title>프로그램등록</title>
 
 <style type="text/css">
     h1 {font-size:12px;}
@@ -82,8 +82,7 @@
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="header"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncHeader" /></div>
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
     <!-- //header 끝 --> 
     <!-- container 시작 -->
     <div id="container">
@@ -143,10 +142,11 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="SYS_GB" name="SYS_GB" class="select" onchange="fn_egov_selectTmplatType(this)" id="SYS_GB" title="시스템구분">
-                                   <option selected value=''>--선택하세요--</option>
-                                   <option value="S1"><c:out value="S1"/></option>
-                                   <option value="S2"><c:out value="S2"/></option>
+                            <select id="SYS_GB" name="SYS_GB" class="select" title="시스템구분">
+									   <option value="" >선택하세요</option>
+									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
+									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${searchVO.searchBySysGb == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
+									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>  --%>   
@@ -162,10 +162,8 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="TASK_GB" name="TASK_GB" class="select" onchange="fn_egov_selectTmplatType(this)" id="TASK_GB" title="업무구분">
-                                   <option selected value=''>--선택하세요--</option>
-                                   <option value="T1"><c:out value="T1"/></option>
-                                   <option value="T2"><c:out value="T2"/></option>
+                            <select id="TASK_GB" name="TASK_GB" class="select" id="TASK_GB" title="업무구분">
+									   <option value="">선택하세요</option>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>   --%>  
@@ -181,7 +179,15 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="USER_DEV_ID" name="USER_DEV_ID" type="text" size="60"  maxlength="60" style="width:100%" title="개발자">
+                            <select id="USER_DEV_ID" name="USER_DEV_ID" class="select" title="개발자">
+									   <option value="" >선택하세요</option>
+									      <c:forEach var="DEV_ID" items="${dev_List}" varStatus="status">
+									    	<option value="<c:out value="${DEV_ID.USER_NM}"/>" ><c:out value="${DEV_ID.USER_NM}" /></option>
+									      </c:forEach>
+                                <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
+                                    <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
+                                </c:forEach>  --%>   
+                            </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
                               <br/>
                             </td>
                           </tr>
