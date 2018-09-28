@@ -146,21 +146,6 @@ function fn_egov_delete_defectImg() {
 					          <input type="text" size="10" readonly="readonly" value="<c:out value="${defectOne.userDevId}"/>"  maxlength="40" title="개발자" 
 					          style="text-align:center; width:90%;" /> 
 					        </td>
-					        <th width="12.5%" height="23" nowrap >등록일자
-					        </th>
-					        <td width="12.5%" nowrap >
-					          <input name="enrollDt" size="5" readonly="readonly" value="<c:out value="${defectOne.enrollDt}"/>"  maxlength="40" title="등록일자"
-					          style="text-align:center; width:90%;" /> 
-					        </td>
-					       </tr>
-					       
-					      <tr>   
-					        <th width="12.5%" height="23" nowrap >결함명
-					        </th>
-					        <td width="37.5%" nowrap colspan="3">
-					          <input id="defectTitle" name="defectTitle" size="5"  value="<c:out value="${defectOne.defectTitle}"/>"  maxlength="40" title="결함명"
-					          style="text-align:center; width:90%;" /> 
-					        </td>
 					         <th width="12.5%" height="23" nowrap >조치상태
 					        </th>
 					        <td width="12.5%" nowrap >
@@ -171,6 +156,21 @@ function fn_egov_delete_defectImg() {
 									    	><c:out value="${actionSt.codeNm}" /></option>
 									    </c:forEach>
 							</select>
+					        </td>
+					       </tr>
+					       
+					      <tr>   
+					        <th width="12.5%" height="23" nowrap >결함명
+					        </th>
+					        <td width="37.5%" nowrap colspan="3">
+					          <input id="defectTitle" name="defectTitle" size="5"  value="<c:out value="${defectOne.defectTitle}"/>"  maxlength="40" title="결함명"
+					          style="text-align:center; width:90%;" /> 
+					        </td>
+					        <th width="12.5%" height="23" nowrap >등록일자
+					        </th>
+					        <td width="12.5%" nowrap >
+					          <input name="enrollDt" size="5" readonly="readonly" value="<c:out value="${defectOne.enrollDt}"/>"  maxlength="40" title="등록일자"
+					          style="text-align:center; width:90%;" /> 
 					        </td>
 					         <th width="12.5%" height="23" nowrap >조치일자
 					        </th>

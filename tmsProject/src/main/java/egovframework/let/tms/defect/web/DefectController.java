@@ -31,6 +31,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
@@ -79,7 +80,6 @@ public class DefectController {
 		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
 		paginationInfo.setPageSize(searchVO.getPageSize());
-		System.out.println("defect1-"+searchVO.getSearchByStartDt());
 		
 		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
@@ -101,7 +101,6 @@ public class DefectController {
 		model.addAttribute("defectList", list);
 		
 		int totCnt = defectService.selectDefectTotCnt(searchVO);
-		//System.out.println("defect2-"+totCnt);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
@@ -258,8 +257,8 @@ public class DefectController {
 		}
 		
 		List<?> list = defectService.selectDefect(searchVO);
-		
 		model.addAttribute("defectList", list);
+		
 		int totCnt = defectService.selectDefectTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
@@ -273,9 +272,7 @@ public class DefectController {
 		List<?> actionStList = defectService.selectActionSt();
 		model.addAttribute("actionSt", actionStList);
 		
-		
-		int actionComplete = defectService.selectActionComplete();
-		
+		int actionComplete = defectService.selectActionComplete(searchVO);
 		model.addAttribute("actionTotCnt",totCnt);
 		model.addAttribute("actionComplete",actionComplete);
 		
@@ -382,7 +379,6 @@ public class DefectController {
 		for(int i=0; i<taskGbList.size(); i++) {
 			taskGbByStats.addAll(defectService.selectTaskByStats(taskGbList.get(i).toString()));
 		}
-		System.out.println("###########"+taskGbByStats);
 		
 		List<String> pgIdList = defectService.selectPgIdByDefect();
 		List<String> pgIdByStats = new ArrayList<String>();
@@ -406,6 +402,23 @@ public class DefectController {
 		model.addAttribute("pgIdByStats",pgIdByStats);
 		model.addAttribute("userTestByStats",userTestByStats);
 		model.addAttribute("userDevByStats",userDevByStats);
+		return "tms/defect/defectStatsList";
+	}
+	
+	/** 통계 엑셀 다운로드 기능 */
+	@RequestMapping(value = "/tms/defect/StatsToExcel.do")
+	public String StatsToExcel(@RequestParam("statsGb") String statsGb) {
+		
+		if(statsGb.equals("task")) {
+			
+		} else if(statsGb.equals("pg")) {
+			
+		} else if(statsGb.equals("userTest")) {
+			
+		} else {
+			
+		}
+		
 		return "tms/defect/defectStatsList";
 	}
 	

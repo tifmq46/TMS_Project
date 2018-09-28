@@ -80,11 +80,11 @@
                 </div>
      
               
-             <form:form commandName="searchVO" name="listForm" method="post" action="tms/defect/defectList.do">   
+             <form:form commandName="searchVO" name="listForm" method="post" action="tms/defect/selectDefectCurrent.do">   
                 <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
                 <!-- 검색 필드 박스 시작 -->
             <div id="search_field">
-               <div id="search_field_loc"><h2><strong>결함관리</strong></h2></div>
+               <div id="search_field_loc"><h2><strong>결함처리현황</strong></h2></div>
                
                     <fieldset><legend>조건정보 영역</legend>     
                     <div class="sf_start">
@@ -154,21 +154,32 @@
             <!-- //검색 필드 박스 끝 -->
                 
                 
-                <table width="80% border="0" cellpadding="0" cellspacing="10" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
+                 <table width="80% border="0" cellpadding="0" cellspacing="10" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
                  <caption style="visibility:hidden">총 건수, 완료건수, 미완료, 진행률 표시하는 테이블</caption>
                  
                  <tr>
                  	<td align="center">총 : <c:out value="${actionTotCnt}"/> </td>
-                 	<td align="center"></td>
-                 	<td align="center">완료 : <c:out value="${actionComplete}"/></td>
-                 	<td align="center"></td>
+                  <td align="center">완료 : <c:out value="${actionComplete}"/></td>
                  	<td align="center">미완료 : <c:out value="${actionTotCnt - actionComplete}"/></td>
-                 	<td align="center"></td>
-                 	<fmt:parseNumber var="actionProgression" integerOnly="true" value="${actionComplete / actionTotCnt * 100}"/>
-                 	<%-- ${actionProgression}% --%>
+                 	<c:choose>
+                 		<c:when test="${actionTotCnt ne '0' }">
+                 		<fmt:parseNumber var="actionProgression" integerOnly="true" value="${actionComplete / actionTotCnt * 100}"/>
+                 		${actionProgression}%
+                 		</c:when>
+                 		<c:otherwise>
+                 		0%
+                 		</c:otherwise>
+                 	</c:choose>
                  	<td align="center">진행률 : </td>
                  	<td>
-                 	<div class="progress"><div class="progress-bar" style="width:${actionProgression}%"> <strong><c:out value=" ${actionProgression}"></c:out>%</strong></div></div>
+                 	<c:choose>
+                 		<c:when test="${actionTotCnt ne '0' }">
+                 			<div class="progress"><div class="progress-bar" style="width:${actionProgression}%"> <strong><c:out value=" ${actionProgression}"></c:out>%</strong></div></div>
+                 		</c:when>
+                 		<c:otherwise>
+                 			<div class="progress"><div class="progress-bar" style="width:0%"> <strong><c:out value="0"></c:out>%</strong></div></div>
+                 		</c:otherwise>
+                 	</c:choose>
                  	</td>
                  	<td align="center"></td>
                  	
@@ -191,7 +202,6 @@
         				<col width="10%"/>
         				<col width="10%"/>
         				<col width="10%"/>
-        				<col width="10%"/>
         	</colgroup>
         			<tr>
         			
@@ -199,11 +209,10 @@
         				<th align="center">업무구분</th>
         				<th align="center">화면ID</th>
         				<th align="center">화면명</th>
-        				<th align="center">제목</th>
+        				<th align="center">결함명</th>
         				<th align="center">결함유형</th>
         				<th align="center">테스터</th>
 			        	<th align="center">등록일자</th>
-        				<th align="center">조치율</th>
         				<th align="center">조치상태</th>
         				
         	
@@ -215,30 +224,11 @@
             				<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.taskGb}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
-            				<td align="center" class="listtd"><c:out value="${result.pgNm}"/></td>
-            				<td align="center" class="listtd"><c:out value="${result.defectTitle}"/></td>
+            				<td align="center" class="listtd" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
+            				<td align="center" class="listtd" style="text-align:left;"><c:out value="${result.defectTitle}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.defectGb}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.userTestId}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/></td>
-            				<!-- 조치상태에 따른 조치율 -->
-            				<c:choose>
-	            				<c:when test="${result.actionSt eq '대기'}">
-	            					<td align="center" class="listtd">0%</td>
-	           					</c:when>
-	            				<c:when test="${result.actionSt eq '조치중'}">
-	            					<td align="center" class="listtd">25%</td>
-	           					</c:when>
-	           					<c:when test="${result.actionSt eq '조치완료'}">
-	            					<td align="center" class="listtd">50%</td>
-	           					</c:when>
-	           					<c:when test="${result.actionSt eq '재요청'}">
-	            					<td align="center" class="listtd">75%</td>
-	           					</c:when>
-	           					<c:otherwise>
-	            					<td align="center" class="listtd">100%</td>
-	            				</c:otherwise>
-            				</c:choose>
-            				
             				<td align="center" class="listtd"><c:out value="${result.actionSt}"/>&nbsp;</td>
             			
             			</tr>

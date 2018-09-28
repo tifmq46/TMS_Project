@@ -178,10 +178,10 @@
 					       </tr>
 					       
 					       <tr>
-					       <th width="16.6%" height="23" class="required_text" nowrap >다운로드
+					       <th width="16.6%" height="23" class="required_text" nowrap >첨부파일
 					        </th>
 					        <td width="83.4%" colspan="5" nowrap >
-								<input type="file" name="fileImg" title="다운로드"/>
+								<input type="file" name="fileImg" title="첨부파일"/>
 					        </td>
 					       </tr>
 					      
