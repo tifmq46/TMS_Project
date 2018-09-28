@@ -76,7 +76,7 @@ function selectList(){
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
+    <div id="topnavi" style="margin:0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>        
     <!-- //header 끝 --> 
     <!-- container 시작 -->
     <div id="container">

@@ -116,5 +116,13 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	public List<?> selectDevPeriod() throws Exception{
 		return list("DevPlanDAO.selectDevPeriod");
 	}
-	
+
+	public void insertWeek(int i) {
+		insert("DevPlanDAO.insertWeek", i);
+	}
+
+	public void deleteWeek() {
+		delete("DevPlanDAO.deleteWeek");
+		
+	}
 }

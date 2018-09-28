@@ -16,7 +16,7 @@ public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
 	private String searchKeyword = "";
 
 	/** 시스템구분으로 검색 */
-	private String searchBySysGb = "";
+	private String searchBySysGb = null;
 	
 	/** 업무구분으로 검색 */
 	private String searchByTaskGb = "";

@@ -6,6 +6,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -49,7 +50,41 @@
                         </ul>
                     </div>
                 </div>
-				<table width="120%" border="0" cellpadding="0" cellspacing="0" >
+                <!-- 검색 필드 박스 시작 -->
+               
+				
+				<div id="search_field">
+					<div id="search_field_loc"><h2><strong>개발진척통계</strong></h2></div>
+					
+					  	<fieldset><legend>조건정보 영역</legend>	  
+					  	<div class="sf_start">
+					  	<ul id="search_first_ul">
+						  	<li><label >계획시작일</label></li>
+						  	<li>
+						  	<input type="text" value="<fmt:formatDate value="${tt.DEV_START_DT}" pattern="yyyy-MM-dd" />">
+						  	</li>
+						  
+						  	<li><label >계획종료일</label></li>
+						  	<li><input type="text" value="<fmt:formatDate value="${tt.DEV_END_DT}" pattern="yyyy-MM-dd" />"></li>
+					  	</ul>
+						</div>			
+						</fieldset>		
+				</div>
+				<!-- //검색 필드 박스 끝 -->
+                
+                <div id="page_info"><div id="page_info_align"></div></div>                    
+                <!-- table add start -->
+                <div class="default_tablestyle">
+                    <table summary="진척통계 테이블입니다" cellpadding="0" cellspacing="0">
+                    <caption>진척통계 테이블</caption>
+                    
+                    </table>
+                </div>
+                
+               
+                
+                 
+				<%-- <table width="120%" border="0" cellpadding="0" cellspacing="0" >
                  <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
               
               <tr>
@@ -58,14 +93,14 @@
         				<th align="center" class="listtd"><c:out value="${resultP.formatFriday}"/></th>
         				
         			
-            			<%-- <tr>
+            			<tr>
             				<td align="center" class="listtd"><c:out value="${resultP.formatFriday}"/>&nbsp;</td>
             				
-            			</tr> --%>
+            			</tr>
         			</c:forEach>
         			</tr>
               
-              </table>        
+              </table>         --%>
             </div>
             <!-- //content 끝 -->
         </div>

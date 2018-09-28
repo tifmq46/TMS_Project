@@ -1,14 +1,15 @@
 package egovframework.let.sym.prm.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.let.sym.prm.service.ProgrmManageDtlVO;
-import egovframework.let.sym.prm.service.ProgrmManageVO;
 import egovframework.let.sym.prm.service.TmsProjectManageVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
-
-import org.springframework.stereotype.Repository;
 /**
  * 프로그램 목록관리및 프로그램변경관리에 대한 DAO 클래스를 정의한다.
  * @author 개발환경 개발팀 이용
@@ -89,5 +90,25 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
 		insert("TmsProgrmManageDAO.insertProject",tmsProjectManageVO);
 		return null;
 	}
+
+	public List<?> selectTestList() {
+		// TODO Auto-generated method stub
+		return list("TmsProgrmManageDAO.selectTestList");
+	}
+
+	public List<?>[] selectProgrmList1(List<?> testList) {
+	      // TODO Auto-generated method stub
+	      
+	      HashMap<Integer,Object> map = new HashMap<Integer,Object>();
+	      List<?>[] pro = new List<?>[6];
+	      int diff = 0;
+	      for(int i = 38; i<44; i++)
+	      {
+	         pro[diff] = list("TmsProgrmManageDAO.selectTestList1",i);
+	         diff +=1;
+	         System.out.println("map ===================== " + map);
+	      }
+	      return pro;
+	   }
 	
 }

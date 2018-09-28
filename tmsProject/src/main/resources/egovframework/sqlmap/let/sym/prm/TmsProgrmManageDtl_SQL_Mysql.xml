@@ -20,13 +20,15 @@
 		<result property="TASK_GB"             column="TASK_GB"             columnIndex="5"/>
 		<result property="USE_YN"             column="USE_YN"             columnIndex="6"/>
 		<result property="PJT_ID"             column="PJT_ID"             columnIndex="7"/>
+		<result property="USER_REAL_ID"             column="USER_REAL_ID"             columnIndex="8"/>
 	</resultMap> 
 	
 	<select id="TmsProgrmManageDAO.selectProgrmList_D" parameterClass="comDefaultVO" resultMap="TmsProgrmManage">
 		<![CDATA[
 			SELECT 
 				  PG_ID   AS "PG_ID"
-				, (SELECT USER_NM FROM USER_TB WHERE USER_ID = USER_DEV_ID) AS "USER_DEV_ID"
+				, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = USER_DEV_ID) AS "USER_DEV_ID"
+				, USER_DEV_ID AS "USER_REAL_ID"
 				, PG_NM  AS "PG_NM" 
 				, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = SYS_GB) AS "SYS_GB" 
 				, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = TASK_GB) AS "TASK_GB"
@@ -131,5 +133,52 @@
         	)
 			]]>
 	</insert>
+	
+	<!-- 공통코드수 조회 -->
+	<select id="TmsProgrmManageDAO.selectTestList" resultClass="java.util.HashMap">
+			SELECT  WEEKYEAR
+			FROM TEST
+	
+	</select>
+	
+	<!-- 공통코드수 조회 -->
+	<select id="TmsProgrmManageDAO.selectTestList1" parameterClass="java.lang.Integer" resultClass="java.util.HashMap" remapResults="true">
+			SELECT SUM(A#i#) AS week#i# FROM
+(
+   SELECT IFNULL(X.USER_NM, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = Y.USER_DEV_ID)) AS NAME
+         ,IFNULL(CASE WHEN X.W = #i# THEN X.CNT END,0) AS A#i#
+   FROM
+      (
+      SELECT C.USER_DEV_ID, D.USER_NM, C.PG, C.PED, C.W, COUNT(C.W) AS CNT FROM
+         (SELECT B.USER_DEV_ID, A.PG, A.PED, A.W FROM
+            (SELECT PG_ID AS PG
+                  ,PLAN_END_DT AS PED
+                  ,WEEK(PLAN_END_DT,1) AS W
+               FROM DEV_PLAN_TB)AS A
+               
+            INNER JOIN
+            PG_TB B
+            ON A.PG = B.PG_ID) AS C
+      INNER JOIN
+      LETTNEMPLYRINFO D
+      ON C.USER_DEV_ID = D.EMPLYR_ID
+      GROUP BY C.USER_DEV_ID, C.W
+      ) AS X
+   
+   RIGHT OUTER JOIN
+      
+      (
+      SELECT WEEKYEAR, E.USER_DEV_ID FROM TEST 
+      CROSS JOIN (SELECT USER_DEV_ID
+                  FROM PG_TB
+                  GROUP BY USER_DEV_ID) AS E
+      
+      ) AS Y
+   ON X.W = Y.WEEKYEAR
+   AND X.USER_DEV_ID = Y.USER_DEV_ID
+   )AS O 
+   GROUP BY O.NAME;
+	
+	</select>
 
 </sqlMap>                            

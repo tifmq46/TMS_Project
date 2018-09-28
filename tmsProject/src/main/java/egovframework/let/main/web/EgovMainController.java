@@ -1,6 +1,8 @@
 package egovframework.let.main.web;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -139,6 +141,22 @@ public class EgovMainController {
 		List<?> pjtMemberList = defectService.selectPjtMember();
 		model.addAttribute("pjtMemberList", pjtMemberList);
 		// 프로젝트 멤버 부분 끝 ----------------------------
+		
+		List<?> testList = TmsProgrmManageService.selectTestList();
+		List<?>[] testList1 = TmsProgrmManageService.selectProgrmList1(testList);
+		System.out.println("testList0 ========================================== " + testList1[0]);
+		System.out.println("testList1 ========================================== " + testList1[1]);
+		System.out.println("testList2 ========================================== " + testList1[2]);
+		System.out.println("testList3 ========================================== " + testList1[3]);
+		System.out.println("testList4 ========================================== " + testList1[4]);
+		System.out.println("testList5 ========================================== " + testList1[5]);
+		
+		
+		
+		
+		model.addAttribute("testList1", testList1);
+
+		
 		
 		return "main/EgovMainView";
 	}

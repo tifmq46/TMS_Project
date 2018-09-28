@@ -28,6 +28,7 @@
 <script type="text/javascript">
 
 function checkForm() {
+	var idReg = /^[A-za-z]/g;
 	if($('#result').html() == '중복된 아이디입니다.')
 	{
 		alert("아이디가 중복되었습니다.")
@@ -37,7 +38,8 @@ function checkForm() {
 		alert("비밀번호가 맞지 않습니다.");
 	}else if($.trim($('#PASSWORD').val())=="" || $.trim($('#CONFIRM_PASSWORD').val())=="" || $.trim($('#USER_NM').val())=="" || $.trim($('#ESNTL_ID').val())==""){
 		alert("모든 값을 입력해주십시오.")
-	}else{
+	}
+	else{
 		document.TmsLoginVO.submit();
 	}
 	
@@ -102,7 +104,7 @@ $(document).on('keyup','#EMPLYR_ID',function(){
         <div id="leftmenu"><c:import url="/sym/mms/EgovMainMenuLeft.do" /></div>
         <!-- //좌측메뉴 끝 -->
             <!-- 현재위치 네비게이션 시작 -->
-            <div id="content">
+            <div id="content" style="width:800px;">
                 <div id="cur_loc">
                     <div id="cur_loc_align">
                         <ul>

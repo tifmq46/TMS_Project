@@ -15,12 +15,14 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import com.ibm.icu.text.SimpleDateFormat;
+import com.ibm.icu.util.Calendar;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.let.sym.prm.service.TmsProgrmManageService;
+import egovframework.let.sym.prm.service.TmsProjectManageVO;
 import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.dev.service.DevPlanService;
 import egovframework.let.tms.dev.service.DevPlanVO;
@@ -52,6 +54,7 @@ public class DevPlanController {
 	/** EgovProgrmManageService */
 	@Resource(name = "TmsProgrmManageService")
 	private TmsProgrmManageService TmsProgrmManageService;
+	
 	
 	/**
 	 * 글 목록을 조회한다. (pageing)
@@ -90,6 +93,8 @@ public class DevPlanController {
 		int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
+		
+		
 
 		return "tms/dev/devPlanList";
 	}
@@ -278,6 +283,41 @@ public class DevPlanController {
 	public String devStats(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
 		
 		/*개발기간*/
+		String start = "2018-09-17";
+		String end = "2018-10-28";
+		/*프로젝트의 개발기간을 가져와서 주차의 값이랑 주차의 차이를 가져온다.*/
+		TmsProjectManageVO tt = TmsProgrmManageService.selectProject();
+		model.addAttribute("tt", tt);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date startDate = tt.getDEV_START_DT();
+		String ab = sdf.format(startDate);
+		
+		Date endDate = tt.getDEV_END_DT();
+		
+		//date -> calendar
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(startDate);
+		
+		int startWeek = cal.get(cal.WEEK_OF_YEAR);
+		
+		cal.setTime(endDate);
+		int endWeek = cal.get(cal.WEEK_OF_YEAR);
+		
+		devPlanService.deleteWeek();
+		for(int i=startWeek; i<=endWeek; i++){
+			devPlanService.insertWeek(i);
+		}
+		/*월에서 주차 구하기
+		 * System.out.println(String.valueOf(cal.get(Calendar.WEEK_OF_MONTH)));
+		 * */
+		
+		
+		System.out.println("========================");
+		System.out.println(sdf.format(startDate));
+		System.out.println("시작 주차"+startWeek);
+		System.out.println("종료 주차"+endWeek);
+		
 		
 		List<?> devPeriod = devPlanService.selectDevPeriod();
 		model.addAttribute("resultP", devPeriod);

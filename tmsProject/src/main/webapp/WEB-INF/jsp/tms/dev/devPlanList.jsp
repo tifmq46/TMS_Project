@@ -113,7 +113,6 @@ $(function(){
 					  	<fieldset><legend>조건정보 영역</legend>	  
 					  	<div class="sf_start">
 					  		<ul id="search_first_ul">
-					  		
 					  			<li>
 								    <label >시스템구분</label>
 									<select name="bbb" id="bbb" style="width:12%;text-align-last:center;">
@@ -220,7 +219,7 @@ $(function(){
                 <!-- 페이지 네비게이션 시작 -->
                 <div id="paging_div">
                     <ul class="paging_align">
-                       <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_tmplatInfo"  />
+                       <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_searchList"  />
                     </ul>
                 </div>                          
                 <!-- //페이지 네비게이션 끝 -->

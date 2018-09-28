@@ -149,10 +149,9 @@ public class TmsProgrmManageController {
 	    
 	    @RequestMapping(value="/sym/prm/insertProject.do")
 	    public String insertProject(@ModelAttribute("TmsProjectManageVO") TmsProjectManageVO TmsProjectManageVO, ModelMap model)throws Exception {
-	    	System.out.println("여기 옴@@@@@@@@@@@@@@@@2");
+	    	
 	    	TmsProgrmManageService.insertProject(TmsProjectManageVO);
-	    	
-	    	
+
 	      	return "redirect:/cmm/main/mainPage.do";
 	    }
 
