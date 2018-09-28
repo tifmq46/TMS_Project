@@ -155,4 +155,13 @@ public interface TestService {
 	 */
 	public HashMap<String, Object> selectTestCurrentCnt(TestDefaultVO searchVO) throws Exception;
 	
+	
+	
+	/**
+	 * 테스트 통계(통계표)을 조회한다.
+	 * @param searchVO - 조회할 정보가 담긴 VO
+	 * @return 글 목록
+	 * @exception Exception
+	 */
+	public List<?> selectTestStatsTable(TestDefaultVO searchVO) throws Exception;
 }

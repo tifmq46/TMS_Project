@@ -38,7 +38,6 @@ public class TmsProgrmManageVO{
 	private String USER_REAL_ID="";
 	
 	
-	
 
 	public String getUSER_REAL_ID() {
 		return USER_REAL_ID;

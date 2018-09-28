@@ -83,8 +83,8 @@ function selectTestCurrent(pageNo){
               
 		        <form:form commandName="searchVO" name="listForm" method="post" action="/tms/test/selectTestCurrent.do">   
                 <!-- 검색 필드 박스 시작 -->
-				<div id="search_field">
-					
+					<div id="search_field">
+						
 					  	<fieldset><legend>조건정보 영역</legend>	
 					  	
 				  	 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
@@ -93,34 +93,31 @@ function selectTestCurrent(pageNo){
 					  		<ul id="search_first_ul">
 					  		
 					  			<li><label for="searchByTestcaseGb"><spring:message code="tms.test.testcaseGb" /></label></li>
-					  			
 								<li>
-									<select name="searchByTestcaseGb" id="searchByTestcaseGb" value="${searchVO.searchByTestcaseGb }">
+									<select name="searchByTestcaseGb" id="searchByTestcaseGb"  value="<c:out value='${searchVO.searchByTestcaseGb}'/>" >
 										<c:forEach var="cmCode" items="${tcGbCode}">
-										<option value="${cmCode.code}">${cmCode.codeNm}</option>
+										<option value="${cmCode.code}"  <c:if test="${searchVO.searchByTestcaseGb == cmCode.code}">selected="selected"</c:if> >${cmCode.codeNm}</option>
 										</c:forEach>
 									</select>						
 					  			</li>
 					  		
 					  			<li><label for="searchByTestcaseId"><spring:message code="tms.test.testcaseId" /></label></li>
-					  			<li><input type="text" name="searchByTestcaseId" id="searchByTestcaseId" size="15" /></li>
+					  			<li><input type="text" name="searchByTestcaseId" id="searchByTestcaseId" size="15"  value="<c:out value='${searchVO.searchByTestcaseId}'/>" /></li>
 					  			
 				  				<c:if test="${testCurrent[0].pgId != '' && testCurrent[0].pgId ne null }">
 									<li><label for="searchByPgId"><spring:message code="tms.test.pgId" /></label></li>
-						  			<li><input type="text" name="searchByPgId" id="searchByPgId" size="15"/></li>
+						  			<li><input type="text" name="searchByPgId" id="searchByPgId" size="15"  value="<c:out value='${searchVO.searchByPgId}'/>"/></li>
 					  			</c:if>
-					  			
 					  		</ul>	
 					  		
 					  		<ul id="search_second_ul">
 					  			
 					  			<li><label for="searchByTaskGb"><spring:message code="tms.test.taskGb" /></label></li>
-					  			
 								<li>
-									<select name="searchByTaskGb" id="searchByTaskGb">
+									<select name="searchByTaskGb" id="searchByTaskGb" value="<c:out value='${searchVO.searchByTaskGb}'/>">
 										<option value="">전체</option>
 										<c:forEach var="cmCode" items="${taskGbCode}">
-										<option value="${cmCode.code}">${cmCode.codeNm}</option>
+										<option value="${cmCode.code}" <c:if test="${searchVO.searchByTaskGb == cmCode.code}">selected="selected"</c:if>>${cmCode.codeNm}</option>
 										</c:forEach>
 									</select>						
 					  			</li>
@@ -128,23 +125,23 @@ function selectTestCurrent(pageNo){
 					  			
 					  			<li><label for="searchByResultYn"><spring:message code="tms.test.completeYn" /></label></li>
 					  			<li>
-									<select name="searchByResultYn" id="searchByResultYn">
+									<select name="searchByResultYn" id="searchByResultYn" value="<c:out value='${searchVO.searchByResultYn}'/>">
 										<option value="">전체</option>
 										<c:forEach var="cmCode" items="${resultYnCode}">
-										<option value="${cmCode.code}">${cmCode.codeNm}</option>
+										<option value="${cmCode.code}" <c:if test="${searchVO.searchByResultYn == cmCode.code}">selected="selected"</c:if> >${cmCode.codeNm}</option>
 										</c:forEach>
 									</select>							
 					  			</li>
 					  			
 					  			
 					  			<li><label for="searchByUserDevId"><spring:message code="tms.test.userWriterId" /></label></li>
-					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" /></li>
+					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId"   value="<c:out value='${searchVO.searchByUserDevId}'/>"/></li>
 					  			
 					  			
 					  			<li>
 									<div class="buttons" style="float:right;">
 									    
-                                        <a href="<c:url value='/tms/test/selectTestCurrent.do'/>" onclick="selectTestCurrent('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
+	                                       <a href="<c:url value='/tms/test/selectTestCurrent.do'/>" onclick="selectTestCurrent('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
 											<spring:message code="button.inquire" /></a>
 									</div>	  				  			
 					  			</li> 
@@ -153,7 +150,7 @@ function selectTestCurrent(pageNo){
 					  				
 						</div>			
 						</fieldset>
-					 		
+						 		
 					</div>
 				</form:form>
 				<!-- //검색 필드 박스 끝 -->
@@ -161,7 +158,6 @@ function selectTestCurrent(pageNo){
 
                 <div id="page_info"><div id="page_info_align"></div></div>     
                 
-              
                 
                 <div class="default_tablestyle">
                 
@@ -169,12 +165,22 @@ function selectTestCurrent(pageNo){
                   
            			<fmt:parseNumber var="tc1_yCnt" value="${selectTestCurrentCnt.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
                    	<fmt:parseNumber var="tc1_totCnt" value="${selectTestCurrentCnt.totCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
-                   	<fmt:parseNumber var="value1" value="${(tc1_yCnt/tc1_totCnt)*100}" type="number"  integerOnly="true" />
+                   	
+                   	<c:choose>
+                   		<c:when test="${tc1_totCnt eq '0'}">
+                   			<c:set var="testPct"  value="0"></c:set>
+                   		</c:when>
+                   		
+                   		<c:otherwise>
+                   			<fmt:parseNumber var="testPct" value="${(tc1_yCnt/tc1_totCnt)*100}" type="number"  integerOnly="true" ></fmt:parseNumber>
+                   		</c:otherwise>
+                   	</c:choose>
+                   	
                   	<strong>
 			                             총 : <c:out value="${selectTestCurrentCnt.totCnt}"></c:out>
 			              , 완료 : <c:out value="${selectTestCurrentCnt.yCnt}"></c:out>
 			              , 미완료 : <c:out value="${selectTestCurrentCnt.nCnt}"></c:out>
-			              , 진행률 : <c:out value="${value1}"></c:out>%
+			              , 진행률 : <c:out value="${testPct}"></c:out>%
 			         </strong>
                  </div>
 	                
@@ -239,17 +245,14 @@ function selectTestCurrent(pageNo){
               </table>        
            </div>
            
+            <!-- 페이지 네비게이션 시작 -->
+           <div id="paging_div">
+               <ul class="paging_align">
+                  <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="selectTestCurrent"  />
+               </ul>
+           </div>                          
+           <!-- //페이지 네비게이션 끝 -->  
            
-                 <!-- 페이지 네비게이션 시작 -->
-                <div id="paging_div">
-                    <ul class="paging_align">
-                       <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_testCaseList"  />
-                    </ul>
-                </div>                          
-                <!-- //페이지 네비게이션 끝 -->  
-                
-                
-                
             </div>
             <!-- //content 끝 -->
         </div>

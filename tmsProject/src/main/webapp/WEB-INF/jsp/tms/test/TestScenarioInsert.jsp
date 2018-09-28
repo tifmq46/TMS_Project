@@ -27,23 +27,22 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>테스트케이스 목록 조회</title>
-
+<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<validator:javascript formName="testScenarioVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript" defer="defer">
 
 
-function fn_egov_select_testCaseList(pageNo){
-    document.listForm.pageIndex.value = pageNo; 
-    document.listForm.action = "<c:url value='/tms/test/selectTestCaseList.do'/>";
-    document.listForm.submit();  
-}
-
-
 function insertTestScenarioImpl(){
-    document.insertForm.action = "<c:url value='/tms/test/insertTestScenarioImpl.do'/>";
-    document.insertForm.submit();  
+	
+	if (!validateTestScenarioVO(document.testScenarioVO)){
+        return;
+    }
+    
+    if (confirm('<spring:message code="common.regist.msg" />')) {
+    	document.testScenarioVO.action = "<c:url value='/tms/test/insertTestScenarioImpl.do'/>";
+   	    document.testScenarioVO.submit();       
+    }
 }
-
-
 
 
 </script>
@@ -84,79 +83,93 @@ function insertTestScenarioImpl(){
                <div id="search_field_loc"><h2><strong>테스트시나리오 등록</strong></h2></div>
                         
                               
-             <form:form commandName="testScenarioVO" name="insertForm" method="post" action="<c:url value='/tms/test/insertTestScenarioImpl.do'/>">          
+             <form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="<c:url value='/tms/test/insertTestScenarioImpl.do'/>">          
                         
                  <div id="border" class="modify_user" >
-                      <table>
-                      
-                      	<form:hidden path="userTestId" value="${userTestId}"/>
-                         <tr>
-                              <th width="20%" height="23" class="required_text" nowrap >
-                                    <label for="testcaseId"> 
-                                    	<spring:message code="tms.test.testcaseId" />
-                                    </label>    
-                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td width="80%" nowrap colspan="3">
-                                    <c:out value="${testcaseId}" ></c:out>
-                                	<form:hidden path="testcaseId" value="${testcaseId}"/>
-                                </td>
-                          </tr>
-                          <tr>
-                              <th width="20%" height="23" class="required_text" nowrap >
-                                    <label for="testscenarioId"> 
-                                    	<spring:message code="tms.test.testscenarioId" />
-                                    </label>
-                                	<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
-                               </th>
-                                <td width="80%" nowrap colspan="3">
-                                    <form:input title="게시판명입력" path="testscenarioId" size="60" cssStyle="width:50%" />
-                                </td>
-                          </tr>
-                          <tr> 
-                            <th height="23" class="required_text" >
-                                <label for="testscenarioOrd">
-                                	<spring:message code="tms.test.testscenarioOrd" />
-                                </label>    
-                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
-                            </th>
-                            <td colspan="3">
-                                <form:input title="게시판명입력" path="testscenarioOrd" size="60" cssStyle="width:50%" value=""/>
-                            </td>
-                          </tr>
-                          
-                           <tr>
-                              <th width="20%" height="23" class="required_text" nowrap >
-                                    <label for="testCondition"> 
-                                    	<spring:message code="tms.test.testCondition" />
-                                    </label>    
-                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td width="80%" nowrap colspan="3">
-                                    <form:input title="게시판명입력" path="testCondition" size="30" cssStyle="width:100%" />
-                                </td>
-                          </tr>
-                          <tr>
-                              <th width="20%" height="23" class="required_text" nowrap >
-                                    <label for="testscenarioContent"> 
-                                    	<spring:message code="tms.test.testscenarioContent" />
-                                    </label>    
-                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td colspan="3">
-                               	<form:textarea title="게시판소개입력" path="testscenarioContent" cols="75" rows="4" cssStyle="width:100%" />
-                            	</td>
-                          </tr>
-                          <tr> 
-                            <th height="23" class="required_text" >
-                                <label for="expectedResult">
-                                	<spring:message code="tms.test.expectedResult" />
-                                </label>    
-                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
-                            </th>
-                            <td colspan="3">
-                               <form:textarea title="게시판소개입력" path="expectedResult" cols="75" rows="4" cssStyle="width:100%" />
-                            </td>
-                          </tr>
+                 		<form:hidden path="userTestId" value="${userTestId}"/>
+                        <table>
                         
-                       </table>
+                        	<tr>
+                             	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testcaseId" /></label>
+                             	<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+                                </th>
+								<td width="75%" colspan="3">
+									<c:out value="${testcaseId}" ></c:out>
+									<form:hidden path="testcaseId" value="${testcaseId}"/>
+                            	</td>
+                            </tr>
+                            <tr>
+                                <th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testscenarioId" /></label>
+                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+                                </th>
+                                <td width="25%" nowrap >
+                                  <c:out value='${testScenarioVO.testscenarioId}'/>
+                                  <input id="testscenarioId" name="testscenarioId" type="text" size="25"  >
+                                  <br/><form:errors path="testscenarioId" />
+                                </td>
+                                
+                                <th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testscenarioOrd" /></label>
+                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+                                </th>
+                                <td width="25%" nowrap >
+                                	<input id="testscenarioOrd" name="testscenarioOrd" type="text" size="25"  >
+                                	<br/><form:errors path="testscenarioOrd" /> 
+                                </td>
+                            </tr>
+                            
+                             <tr>
+                             	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testCondition" /></label>
+                                </th>
+								<td width="75%" colspan="3">
+                                	<textarea type="textarea" rows="2" style="width:100%" id="testCondition" name="testCondition"></textarea>
+                                	<br/><form:errors path="testCondition" /> 
+                            	</td>
+                            </tr>
+                            
+                            
+                            <tr>
+                             	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
+                             	<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+                                </th>
+								<td width="75%" colspan="3">
+                            		<textarea type="textarea" rows="5" style="width:100%" id="testscenarioContent" name="testscenarioContent"></textarea>
+                            		<br/><form:errors path="testscenarioContent" />
+                            	</td>
+                            </tr>
+                            
+                            <tr>
+                            	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.expectedResult" /></label>
+                            	<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+                                </th>
+                                <td width="75%" colspan="3">
+                                	<textarea type="textarea" rows="5" style="width:100%" id="expectedResult" name="expectedResult"></textarea>
+                            	</td>
+                            </tr>
+                            
+                            
+                            <tr>
+                            	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testResultYn" /></label>
+                                </th>
+                                <td width="25%" nowrap >
+                           			<input disabled="disabled" type="radio" name="testResultYn" value="P">Pass
+									&nbsp;<input disabled="disabled" type="radio" name="testResultYn" value="F">Fail
+                                </td>
+                                
+                                <th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testDt" /></label>
+                                </th>
+                                <td width="25%" nowrap >
+                                	<input disabled="disabled" id="testDt" name="testDt" type="date" size="25" maxlength="60"  value="<fmt:formatDate value='${testScenarioVO.testDt}' pattern='yyyy-MM-dd' />" /> 
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                             	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testResultContent" /></label>
+                                </th>
+                                <td width="75%" colspan="3">
+                            		<textarea disabled="disabled" type="textarea" rows="5" style="width:100%" id="testResultContent" name="testResultContent"></textarea>
+                            	</td>
+                            </tr>
+                        </table>
                     </div>
              	
 			</form:form>             	

@@ -203,4 +203,16 @@ public class TestDAO extends EgovAbstractDAO{
 	public HashMap<String, Object> selectTestCurrentCnt(TestDefaultVO searchVO) throws Exception {
 		return  (HashMap<String, Object>) select("TestDAO.selectTestCurrentCnt", searchVO);
 	}
+	
+	
+	/**
+	 * 테스트 통계(통계표)를 조회한다.
+	 * @param TestDefaultVO - 조회할 정보가 담긴 searchVO
+	 * @return 글 목록
+	 * @exception Exception
+	 */
+	public List<?> selectTestStatsTable(TestDefaultVO searchVO) throws Exception {
+		return list("TestDAO.selectTestStatsTable", searchVO);
+	}
+	
 }

@@ -64,7 +64,7 @@
 			 WHERE GROUP_ID=#groupId#
 		]]>
 	</delete>
-	
+<!-- 	
 	<select id="groupManageDAO.selectGroupListTotCnt" parameterClass="groupManageVO" resultClass="int">
 
 			SELECT COUNT(*) totcnt
@@ -74,5 +74,5 @@
 				GROUP_NM LIKE CONCAT('%' , #searchKeyword#, '%')
 			</isEqual>
 	</select>
-
+ -->
 </sqlMap>

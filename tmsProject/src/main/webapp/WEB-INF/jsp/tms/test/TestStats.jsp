@@ -33,12 +33,6 @@
 <script type="text/javaScript" language="javascript" defer="defer">
 
 
-function fn_egov_select_testCaseList(pageNo){
-    document.listForm.pageIndex.value = pageNo; 
-    document.listForm.action = "<c:url value='/tms/test/selectTestCaseList.do'/>";
-    document.listForm.submit();  
-}
-
 window.onload = function() {
 	
 	
@@ -132,12 +126,22 @@ window.onload = function() {
                       	<div style="float:right;">
 	                      	<fmt:parseNumber var="tc1_yCnt" value="${testCaseStatsMapTC1.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
 	                      	<fmt:parseNumber var="tc1_totCnt" value="${testCaseStatsMapTC1.totCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
-	                      	<fmt:parseNumber var="value1" value="${(tc1_yCnt/tc1_totCnt)*100}" type="number"  integerOnly="true" />
+	                      
+		                      <c:choose>
+	                   			<c:when test="${tc1_totCnt eq '0'}">
+	                   				<c:set var="tc1_Pct"  value="0"></c:set>
+	                   			</c:when>
+	                   		
+	                   			<c:otherwise>
+	                   				<fmt:parseNumber var="tc1_Pct" value="${(tc1_yCnt/tc1_totCnt)*100}" type="number"  integerOnly="true" ></fmt:parseNumber>
+	                   			</c:otherwise>
+	                   		</c:choose>
+	                      
 	                      	<strong><c:out value="${tc1_yCnt}"></c:out>&nbsp;/&nbsp;<c:out value="${tc1_totCnt}"></c:out></strong>
 						</div>
 						
                       	<div class="progress">
-						    <div class="progress-bar" style="width:${value1}%"> <strong><c:out value=" ${value1}"></c:out>%</strong></div>
+						    <div class="progress-bar" style="width:${tc1_Pct}%"> <strong><c:out value=" ${tc1_Pct}"></c:out>%</strong></div>
 						</div>
 						  
 						<div style="float:right;">
@@ -153,13 +157,23 @@ window.onload = function() {
                  		<div style="float:right;">
                       		<fmt:parseNumber var="tc2_yCnt" value="${testCaseStatsMapTC2.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
 	                      	<fmt:parseNumber var="tc2_totCnt" value="${testCaseStatsMapTC2.totCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
-	                      	<fmt:parseNumber var="value2" value="${(tc2_yCnt/tc2_totCnt)*100}" type="number" integerOnly="true" />
+	                      	
+	                      	<c:choose>
+	                   			<c:when test="${tc2_totCnt eq '0'}">
+	                   				<c:set var="tc2_Pct"  value="0"></c:set>
+	                   			</c:when>
+	                   		
+	                   			<c:otherwise>
+	                   				<fmt:parseNumber var="tc2_Pct" value="${(tc2_yCnt/tc2_totCnt)*100}" type="number"  integerOnly="true" ></fmt:parseNumber>
+	                   			</c:otherwise>
+	                   		</c:choose>
+	                      	
 	                      	<strong><c:out value="${tc2_yCnt}"></c:out>&nbsp;/&nbsp;<c:out value="${tc2_totCnt}"></c:out></strong>
 						</div>
                  
                       	
                       	<div class="progress">
-						    <div class="progress-bar" style="width:${value2}%"><strong><c:out value=" ${value2}"></c:out>% </strong> </div>
+						    <div class="progress-bar" style="width:${tc2_Pct}%"><strong><c:out value=" ${tc2_Pct}"></c:out>% </strong> </div>
 						</div>
 						
 						<div style="float:right;">

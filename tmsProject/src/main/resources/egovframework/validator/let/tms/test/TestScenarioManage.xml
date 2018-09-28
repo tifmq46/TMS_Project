@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+    <formset>
+        <form name="testScenarioVO">
+			<field property="testscenarioId" depends="required, maxlength">
+        		<arg0 key="tms.test.testscenarioId" />
+        		<arg1 key="20" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>20</var-value>
+				</var>
+			</field> 
+			<field property="testscenarioOrd" depends="required, integer">
+        		<arg0 key="tms.test.testscenarioOrd" />
+			</field>
+			<field property="testCondition" depends="maxlength">
+        		<arg0 key="tms.test.testCondition" />
+        		<arg1 key="800" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>800</var-value>
+				</var>
+			</field>
+			<field property="testscenarioContent" depends="required, maxlength">
+        		<arg0 key="tms.test.testscenarioContent" />
+        		<arg1 key="800" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>800</var-value>
+				</var>
+			</field> 
+			<field property="expectedResult" depends="required, maxlength">
+        		<arg0 key="tms.test.expectedResult" />
+        		<arg1 key="800" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>800</var-value>
+				</var>
+			</field> 
+		</form>
+    </formset> 
+    
+    <formset>
+        <form name="testScenarioUpdate">
+			
+			<field property="testscenarioOrd" depends="required, integer">
+        		<arg0 key="tms.test.testscenarioOrd" />
+			</field>
+			<field property="testCondition" depends="maxlength">
+        		<arg0 key="tms.test.testCondition" />
+        		<arg1 key="800" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>800</var-value>
+				</var>
+			</field>
+			<field property="testscenarioContent" depends="required, maxlength">
+        		<arg0 key="tms.test.testscenarioContent" />
+        		<arg1 key="800" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>800</var-value>
+				</var>
+			</field> 
+			<field property="expectedResult" depends="required, maxlength">
+        		<arg0 key="tms.test.expectedResult" />
+        		<arg1 key="800" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>800</var-value>
+				</var>
+			</field>
+			<field property="testResultContent" depends="maxlength">
+        		<arg0 key="tms.test.testResultContent" />
+        		<arg1 key="800" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>800</var-value>
+				</var>
+			</field>
+		</form>
+    </formset>
+</form-validation>

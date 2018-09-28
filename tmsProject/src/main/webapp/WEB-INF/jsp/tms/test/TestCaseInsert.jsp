@@ -28,12 +28,21 @@
 
 <title>테스트케이스 등록</title>
 
+<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<validator:javascript formName="testCaseVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript" defer="defer">
 
 
 function insertTestCaseImpl(){
-    document.insertForm.action = "<c:url value='/tms/test/insertTestCaseImpl.do'/>";
-    document.insertForm.submit();  
+
+	if (!validateTestCaseVO(document.testCaseVO)){
+        return;
+    }
+    
+    if (confirm('<spring:message code="common.regist.msg" />')) {
+    	document.testCaseVO.action = "<c:url value='/tms/test/insertTestCaseImpl.do'/>";
+        document.testCaseVO.submit();      
+    }
 }
 
 function searchFileNm() {
@@ -80,7 +89,7 @@ function searchFileNm() {
                <div id="search_field_loc"><h2><strong>테스트케이스 등록</strong></h2></div>
                         
                               
-             <form:form commandName="testCaseVO" name="insertForm" method="post" >          
+             <form:form commandName="testCaseVO" name="testCaseVO" method="post" >          
                         
                  <div id="border" class="modify_user" >
                       <table>
@@ -99,6 +108,7 @@ function searchFileNm() {
 										<option value="${cmCode.code}">${cmCode.codeNm}</option>
 										</c:forEach>
 									</select>
+									<br/><form:errors path="testcaseGb" />
                                 </td>
                           </tr>
                          <tr>
@@ -108,7 +118,8 @@ function searchFileNm() {
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
-                                    <form:input title="게시판명입력" path="testcaseId"  cssStyle="width:50%" />
+                                    <form:input type="text" title="게시판명입력" path="testcaseId"  cssStyle="width:50%" />
+                                    <br/><form:errors path="testcaseId" /> 
                                 </td>
                           </tr>
                           <tr>
@@ -117,8 +128,9 @@ function searchFileNm() {
                                     	<spring:message code="tms.test.testcaseContent" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td width="80%" nowrap colspan="3">
-                                    <form:input title="게시판명입력" path="testcaseContent" cssStyle="width:80%" />
+                                <td width="50%" nowrap colspan="3">
+                                    <form:input type="text" title="게시판명입력" path="testcaseContent" cssStyle="width:50%" />
+                                    <br/><form:errors path="testcaseContent" />
                                 </td>
                           </tr>
                           <tr> 
@@ -126,12 +138,21 @@ function searchFileNm() {
                                 <label for="pgId">
                                 	<spring:message code="tms.test.pgId" />
                                 </label>    
-                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td colspan="3">
-                                <form:input title="게시판명입력" path="pgId" id="TmsProgrmFileNm_pg_id"  size="60" cssStyle="width:50%" />
+                                <form:input type="text" title="게시판명입력" path="pgId" id="TmsProgrmFileNm_pg_id"  size="60" cssStyle="width:50%" />
                            		<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
+                            </td>
+                          </tr>
+                           <tr> 
+                            <th height="23" class="required_text" >
+                                <label for="pgNm">
+                                	<spring:message code="tms.test.pgNm" />
+                                </label>    
+                            </th>
+                            <td colspan="3">
+                                <form:input type="text" title="게시판명입력" path="" disabled="true" id="TmsProgrmFileNm_pg_nm"  size="60" cssStyle="width:50%" />
                             </td>
                           </tr>
                           <tr>
@@ -143,11 +164,11 @@ function searchFileNm() {
                                 <td width="80%" nowrap colspan="3">
                                 
 	                                 <select name="taskGb" id="TmsProgrmFileNm_task_gb">
-										<option value="">없음</option>
 										<c:forEach var="cmCode" items="${taskGbCode}">
 										<option value="${cmCode.codeNm}">${cmCode.codeNm}</option>
 										</c:forEach>
 									</select>
+									<br/><form:errors path="taskGb" />
                                 </td>
                           </tr>
                            <tr>
@@ -157,22 +178,23 @@ function searchFileNm() {
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
-                                    <form:input title="게시판명입력" path="userId" id="TmsProgrmFileNm_user_dev_id" size="30" cssStyle="width:50%"/>
-                                </td>
+                                    <form:input type="text" path="userId" title="게시판명입력" id="TmsProgrmFileNm_user_real_id" size="30" cssStyle="width:50%"/>
+                                    <form:hidden title="게시판명입력" path="" id="TmsProgrmFileNm_user_dev_id" />
+                                    <br/><form:errors path="userId" />
+                                </td> 
                           </tr>
                           <tr> 
                             <th height="23" class="required_text" >
                                 <label for="precondition">
                                 	<spring:message code="tms.test.precondition" />
                                 </label>    
-                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td colspan="3">
-                               <form:textarea title="게시판소개입력" path="precondition" cols="75" rows="4" cssStyle="width:100%" />
+                               <form:textarea type="textarea" title="게시판소개입력" path="precondition" cols="75" rows="4" cssStyle="width:100%" />
+                            	<br/><form:errors path="precondition" />
                             </td>
                           </tr>
                          	<form:hidden path=""  id="TmsProgrmFileNm_sys_gb"/>
-                         	<form:hidden path=""  id="TmsProgrmFileNm_pg_nm"/>
                        </table>
                     </div>
              	
