@@ -64,7 +64,7 @@
 	<!-- container 시작 -->
 	<div id="main_container">
 	    <!-- 프로그램리스트 검색 시작 -->
-		  <div>
+		 <%--  <div>
          	<ul>
             	<li>
                 	<div>
@@ -79,7 +79,7 @@
                     </div>
                 </li>	
             </ul>           
-         </div> 
+         </div>  --%>
         <!-- 프로그램리스트 검색 끝 --> 
         <div class="container" style="padding:0 15px; 0 15px;">
 	    	<div class="page-title">
@@ -223,49 +223,8 @@
 	    					프로젝트 진행상태
     				</div>
     			</div>
-    			<div class="widget-content default_tablestyle" style="height:212px; overflow:auto; ">
-    				<table width="100%" cellspacing="0" cellpadding="0" class="table table-search-head table-size-th4">
-			    					<caption>프로젝트 멤버</caption>
-			            <colgroup>
-			            <col width="10%" >
-			            <col width="15%" >
-			            <col width="15%" >
-			            <col width="15%" >
-			            <col width="15%" >
-			            <col width="15%" >
-			            <col width="15%" >
-			           
-			            </colgroup>
-			            <thead>
-			            <tr>
-			                <th scope="col" class="f_field" nowrap="nowrap">이름</th>
-			                <th scope="col" nowrap="nowrap">역할</th>
-			                <th scope="col" nowrap="nowrap">대기</th>
-			                <th scope="col" nowrap="nowrap">조치중</th>
-			                <th scope="col" nowrap="nowrap">조치완료</th>
-			                <th scope="col" nowrap="nowrap">재요청</th>
-			                <th scope="col" nowrap="nowrap">최종완료</th>
-			            </tr>
-			            </thead>
-			            <tbody>                 
-			            
-				        <c:forEach var="testList1" items="${testList1}" varStatus="status">
-				        <c:if test="${status.index eq 0}">
-			            <!-- loop 시작 -->                                
-			              <tr>
-			              	<td nowrap="nowrap"><c:out value="1"/></td>
-						    <td nowrap="nowrap"><c:out value="${testList1}"/></td>
-						    <td nowrap="nowrap"><c:out value="${testList1[0].week39}"/></td>
-						    <td nowrap="nowrap"><c:out value="2"/></td>
-						    <td nowrap="nowrap"><c:out value="3"/></td>
-						    <td nowrap="nowrap"><c:out value="4"/></td>
-						    <td nowrap="nowrap"><c:out value="5"/></td>
-			              </tr>
-			            </c:if>
-			            </c:forEach>  
-			            </tbody> 
-    				</table>
-    			</div>
+    			
+    			
     			
     		</div>    	    	
     	</div>
@@ -281,28 +240,7 @@
     		</div>    	    	
     	</div>
     	
-    	<div class="myBsnsList" class="col-md-6" style="height:241px; margin-bottom:20px !important	;">
-    		<div class="widget">
-    			<div class="widget-header">
-    				<div class="header-name" style="margin:10px;">
-	    					테스트 진행상태
-    				</div>
-    			</div>
-    			
-    		</div>    	    	
-    	</div>
-    	
-    	<div class="recentBsnsList" class="col-md-6" style="height:241px; margin-bottom:20px !important	;">
-    		<div class="widget">
-    			<div class="widget-header">
-    				<div class="header-name" style="margin:10px;">
-	    					조치 진행상태
-    				</div>
-    			</div>
-    			
-    		</div>    	    	
-    	</div>
-    	
+    
     </div>	                
 	</div>
 	<!-- //게시판 끝 -->
