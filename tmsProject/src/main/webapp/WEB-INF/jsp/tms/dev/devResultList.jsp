@@ -34,12 +34,7 @@
 function fn_result_regist(t){
 	
 	var f = document.listForm;
-	//var idVal = document.getElementById("pgId").value;
-	//var idVal2 = $(this).closest('tr').find('.pgId').text();
-	//var k = document.getElementById("test").value;
-	//var idVal2 = k.closest('tr').find('.pgId').text();
-	
-	//alert(idVal2);
+
 	var idVal = document.getElementById(t).value;
 	var idVal1 = document.getElementById(t+1).value;
 	location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1;
@@ -229,7 +224,7 @@ $(function(){
             				
             				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
             				<%-- <a href="<c:url value='/tms/dev/updateDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%>
-            				<a href="#LINK" onclick="fn_result_regist('${result.pgId}');" id="test" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				<a href="#LINK" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
             				<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%> 
             				<!-- 값이 바뀌는 이벤트가 발생했을 때 저장 버튼 활성화
             					저장 누르면 버튼 enable

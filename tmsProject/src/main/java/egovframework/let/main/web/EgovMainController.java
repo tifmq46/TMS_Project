@@ -153,7 +153,7 @@ public class EgovMainController {
 			r1.addAll(TmsProgrmManageService.selectProgrmList1(i));
 		}
 		
-		System.out.println("====tttt====="+r1);
+		/*System.out.println("====tttt====="+r1);
 		
 
 		System.out.println(r1.size());
@@ -176,9 +176,9 @@ public class EgovMainController {
 		HashMap<String, String> hm3 = new HashMap<String,String>();
 		HashMap<String, String> hm4 = new HashMap<String,String>();
 		
-		/*for(int i=0; i<firstVal; i++){
+		for(int i=0; i<firstVal; i++){
 			HashMap<String, String> hmi = new HashMap<String,String>();			
-		}*/
+		}
 		
 		int k[] = new int[4];
 		ArrayList<HashMap<String, String>> al = new ArrayList <HashMap<String,String>>();
@@ -188,8 +188,8 @@ public class EgovMainController {
 		}
 		
 		String t, t2;
-		
-		for(int i=0; i<r1.size();i++){
+		*/
+		/*for(int i=0; i<r1.size();i++){
 			
 			//System.out.println("-----------------"+r1.get(i));
 			String temp = r1.get(i).get("BN").toString();
@@ -221,17 +221,17 @@ public class EgovMainController {
 				//r2.addAll(al);
 				
 			}
-		}
+		}*/
 		//r2.addAll(al);
 		
 		//r2.add(rrr[0]);
 		//r2.add(hm2);
 		
-		System.out.println("====="+r2);
+		//System.out.println("====="+r2);
 		
 		model.addAttribute("testList1", r1);
 		
-		model.addAttribute("r2", r2);
+		//model.addAttribute("r2", r2);
 		
 		return "main/EgovMainView";
 	}
