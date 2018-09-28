@@ -42,7 +42,6 @@
     
 	$(function(){
 		   $('#SYS_GB').change(function() {
-			   alert("dasd");
 		      $.ajax({
 		         type:"POST",
 		         url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
@@ -144,7 +143,7 @@
                             </th>
                             <td>
                             <select id="SYS_GB" name="SYS_GB" class="select" title="시스템구분">
-									   <option value="" >전체</option>
+									   <option value="" >선택하세요</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
 									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${searchVO.searchBySysGb == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
 									      </c:forEach>
@@ -180,7 +179,15 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="USER_DEV_ID" name="USER_DEV_ID" type="text" size="60"  maxlength="60" style="width:100%" title="개발자">
+                            <select id="USER_DEV_ID" name="USER_DEV_ID" class="select" title="개발자">
+									   <option value="" >선택하세요</option>
+									      <c:forEach var="DEV_ID" items="${dev_List}" varStatus="status">
+									    	<option value="<c:out value="${DEV_ID.USER_NM}"/>" ><c:out value="${DEV_ID.USER_NM}" /></option>
+									      </c:forEach>
+                                <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
+                                    <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
+                                </c:forEach>  --%>   
+                            </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
                               <br/>
                             </td>
                           </tr>

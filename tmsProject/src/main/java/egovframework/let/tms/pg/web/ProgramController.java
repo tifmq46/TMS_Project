@@ -193,7 +193,9 @@ public class ProgramController {
 		// 공통코드 부분 시작 -------------------------------	
 		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
-				
+		List<?> user_dev_List = TmsProgrmManageService.selectUserList();
+		model.addAttribute("dev_List", user_dev_List);
+		
 		System.out.println("111-"+searchVO.getSearchBySysGb());
 		System.out.println("222-"+searchVO.getSearchByTaskGb());
 		
