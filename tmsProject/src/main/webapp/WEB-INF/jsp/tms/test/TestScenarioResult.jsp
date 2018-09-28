@@ -27,7 +27,7 @@
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
-<title>테스트시나리오 상세</title>
+<title>테스트시나리오 결과</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="testScenarioUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript" defer="defer">
@@ -84,7 +84,7 @@ function deleteTestScenario() {
 							<li>&gt;</li>
 							<li>테스트관리</li>
 							<li>&gt;</li>
-							<li><strong>테스트시나리오 상세</strong></li>
+							<li><strong>테스트 시나리오 결과</strong></li>
                         </ul>
                     </div>
                 </div>
@@ -119,7 +119,7 @@ function deleteTestScenario() {
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
                                 <td width="25%" nowrap >
-                                	<input id="testscenarioOrd" name="testscenarioOrd" type="text" size="25" value="<c:out value='${testScenarioVO.testscenarioOrd}'/>" > 
+                                	<c:out value='${testScenarioVO.testscenarioOrd}'/>
                                 </td>
                             </tr>
                             
@@ -127,7 +127,7 @@ function deleteTestScenario() {
                              	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testCondition" /></label>
                                 </th>
 								<td width="75%" colspan="3">
-                                	<textarea type="textarea" rows="2" style="width:100%" id="testCondition" name="testCondition"><c:out value='${testScenarioVO.testCondition}'/></textarea>
+                                	<c:out value='${testScenarioVO.testCondition}'/>
                             	</td>
                             </tr>
                             
@@ -137,7 +137,7 @@ function deleteTestScenario() {
                              	<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
 								<td width="75%" colspan="3">
-                            		<textarea type="textarea" rows="5" style="width:100%" id="testscenarioContent" name="testscenarioContent"><c:out value='${testScenarioVO.testscenarioContent}'/></textarea>
+                            		<c:out value='${testScenarioVO.testscenarioContent}'/>
                             	</td>
                             </tr>
                             
@@ -146,7 +146,7 @@ function deleteTestScenario() {
                             	<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
                                 <td width="75%" colspan="3">
-                                	<textarea type="textarea" rows="5" style="width:100%" id="expectedResult" name="expectedResult"><c:out value='${testScenarioVO.expectedResult}'/></textarea>
+                                	<c:out value='${testScenarioVO.expectedResult}'/>
                             	</td>
                             </tr>
                             
@@ -157,18 +157,18 @@ function deleteTestScenario() {
                                 <td width="25%" nowrap >
                                 	<c:choose>
                                 		<c:when test="${testScenarioVO.testResultYn == 'P'}">
-	                                		<input disabled="disabled" type="radio" name="testResultYn" value="P" checked>Pass
-	  										&nbsp;<input disabled="disabled" type="radio" name="testResultYn" value="F">Fail
+	                                		<input type="radio" name="testResultYn" value="P" checked>Pass
+	  										&nbsp;<input type="radio" name="testResultYn" value="F">Fail
                                 		</c:when>
                                 		
                                 		<c:when test="${testScenarioVO.testResultYn == 'F'}">
-	                                		<input disabled="disabled" type="radio" name="testResultYn" value="P" >Pass
-	  										&nbsp;<input disabled="disabled" type="radio" name="testResultYn" value="F" checked>Fail
+	                                		<input type="radio" name="testResultYn" value="P" >Pass
+	  										&nbsp;<input type="radio" name="testResultYn" value="F" checked>Fail
                                 		</c:when>
                                 		
                                 		<c:otherwise>
-                                			<input disabled="disabled" type="radio" name="testResultYn" value="P">Pass
-	  										&nbsp;<input disabled="disabled" type="radio" name="testResultYn" value="F">Fail
+                                			<input type="radio" name="testResultYn" value="P">Pass
+	  										&nbsp;<input type="radio" name="testResultYn" value="F">Fail
                                 		</c:otherwise>
                                 	</c:choose>
                                 </td>
@@ -176,7 +176,7 @@ function deleteTestScenario() {
                                 <th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testDt" /></label>
                                 </th>
                                 <td width="25%" nowrap >
-                                	<input disabled="disabled" id="testDt" name="testDt" type="date" size="25" maxlength="60"  value="<fmt:formatDate value='${testScenarioVO.testDt}' pattern='yyyy-MM-dd' />" /> 
+                                	<input id="testDt" name="testDt" type="date" size="25" maxlength="60"  value="<fmt:formatDate value='${testScenarioVO.testDt}' pattern='yyyy-MM-dd' />" /> 
                                 </td>
                             </tr>
                             
@@ -184,7 +184,7 @@ function deleteTestScenario() {
                              	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testResultContent" /></label>
                                 </th>
                                 <td width="75%" colspan="3">
-                            		<textarea disabled="disabled" type="textarea" rows="5" style="width:100%" id="testResultContent" name="testResultContent"><c:out value='${testScenarioVO.testResultContent}'/></textarea>
+                            		<textarea type="textarea" rows="5" style="width:100%" id="testResultContent" name="testResultContent"><c:out value='${testScenarioVO.testResultContent}'/></textarea>
                             	</td>
                             </tr>
                         </table>

@@ -26,7 +26,7 @@
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
-<title>통합 테스트 케이스 목록 조회</title>
+<title>통합 테스트 시나리오 목록 조회</title>
 
 <script type="text/javaScript" language="javascript" defer="defer">
 
@@ -73,13 +73,13 @@ function fn_egov_select_testCaseList(pageNo){
 							<li>&gt;</li>
 							<li>통합 테스트 관리</li>
 							<li>&gt;</li>
-							<li><strong>케이스 관리</strong></li>
+							<li><strong>시나리오 관리</strong></li>
                         </ul>
                     </div>
                 </div>
     
     		 <br>
-              <div id="search_field_loc"><h2><strong>통합 테스트 케이스 관리</strong></h2></div>
+              <div id="search_field_loc"><h2><strong>통합 테스트 시나리오 관리</strong></h2></div>
               
 		         <form:form commandName="searchVO" name="listForm" method="post" action="/tms/test/selectTestCaseList.do">   
                 <!-- 검색 필드 박스 시작 -->

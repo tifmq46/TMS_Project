@@ -154,4 +154,8 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 		return testDAO.selectTestCurrentCnt(searchVO);
 	}
 	
+	@Override
+	public List<?> selectTestStatsTable(TestDefaultVO searchVO) throws Exception {
+		return testDAO.selectTestStatsTable(searchVO);
+	}
 }

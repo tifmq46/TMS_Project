@@ -34,6 +34,18 @@ public class TmsProgrmManageVO{
 	private String USE_YN="";
 	
 	private String PJT_ID="";
+	
+	private String USER_REAL_ID="";
+	
+	
+
+	public String getUSER_REAL_ID() {
+		return USER_REAL_ID;
+	}
+
+	public void setUSER_REAL_ID(String uSER_REAL_ID) {
+		USER_REAL_ID = uSER_REAL_ID;
+	}
 
 	public String getPG_ID() {
 		return PG_ID;
@@ -94,8 +106,11 @@ public class TmsProgrmManageVO{
 	@Override
 	public String toString() {
 		return "TmsProgrmManageVO [PG_ID=" + PG_ID + ", USER_DEV_ID=" + USER_DEV_ID + ", PG_NM=" + PG_NM + ", SYS_GB="
-				+ SYS_GB + ", TASK_GB=" + TASK_GB + ", USE_YN=" + USE_YN + ", PJT_ID=" + PJT_ID + "]";
+				+ SYS_GB + ", TASK_GB=" + TASK_GB + ", USE_YN=" + USE_YN + ", PJT_ID=" + PJT_ID + ", USER_REAL_ID="
+				+ USER_REAL_ID + "]";
 	}
+
+	
 
 	
 }

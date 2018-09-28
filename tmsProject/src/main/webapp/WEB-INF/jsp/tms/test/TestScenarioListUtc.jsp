@@ -26,11 +26,10 @@
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
-<title>단위 테스트 케이스 목록 조회</title>
+<title>단위 테스트 시나리오 목록 조회</title>
 
 <script type="text/javaScript" language="javascript" defer="defer">
 
-<!--
 function fn_egov_select_testCaseList(pageNo){
     document.listForm.pageIndex.value = pageNo; 
     document.listForm.action = "<c:url value='/tms/test/selectTestCaseList.do?testcaseGb=TC1'/>";
@@ -41,31 +40,6 @@ function searchFileNm() {
     window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
 }
 
-function fCheckAll() {
-    var checkField = document.listForm.checkField;
-    if(document.listForm.checkAll.checked) {
-        if(checkField) {
-            if(checkField.length > 1) {
-                for(var i=0; i < checkField.length; i++) {
-                    checkField[i].checked = true;
-                }
-            } else {
-                checkField.checked = true;
-            }
-        }
-    } else {
-        if(checkField) {
-            if(checkField.length > 1) {
-                for(var j=0; j < checkField.length; j++) {
-                    checkField[j].checked = false;
-                }
-            } else {
-                checkField.checked = false;
-            }
-        }
-    }
-}
--->
 </script>
 
 </head>
@@ -100,13 +74,13 @@ function fCheckAll() {
 							<li>&gt;</li>
 							<li>단위 테스트 관리</li>
 							<li>&gt;</li>
-							<li><strong>케이스 관리</strong></li>
+							<li><strong>시나리오 관리</strong></li>
                         </ul>
                     </div>
                 </div>
     
     		 <br>
-              <div id="search_field_loc"><h2><strong>단위 테스트 케이스 관리</strong></h2></div>
+              <div id="search_field_loc"><h2><strong>단위 테스트 시나리오 관리</strong></h2></div>
               
 		         <form:form commandName="searchVO" name="listForm" method="post" action="/tms/test/selectTestCaseList.do">   
                 <!-- 검색 필드 박스 시작 -->
@@ -159,10 +133,6 @@ function fCheckAll() {
 									    
                                         <a href="<c:url value='/tms/test/selectTestCaseList.do'/>" onclick="fn_egov_select_testCaseList('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
 										<spring:message code="button.inquire" /></a>
-									    <a href= "<c:url value="/tms/test/insertTestCase.do" />" ><spring:message code="button.create" /></a>
-									    <a href="#LINK" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
-									    
-									    
 									</div>	  				  			
 					  			</li> 
 					  			
@@ -172,7 +142,7 @@ function fCheckAll() {
 						</fieldset>
 						
 					</div>
- 					
+ 					</form:form>
 				<!-- //검색 필드 박스 끝 -->
                 
 
@@ -184,8 +154,7 @@ function fCheckAll() {
               
               
              		 <colgroup>
-             		 	<col width="4%" >
-             		 	<col width="20"/>
+             		 	<col width="40"/>
         				<col width="100"/> 
         				<col width="100"/>
         				<col width="50"/>
@@ -195,7 +164,6 @@ function fCheckAll() {
         				<col width="50"/>
         			</colgroup>
         			<tr>
-        				<th scope="col" class="f_field" nowrap="nowrap"><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/></th>
         			    <th align="center"><spring:message code="tms.test.no" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseId" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseContent" /></th>
@@ -209,14 +177,10 @@ function fCheckAll() {
         			<c:forEach var="result" items="${testCaseList}" varStatus="status">
         			
             			<tr>
-	            			<td nowrap="nowrap">
-						       <input type="checkbox" name="checkField" class="check2" title="선택"/>
-						       <input name="checkMenuNo" type="hidden" value="<c:out value='${result.testcaseId}'/>"/>
-						    </td>
-            			    <td nowrap="nowrap"><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
+            			    <td align="center" class="listtd" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
             				<td align="center" class="listtd"><c:out value="${result.testcaseId}"/></td>
             				<td align="left" class="listtd">
-            					<a href= "<c:url value='/tms/test/selectTestCase.do?testcaseId=${result.testcaseId}'/>">
+            					<a href= "<c:url value='/tms/test/selectTestCaseWithScenario.do?testcaseId=${result.testcaseId}'/>">
 	            					<strong><c:out value="${result.testcaseContent}"/></strong>
 	            				</a>
             				</td>
@@ -238,7 +202,6 @@ function fCheckAll() {
            </div>                          
            <!-- //페이지 네비게이션 끝 -->  
  		
- 		</form:form>
             </div>
             <!-- //content 끝 -->
         </div>

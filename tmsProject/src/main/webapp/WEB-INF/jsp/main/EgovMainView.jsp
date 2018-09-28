@@ -75,6 +75,7 @@
 	                	<input type="text" id="TmsProgrmFileNm_pg_nm" size="20" disabled="disabled">
 	                	<input type="text" id="TmsProgrmFileNm_sys_gb" size="20" disabled="disabled">
 	                	<input type="text" id="TmsProgrmFileNm_task_gb" size="20" disabled="disabled">
+	                	<input type="text" id="TmsProgrmFileNm_user_real_id" size="20" disabled="disabled">
                     </div>
                 </li>	
             </ul>           
