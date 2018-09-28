@@ -19,7 +19,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -28,7 +28,19 @@
 
 <title>개발결과관리</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+
 <script type="text/javaScript" language="javascript">
+
+function fn_result_regist(t){
+	
+	var f = document.listForm;
+
+	var idVal = document.getElementById(t).value;
+	var idVal1 = document.getElementById(t+1).value;
+	location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1;
+			
+}
+
 function fn_searchList(pageNo){
     document.listForm.pageIndex.value = pageNo;
     document.listForm.searchByTaskGb.value = document.listForm.task.value;
@@ -37,6 +49,7 @@ function fn_searchList(pageNo){
 }
 
 $(function(){
+	
 	   $('#bbb').change(function() {
 	      $.ajax({
 	         
@@ -63,6 +76,7 @@ $(function(){
 	   })
 	})
 </script>
+
 
 </head>
 
@@ -95,7 +109,7 @@ $(function(){
                     </div>
                 </div>
         
-             <form:form commandName="searchVO" name="listForm" method="post" action="tms/dev/devPlanList.do">   
+             <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="tms/dev/devPlanList.do">   
                 <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
                 <!-- 검색 필드 박스 시작 -->
 				<div id="search_field">
@@ -162,13 +176,13 @@ $(function(){
         			<col width="70" >
                     <col width="60" >  
                     <col width="10%" >
-                    <col width="20%" >
+                    <col width="10%" >
                     <col width="40" >
                     <col width="90" >
                     <col width="90" >
-                    <col width="90" >
-                    <col width="90" >
-                    <col width="80" >
+                    <col width="10%" >
+                    <col width="10%" >
+                    <col width="5%" >
         			</colgroup>
         			<tr>
         				<th align="center">시스템구분</th>
@@ -186,21 +200,36 @@ $(function(){
         			<c:forEach var="result" items="${resultList}" varStatus="status">
         			
             			<tr>
-            				<td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>
+            				<td align="center" class="listtd" name="sys"><c:out value="${result.sysGb}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
             				<td align="center" class="listtd">
-            					<a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>">
-                                <c:out value="${result.pgId}"/></a>
+            					<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>"> --%>
+                                <c:out value="${result.pgId}"/><!-- </a> -->
+                                <input type="hidden" id="pgId" name="pgId" value='<c:out value="${result.pgId}"/>' >
                             </td>
             				<td align="left" class="listtd"><c:out value="${result.pgNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.devEndDt}"/>&nbsp;</td>
+            				
+            				<td><input type="date"  id="${result.pgId}" value="<fmt:formatDate value="${result.devStartDt}" pattern="yyyy-MM-dd" />" />
+                            <img src="images/calendar.gif"  width="19" height="19" alt="" /></td>
+                            <td><input type="date"  id="${result.pgId}1" value="<fmt:formatDate value="${result.devEndDt}" pattern="yyyy-MM-dd" />"/>
+                            <img src="images/calendar.gif" width="19" height="19" alt="" /></td>
+            				
+            				<%-- <td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.devEndDt}"/>&nbsp;</td> --%>
+            				
             				<td align="center" class="listtd">
+            				
             				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
-            				<a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >등록</a> 
+            				<%-- <a href="<c:url value='/tms/dev/updateDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%>
+            				<a href="#LINK" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%> 
+            				<!-- 값이 바뀌는 이벤트가 발생했을 때 저장 버튼 활성화
+            					저장 누르면 버튼 enable
+            				  -->
+            				
             				</div>
             				<!-- <input type="button" value="등록" class="buttons"
             				onclick=""
@@ -224,7 +253,7 @@ $(function(){
             				</c:choose> --%>
             			</tr>
         			</c:forEach>
-              
+            
               </table>        
               
            </div>

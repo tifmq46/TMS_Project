@@ -18,6 +18,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -168,14 +169,15 @@ $(function(){
                     <table summary="번호,게시판명,사용 커뮤니티 명,사용 동호회 명,등록일시,사용여부   목록입니다" cellpadding="0" cellspacing="0">
                     <caption>게시판 템플릿 목록</caption>
                     <colgroup>
-                    <col width="10%" >
-                    <col width="10%" >  
-                    <col width="10%" >
-                    <col width="15%" >
+                    <col width="70" >
+                    <col width="60" >  
                     <col width="10%" >
                     <col width="20%" >
-                    <col width="20%" >
-                    <col width="20%" >
+                    <col width="70" >
+                    <col width="120" >
+                    <col width="120" >
+                    <col width="50" >
+                    <col width="5%" >
                     </colgroup>
                     <thead>
                     <tr>
@@ -187,6 +189,7 @@ $(function(){
         				<th align="center">계획시작일자</th>
         				<th align="center">계획종료일자</th>
         				<th align="center">소요일수</th>
+        				<th align="center"></th>
                     </tr>
                     </thead>
                     <tbody>                 
@@ -203,9 +206,18 @@ $(function(){
             				<%-- <td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td> --%>
             				<td align="left" class="listtd"><c:out value="${result.pgNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>
+            				<%-- <td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td> --%>
+            				<td><input type="date"  id="planStartDt" value="<fmt:formatDate value="${result.planStartDt}" pattern="yyyy-MM-dd"/>" />
+                            </td>
+                            <td><input type="date"  id="planEndDt" value="<fmt:formatDate value="${result.planEndDt}" pattern="yyyy-MM-dd" />"/>
+                            </td>
             				<td align="center" class="listtd"><c:out value="${result.dayDiff}"/>&nbsp;</td>
+            				<td align="center" class="listtd">
+            				
+            				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
+            				<a href="#LINK" onclick="" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				</div>
                       </tr>
                      </c:forEach>     
                      <c:if test="${fn:length(resultList) == 0}">

@@ -220,8 +220,59 @@
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
-	    					프로젝트 진행상태
+	    					통계
     				</div>
+    			</div>
+    			<div class="widget-content default_tablestyle" style="height:212px; overflow:auto; ">
+    				<table width="100%" cellspacing="0" cellpadding="0" class="table table-search-head table-size-th4">
+			    					<caption>통계</caption>
+			            
+			            <thead>
+			            <tr>
+			            <th scope="col" nowrap="nowrap">이름</th>
+			                <th scope="col" nowrap="nowrap">38주</th>
+			                <th scope="col" nowrap="nowrap">39주</th>
+			                <th scope="col" nowrap="nowrap">40주</th>
+			                <th scope="col" nowrap="nowrap">41주</th>
+			                <th scope="col" nowrap="nowrap">42주</th>
+			                <th scope="col" nowrap="nowrap">43주</th>
+			            </tr>
+			            </thead>
+			            
+			            <tbody>                 
+			            
+				            <%-- <c:forEach var="t1" items="${testList1}" varStatus="status">
+			            <!-- loop 시작 -->                                
+			              <tr>
+			              	<td>${t1.38}</td>
+						    
+			              </tr>
+			            </c:forEach>  --%>
+			            <%-- <tr><td>${kk[0]}</td>
+			            <td>${kk[1]}</td>
+			            <td>${kk[2]}</td>
+			            <td>${kk[3]}</td>
+			            <td>${kk[4]}</td>
+			            <td>${kk[5]}</td>
+			            </tr>
+			            <tr> --%>
+			           
+			            <%-- <td>${r2.BN}</td> --%>
+			            <c:forEach var="r2" items="${r2}">
+			            	 <tr>
+			            	<td>${r2.BN}</td>
+			            	<td>${r2.B38}</td>
+			            	<td>${r2.B39}</td>
+			            	<td>${r2.B40}</td>
+			            	<td>${r2.B41}</td>
+			            	<td>${r2.B42}</td>
+			            	<td>${r2.B43}</td>
+			            	
+			            	  </tr> 
+			            </c:forEach> 
+			          
+			            </tbody> 
+    				</table>
     			</div>
     			
     			

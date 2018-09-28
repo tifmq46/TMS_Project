@@ -103,19 +103,8 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
 		return list("TmsProgrmManageDAO.selectTestList");
 	}
 
-	public List<?>[] selectProgrmList1(List<?> testList) {
-	      // TODO Auto-generated method stub
-	      
-	      HashMap<Integer,Object> map = new HashMap<Integer,Object>();
-	      List<?>[] pro = new List<?>[6];
-	      int diff = 0;
-	      for(int i = 38; i<44; i++)
-	      {
-	         pro[diff] = list("TmsProgrmManageDAO.selectTestList1",i);
-	         diff +=1;
-	         System.out.println("map ===================== " + map);
-	      }
-	      return pro;
+	public List<HashMap<String,String>> selectProgrmList1(int a) {
+	      return (List<HashMap<String,String>>)list("TmsProgrmManageDAO.selectTestList1",a);
 	   }
 	
 }
