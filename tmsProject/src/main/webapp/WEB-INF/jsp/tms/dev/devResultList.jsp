@@ -42,6 +42,8 @@ function fn_result_regist(t){
 	//alert(idVal2);
 	var idVal = document.getElementById(t).value;
 	var idVal1 = document.getElementById(t+1).value;
+	var idVal2 = document.getElementById(t+2).id;
+	document.getElementById(t+2).className="disabled";
 	location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1;
 			
 }
@@ -81,6 +83,11 @@ $(function(){
 	   })
 	})
 </script>
+<style>
+.disabled {
+       pointer-events:none;
+}
+</style>
 
 
 </head>
@@ -227,14 +234,21 @@ $(function(){
             				
             				<td align="center" class="listtd">
             				
-            				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
+            				<div class="buttons"  style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
             				<%-- <a href="<c:url value='/tms/dev/updateDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%>
-            				<a href="#LINK" onclick="fn_result_regist('${result.pgId}');" id="test" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				<c:choose>
+            				<c:when test="${result.devStartDt ne null || result.devStartDt != ''}">
+            				<a href="#LINK" id="${result.pgId}3" class="disabled" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				</c:when>
+            				<c:otherwise>>
+            				<a href="#LINK" id="${result.pgId}2" class="abled" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				</c:otherwise>
+            				
+            				</c:choose>
             				<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%> 
             				<!-- 값이 바뀌는 이벤트가 발생했을 때 저장 버튼 활성화
             					저장 누르면 버튼 enable
             				  -->
-            				
             				</div>
             				<!-- <input type="button" value="등록" class="buttons"
             				onclick=""

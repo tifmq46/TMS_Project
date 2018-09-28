@@ -22,7 +22,7 @@ public class DevPlanVO implements Serializable{
 	
 	/**  개발시작일자 */
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date devStartDt;
+	private Date devStartDt=null;
 	
 	/**  개발완료일자 */
 	@DateTimeFormat(pattern="yyyy-MM-dd")
