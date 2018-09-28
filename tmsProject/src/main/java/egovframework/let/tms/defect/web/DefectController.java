@@ -2,6 +2,8 @@ package egovframework.let.tms.defect.web;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -22,6 +24,10 @@ import javax.sql.rowset.serial.SerialBlob;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -42,6 +48,7 @@ import egovframework.let.tms.defect.service.DefectDefaultVO;
 import egovframework.let.tms.defect.service.DefectFileVO;
 import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.defect.service.DefectVO;
+import egovframework.let.tms.pg.service.PgCurrentVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import net.sf.json.JSONArray;
@@ -375,25 +382,25 @@ public class DefectController {
 	@RequestMapping("/tms/defect/selectDefectStatsList.do")
 	public String selectDefectStatsList(ModelMap model){
 		List<String> taskGbList = defectService.selectTaskGbByDefect();
-		List<String> taskGbByStats = new ArrayList<String>();
+		List<HashMap<String,String>> taskGbByStats = new ArrayList<HashMap<String,String>>();
 		for(int i=0; i<taskGbList.size(); i++) {
 			taskGbByStats.addAll(defectService.selectTaskByStats(taskGbList.get(i).toString()));
 		}
 		
 		List<String> pgIdList = defectService.selectPgIdByDefect();
-		List<String> pgIdByStats = new ArrayList<String>();
+		List<HashMap<String,String>> pgIdByStats = new ArrayList<HashMap<String,String>>();
 		for (int i=0; i<pgIdList.size(); i++) {
 			pgIdByStats.addAll(defectService.selectPgByStats(pgIdList.get(i).toString()));
 		}
 
 		List<String> userTestList = defectService.selectUserTestIdByDefect();
-		List<String> userTestByStats = new ArrayList<String>();
+		List<HashMap<String,String>> userTestByStats = new ArrayList<HashMap<String,String>>();
 		for (int i=0; i<userTestList.size(); i++) {
 			userTestByStats.addAll(defectService.selectUserTestByStats(userTestList.get(i).toString()));
 		}
 
 		List<String> userDevList = defectService.selectUserDevIdByDefect();
-		List<String> userDevByStats = new ArrayList<String>();
+		List<HashMap<String,String>> userDevByStats = new ArrayList<HashMap<String,String>>();
 		for (int i=0; i<userDevList.size(); i++) {
 			userDevByStats.addAll(defectService.selectUserDevByStats(userDevList.get(i).toString()));
 		}
@@ -407,19 +414,147 @@ public class DefectController {
 	
 	/** 통계 엑셀 다운로드 기능 */
 	@RequestMapping(value = "/tms/defect/StatsToExcel.do")
-	public String StatsToExcel(@RequestParam("statsGb") String statsGb) {
+	public String StatsToExcel(@RequestParam("statsGb") String statsGb, ModelMap model) {
 		
-		if(statsGb.equals("task")) {
-			
-		} else if(statsGb.equals("pg")) {
-			
-		} else if(statsGb.equals("userTest")) {
-			
-		} else {
-			
+		List<String> taskGbList = defectService.selectTaskGbByDefect();
+		List<HashMap<String,String>> taskGbByStats = new ArrayList<HashMap<String,String>>();
+		for(int i=0; i<taskGbList.size(); i++) {
+			taskGbByStats.addAll(defectService.selectTaskByStats(taskGbList.get(i).toString()));
+		}
+
+		List<String> pgIdList = defectService.selectPgIdByDefect();
+		List<HashMap<String,String>> pgIdByStats = new ArrayList<HashMap<String,String>>();
+		for (int i=0; i<pgIdList.size(); i++) {
+			pgIdByStats.addAll(defectService.selectPgByStats(pgIdList.get(i).toString()));
 		}
 		
+		List<String> userTestList = defectService.selectUserTestIdByDefect();
+		List<HashMap<String,String>> userTestByStats = new ArrayList<HashMap<String,String>>();
+		for (int i=0; i<userTestList.size(); i++) {
+			userTestByStats.addAll(defectService.selectUserTestByStats(userTestList.get(i).toString()));
+		}
+		
+		List<String> userDevList = defectService.selectUserDevIdByDefect();
+		List<HashMap<String,String>> userDevByStats = new ArrayList<HashMap<String,String>>();
+		for (int i=0; i<userDevList.size(); i++) {
+			userDevByStats.addAll(defectService.selectUserDevByStats(userDevList.get(i).toString()));
+		}
+		
+		if(statsGb.equals("task")) {
+			System.out.println("############################1");
+			xlsxWiter(taskGbByStats, statsGb);
+			System.out.println("############################end");
+		} else if(statsGb.equals("pg")) {
+			xlsxWiter(pgIdByStats, statsGb);
+		} else if(statsGb.equals("userTest")) {
+			xlsxWiter(userTestByStats, statsGb);
+		} else {
+			xlsxWiter(userDevByStats, statsGb);
+		}
+		
+		model.addAttribute("taskGbByStats",taskGbByStats);
+		model.addAttribute("pgIdByStats",pgIdByStats);
+		model.addAttribute("userTestByStats",userTestByStats);
+		model.addAttribute("userDevByStats",userDevByStats);
 		return "tms/defect/defectStatsList";
+	}
+	
+	public void xlsxWiter(List<HashMap<String,String>> list, String statsGb) {
+		System.out.println("############################2");
+		// 워크북 생성
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		// 워크시트 생성
+		XSSFSheet sheet = workbook.createSheet();
+		// 행 생성
+		XSSFRow row = sheet.createRow(0);
+		// 쎌 생성
+		XSSFCell cell;
+		
+		// 헤더 정보 구성
+		cell = row.createCell(0);
+		cell.setCellValue("구분");
+		
+		cell = row.createCell(1);
+		cell.setCellValue("상태/유형별");
+		
+		cell = row.createCell(2);
+		cell.setCellValue("오류");
+		
+		cell = row.createCell(3);
+		cell.setCellValue("개선");
+		
+		cell = row.createCell(4);
+		cell.setCellValue("문의");
+		
+		cell = row.createCell(5);
+		cell.setCellValue("기타");
+		
+		cell = row.createCell(6);
+		cell.setCellValue("합계");
+		System.out.println("############################3");
+		// 리스트의 size 만큼 row를 생성
+		System.out.println("###########################"+list.toString());
+		
+		
+		for(int i=0; i < list.size(); i++) {
+			System.out.println("############################4");
+			System.out.println("############################"+list.get(i));
+			
+			// 행 생성
+//			row = sheet.createRow(i+1);
+//			
+//			cell = row.createCell(0);
+//			cell.setCellValue(list.get(i).get("taskNm"));
+//			System.out.println("######################"+list.get(i).get("taskNm"));
+//			cell = row.createCell(1);
+//			cell.setCellValue(list.get(i).get("actionNm"));
+//			
+//			cell = row.createCell(2);
+//			cell.setCellValue(list.get(i).get("defectGbD1"));
+//			
+//			cell = row.createCell(3);
+//			cell.setCellValue(list.get(i).get("defectGbD2"));
+//			
+//			cell = row.createCell(4);
+//			cell.setCellValue(list.get(i).get("defectGbD3"));
+//			
+//			cell = row.createCell(5);
+//			cell.setCellValue(list.get(i).get("defectGbD4"));
+//			
+//			cell = row.createCell(6);
+//			cell.setCellValue(list.get(i).get("rowSum"));
+			
+		}
+//		
+//		// 입력된 내용 파일로 쓰기
+//		File folder = new File("C:\\TMS\\TMS_통계자료");
+//		
+//		File file = new File("C:\\TMS\\TMS_통계자료\\프로그램 현황.xlsx");
+//		
+//		if(!folder.exists()){
+//            //디렉토리 생성 메서드
+//			folder.mkdirs();
+//		}
+//		
+//		FileOutputStream fos = null;
+//		
+//		try {
+//			fos = new FileOutputStream(file);
+//			workbook.write(fos);
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				if(workbook!=null) //workbook.close();
+//				if(fos!=null) fos.close();
+//				
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 	}
 	
 }

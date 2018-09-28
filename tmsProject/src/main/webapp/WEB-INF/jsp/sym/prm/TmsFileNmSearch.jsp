@@ -70,7 +70,6 @@ function selectProgramListSearch() {
  * 프로그램목록 선택 처리 함수
  ******************************************************** */ 
 function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb,user_real_id) { 
-	alert(user_real_id);
 	opener.document.all.TmsProgrmFileNm_pg_id.value = pg_id;
 	opener.document.all.TmsProgrmFileNm_user_dev_id.value = user_dev_id;
 	opener.document.all.TmsProgrmFileNm_pg_nm.value = pg_nm;

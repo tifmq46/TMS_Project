@@ -151,8 +151,8 @@ public class DefectDAO extends EgovAbstractDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<String> selectTaskByStats(String taskGbList) {
-		return (List<String>) list("defectDAO.selectTaskByStats", taskGbList);
+	public List<HashMap<String,String>> selectTaskByStats(String taskGbList) {
+		return (List<HashMap<String, String>>) list("defectDAO.selectTaskByStats", taskGbList);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -166,8 +166,8 @@ public class DefectDAO extends EgovAbstractDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<String> selectPgByStats(String pgIdList) {
-		return (List<String>) list("defectDAO.selectPgByStats", pgIdList);
+	public List<HashMap<String,String>> selectPgByStats(String pgIdList) {
+		return (List<HashMap<String,String>>) list("defectDAO.selectPgByStats", pgIdList);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -176,8 +176,8 @@ public class DefectDAO extends EgovAbstractDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<String> selectUserTestByStats(String userTestList) {
-		return (List<String>) list("defectDAO.selectUserTestByStats", userTestList);
+	public List<HashMap<String,String>> selectUserTestByStats(String userTestList) {
+		return (List<HashMap<String,String>>) list("defectDAO.selectUserTestByStats", userTestList);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -186,7 +186,7 @@ public class DefectDAO extends EgovAbstractDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<String> selectUserDevByStats(String userDevList) {
-		return (List<String>) list("defectDAO.selectUserDevByStats", userDevList);
+	public List<HashMap<String,String>> selectUserDevByStats(String userDevList) {
+		return (List<HashMap<String,String>>) list("defectDAO.selectUserDevByStats", userDevList);
 	}
 }

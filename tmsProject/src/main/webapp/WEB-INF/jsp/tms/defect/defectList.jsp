@@ -198,7 +198,7 @@ function searchFileNm() {
                         <td align="center" class="listtd" style="text-align:left;">
                         <a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>"
                         title="<c:out value="${result.defectTitle}"/>">
-                        <c:out value="${result.defectTitle}"/>
+                        <font color="#0F438A"><c:out value="${result.defectTitle}"/></font>
                         </a>
                         </td>
                         
@@ -220,6 +220,7 @@ function searchFileNm() {
          <input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
          <input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
          <input id="TmsProgrmFileNm_user_dev_id" type="hidden" /> 
+         <input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
 
 
        </form:form>

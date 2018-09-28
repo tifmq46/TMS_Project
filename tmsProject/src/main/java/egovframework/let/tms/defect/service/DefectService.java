@@ -62,19 +62,19 @@ public interface DefectService {
 	
 	public List<?> selectMonthByDefectCnt();
 	
-	public List<String> selectTaskByStats(String taskGbList);
+	public List<HashMap<String,String>> selectTaskByStats(String taskGbList);
 	
 	public List<String> selectTaskGbByDefect();
 	
 	public List<String> selectPgIdByDefect();
 	
-	public List<String> selectPgByStats(String pgIdList);
+	public List<HashMap<String,String>> selectPgByStats(String pgIdList);
 	
 	public List<String> selectUserTestIdByDefect();
 	
-	public List<String> selectUserTestByStats(String userTestList);
+	public List<HashMap<String,String>> selectUserTestByStats(String userTestList);
 	
 	public List<String> selectUserDevIdByDefect();
 	
-	public List<String> selectUserDevByStats(String userDevList);
+	public List<HashMap<String,String>> selectUserDevByStats(String userDevList);
 }
