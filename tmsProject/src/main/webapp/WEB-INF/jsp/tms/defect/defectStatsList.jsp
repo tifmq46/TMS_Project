@@ -59,6 +59,8 @@
 	
 	function StatsToExcel(statsGb) {
 		alert(statsGb);
+		alert("'C://TMS_통계자료// 경로에 다운되었습니다.");
+		location.href="./StatsToExcel.do?statsGb="+statsGb; 
 	} 
 
 </script>
@@ -156,9 +158,12 @@
 				</c:forEach> 
         	</table>
         	</div>
-        	<div class="buttons" id="StatsByTaskToExcel"  onclick="javascript:StatsToExcel('task')" style="float:right; margin-top:10px;">
-						<a href="#LINK">엑셀</a>
-			</div>
+        	<form name="taskForm" id="taskForm">
+        		<input type="hidden" name="task" value="task"/>
+        		<div class="buttons" id="StatsByTaskToExcel" style="float:right; margin-top:10px;">
+						<a href="<c:url value='/tms/defect/StatsToExcel.do'/>" onclick="javascript:StatsToExcel('task'); return false;" >엑셀</a>
+				</div>
+			</form>
         	</div>
         	
         	<div id="StatsByPg" style="display:none;">
@@ -210,8 +215,8 @@
 				</c:forEach> 
         	</table>
         	</div>
-        	<div class="buttons" id="StatsByPgToExcel"  onclick="javascript:StatsToExcel('pg')" style="float:right; margin-top:10px;">
-						<a href="#LINK">엑셀</a>
+        	<div class="buttons" id="StatsByPgToExcel" style="float:right; margin-top:10px;">
+						<a href="<c:url value='/tms/defect/StatsToExcel.do'/>" onclick="javascript:StatsToExcel('pg'); return false;" >엑셀</a>
 			</div>
         	</div>
         	
@@ -267,8 +272,8 @@
         	</table>
         	</div>
         	<br/>
-        	<div class="buttons" id="StatsByUserTestToExcel" onclick="javascript:StatsToExcel('userTest')"  style="float:right; margin-top:10px;">
-						<a href="#LINK">엑셀</a>
+        	<div class="buttons" id="StatsByUserTestToExcel" style="float:right; margin-top:10px;">
+						<a href="<c:url value='/tms/defect/StatsToExcel.do'/>" onclick="javascript:StatsToExcel('userTest'); return false;" >엑셀</a>
 			</div>
         	</div>
         	
@@ -323,8 +328,8 @@
 				</c:forEach> 
         	</table>
         	</div>
-        	<div class="buttons" id="StatsByUserDevToExcel" onclick="javascript:StatsToExcel('userDev')"  style="float:right; margin-top:10px;">
-						<a href="#LINK">엑셀</a>
+        	<div class="buttons" id="StatsByUserDevToExcel" style="float:right; margin-top:10px;">
+				<a href="<c:url value='/tms/defect/StatsToExcel.do'/>" onclick="javascript:StatsToExcel('userDev'); return false;" >엑셀</a>
 			</div>
         	</div>
      

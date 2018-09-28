@@ -73,8 +73,8 @@ public class DefectDAO extends EgovAbstractDAO{
 		return list("defectDAO.searchDefect", searchVO);
 	}
 	
-	public int selectActionComplete() {
-		return (int) select("defectDAO.selectActionComplete");
+	public int selectActionComplete(DefectDefaultVO searchVO) {
+		return (int) select("defectDAO.selectActionComplete", searchVO);
 	}
 	
 	public int selectActionNotComplete() {

@@ -161,16 +161,15 @@ function searchFileNm() {
               
               
               <colgroup>
-                    <col width="5%"/> 
+                    <col width="2%"/> 
+                    <col width="5%"/>
+                    <col width="8%"/>
                     <col width="10%"/>
-                    <col width="10%"/>
-                    <col width="10%"/>
-                    <col width="15%"/>
-                    <col width="10%"/>
-                    <col width="10%"/>
-                    <col width="10%"/>
-                    <col width="10%"/>
-                    <col width="10%"/>
+                    <col width="20%"/>
+                    <col width="5%"/>
+                    <col width="5%"/>
+                    <col width="8%"/>
+                    <col width="5%"/>
            </colgroup>
                  <tr>
                  
@@ -178,11 +177,10 @@ function searchFileNm() {
                     <th align="center">업무구분</th>
                     <th align="center">화면ID</th>
                     <th align="center">화면명</th>
-                    <th align="center">제목</th>
+                    <th align="center">결함명</th>
                     <th align="center">결함유형</th>
                     <th align="center">테스터</th>
                     <th align="center">등록일자</th>
-                    <th align="center">조치율</th>
                     <th align="center">조치상태</th>
                     
            
@@ -195,9 +193,9 @@ function searchFileNm() {
                         <td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.taskGb}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
-                        <td align="center" class="listtd"><c:out value="${result.pgNm}"/></td>
+                        <td align="center" class="listtd" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
                         
-                        <td align="center" class="listtd">
+                        <td align="center" class="listtd" style="text-align:left;">
                         <a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>"
                         title="<c:out value="${result.defectTitle}"/>">
                         <c:out value="${result.defectTitle}"/>
@@ -207,28 +205,6 @@ function searchFileNm() {
                         <td align="center" class="listtd"><c:out value="${result.defectGb}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.userTestId}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.enrollDt}"/></td>
-                        <!-- 조치상태에 따른 조치율 -->
-                        <c:choose>
-                           <c:when test="${result.actionSt eq '대기'}">
-                              <td align="center" class="listtd">0%</td>
-                             </c:when>
-                           <c:when test="${result.actionSt eq '조치중'}">
-                              <td align="center" class="listtd">25%</td>
-                             </c:when>
-                             <c:when test="${result.actionSt eq '조치완료'}">
-                              <td align="center" class="listtd">50%</td>
-                             </c:when>
-                             <c:when test="${result.actionSt eq '재요청'}">
-                              <td align="center" class="listtd">75%</td>
-                             </c:when>
-                             <c:when test="${result.actionSt eq '최종완료'}">
-                              <td align="center" class="listtd">100%</td>
-                             </c:when>
-                             
-                             <c:otherwise>
-                              <td align="center" class="listtd"></td>
-                           </c:otherwise>
-                        </c:choose>
                         
                         <td align="center" class="listtd"><c:out value="${result.actionSt}"/>&nbsp;</td>
                      

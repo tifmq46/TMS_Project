@@ -251,12 +251,49 @@
         ]]>
     </select>
     
-    <select id="defectDAO.selectActionComplete" resultClass="java.lang.Integer">
-        <![CDATA[
-            SELECT COUNT(*)
-            FROM DEFECT_TB
-            WHERE ACTION_ST='A5'
-        ]]>
+    <select id="defectDAO.selectActionComplete" parameterClass="DefectDefaultVO" resultClass="java.lang.Integer">
+         <![CDATA[
+           SELECT COUNT(*) FROM (
+               SELECT
+                 D.DEFECT_ID_SQ,
+                 (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = P.TASK_GB) AS TASK_GB,
+                 D.PG_ID,
+                 P.PG_NM,
+                 D.DEFECT_TITLE,
+                 (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.DEFECT_GB) AS DEFECT_GB,
+                 (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_ID,
+                 D.ENROLL_DT,
+                (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST,
+                (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID
+                  FROM DEFECT_TB AS D, PG_TB AS P
+              WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND D.ACTION_ST='A5'
+              ORDER BY D.DEFECT_ID_SQ
+           ) as C
+           WHERE 1=1
+        ]]>    
+      <isNotEmpty property="searchByPgId" >
+                AND PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
+        </isNotEmpty>        
+      <isNotEmpty property="searchByUserTestId" >
+                AND USER_TEST_ID LIKE CONCAT('%' , #searchByUserTestId#, '%')
+        </isNotEmpty>    
+        <isNotEmpty property="searchByUserDevId" >
+                AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+        </isNotEmpty>
+        <isNotEmpty property="searchByTaskGb" >
+                AND TASK_GB LIKE CONCAT('%' , #searchByTaskGb#, '%')
+        </isNotEmpty>
+        <isNotEmpty property="searchByDefectGb" >
+                AND DEFECT_GB LIKE CONCAT('%' , #searchByDefectGb#, '%')
+        </isNotEmpty>
+        <isNotEmpty property="searchByActionSt" >
+                AND ACTION_ST LIKE CONCAT('%' , #searchByActionSt#, '%')
+        </isNotEmpty>
+        <isNotEmpty property="searchByStartDt" >
+            <isNotEmpty property="searchByEndDt">
+                AND ENROLL_DT BETWEEN DATE(#searchByStartDt#) AND DATE(#searchByEndDt#)
+            </isNotEmpty>
+        </isNotEmpty>
     </select>
     
     <select id="defectDAO.selectDefectImg" parameterClass="java.lang.String" resultClass="java.util.HashMap">
