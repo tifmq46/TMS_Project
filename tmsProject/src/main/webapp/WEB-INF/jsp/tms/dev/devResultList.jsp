@@ -28,29 +28,9 @@
 
 <title>개발결과관리</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+
 <script type="text/javaScript" language="javascript">
 
-function fn_result_regist(a) {
-	alert(a.pgId.value);
-
-    var id = document.listForm.pgId.value;
-    var start = document.listForm.devStartDt.value;
-    var end = document.listForm.devEndDt.value;
-    
-    alert(id+start+end);
-	//var form = document.listForm;
-    //alert(form.pgId.value);
-    form.action = "<c:url value='/tms/dev/updateDevResult.do'/>";
-    //varform.submit();
-    
-    if(confirm("저장 하시겠습니까?")){
-        //if(!validateAuthorManage(varFrom)){           
-            //return;
-        //}else{
-            form.submit();
-        //} 
-    }
-}
 
 
 function fn_searchList(pageNo){
@@ -61,6 +41,22 @@ function fn_searchList(pageNo){
 }
 
 $(function(){
+	$('.bnt').click(function(){
+		/*var ch = $(this);
+		var tr = ch.parent().parent().parent(); */
+		var pgIdTxt = $(this).closest('tr').find('.pgId').text();
+		alert(pgIdTxt);
+		
+		
+		var f = document.listForm;
+		
+		//f.h.value = tr.text();
+		//f.action = "<c:url value='/tms/dev/updateDevResult.do'/>";
+		//f.submit();
+	});
+	
+	
+	
 	   $('#bbb').change(function() {
 	      $.ajax({
 	         
@@ -87,6 +83,7 @@ $(function(){
 	   })
 	})
 </script>
+
 
 </head>
 
@@ -121,6 +118,7 @@ $(function(){
         
              <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="tms/dev/devPlanList.do">   
                 <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
+                <input type="hidden" name="h" id="h" />
                 <!-- 검색 필드 박스 시작 -->
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발결과관리</strong></h2></div>
@@ -210,7 +208,7 @@ $(function(){
         			<c:forEach var="result" items="${resultList}" varStatus="status">
         			
             			<tr>
-            				<td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>
+            				<td align="center" class="listtd" name="sys"><c:out value="${result.sysGb}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
             				<td align="center" class="listtd">
             					<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>"> --%>
@@ -229,9 +227,12 @@ $(function(){
             				
             				<%-- <td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.devEndDt}"/>&nbsp;</td> --%>
+            				
             				<td align="center" class="listtd">
+            				
             				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
-            				<a href="#LINK" onclick="fn_result_regist(this);" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				<a href="#LINK" class="bnt" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				<!-- <a href="#LINK" onclick="fn_result_regist(this);" style="selector-dummy:expression(this.hideFocus=false);">저장</a> -->
             				<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%> 
             				<!-- 값이 바뀌는 이벤트가 발생했을 때 저장 버튼 활성화
             					저장 누르면 버튼 enable
