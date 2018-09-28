@@ -251,12 +251,35 @@
         ]]>
     </select>
     
-    <select id="defectDAO.selectActionComplete" resultClass="java.lang.Integer">
+    <select id="defectDAO.selectActionComplete" parameterClass="DefectDefaultVO" resultClass="java.lang.Integer">
         <![CDATA[
             SELECT COUNT(*)
             FROM DEFECT_TB
             WHERE ACTION_ST='A5'
         ]]>
+      <isNotEmpty property="searchByPgId" >
+                AND PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
+        </isNotEmpty>        
+      <isNotEmpty property="searchByUserTestId" >
+                AND USER_TEST_ID LIKE CONCAT('%' , #searchByUserTestId#, '%')
+        </isNotEmpty>    
+        <isNotEmpty property="searchByUserDevId" >
+                AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+        </isNotEmpty>
+        <isNotEmpty property="searchByTaskGb" >
+                AND TASK_GB LIKE CONCAT('%' , #searchByTaskGb#, '%')
+        </isNotEmpty>
+        <isNotEmpty property="searchByDefectGb" >
+                AND DEFECT_GB LIKE CONCAT('%' , #searchByDefectGb#, '%')
+        </isNotEmpty>
+        <isNotEmpty property="searchByActionSt" >
+                AND ACTION_ST LIKE CONCAT('%' , #searchByActionSt#, '%')
+        </isNotEmpty>
+        <isNotEmpty property="searchByStartDt" >
+            <isNotEmpty property="searchByEndDt">
+                AND ENROLL_DT BETWEEN DATE(#searchByStartDt#) AND DATE(#searchByEndDt#)
+            </isNotEmpty>
+        </isNotEmpty>
     </select>
     
     <select id="defectDAO.selectDefectImg" parameterClass="java.lang.String" resultClass="java.util.HashMap">

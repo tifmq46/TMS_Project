@@ -274,7 +274,7 @@ public class DefectController {
 		model.addAttribute("actionSt", actionStList);
 		
 		
-		int actionComplete = defectService.selectActionComplete();
+		int actionComplete = defectService.selectActionComplete(searchVO);
 		
 		model.addAttribute("actionTotCnt",totCnt);
 		model.addAttribute("actionComplete",actionComplete);

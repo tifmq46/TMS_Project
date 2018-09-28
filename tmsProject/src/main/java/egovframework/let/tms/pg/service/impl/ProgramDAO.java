@@ -15,7 +15,7 @@ public class ProgramDAO extends EgovAbstractDAO{
 	/**
 	 * 개발계획을 등록한다.
 	 * @param vo - 등록할 정보가 담긴 DevPlanVO
-	 * @return 등록 결과
+	 * @return등 등록 결과
 	 * @exception Exception
 	 */
 	public void insertPg(ProgramVO vo) throws Exception {
@@ -81,11 +81,11 @@ public class ProgramDAO extends EgovAbstractDAO{
 		return (Integer) select("ProgramDAO.selectPgCurrentTotCnt");
 	}
 
-	public List<?> selectPgCurrentList(PgCurrentVO searchVO) throws Exception {
+	public List<?> selectPgCurrentList(ProgramVO searchVO) throws Exception {
 		return list("ProgramDAO.selectPgCurrentList", searchVO);
 	}
 	
-	public List<?> selectPgCurrentExcelList() throws Exception {
-		return list("ProgramDAO.selectPgCurrentExcelList");
+	public List<?> selectPgCurrentExcelList(ProgramDefaultVO searchVO) throws Exception {
+		return list("ProgramDAO.selectPgCurrentExcelList", searchVO);
 	}
 }

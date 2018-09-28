@@ -88,13 +88,13 @@ public class ProgramServiceImpl extends EgovAbstractServiceImpl implements Progr
 	
 	
 	@Override
-	public List<?> selectPgCurrentList(PgCurrentVO searchVO) throws Exception {
+	public List<?> selectPgCurrentList(ProgramVO searchVO) throws Exception {
 		return ProgramDAO.selectPgCurrentList(searchVO);
 	}
 	
 	@Override
-	public List<?> selectPgCurrentExcelList() throws Exception {
-		return ProgramDAO.selectPgCurrentExcelList();
+	public List<?> selectPgCurrentExcelList(ProgramDefaultVO searchVO) throws Exception {
+		return ProgramDAO.selectPgCurrentExcelList(searchVO);
 	}
 	
 }

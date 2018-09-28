@@ -25,6 +25,7 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="templateInf" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
     
     
@@ -38,6 +39,33 @@
         document.programVO.submit();
     
 	}
+    
+	$(function(){
+		   $('#SYS_GB').change(function() {
+			   alert("dasd");
+		      $.ajax({
+		         type:"POST",
+		         url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
+		         data : {searchData : this.value},
+		         async: false,
+		         dataType : "json",
+		         success : function(selectTaskGbSearch){
+		        	 $("#searchBySysGb").val($("#SYS_GB").val());
+		            $("#TASK_GB").find("option").remove().end().append("<option value=''>선택하세요</option>");
+		            $.each(selectTaskGbSearch, function(i){
+		               (JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
+		            $("#TASK_GB").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+		            });
+		            
+		         },
+		         error : function(request,status,error){
+		            alert("에러");
+		            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+		         }
+		      });
+		   })
+		})
 
 
 </script>
@@ -115,10 +143,11 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="SYS_GB" name="SYS_GB" class="select" id="SYS_GB" title="시스템구분">
-                                   <option selected value=''>--선택하세요--</option>
-                                   <option value="열차"><c:out value="열차"/></option>
-                                   <option value="기차"><c:out value="기차"/></option>
+                            <select id="SYS_GB" name="SYS_GB" class="select" title="시스템구분">
+									   <option value="" >전체</option>
+									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
+									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${searchVO.searchBySysGb == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
+									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>  --%>   
@@ -135,9 +164,7 @@
                             </th>
                             <td>
                             <select id="TASK_GB" name="TASK_GB" class="select" id="TASK_GB" title="업무구분">
-                                   <option selected value=''>--선택하세요--</option>
-                                   <option value="T1"><c:out value="T1"/></option>
-                                   <option value="T2"><c:out value="T2"/></option>
+									   <option value="">선택하세요</option>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>   --%>  

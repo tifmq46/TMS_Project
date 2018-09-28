@@ -340,7 +340,7 @@
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
 									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${searchVO.searchBySysGb == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
-									    </c:forEach>
+									      </c:forEach>
 									</select>
 									
 									<input type="hidden" name="searchBySysGb" id="searchBySysGb" value=""/>					
@@ -370,7 +370,7 @@
                                     		<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
                                     		<a href="#Link" onclick="Pg_DeleteList(${searchVO.pageIndex}); return false;">삭제</a>
                                     		<a href="<c:url value='/tms/pg/PgInsert.do'/>" >등록</a>
-                                    		<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀업로드</a>
+                                    		<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀등록</a>
                                     	</div>
                                 	</li>
                             	</ul>
@@ -414,11 +414,11 @@
             				<tr>
             					<td align="center" class="listtd" nowrap="nowrap"><input type="checkbox" name="delYn" class="check2" title="선택"><input type="hidden" name="checkId" value="<c:out value="${result.PG_ID}"/>" /></td>
             					<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            					<td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
-            					<td align="center" class="listtd">
+            					<td align="center" class="listtd">         							
             						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?PG_ID=<c:out value='${result.PG_ID}'/>">
-            							<strong><c:out value="${result.PG_NM}"/><strong>
-            						</a></td>
+                                		<strong><c:out value="${result.PG_ID}"/><strong>
+                            		</a></td>
+            					<td align="center" class="listtd"><c:out value="${result.PG_NM}"/></td>
             					<td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>

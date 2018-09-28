@@ -98,11 +98,12 @@ public class TmsProgrmManageController {
 	@RequestMapping(value = "/sym/prm/TaskGbSearch.do")
 	@ResponseBody
 	public List<?> selectTaskGbSearch(String searchData,ModelMap model) throws Exception {
+		System.out.println("여기옴");
 		// 0. Spring Security 사용자권한 처리
 		
 		List<?> selectTaskGbSearch = TmsProgrmManageService.selectTaskGbSearch(searchData);
 		model.addAttribute("selectTaskGbSearch", selectTaskGbSearch);
-	
+		System.out.println("================"+selectTaskGbSearch);
 		return selectTaskGbSearch;
 
 	}

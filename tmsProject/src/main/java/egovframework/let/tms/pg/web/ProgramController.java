@@ -67,7 +67,6 @@ public class ProgramController {
 	@RequestMapping(value = "/tms/pg/PgManage.do")
 	public String selectPgList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
-		System.out.println("시스템 = " + searchVO.getSearchBySysGb());
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -139,7 +138,7 @@ public class ProgramController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/pg/PgCurrent.do")
-	public String selectDevResultList(@ModelAttribute("searchVO") PgCurrentVO searchVO, ModelMap model) throws Exception {
+	public String selectDevResultList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -155,17 +154,33 @@ public class ProgramController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> PgList = ProgramService.selectPgCurrentList(searchVO);
+		List<?> PgList = ProgramService.selectPgList(searchVO);
 		//List<?> PgList = ProgramService.selectPgList(searchVO);
 		model.addAttribute("resultList", PgList);
 
-		int totCnt = ProgramService.selectPgCurrentTotCnt();
+		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
 		
 		System.out.println("current--"+totCnt);
 		
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
+		// 공통코드 부분 시작 -------------------------------	
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+		
+		System.out.println("111-"+searchVO.getSearchBySysGb());
+		System.out.println("222-"+searchVO.getSearchByTaskGb());
+		if(!searchVO.getSearchBySysGb().isEmpty()) {
+			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
+			model.addAttribute("taskGb2", taskGbList2);
+		}
+		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		
+		// 공통코드 끝 시작 -------------------------------	
+		
+
 		return "tms/pg/PgCurrent";
 	}
 	
@@ -175,7 +190,16 @@ public class ProgramController {
 	@RequestMapping(value = "/tms/pg/PgInsert.do")
 	public String registerPgList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
+		// 공통코드 부분 시작 -------------------------------	
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+				
+		System.out.println("111-"+searchVO.getSearchBySysGb());
+		System.out.println("222-"+searchVO.getSearchByTaskGb());
 		
+		
+				
+		// 공통코드 끝 시작 -------------------------------
 		
 		return "tms/pg/PgInsert";
 	}
@@ -296,21 +320,21 @@ public class ProgramController {
 	}
 	
 	/**
-	 * 프로그램 현황을 엑섹파일로 출력한다.	 
+	 * 프로그램 현황을 엑셀파일로 출력한다.	 
 	 */	
 	@RequestMapping(value = "/tms/pg/ExelWrite.do")
-	public String ExelWrite(@ModelAttribute("searchVO") PgCurrentVO searchVO, ModelMap model) throws Exception {
+	public String ExelWrite(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 
 		// 엑셀로 쓸 데이터 생성		
-		List<PgCurrentVO> list = new ArrayList<PgCurrentVO>();
+		List<ProgramVO> list = new ArrayList<ProgramVO>();
 		
 		// 엑셀 리스트 생성
-		List<?> excelList = ProgramService.selectPgCurrentExcelList();
+		List<?> excelList = ProgramService.selectPgCurrentExcelList(searchVO);
 		
 		// 엑셀 데이터에 엑셀 리스트 추가
 		for(int i=0; i<excelList.size(); i++)
 		{
-			PgCurrentVO excel = (PgCurrentVO) excelList.get(i);
+			ProgramVO excel = (ProgramVO) excelList.get(i);
 			list.add(excel);
 			
 		}
@@ -332,13 +356,31 @@ public class ProgramController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> PgList = ProgramService.selectPgCurrentList(searchVO);
+		List<?> PgList = ProgramService.selectPgList(searchVO);
 		//List<?> PgList = ProgramService.selectPgList(searchVO);
 		model.addAttribute("resultList", PgList);
 
-		int totCnt = ProgramService.selectPgCurrentTotCnt();
+		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
+		
+		System.out.println("current--"+totCnt);
+		
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
+		
+		// 공통코드 부분 시작 -------------------------------	
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+		
+		System.out.println(searchVO.getSearchBySysGb());
+		System.out.println(searchVO.getSearchByTaskGb());
+		if(!searchVO.getSearchBySysGb().isEmpty()) {
+			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
+			model.addAttribute("taskGb2", taskGbList2);
+		}
+		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		
+		// 공통코드 끝 시작 -------------------------------	
 		
 		return "tms/pg/PgCurrent";
 		
@@ -378,9 +420,9 @@ public class ProgramController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> PgList = ProgramService.selectPgCurrentList(searchVO);
+		//List<?> PgList = ProgramService.selectPgCurrentList(searchVO);
 		//List<?> PgList = ProgramService.selectPgList(searchVO);
-		model.addAttribute("resultList", PgList);
+		//model.addAttribute("resultList", PgList);
 
 		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -480,7 +522,7 @@ public class ProgramController {
 		}
 	}
 	
-	public void xlsxWiter(List<PgCurrentVO> list) {
+	public void xlsxWiter(List<ProgramVO> list) {
 		// 워크북 생성
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// 워크시트 생성
@@ -522,30 +564,27 @@ public class ProgramController {
 		
 		// 헤더 정보 구성
 		cell = row.createCell(0);
-		cell.setCellValue("프로그램ID");
+		cell.setCellValue("화면ID");
 		cell.setCellStyle(HeadStyle); // 제목스타일 
 
 		cell = row.createCell(1);
-		cell.setCellValue("프로그램명");
+		cell.setCellValue("화면명");
 		cell.setCellStyle(HeadStyle); // 제목스타일 
 		cell = row.createCell(2);
-		cell.setCellValue("개발자");
+		cell.setCellValue("시스템구분");
 		cell.setCellStyle(HeadStyle); // 제목스타일 
 		cell = row.createCell(3);
-		cell.setCellValue("개발완료일자");
+		cell.setCellValue("업무구분");
 		cell.setCellStyle(HeadStyle); // 제목스타일 
 		cell = row.createCell(4);
-		cell.setCellValue("개발여부");
+		cell.setCellValue("개발자");
 		cell.setCellStyle(HeadStyle); // 제목스타일 
 		cell = row.createCell(5);
-		cell.setCellValue("PL확인");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		cell = row.createCell(6);
-		cell.setCellValue("단위테스트");
+		cell.setCellValue("사용여부");
 		cell.setCellStyle(HeadStyle); // 제목스타일 
 		
 		// 리스트의 size 만큼 row를 생성
-		PgCurrentVO vo;
+		ProgramVO vo;
 		for(int rowIdx=0; rowIdx < list.size(); rowIdx++) {
 			vo = list.get(rowIdx);
 			
@@ -560,19 +599,16 @@ public class ProgramController {
 			cell.setCellValue(vo.getPG_NM());
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(2);
-			cell.setCellValue(vo.getUSER_DEV_ID());
+			cell.setCellValue(vo.getSYS_GB());
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(3);
-			cell.setCellValue(vo.getDEV_END_DT());
+			cell.setCellValue(vo.getTASK_GB());
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(4);
-			cell.setCellValue(vo.getDEV_END_YN());
+			cell.setCellValue(vo.getUSER_DEV_ID());
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(5);
-			cell.setCellValue(vo.getSECOND_TEST_RESULT_YN());
-			cell.setCellStyle(BodyStyle); // 본문스타일 
-			cell = row.createCell(6);
-			cell.setCellValue(vo.getTHIRD_TEST_RESULT_YN());
+			cell.setCellValue(vo.getUSE_YN());
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 		}
 		/** 3. 컬럼 Width */ 

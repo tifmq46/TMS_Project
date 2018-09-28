@@ -80,7 +80,7 @@
                 </div>
      
               
-             <form:form commandName="searchVO" name="listForm" method="post" action="tms/defect/defectList.do">   
+             <form:form commandName="searchVO" name="listForm" method="post" action="tms/defect/selectDefectCurrent.do">   
                 <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
                 <!-- 검색 필드 박스 시작 -->
             <div id="search_field">

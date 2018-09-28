@@ -95,33 +95,42 @@
 			</isNotEmpty> 
 	</select>	
 	
-	<!-- 프로그램현황 조회 -->
-	<select id="ProgramDAO.selectPgCurrentList" parameterClass="PgCurrentVO" resultMap="PgCurrent" >
-		<![CDATA[
-			SELECT
-				a.PG_ID, a.PG_NM, a.USER_DEV_ID, b.DEV_END_DT, b.DEV_END_YN, b.SECOND_TEST_RESULT_YN, b.THIRD_TEST_RESULT_YN
-			FROM 
-				PG_TB a, DEV_PLAN_TB b
-			WHERE
-				a.PG_ID = b.PG_ID 
-			LIMIT 
-				#recordCountPerPage# OFFSET #firstIndex#
-		]]>
-			
-	</select>
+	
 	
 	<!-- 프로그램현황 조회(엑셀 다운용) -->
-	<select id="ProgramDAO.selectPgCurrentExcelList" resultMap="PgCurrent" >
+	<select id="ProgramDAO.selectPgCurrentExcelList" parameterClass="ProgramDefaultVO" resultMap="PgList" >
 		<![CDATA[
 			SELECT
-				a.PG_ID, a.PG_NM, a.USER_DEV_ID, b.DEV_END_DT, b.DEV_END_YN, b.SECOND_TEST_RESULT_YN, b.THIRD_TEST_RESULT_YN
+				a.PG_ID, 
+				a.PG_NM, 
+				(SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE a.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID,
+				a.SYS_GB, 
+				a.TASK_GB, 
+				a.USE_YN
 			FROM 
-				PG_TB a, DEV_PLAN_TB b
-			WHERE
-				a.PG_ID = b.PG_ID 
+				PG_TB a
+			WHERE 
+				1=1			
 		]]>
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND a.PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
+			</isNotEmpty>  
 			
-	</select>
+			<!-- 시스템구분으로 검색 -->
+			<isNotEmpty property="searchBySysGb">
+			    AND a.SYS_GB = #searchBySysGb# 
+			</isNotEmpty>
+			
+			<isNotEmpty property="searchByTaskGb">
+			    AND a.TASK_GB = #searchByTaskGb#
+			</isNotEmpty>
+			
+			<!-- 개발자명으로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND a.USER_DEV_ID IN (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT('%' , #searchByUserDevId#, '%'))
+			</isNotEmpty> 
+	</select>	
 	
 	<!-- 프로그램현황 수 확인 -->
 	<select id="ProgramDAO.selectPgCurrentTotCnt" resultClass="java.lang.Integer" >
@@ -182,7 +191,7 @@
 	<update id="ProgramDAO.updatePg" parameterClass="ProgramVO">
  		<![CDATA[
 			UPDATE PG_TB SET 
-				USER_DEV_ID = (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT(#USER_DEV_ID#)), 
+				USER_DEV_ID = #USER_DEV_ID#, 
 				PG_NM = #PG_NM#,
 				SYS_GB = #SYS_GB#,
 				TASK_GB = #TASK_GB#,
@@ -194,7 +203,8 @@
 	<!-- 삭제 -> 사용여부 변경 -->
 	<update id="ProgramDAO.deletePg" parameterClass="ProgramVO">
  		<![CDATA[
-			DELETE FROM PG_TB
+			UPDATE PG_TB SET 				
+				USE_YN = 'N'				
 			WHERE PG_ID = #PG_ID#
  		]]>
  	</update>

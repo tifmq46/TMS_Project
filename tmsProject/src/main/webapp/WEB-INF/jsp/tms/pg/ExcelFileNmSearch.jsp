@@ -113,7 +113,7 @@ function test3() {
                     <li>
                         <input type="file" name="file" />
                         <div class="buttons" style="float:right;">                     	
-                        	<a href="#LINK" onclick="javascript:file_upload(); test3(); return false;">저장 </a>
+                        	<a href="#LINK" onclick="javascript:file_upload(); test3(); return false;">등록 </a>
                         	<font id="fon" >${result}</font> 
                         	<input type="hidden" id="change" name="change" value="<c:out value='${result}'/>" onclick="test(); return false;">
                         </div>

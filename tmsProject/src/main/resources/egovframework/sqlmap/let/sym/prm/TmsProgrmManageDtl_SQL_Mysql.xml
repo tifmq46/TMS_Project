@@ -78,6 +78,7 @@
 	</select>  
 	
 	<!-- 업무구분 조회 -->
+	            
 	<select id="TmsProgrmManageDAO.selectTaskGb2" parameterClass="ProgramDefaultVO" resultClass="TmsProgrmManageVO">
 			
 	    	SELECT CODE_NM AS "TASK_GB" 
