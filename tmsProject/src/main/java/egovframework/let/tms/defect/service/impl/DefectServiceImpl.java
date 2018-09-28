@@ -217,7 +217,7 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 
 
 	@Override
-	public List<String> selectTaskByStats(String taskGbList) {
+	public List<HashMap<String,String>> selectTaskByStats(String taskGbList) {
 		// TODO Auto-generated method stub
 		return defectDAO.selectTaskByStats(taskGbList);
 	}
@@ -238,7 +238,7 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 
 
 	@Override
-	public List<String> selectPgByStats(String pgIdList) {
+	public List<HashMap<String,String>> selectPgByStats(String pgIdList) {
 		// TODO Auto-generated method stub
 		return defectDAO.selectPgByStats(pgIdList);
 	}
@@ -252,7 +252,7 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 
 
 	@Override
-	public List<String> selectUserTestByStats(String userTestList) {
+	public List<HashMap<String,String>> selectUserTestByStats(String userTestList) {
 		// TODO Auto-generated method stub
 		return defectDAO.selectUserTestByStats(userTestList);
 	}
@@ -266,7 +266,7 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 
 
 	@Override
-	public List<String> selectUserDevByStats(String userDevList) {
+	public List<HashMap<String,String>> selectUserDevByStats(String userDevList) {
 		// TODO Auto-generated method stub
 		return defectDAO.selectUserDevByStats(userDevList);
 	}

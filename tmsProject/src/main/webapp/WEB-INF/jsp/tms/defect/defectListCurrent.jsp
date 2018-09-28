@@ -225,7 +225,12 @@
             				<td align="center" class="listtd"><c:out value="${result.taskGb}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
             				<td align="center" class="listtd" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
-            				<td align="center" class="listtd" style="text-align:left;"><c:out value="${result.defectTitle}"/></td>
+            				<td align="center" class="listtd" style="text-align:left;">
+            				<a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>"
+                       			 title="<c:out value="${result.defectTitle}"/>">
+                       			 <font color="0F438A"><c:out value="${result.defectTitle}"/></font>
+                        	</a>
+            				</td>
             				<td align="center" class="listtd"><c:out value="${result.defectGb}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.userTestId}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/></td>
@@ -241,6 +246,7 @@
          <input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
          <input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
          <input id="TmsProgrmFileNm_user_dev_id" type="hidden" /> 
+         <input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
 
 
        </form:form>

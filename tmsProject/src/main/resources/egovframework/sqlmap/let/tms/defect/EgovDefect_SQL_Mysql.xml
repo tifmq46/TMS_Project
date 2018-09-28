@@ -208,7 +208,8 @@
               P.SYS_GB,
               (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = P.TASK_GB) AS TASK_GB,
               P.USE_YN,
-              P.PJT_ID
+              P.PJT_ID,
+              CURDATE() AS curDate
            FROM DEFECT_TB AS D, PG_TB AS P
            WHERE D.PG_ID = P.PG_ID AND D.DEFECT_ID_SQ = #defectIdSq# AND P.PG_ID = #pgId#
            ) as C

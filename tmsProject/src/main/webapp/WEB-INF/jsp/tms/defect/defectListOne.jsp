@@ -41,6 +41,7 @@ function fn_egov_delete_defectImg() {
 	document.defectVO.action = "<c:url value='/tms/defect/deleteDefectImg.do'/>"
 	document.defectVO.submit();
 }
+
 </script>
 
 <style type="text/css">
@@ -95,25 +96,25 @@ function fn_egov_delete_defectImg() {
 					        </th>
 					        <td width="12.5%" nowrap >
 					          <input name="defectIdSq" size="5" readonly="readonly" value="<c:out value="${defectOne.defectIdSq}"/>"  maxlength="40" title="결함번호"
-					          style="text-align:center; width:90%;" /> 
+					          style="text-align:center; border:none; width:90%;" /> 
 					        </td>
 					         <th width="12.5%" height="23" nowrap >업무구분
 					        </th>
 					        <td width="12.5%" nowrap >
 					          <input type="text" size="10" readonly="readonly" value="<c:out value="${defectOne.taskGb}"/>"  maxlength="40" title="업무구분"  
-					           style="text-align:center; width:80%;"/> 
+					           style="text-align:center; border:none; width:80%;"/> 
 					        </td>
 					         <th width="12.5%" height="23" nowrap >화면ID
 					        </th>
 					        <td width="12.5%" nowrap >
 					          <input name="pgId" type="text" size="10" readonly="readonly" value="<c:out value="${defectOne.pgId}"/>"  maxlength="40" title="화면ID" 
-					          style="text-align:center; width:90%;" /> 
+					          style="text-align:center; border:none; width:90%;" /> 
 					        </td>
 					        <th width="12.5%" height="23" nowrap >화면명
 					        </th>
 					        <td width="12.5%" nowrap >
 					          <input size="5" readonly="readonly" value="<c:out value="${defectOne.pgNm}"/>"  maxlength="40" title="화면명"
-					          style="text-align:center; width:90%;" /> 
+					          style="text-align:center; border:none; width:90%;" /> 
 					        </td>
 					       </tr>
 					       
@@ -144,7 +145,7 @@ function fn_egov_delete_defectImg() {
 					        </th>
 					        <td width="12.5%" nowrap >
 					          <input type="text" size="10" readonly="readonly" value="<c:out value="${defectOne.userDevId}"/>"  maxlength="40" title="개발자" 
-					          style="text-align:center; width:90%;" /> 
+					          style="text-align:center; border:none; width:90%;" /> 
 					        </td>
 					         <th width="12.5%" height="23" nowrap >조치상태
 					        </th>
@@ -170,13 +171,21 @@ function fn_egov_delete_defectImg() {
 					        </th>
 					        <td width="12.5%" nowrap >
 					          <input name="enrollDt" size="5" readonly="readonly" value="<c:out value="${defectOne.enrollDt}"/>"  maxlength="40" title="등록일자"
-					          style="text-align:center; width:90%;" /> 
+					          style="text-align:center; border:none; width:90%;" /> 
 					        </td>
 					         <th width="12.5%" height="23" nowrap >조치일자
 					        </th>
 					        <td width="12.5%" nowrap >
-					          <input name="actionDt" type="text" size="10" readonly="readonly" value="<c:out value="${defectOne.actionDt}"/>"  maxlength="40" title="조치일자" 
-					          style="text-align:center; width:90%;" /> 
+					        <c:choose>
+					        <c:when test="${defectOne.actionDt eq null }">
+					          <input id="actionDt" name="actionDt" type="text" size="10" readonly="readonly" 
+					          value="${defectOne.curDate}"  maxlength="40" title="조치일자" style="text-align:center; border:none; width:90%;" /> 
+					        </c:when>
+					        <c:otherwise>
+					          <input id="actionDt" name="actionDt" type="text" size="10" readonly="readonly" 
+					          value="${defectOne.actionDt}"  maxlength="40" title="조치일자" style="text-align:center; border:none; width:90%;" /> 
+					        </c:otherwise>
+					        </c:choose>
 					        </td>
 					       </tr>
 					       
