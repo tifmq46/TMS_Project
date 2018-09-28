@@ -143,8 +143,6 @@ public class EgovMainController {
 		model.addAttribute("pjtMemberList", pjtMemberList);
 		// 프로젝트 멤버 부분 끝 ----------------------------
 		
-		List<?> testList = TmsProgrmManageService.selectTestList();
-		
 		List<HashMap<String,String>> r1 = new ArrayList <HashMap<String,String>>();
 		List<HashMap<String,String>> r2 = new ArrayList <HashMap<String,String>>();
 		
@@ -159,7 +157,6 @@ public class EgovMainController {
 		System.out.println(r1.size());
 		int firstVal = r1.size()/6;
 		String[] names = new String[firstVal];
-		String[] names2 = new String[firstVal];
 		
 		for(int j=0; j<firstVal;j++){
 			names[j] = r1.get(j).get("BN").toString();
@@ -167,62 +164,41 @@ public class EgovMainController {
 		}        
 		
 		//int k =38;
-		int k1 =38;
 		
 		//String hm = hm+k;
 		
-		HashMap<String, String> hm1 = new HashMap<String,String>();
-		HashMap<String, String> hm2 = new HashMap<String,String>();
-		HashMap<String, String> hm3 = new HashMap<String,String>();
-		HashMap<String, String> hm4 = new HashMap<String,String>();
+		int num[] = new int[100];
+		num[0] = 38;
+		num[1] = 38;
 		
-		/*for(int i=0; i<firstVal; i++){
-			HashMap<String, String> hmi = new HashMap<String,String>();			
-		}*/
+		String t;
+		HashMap<List<String>, List<String>> c1 = new HashMap<List<String>,List<String>>();
+		HashMap<String, String> c2 = new HashMap<String,String>();
 		
-		int k[] = new int[4];
-		@SuppressWarnings("unchecked")
-		HashMap<String,String>[] rrr = new HashMap[4];
-		ArrayList<HashMap<String, String>> al = new ArrayList <HashMap<String,String>>();
-		
-		for(int i=0; i<firstVal; i++){
-			k[i]=38;
-		}
-		
-		String t, t2;
 		
 		for(int i=0; i<r1.size();i++){
 			
 			//System.out.println("-----------------"+r1.get(i));
 			String temp = r1.get(i).get("BN").toString();
-			
-			for(int j=0; j<firstVal; j++){
-				if(names[j].equals(temp)){
-					t = (String.format("%s",r1.get(i).get("B"+k[j])));
+				if(names[0].equals(temp)){
+					System.out.println("여기로옴1");
+					t = (String.format("%s",r1.get(i).get("B"+num[0])));
+					c1[0].put("BN", names[0]);
+					c1.put("B"+num[0], t);
+					num[0]+=1;
 					
-					hm1.put("BN", names[j]);
-					hm1.put("B"+k[j], t);
-					
-					System.out.println("맵: "+ hm1);
-					System.out.println("앞 리스트 :"+al);
-					
-					if(hm1.containsKey("B43")){
-						System.out.println("><><><");
-						al.add(j,hm1);
-					}
-					System.out.println("j========" + j);
-					System.out.println("뒤 리스트 :"+al);
-					System.out.println("----");
-					
-					k[j] +=1;
-					
+				}else if(names[1].equals(temp)){
+					System.out.println("여기로옴2");
+					t = (String.format("%s",r1.get(i).get("B"+num[1])));
+					c2.put("BN", names[1]);
+					c2.put("B"+num[1], t);
+					num[1]+=1;
 				}
-				
-				r2.addAll(al);
-				
-			}
+			
 		}
-		//r2.addAll(al);
+		r2.add(c1);
+		r2.add(c2);
+		
 		
 		//r2.add(rrr[0]);
 		//r2.add(hm2);
