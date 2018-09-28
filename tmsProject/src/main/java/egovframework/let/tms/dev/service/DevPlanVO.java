@@ -44,8 +44,31 @@ public class DevPlanVO implements Serializable{
 	/**  3차테스트결과 */
 	private String thirdTestResultYn;
 	
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date devStartDt1;
+	
+	/**  개발완료일자 */
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date devEndDt1;
+	
 	public String getPgId() {
 		return pgId;
+	}
+
+	public Date getDevStartDt1() {
+		return devStartDt1;
+	}
+
+	public void setDevStartDt1(Date devStartDt1) {
+		this.devStartDt1 = devStartDt1;
+	}
+
+	public Date getDevEndDt1() {
+		return devEndDt1;
+	}
+
+	public void setDevEndDt1(Date devEndDt1) {
+		this.devEndDt1 = devEndDt1;
 	}
 
 	public void setPgId(String pgId) {

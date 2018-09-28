@@ -31,7 +31,20 @@
 
 <script type="text/javaScript" language="javascript">
 
-
+function fn_result_regist(t){
+	
+	var f = document.listForm;
+	//var idVal = document.getElementById("pgId").value;
+	//var idVal2 = $(this).closest('tr').find('.pgId').text();
+	//var k = document.getElementById("test").value;
+	//var idVal2 = k.closest('tr').find('.pgId').text();
+	
+	//alert(idVal2);
+	var idVal = document.getElementById(t).value;
+	var idVal1 = document.getElementById(t+1).value;
+	location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1;
+			
+}
 
 function fn_searchList(pageNo){
     document.listForm.pageIndex.value = pageNo;
@@ -41,21 +54,6 @@ function fn_searchList(pageNo){
 }
 
 $(function(){
-	$('.bnt').click(function(){
-		/*var ch = $(this);
-		var tr = ch.parent().parent().parent(); */
-		var pgIdTxt = $(this).closest('tr').find('.pgId').text();
-		alert(pgIdTxt);
-		
-		
-		var f = document.listForm;
-		
-		//f.h.value = tr.text();
-		//f.action = "<c:url value='/tms/dev/updateDevResult.do'/>";
-		//f.submit();
-	});
-	
-	
 	
 	   $('#bbb').change(function() {
 	      $.ajax({
@@ -118,7 +116,6 @@ $(function(){
         
              <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="tms/dev/devPlanList.do">   
                 <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
-                <input type="hidden" name="h" id="h" />
                 <!-- 검색 필드 박스 시작 -->
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발결과관리</strong></h2></div>
@@ -220,9 +217,9 @@ $(function(){
             				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>
             				
-            				<td><input type="date" name="devStartDt" id="devStartDt" value="<fmt:formatDate value="${result.devStartDt}" pattern="yyyy-MM-dd" />" />
+            				<td><input type="date"  id="${result.pgId}" value="<fmt:formatDate value="${result.devStartDt}" pattern="yyyy-MM-dd" />" />
                             <img src="images/calendar.gif"  width="19" height="19" alt="" /></td>
-                            <td><input type="date" name="devEndDt" id="devEndDt" value="<fmt:formatDate value="${result.devEndDt}" pattern="yyyy-MM-dd" />"/>
+                            <td><input type="date"  id="${result.pgId}1" value="<fmt:formatDate value="${result.devEndDt}" pattern="yyyy-MM-dd" />"/>
                             <img src="images/calendar.gif" width="19" height="19" alt="" /></td>
             				
             				<%-- <td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
@@ -231,8 +228,8 @@ $(function(){
             				<td align="center" class="listtd">
             				
             				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
-            				<a href="#LINK" class="bnt" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-            				<!-- <a href="#LINK" onclick="fn_result_regist(this);" style="selector-dummy:expression(this.hideFocus=false);">저장</a> -->
+            				<%-- <a href="<c:url value='/tms/dev/updateDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%>
+            				<a href="#LINK" onclick="fn_result_regist('${result.pgId}');" id="test" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
             				<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%> 
             				<!-- 값이 바뀌는 이벤트가 발생했을 때 저장 버튼 활성화
             					저장 누르면 버튼 enable
@@ -261,7 +258,7 @@ $(function(){
             				</c:choose> --%>
             			</tr>
         			</c:forEach>
-              
+            
               </table>        
               
            </div>

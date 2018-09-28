@@ -257,18 +257,18 @@ public class DevPlanController {
 	}
 	
 	@RequestMapping(value = "/tms/dev/updateDevResult.do")
-	public String updateDevResult(@RequestParam("h") String h, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
+	public String updateDevResult(@ModelAttribute("searchVO") DevPlanVO dvo, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 
-		System.out.println("---------------dd-"+h);
+		//System.out.println("---------------dd-"+h);
 		//beanValidator.validate(dvo, bindingResult); //validation 수행
 
 		//if (bindingResult.hasErrors()) {
 			//return "/tms/dev/updateDevPlan";
 		//} else {
-			/*devPlanService.updateDevResult(dvo);
+			devPlanService.updateDevResult(dvo);
 			status.setComplete();
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));*/
-			return "forward:/tms/dev/selectDevResult.do";
+			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
+			return "redirect:/tms/dev/devResultList.do";
 		//}
 	}
 	
