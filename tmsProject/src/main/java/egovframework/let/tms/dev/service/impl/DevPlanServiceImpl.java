@@ -140,5 +140,10 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public void deleteWeek() throws Exception {
 		devPlanDAO.deleteWeek();
 	}
+
+	@Override
+	public String ifNullDevPlan(String b) {
+		return devPlanDAO.ifNullDevPlan(b);
+	}
 	
 }

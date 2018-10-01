@@ -39,17 +39,17 @@
 	<select id="devPlanDAO.selectDevPlans" parameterClass="searchVO" resultClass="egovMap">
 			<![CDATA[
 				SELECT * FROM	(			
-					select A.PG_ID
-						,A.PG_NM
-						,(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = A.USER_DEV_ID ) USER_DEV_ID
-						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.SYS_GB) AS SYS_GB
-						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB) TASK_GB
-						,B.PLAN_START_DT
-						,B.PLAN_END_DT
-						,(select DATEDIFF(B.PLAN_END_DT, B.PLAN_START_DT )+1 )as dayDiff
-				FROM PG_TB A
-				LEFT JOIN DEV_PLAN_TB B
-				ON A.PG_ID = B.PG_ID )AS C
+				select A.PG_ID
+					,A.PG_NM
+					,(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = A.USER_DEV_ID ) USER_DEV_ID
+					,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.SYS_GB) AS SYS_GB
+					,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB) TASK_GB
+					,B.PLAN_START_DT
+					,B.PLAN_END_DT
+					,(select DATEDIFF(B.PLAN_END_DT, B.PLAN_START_DT )+1 )as dayDiff
+			FROM PG_TB A
+			LEFT JOIN DEV_PLAN_TB B
+			ON A.PG_ID = B.PG_ID )AS C
 					WHERE 1=1
 			]]>
 			
@@ -108,6 +108,13 @@
 			
 				]]>				
 	</select> 
+	
+	<select id="DevPlanDAO.ifNullDevPlan" parameterClass="java.lang.String" resultClass="java.lang.String">
+	    <![CDATA[
+		    select ifnull('1','0') from DEV_PLAN_TB
+			where PG_ID=#pgId#
+	    ]]>
+	</select>
 	
 	<insert id="DevPlanDAO.insertDevPlan" parameterClass="DevPlanVO" >
 		<![CDATA[
