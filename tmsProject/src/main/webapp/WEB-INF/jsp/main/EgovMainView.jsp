@@ -105,7 +105,7 @@
 	
 	<!-- 프로젝트 생성 끝 -->
      <c:if test="${tmsProjectManageVO.PJT_ID != null }">
-    	<div class="myBsnsList" class="col-md-6" style="height: 241px; margin-bottom:20px;">
+    	<div class="myBsnsList" class="col-md-6" style="height: 260px; margin-bottom:30px;">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
@@ -154,7 +154,7 @@
     		</div>
     	</div>
     	</c:if>
-    	<div class="recentBsnsList" class="col-md-6" style="height:241px; margin-bottom:20px !important	; ">
+    	<div class="recentBsnsList" class="col-md-6" style="height:260px; margin-bottom:30px !important	; ">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
@@ -216,7 +216,7 @@
     		</div>    	    	
     	</div>
     	
-    	<div class="myBsnsList" class="col-md-6" style="height:241px; margin-bottom:20px !important	;">
+    	<div class="myBsnsList" class="col-md-6" style="height:290px; margin-bottom:20px !important	;">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
@@ -280,7 +280,7 @@
     		</div>    	    	
     	</div>
     	
-    	<div class="recentBsnsList" class="col-md-6" style="height:241px; margin-bottom:20px !important	;">
+    	<div class="recentBsnsList" class="col-md-6" style="height:290px; margin-bottom:20px !important	;">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">

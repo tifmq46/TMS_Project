@@ -31,12 +31,22 @@
 
 <script type="text/javaScript" language="javascript">
 
+function fn_result_change(asd) {
+	var idVal3 = document.getElementById(asd+3).id;
+	$("#"+idVal3).removeClass("disabled");
+	$("#"+idVal3).addClass("abled");
+}
+
+
 function fn_result_regist(t){
 	
 	var f = document.listForm;
 
 	var idVal = document.getElementById(t).value;
 	var idVal1 = document.getElementById(t+1).value;
+	
+
+	
 	location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1;
 			
 }
@@ -76,7 +86,11 @@ $(function(){
 	   })
 	})
 </script>
-
+<style>
+.disabled {
+       pointer-events:none;
+}
+</style>
 
 </head>
 
@@ -212,9 +226,9 @@ $(function(){
             				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>
             				
-            				<td><input type="date"  id="${result.pgId}" value="<fmt:formatDate value="${result.devStartDt}" pattern="yyyy-MM-dd" />" />
+            				<td><input type="date"  id="${result.pgId}" onchange="fn_result_change('${result.pgId}')" value="<fmt:formatDate value="${result.devStartDt}" pattern="yyyy-MM-dd" />"/>
                             <img src="images/calendar.gif"  width="19" height="19" alt="" /></td>
-                            <td><input type="date"  id="${result.pgId}1" value="<fmt:formatDate value="${result.devEndDt}" pattern="yyyy-MM-dd" />"/>
+                            <td><input type="date"  id="${result.pgId}1" onchange="fn_result_change('${result.pgId}')" value="<fmt:formatDate value="${result.devEndDt}" pattern="yyyy-MM-dd" />"/>
                             <img src="images/calendar.gif" width="19" height="19" alt="" /></td>
             				
             				<%-- <td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
@@ -224,7 +238,12 @@ $(function(){
             				
             				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
             				<%-- <a href="<c:url value='/tms/dev/updateDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%>
-            				<a href="#LINK" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				<c:if test="${result.devStartDt eq null || result.devEndDt eq null}">
+            				<a id="${result.pgId}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				</c:if>
+            				<c:if test="${result.devStartDt ne null || result.devEndDt ne null}">
+            				<a id="${result.pgId}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				</c:if>
             				<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%> 
             				<!-- 값이 바뀌는 이벤트가 발생했을 때 저장 버튼 활성화
             					저장 누르면 버튼 enable

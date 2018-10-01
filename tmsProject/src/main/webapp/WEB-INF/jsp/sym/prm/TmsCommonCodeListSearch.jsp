@@ -70,9 +70,9 @@ function choisProgramListSearch(code_id) {
 <input type="submit" id="invisible" class="invisible"/>
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
     <!-- 검색 필드 박스 시작 -->
-    <div id="search_field">
+    <div id="search_field" style="width:98%">
         <div id="search_field_loc" class="h_title">코드명 검색</div>
-            <fieldset><legend>조건정보 영역</legend>    
+            <fieldset style="width:100%;"><legend>조건정보 영역</legend>    
             <div class="sf_start">
                 <ul id="search_first_ul">
                     <li>
@@ -127,8 +127,8 @@ function choisProgramListSearch(code_id) {
     </div>
 
     <!-- 페이지 네비게이션 시작 -->
-    <div id="paging_div">
-        <ul class="paging_align">
+    <div id="paging_div" style="width:100%;">
+        <ul class="paging_align" style="width:100%;">
             <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage"/>
         </ul>
     </div>                          

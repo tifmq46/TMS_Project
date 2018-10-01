@@ -238,6 +238,7 @@ public class DevPlanController {
 		
 		List<?> devResultList = devPlanService.selectDevResultList(searchVO);
 		model.addAttribute("resultList", devResultList);
+		System.out.println("================================"+devResultList);
 		
 		int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);

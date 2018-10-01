@@ -152,8 +152,7 @@
 	<select id="DevPlanDAO.selectDevPlanListTotCnt" parameterClass="searchVO" resultClass="java.lang.Integer" >
 			<![CDATA[
 				SELECT COUNT(*) AS totcnt
-		  FROM DEV_PLAN_TB A , PG_TB B
-			WHERE A.PG_ID = B.PG_ID
+		  FROM PG_TB 
 			]]>
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
