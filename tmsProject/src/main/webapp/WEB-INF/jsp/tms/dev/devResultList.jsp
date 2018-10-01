@@ -67,7 +67,7 @@ function fn_searchList(pageNo){
 
 $(function(){
 	
-	   $('#bbb').change(function() {
+	   $('#searchBySysGb').change(function() {
 	      $.ajax({
 	         
 	         type:"POST",
@@ -76,7 +76,6 @@ $(function(){
 	         async: false,
 	         dataType : "json",
 	         success : function(selectTaskGbSearch){
-	        	 $("#searchBySysGb").val($("#bbb").val());
 	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
 	            $.each(selectTaskGbSearch, function(i){
 	               (JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
@@ -142,14 +141,13 @@ $(function(){
 					  		<ul id="search_first_ul">
 					  			<li>
 								    <label >시스템구분</label>
-									<select name="bbb" id="bbb" style="width:12%;text-align-last:center;">
-									   <option value="" selected="selected" >전체</option>
+									<select name="searchBySysGb" id="searchBySysGb" style="width:12%;text-align-last:center;">
+									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb.SYS_GB}"/>"><c:out value="${sysGb.SYS_GB}" /></option>
-									    </c:forEach>
+									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${searchVO.searchBySysGb == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
+									      </c:forEach>
 									</select>
 									
-									<input type="hidden" name="searchBySysGb" id="searchBySysGb" value="">					
 					  			</li>
 					  			<li>
 								    <label for="searchByTaskGb">업무구분</label>
