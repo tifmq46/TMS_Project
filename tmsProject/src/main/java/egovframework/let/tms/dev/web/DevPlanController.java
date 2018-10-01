@@ -242,14 +242,12 @@ public class DevPlanController {
 		System.out.println(searchVO.getSearchBySysGb());
 		System.out.println(searchVO.getSearchByTaskGb());
 				
-		List<?> devList = devPlanService.selectDevPlans(searchVO);
-		model.addAttribute("resultList", devList);
 		
 		List<?> devResultList = devPlanService.selectDevResultList(searchVO);
 		model.addAttribute("resultList", devResultList);
 		System.out.println("================================"+devResultList);
 		
-		int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
+		int totCnt = devPlanService.selectDevResultListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		

@@ -31,6 +31,13 @@
 
 <script type="text/javaScript" language="javascript">
 
+function linkPage1(pageNo){
+	   alert(pageNo);
+	   document.listForm.pageIndex.value = pageNo;
+	   document.listForm.action = "<c:url value='/tms/dev/devResultList.do'/>";
+	   document.listForm.submit();
+	}
+
 function fn_result_change(asd) {
 	var idVal3 = document.getElementById(asd+3).id;
 	$("#"+idVal3).removeClass("disabled");
@@ -282,7 +289,7 @@ $(function(){
                 <%-- <c:if test="${!empty loginPolicyVO.pageIndex }"> --%>
                     <div id="paging_div">
                         <ul class="paging_align">
-                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage" />
+                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage1" />
                         </ul>
                     </div>
                 <!-- //페이지 네비게이션 끝 -->

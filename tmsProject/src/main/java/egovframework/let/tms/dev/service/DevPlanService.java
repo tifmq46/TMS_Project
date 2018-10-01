@@ -105,4 +105,6 @@ public interface DevPlanService {
 
 	public String ifNullDevPlan(String b);
 
+	public int selectDevResultListTotCnt(DevPlanDefaultVO searchVO)throws Exception;
+
 }

@@ -145,5 +145,11 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public String ifNullDevPlan(String b) {
 		return devPlanDAO.ifNullDevPlan(b);
 	}
+
+	@Override
+	public int selectDevResultListTotCnt(DevPlanDefaultVO searchVO) throws Exception {
+		
+		return devPlanDAO.selectDevResultListTotCnt(searchVO);
+	}
 	
 }

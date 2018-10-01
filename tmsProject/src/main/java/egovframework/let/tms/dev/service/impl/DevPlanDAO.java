@@ -129,4 +129,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	public String ifNullDevPlan(String b) {
 		return (String) select("DevPlanDAO.ifNullDevPlan",b);
 	}
+
+	public int selectDevResultListTotCnt(DevPlanDefaultVO searchVO) {
+		return (Integer) select("DevPlanDAO.selectDevResultListTotCnt" ,searchVO);
+	}
 }
