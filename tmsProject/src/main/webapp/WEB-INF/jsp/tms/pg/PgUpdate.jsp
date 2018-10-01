@@ -25,6 +25,7 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="templateInf" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
     
     
@@ -34,31 +35,38 @@
     }
     
     function fn_egov_regist_tmplatInfo(){
-    	alert("d");
         document.programVO.action = "<c:url value='/tms/pg/Pgupdate.do'/>";
         document.programVO.submit();
     
-	}
-
-
-    function fn_egov_previewTmplat() {
-        var frm = document.templateInf;
-        
-        var url = frm.tmplatCours.value;
-
-        var target = "";
-
-        if (frm.tmplatSeCode.value == 'TMPT01') {
-            target = "<c:url value='/cop/bbs/previewBoardList.do'/>";
-            width = "1024";
-        } else {
-            alert('<spring:message code="cop.tmplatCours" /> 지정 후 선택해 주세요.');
-        }
-
-        if (target != "") {
-            window.open(target + "?searchWrd="+url, "preview", "width=" + width + "px, height=500px;");
-        }
     }
+    
+	$(function(){
+		   $('#SYS_GB').change(function() {
+		      $.ajax({
+		         type:"POST",
+		         url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
+		         data : {searchData : this.value},
+		         async: false,
+		         dataType : "json",
+		         success : function(selectTaskGbSearch){
+		        	 $("#searchBySysGb").val($("#SYS_GB").val());
+		            $("#TASK_GB").find("option").remove().end().append("<option value=''>선택하세요</option>");
+		            $.each(selectTaskGbSearch, function(i){
+		               (JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
+		            $("#TASK_GB").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+		            });
+		            
+		         },
+		         error : function(request,status,error){
+		            alert("에러");
+		            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+		         }
+		      });
+		   })
+		})
+
+
 </script>
 <title>프로그램상세</title>
 
@@ -74,7 +82,7 @@
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>  
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
     <!-- //header 끝 --> 
     <!-- container 시작 -->
     <div id="container">
@@ -110,8 +118,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="PG_ID" name="PG_ID" type="text" size="60"  maxlength="60" style="width:100%" id="PG_ID"  title="화면ID"
-                               value="<c:out value='${programVO.PG_ID}'/>" >
+                              <input id="PG_ID" name="PG_ID" type="text" size="60"  maxlength="60" style="width:100%" id="PG_ID"  title="화면ID" value="<c:out value='${programVO.PG_ID}'/>" >
                               <br/> 
                             </td>
                           </tr>
@@ -123,8 +130,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="PG_NM" name="PG_NM" type="text" size="60"  maxlength="60" style="width:100%" title="화면ID"
-                               value="<c:out value='${programVO.PG_NM}'/>" >
+                              <input id="PG_NM" name="PG_NM" type="text" size="60"  maxlength="60" style="width:100%" title="화면ID" value="<c:out value='${programVO.PG_NM}'/>" >
                               <br/>
                             </td>
                           </tr>
@@ -136,10 +142,11 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="SYS_GB" name="SYS_GB" class="select" id="SYS_GB" title="시스템구분" >
-                                   <option selected value=''>--선택하세요--</option>
-                                   <option <c:if test="${programVO.SYS_GB == '철도1'}"> selected</c:if> value="철도1"><c:out value="철도1"/></option>
-                                   <option <c:if test="${programVO.SYS_GB == '철도2'}"> selected</c:if> value="철도2"><c:out value="철도2"/></option>
+                            <select id="SYS_GB" name="SYS_GB" class="select" title="시스템구분">
+									   <option selected value="" >선택하세요</option>
+									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
+									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${programVO.SYS_GB == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
+									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>  --%>   
@@ -155,13 +162,11 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="TASK_GB" name="TASK_GB" class="select" onchange="fn_egov_selectTmplatType(this)" id="TASK_GB" title="업무구분">
-                                   <option selected value=''>--선택하세요--</option>
-                                   <option <c:if test="${programVO.TASK_GB == '철도1'}"> selected</c:if> value="철도1"><c:out value="철도1"/></option>
-                                   <option <c:if test="${programVO.TASK_GB == '철도2'}"> selected</c:if> value="철도2"><c:out value="철도2"/></option>
-                                <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
-                                    <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
-                                </c:forEach>   --%>  
+                            <select id="TASK_GB" name="TASK_GB" class="select" id="TASK_GB" title="업무구분">
+									   <option value="">선택하세요</option>
+					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
+									    		<option value="<c:out value="${taskGb.TASK_GB}"/>" <c:if test="${programVO.TASK_GB == taskGb.TASK_GB}">selected="selected"</c:if> ><c:out value="${programVO.TASK_GB}" /></option>
+									    	</c:forEach>	
                             </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
                                <br/>
                             </td>
@@ -174,8 +179,15 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="USER_DEV_ID" name="USER_DEV_ID" type="text" size="60"  maxlength="60" style="width:100%" title="개발자"
-                                value="<c:out value='${programVO.USER_DEV_ID}'/>" >
+                            <select id="USER_DEV_ID" name="USER_DEV_ID" class="select" title="개발자">
+									   <option value="" >선택하세요</option>
+									      <c:forEach var="DEV_ID" items="${dev_List}" varStatus="status">
+									    	<option value="<c:out value="${DEV_ID.USER_NM}"/>" <c:if test="${programVO.USER_DEV_ID == DEV_ID.USER_NM}">selected="selected"</c:if>><c:out value="${DEV_ID.USER_NM}" /></option>
+									      </c:forEach>
+                                <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
+                                    <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
+                                </c:forEach>  --%>   
+                            </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
                               <br/>
                             </td>
                           </tr>
@@ -186,9 +198,10 @@
                                 </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
-                            <td width="80%" nowrap="nowrap" >
+                            <td width="80%" nowrap="nowrap">
                                 Y : <input type="radio" id="USE_YN" name="USE_YN" id="USE_YN" class="radio2" value="Y" <c:if test="${programVO.USE_YN == 'Y'}"> checked="checked"</c:if> >&nbsp;
-                                N : <input type="radio" id="USE_YN" name="USE_YN" id="USE_YN" class="radio2" value="N" <c:if test="${programVO.USE_YN == 'N'}"> checked="checked"</c:if> >                            
+                                N : <input type="radio" id="USE_YN" name="USE_YN" id="USE_YN" class="radio2" value="N" <c:if test="${programVO.USE_YN == 'N'}"> checked="checked"</c:if> >
+                                <br/>
                             </td>
                           </tr>  
                         </table>
@@ -201,7 +214,7 @@
                       <table border="0" cellspacing="0" cellpadding="0" align="center">
                         <tr> 
                           <td>
-                              <a onclick="javaScript:fn_egov_regist_tmplatInfo(); return false;">수정</a> 
+                              <a onclick="javaScript:fn_egov_regist_tmplatInfo(); return false;">저장</a> 
                           </td>
                           <td>
                               <a href="<c:url value='/tms/pg/PgManage.do'/>" >목록</a>

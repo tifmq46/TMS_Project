@@ -119,15 +119,30 @@ public class ProgramController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/tms/pg/selectPgInf.do")
-	public String selectTemplateInf(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
+	public String selectTemplateInf(@ModelAttribute("programVO") ProgramVO searchVO, ModelMap model) throws Exception {
 
-		System.out.println("---");
 		//VO.setCodeId("COM005");
 
-		ProgramVO VO = ProgramService.selectProgramInf(programVO);
+		ProgramVO VO = ProgramService.selectProgramInf(searchVO);
 		
 		model.addAttribute("programVO", VO);
 
+		// 공통코드 부분 시작 -------------------------------	
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+		
+		
+		
+		List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
+		model.addAttribute("taskGb2", taskGbList2);
+		
+		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		List<?> user_dev_List = TmsProgrmManageService.selectUserList();
+		model.addAttribute("dev_List", user_dev_List);
+		// 공통코드 끝 시작 -------------------------------	
+		
+		
 		return "tms/pg/PgUpdate";
 	}
 	

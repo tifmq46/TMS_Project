@@ -414,11 +414,11 @@
             				<tr>
             					<td align="center" class="listtd" nowrap="nowrap"><input type="checkbox" name="delYn" class="check2" title="선택"><input type="hidden" name="checkId" value="<c:out value="${result.PG_ID}"/>" /></td>
             					<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            					<td align="center" class="listtd">         							
+            					<td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
+            					<td align="left" class="listtd">
             						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?PG_ID=<c:out value='${result.PG_ID}'/>">
-                                		<strong><c:out value="${result.PG_ID}"/><strong>
-                            		</a></td>
-            					<td align="center" class="listtd"><c:out value="${result.PG_NM}"/></td>
+            							<strong><c:out value="${result.PG_NM}"/></td></strong>
+            						</a></td>
             					<td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>

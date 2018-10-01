@@ -33,7 +33,7 @@
 			SELECT
 				a.PG_ID, 
 				a.PG_NM, 
-				(SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE a.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID,
+				(SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE a.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID,				
 				a.SYS_GB, 
 				a.TASK_GB, 
 				a.USE_YN
@@ -152,11 +152,16 @@
 	<select id="ProgramDAO.selectProgramInf" parameterClass="ProgramVO" resultMap="PgList">
 		<![CDATA[
 			SELECT
-				PG_ID, PG_NM, USER_DEV_ID, SYS_GB, TASK_GB, USE_YN
+				a.PG_ID, 
+				a.PG_NM, 
+				(SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE a.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID,
+				a.SYS_GB, 
+				a.TASK_GB, 
+				a.USE_YN
 			FROM 
-				PG_TB
+				PG_TB a
 			WHERE
-				PG_ID = #PG_ID#
+				a.PG_ID = #PG_ID#
 		]]>
 			
 	</select>
@@ -204,9 +209,8 @@
 	<!-- 삭제 -> 사용여부 변경 -->
 	<update id="ProgramDAO.deletePg" parameterClass="ProgramVO">
  		<![CDATA[
-			UPDATE PG_TB SET 				
-				USE_YN = 'N'				
-			WHERE PG_ID = #PG_ID#
+ 			DELETE FROM PG_TB
+ 			WHERE PG_ID = #PG_ID#
  		]]>
  	</update>
 	
