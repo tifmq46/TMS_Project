@@ -49,11 +49,11 @@
 			
 			<!-- 시스템구분으로 검색 -->
 			<isNotEmpty property="searchBySysGb">
-			    AND a.SYS_GB = #searchBySysGb# 
+			    AND a.SYS_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #searchBySysGb#)
 			</isNotEmpty>
 			
 			<isNotEmpty property="searchByTaskGb">
-			    AND a.TASK_GB = #searchByTaskGb#
+			    AND a.TASK_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #searchByTaskGb#)
 			</isNotEmpty>
 			
 			<!-- 개발자명으로 검색 -->
