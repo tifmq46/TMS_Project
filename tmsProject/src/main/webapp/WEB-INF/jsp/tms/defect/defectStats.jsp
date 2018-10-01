@@ -218,7 +218,7 @@ window.onload = function() {
                     </div>
                 </div>
      		<div id="search_field">
-					<div id="search_field_loc"><h2><strong>결함처리통계</strong></h2></div>
+					<div id="search_field_loc"><h2><strong>결함처리통계(그래프)</strong></h2></div>
 			</div>
              <h3><strong>조치율</strong></h3>
              

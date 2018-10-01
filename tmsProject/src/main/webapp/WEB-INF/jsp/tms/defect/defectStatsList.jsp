@@ -97,7 +97,9 @@
                 </div>
      		<br/>
      		<br/>
-     		<h3><strong>결함처리통계(표)</strong></h3>
+            <div id="search_field">
+					<div id="search_field_loc"><h2><strong>결함처리통계(표)</strong></h2></div>
+			</div>
      		<div align="right">
      		<select id="selectBoxStats" style="width:12%;text-align-last:center;" onChange="javascript:selectBoxChange();">
 				<option value="1" selected="selected" >업무별</option>

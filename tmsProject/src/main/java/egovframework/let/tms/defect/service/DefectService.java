@@ -77,4 +77,6 @@ public interface DefectService {
 	public List<String> selectUserDevIdByDefect();
 	
 	public List<HashMap<String,String>> selectUserDevByStats(String userDevList);
+
+	public String selectUserNm(String userTestId);
 }

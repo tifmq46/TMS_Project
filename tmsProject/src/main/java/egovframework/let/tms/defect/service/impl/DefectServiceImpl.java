@@ -271,4 +271,11 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 		return defectDAO.selectUserDevByStats(userDevList);
 	}
 
+
+	@Override
+	public String selectUserNm(String userTestId) {
+		// TODO Auto-generated method stub
+		return defectDAO.selectUserNm(userTestId);
+	}
+
 }

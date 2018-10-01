@@ -111,6 +111,9 @@ public class DefectController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
 		List<?> taskGbList = defectService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		
@@ -145,7 +148,9 @@ public class DefectController {
 	@RequestMapping("/tms/defect/insertDefectImpl.do")
 	public String insertDefectImpl(MultipartHttpServletRequest mtpRequest,@ModelAttribute("defectVO") DefectVO defectVO) throws IOException {
 		MultipartFile defectFileImg = mtpRequest.getFile("fileImg");
+		String userTestId = defectService.selectUserNm(defectVO.getUserNm());
 		if(defectFileImg.getOriginalFilename() == "") {
+			defectVO.setUserTestId(userTestId);
 			defectService.insertDefect(defectVO);
 		} else { // 파일 이미지를 등록했을 경우
 			Map<String, Object> hmap = new HashMap<String, Object>();
@@ -156,7 +161,7 @@ public class DefectController {
 			hmap.put("DEFECT_TITLE", defectVO.getDefectTitle());
 			hmap.put("DEFECT_CONTENT", defectVO.getDefectContent());
 			hmap.put("PG_ID", defectVO.getPgId());
-			hmap.put("USER_TEST_ID", defectVO.getUserTestId());
+			hmap.put("USER_TEST_ID", userTestId);
 			hmap.put("DEFECT_GB", defectVO.getDefectGb());
 			hmap.put("ENROLL_DT", defectVO.getEnrollDt());
 			hmap.put("ACTION_CONTENT", defectVO.getActionContent());
@@ -194,6 +199,8 @@ public class DefectController {
 	/** 결함조치 수정*/
 	@RequestMapping("/tms/defect/updateDefect.do")
 	public String updateDefect(HttpServletRequest request,@ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) throws Exception{
+		String userTestId = defectService.selectUserNm(defectVO.getUserNm());
+		defectVO.setUserTestId(userTestId);
 		int result = defectService.updateDefect(defectVO);
 		MultipartHttpServletRequest mtpRequest = (MultipartHttpServletRequest) request;
 		MultipartFile defectFileImg = mtpRequest.getFile("fileImg");
@@ -495,11 +502,14 @@ public class DefectController {
 		// 리스트의 size 만큼 row를 생성
 		System.out.println("###########################"+list.toString());
 		
-		
 		for(int i=0; i < list.size(); i++) {
+//			for (Map.Entry me : list.get(i).entrySet()) {
+//		          System.out.println("Key: "+me.getKey() + " & Value: " + me.getValue());
+//		       }
 			System.out.println("############################4");
 			System.out.println("############################"+list.get(i));
-			
+			System.out.println("############################"+(String)list.get(i).get("taskNm"));
+//			string.format("%s",)
 			// 행 생성
 //			row = sheet.createRow(i+1);
 //			

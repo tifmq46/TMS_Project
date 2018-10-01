@@ -133,13 +133,13 @@ function fn_egov_delete_defectImg() {
 					         <th width="12.5%" height="23" class="" nowrap >테스터
 					        </th>
 					        <td width="12.5%" nowrap >
-					           <select name="userTestId" id="userTestId" style="width:85%; text-align-last:center;">
+					        <input list="userTestId" name="userNm" value="<c:out value="${defectOne.userTestId}"/>"  autocomplete="off" style="text-align:center; width:85%;"/>
+					        	<datalist id="userTestId">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
-									    	<option value="<c:out value="${userList.emplyrId}"/>"
-									    	<c:if test="${defectOne.userTestId eq userList.userNm}">selected="selected"</c:if>
-									    	><c:out value="${userList.userNm}" /></option>
+									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
 									    </c:forEach>
-							</select>
+					        	</datalist>
+					        	
 					        </td>
 					         <th width="12.5%" height="23" nowrap >개발자
 					        </th>
@@ -164,7 +164,7 @@ function fn_egov_delete_defectImg() {
 					        <th width="12.5%" height="23" nowrap >결함명
 					        </th>
 					        <td width="37.5%" nowrap colspan="3">
-					          <input id="defectTitle" name="defectTitle" size="5"  value="<c:out value="${defectOne.defectTitle}"/>"  maxlength="40" title="결함명"
+					          <input id="defectTitle" name="defectTitle" size="5"  value="<c:out value="${defectOne.defectTitle}"/>" autocomplete="off" maxlength="40" title="결함명"
 					          style="text-align:center; width:90%;" /> 
 					        </td>
 					        <th width="12.5%" height="23" nowrap >등록일자
@@ -213,18 +213,18 @@ function fn_egov_delete_defectImg() {
 					        		<c:when test="${!empty defectImgOne}">
 										
 					      			 <!--  <a href="#LINK" onclick="javaScript:download_attachment(); return false;"> -->
-					        	<img alt="이미지" width="200" height="200" src="<c:url value='/tms/defect/selectDefectImg.do'/>?defectIdSq=<c:out value="${defectOne.defectIdSq}"/>"/>
-					        <br/>
 									<a href="<c:url value='/tms/defect/downloadDefectImg.do'/>?defectIdSq=<c:out value="${defectOne.defectIdSq}"/>">
-					        		<input type="text" name="fileNm" value="<c:out value="${defectImgOne.fileNm}" />"/>
-									(<input type="text" name="fileSize" value="<c:out value="${defectImgOne.fileSize}"/>"/>Byte)
+					        	<img alt="이미지" width="200" height="200" src="<c:url value='/tms/defect/selectDefectImg.do'/>?defectIdSq=<c:out value="${defectOne.defectIdSq}"/>"/>
 					        		</a>
+					        <br/>
+					        		<input type="text" name="fileNm" value="<c:out value="${defectImgOne.fileNm}" />"  readonly="readonly" style="border:none; width:10%; text-align:right"/>
+									<input type="text" name="fileSize" value="(<c:out value="${defectImgOne.fileSize}"/>Byte)"  readonly="readonly" style="border:none; width:10%; text-align:left"/>
 					        	<a href="#LINK" onclick="javascript:fn_egov_delete_defectImg(); return false;" >삭제</a>
 					        		</c:when>
 									<c:otherwise>
 									첨부파일없음 <input type="file" name="fileImg" title="다운로드"/>
 									<br/>
-									<input type="hidden" name="fileNm" value=""/>
+									<input type="hidden" name="fileNm" value="" />
 									<input type="hidden" name="fileSize" value="0"/>
 								</c:otherwise>					        	
 					        </c:choose>

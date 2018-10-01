@@ -18,6 +18,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ page import ="egovframework.com.cmm.LoginVO" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -26,8 +27,8 @@
 <title>게시판 사용등록</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <script type="text/javascript" src="<c:url value='/js/showModalDialog.js'/>" ></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-	
 	
     function fn_egov_insert_addDefectImpl(){
     	document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
@@ -134,13 +135,25 @@
 					         <th width="16.6%" height="23" class="required_text" nowrap >테스터
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
-					        <td width="16.6%" nowrap >
-					          <select name="userTestId" id="userTestId" style="width:90%; text-align-last:center;">
-									    <option value="0" selected="selected">선택</option>
+								<%
+									LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO");
+										if (loginVO == null) {
+								%>
+
+								<%
+									} else {
+								%>
+								<c:set var="loginName" value="<%=loginVO.getName()%>" />
+									<%
+								}
+								%>
+								<td width="16.6%" nowrap >
+					        	<input list="userTestId" name="userNm" value="<c:out value="${loginName}"/>"  autocomplete="off" style="text-align:center; width:85%;"/>
+					        	<datalist id="userTestId">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
-									    	<option value="<c:out value="${userList.emplyrId}"/>"><c:out value="${userList.userNm}" /></option>
+									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
 									    </c:forEach>
-								</select>
+					        	</datalist>
 					        </td>
 					       </tr>
 					       
@@ -148,7 +161,7 @@
 					       <th width="16.6%" height="23" class="required_text" nowrap >결함제목
 					        </th>
 					        <td width="49.8%" nowrap colspan="3">
-					          <input id="defectTitle" name="defectTitle" type="text" value=""  maxlength="40" title="결함제목" 
+					          <input id="defectTitle" name="defectTitle" type="text" value=""  autocomplete="off" maxlength="40" title="결함제목" 
 					          style="width:98%;"/> 
 					          &nbsp;
 					        </td>
@@ -188,7 +201,7 @@
                         </table>
                     </div>
 					<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
-					<input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
+					<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
 
                     <!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">

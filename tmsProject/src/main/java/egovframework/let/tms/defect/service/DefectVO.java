@@ -22,6 +22,8 @@ public class DefectVO{
 	/** 테스터 아이디 */
 	private String userTestId;
 	
+	private String userNm;
+	
 	/** 결함 유형 구분 */
 	private String defectGb;
 	
@@ -109,6 +111,14 @@ public class DefectVO{
 
 	public void setUserTestId(String userTestId) {
 		this.userTestId = userTestId;
+	}
+
+	public String getUserNm() {
+		return userNm;
+	}
+
+	public void setUserNm(String userNm) {
+		this.userNm = userNm;
 	}
 
 	public String getDefectGb() {

@@ -126,14 +126,20 @@ function searchFileNm() {
                        </ul>
                        
                        <ul id="search_second_ul">
-                        <li><label for="searchByUserTestId">테스터명</label>&nbsp;&nbsp;</li>
-                        <li><input type="text" name="searchByUserTestId" id="searchByUserTestId" size="10" style="text-align:center;" value="<c:out value='${searchVO.searchByUserTestId}'/>"/></li>
-                          <li><label for="searchByUserDevId">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개발자명</label>&nbsp;</li>
-                          <li><input type="text" name="searchByUserDevId" id="searchByUserDevId" size="13" style="text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>&nbsp;</li>
+                        <li><label for="searchByUserTestId">테스터명</label>&nbsp;</li>
+                        <li><input type="text" list="userAllList" autocomplete="off" name="searchByUserTestId" id="searchByUserTestId" size="10" style="text-align:center;" value="<c:out value='${searchVO.searchByUserTestId}'/>"/></li>
+                          <li><label for="searchByUserDevId">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개발자명</label></li>
+                          <li><input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="18" style="text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+                          <datalist id="userAllList">
+									    <c:forEach var="userList" items="${userList}" varStatus="status">
+									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+									    </c:forEach>
+					        	</datalist>
+                          </li>
                           <li>
-                          <label>&nbsp;&nbsp;등록일자</label>
+                          <label>&nbsp;&nbsp;&nbsp;등록일자</label>&nbsp;&nbsp;&nbsp;
                         <input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-                          ~<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
                           </li>                          
                        </ul>
                        <br/>
@@ -161,19 +167,19 @@ function searchFileNm() {
               
               
               <colgroup>
-                    <col width="2%"/> 
+                    <col width="5%"/> 
                     <col width="5%"/>
-                    <col width="8%"/>
                     <col width="10%"/>
-                    <col width="20%"/>
+                    <col width="15%"/>
+                    <col width="40%"/>
                     <col width="5%"/>
                     <col width="5%"/>
-                    <col width="8%"/>
+                    <col width="10%"/>
                     <col width="5%"/>
            </colgroup>
                  <tr>
                  
-                    <th align="center">No</th>
+                    <th align="center">번호</th>
                     <th align="center">업무구분</th>
                     <th align="center">화면ID</th>
                     <th align="center">화면명</th>
