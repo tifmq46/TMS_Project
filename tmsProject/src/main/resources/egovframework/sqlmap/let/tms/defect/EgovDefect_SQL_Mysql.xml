@@ -252,6 +252,14 @@
         ]]>
     </select>
     
+    <select id="defectDAO.selectUserNm" parameterClass="java.lang.String" resultClass="java.lang.String">
+        <![CDATA[
+        	SELECT EMPLYR_ID
+        	FROM LETTNEMPLYRINFO
+        	WHERE USER_NM = #userTestId#
+        ]]>
+    </select>
+    
     <select id="defectDAO.selectActionComplete" parameterClass="DefectDefaultVO" resultClass="java.lang.Integer">
          <![CDATA[
            SELECT COUNT(*) FROM (

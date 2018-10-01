@@ -36,7 +36,7 @@
 				, USE_YN              AS "USE_YN"
 				, PJT_ID              AS "PJT_ID"
 			FROM LETTCCMMNDETAILCODE, PG_TB
-			WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%') AND SYS_GB = CODE
+			WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%') AND SYS_GB = CODE AND USE_YN = 'Y'
 			LIMIT  #recordCountPerPage# OFFSET #firstIndex#
 		 ]]>
 	</select> 
@@ -46,7 +46,7 @@
 		<![CDATA[
 		SELECT COUNT(*) AS totcnt
 		  FROM LETTCCMMNDETAILCODE A, PG_TB B
-		 WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%') AND SYS_GB = CODE
+		 WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%') AND SYS_GB = CODE AND USE_YN = 'Y'
 		]]>
 	</select>
 	<!-- 프로그램 정보 조회 -->

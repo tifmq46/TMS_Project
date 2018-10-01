@@ -189,4 +189,8 @@ public class DefectDAO extends EgovAbstractDAO{
 	public List<HashMap<String,String>> selectUserDevByStats(String userDevList) {
 		return (List<HashMap<String,String>>) list("defectDAO.selectUserDevByStats", userDevList);
 	}
+	
+	public String selectUserNm(String userTestId) {
+		return (String) select("defectDAO.selectUserNm",userTestId);
+	}
 }
