@@ -5,6 +5,7 @@ import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.let.tms.pg.service.ProgramDefaultVO;
+import egovframework.let.tms.pg.service.ProgramVO;
 
 /**
  * 프로그램관리에 관한 서비스 인터페이스 클래스를 정의한다.
@@ -65,6 +66,8 @@ public interface TmsProgrmManageService {
 	 * @exception Exception
 	 */
 	List<?> selectTaskGb2(ProgramDefaultVO searchVO) throws Exception;
+	
+	List<?> selectTaskGb3(ProgramVO searchVO) throws Exception;
 	
 	List<?> selectTaskGbSearch(String searchData) throws Exception;
 	/**

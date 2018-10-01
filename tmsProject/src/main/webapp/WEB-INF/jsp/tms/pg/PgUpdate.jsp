@@ -165,7 +165,7 @@
                             <select id="TASK_GB" name="TASK_GB" class="select" id="TASK_GB" title="업무구분">
 									   <option value="">선택하세요</option>
 					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
-									    		<option value="<c:out value="${taskGb.TASK_GB}"/>" <c:if test="${programVO.TASK_GB == taskGb.TASK_GB}">selected="selected"</c:if> ><c:out value="${programVO.TASK_GB}" /></option>
+									    		<option value="<c:out value="${taskGb.TASK_GB}"/>" <c:if test="${programVO.TASK_GB == taskGb.TASK_GB}">selected="selected"</c:if> ><c:out value="${taskGb.TASK_GB}" /></option>
 									    	</c:forEach>	
                             </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
                                <br/>

@@ -130,11 +130,11 @@ public class ProgramController {
 		// 공통코드 부분 시작 -------------------------------	
 		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
+		;
+		System.out.println("here---"+searchVO.getPG_ID());
 		
-		
-		
-		List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
-		model.addAttribute("taskGb2", taskGbList2);
+		List<?> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
+		model.addAttribute("taskGb2", taskGbList3);
 		
 		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
@@ -309,7 +309,6 @@ public class ProgramController {
 				
 			}
 			
-			ProgramService.deletePg(programVO);
 			/** EgovPropertyService.sample */
 			searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 			searchVO.setPageSize(propertiesService.getInt("pageSize"));

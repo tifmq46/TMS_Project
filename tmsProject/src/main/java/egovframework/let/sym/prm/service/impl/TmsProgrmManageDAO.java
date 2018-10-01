@@ -74,6 +74,11 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
 		return list("TmsProgrmManageDAO.selectTaskGb2", searchVO);
 	}
 
+	public List<?> selectTaskGb3(ProgramVO searchVO) {
+		// TODO Auto-generated method stub
+		return list("TmsProgrmManageDAO.selectTaskGb3", searchVO);
+	}
+	
 	public List<?> selectTaskGbSearch(String searchData) {
 		// TODO Auto-generated method stub
 		return list("TmsProgrmManageDAO.selectTaskGbSearch",searchData);
