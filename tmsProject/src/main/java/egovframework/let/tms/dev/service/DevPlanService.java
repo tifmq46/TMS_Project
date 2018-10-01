@@ -103,4 +103,6 @@ public interface DevPlanService {
 
 	public void deleteWeek()throws Exception;
 
+	public String ifNullDevPlan(String b);
+
 }

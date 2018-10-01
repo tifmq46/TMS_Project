@@ -125,4 +125,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		delete("DevPlanDAO.deleteWeek");
 		
 	}
+
+	public String ifNullDevPlan(String b) {
+		return (String) select("DevPlanDAO.ifNullDevPlan",b);
+	}
 }

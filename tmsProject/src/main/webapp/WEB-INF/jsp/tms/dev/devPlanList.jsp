@@ -28,6 +28,17 @@
 <script type="text/javascript">
 
 
+function fn_result_regist(t){
+	
+	var f = document.listForm;
+
+	var idVal = document.getElementById(t).value;
+	var idVal1 = document.getElementById(t+1).value;
+
+	location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
+			
+}
+
 function fn_egov_insert_addDevPlan(){    
     document.frm.action = "<c:url value='/tms/dev/addDevPlan.do'/>";
     document.frm.submit();
@@ -208,15 +219,15 @@ $(function(){
             				<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
             				<%-- <td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td> --%>
-            				<td><input type="date"  id="planStartDt" value="<fmt:formatDate value="${result.planStartDt}" pattern="yyyy-MM-dd"/>" />
+            				<td><input type="date"  id="${result.pgId}" value="<fmt:formatDate value="${result.planStartDt}" pattern="yyyy-MM-dd"/>" />
                             </td>
-                            <td><input type="date"  id="planEndDt" value="<fmt:formatDate value="${result.planEndDt}" pattern="yyyy-MM-dd" />"/>
+                            <td><input type="date"  id="${result.pgId}1" value="<fmt:formatDate value="${result.planEndDt}" pattern="yyyy-MM-dd" />"/>
                             </td>
             				<td align="center" class="listtd"><c:out value="${result.dayDiff}"/>&nbsp;</td>
             				<td align="center" class="listtd">
             				
-            				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
-            				<a href="#LINK" onclick="" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;" >
+            				<a href="#LINK"  class="bt" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
             				</div>
                       </tr>
                      </c:forEach>     

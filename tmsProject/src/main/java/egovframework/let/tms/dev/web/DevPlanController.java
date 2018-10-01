@@ -185,10 +185,19 @@ public class DevPlanController {
 		//if (bindingResult.hasErrors()) {
 			//return "/tms/dev/updateDevPlan";
 		//} else {
+		System.out.println("00000"+dvo.getPgId());
+		String result = devPlanService.ifNullDevPlan(dvo.getPgId());
+		String r = String.valueOf(result);
+		//System.out.println("result값 = "+result);
+		if(r.equals("1")){
 			devPlanService.updateDevPlan(dvo);
-			status.setComplete();
+			status.setComplete(); 
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
-			return "forward:/tms/dev/selectDevPlan.do";
+		}else{
+			devPlanService.insertDevPlan(dvo);
+		}
+			
+			return "redirect:/tms/dev/devPlans.do";
 		//}
 	}
 
@@ -260,9 +269,7 @@ public class DevPlanController {
 	@RequestMapping(value = "/tms/dev/updateDevResult.do")
 	public String updateDevResult(@ModelAttribute("searchVO") DevPlanVO dvo, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 
-		//System.out.println("---------------dd-"+h);
-		//beanValidator.validate(dvo, bindingResult); //validation 수행
-
+		
 		//if (bindingResult.hasErrors()) {
 			//return "/tms/dev/updateDevPlan";
 		//} else {
