@@ -154,8 +154,10 @@ $(function(){
 					<%-- </form> --%>
 				</div>
 				<!-- //검색 필드 박스 끝 -->
-                
-                
+               	
+                <c:forEach var="r" items="${r}" varStatus="status">
+                	${r}
+                </c:forEach>
                 
 
                 <div id="page_info"><div id="page_info_align"></div></div>                    

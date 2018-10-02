@@ -424,6 +424,10 @@ public class DevPlanController {
 		List<HashMap<String,String>> devResult = devPlanService.selectDevCurrent(searchVO);
 		model.addAttribute("resultList", devResult);
 		
+		HashMap<String,String> devPlanAvg = devPlanService.DevPlanAvg();
+		model.addAttribute("r", devPlanAvg);
+		System.out.println(devPlanAvg);
+		
 		int totCnt = devPlanService.selectDevResultListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);

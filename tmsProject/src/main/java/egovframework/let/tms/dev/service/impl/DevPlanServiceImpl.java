@@ -163,5 +163,10 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 		devPlanDAO.updateRate(searchVO);
 		
 	}
+
+	@Override
+	public HashMap<String, String> DevPlanAvg() {
+		return devPlanDAO.DevPlanAvg();
+	}
 	
 }

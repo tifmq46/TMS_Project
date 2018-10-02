@@ -142,4 +142,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	public void updateRate(DevPlanDefaultVO searchVO) {
 		update("DevPlanDAO.updateRate", searchVO);
 	}
+
+	public HashMap<String, String> DevPlanAvg() {
+		return (HashMap<String, String>)select("DevPlanDAO.DevPlanAvg");
+	}
 }

@@ -112,4 +112,6 @@ public interface DevPlanService {
 
 	public void updateRate(DevPlanDefaultVO searchVO);
 
+	public HashMap<String, String> DevPlanAvg();
+
 }

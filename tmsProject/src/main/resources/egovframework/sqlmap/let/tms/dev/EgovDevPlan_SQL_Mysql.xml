@@ -465,6 +465,13 @@
         ]]>
     </update>
 	
+	<select id="DevPlanDAO.DevPlanAvg" resultClass="java.util.HashMap" remapResults="true">
+	    <![CDATA[
+		    select COUNT(*) AS cnt,
+				AVG(ACHIEVEMENT_RATE) as rateAvg
+			from DEV_PLAN_TB
+	    ]]>
+	</select>
 	
 	
 <!-- 
