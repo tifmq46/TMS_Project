@@ -399,9 +399,10 @@
     
     <select id="defectDAO.selectTaskByDefectGbCnt" resultClass="egovMap">
         <![CDATA[
-        SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(D1CNT,0) AS defectGbD1, IFNULL(D2CNT,0) AS defectGbD2, IFNULL(D3CNT,0) AS defectGbD3, IFNULL(D4CNT,0) AS defectGbD4
-      FROM LETTCCMMNDETAILCODE AS A LEFT JOIN
-         (SELECT P.TASK_GB,COUNT(CASE WHEN DEFECT_GB='D1' THEN 1 END) AS D1CNT, 
+         SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(DEFECTALL,0) AS defectGbAll,IFNULL(D1CNT,0) AS defectGbD1, IFNULL(D2CNT,0) AS defectGbD2, IFNULL(D3CNT,0) AS defectGbD3, IFNULL(D4CNT,0) AS defectGbD4
+      FROM LETTCCMMNDETAILCODE AS A INNER JOIN
+         (SELECT P.TASK_GB, COUNT(*) AS DEFECTALL,
+			COUNT(CASE WHEN DEFECT_GB='D1' THEN 1 END) AS D1CNT, 
           COUNT(CASE WHEN DEFECT_GB='D2' THEN 1 END) AS D2CNT, 
           COUNT(CASE WHEN DEFECT_GB='D3' THEN 1 END) AS D3CNT, 
           COUNT(CASE WHEN DEFECT_GB='D4' THEN 1 END) AS D4CNT
@@ -410,6 +411,7 @@
          GROUP BY P.TASK_GB
       ) AS B ON A.CODE = B.TASK_GB
       WHERE A.CODE_ID='TASKGB'
+      ORDER BY defectGbAll DESC
 
         ]]>
     </select>
@@ -437,7 +439,7 @@
     
     <select id="defectDAO.selectDayByDefectCnt" resultClass="egovMap">
         <![CDATA[
-         SELECT A.DAYS AS days, IFNULL(B.ENROLL_DT_CNT,0) AS enrollDtCnt, IFNULL(C.ACTION_A5_CNT,0) AS actionDtCnt
+         SELECT CAST(A.DAYS AS CHAR) AS days , IFNULL(B.ENROLL_DT_CNT,0) AS enrollDtCnt, IFNULL(C.ACTION_A5_CNT,0) AS actionDtCnt
          FROM (SELECT DATE_SUB(CURDATE(), INTERVAL N.NO DAY) AS DAYS
             FROM NUMBERS AS N
             WHERE N.NO<7
@@ -457,6 +459,8 @@
     
     <select id="defectDAO.selectMonthByDefectCnt" resultClass="egovMap">
         <![CDATA[
+        SELECT CAST(months AS CHAR) AS months, enrollMonthDtCnt, actionMonthDtCnt
+		 FROM(
            SELECT A.MONTHS AS months, IFNULL(ENROLL_MONTH_DT_CNT,0) AS enrollMonthDtCnt, IFNULL(ACTION_A5_CNT,0) AS actionMonthDtCnt
          FROM
             (SELECT MONTH(DATE_SUB(CURDATE(), INTERVAL N.NO MONTH)) AS MONTHS
@@ -473,7 +477,8 @@
             WHERE DEFECT_TB.PG_ID = PG_TB.PG_ID AND PG_TB.USE_YN = 'Y' AND ACTION_ST ='A5'
             GROUP BY MONTH(ACTION_DT) 
          ) AS C ON A.MONTHS = C.ACTION_MONTH_DT
-         ORDER BY months ASC
+         ORDER BY months ASC) AS D
+        	WHERE 1=1
         ]]>
     </select>
     
@@ -486,7 +491,7 @@
         ]]>
     </select>
     	
-    <select id="defectDAO.selectTaskByStats" parameterClass="java.lang.String" resultClass="egovMap">
+    <select id="defectDAO.selectTaskByStats" parameterClass="java.lang.String" resultClass="java.util.HashMap" remapResults="true">
         <![CDATA[
         	SELECT (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = #taskGbList#) AS taskNm, IFNULL(B.TASK_GB,#taskGbList#) AS taskGb,A.CODE AS actionSt, A.CODE_NM AS actionNm, IFNULL(B.DEFECTGBD1,0) AS defectGbD1, IFNULL(B.DEFECTGBD2,0) AS defectGbD2, IFNULL(B.DEFECTGBD3,0) AS defectGbD3, IFNULL(B.DEFECTGBD4,0) AS defectGbD4, IFNULL((B.DEFECTGBD1+B.DEFECTGBD2+B.DEFECTGBD3+B.DEFECTGBD4),0) AS rowSum,
         		IFNULL((SELECT COUNT(*) FROM DEFECT_TB AS D, PG_TB AS P WHERE P.PG_ID=D.PG_ID AND P.USE_YN='Y' AND D.DEFECT_GB='D1'AND P.TASK_GB=#taskGbList#),0) AS d1Sum,
@@ -519,7 +524,7 @@
         ]]>
     </select>
     
-    <select id="defectDAO.selectPgByStats" parameterClass="java.lang.String" resultClass="egovMap">
+    <select id="defectDAO.selectPgByStats" parameterClass="java.lang.String" resultClass="java.util.HashMap" remapResults="true">
         <![CDATA[
         	SELECT IFNULL(B.PG_ID,#pgIdList#) AS pgId, IFNULL(B.PG_NM,(SELECT PG_NM FROM PG_TB WHERE PG_ID=#pgIdList#)) AS pgNm, A.CODE AS actionSt, A.CODE_NM AS actionNm,
  				IFNULL(B.DEFECTGBD1,0) AS defectGbD1, IFNULL(B.DEFECTGBD2,0) AS defectGbD2, IFNULL(B.DEFECTGBD3,0) AS defectGbD3, IFNULL(B.DEFECTGBD4,0) AS defectGbD4, IFNULL((B.DEFECTGBD1+B.DEFECTGBD2+B.DEFECTGBD3+B.DEFECTGBD4),0) AS rowSum,
@@ -552,7 +557,7 @@
         ]]>
     </select>
     
-    <select id="defectDAO.selectUserTestByStats" parameterClass="java.lang.String" resultClass="egovMap">
+    <select id="defectDAO.selectUserTestByStats" parameterClass="java.lang.String" resultClass="java.util.HashMap" remapResults="true">
         <![CDATA[
         	SELECT IFNULL(B.USER_TEST_ID, #userTestList#) AS userTestId, IFNULL(B.USER_TEST_NM, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = #userTestList#)) AS userTestNm, A.CODE AS actionSt, A.CODE_NM AS actionNm,
  				IFNULL(B.DEFECTGBD1,0) AS defectGbD1, IFNULL(B.DEFECTGBD2,0) AS defectGbD2, IFNULL(B.DEFECTGBD3,0) AS defectGbD3, IFNULL(B.DEFECTGBD4,0) AS defectGbD4, IFNULL((B.DEFECTGBD1+B.DEFECTGBD2+B.DEFECTGBD3+B.DEFECTGBD4),0) AS rowSum,
@@ -586,7 +591,7 @@
         ]]>
     </select>
     
-    <select id="defectDAO.selectUserDevByStats" parameterClass="java.lang.String" resultClass="egovMap">
+    <select id="defectDAO.selectUserDevByStats" parameterClass="java.lang.String" resultClass="java.util.HashMap" remapResults="true">
         <![CDATA[
 			SELECT IFNULL(B.USER_DEV_ID,#userDevList#) AS userDevId, IFNULL(B.USER_DEV_NM, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = #userDevList#)) AS userDevNm, A.CODE AS actionSt, A.CODE_NM AS actionNm,
  				IFNULL(B.DEFECTGBD1,0) AS defectGbD1, IFNULL(B.DEFECTGBD2,0) AS defectGbD2, IFNULL(B.DEFECTGBD3,0) AS defectGbD3, IFNULL(B.DEFECTGBD4,0) AS defectGbD4, IFNULL((B.DEFECTGBD1+B.DEFECTGBD2+B.DEFECTGBD3+B.DEFECTGBD4),0) AS rowSum,
@@ -610,6 +615,20 @@
         ]]>
     </select>
     
+    <select id="defectDAO.selectTaskByMainStats" resultClass="egovMap">
+        <![CDATA[
+        	SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(B.TASKALL,0) AS taskAll, IFNULL(B.ACTSIONSTA5,0) AS actionStA5
+			FROM LETTCCMMNDETAILCODE AS A INNER JOIN
+				(SELECT P.TASK_GB, COUNT(P.TASK_GB) AS TASKALL,
+				COUNT(CASE WHEN ACTION_ST='A5' THEN 1 END) AS ACTSIONSTA5
+				FROM DEFECT_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
+				GROUP BY P.TASK_GB
+			) AS B ON A.CODE = B.TASK_GB
+			WHERE A.CODE_ID='TASKGB'
+			ORDER BY taskAll DESC
+        ]]>
+    </select>
     
     <insert id="defectDAO.insertDefect" parameterClass="DefectVO">
         <![CDATA[

@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
+
+import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.pg.service.PgCurrentVO;
 import egovframework.let.tms.pg.service.ProgramDefaultVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
@@ -47,6 +49,10 @@ public class ProgramController {
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
 
+	/** DefectService */
+	@Resource (name = "defectService")
+	private DefectService defectService;
+	
 	/** Validator */
 	@Resource(name = "beanValidator")
 	protected DefaultBeanValidator beanValidator;
@@ -309,7 +315,9 @@ public class ProgramController {
 				
 			}
 			
-			ProgramService.deletePg(programVO);
+			/** 프로그램 삭제시 결함 시퀀스 초기화 */
+			defectService.updateDefectIdSq();
+			
 			/** EgovPropertyService.sample */
 			searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 			searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -634,10 +642,6 @@ public class ProgramController {
 			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
 		}
 
-		
-		
-		
-		
 		// 입력된 내용 파일로 쓰기
 		File folder = new File("C:\\TMS\\TMS_통계자료");
 		

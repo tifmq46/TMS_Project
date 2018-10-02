@@ -26,6 +26,7 @@ import egovframework.let.sym.prm.service.TmsProgrmManageService;
 import egovframework.let.sym.prm.service.TmsProjectManageVO;
 import egovframework.let.tms.defect.service.DefectService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
+import net.sf.json.JSONArray;
 
 /**
  * 템플릿 메인 페이지 컨트롤러 클래스(Sample 소스)
@@ -63,6 +64,7 @@ public class EgovMainController {
 	/** DefectService */
 	@Resource (name = "defectService")
 	private DefectService defectService;
+	
 	/**
 	 * 메인 페이지에서 각 업무 화면으로 연계하는 기능을 제공한다.
 	 *
@@ -142,6 +144,11 @@ public class EgovMainController {
 		List<?> pjtMemberList = defectService.selectPjtMember();
 		model.addAttribute("pjtMemberList", pjtMemberList);
 		// 프로젝트 멤버 부분 끝 ----------------------------
+		
+		// 결함 진행상태 부분 시작 --------------------------
+		List<?> taskByMainStats = defectService.selectTaskByMainStats();
+		model.addAttribute("taskByMainStats", JSONArray.fromObject(taskByMainStats));
+		// 결함 진행상태 부분 끝 --------------------------
 		
 		List<?> testList = TmsProgrmManageService.selectTestList();
 		

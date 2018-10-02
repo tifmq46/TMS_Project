@@ -79,4 +79,9 @@ public interface DefectService {
 	public List<HashMap<String,String>> selectUserDevByStats(String userDevList);
 
 	public String selectUserNm(String userTestId);
+	
+	public void updateDefectIdSq();
+	
+	public List<?> selectTaskByMainStats();
+	
 }

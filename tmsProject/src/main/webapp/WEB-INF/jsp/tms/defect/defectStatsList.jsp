@@ -58,7 +58,6 @@
 	}
 	
 	function StatsToExcel(statsGb) {
-		alert(statsGb);
 		alert("'C://TMS_통계자료// 경로에 다운되었습니다.");
 		location.href="./StatsToExcel.do?statsGb="+statsGb; 
 	} 

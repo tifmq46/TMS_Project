@@ -129,11 +129,17 @@
                        
                        <ul id="search_second_ul">
                         <li><label for="searchByUserTestId">테스터명</label>&nbsp;</li>
-                        <li><input type="text" name="searchByUserTestId" id="searchByUserTestId" size="10" style="text-align:center;" value="<c:out value='${searchVO.searchByUserTestId}'/>"/></li>
+                        <li><input type="text" list="userAllList" autocomplete="off" name="searchByUserTestId" id="searchByUserTestId" size="10" style="text-align:center;" value="<c:out value='${searchVO.searchByUserTestId}'/>"/></li>
                           <li><label for="searchByUserDevId">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개발자명</label></li>
-                          <li><input type="text" name="searchByUserDevId" id="searchByUserDevId" size="13" style="text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>&nbsp;</li>
+                          <li><input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="18" style="text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+                          <datalist id="userAllList">
+									    <c:forEach var="userList" items="${userList}" varStatus="status">
+									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+									    </c:forEach>
+					        	</datalist>
+                          </li>
                           <li>
-                          <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;등록일자</label>&nbsp;&nbsp;&nbsp;
+                          <label>&nbsp;&nbsp;&nbsp;등록일자</label>&nbsp;&nbsp;&nbsp;
                         <input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
                           &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
                           </li>                          

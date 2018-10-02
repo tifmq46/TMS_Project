@@ -28,6 +28,7 @@
 
 
 function fn_egov_update_updateDefect(){
+	alert('저장되었습니다.');
 	document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
 	document.defectVO.submit();
 }
