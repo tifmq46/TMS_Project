@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
+
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+
 import egovframework.let.tms.pg.service.PgCurrentVO;
 import egovframework.let.tms.pg.service.ProgramDefaultVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
@@ -130,7 +133,7 @@ public class ProgramController {
 		// 공통코드 부분 시작 -------------------------------	
 		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
-		;
+		
 		System.out.println("here---"+searchVO.getPG_ID());
 		
 		List<?> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
@@ -712,8 +715,43 @@ public class ProgramController {
 		
 		ProgramVO vo;
 		
+		int j = 0;
+		int error = 0;
+		
+		List<String> error_list = new ArrayList<String>();
+		
+		for (int i = 0; i < xlsxList.size(); i++) {
+			
+			j=i;
+			
+			try {
+				vo = xlsxList.get(i);
+				ProgramService.insertPg(vo);
+						
+				model.addAttribute("result", "true");
+				model.addAttribute("result2", "true");
+			}catch(Exception e) {
+				error = 1;
+				
+				String[] array = e.toString().split(":");
+				
+				String last = array[array.length-1];
+				
+				error_list.add((j+1)+"행을 등록시키지 못했습니다!"+last);	
+				
+				model.addAttribute("result", (j+1)+": false");
+				model.addAttribute("result2", (j+1)+": false");
+				continue;
+			}
+		}  
+		model.addAttribute("error_lists", error_list);
+		
+		/*
 		try {
 			for (int i = 0; i < xlsxList.size(); i++) {
+				
+				j=i;
+				
 				vo = xlsxList.get(i);
 				ProgramService.insertPg(vo);
 				
@@ -721,9 +759,11 @@ public class ProgramController {
 				model.addAttribute("result2", "true");
 			}       			
 		}catch(Exception e) {
-			model.addAttribute("result", "false");
-			model.addAttribute("result2", "false");
-		}
+			model.addAttribute("result", (j+1)+": false");
+			model.addAttribute("result2", (j+1)+": false");
+			
+			System.out.println("상황1");
+		}*/
         
 
 		/** EgovPropertyService.sample */

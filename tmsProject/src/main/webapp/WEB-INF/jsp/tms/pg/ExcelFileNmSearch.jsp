@@ -53,11 +53,6 @@ function file_upload() {
 	  
 	document.progrmManageForm.action = "<c:url value='/tms/pg/requestupload.do'/>";
 	document.progrmManageForm.submit();   
-	/* document.frm.PgID.value = aaa; */
-	//document.fileForm.action = "<c:url value='/tms/pg/requestupload.do'/>";
-	//document.fileForm.submit();     
-	//opener.location.reload();
-	//self.close();
 }
 function window_close() {
 	   
@@ -113,13 +108,22 @@ function test3() {
                     <li>
                         <input type="file" name="file" />
                         <div class="buttons" style="float:right;">                     	
-                        	<a href="#LINK" onclick="javascript:file_upload(); test3(); return false;">등록 </a>
+                        	<a href="#LINK" onclick="file_upload(); return false;">등록 </a>
                         	<font id="fon" >${result}</font> 
                         	<input type="hidden" id="change" name="change" value="<c:out value='${result}'/>" onclick="test(); return false;">
                         </div>
                     </li>       
                 </ul>
-                                        
+                
+            	<div class="default_tablestyle">
+            		<table width="100%" border="0" cellpadding="0" cellspacing="0" >
+        				<c:forEach var="error_list" items="${error_lists}" varStatus="status">
+            				<tr>
+            					<td align="center" class="listtd"><c:out value="${error_list}"/>&nbsp;</td>
+            				</tr>
+        				</c:forEach>           
+            		</table>  
+               	</div>                         
             </div>          
             </fieldset>
             <br>
@@ -129,7 +133,9 @@ function test3() {
                             <a href="#LINK" onclick="javascript:window_close(); return false;">닫기 </a>
                         </div>                              
                     </li>                    
-                </ul> 
+            </ul> 
+              
+            
     </div>
     <!-- //검색 필드 박스 끝 -->
 
