@@ -123,7 +123,7 @@ public class TmsProgrmManageServiceImpl extends EgovAbstractServiceImpl implemen
 		return TmsProgrmManageDAO.selectProgrmList1(a);
 	}
 	@Override
-	public List<?> selectTaskGb3(DevPlanDefaultVO dvo) {
-		return TmsProgrmManageDAO.selectTaskGb3(dvo);
+	public List<?> selectTaskGb4(DevPlanDefaultVO dvo) {
+		return TmsProgrmManageDAO.selectTaskGb4(dvo);
 	}
 }

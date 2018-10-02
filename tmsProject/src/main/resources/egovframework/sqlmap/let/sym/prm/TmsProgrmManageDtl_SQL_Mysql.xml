@@ -93,7 +93,7 @@
 			</isNotEmpty>
 	</select>  
 	
-	<select id="TmsProgrmManageDAO.selectTaskGb3" parameterClass="DevPlanDefaultVO" resultClass="TmsProgrmManageVO">
+	<select id="TmsProgrmManageDAO.selectTaskGb4" parameterClass="DevPlanDefaultVO" resultClass="TmsProgrmManageVO">
 			
 	    	SELECT CODE_NM AS "TASK_GB" 
 			FROM LETTCCMMNDETAILCODE

@@ -240,7 +240,7 @@ public class DevPlanController {
 		String a = String.valueOf(searchVO.getSearchBySysGb());
 		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
 			//System.out.println("ddddd");
-			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb3(searchVO);
+			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
 			model.addAttribute("taskGb2", taskGbList2);
 		}
 		
@@ -366,7 +366,7 @@ public class DevPlanController {
 		String a = String.valueOf(searchVO.getSearchBySysGb());
 		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
 			//System.out.println("ddddd");
-			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb3(searchVO);
+			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
 			model.addAttribute("taskGb2", taskGbList2);
 		}
 		
