@@ -27,6 +27,11 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 
+function fn_result_change(asd) {
+	var idVal3 = document.getElementById(asd+3).id;
+	$("#"+idVal3).removeClass("disabled");
+	$("#"+idVal3).addClass("abled");
+}
 
 function fn_result_regist(t){
 	
@@ -79,6 +84,13 @@ $(function(){
 	   })
 	})
 </script>
+
+<style>
+.disabled {
+       pointer-events:none;
+       opacity:0.5;
+}
+</style>
 
 <title>개발계획관리</title>
 <style type="text/css">
@@ -155,7 +167,6 @@ $(function(){
 					  			<li>
 									<div class="buttons" style="float:right;">
 										<a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-									    <a href="<c:url value='/tms/dev/addDevPlan.do'/>" onclick="javascript:fn_egov_insert_addDevPlan(); return false;" >등록</a>
 									</div>	  				  			
 					  			</li>
 					  			
@@ -219,15 +230,20 @@ $(function(){
             				<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
             				<%-- <td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td> --%>
-            				<td><input type="date"  id="${result.pgId}" value="<fmt:formatDate value="${result.planStartDt}" pattern="yyyy-MM-dd"/>" />
+            				<td><input type="date"  id="${result.pgId}" onchange="fn_result_change('${result.pgId}')" value="<fmt:formatDate value="${result.planStartDt}" pattern="yyyy-MM-dd"/>" />
                             </td>
-                            <td><input type="date"  id="${result.pgId}1" value="<fmt:formatDate value="${result.planEndDt}" pattern="yyyy-MM-dd" />"/>
+                            <td><input type="date"  id="${result.pgId}1" onchange="fn_result_change('${result.pgId}')" value="<fmt:formatDate value="${result.planEndDt}" pattern="yyyy-MM-dd" />"/>
                             </td>
             				<td align="center" class="listtd"><c:out value="${result.dayDiff}"/>&nbsp;</td>
             				<td align="center" class="listtd">
             				
-            				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;" >
-            				<a href="#LINK"  class="bt" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+            				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
+	            				<c:if test="${result.planStartDt eq null || result.planEndDt eq null}">
+	            				<a id="${result.pgId}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+	            				</c:if>
+	            				<c:if test="${result.planStartDt ne null || result.planEndDt ne null}">
+	            				<a id="${result.pgId}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+	            				</c:if>
             				</div>
                       </tr>
                      </c:forEach>     

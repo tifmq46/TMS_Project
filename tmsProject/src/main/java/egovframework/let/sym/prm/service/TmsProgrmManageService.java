@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
+import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.pg.service.ProgramDefaultVO;
 import egovframework.let.tms.pg.service.ProgramVO;
 
@@ -81,4 +82,5 @@ public interface TmsProgrmManageService {
 	Object insertProject(TmsProjectManageVO tmsProjectManageVO) throws Exception;
 	List<?> selectTestList();
 	List<HashMap<String, String>> selectProgrmList1(int a);
+	List<?> selectTaskGb4(DevPlanDefaultVO searchVO);
 }

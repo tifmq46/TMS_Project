@@ -1,6 +1,7 @@
 package egovframework.let.tms.dev.web;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -235,6 +236,14 @@ public class DevPlanController {
 		//공통코드(시스템, 업무구분)
 		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
+		
+		String a = String.valueOf(searchVO.getSearchBySysGb());
+		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
+			//System.out.println("ddddd");
+			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
+			model.addAttribute("taskGb2", taskGbList2);
+		}
+		
 		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		
@@ -242,14 +251,12 @@ public class DevPlanController {
 		System.out.println(searchVO.getSearchBySysGb());
 		System.out.println(searchVO.getSearchByTaskGb());
 				
-		List<?> devList = devPlanService.selectDevPlans(searchVO);
-		model.addAttribute("resultList", devList);
-		
+		System.out.println("================================1"+searchVO);
 		List<?> devResultList = devPlanService.selectDevResultList(searchVO);
 		model.addAttribute("resultList", devResultList);
-		System.out.println("================================"+devResultList);
+		System.out.println("================================2"+devResultList);
 		
-		int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
+		int totCnt = devPlanService.selectDevResultListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
@@ -333,6 +340,95 @@ public class DevPlanController {
 		model.addAttribute("resultP", devPeriod);
 		
 		return "/tms/dev/devStats";
+	}
+	
+	@RequestMapping(value = "/tms/dev/devCurrent.do")
+	public String selectDevCurrent(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
+		
+		/** EgovPropertyService.sample */
+		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+		paginationInfo.setPageSize(searchVO.getPageSize());
+		
+		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		
+		//공통코드(시스템, 업무구분)
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+		
+		String a = String.valueOf(searchVO.getSearchBySysGb());
+		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
+			//System.out.println("ddddd");
+			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
+			model.addAttribute("taskGb2", taskGbList2);
+		}
+		
+		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		
+		List<HashMap<String,String>> devCurrentList = devPlanService.selectDevCurrent(searchVO);
+		//model.addAttribute("resultList", devCurrentList);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date start[] = new Date[devCurrentList.size()];
+		Date end[] = new Date[devCurrentList.size()];
+		Date cur = new Date();
+		
+		/*달성률 계산*/
+		for(int i=0; i<devCurrentList.size(); i++){
+			String start_temp = String.valueOf(devCurrentList.get(i).get("PLAN_START_DT"));
+			start[i] = sdf.parse(start_temp);
+			
+			String end_temp = String.valueOf(devCurrentList.get(i).get("PLAN_END_DT"));
+			end[i] = sdf.parse(end_temp);
+			
+			int compare = cur.compareTo(start[i]); 	/*현재날짜, 계획시작날짜 비교*/
+			int compare2 = cur.compareTo(end[i]);	/*현재날짜, 계획종료날짜 비교*/
+			
+			/*계획시작일 ~ 현재날짜 작업일수*/
+			long calDate = start[i].getTime() - cur.getTime();
+			long calDateDays = Math.abs(calDate / (24*60*60*1000));
+			float aa = (float)(long)calDateDays;
+			
+			/*계획시작일 ~ 계획종료일 작업일수*/
+			long calDate2 = start[i].getTime() - end[i].getTime();
+			long calDateDays2 = Math.abs(calDate2 / (24*60*60*1000));
+			float bb = (float)(long)calDateDays2;
+			
+			searchVO.setPgId(devCurrentList.get(i).get("PG_ID"));
+			float achRate = (float) 0.0;
+			
+			if(compare > 0){
+				System.out.println("현재날짜 > 계획시작일");
+				if(compare2 > 0){
+					achRate = (float) 100.0;
+				}else if(compare2 < 0){
+					achRate = ((aa/bb)*100);
+				}
+			}else if(compare < 0){
+				System.out.println("현재날짜 < 계획시작일");
+					achRate = (float) 0.0;
+
+			}
+			
+			searchVO.setAchievementRate(achRate);
+			devPlanService.updateRate(searchVO);
+		}
+		List<HashMap<String,String>> devResult = devPlanService.selectDevCurrent(searchVO);
+		model.addAttribute("resultList", devResult);
+		
+		int totCnt = devPlanService.selectDevResultListTotCnt(searchVO);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+		
+		return "tms/dev/devCurrent";
 	}
 		
 }

@@ -12,6 +12,7 @@
 	<typeAlias  alias="CommonCodeVO" type="egovframework.com.cmm.CommonCodeVO"/>
 	<typeAlias  alias="ProgramDefaultVO" type="egovframework.let.tms.pg.service.ProgramDefaultVO"/>
 	<typeAlias  alias="ProgramVO" type="egovframework.let.tms.pg.service.ProgramVO"/>
+	<typeAlias  alias="DevPlanDefaultVO" type="egovframework.let.tms.dev.service.DevPlanDefaultVO"/>
 	
     <!-- 프로그램목록 관리 -->
 	<resultMap id="TmsProgrmManage"       class="egovframework.let.sym.prm.service.TmsProgrmManageVO">
@@ -99,6 +100,17 @@
 			FROM LETTCCMMNDETAILCODE
 			where parent = (SELECT SYS_GB FROM PG_TB WHERE PG_ID = #PG_ID#);
 	</select>  
+	<select id="TmsProgrmManageDAO.selectTaskGb4" parameterClass="DevPlanDefaultVO" resultClass="TmsProgrmManageVO">
+			
+	    	SELECT CODE_NM AS "TASK_GB" 
+			FROM LETTCCMMNDETAILCODE
+			<isNotEmpty property="searchBySysGb">
+			where parent = (select code
+								 from LETTCCMMNDETAILCODE
+								 where code_nm = #searchBySysGb#);
+			</isNotEmpty>
+	</select>
+	
 	
 	
 	<!-- 업무구분 조회 -->
