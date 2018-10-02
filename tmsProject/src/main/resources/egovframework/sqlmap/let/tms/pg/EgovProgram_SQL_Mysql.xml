@@ -69,31 +69,31 @@
 	
 	
 	
-	<select id="ProgramDAO.selectPgListTotCnt" parameterClass="ProgramDefaultVO" resultClass="java.lang.Integer" >
-			<![CDATA[
-				SELECT COUNT(*) totcnt 
-				FROM PG_TB
-				WHERE 1=1
-			]]>
-			<!-- 화면ID로 검색 -->
-			<isNotEmpty property="searchByPgId">
-			    AND PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
-			</isNotEmpty>  
-			
-			<!-- 시스템구분으로 검색 -->
-			<isNotEmpty property="searchBySysGb">
-			    AND SYS_GB = #searchBySysGb# 
-			</isNotEmpty>
-			
-			<isNotEmpty property="searchByTaskGb">
-			    AND TASK_GB = #searchByTaskGb# 
-			</isNotEmpty>
-			
-			<!-- 개발자명으로 검색 -->
-			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID IN (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT('%' , #searchByUserDevId#, '%'))
-			</isNotEmpty> 
-	</select>	
+   <select id="ProgramDAO.selectPgListTotCnt" parameterClass="ProgramDefaultVO" resultClass="java.lang.Integer" >
+         <![CDATA[
+            SELECT COUNT(*) totcnt 
+            FROM PG_TB a
+            WHERE 1=1
+         ]]>
+         <!-- 화면ID로 검색 -->
+         <isNotEmpty property="searchByPgId">
+             AND a.PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
+         </isNotEmpty>  
+         
+         <!-- 시스템구분으로 검색 -->
+         <isNotEmpty property="searchBySysGb">
+             AND a.SYS_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #searchBySysGb#)
+         </isNotEmpty>
+         
+         <isNotEmpty property="searchByTaskGb">
+             AND a.TASK_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #searchByTaskGb#)
+         </isNotEmpty>
+         
+         <!-- 개발자명으로 검색 -->
+         <isNotEmpty property="searchByUserDevId">
+             AND a.USER_DEV_ID IN (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT('%' , #searchByUserDevId#, '%'))
+         </isNotEmpty> 
+   </select>
 	
 	
 	<!-- 프로그램현황 조회(엑셀 다운용) -->
