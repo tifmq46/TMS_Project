@@ -25,6 +25,7 @@
 </head>
 <body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
 <script type="text/javaScript">
 	function searchFileNm() {
 	    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
@@ -53,6 +54,38 @@
 		})
 	})
 	
+window.onload = function() {
+		
+		/** 결함 진행상태 통계 시작*/
+		var taskByMainStats = JSON.parse('${taskByMainStats}');
+		var taskByMainStatsTaskNm = new Array();
+		var taskByMainStatsTaskAll = new Array();
+		var taskByMainStatsActionStA5 = new Array();
+		for (var i = 0; i < taskByMainStats.length; i++) {
+			taskByMainStatsTaskNm.push(taskByMainStats[i].taskNm);
+			taskByMainStatsTaskAll.push(taskByMainStats[i].taskAll);
+			taskByMainStatsActionStA5.push(taskByMainStats[i].actionStA5);
+		}
+		var ctx6 = document.getElementById('taskByMainStats');
+		var taskByMainStatsChart = new Chart(ctx6, {
+			type : 'bar',
+			data : {
+				labels : taskByMainStatsTaskNm,
+				barThickness : '0.9',
+				datasets : [ {
+					label : '등록건수',
+					data : taskByMainStatsTaskAll,
+					backgroundColor : '#007bff',
+				}, {
+					label : '조치건수',
+					data : taskByMainStatsActionStA5,
+					backgroundColor : '#00B3E6',
+				}]
+			}
+		});
+		/** 결함 진행상태 통계 끝*/
+}	
+
 </script>
 
 <noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>	
@@ -280,14 +313,16 @@
     		</div>    	    	
     	</div>
     	
-    	<div class="recentBsnsList" class="col-md-6" style="height:290px; margin-bottom:20px !important	;">
+    	<div class="recentBsnsList" class="col-md-6" style="overflow:auto; white-space:nowrap; overflow-y:hidden; height:290px; width:220px; margin-bottom:20px !important	;">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
 	    					결함 진행상태
     				</div>
     			</div>
-    			
+    			<c:if test="${taskByMainStats != null }">
+    			<canvas id="taskByMainStats" width="100%" height="38%"></canvas>
+    			</c:if>
     		</div>    	    	
     	</div>
     	

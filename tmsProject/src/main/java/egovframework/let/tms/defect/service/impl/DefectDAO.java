@@ -193,4 +193,16 @@ public class DefectDAO extends EgovAbstractDAO{
 	public String selectUserNm(String userTestId) {
 		return (String) select("defectDAO.selectUserNm",userTestId);
 	}
+	
+	public void updateDefectIdSq() {
+		/** 시퀀스 재정렬 시작 */
+		int result_defectIdSq = update("defectDAO.setDefectIdSq");
+		int result_defectIdSqInfo = update("defectDAO.setDefectIdSqInfo");
+		int result_defectIdSqImpl = update("defectDAO.setDefectIdSqImpl");
+		/** 시퀀스 재정렬 끝 */
+	}
+	
+	public List<?> selectTaskByMainStats() {
+		return list("defectDAO.selectTaskByMainStats");
+	}
 }

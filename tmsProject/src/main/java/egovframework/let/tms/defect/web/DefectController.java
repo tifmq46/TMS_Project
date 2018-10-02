@@ -24,6 +24,10 @@ import javax.sql.rowset.serial.SerialBlob;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -286,6 +290,9 @@ public class DefectController {
 		List<?> actionStList = defectService.selectActionSt();
 		model.addAttribute("actionSt", actionStList);
 		
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
 		int actionComplete = defectService.selectActionComplete(searchVO);
 		model.addAttribute("actionTotCnt",totCnt);
 		model.addAttribute("actionComplete",actionComplete);
@@ -364,15 +371,14 @@ public class DefectController {
 		
 		// 일자별 결함 등록 건수, 조치건수
 		List<?> dayByDefectCnt = defectService.selectDayByDefectCnt();
-		model.addAttribute("dayByDefectCnt", dayByDefectCnt);
+		model.addAttribute("dayByDefectCnt", JSONArray.fromObject(dayByDefectCnt));
 		
 		// 월별 결함 등록건수, 조치건수
 		List<?> monthByDefectCnt = defectService.selectMonthByDefectCnt();
-		model.addAttribute("monthByDefectCnt", monthByDefectCnt);
+		model.addAttribute("monthByDefectCnt", JSONArray.fromObject(monthByDefectCnt));
 		
 		// 업무별 조치율
 		List<?> taskByActionProgression = defectService.selectTaskByActionProgression();
-//		model.addAttribute("taskByActionProgression", taskByActionProgression);
 		model.addAttribute("taskByActionProgression", JSONArray.fromObject(taskByActionProgression));
 		
 		// 업무별 상태별 결함건수
@@ -381,7 +387,7 @@ public class DefectController {
 		
 		// 업무별 유형별 결함 건수
 		List<?> taskByDefectGbCnt = defectService.selectTaskByDefectGbCnt();
-		model.addAttribute("taskByDefectGbCnt", taskByDefectGbCnt);
+		model.addAttribute("taskByDefectGbCnt", JSONArray.fromObject(taskByDefectGbCnt));
 		
 		return "tms/defect/defectStats";
 	}
@@ -448,9 +454,7 @@ public class DefectController {
 		}
 		
 		if(statsGb.equals("task")) {
-			System.out.println("############################1");
 			xlsxWiter(taskGbByStats, statsGb);
-			System.out.println("############################end");
 		} else if(statsGb.equals("pg")) {
 			xlsxWiter(pgIdByStats, statsGb);
 		} else if(statsGb.equals("userTest")) {
@@ -467,7 +471,6 @@ public class DefectController {
 	}
 	
 	public void xlsxWiter(List<HashMap<String,String>> list, String statsGb) {
-		System.out.println("############################2");
 		// 워크북 생성
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// 워크시트 생성
@@ -477,94 +480,150 @@ public class DefectController {
 		// 쎌 생성
 		XSSFCell cell;
 		
+		Font defaultFont = workbook.createFont();        
+		defaultFont.setFontHeightInPoints((short) 11); 
+		defaultFont.setFontName("맑은 고딕");
+
+		//제목 스타일 
+		CellStyle HeadStyle = workbook.createCellStyle(); 
+		HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
+		HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index); 
+		HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
+		HeadStyle.setFont(defaultFont);
+
+		//본문 스타일 
+		CellStyle BodyStyle = workbook.createCellStyle(); 
+		BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		BodyStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		BodyStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setFont(defaultFont);   
+		
 		// 헤더 정보 구성
 		cell = row.createCell(0);
 		cell.setCellValue("구분");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		
 		cell = row.createCell(1);
 		cell.setCellValue("상태/유형별");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		
 		cell = row.createCell(2);
 		cell.setCellValue("오류");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		
 		cell = row.createCell(3);
 		cell.setCellValue("개선");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		
 		cell = row.createCell(4);
 		cell.setCellValue("문의");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		
 		cell = row.createCell(5);
 		cell.setCellValue("기타");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		
 		cell = row.createCell(6);
 		cell.setCellValue("합계");
-		System.out.println("############################3");
-		// 리스트의 size 만큼 row를 생성
-		System.out.println("###########################"+list.toString());
+		cell.setCellStyle(HeadStyle); // 제목스타일 
 		
+		// 리스트의 size 만큼 row를 생성
 		for(int i=0; i < list.size(); i++) {
-//			for (Map.Entry me : list.get(i).entrySet()) {
-//		          System.out.println("Key: "+me.getKey() + " & Value: " + me.getValue());
-//		       }
-			System.out.println("############################4");
-			System.out.println("############################"+list.get(i));
-			System.out.println("############################"+(String)list.get(i).get("taskNm"));
-//			string.format("%s",)
 			// 행 생성
-//			row = sheet.createRow(i+1);
-//			
-//			cell = row.createCell(0);
-//			cell.setCellValue(list.get(i).get("taskNm"));
-//			System.out.println("######################"+list.get(i).get("taskNm"));
-//			cell = row.createCell(1);
-//			cell.setCellValue(list.get(i).get("actionNm"));
-//			
-//			cell = row.createCell(2);
-//			cell.setCellValue(list.get(i).get("defectGbD1"));
-//			
-//			cell = row.createCell(3);
-//			cell.setCellValue(list.get(i).get("defectGbD2"));
-//			
-//			cell = row.createCell(4);
-//			cell.setCellValue(list.get(i).get("defectGbD3"));
-//			
-//			cell = row.createCell(5);
-//			cell.setCellValue(list.get(i).get("defectGbD4"));
-//			
-//			cell = row.createCell(6);
-//			cell.setCellValue(list.get(i).get("rowSum"));
+	
+			row = sheet.createRow(i+1);
+			
+			cell = row.createCell(0);
+			if(statsGb.equals("task")) {
+				cell.setCellValue(list.get(i).get("taskNm"));
+			} else if(statsGb.equals("pg")) {
+				cell.setCellValue(list.get(i).get("pgNm"));
+			} else if(statsGb.equals("userTest")) {
+				cell.setCellValue(list.get(i).get("userTestNm"));
+			} else {
+				cell.setCellValue(list.get(i).get("userDevNm"));
+			}
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(1);
+			cell.setCellValue(list.get(i).get("actionNm"));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(2);
+			cell.setCellValue(String.format("%s", list.get(i).get("defectGbD1")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(3);
+			cell.setCellValue(String.format("%s", list.get(i).get("defectGbD2")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(4);
+			cell.setCellValue(String.format("%s", list.get(i).get("defectGbD3")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(5);
+			cell.setCellValue(String.format("%s", list.get(i).get("defectGbD4")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(6);
+			cell.setCellValue(String.format("%s", list.get(i).get("rowSum")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
 			
 		}
-//		
-//		// 입력된 내용 파일로 쓰기
-//		File folder = new File("C:\\TMS\\TMS_통계자료");
-//		
-//		File file = new File("C:\\TMS\\TMS_통계자료\\프로그램 현황.xlsx");
-//		
-//		if(!folder.exists()){
-//            //디렉토리 생성 메서드
-//			folder.mkdirs();
-//		}
-//		
-//		FileOutputStream fos = null;
-//		
-//		try {
-//			fos = new FileOutputStream(file);
-//			workbook.write(fos);
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				if(workbook!=null) //workbook.close();
-//				if(fos!=null) fos.close();
-//				
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
+		
+		/** 3. 컬럼 Width */ 
+		for (int i = 0; i <  list.size(); i++){ 
+			sheet.autoSizeColumn(i); 
+			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
+		}
+		
+		// 입력된 내용 파일로 쓰기
+		File folder = new File("C:\\TMS\\TMS_통계자료");
+		
+		File file;
+		
+		if(statsGb.equals("task")) {
+			file = new File("C:\\TMS\\TMS_통계자료\\업무별 현황.xlsx");
+		} else if(statsGb.equals("pg")) {
+			file = new File("C:\\TMS\\TMS_통계자료\\화면별 현황.xlsx");
+		} else if(statsGb.equals("userTest")) {
+			file = new File("C:\\TMS\\TMS_통계자료\\테스터별 현황.xlsx");
+		} else {
+			file = new File("C:\\TMS\\TMS_통계자료\\개발자별 현황.xlsx");
+		}
+		
+		//디렉토리 생성 메서드
+		if(!folder.exists()){
+			folder.mkdirs();
+		}
+		
+		FileOutputStream fos = null;
+		
+		try {
+			fos = new FileOutputStream(file);
+			workbook.write(fos);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(workbook!=null) //workbook.close();
+				if(fos!=null) fos.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }
