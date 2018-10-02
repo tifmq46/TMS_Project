@@ -115,15 +115,22 @@ function test3() {
                     </li>       
                 </ul>
                 
+                
+                
             	<div class="default_tablestyle">
             		<table width="100%" border="0" cellpadding="0" cellspacing="0" >
-        				<c:forEach var="error_list" items="${error_lists}" varStatus="status">
+        				<c:forEach var="error_hash" items="${error_hashs}" varStatus="status">
             				<tr>
-            					<td align="center" class="listtd"><c:out value="${error_list}"/>&nbsp;</td>
+            					<td align="center" class="listtd"><strong><c:out value="${error_hash.problem}"/>&nbsp;</strong></td>
+            				</tr>
+            				<tr>
+            					<td align="center" class="listtd"><c:out value="=>원인 : ${error_hash.reason}"/>&nbsp;</td>
             				</tr>
         				</c:forEach>           
             		</table>  
-               	</div>                         
+               	</div>     
+               	
+               	               
             </div>          
             </fieldset>
             <br>
@@ -134,7 +141,7 @@ function test3() {
                         </div>                              
                     </li>                    
             </ul> 
-              
+            
             
     </div>
     <!-- //검색 필드 박스 끝 -->
