@@ -1,13 +1,21 @@
 package egovframework.let.tms.pg.web;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.Resource;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -22,6 +30,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,15 +38,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
-import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
-
+import egovframework.let.sym.prm.service.TmsProgrmManageService;
 import egovframework.let.tms.pg.service.PgCurrentVO;
 import egovframework.let.tms.pg.service.ProgramDefaultVO;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import egovframework.let.tms.pg.service.ProgramService;
 import egovframework.let.tms.pg.service.ProgramVO;
-import egovframework.let.sym.prm.service.TmsProgrmManageService;
+import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
 public class ProgramController {
@@ -342,23 +349,190 @@ public class ProgramController {
 	 * 프로그램 현황을 엑셀파일로 출력한다.	 
 	 */	
 	@RequestMapping(value = "/tms/pg/ExelWrite.do")
-	public String ExelWrite(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+	public String ExelWrite(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model,HttpServletRequest request, HttpServletResponse response, ServletResponse ServletResponse) throws Exception {
 
 		// 엑셀로 쓸 데이터 생성		
-		List<ProgramVO> list = new ArrayList<ProgramVO>();
-		
-		// 엑셀 리스트 생성
-		List<?> excelList = ProgramService.selectPgCurrentExcelList(searchVO);
-		
-		// 엑셀 데이터에 엑셀 리스트 추가
-		for(int i=0; i<excelList.size(); i++)
-		{
-			ProgramVO excel = (ProgramVO) excelList.get(i);
-			list.add(excel);
-			
-		}
-		//xlsx 파일 쓰기
-		xlsxWiter(list);	
+					List<ProgramVO> list = new ArrayList<ProgramVO>();
+					
+					// 엑셀 리스트 생성
+					List<?> excelList = ProgramService.selectPgCurrentExcelList(searchVO);
+					
+					// 엑셀 데이터에 엑셀 리스트 추가
+					for(int i=0; i<excelList.size(); i++)
+					{
+						ProgramVO excel = (ProgramVO) excelList.get(i);
+						list.add(excel);
+						
+					}
+					// 워크북 생성
+							XSSFWorkbook workbook = new XSSFWorkbook();
+							// 워크시트 생성
+							XSSFSheet sheet = workbook.createSheet();
+							// 행 생성
+							XSSFRow row = sheet.createRow(0);
+							// 쎌 생성
+							XSSFCell cell;
+							
+							
+							Font defaultFont = workbook.createFont();        
+							defaultFont.setFontHeightInPoints((short) 11); 
+							defaultFont.setFontName("맑은 고딕");
+
+							//제목 스타일 
+							CellStyle HeadStyle = workbook.createCellStyle(); 
+							HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+							HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
+							HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index); 
+							HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+							HeadStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+							HeadStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+							HeadStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+							HeadStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
+							HeadStyle.setFont(defaultFont);
+
+							//본문 스타일 
+							CellStyle BodyStyle = workbook.createCellStyle(); 
+							BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+							BodyStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+							BodyStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+							BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+							BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+							BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+							BodyStyle.setFont(defaultFont);   
+
+
+							
+							
+							// 헤더 정보 구성
+							cell = row.createCell(0);
+							cell.setCellValue("화면ID");
+							cell.setCellStyle(HeadStyle); // 제목스타일 
+
+							cell = row.createCell(1);
+							cell.setCellValue("화면명");
+							cell.setCellStyle(HeadStyle); // 제목스타일 
+							cell = row.createCell(2);
+							cell.setCellValue("시스템구분");
+							cell.setCellStyle(HeadStyle); // 제목스타일 
+							cell = row.createCell(3);
+							cell.setCellValue("업무구분");
+							cell.setCellStyle(HeadStyle); // 제목스타일 
+							cell = row.createCell(4);
+							cell.setCellValue("개발자");
+							cell.setCellStyle(HeadStyle); // 제목스타일 
+							cell = row.createCell(5);
+							cell.setCellValue("사용여부");
+							cell.setCellStyle(HeadStyle); // 제목스타일 
+							
+							// 리스트의 size 만큼 row를 생성
+							ProgramVO vo;
+							for(int rowIdx=0; rowIdx < list.size(); rowIdx++) {
+								vo = list.get(rowIdx);
+								
+								// 행 생성
+								row = sheet.createRow(rowIdx+1);
+								
+								cell = row.createCell(0);
+								cell.setCellValue(vo.getPG_ID());
+								cell.setCellStyle(BodyStyle); // 본문스타일 
+
+								cell = row.createCell(1);
+								cell.setCellValue(vo.getPG_NM());
+								cell.setCellStyle(BodyStyle); // 본문스타일 
+								cell = row.createCell(2);
+								cell.setCellValue(vo.getSYS_GB());
+								cell.setCellStyle(BodyStyle); // 본문스타일 
+								cell = row.createCell(3);
+								cell.setCellValue(vo.getTASK_GB());
+								cell.setCellStyle(BodyStyle); // 본문스타일 
+								cell = row.createCell(4);
+								cell.setCellValue(vo.getUSER_DEV_ID());
+								cell.setCellStyle(BodyStyle); // 본문스타일 
+								cell = row.createCell(5);
+								cell.setCellValue(vo.getUSE_YN());
+								cell.setCellStyle(BodyStyle); // 본문스타일 
+							}
+							/** 3. 컬럼 Width */ 
+							for (int i = 0; i <  list.size(); i++){ 
+								sheet.autoSizeColumn(i); 
+								sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
+							}
+							
+							// 입력된 내용 파일로 쓰기
+							File folder = new File("C:\\TMS\\TMS_통계자료");
+							
+							File file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
+							
+							if(!folder.exists()){
+					            //디렉토리 생성 메서드
+								folder.mkdirs();
+							}
+							
+							FileOutputStream fos = null;
+							
+							try {
+								fos = new FileOutputStream(file);
+								workbook.write(fos);
+							} catch (FileNotFoundException e) {
+								e.printStackTrace();
+							} catch (IOException e) {
+								e.printStackTrace();
+							} finally {
+								try {
+									if(workbook!=null) //workbook.close();
+									if(fos!=null) fos.close();
+									
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+				 
+			  String path = "C:/TMS/TMS_통계자료/";  // Link의 자바파일에서 excel 파일이 생성된 경로
+			  String realFileNm = "프로그램현황.xlsx";
+			  
+			  File uFile = new File(path,realFileNm);
+			  int fSize = (int) uFile.length();
+			  if (fSize > 0) {  //파일 사이즈가 0보다 클 경우 다운로드
+			   String mimetype = "application/x-msdownload";  //minetype은 파일확장자에 맞게 설정
+			   response.setHeader("Content-Disposition", "attachment; filename=\"TMS.xlsx\"");
+			   response.setContentType(mimetype);
+			   response.setContentLength(fSize);
+			   BufferedInputStream in = null;
+			   BufferedOutputStream out = null;
+			   
+			   try {
+				
+			    in = new BufferedInputStream(new FileInputStream(uFile));
+			    out = new BufferedOutputStream(response.getOutputStream());
+			    FileCopyUtils.copy(in, out);
+			    out.flush();
+			   } catch (Exception ex) {
+			   } finally {
+				   String path1 = "C:/TMS/TMS_통계자료/프로그램현황.xlsx";
+				   File deleteFolder = new File(path1);
+				   deleteFolder.delete();
+				   String path2 = "C:/TMS/TMS_통계자료";
+				   File deleteFolder2 = new File(path2);
+				   deleteFolder2.delete();
+				   String path3 = "C:/TMS";
+				   File deleteFolder3 = new File(path3);
+				   deleteFolder3.delete();
+			    if (in != null) in.close();
+			    if (out != null) out.close();
+			   }
+			  } else {
+			   response.setContentType("application/x-msdownload");
+			 
+			   PrintWriter printwriter = response.getWriter();
+			   printwriter.println("<html>");
+			   printwriter.println("<br><br><br><h2>Could not get file name:<br>" + realFileNm + "</h2>");
+			   printwriter.println("<br><br><br><center><h3><a href='javascript: history.go(-1)'>Back</a></h3></center>");
+			   printwriter.println("<br><br><br>&copy; webAccess");
+			   printwriter.println("</html>");
+			   printwriter.flush();
+			   printwriter.close();
+			  }
 		
 		
 		/** EgovPropertyService.sample */
