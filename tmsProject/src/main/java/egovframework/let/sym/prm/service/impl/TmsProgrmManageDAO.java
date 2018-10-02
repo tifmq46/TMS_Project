@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.let.sym.prm.service.TmsProjectManageVO;
+import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.pg.service.ProgramDefaultVO;
 import egovframework.let.tms.pg.service.ProgramVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
@@ -106,5 +107,9 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
 	public List<HashMap<String,String>> selectProgrmList1(int a) {
 	      return (List<HashMap<String,String>>)list("TmsProgrmManageDAO.selectTestList1",a);
 	   }
+
+	public List<?> selectTaskGb3(DevPlanDefaultVO dvo) {
+		return list("TmsProgrmManageDAO.selectTaskGb3", dvo);
+	}
 	
 }

@@ -1,5 +1,6 @@
 package egovframework.let.tms.dev.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -150,6 +151,17 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public int selectDevResultListTotCnt(DevPlanDefaultVO searchVO) throws Exception {
 		
 		return devPlanDAO.selectDevResultListTotCnt(searchVO);
+	}
+
+	@Override
+	public List<HashMap<String, String>> selectDevCurrent(DevPlanDefaultVO searchVO) {
+		return devPlanDAO.selectDevCurrent(searchVO);
+	}
+
+	@Override
+	public void updateRate(DevPlanDefaultVO searchVO) {
+		devPlanDAO.updateRate(searchVO);
+		
 	}
 	
 }

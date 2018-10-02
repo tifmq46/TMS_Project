@@ -1,5 +1,6 @@
 package egovframework.let.tms.dev.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -132,5 +133,13 @@ public class DevPlanDAO extends EgovAbstractDAO{
 
 	public int selectDevResultListTotCnt(DevPlanDefaultVO searchVO) {
 		return (Integer) select("DevPlanDAO.selectDevResultListTotCnt" ,searchVO);
+	}
+
+	public List<HashMap<String, String>> selectDevCurrent(DevPlanDefaultVO searchVO) {
+		return (List<HashMap<String, String>>) list("devPlanDAO.selectDevCurrent",searchVO);
+	}
+
+	public void updateRate(DevPlanDefaultVO searchVO) {
+		update("DevPlanDAO.updateRate", searchVO);
 	}
 }

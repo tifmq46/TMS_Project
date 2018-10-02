@@ -1,5 +1,6 @@
 package egovframework.let.tms.dev.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -106,5 +107,9 @@ public interface DevPlanService {
 	public String ifNullDevPlan(String b);
 
 	public int selectDevResultListTotCnt(DevPlanDefaultVO searchVO)throws Exception;
+
+	public List<HashMap<String, String>> selectDevCurrent(DevPlanDefaultVO searchVO);
+
+	public void updateRate(DevPlanDefaultVO searchVO);
 
 }

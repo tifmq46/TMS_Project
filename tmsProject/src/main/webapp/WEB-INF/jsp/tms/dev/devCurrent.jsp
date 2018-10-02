@@ -1,16 +1,3 @@
-<%--
-  Class Name : EgovLoginPolicyList.jsp
-  Description : EgovLoginPolicyList 화면
-  Modification Information
-
-      수정일         수정자                   수정내용
-    -------    --------    ---------------------------
-     2009.02.01   lee.m.j            최초 생성
-     2011.08.31   JJY       경량환경 버전 생성
-
-    author   : 공통서비스 개발팀 lee.m.j
-    since    : 2009.02.01
---%>
 <%@ page import="egovframework.com.cmm.LoginVO"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -31,57 +18,24 @@
 
 <script type="text/javaScript" language="javascript">
 
-function fn_result_change(asd) {
-	   var idVal0 = document.getElementById(asd).value;
-	   var idVal1 = document.getElementById(asd+1).value;
-	   if(idVal1 != null && idVal1 != "")
-	      {
-	         if(idVal0 > idVal1)
-	            {
-	               alert("개발시작일자보다 큰 값을 입력하시오.");
-	               document.getElementById(asd+1).value = null;
-	            }
-	      }
-	   if(idVal0 == null || idVal0 == "")
-	      {
-	         alert("개발시작일자부터 입력하십시오.")
-	         document.getElementById(asd+1).value = null;
-	      }
-	   var idVal3 = document.getElementById(asd+3).id;
-	   $("#"+idVal3).removeClass("disabled");
-	   $("#"+idVal3).addClass("abled");
-	}
-
 function linkPage1(pageNo){
 	   document.listForm.pageIndex.value = pageNo;
-	   document.listForm.action = "<c:url value='/tms/dev/devResultList.do'/>";
+	   document.listForm.action = "<c:url value='/tms/dev/devCurrent.do'/>";
 	   document.listForm.submit();
 	}
 
-/* function fn_result_change(asd) {
+function fn_result_change(asd) {
 	var idVal3 = document.getElementById(asd+3).id;
 	$("#"+idVal3).removeClass("disabled");
 	$("#"+idVal3).addClass("abled");
-} */
-
-
-function fn_result_regist(t){
-	
-	var f = document.listForm;
-
-	var idVal = document.getElementById(t).value;
-	var idVal1 = document.getElementById(t+1).value;
-	
-
-	
-	location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1;
-			
 }
+
+
 
 function fn_searchList(pageNo){
     document.listForm.pageIndex.value = pageNo;
     document.listForm.searchByTaskGb.value = document.listForm.task.value;
-    document.listForm.action = "<c:url value='/tms/dev/devResultList.do'/>";
+    document.listForm.action = "<c:url value='/tms/dev/devCurrent.do'/>";
     document.listForm.submit();
 }
 
@@ -112,12 +66,7 @@ $(function(){
 	   })
 	})
 </script>
-<style>
-.disabled {
-       pointer-events:none;
-       opacity:0.5;
-}
-</style>
+
 
 </head>
 
@@ -145,7 +94,7 @@ $(function(){
 							<li>&gt;</li>
 							<li>개발진척관리</li>
 							<li>&gt;</li>
-							<li><strong>개발결과관리</strong></li>
+							<li><strong>개발진척현황</strong></li>
                         </ul>
                     </div>
                 </div>
@@ -154,7 +103,7 @@ $(function(){
                 <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
                 <!-- 검색 필드 박스 시작 -->
 				<div id="search_field">
-					<div id="search_field_loc"><h2><strong>개발결과관리</strong></h2></div>
+					<div id="search_field_loc"><h2><strong>개발진척현황</strong></h2></div>
 					<%-- <form action="form_action.jsp" method="post"> --%>
 					  	<fieldset><legend>조건정보 영역</legend>	  
 					  	<div class="sf_start">
@@ -225,7 +174,7 @@ $(function(){
                     <col width="90" >
                     <col width="10%" >
                     <col width="10%" >
-                    <col width="5%" >
+                     <col width="5%" >
         			</colgroup>
         			<tr>
         				<th align="center">시스템구분</th>
@@ -237,68 +186,29 @@ $(function(){
         				<th align="center">계획종료일자</th>
 			        	<th align="center">개발시작일자</th>
         				<th align="center">개발종료일자</th>
-        				<th align="center"></th>
+        				<th align="center">달성률(%)</th>
         			</tr>
         			
         			<c:forEach var="result" items="${resultList}" varStatus="status">
         			
             			<tr>
-            				<td align="center" class="listtd" name="sys"><c:out value="${result.sysGb}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
+            				<td align="center" class="listtd" name="sys"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd">
             					<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>"> --%>
-                                <c:out value="${result.pgId}"/><!-- </a> -->
-                                <input type="hidden" id="pgId" name="pgId" value='<c:out value="${result.pgId}"/>' >
+                                <c:out value="${result.PG_ID}"/><!-- </a> -->
+                                <input type="hidden" id="pgId" name="pgId" value='<c:out value="${result.PG_ID}"/>' >
                             </td>
-            				<td align="left" class="listtd"><c:out value="${result.pgNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>
+            				<td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.PLAN_START_DT}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.PLAN_END_DT}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.DEV_START_DT}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.DEV_END_DT}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.ACHIEVEMENT_RATE}"/>%&nbsp;</td>
+            		
             				
-            				<td><input type="date"  id="${result.pgId}" onchange="fn_result_change('${result.pgId}')" value="<fmt:formatDate value="${result.devStartDt}" pattern="yyyy-MM-dd" />"/>
-                            <img src="images/calendar.gif"  width="19" height="19" alt="" /></td>
-                            <td><input type="date"  id="${result.pgId}1" onchange="fn_result_change('${result.pgId}')" value="<fmt:formatDate value="${result.devEndDt}" pattern="yyyy-MM-dd" />"/>
-                            <img src="images/calendar.gif" width="19" height="19" alt="" /></td>
             				
-            				<%-- <td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.devEndDt}"/>&nbsp;</td> --%>
-            				
-            				<td align="center" class="listtd">
-            				
-            				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
-            				<%-- <a href="<c:url value='/tms/dev/updateDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%>
-            				<c:if test="${result.devStartDt eq null || result.devEndDt eq null}">
-            				<a id="${result.pgId}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-            				</c:if>
-            				<c:if test="${result.devStartDt ne null || result.devEndDt ne null}">
-            				<a id="${result.pgId}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-            				</c:if>
-            				<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%> 
-            				<!-- 값이 바뀌는 이벤트가 발생했을 때 저장 버튼 활성화
-            					저장 누르면 버튼 enable
-            				  -->
-            				
-            				</div>
-            				<!-- <input type="button" value="등록" class="buttons"
-            				onclick=""
-            				/> -->
-            				</td>
-            				<%-- <td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
-	            					<td align="center" class="listtd"><c:out value="${result.devEndDt}"/>&nbsp;</td> --%>
-            				
-            				<!--  계획일자가 등록되어 있는 경우에만 개발일자를 등록할 수 있음 -->
-            				<%-- <c:choose>
-	            				<c:when test="${!empty result.planStartDt}">
-	            					
-		            				<td align="center" class="listtd"><input type="date" id="${result.pgId}DevStartDt" style="width:120px; height:15px;" value="<c:out value="${result.devStartDt}"/>"/>&nbsp;</td>
-		            				<td align="center" class="listtd"><input type="date" id="${result.pgId}DevEndDt" style="width:120px; height:15px;" value="<c:out value="${result.devEndDt}"/>"/>&nbsp;</td> 
-	           					</c:when>
-	            				
-	            				<c:otherwise>
-	            					<td align="center" class="listtd"></td>
-	            					<td align="center" class="listtd"></td>
-	            				</c:otherwise>
-            				</c:choose> --%>
             			</tr>
         			</c:forEach>
             
