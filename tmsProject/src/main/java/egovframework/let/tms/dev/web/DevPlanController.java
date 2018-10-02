@@ -237,7 +237,11 @@ public class DevPlanController {
 		model.addAttribute("sysGb", sysGbList);
 		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
-		
+		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
+			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb3(searchVO);
+			System.out.println("taskGbList2========================="+taskGbList2);
+			model.addAttribute("taskGb2", taskGbList2);
+		}
 		System.out.println("----------------------업무구분값");
 		System.out.println(searchVO.getSearchBySysGb());
 		System.out.println(searchVO.getSearchByTaskGb());

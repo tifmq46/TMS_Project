@@ -65,6 +65,7 @@
         document.frm.action = "<c:url value='/tms/pg/ExelWrite.do'/>";
         document.frm.submit();      
     }
+    
     function fn_egov_select_bbsUseInf(bbsId, trgetId){
         document.frm.bbsId.value = bbsId;
         document.frm.trgetId.value = trgetId;
@@ -76,6 +77,11 @@
 <c:otherwise>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
+
+function fn_egov_insert_a(){
+	 document.frm.action = "<c:url value='/tms/pg/downLoadFile.do'/>";
+     document.frm.submit();   
+}
 
 	$(function(){
 	   $('#bbb').change(function() {
@@ -246,6 +252,7 @@
                             			<div class="buttons" style="float:right;">                              			
                                     		<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
 											<a href="<c:url value='/tms/pg/ExelWrite.do'/>" onclick="setting();fn_egov_insert_addbbsUseInf(); return false;">엑셀</a>
+											<a onclick="fn_egov_insert_a();">경로다운</a>
                                     	</div>
                                 	</li>
                             	</ul>

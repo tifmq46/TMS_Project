@@ -32,13 +32,27 @@
 <script type="text/javaScript" language="javascript">
 
 function linkPage1(pageNo){
-	   alert(pageNo);
 	   document.listForm.pageIndex.value = pageNo;
 	   document.listForm.action = "<c:url value='/tms/dev/devResultList.do'/>";
 	   document.listForm.submit();
 	}
 
 function fn_result_change(asd) {
+	var idVal0 = document.getElementById(asd).value;
+	var idVal1 = document.getElementById(asd+1).value;
+	if(idVal1 != null && idVal1 != "")
+		{
+			if(idVal0 > idVal1)
+				{
+					alert("개발시작일자보다 큰 값을 입력하시오.");
+					document.getElementById(asd+1).value = null;
+				}
+		}
+	if(idVal0 == null || idVal0 == "")
+		{
+			alert("개발시작일자부터 입력하십시오.")
+			document.getElementById(asd+1).value = null;
+		}
 	var idVal3 = document.getElementById(asd+3).id;
 	$("#"+idVal3).removeClass("disabled");
 	$("#"+idVal3).addClass("abled");
@@ -51,7 +65,8 @@ function fn_result_regist(t){
 
 	var idVal = document.getElementById(t).value;
 	var idVal1 = document.getElementById(t+1).value;
-	
+	var idVal2 = document.getElementById(t+2).value;
+
 
 	
 	location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1;
@@ -152,7 +167,10 @@ $(function(){
 					  			<li>
 								    <label for="searchByTaskGb">업무구분</label>
 									<select name="task" id="task" style="width:15%;text-align-last:center;">
-									   <option value="">선택하세요</option>
+									<option value="">선택하세요</option>
+									   <c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
+									    		<option value="<c:out value="${taskGb.TASK_GB}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb.TASK_GB}">selected="selected"</c:if> ><c:out value="${taskGb.TASK_GB}" /></option>
+									    	</c:forEach>	
 									</select>				
 									<input type="hidden" name="searchByTaskGb" value="">
 					  			</li>
