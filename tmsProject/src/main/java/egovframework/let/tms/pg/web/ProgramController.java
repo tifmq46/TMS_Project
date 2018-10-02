@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.annotation.Resource;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -719,32 +720,82 @@ public class ProgramController {
 		int error = 0;
 		
 		List<String> error_list = new ArrayList<String>();
+		List<String> error_message = new ArrayList<String>();
+		ArrayList <HashMap<String, String>> error_hash = new ArrayList <HashMap<String, String>>();
+		
 		
 		for (int i = 0; i < xlsxList.size(); i++) {
 			
 			j=i;
 			
+			
 			try {
 				vo = xlsxList.get(i);
+				
+				if(!vo.getUSE_YN().equals("Y") || vo.getUSE_YN().equals("N"))
+				{
+					HashMap<String, String> hash = new HashMap<String, String>();
+					
+					hash.put("problem", (j+1)+"행을 등록시키지 못했습니다!");
+					hash.put("reason", "컬럼 'USE YN' 형식 불일치");
+					error_hash.add(hash);
+					
+					continue;
+				}
+				
 				ProgramService.insertPg(vo);
-						
+				
+				
+				
 				model.addAttribute("result", "true");
 				model.addAttribute("result2", "true");
 			}catch(Exception e) {
+				HashMap<String, String> hash = new HashMap<String, String>();
+				
 				error = 1;
+				
+				
 				
 				String[] array = e.toString().split(":");
 				
-				String last = array[array.length-1];
 				
-				error_list.add((j+1)+"행을 등록시키지 못했습니다!"+last);	
+				
+				String last = array[array.length-1];
+				last = last.replace("Column", "컬럼");
+				last = last.replace("Duplicate entry", "컬럼");
+				last = last.replace("cannot be nul", "형식 불일치");
+				last = last.replace("for key 'PRIMARY'", "중복");
+				last = last.replace("for key 'PRIMARY'", "중복");
+				
+				if(last.contains("a foreign key"))
+				{
+					String[] array2 = last.split("\\(");
+					last = array2[3];
+					String[] array3 = last.split("\\)");
+					last = "컬럼 "+array3[0]+" 외래키";
+					//System.out.println(last);
+				}
+				
+				
+				
+				error_list.add((j+1)+"행을 등록시키지 못했습니다!"+last);
+				error_message.add(last);
+				
+				hash.put("problem", (j+1)+"행을 등록시키지 못했습니다!");
+				hash.put("reason", last);
+				error_hash.add(hash);
 				
 				model.addAttribute("result", (j+1)+": false");
 				model.addAttribute("result2", (j+1)+": false");
 				continue;
 			}
+			
 		}  
 		model.addAttribute("error_lists", error_list);
+		model.addAttribute("error_messages", error_message);
+		model.addAttribute("error_hashs", error_hash);
+		
+		//System.out.println(error_hash.get(2));
 		
 		/*
 		try {
