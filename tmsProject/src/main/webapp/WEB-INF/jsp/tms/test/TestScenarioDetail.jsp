@@ -195,7 +195,7 @@ function deleteTestScenario() {
                     <div class="tmsTestButton">
 	                  	<ul>        
 	           				<li>
-								<div class="buttons" style="float:right;">
+								<div class="buttons">
 	                                <a href="#" onclick="updateTestScenario(); return false;"><spring:message code="button.save" /></a>
 				   					<a href="#" onclick="deleteTestScenario(); return false;"><spring:message code="button.delete" /></a>
 								</div>	  				  			

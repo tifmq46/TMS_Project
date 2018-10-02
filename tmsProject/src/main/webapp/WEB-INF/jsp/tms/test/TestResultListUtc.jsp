@@ -156,11 +156,13 @@ function searchFileNm() {
              		 <colgroup>
              		 	<col width="40"/>
         				<col width="100"/> 
-        				<col width="100"/>
+        				<col width="130"/>
         				<col width="50"/>
         				<col width="60"/>
         				<col width="60"/>
         				<col width="80"/>
+        				<col width="30"/>
+        				<col width="30"/>
         				<col width="50"/>
         			</colgroup>
         			<tr>
@@ -171,6 +173,8 @@ function searchFileNm() {
         				<th align="center"><spring:message code="tms.test.pgId" /></th>
         				<th align="center"><spring:message code="tms.test.taskGb" /></th>
 			        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>
+			        	<th align="center"><spring:message code="tms.test.firstTest" /></th>
+			        	<th align="center"><spring:message code="tms.test.secondTest" /></th>
         				<th align="center"><spring:message code="tms.test.completeYn" /></th>
         			</tr>
         			
@@ -188,6 +192,8 @@ function searchFileNm() {
             				<td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.firstTestResultYn}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.secondTestResultYn}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>
             			</tr>
         			</c:forEach>

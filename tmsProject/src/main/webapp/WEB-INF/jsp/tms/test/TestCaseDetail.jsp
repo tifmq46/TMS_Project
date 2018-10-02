@@ -199,7 +199,7 @@ function deleteTestCase() {
                     <div class="tmsTestButton" style="margin-bottom:30px;">
 	                  	<ul>        
 	           				<li>
-								<div id="buttonDiv" class="buttons" style="float:right;">
+								<div id="buttonDiv" class="buttons">
 	                                <a href="#" onclick="updateTestCase(); return false;"><spring:message code="button.save" /> </a>
 	                                <a href="#" onclick="deleteTestCase(); return false;"><spring:message code="button.delete" /> </a>
 				   					<%-- 

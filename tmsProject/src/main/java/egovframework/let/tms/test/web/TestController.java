@@ -11,11 +11,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 
 import egovframework.let.tms.test.service.TestDefaultVO;
 import egovframework.let.tms.test.service.TestScenarioVO;
@@ -28,6 +28,13 @@ import egovframework.let.tms.test.service.TestCaseVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import net.sf.json.JSONArray;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
+
+//import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 
 @Controller
 public class TestController {
@@ -194,11 +201,11 @@ public class TestController {
 	public String updateTestCaseImpl(RedirectAttributes redirectAttributes, @ModelAttribute("testCaseVO") TestCaseVO testCaseVO, 
 			BindingResult errors , ModelMap model) throws Exception {
 		
-			String testcaseId = testCaseVO.getTestcaseId();
+			String testcaseGb = testCaseVO.getTestcaseGb();
 			
 			testService.updateTestCase(testCaseVO);
 			redirectAttributes.addFlashAttribute("message",  egovMessageSource.getMessage("success.common.update"));
-			return "redirect:/tms/test/selectTestCase.do?testcaseId=" + testcaseId;
+			return "redirect:/tms/test/selectTestCaseList.do?testcaseGb=" + testcaseGb;
 			
 	}
 	
@@ -213,17 +220,56 @@ public class TestController {
 			BindingResult errors ,  ModelMap model) throws Exception {
 		
 		String testcaseId = testScenarioVO.getTestcaseId();
+		System.out.println("시나리오 테스트 결과 :" + testScenarioVO.getTestResultYn());
 		
 		beanValidator.validate(testScenarioVO, errors);
 		if(errors.hasErrors()){
-			return "redirect:/tms/test/selectTestCase.do?testcaseId=" + testcaseId;
+			System.out.println("시나리오 업데이트 안됨");
+			redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("fail.common.update"));
+			return "redirect:/tms/test/selectTestResult.do?testcaseId=" + testcaseId;
 
 		} else {
 			testService.updateTestScenario(testScenarioVO);
 			redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.update"));
-			return "redirect:/tms/test/selectTestCase.do?testcaseId=" + testcaseId;
+			return "redirect:/tms/test/selectTestResult.do?testcaseId=" + testcaseId;
 		}
 	}
+	
+	
+	/**
+	 * 테스트시나리오 결과를 복수로 수정한다.
+	 * @param vo - 등록할 정보가 담긴 TestScenarioVO
+	 * @return String
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "/tms/test/updateTestScenarioMultiResultImpl.do")
+	public String updateTestScenarioMultiResultImpl(@RequestParam("updateScenarioDataJson") String updateScenarioDataJson, RedirectAttributes redirectAttributes, ModelMap model,
+			@ModelAttribute("testScenarioVO") TestScenarioVO testScenarioVO ) throws Exception {
+		
+		String testcaseId = testScenarioVO.getTestcaseId();
+		String tmp = (String)updateScenarioDataJson;
+		System.out.println("업데이트 시나리오 : " + tmp);
+		try {
+		
+		JSONParser jsonParser = new JSONParser();
+		org.json.simple.JSONArray jsonArray = (org.json.simple.JSONArray)jsonParser.parse(tmp);
+		
+		for(int i = 0; i < jsonArray.size(); i++){
+			JSONObject tempObj = (JSONObject)jsonArray.get(i);
+			TestScenarioVO vo = new TestScenarioVO();
+			vo.setTestscenarioId((String)tempObj.get("testscenarioId"));
+			vo.setTestResultYn((String)tempObj.get("testResultYn"));
+			testService.updateTestScenarioMultiResult(vo);
+		}
+		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.update"));
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/tms/test/selectTestResult.do?testcaseId=" + testcaseId;
+	}
+	
 	
 	
 	/**
