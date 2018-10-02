@@ -74,6 +74,10 @@
 				<var-value>800</var-value>
 				</var>
 			</field>
+		</form>
+    </formset>
+    <formset>
+        <form name="testScenarioResultUpdate">
 			<field property="testResultContent" depends="maxlength">
         		<arg0 key="tms.test.testResultContent" />
         		<arg1 key="800" resource="false"/>

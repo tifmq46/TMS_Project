@@ -43,7 +43,6 @@ public class TestScenarioVO implements Serializable{
 	/** 테스트결과 내용 */
 	private String testResultContent;
 	
-	
 
 	public String getTestscenarioId() {
 		return testscenarioId;

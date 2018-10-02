@@ -29,13 +29,13 @@
 
 <title>테스트시나리오 결과</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="testScenarioUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
+<validator:javascript formName="testScenarioResultUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript" defer="defer">
 
 
 function updateTestScenario(){
 	
-	if (!validateTestScenarioUpdate(document.testScenarioVO)){
+	if (!validateTestScenarioResultUpdate(document.testScenarioVO)){
         return;
     }
     if (confirm('<spring:message code="common.update.msg" />')) {
@@ -120,6 +120,7 @@ function deleteTestScenario() {
                                 </th>
                                 <td width="25%" nowrap >
                                 	<c:out value='${testScenarioVO.testscenarioOrd}'/>
+                                	<input type="hidden" name="testscenarioOrd" value="${testScenarioVO.testscenarioOrd}" />
                                 </td>
                             </tr>
                             
@@ -138,6 +139,7 @@ function deleteTestScenario() {
                                 </th>
 								<td width="75%" colspan="3">
                             		<c:out value='${testScenarioVO.testscenarioContent}'/>
+                            		<input type="hidden" name="testscenarioContent" value="${testScenarioVO.testscenarioContent}" />
                             	</td>
                             </tr>
                             
@@ -147,6 +149,7 @@ function deleteTestScenario() {
                                 </th>
                                 <td width="75%" colspan="3">
                                 	<c:out value='${testScenarioVO.expectedResult}'/>
+                                	<input type="hidden" name="expectedResult" value="${testScenarioVO.expectedResult}" />
                             	</td>
                             </tr>
                             
@@ -185,6 +188,7 @@ function deleteTestScenario() {
                                 </th>
                                 <td width="75%" colspan="3">
                             		<textarea type="textarea" rows="5" style="width:100%" id="testResultContent" name="testResultContent"><c:out value='${testScenarioVO.testResultContent}'/></textarea>
+                            		<br/><form:errors path="testResultContent" />
                             	</td>
                             </tr>
                         </table>
@@ -195,7 +199,7 @@ function deleteTestScenario() {
                     <div class="tmsTestButton">
 	                  	<ul>        
 	           				<li>
-								<div class="buttons" style="float:right;">
+								<div class="buttons">
 	                                <a href="#" onclick="updateTestScenario(); return false;"><spring:message code="button.save" /></a>
 				   					<a href="#" onclick="deleteTestScenario(); return false;"><spring:message code="button.delete" /></a>
 								</div>	  				  			

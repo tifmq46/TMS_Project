@@ -129,20 +129,16 @@
 	    
 		    UPDATE TESTCASE_TB
 		    SET
-		    	  PRECONDITION 			= #precondition#
-		    	, TESTCASE_CONTENT 		= #testcaseContent#
-		    	, FIRST_TEST_RESULT_YN 	= #firstTestResultYn#
+		    	 FIRST_TEST_RESULT_YN 	= #firstTestResultYn#
 		    	, SECOND_TEST_RESULT_YN = #secondTestResultYn#
-		    	
-	    		<!-- 3차 테스트 완료시 최종완료여부와 최종완료일자 등록 -->
-	    		
-			 <isNotEmpty property="thirdTestResultYn">
-	     			, THIRD_TEST_RESULT_YN = #thirdTestResultYn#
-	   			<isEqual property="thirdTestResultYn" compareValue="Y">
-	   			     , COMPLETE_YN = 'Y'
-	   				 , COMPLETE_DT = now()
-	   			</isEqual>
-	       	</isNotEmpty>
+	     		, PRECONDITION = #precondition#
+	     		, TESTCASE_CONTENT = #testcaseContent#
+	     		
+		    	<isNotEmpty property="completeYn">
+	     			, COMPLETE_YN = #completeYn#
+	     			, COMPLETE_DT = now()
+	       		</isNotEmpty>
+			 
 			WHERE TESTCASE_ID = #testcaseId#
 	    
 	</update>
@@ -150,16 +146,65 @@
 	<update id="TestDAO.updateTestScenario" parameterClass="TestScenarioVO">
 	    
 	    UPDATE TESTSCENARIO_TB
-	    SET
-	    	  TESTSCENARIO_ORD 		= #testscenarioOrd#
-	    	, TEST_RESULT_YN 		= #testResultYn#
-	    	, TESTSCENARIO_CONTENT 	= #testscenarioContent#
-	    	, EXPECTED_RESULT 		= #expectedResult#
-	    	, TEST_RESULT_CONTENT 	= #testResultContent#
-	    	, TEST_DT 				= #testDt#
 	    
+	    <dynamic prepend = "SET" >
+	    
+	    	<isNotEmpty property="testCondition" prepend = ",">
+	     			TEST_CONDITION = #testCondition#
+	       	</isNotEmpty>
+	       	
+	    	<isNotEmpty property="testResultYn" prepend = ",">
+	     			TEST_RESULT_YN = #testResultYn#
+	       	</isNotEmpty>
+	       	
+	    	<isNotEmpty property="testDt" prepend = ",">
+	     			TEST_DT = #testDt#
+	       	</isNotEmpty>
+	       	
+	    	<isNotEmpty property="testResultContent" prepend = ",">
+	     			TEST_RESULT_CONTENT = #testResultContent#
+	       	</isNotEmpty>
+	    	
+	    	<isNotEmpty property="testscenarioOrd" prepend = ",">
+	     			TESTSCENARIO_ORD = #testscenarioOrd#
+	       	</isNotEmpty>
+	       		
+	    	<isNotEmpty property="testscenarioContent" prepend = ",">
+	     			TESTSCENARIO_CONTENT = #testscenarioContent#
+	       	</isNotEmpty>
+	       		
+	    	 <isNotEmpty property="expectedResult" prepend = ",">
+	     			EXPECTED_RESULT = #expectedResult#
+	       	</isNotEmpty>
+	       	
+	    </dynamic>
+	    	  
 		WHERE TESTSCENARIO_ID = #testscenarioId#
+		
+	</update>
+	
+	<update id="TestDAO.updateTestScenarioMultiResult" parameterClass="TestScenarioVO">
 	    
+	    UPDATE TESTSCENARIO_TB
+	    
+	    <dynamic prepend = "SET" >
+	    	
+	    	<isNotEmpty property="testResultYn" prepend = ",">
+	     			TEST_RESULT_YN = #testResultYn#
+	       	</isNotEmpty>
+	       	
+	    	<isNotEmpty property="testDt" prepend = ",">
+	     			TEST_DT = #testDt#
+	       	</isNotEmpty>
+	       	
+	    	<isNotEmpty property="testResultContent" prepend = ",">
+	     			TEST_RESULT_CONTENT = #testResultContent#
+	       	</isNotEmpty>
+	    
+	    </dynamic>
+	    	  
+		WHERE TESTSCENARIO_ID = #testscenarioId#
+		
 	</update>
 	
 	<delete id="TestDAO.deleteTestCase" parameterClass="java.lang.String" >

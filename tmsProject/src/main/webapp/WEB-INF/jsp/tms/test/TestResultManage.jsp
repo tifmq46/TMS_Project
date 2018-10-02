@@ -27,20 +27,70 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>테스트케이스 상세</title>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="testCaseUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 
 function updateTestCase(){
 	
-	if (!validateTestCaseUpdate(document.testCaseVO)){
-        return;
-    }
     if (confirm('<spring:message code="common.update.msg" />')) {
     	document.testCaseVO.action = "<c:url value='/tms/test/updateTestCaseImpl.do'/>";
-   	 	document.testCaseVO.submit();       
+   	 	document.testCaseVO.submit();  
     }
+}
+
+
+/* ********************************************************
+ * 멀티삭제 처리 함수
+ ******************************************************** */
+function fDeleteMenuList() {
+    var checkField = document.menuManageForm.checkField;
+    var menuNo = document.menuManageForm.checkMenuNo;
+    var checkMenuNos = "";
+    var checkedCount = 0;
+    if(checkField) {
+
+        if(checkField.length > 1) {
+            for(var i=0; i < checkField.length; i++) {
+                if(checkField[i].checked) {
+                    checkMenuNos += ((checkedCount==0? "" : ",") + menuNo[i].value);
+                    checkedCount++;
+                }
+            }
+        } else {
+            if(checkField.checked) {
+                checkMenuNos = menuNo.value;
+            }
+        }
+    }   
+
+    document.menuManageForm.checkedMenuNoForDel.value=checkMenuNos;
+    document.menuManageForm.action = "<c:url value='/sym/mnu/mpm/EgovMenuManageListDelete.do'/>";
+    document.menuManageForm.submit(); 
+}
+
+
+function UpdateScenarioResultAll() {
+	
+	 if (confirm('<spring:message code="common.update.msg" />')) {
+	
+	var updateScenarioCount = $('.checkScenarioId').length;
+	var updateArray = new Array();
+	 
+	$('.checkScenarioId').each(function(){
+		var updateScenarioId 	= $(this).val();
+		var updateScenarioValue = document.getElementById(updateScenarioId).value;
+		var updateScenarioData	= new Object();
+		
+		updateScenarioData.testscenarioId 	= updateScenarioId;
+		updateScenarioData.testResultYn 	= updateScenarioValue;
+		updateArray.push(updateScenarioData);
+	});
+	
+	document.testScenarioVO.updateScenarioDataJson.value = JSON.stringify(updateArray);
+	document.testScenarioVO.action = "<c:url value='/tms/test/updateTestScenarioMultiResultImpl.do'/>";
+	document.testScenarioVO.submit(); 
+
+	 }
 }
 
 function deleteTestCase() {
@@ -92,7 +142,7 @@ function deleteTestCase() {
                 <div id="page_info"><div id="page_info_align"></div></div>      
                              
                              
-               <form:form commandName="testCaseVO" name="testCaseVO" method="post" action="/tms/test/updateTestCaseImpl.do">           
+               <form:form commandName="testCaseVO" name="testCaseVO" method="post" action="<c:url value='/tms/test/updateTestCaseImpl.do'/>">           
                  
                   <div id="border" class="modify_user" >
                  		<input type="hidden" name="testcaseGb" value="${testVoMap.testcaseGbCode}" >
@@ -109,7 +159,7 @@ function deleteTestCase() {
                                 </th>
                                 <td width="49.8%" nowrap colspan="3">
                                  <c:out value='${testVoMap.testcaseContent}'/>
-                                  <br/><form:errors path="testcaseContent" />
+                                 <input type="hidden" name="testcaseContent" value="${testVoMap.testcaseContent}" >
                                 </td>
                             </tr>
                             
@@ -159,7 +209,7 @@ function deleteTestCase() {
                                 </th>
                                 <td width="83%" nowrap colspan="5">
                                    <c:out value='${testVoMap.precondition}'/>
-                                   <br/><form:errors path="precondition" /> 
+                                   <input type="hidden" name="precondition" value="${testVoMap.precondition}" >
                                 </td>
                             </tr>
                 
@@ -215,7 +265,22 @@ function deleteTestCase() {
                                   <th width="16.6%" height="23"  nowrap="nowrap"><label for="completeYn"><spring:message code="tms.test.completeYn" /></label>
                                 </th>
                                 <td width="16.6%" nowrap >
-                                	<c:out value='${testVoMap.completeYn}'/>
+                                	<c:choose>
+                                		<c:when test="${testVoMap.completeYn == 'Y'}">
+	                                		<input type="radio" name="completeYn" value="Y" checked>Y
+	  										&nbsp;<input type="radio" name="completeYn" value="N">N
+                                		</c:when>
+                                		
+                                		<c:when test="${testVoMap.completeYn == 'N'}">
+	                                		<input type="radio" name="completeYn" value="Y" >Y
+	  										&nbsp;<input type="radio" name="completeYn" value="N" checked>N
+                                		</c:when>
+                                		
+                                		<c:otherwise>
+                                			<input type="radio" name="completeYn" value="Y">Y
+	  										&nbsp;<input type="radio" name="completeYn" value="N">N
+                                		</c:otherwise>
+                                	</c:choose>
                                 </td>
                             </tr>
                             
@@ -225,15 +290,19 @@ function deleteTestCase() {
                     <br>
                 	</form:form>
                 
-                   <form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="/tms/test/updateTestScenarioImpl.do">           
-					<div id="border" class="modify_user" style="height:250px; overflow:auto; " >
+                   <form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="<c:url value='/tms/test/updateTestScenarioMultiResultImpl.do'/>">           
+					<div id="border" class="modify_user" style="height:200px; width:92%; overflow:auto; " >
+						
+						<input type="hidden" name="testcaseId" value="${testVoMap.testcaseId}" >
+						<input type="hidden" name="updateScenarioDataJson" >
                         <table>
                         	<colgroup>
-		        				<col width="40"/> 
+		        				<col width="40"/>
 		        				<col width="180"/>
 		        				<col width="100"/>
 		        				<col width="180"/>
 		        				<col width="120"/>
+		        				<col width="60"/>
 		        				<col width="60"/>
 	        				</colgroup>
                         
@@ -265,40 +334,36 @@ function deleteTestCase() {
 	            						<a href= "<c:url value='/tms/test/selectTestScenarioResult.do?testscenarioId=${result.testscenarioId}'/>">
 			            				<strong><c:out value="${result.testscenarioContent}"/></strong>
 			            				</a>
+			            				<input class="checkScenarioId" type="hidden" value="<c:out value='${result.testscenarioId}'/>"/>
 		            				</td>
 		            				<td align="center" class="listtd"><c:out value="${result.testCondition}"/>&nbsp;</td>
 		            				<td align="center" class="listtd"><c:out value="${result.expectedResult}"/>&nbsp;</td>
 		            				<td align="center" class="listtd"><c:out value="${result.testResultContent}"/>&nbsp;</td>
 		            				<td align="center" class="listtd"><c:out value="${result.userTestId}"/>&nbsp;</td>
-		            				<td align="center" class="listtd"><c:out value="${result.testResultYn}"/>&nbsp;</td>
+		            				<td align="center" class="listtd">
+		            					<select name="testResultYn" id="<c:out value='${result.testscenarioId}'/>" >
+           									<option value="">없음</option>
+           									<option value="P" <c:if test="${result.testResultYn == 'P'}">selected="selected"</c:if>>Pass</option>
+           									<option value="F" <c:if test="${result.testResultYn == 'F'}">selected="selected"</c:if>>Fail</option>
+		            					</select>	
+		            				</td>
 		            			</tr>
         					</c:forEach>
                         </table>
                     </div>
-
-             	
-             		<div class="tmsTestButton" >
+				</form:form>
+				
+					<div class="tmsTestButton" >
 	                    <ul>        
 	           				<li>
-								<div class="buttons" style="float:right;">
-				   					<a href= "<c:url value='/tms/test/insertTestScenario.do?userId=${testVoMap.userId}&amp;testcaseId=${testVoMap.testcaseId} '/>"><spring:message code="button.create" /></a>
-									<a href="#LINK" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
+								<div class="buttons">
+	                                <a href="#" onclick="UpdateScenarioResultAll(); return false;"><spring:message code="button.save" /> </a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>        
                    </div>
-
-                <!-- 페이지 네비게이션 시작 -->
-                <c:if test="${!empty loginPolicyVO.pageIndex }">
-                    <div id="paging_div">
-                        <ul class="paging_align">
-                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage" />
-                        </ul>
-                    </div>
-                <!-- //페이지 네비게이션 끝 -->
-                </c:if>
-				</form:form>
-
+				
+				
             </div>
             <!-- //content 끝 -->
             

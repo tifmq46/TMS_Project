@@ -56,6 +56,15 @@ public class TestDAO extends EgovAbstractDAO{
 	}
 
 	
+	/**
+	 * 테스트 시나리오를 복수로 수정한다.
+	 * @param vo - 수정할 정보가 담긴 TestScenarioVO
+	 * @return void형
+	 * @exception Exception
+	 */
+	public void updateTestScenarioMultiResult(TestScenarioVO testScenarioVO) throws Exception {
+		update("TestDAO.updateTestScenarioMultiResult", testScenarioVO);
+	}
 	
 	
 	/**

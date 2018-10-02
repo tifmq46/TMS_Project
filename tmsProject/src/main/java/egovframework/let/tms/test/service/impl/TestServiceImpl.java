@@ -70,6 +70,11 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 		
 	}
 	
+	@Override
+	public void updateTestScenarioMultiResult(TestScenarioVO testScenarioVO) throws Exception{
+		testDAO.updateTestScenarioMultiResult(testScenarioVO);
+	}
+	
 	
 	@Override
 	public void deleteTestCase(String testcaseId) throws Exception {

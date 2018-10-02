@@ -177,7 +177,7 @@ function insertTestScenarioImpl(){
              		<div class="tmsTestButton" >
 	                    <ul>        
 	           				<li>
-								<div class="buttons" style="float:right;">
+								<div class="buttons">
 				   					<a onclick="insertTestScenarioImpl(); return false;"><spring:message code="button.create" /></a>
 								</div>  				  			
 		  					</li>             

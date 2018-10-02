@@ -219,7 +219,7 @@ function fCheckAll() {
                 	</form:form>
                 	
                 	<form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="/tms/test/updateTestScenarioImpl.do">           
-					<div id="border" class="modify_user" style="height:250px; overflow:auto; " >
+					<div id="border" class="modify_user" style="height:200px; width:92%; overflow:auto; " >
                         <table>
                         	<colgroup>
                         		<col width="4%" >
@@ -228,6 +228,7 @@ function fCheckAll() {
 		        				<col width="100"/>
 		        				<col width="180"/>
 		        				<col width="120"/>
+		        				<col width="60"/>
 		        				<col width="60"/>
 	        				</colgroup>
                         
@@ -255,7 +256,7 @@ function fCheckAll() {
                             <c:forEach var="result" items="${testScenarioList}" varStatus="status">
         			
 		            			<tr>
-			            			<td nowrap="nowrap">
+			            			<td align="center" class="listtd" nowrap="nowrap">
 							       		<input type="checkbox" name="checkField" class="check2" title="선택"/>
 							       		<input name="checkMenuNo" type="hidden" value="<c:out value='${result.testscenarioId}'/>"/>
 							    	</td>
@@ -280,7 +281,7 @@ function fCheckAll() {
              		<div class="tmsTestButton" >
 	                    <ul>        
 	           				<li>
-								<div class="buttons" style="float:right;">
+								<div class="buttons">
 				   					<a href= "<c:url value='/tms/test/insertTestScenario.do?userId=${testVoMap.userId}&amp;testcaseId=${testVoMap.testcaseId} '/>"><spring:message code="button.create" /></a>
 									<a href="#LINK" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
 								</div>	  				  			
