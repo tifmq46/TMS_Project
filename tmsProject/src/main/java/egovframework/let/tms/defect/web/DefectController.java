@@ -1,20 +1,20 @@
 package egovframework.let.tms.defect.web;
 
-import java.io.ByteArrayInputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -38,7 +36,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,13 +44,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
-import com.mysql.jdbc.Blob;
-
 import egovframework.let.tms.defect.service.DefectDefaultVO;
 import egovframework.let.tms.defect.service.DefectFileVO;
 import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.defect.service.DefectVO;
-import egovframework.let.tms.pg.service.PgCurrentVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import net.sf.json.JSONArray;
@@ -425,9 +420,10 @@ public class DefectController {
 		return "tms/defect/defectStatsList";
 	}
 	
-	/** 통계 엑셀 다운로드 기능 */
+	/** 통계 엑셀 다운로드 기능 
+	 * @throws Exception */
 	@RequestMapping(value = "/tms/defect/StatsToExcel.do")
-	public String StatsToExcel(@RequestParam("statsGb") String statsGb, ModelMap model) {
+	public String StatsToExcel(@RequestParam("statsGb") String statsGb, ModelMap model, HttpServletResponse response) throws Exception {
 		
 		List<String> taskGbList = defectService.selectTaskGbByDefect();
 		List<HashMap<String,String>> taskGbByStats = new ArrayList<HashMap<String,String>>();
@@ -454,13 +450,13 @@ public class DefectController {
 		}
 		
 		if(statsGb.equals("task")) {
-			xlsxWiter(taskGbByStats, statsGb);
+			xlsxWiter(taskGbByStats, statsGb, response);
 		} else if(statsGb.equals("pg")) {
-			xlsxWiter(pgIdByStats, statsGb);
+			xlsxWiter(pgIdByStats, statsGb, response);
 		} else if(statsGb.equals("userTest")) {
-			xlsxWiter(userTestByStats, statsGb);
+			xlsxWiter(userTestByStats, statsGb, response);
 		} else {
-			xlsxWiter(userDevByStats, statsGb);
+			xlsxWiter(userDevByStats, statsGb, response);
 		}
 		
 		model.addAttribute("taskGbByStats",taskGbByStats);
@@ -470,7 +466,7 @@ public class DefectController {
 		return "tms/defect/defectStatsList";
 	}
 	
-	public void xlsxWiter(List<HashMap<String,String>> list, String statsGb) {
+	public void xlsxWiter(List<HashMap<String,String>> list, String statsGb, HttpServletResponse response) throws Exception {
 		// 워크북 생성
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// 워크시트 생성
@@ -591,13 +587,13 @@ public class DefectController {
 		File file;
 		
 		if(statsGb.equals("task")) {
-			file = new File("C:\\TMS\\TMS_통계자료\\업무별 현황.xlsx");
+			file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
 		} else if(statsGb.equals("pg")) {
-			file = new File("C:\\TMS\\TMS_통계자료\\화면별 현황.xlsx");
+			file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
 		} else if(statsGb.equals("userTest")) {
-			file = new File("C:\\TMS\\TMS_통계자료\\테스터별 현황.xlsx");
+			file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
 		} else {
-			file = new File("C:\\TMS\\TMS_통계자료\\개발자별 현황.xlsx");
+			file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
 		}
 		
 		//디렉토리 생성 메서드
@@ -624,6 +620,54 @@ public class DefectController {
 				e.printStackTrace();
 			}
 		}
+		
+		/** 경로 다운로드 */
+		 String path = "C:/TMS/TMS_통계자료/";  // Link의 자바파일에서 excel 파일이 생성된 경로
+         String realFileNm = "프로그램현황.xlsx";
+         
+         File uFile = new File(path,realFileNm);
+         int fSize = (int) uFile.length();
+         if (fSize > 0) {  //파일 사이즈가 0보다 클 경우 다운로드
+          String mimetype = "application/x-msdownload";  //minetype은 파일확장자에 맞게 설정
+          response.setHeader("Content-Disposition", "attachment; filename=\"TMS.xlsx\"");
+          response.setContentType(mimetype);
+          response.setContentLength(fSize);
+          BufferedInputStream in = null;
+          BufferedOutputStream out = null;
+          
+          try {
+          
+           in = new BufferedInputStream(new FileInputStream(uFile));
+           out = new BufferedOutputStream(response.getOutputStream());
+           FileCopyUtils.copy(in, out);
+           out.flush();
+          } catch (Exception ex) {
+          } finally {
+             String path1 = "C:/TMS/TMS_통계자료/프로그램현황.xlsx";
+             File deleteFolder = new File(path1);
+             deleteFolder.delete();
+             String path2 = "C:/TMS/TMS_통계자료";
+             File deleteFolder2 = new File(path2);
+             deleteFolder2.delete();
+             String path3 = "C:/TMS";
+             File deleteFolder3 = new File(path3);
+             deleteFolder3.delete();
+           if (in != null) in.close();
+           if (out != null) out.close();
+          }
+         } else {
+          response.setContentType("application/x-msdownload");
+        
+          PrintWriter printwriter = response.getWriter();
+          printwriter.println("<html>");
+          printwriter.println("<br><br><br><h2>Could not get file name:<br>" + realFileNm + "</h2>");
+          printwriter.println("<br><br><br><center><h3><a href='javascript: history.go(-1)'>Back</a></h3></center>");
+          printwriter.println("<br><br><br>&copy; webAccess");
+          printwriter.println("</html>");
+          printwriter.flush();
+          printwriter.close();
+         }
+		
 	}
 	
 }
