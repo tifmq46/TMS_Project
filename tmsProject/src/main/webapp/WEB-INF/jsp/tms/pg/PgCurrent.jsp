@@ -61,11 +61,11 @@
         document.frm.submit();
     }
     function fn_egov_insert_addbbsUseInf(){
-    	alert("'C://TMS_통계자료//프로그램현황.xlsx'이 다운되었습니다.");
         document.frm.action = "<c:url value='/tms/pg/ExelWrite.do'/>";
         document.frm.submit();      
     }
     function fn_egov_select_bbsUseInf(bbsId, trgetId){
+    	
         document.frm.bbsId.value = bbsId;
         document.frm.trgetId.value = trgetId;
         document.frm.action = "<c:url value='/cop/com/selectBBSUseInf.do'/>";
@@ -131,7 +131,6 @@
         }
     }
     function fn_egov_insert_addbbsUseInf(){
-    	alert("'C://TMS_통계자료//프로그램현황.xlsx'이 다운되었습니다.");
         document.frm.action = "<c:url value='/tms/pg/ExelWrite.do'/>";
         document.frm.submit();      
     }
@@ -174,7 +173,6 @@
                         </ul>
                     </div>
                 </div>
-                
                 
                 <form name="frm" id="frm" action ="<c:url value='/tms/pg/PgManage.do'/>" method="post">
 				<input type="submit" id="invisible" class="invisible"/>
