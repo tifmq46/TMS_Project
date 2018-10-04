@@ -159,40 +159,36 @@
             </div>
             <!-- //검색 필드 박스 끝 -->
                 
-                
-                 <table width="80% border="0" cellpadding="0" cellspacing="10" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
+                 <table width="80%" cellspacing="0" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
                  <caption style="visibility:hidden">총 건수, 완료건수, 미완료, 진행률 표시하는 테이블</caption>
                  
                  <tr>
-                 	<td align="center">총 : <c:out value="${actionTotCnt}"/> </td>
-                  <td align="center">완료 : <c:out value="${actionComplete}"/></td>
-                 	<td align="center">미완료 : <c:out value="${actionTotCnt - actionComplete}"/></td>
+                 	<td align="center" width="100" style="font-size:15px; font-weight:bolder">총 : <c:out value="${actionTotCnt}"/></td>
+                  <td align="center" width="100" style="font-size:15px; font-weight:bolder">완료 : <c:out value="${actionComplete}"/></td>
+                 	<td align="center" width="100" style="font-size:15px; font-weight:bolder">미완료 : <c:out value="${actionTotCnt - actionComplete}"/></td>
+                 	<td align="right" width="100" style="font-size:15px; font-weight:bolder">진행률 : </td>
                  	<c:choose>
                  		<c:when test="${actionTotCnt ne '0' }">
                  		<fmt:parseNumber var="actionProgression" integerOnly="true" value="${actionComplete / actionTotCnt * 100}"/>
-                 		${actionProgression}%
                  		</c:when>
                  		<c:otherwise>
-                 		0%
                  		</c:otherwise>
                  	</c:choose>
-                 	<td align="center">진행률 : </td>
-                 	<td>
+                 	<td style="font-size:15px; font-weight:bolder">
                  	<c:choose>
                  		<c:when test="${actionTotCnt ne '0' }">
-                 			<div class="progress"><div class="progress-bar" style="width:${actionProgression}%"> <strong><c:out value=" ${actionProgression}"></c:out>%</strong></div></div>
+                 			<div class="progress" style="height: 1.5rem;"><div class="progress-bar" style="width:${actionProgression}%" > <strong><c:out value=" ${actionProgression}"></c:out>%</strong></div></div>
                  		</c:when>
                  		<c:otherwise>
-                 			<div class="progress"><div class="progress-bar" style="width:0%"> <strong><c:out value="0"></c:out>%</strong></div></div>
+                 			<div class="progress" style="height: 1.5rem;"><div class="progress-bar" style="width:0%"> <strong><c:out value="0"></c:out>%</strong></div></div>
                  		</c:otherwise>
                  	</c:choose>
                  	</td>
-                 	<td align="center"></td>
-                 	
                  </tr>        
              	</table>
-
-                <div id="page_info"><div id="page_info_align"></div></div>                    
+             	
+                <!-- <div id="page_info"><div id="page_info_align"></div></div> -->
+                                    
                 <div class="default_tablestyle">
               <table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
                  <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
@@ -201,14 +197,14 @@
               <colgroup>
                     <col width="5%"/> 
                     <col width="5%"/>
-                    <col width="10%"/>
                     <col width="15%"/>
-                    <col width="40%"/>
+                    <col width="15%"/>
+                    <col width="35%"/>
                     <col width="5%"/>
                     <col width="5%"/>
                     <col width="10%"/>
                     <col width="5%"/>
-        	</colgroup>
+           </colgroup>
         			<tr>
         			
         				<th align="center">번호</th>

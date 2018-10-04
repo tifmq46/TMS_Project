@@ -28,9 +28,46 @@
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
 <script type="text/javascript">
+
+function selectBoxChange() {
+	var selectBoxId = document.getElementById("selectBoxStats");
+	var selectBoxValue = selectBoxId.options[selectBoxId.selectedIndex].value;
+	
+	if(selectBoxValue == 1) {
+		document.getElementById("dayByDefectCntTitle").style.display="inline"
+		document.getElementById("dayByDefectCnt").style.display="inline"
+		document.getElementById("monthByDefectCntTitle").style.display="none"
+		document.getElementById("monthByDefectCnt").style.display="none"
+	} else if (selectBoxValue == 2) {
+		document.getElementById("dayByDefectCntTitle").style.display="none"
+		document.getElementById("dayByDefectCnt").style.display="none"
+		document.getElementById("monthByDefectCntTitle").style.display="inline"
+		document.getElementById("monthByDefectCnt").style.display="inline"
+	} 
+}
+
+function taskBySelectBoxChange() {
+	var selectBoxId = document.getElementById("taskBySelectBoxStats");
+	var selectBoxValue = selectBoxId.options[selectBoxId.selectedIndex].value;
+	
+	if(selectBoxValue == 1) {
+		document.getElementById("taskByActionStCntTitle").style.display="inline"
+		document.getElementById("taskByActionStCnt").style.display="inline"
+		document.getElementById("taskByDefectGbCntTitle").style.display="none"
+		document.getElementById("taskByDefectGbCnt").style.display="none"
+	} else if (selectBoxValue == 2) {
+		document.getElementById("taskByActionStCntTitle").style.display="none"
+		document.getElementById("taskByActionStCnt").style.display="none"
+		document.getElementById("taskByDefectGbCntTitle").style.display="inline"
+		document.getElementById("taskByDefectGbCnt").style.display="inline"
+	} 
+}
+
 window.onload = function() {
 	
-		var colorArray = [ '#FF6633', '#FFB399', '#FF33FF', '#FFFF99',
+	
+		var colorArray = [ '#B7BDD6', '#98D5DC', '#3765A4', '#D57C86', '#007bff',
+		                   '#FF6633', '#FFB399', '#FF33FF', '#FFFF99',
 				'#00B3E6', '#E6B333', '#3366E6', '#999966', '#99FF99',
 				'#B34D4D', '#80B300', '#809900', '#E6B3B3', '#6680B3',
 				'#66991A', '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A',
@@ -318,6 +355,8 @@ window.onload = function() {
 				}]
 			}
 		});
+		
+		$('html').scrollTop(0);
 	}
 </script>
 </head>
@@ -361,10 +400,11 @@ window.onload = function() {
                  	미완료 : <c:out value="${defectStats.actionStAll - defectStats.actionStA5}"/> --%>
                  	
                		 <div style="float:right;">
-	                     	<strong><c:out value="${defectStats.actionStA5}"></c:out>&nbsp;/&nbsp;<c:out value="${defectStats.actionStAll}"></c:out></strong>
+	                     	<h3><strong><c:out value="${defectStats.actionStA5}"></c:out>&nbsp;/&nbsp;<c:out value="${defectStats.actionStAll}"></c:out></strong>
+					</h3>
 					</div>
                 		<fmt:parseNumber var="actionProgression" integerOnly="true" value="${defectStats.actionStA5 / defectStats.actionStAll * 100}"/>
-               		 <div class="progress">
+               		 <div class="progress" style="height: 2rem;">
 					    <div class="progress-bar" style="width:${actionProgression}%"><strong><c:out value=" ${actionProgression}"></c:out>% </strong> </div>
 					</div>
 					
@@ -385,73 +425,140 @@ window.onload = function() {
             	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 최종완료 <br/><c:out value="${defectStats.actionStA5}"/></font></td>
             </tr>
             </table>
-			
-			<br/><br/>
-			<h4><strong>일자별 등록건수, 조치건수</strong></h4>
-			<c:forEach var="dayByDefectCnt" items="${dayByDefectCnt}" varStatus="status">
+            <br/>
+			<div id="dayByDefectCntTitle" style="display:inline">
+			<h3><strong>일자별 등록건수, 조치건수</strong></h3>
+			<%-- <c:forEach var="dayByDefectCnt" items="${dayByDefectCnt}" varStatus="status">
             	<c:out value="${dayByDefectCnt.days}"/> : <c:out value="${dayByDefectCnt.enrollDtCnt}"/> | <c:out value="${dayByDefectCnt.actionDtCnt}"/>
             	&nbsp;
-            </c:forEach>
-            <canvas id="dayByDefectCnt" width="100%" height="20"></canvas>
-            
-			<h4><strong>월별 등록건수, 조치건수</strong></h4>
-			<c:forEach var="monthByDefectCnt" items="${monthByDefectCnt}" varStatus="status">
+            </c:forEach> --%>
+			</div>
+            <div id="monthByDefectCntTitle" style="display:none">
+			<h3><strong>월별 등록건수, 조치건수</strong></h3>
+			<%-- <c:forEach var="monthByDefectCnt" items="${monthByDefectCnt}" varStatus="status">
             	<c:out value="${monthByDefectCnt.months}"/> : <c:out value="${monthByDefectCnt.enrollMonthDtCnt}"/> | <c:out value="${monthByDefectCnt.actionMonthDtCnt}"/>
             	&nbsp;
-            </c:forEach>
-            <canvas id="monthByDefectCnt" width="100%" height="20"></canvas>
-
+            </c:forEach> --%>
+            </div>
+			<div align="right">
+			<select id="selectBoxStats" style="width:12%;text-align-last:center;" onChange="javascript:selectBoxChange();">
+				<option value="1" selected="selected" >일자별</option>
+				<option value="2" >월별</option>
+			</select>
+			</div>
+            <canvas id="dayByDefectCnt" width="100%" height="20" style="display:inline"></canvas>
+            <canvas id="monthByDefectCnt" width="100%" height="20" style="display:none"></canvas>
             <br/><br/>
-            <h4><strong>업무별 조치율</strong></h4>
-            	전체: <c:out value="${defectStats.actionStA5}"/>	/ <c:out value="${defectStats.actionStAll}"/> 
-           			 <fmt:parseNumber var="actionProgression" integerOnly="true" value="${defectStats.actionStA5 / defectStats.actionStAll * 100}"/>
-                 	진행률 : <strong><c:out value=" ${actionProgression}"></c:out>%</strong>
-            <canvas id="taskByAllProgression" width="200" height="200"></canvas>
+            <h3><strong>업무별 조치율</strong></h3>
+            <div style="overflow:auto; white-space:nowrap; overflow-y:hidden;">
+            <table>
+            <tr>
+            <td>
+            &nbsp;&nbsp;<canvas id="taskByAllProgression" width="200" height="200" style="display: inline !important;"></canvas>&nbsp;&nbsp;
+            </td>
             <c:forEach var="taskByActionProgression" items="${taskByActionProgression}" varStatus="status">
-            	<c:out value="${taskByActionProgression.taskNm}"/> : <c:out value="${taskByActionProgression.taskA5Cnt}"/> / <c:out value="${taskByActionProgression.taskTotCnt}"/>
-            	&nbsp;
+            <td>
+            <canvas id="<c:out value="${taskByActionProgression.taskGb}"/>"  width="180" height="180" style="display: inline !important;"></canvas>&nbsp;&nbsp;
+			</td>            
+            </c:forEach>
+            <br/>
+            <tr>
+            <td align="center" valign="middle">
+            <div style="font-size:15px; font-weight:bolder;">
+            	<font color="#007BFF"><c:out value="${defectStats.actionStA5}"/></font>	/ <c:out value="${defectStats.actionStAll}"/> 
+           			 <fmt:parseNumber var="actionProgression" integerOnly="true" value="${defectStats.actionStA5 / defectStats.actionStAll * 100}"/>
+                 (<c:out value=" ${actionProgression}"></c:out>%)
+                 	<br/>
+                 	전체
+                 	<br/>
+             </div>
+            </td>
+            <c:forEach var="taskByActionProgression" items="${taskByActionProgression}" varStatus="status">
+            <td align="center" valign="middle">
+            	<div style="font-size:13px; font-weight:bolder;">
+            	<font color="#007BFF"><c:out value="${taskByActionProgression.taskA5Cnt}"/></font> / <c:out value="${taskByActionProgression.taskTotCnt}"/>
             	 <c:if test="${taskByActionProgression.taskTotCnt != 0}">
             	 (<fmt:parseNumber var="actionProgression" integerOnly="true" value="${taskByActionProgression.taskA5Cnt / taskByActionProgression.taskTotCnt * 100}"/>
-                 	<strong><c:out value=" ${actionProgression}"></c:out>%</strong>)&nbsp;
+                 	<c:out value=" ${actionProgression}"></c:out>%)
                  </c:if>
-            <canvas id="<c:out value="${taskByActionProgression.taskGb}"/>"  width="200" height="200" style="display: inline !important;"></canvas>
+                 <br/>
+					<c:out value="${taskByActionProgression.taskNm}"/>
+                 <br/>
+                 </div>
+            </td>
             </c:forEach>
+            </tr>
+            </table>
+            </div>
             
             
             <br/><br/>
-			 <h4><strong>업무별 전체결함건수</strong></h4>
-			 <c:forEach var="taskByActionProgression" items="${taskByActionProgression}" varStatus="status">
+            <table width="100%">
+            <tr>
+            <td width="90%" valign="middle">
+			 <strong><font size=3>업무별 전체 결함현황</font></strong>
+            </td>
+            <td width="10%" align="center" valign="middle">
+            <strong><font size=2>(단위:%)</font></strong>
+            </td>
+            </tr>
+            </table>
+			 <%-- <c:forEach var="taskByActionProgression" items="${taskByActionProgression}" varStatus="status">
             	<c:out value="${taskByActionProgression.taskNm}"/> : <c:out value="${taskByActionProgression.taskTotCnt}"/>
             	&nbsp;
             	 <c:if test="${taskByActionProgression.taskTotCnt != 0}">
             	 (<fmt:parseNumber var="actionProgression" integerOnly="true" value="${taskByActionProgression.taskTotCnt / defectStats.actionStAll * 100}"/>
                  	<strong><c:out value=" ${actionProgression}"></c:out>%</strong>)&nbsp;
                  	</c:if>
-            </c:forEach>
+            </c:forEach> --%>
             <canvas id="taskByActionProgression" width="100%" height="15"></canvas>
-            
 			  <br/><br/>
-			 <h4><strong>업무별 상태별  결함건수</strong></h4>
-			 <c:forEach var="taskByActionStCnt" items="${taskByActionStCnt}" varStatus="status">
+			  
+			  <div align="right">
+			<select id="taskBySelectBoxStats" style="width:12%;text-align-last:center;" onChange="javascript:taskBySelectBoxChange();">
+				<option value="1" selected="selected" >상태별</option>
+				<option value="2" >유형별</option>
+			</select>
+			</div>
+			<div id="taskByActionStCntTitle" style="display:inline">
+			<table width="100%">
+            <tr>
+            <td width="90%" valign="middle">
+			 <strong><font size=3>업무별/상태별 결함현황</font></strong>
+            </td>
+            <td width="10%" align="center" valign="middle">
+            <strong><font size=2>(단위:%)</font></strong>
+            </td>
+            </tr>
+            </table>
+			<%--  <c:forEach var="taskByActionStCnt" items="${taskByActionStCnt}" varStatus="status">
             	<c:out value="${taskByActionStCnt.taskNm}"/> : (<c:out value="${taskByActionStCnt.actionStAll}"/>) 
             	<c:out value="${taskByActionStCnt.actionStA1}"/> / <c:out value="${taskByActionStCnt.actionStA2}"/> /
             	<c:out value="${taskByActionStCnt.actionStA3}"/> / <c:out value="${taskByActionStCnt.actionStA4}"/> /
             	<c:out value="${taskByActionStCnt.actionStA5}"/>
             	&nbsp;
-            </c:forEach>
-            <canvas id="taskByActionStCnt" width="100%" height="20"></canvas>
-			 
-			 
-			 <br/><br/>
-			 <h4><strong>업무별 유형별 결함건수</strong></h4>
-			 <c:forEach var="taskByDefectGbCnt" items="${taskByDefectGbCnt}" varStatus="status">
+            </c:forEach> --%>
+			</div>
+            <canvas id="taskByActionStCnt" width="100%" height="20" style="display:inline"></canvas>
+			<div id="taskByDefectGbCntTitle" style="display:none">
+			<table width="100%">
+            <tr>
+            <td width="90%" valign="middle">
+			 <strong><font size=3>업무별/유형별 결함현황</font></strong>
+            </td>
+            <td width="10%" align="center" valign="middle">
+            <strong><font size=2>(단위:%)</font></strong>
+            </td>
+            </tr>
+            </table>
+			<%--  <c:forEach var="taskByDefectGbCnt" items="${taskByDefectGbCnt}" varStatus="status">
             	<c:out value="${taskByDefectGbCnt.taskNm}"/> : <c:out value="${taskByDefectGbCnt.defectGbD1}"/> / 
             	<c:out value="${taskByDefectGbCnt.defectGbD2}"/> / <c:out value="${taskByDefectGbCnt.defectGbD3}"/> /
             	<c:out value="${taskByDefectGbCnt.defectGbD4}"/>
             	&nbsp;
-            </c:forEach>
-            <canvas id="taskByDefectGbCnt" width="100%" height="20"></canvas>
-			 
+            </c:forEach> --%>
+			</div>
+            <canvas id="taskByDefectGbCnt" width="100%" height="20" style="display:none"></canvas>
 			</div>
             <!-- //content 끝 -->
         </div>

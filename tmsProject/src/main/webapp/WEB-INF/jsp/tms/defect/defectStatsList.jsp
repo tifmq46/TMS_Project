@@ -58,7 +58,6 @@
 	}
 	
 	function StatsToExcel(statsGb) {
-		alert("'C://TMS_통계자료// 경로에 다운되었습니다.");
 		location.href="./StatsToExcel.do?statsGb="+statsGb; 
 	} 
 
@@ -137,7 +136,7 @@
         	 <c:forEach var="taskGbByStats" items="${taskGbByStats}" varStatus="status">
 					<tr>
 					<c:if test="${taskGbByStats.actionSt eq 'A1'}">
-						<td rowspan="6"><c:out value="${taskGbByStats.taskNm}"/></td>
+						<td rowspan="6" style="border-bottom: solid 1px #00000054;"><c:out value="${taskGbByStats.taskNm}"/></td>
 					</c:if>
 							<td><c:out value="${taskGbByStats.actionNm}"/></td>
 							<td>${taskGbByStats.defectGbD1}</td>
@@ -148,12 +147,12 @@
 					</tr>
 					<c:if test="${taskGbByStats.actionSt eq 'A5'}">
 						<tr>
-						<td><strong>합계</strong></td>
-						<td><strong><c:out value="${taskGbByStats.d1Sum}"/></strong></td>
-						<td><strong><c:out value="${taskGbByStats.d2Sum}"/></strong></td>
-						<td><strong><c:out value="${taskGbByStats.d3Sum}"/></strong></td>
-						<td><strong><c:out value="${taskGbByStats.d4Sum}"/></strong></td>
-						<td><strong><c:out value="${taskGbByStats.totalRowSum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong>합계</strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${taskGbByStats.d1Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${taskGbByStats.d2Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${taskGbByStats.d3Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${taskGbByStats.d4Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${taskGbByStats.totalRowSum}"/></strong></td>
 					</tr>
 					</c:if>
 				</c:forEach> 
@@ -194,7 +193,7 @@
         	 <c:forEach var="pgIdByStats" items="${pgIdByStats}" varStatus="status">
 					<tr>
 					<c:if test="${pgIdByStats.actionSt eq 'A1'}">
-						<td rowspan="6"><c:out value="${pgIdByStats.pgNm}"/></td>
+						<td rowspan="6" style="border-bottom: solid 1px #00000054;"><c:out value="${pgIdByStats.pgNm}"/></td>
 					</c:if>
 							<td><c:out value="${pgIdByStats.actionNm}"/></td>
 							<td>${pgIdByStats.defectGbD1}</td>
@@ -205,12 +204,12 @@
 					</tr>
 					<c:if test="${pgIdByStats.actionSt eq 'A5'}">
 						<tr>
-						<td><strong>합계</strong></td>
-						<td><strong><c:out value="${pgIdByStats.d1Sum}"/></strong></td>
-						<td><strong><c:out value="${pgIdByStats.d2Sum}"/></strong></td>
-						<td><strong><c:out value="${pgIdByStats.d3Sum}"/></strong></td>
-						<td><strong><c:out value="${pgIdByStats.d4Sum}"/></strong></td>
-						<td><strong><c:out value="${pgIdByStats.totalRowSum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong>합계</strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${pgIdByStats.d1Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${pgIdByStats.d2Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${pgIdByStats.d3Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${pgIdByStats.d4Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${pgIdByStats.totalRowSum}"/></strong></td>
 					</tr>
 					</c:if>
 				</c:forEach> 
@@ -250,7 +249,7 @@
         	 <c:forEach var="userTestByStats" items="${userTestByStats}" varStatus="status">
 					<tr>
 					<c:if test="${userTestByStats.actionSt eq 'A1'}">
-						<td rowspan="6"><c:out value="${userTestByStats.userTestNm}"/></td>
+						<td rowspan="6" style="border-bottom: solid 1px #00000054;"><c:out value="${userTestByStats.userTestNm}"/></td>
 					</c:if>
 							<td><c:out value="${userTestByStats.actionNm}"/></td>
 							<td>${userTestByStats.defectGbD1}</td>
@@ -261,12 +260,12 @@
 					</tr>
 					<c:if test="${userTestByStats.actionSt eq 'A5'}">
 						<tr>
-						<td><strong>합계</strong></td>
-						<td><strong><c:out value="${userTestByStats.d1Sum}"/></strong></td>
-						<td><strong><c:out value="${userTestByStats.d2Sum}"/></strong></td>
-						<td><strong><c:out value="${userTestByStats.d3Sum}"/></strong></td>
-						<td><strong><c:out value="${userTestByStats.d4Sum}"/></strong></td>
-						<td><strong><c:out value="${userTestByStats.totalRowSum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong>합계</strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${userTestByStats.d1Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${userTestByStats.d2Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${userTestByStats.d3Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${userTestByStats.d4Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${userTestByStats.totalRowSum}"/></strong></td>
 					</tr>
 					</c:if>
 				</c:forEach> 
@@ -307,7 +306,7 @@
         	 <c:forEach var="userDevByStats" items="${userDevByStats}" varStatus="status">
 					<tr>
 					<c:if test="${userDevByStats.actionSt eq 'A1'}">
-						<td rowspan="6"><c:out value="${userDevByStats.userDevNm}"/></td>
+						<td rowspan="6" style="border-bottom: solid 1px #00000054;"><c:out value="${userDevByStats.userDevNm}"/></td>
 					</c:if>
 							<td><c:out value="${userDevByStats.actionNm}"/></td>
 							<td>${userDevByStats.defectGbD1}</td>
@@ -318,12 +317,12 @@
 					</tr>
 					<c:if test="${userDevByStats.actionSt eq 'A5'}">
 						<tr>
-						<td><strong>합계</strong></td>
-						<td><strong><c:out value="${userDevByStats.d1Sum}"/></strong></td>
-						<td><strong><c:out value="${userDevByStats.d2Sum}"/></strong></td>
-						<td><strong><c:out value="${userDevByStats.d3Sum}"/></strong></td>
-						<td><strong><c:out value="${userDevByStats.d4Sum}"/></strong></td>
-						<td><strong><c:out value="${userDevByStats.totalRowSum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong>합계</strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${userDevByStats.d1Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${userDevByStats.d2Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${userDevByStats.d3Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${userDevByStats.d4Sum}"/></strong></td>
+						<td style="border-bottom: solid 1px #00000054;"><strong><c:out value="${userDevByStats.totalRowSum}"/></strong></td>
 					</tr>
 					</c:if>
 				</c:forEach> 

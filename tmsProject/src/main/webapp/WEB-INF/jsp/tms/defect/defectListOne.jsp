@@ -18,6 +18,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ page import ="egovframework.com.cmm.LoginVO" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -29,19 +30,61 @@
 
 function fn_egov_update_updateDefect(){
 	alert('저장되었습니다.');
-	alert(document.defectVO);
+	document.getElementById("defectGb").disabled = "";
+	document.getElementById("actionSt").disabled = "";
 	document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
 	document.defectVO.submit();
 }
 
 function fn_egov_delete_deleteDefect() {
+	document.getElementById("defectGb").disabled = "";
+	document.getElementById("actionSt").disabled = "";
 	document.defectVO.action="<c:url value='/tms/defect/deleteDefect.do'/>"
 	document.defectVO.submit();
 }
 
 function fn_egov_delete_defectImg() {
+	document.getElementById("defectGb").disabled = "";
+	document.getElementById("actionSt").disabled = "";
 	document.defectVO.action = "<c:url value='/tms/defect/deleteDefectImg.do'/>"
 	document.defectVO.submit();
+}
+
+window.onload = function() {
+	
+	/* if( document.getElementById("loginNm").value == document.getElementById("userTestNm").value) {
+		document.getElementById("defectTitle").readOnly = false;
+		document.getElementById("defectTitle").style.border ="1";
+		document.getElementById("defectContent").readOnly = false;
+		document.getElementById("defectContent").style.border ="1";
+		document.getElementById("userTestNm").readOnly = false;
+		document.getElementById("userTestNm").style.border ="1";
+		document.getElementById("defectGb").disabled = "";
+		document.getElementById("deleteBtn").disabled = "";
+		document.getElementById("fileImg").disabled = "";
+	} else {
+		document.getElementById("defectTitle").readOnly = true;
+		document.getElementById("defectTitle").style.border ="0";
+		document.getElementById("defectContent").readOnly = true;
+		document.getElementById("defectContent").style.border ="0";
+		document.getElementById("userTestNm").readOnly = true;
+		document.getElementById("userTestNm").style.border ="0";
+		document.getElementById("defectGb").disabled = "disable";
+		document.getElementById("deleteBtn").disabled = "disable";
+		document.getElementById("fileImg").disabled = "disable";
+	}
+	
+	if( document.getElementById("loginNm").value == document.getElementById("userDevNm").value) {
+		document.getElementById("actionContent").readOnly = false;
+		document.getElementById("actionContent").style.border ="1";
+		document.getElementById("actionSt").disabled = "";
+	} else {
+		document.getElementById("actionContent").readOnly = true;
+		document.getElementById("actionContent").style.border ="0";
+		document.getElementById("actionSt").disabled = "disable";
+	} */
+	 
+	
 }
 
 </script>
@@ -135,19 +178,18 @@ function fn_egov_delete_defectImg() {
 					         <th width="12.5%" height="23" class="" nowrap >테스터
 					        </th>
 					        <td width="12.5%" nowrap >
-					        <input list="userTestList" name="userNm" value="<c:out value="${defectOne.userTestId}"/>"  autocomplete="off" style="text-align:center; width:85%;"/>
+					       
+							  <input list="userTestList" name="userNm" id="userTestNm" value="<c:out value="${defectOne.userTestId}"/>"  autocomplete="off" style="text-align:center; width:85%;"/>
 					        	<datalist id="userTestList">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
 									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
 									    </c:forEach>
 					        	</datalist>
-					        <input type="hidden" name="userTestId" id="userTestId" value="<c:out value="${defectOne.userTestId}"/>"/>
-					        
 					        </td>
 					         <th width="12.5%" height="23" nowrap >개발자
 					        </th>
 					        <td width="12.5%" nowrap >
-					          <input type="text" size="10" readonly="readonly" value="<c:out value="${defectOne.userDevId}"/>"  maxlength="40" title="개발자" 
+					          <input type="text" id="userDevNm" size="10" readonly="readonly" value="<c:out value="${defectOne.userDevId}"/>"  maxlength="40" title="개발자" 
 					          style="text-align:center; border:none; width:90%;" /> 
 					        </td>
 					         <th width="12.5%" height="23" nowrap >조치상태
@@ -201,10 +243,10 @@ function fn_egov_delete_defectImg() {
 					       
 					       <tr>   
 					        <td width="50%" nowrap colspan="4">
-					         <textarea name="defectContent" style="height:200px; width:98%;"><c:out value="${defectOne.defectContent}"/></textarea>
+					         <textarea name="defectContent" id="defectContent" style="height:200px; width:98%;"><c:out value="${defectOne.defectContent}"/></textarea>
 					        </td>
 					        <td width="50%" nowrap colspan="4">
-					        <textarea name="actionContent" style="height:200px; width:98%;"><c:out value="${defectOne.actionContent}"/></textarea>
+					        <textarea name="actionContent" id="actionContent" style="height:200px; width:98%;"><c:out value="${defectOne.actionContent}"/></textarea>
 					        </td>
 					       </tr>
 					       
@@ -220,12 +262,17 @@ function fn_egov_delete_defectImg() {
 					        	<img alt="이미지" width="200" height="200" src="<c:url value='/tms/defect/selectDefectImg.do'/>?defectIdSq=<c:out value="${defectOne.defectIdSq}"/>"/>
 					        		</a>
 					        <br/>
-					        		<input type="text" name="fileNm" value="<c:out value="${defectImgOne.fileNm}" />"  readonly="readonly" style="border:none; width:10%; text-align:right"/>
-									<input type="text" name="fileSize" value="(<c:out value="${defectImgOne.fileSize}"/>Byte)"  readonly="readonly" style="border:none; width:10%; text-align:left"/>
-					        	<a href="#LINK" onclick="javascript:fn_egov_delete_defectImg(); return false;" >삭제</a>
+					        <br/>
+					        	<font color="#666666">
+					        		<input type="text" name="fileNm" value="<c:out value="${defectImgOne.fileNm}" />"  readonly="readonly" style="border:none; width:20%; text-align:right"/>
+									(<input type="text" name="fileSize" value="<c:out value="${defectImgOne.fileSize}"/>"  readonly="readonly" style="border:none; width:6%; text-align:left"/>Byte)
+					        	&nbsp;<a href="#LINK" id="deleteBtn" onclick="javascript:fn_egov_delete_defectImg(); return false;" ><font color="#0F438A">삭제</font></a>
+					        		</font>
+					        		<br/>
+					        		<br/>
 					        		</c:when>
 									<c:otherwise>
-									첨부파일없음 <input type="file" name="fileImg" title="다운로드"/>
+									첨부파일없음 <input type="file" name="fileImg" id="fileImg" title="다운로드"/>
 									<br/>
 									<input type="hidden" name="fileNm" value="" />
 									<input type="hidden" name="fileSize" value="0"/>
@@ -236,7 +283,21 @@ function fn_egov_delete_defectImg() {
                         </table>
                     </div>
 
-					<!-- 버튼 시작(상세지정 style로 div에 지정) -->
+						<%
+							LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO");
+									if (loginVO == null) {
+						%>
+
+						<%
+							} else {
+						%>
+						<c:set var="loginName" value="<%=loginVO.getName()%>" />
+						<%
+							}
+						%>
+						<input type="hidden" id="loginNm" value="<c:out value='${loginName }'/>" />
+						
+						<!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
                     
                     <a href="#LINK" onclick="javaScript:fn_egov_update_updateDefect(); return false;">저장</a>

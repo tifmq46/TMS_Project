@@ -49,6 +49,12 @@ public class DefectDAO extends EgovAbstractDAO{
 		int result_defectIdSqImpl = update("defectDAO.setDefectIdSqImpl");
 		/** 결함 테이블 시퀀스 재정렬 끝 */
 		
+		/** 파일 테이블 시퀀스 재정렬 시작*/
+		update("defectDAO.setDefectFileSq");
+		update("defectDAO.setDefectIdSqInfo");
+		update("defectDAO.setDefectFileSqImpl");
+		/** 파일 테이블 시퀀스 재정렬 끝*/
+		
 		return result;
 	}
 	
@@ -197,11 +203,18 @@ public class DefectDAO extends EgovAbstractDAO{
 	}
 	
 	public void updateDefectIdSq() {
-		/** 시퀀스 재정렬 시작 */
+		/** 결함 테이블 시퀀스 재정렬 시작 */
 		int result_defectIdSq = update("defectDAO.setDefectIdSq");
 		int result_defectIdSqInfo = update("defectDAO.setDefectIdSqInfo");
 		int result_defectIdSqImpl = update("defectDAO.setDefectIdSqImpl");
-		/** 시퀀스 재정렬 끝 */
+		/** 결함 테이블 시퀀스 재정렬 끝 */
+		
+		/** 파일 테이블 시퀀스 재정렬 시작*/
+		update("defectDAO.setDefectFileSq");
+		update("defectDAO.setDefectIdSqInfo");
+		update("defectDAO.setDefectFileSqImpl");
+		/** 파일 테이블 시퀀스 재정렬 끝*/
+		
 	}
 	
 	public List<?> selectTaskByMainStats() {

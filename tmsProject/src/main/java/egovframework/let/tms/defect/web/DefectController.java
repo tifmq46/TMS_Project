@@ -204,8 +204,6 @@ public class DefectController {
 		MultipartHttpServletRequest mtpRequest = (MultipartHttpServletRequest) request;
 		MultipartFile defectFileImg = mtpRequest.getFile("fileImg");
 		
-		System.out.println("#########################" + defectFileImg.getSize());
-		
 		if(defectService.selectDefectIdSqToFileTb(defectVO.getDefectIdSq()) == 0 && defectFileImg.getSize() != 0) {
 			Map<String, Object> hmap = new HashMap<String, Object>();
 			hmap.put("FILE_IMG", defectFileImg.getBytes());
