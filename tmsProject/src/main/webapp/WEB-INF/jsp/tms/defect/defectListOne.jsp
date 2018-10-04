@@ -29,6 +29,7 @@
 
 function fn_egov_update_updateDefect(){
 	alert('저장되었습니다.');
+	alert(document.defectVO);
 	document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
 	document.defectVO.submit();
 }
@@ -134,13 +135,14 @@ function fn_egov_delete_defectImg() {
 					         <th width="12.5%" height="23" class="" nowrap >테스터
 					        </th>
 					        <td width="12.5%" nowrap >
-					        <input list="userTestId" name="userNm" value="<c:out value="${defectOne.userTestId}"/>"  autocomplete="off" style="text-align:center; width:85%;"/>
-					        	<datalist id="userTestId">
+					        <input list="userTestList" name="userNm" value="<c:out value="${defectOne.userTestId}"/>"  autocomplete="off" style="text-align:center; width:85%;"/>
+					        	<datalist id="userTestList">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
 									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
 									    </c:forEach>
 					        	</datalist>
-					        	
+					        <input type="hidden" name="userTestId" id="userTestId" value="<c:out value="${defectOne.userTestId}"/>"/>
+					        
 					        </td>
 					         <th width="12.5%" height="23" nowrap >개발자
 					        </th>
