@@ -121,32 +121,40 @@ function selectTestStatsTable(pageNo){
 	              	<colgroup>
 	        				<col width="30"/>
 	        				<col width="50"/>
+	        				<col width="40"/>
 	        				<col width="30"/>
-	        				<col width="20"/>
-	        				<col width="20"/>
-	        				<col width="20"/>
-	        				<col width="25"/>
-	        				<col width="25"/>
-	        				<col width="25"/>
-	        				<col width="25"/>
-	        				<col width="25"/>
+	        				<col width="30"/>
+	        				<col width="30"/>
+	        				<col width="30"/>
+	        				<col width="30"/>
+	        				<col width="30"/>
+	        				<col width="30"/>
+	        				<col width="30"/>
+	        				<col width="30"/>
+	        				<col width="30"/>
+	        				<col width="30"/>
 	        		</colgroup>
         			<tr>
-        				<th align="center" rowspan="2"><spring:message code="tms.test.sysGb" /></th>
-        				<th align="center" rowspan="2"><spring:message code="tms.test.taskGb" /></th>
-        				<th align="center" rowspan="2"><spring:message code="tms.test.pgCnt" /></th>
-        				<th align="center" colspan="3"><spring:message code="tms.test.testResultYn" /></th>
-			        	<th align="center" rowspan="2"><spring:message code="tms.test.successPct" /></th>
-			        	<th align="center" rowspan="2"><spring:message code="tms.test.defectCnt" /></th>
-			        	<th align="center" rowspan="2"><spring:message code="tms.test.actionCntY" /></th>
-        				<th align="center" rowspan="2"><spring:message code="tms.test.actionCntN" /></th>
-        				<th align="center" rowspan="2"><spring:message code="tms.test.actionPct" /></th>
+        				<th align="center" rowspan="2">시스템구분</th>
+        				<th align="center" rowspan="2">업무구분</th>
+        				<th align="center" rowspan="2">프로그램 본수</th>
+        				<th align="center" colspan="3">테스트 작성현황</th>
+        				<th align="center" rowspan="2">작성률</th>
+			        	<th align="center" colspan="2">테스트 진행현황</th>
+			        	<th align="center" rowspan="2">진행률</th>
+			        	<th align="center" colspan="3">테스트 결과현황</th>
+			        	<th align="center" rowspan="2">완료율</th>
         			</tr>
         			
         			<tr>
-        				<th align="center"><spring:message code="tms.test.resultY" /></th>
-			        	<th align="center"><spring:message code="tms.test.resultN" /></th>
-			        	<th align="center"><spring:message code="tms.test.totCnt" /></th>
+        				<th align="center">작성 완료</th>
+			        	<th align="center">미완료</th>
+			        	<th align="center">합계</th>
+			        	<th align="center">1차 완료</th>
+			        	<th align="center">2차 완료</th>
+			        	<th align="center">최종완료</th>
+			        	<th align="center">미완료</th>
+			        	<th align="center">합계</th>
         			</tr>
         			
         			<c:forEach var="result" items="${testStatsTable}" varStatus="status">
@@ -173,18 +181,22 @@ function selectTestStatsTable(pageNo){
             					</c:otherwise>
             				</c:choose>
             				
-            				
+            				<td align="center" class="listtd"><c:out value="${result.pgCnt}"/>&nbsp;</td> 
+            				<td align="center" class="listtd"><c:out value="${result.tcWriteYCnt}"/>&nbsp;</td> 
+            				<td align="center" class="listtd"><c:out value="${result.tcWriteNCnt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.pgCnt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.tcWritePct}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.firstTestCnt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.secondTestCnt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.tcProgressPct}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.tcYCnt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.tcNCnt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.tcTotCnt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.tcPct}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.defectCnt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.actYCnt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.actNCnt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.defectPct}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.pgCnt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.tcResultPct}"/>&nbsp;</td>
+            				
             			</tr>
         			</c:forEach>
+        			
               </table>        
            </div>
                 

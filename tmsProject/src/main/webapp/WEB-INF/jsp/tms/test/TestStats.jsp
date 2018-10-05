@@ -150,7 +150,20 @@ window.onload = function() {
 						</div>
 				</div>
                  
+                
+                    	
                  <div class="progess_bar_section" >
+                      	
+					    <span><strong>업무별 단위테스트 진행률</strong></span>
+					    <div class="ct-chart ct-perfect-fourth"></div>
+                      	 <div style="text-align: center; margin-top:10px;" >
+							  <img src="<c:url value='/images/tms/icon_pop_blue.gif' />" width="10" height="10" alt="yCnt"/>&nbsp;완료건수
+							  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;등록건수
+						 </div>
+                 </div>   
+                 
+                 
+                  <div class="progess_bar_section" >
                  
                 		<strong>통합테스트 진행률  </strong>
                  
@@ -181,16 +194,6 @@ window.onload = function() {
 							  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;등록건수
 						</div>
                  </div>
-                    	
-                 <div class="progess_bar_section" >
-                      	
-					    <span><strong>업무별 단위테스트 진행률</strong></span>
-					    <div class="ct-chart ct-perfect-fourth"></div>
-                      	 <div style="text-align: center; margin-top:10px;" >
-							  <img src="<c:url value='/images/tms/icon_pop_blue.gif' />" width="10" height="10" alt="yCnt"/>&nbsp;완료건수
-							  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;등록건수
-						 </div>
-                 </div>   
                    
             </div>
             <!-- //content 끝 -->

@@ -2,6 +2,7 @@ package egovframework.let.tms.test.web;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +25,10 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.let.sym.mnu.mpm.service.MenuManageVO;
 import egovframework.let.tms.test.service.TestCaseVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import net.sf.json.JSONArray;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
@@ -185,7 +188,7 @@ public class TestController {
 		} else {
 			testService.insertTestScenario(testScenarioVO);
 			redirectAttributes.addFlashAttribute("message",  egovMessageSource.getMessage("success.common.insert"));
-			return "redirect:/tms/test/selectTestCase.do?testcaseId=" + testcaseId;
+			return "redirect:/tms/test/selectTestCaseWithScenario.do?testcaseId=" + testcaseId;
 		}
 		
 	}
@@ -220,7 +223,6 @@ public class TestController {
 			BindingResult errors ,  ModelMap model) throws Exception {
 		
 		String testcaseId = testScenarioVO.getTestcaseId();
-		System.out.println("시나리오 테스트 결과 :" + testScenarioVO.getTestResultYn());
 		
 		beanValidator.validate(testScenarioVO, errors);
 		if(errors.hasErrors()){
@@ -237,35 +239,17 @@ public class TestController {
 	
 	
 	/**
-	 * 테스트시나리오 결과를 복수로 수정한다.
+	 * 테스트시나리오 결과만 수정한다.
 	 * @param vo - 등록할 정보가 담긴 TestScenarioVO
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/tms/test/updateTestScenarioMultiResultImpl.do")
-	public String updateTestScenarioMultiResultImpl(@RequestParam("updateScenarioDataJson") String updateScenarioDataJson, RedirectAttributes redirectAttributes, ModelMap model,
-			@ModelAttribute("testScenarioVO") TestScenarioVO testScenarioVO ) throws Exception {
-		
+	@RequestMapping(value = "/tms/test/updateTestScenarioResultImpl.do")
+	public String updateTestScenarioResultImpl(RedirectAttributes redirectAttributes, @ModelAttribute("testScenarioVO") TestScenarioVO testScenarioVO, ModelMap model) throws Exception {
+	
 		String testcaseId = testScenarioVO.getTestcaseId();
-		String tmp = (String)updateScenarioDataJson;
-		System.out.println("업데이트 시나리오 : " + tmp);
-		try {
-		
-		JSONParser jsonParser = new JSONParser();
-		org.json.simple.JSONArray jsonArray = (org.json.simple.JSONArray)jsonParser.parse(tmp);
-		
-		for(int i = 0; i < jsonArray.size(); i++){
-			JSONObject tempObj = (JSONObject)jsonArray.get(i);
-			TestScenarioVO vo = new TestScenarioVO();
-			vo.setTestscenarioId((String)tempObj.get("testscenarioId"));
-			vo.setTestResultYn((String)tempObj.get("testResultYn"));
-			testService.updateTestScenarioMultiResult(vo);
-		}
+		testService.updateTestScenarioResult(testScenarioVO);
 		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.update"));
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		return "redirect:/tms/test/selectTestResult.do?testcaseId=" + testcaseId;
 	}
@@ -289,6 +273,27 @@ public class TestController {
 		return "redirect:/tms/test/selectTestCaseList.do?testcaseGb="+testcaseGb;
 	}
 	
+
+	/**
+	 * 메뉴목록 멀티 삭제한다.
+	 * @param checkedMenuNoForDel  String
+	 * @return 
+	 * @exception Exception
+	 */
+	
+	@RequestMapping("/tms/test/deleteMultiTestCase.do")
+	public String deleteMultiTestCase(RedirectAttributes redirectAttributes, @RequestParam("checkedMenuNoForDel") String checkedMenuNoForDel, @ModelAttribute("testCaseVO") TestCaseVO testCaseVO, ModelMap model)
+			throws Exception {
+		
+		String testcaseGb = testCaseVO.getTestcaseGb();
+		testService.deleteMultiTestCase(checkedMenuNoForDel);
+		
+		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.delete"));
+		
+		return "redirect:/tms/test/selectTestCaseList.do?testcaseGb=" + testcaseGb;
+	}
+
+	
 	
 	/**
 	 * 테스트시나리오를 삭제한다
@@ -304,9 +309,28 @@ public class TestController {
 
 		testService.deleteTestScenario(testscenarioId);
 		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.delete"));
-		return "redirect:/tms/test/selectTestCase.do?testcaseId=" + testcaseId;
+		return "redirect:/tms/test/selectTestCaseWithScenario.do?testcaseId=" + testcaseId;
 	}
 	
+	/**
+	 * 메뉴목록 멀티 삭제한다.
+	 * @param checkedMenuNoForDel  String
+	 * @return 
+	 * @exception Exception
+	 */
+	@RequestMapping("/tms/test/deleteMultiTestScenario.do")
+	public String deleteMultiTestScenario(RedirectAttributes redirectAttributes, @RequestParam("checkedMenuNoForDel") String checkedMenuNoForDel, @ModelAttribute("testScenarioVO") TestScenarioVO testScenarioVO, ModelMap model)
+			throws Exception {
+		
+		String testcaseId = testScenarioVO.getTestcaseId();
+		testService.deleteMultiTestScenario(checkedMenuNoForDel);
+		
+		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.delete"));
+		
+		return "redirect:/tms/test/selectTestCaseWithScenario.do?testcaseId=" + testcaseId;
+	}
+
+
 	
 	/**
 	 * 테스트케이스를 가져온다
@@ -318,6 +342,9 @@ public class TestController {
 	public String selectTestCase(ModelMap model, HttpServletRequest request) throws Exception {
 		
 		String testcaseId = request.getParameter("testcaseId");
+		String returnPg = request.getParameter("returnPg");
+		System.out.println(returnPg);
+		
 		HashMap<String, Object> testVoMap = testService.selectTestCase(testcaseId);
 		
 		//테스트 시나리오 목록 가져오기
@@ -325,7 +352,7 @@ public class TestController {
 		model.addAttribute("testScenarioList",testScenarioList);
 		model.addAttribute("testVoMap",testVoMap);
 		
-		return "tms/test/TestCaseDetail";
+		return "tms/test/"+returnPg;
 	}
 	
 	/**

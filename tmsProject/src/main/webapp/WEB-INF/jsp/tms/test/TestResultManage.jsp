@@ -27,16 +27,10 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>테스트케이스 상세</title>
+<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<validator:javascript formName="testScenarioResultUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-
-function updateTestCase(){
-	
-    if (confirm('<spring:message code="common.update.msg" />')) {
-    	document.testCaseVO.action = "<c:url value='/tms/test/updateTestCaseImpl.do'/>";
-   	 	document.testCaseVO.submit();  
-    }
-}
 
 
 /* ********************************************************
@@ -86,9 +80,9 @@ function UpdateScenarioResultAll() {
 		updateArray.push(updateScenarioData);
 	});
 	
-	document.testScenarioVO.updateScenarioDataJson.value = JSON.stringify(updateArray);
-	document.testScenarioVO.action = "<c:url value='/tms/test/updateTestScenarioMultiResultImpl.do'/>";
-	document.testScenarioVO.submit(); 
+	document.updateMultiResult.updateScenarioDataJson.value = JSON.stringify(updateArray);
+	document.updateMultiResult.action = "<c:url value='/tms/test/updateTestScenarioMultiResultImpl.do'/>";
+	document.updateMultiResult.submit(); 
 
 	 }
 }
@@ -101,7 +95,32 @@ function deleteTestCase() {
     }
 }
 
+function testScenarioResultForm(scenarioId, resultContent, resultYn) {
+	
+	document.testScenarioResultInsert.style.visibility = "visible";
+	document.testScenarioResultInsert.testscenarioId.value = scenarioId;
+	document.testScenarioResultInsert.testResultContent.value = resultContent;
+	document.testScenarioResultInsert.testcaseId.value = document.testCaseVO.testcaseId.value;
+	
+	
+	$('input:radio[name=testResultYn]:radio[value='+ resultYn +']').prop("checked",true);
+		
+	
+}
 
+
+function updateTestScenarioResult () {
+	
+/* 	
+	if (!validateTestScenarioResultUpdate(document.testScenarioVO)){
+        return;
+    } */
+    
+    if (confirm('<spring:message code="common.save.msg" />')) {
+    	document.testScenarioResultInsert.action = "<c:url value='/tms/test/updateTestScenarioResultImpl.do'/>";
+        document.testScenarioResultInsert.submit();      
+    }
+}
 
 </script>
 
@@ -142,7 +161,7 @@ function deleteTestCase() {
                 <div id="page_info"><div id="page_info_align"></div></div>      
                              
                              
-               <form:form commandName="testCaseVO" name="testCaseVO" method="post" action="<c:url value='/tms/test/updateTestCaseImpl.do'/>">           
+               <form:form name="testCaseVO" method="post" action="<c:url value='/tms/test/updateTestScenarioMultiResultImpl.do'/>">           
                  
                   <div id="border" class="modify_user" >
                  		<input type="hidden" name="testcaseGb" value="${testVoMap.testcaseGbCode}" >
@@ -217,111 +236,55 @@ function deleteTestCase() {
                                 <th width="16.6%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.firstTest" /></label>
                                 </th>
                                 <td width="16.6%" nowrap >
-									<c:choose>
-                                		<c:when test="${testVoMap.firstTestResultYn == 'Y'}">
-	                                		<input type="radio" name="firstTestResultYn" value="Y" checked>Y
-	  										&nbsp;<input type="radio" name="firstTestResultYn" value="N">N
-                                		</c:when>
-                                		
-                                		<c:when test="${testVoMap.firstTestResultYn == 'N'}">
-	                                		<input type="radio" name="firstTestResultYn" value="Y" >Y
-	  										&nbsp;<input type="radio" name="firstTestResultYn" value="N" checked>N
-                                		</c:when>
-                                		
-                                		<c:otherwise>
-                                			<input type="radio" name="firstTestResultYn" value="Y">Y
-	  										&nbsp;<input type="radio" name="firstTestResultYn" value="N">N
-                                		</c:otherwise>
-                                	</c:choose>
+									<c:out value="${testVoMap.firstTestResultYn}"></c:out>
                                 </td>
                                 
                                 <th width="16.6%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.secondTest" /></label>
                                 </th>
                                 <td width="16.6%" nowrap >
-                               		<c:choose>
-                                		<c:when test="${testVoMap.secondTestResultYn == 'Y'}">
-	                                		<input type="radio" name="secondTestResultYn" value="Y" checked>Y
-	  										&nbsp;<input type="radio" name="secondTestResultYn" value="N">N
-                                		</c:when>
-                                		
-                                		<c:when test="${testVoMap.secondTestResultYn == 'N'}">
-	                                		<input type="radio" name="secondTestResultYn" value="Y" >Y
-	  										&nbsp;<input type="radio" name="secondTestResultYn" value="N" checked>N
-                                		</c:when>
-                                		
-                                		<c:otherwise>
-                                			<input type="radio" name="secondTestResultYn" value="Y">Y
-	  										&nbsp;<input type="radio" name="secondTestResultYn" value="N">N
-                                		</c:otherwise>
-                                	</c:choose>
+                               		<c:out value="${testVoMap.secondTestResultYn}"></c:out>
                                 </td>
-                              <%--   
-                                <th width="16.6%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.thirdTest" /></label>
-                                </th>
-                                <td width="16.6%" nowrap >
-                                	<c:out value="${testVoMap.thirdTestResultYn}"></c:out>
-                                </td> 
-                                 --%>
                                   <th width="16.6%" height="23"  nowrap="nowrap"><label for="completeYn"><spring:message code="tms.test.completeYn" /></label>
                                 </th>
                                 <td width="16.6%" nowrap >
-                                	<c:choose>
-                                		<c:when test="${testVoMap.completeYn == 'Y'}">
-	                                		<input type="radio" name="completeYn" value="Y" checked>Y
-	  										&nbsp;<input type="radio" name="completeYn" value="N">N
-                                		</c:when>
-                                		
-                                		<c:when test="${testVoMap.completeYn == 'N'}">
-	                                		<input type="radio" name="completeYn" value="Y" >Y
-	  										&nbsp;<input type="radio" name="completeYn" value="N" checked>N
-                                		</c:when>
-                                		
-                                		<c:otherwise>
-                                			<input type="radio" name="completeYn" value="Y">Y
-	  										&nbsp;<input type="radio" name="completeYn" value="N">N
-                                		</c:otherwise>
-                                	</c:choose>
+                                	<c:out value="${testVoMap.completeYn}"></c:out>
                                 </td>
                             </tr>
                             
                         </table>
                     </div>
-                    
+                   </form:form>
                     <br>
-                	</form:form>
                 
-                   <form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="<c:url value='/tms/test/updateTestScenarioMultiResultImpl.do'/>">           
 					<div id="border" class="modify_user" style="height:200px; width:92%; overflow:auto; " >
 						
-						<input type="hidden" name="testcaseId" value="${testVoMap.testcaseId}" >
 						<input type="hidden" name="updateScenarioDataJson" >
                         <table>
                         	<colgroup>
-		        				<col width="40"/>
-		        				<col width="180"/>
-		        				<col width="100"/>
-		        				<col width="180"/>
-		        				<col width="120"/>
-		        				<col width="60"/>
-		        				<col width="60"/>
+		        				<col width="4%"/>
+		        				<col width="25%"/>
+		        				<col width="20%"/>
+		        				<col width="25%"/>
+		        				<col width="12%"/>
+		        				<col width="8%"/>
+		        				<col width="6%"/>
 	        				</colgroup>
                         
                             <tr>
-                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.ord" /></label>
+                                <th height="23" rowspan="2"><label for="nttSj"><spring:message code="tms.test.ord" /></label>
                                 </th>
-                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
+                                <th height="23" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
                                 </th>
-                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testCondition" /></label>
+                                <th height="23" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testCondition" /></label>
                                 </th>
-                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.expectedResult" /></label>
+                                <th height="23" rowspan="2"><label for="nttSj"><spring:message code="tms.test.expectedResult" /></label>
                                 </th>
-                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testResultYn" /></label>
-                                </th>
-                                <th height="23"  nowrap="nowrap" colspan="2"><label for="nttSj"><spring:message code="tms.test.testResultYn" /></label>
+                                <th height="23" colspan="3"><label for="nttSj"><spring:message code="tms.test.testResultYn" /></label>
                                 </th>
                             </tr>
                             
                             <tr>
+                            	<th><spring:message code="tms.test.testDt" /></th>
                             	<th><spring:message code="tms.test.userTestId" /></th>
                             	<th><spring:message code="tms.test.result" /></th>
                             </tr>
@@ -331,38 +294,85 @@ function deleteTestCase() {
 		            			<tr>
 							    	<td align="center" class="listtd"><c:out value="${result.testscenarioOrd}"/>&nbsp;</td>
 		            				<td align="center" class="listtd">
-	            						<a href= "<c:url value='/tms/test/selectTestScenarioResult.do?testscenarioId=${result.testscenarioId}'/>">
-			            				<strong><c:out value="${result.testscenarioContent}"/></strong>
-			            				</a>
+			            				
+			            				<div >
+			            					<a href="#" onclick="testScenarioResultForm('${result.testscenarioId}', '${result.testResultContent}', '${result.testResultYn}'); return false;" >
+			            					<strong><c:out value="${result.testscenarioContent}"/></strong>
+			            					</a>
+			            				</div>
 			            				<input class="checkScenarioId" type="hidden" value="<c:out value='${result.testscenarioId}'/>"/>
 		            				</td>
-		            				<td align="center" class="listtd"><c:out value="${result.testCondition}"/>&nbsp;</td>
-		            				<td align="center" class="listtd"><c:out value="${result.expectedResult}"/>&nbsp;</td>
-		            				<td align="center" class="listtd"><c:out value="${result.testResultContent}"/>&nbsp;</td>
-		            				<td align="center" class="listtd"><c:out value="${result.userTestId}"/>&nbsp;</td>
+		            				<td align="center"  class="listtd">
+			            				<div >
+			            					<c:out value="${result.testCondition}"/>
+			            				</div>
+		            				</td>
 		            				<td align="center" class="listtd">
-		            					<select name="testResultYn" id="<c:out value='${result.testscenarioId}'/>" >
-           									<option value="">없음</option>
-           									<option value="P" <c:if test="${result.testResultYn == 'P'}">selected="selected"</c:if>>Pass</option>
-           									<option value="F" <c:if test="${result.testResultYn == 'F'}">selected="selected"</c:if>>Fail</option>
-		            					</select>	
+		            					<div >
+		            						<c:out value="${result.expectedResult}"/>
+		            					</div>
+		            				</td>
+		            				<td align="center" class="listtd">
+			            				<div >
+			            					<c:out value="${result.testDt}"/>
+			            				</div>
+		            				</td>
+		            				<td align="center"  class="listtd"><c:out value="${result.userTestId}"/>&nbsp;</td>
+		            				<td align="center"  class="listtd">
+		            					<c:out value="${result.testResultYn}"/>
 		            				</td>
 		            			</tr>
         					</c:forEach>
                         </table>
                     </div>
-				</form:form>
 				
-					<div class="tmsTestButton" >
+				
+					
+				
+			<form:form style="visibility:hidden;" commandName="testScenarioVO" name="testScenarioResultInsert" method="post" action="/tms/test/updateTestScenarioResultImpl.do">           
+					<div id="border" class="modify_user" >
+						<input type="hidden" name="testscenarioId" >
+						<input type="hidden" name="testcaseId" >
+                        <table>
+                        	<colgroup>
+		        				<col width="180"/>
+		        				<col width="100"/>
+	        				</colgroup>
+                        
+                            <tr>
+                                <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.testResultContent" /></label>
+                                </th>
+                                <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.testResultYn" /></label>
+                                </th>
+                            </tr>
+                            
+	            			<tr>
+                                <td>
+                            		<textarea type="textarea" rows="3" style="width:100%" id="testResultContent" name="testResultContent" maxlength ="800"></textarea>
+                            		<br/><form:errors path="testResultContent" />
+                            	</td>
+                            	
+	            				<td align="center" class="listtd">
+	            					<input type="radio" name="testResultYn" value="P" >Pass&nbsp;
+	  								<input type="radio" name="testResultYn" value="F" >Fail&nbsp;
+	  							</td>
+	            			</tr>
+                            
+                        </table>
+                    </div>
+
+				<div class="tmsTestButton" >
 	                    <ul>        
 	           				<li>
 								<div class="buttons">
-	                                <a href="#" onclick="UpdateScenarioResultAll(); return false;"><spring:message code="button.save" /> </a>
+	                                <a href="#" onclick="updateTestScenarioResult(); return false;"><spring:message code="button.save" /> </a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>        
-                   </div>
+                </div>
 				
+
+			</form:form>
 				
             </div>
             <!-- //content 끝 -->

@@ -154,16 +154,18 @@ function searchFileNm() {
               
               
              		 <colgroup>
-             		 	<col width="40"/>
-        				<col width="100"/> 
-        				<col width="100"/>
-        				<col width="50"/>
-        				<col width="60"/>
-        				<col width="60"/>
-        				<col width="80"/>
-        				<col width="50"/>
+             		 	<col width="4%" >
+             		 	<col width="5%%"/>
+        				<col width="11%"/> 
+        				<col width="41%"/>
+        				<col width="6%"/>
+        				<col width="10%"/>
+        				<col width="9%"/>
+        				<col width="8%"/>
+        				<col width="6%"/>
         			</colgroup>
         			<tr>
+        				<th scope="col" class="f_field" nowrap="nowrap"><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/></th>
         			    <th align="center"><spring:message code="tms.test.no" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseId" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseContent" /></th>
@@ -177,15 +179,19 @@ function searchFileNm() {
         			<c:forEach var="result" items="${testCaseList}" varStatus="status">
         			
             			<tr>
+            				<td nowrap="nowrap" >
+							       <input type="checkbox" name="checkField" class="check2" title="선택"/>
+							       <input name="checkMenuNo" type="hidden" value="<c:out value='${result.testcaseId}'/>"/>
+							    </td>
             			    <td align="center" class="listtd" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
-            				<td align="center" class="listtd"><c:out value="${result.testcaseId}"/></td>
+            				<td align="left" class="listtd"><c:out value="${result.testcaseId}"/></td>
             				<td align="left" class="listtd">
             					<a href= "<c:url value='/tms/test/selectTestCaseWithScenario.do?testcaseId=${result.testcaseId}'/>">
 	            					<strong><c:out value="${result.testcaseContent}"/></strong>
 	            				</a>
             				</td>
             				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
+            				<td align="left" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>

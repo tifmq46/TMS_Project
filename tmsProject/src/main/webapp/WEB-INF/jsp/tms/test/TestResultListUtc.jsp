@@ -154,23 +154,21 @@ function searchFileNm() {
               
               
              		 <colgroup>
-             		 	<col width="40"/>
-        				<col width="100"/> 
-        				<col width="130"/>
-        				<col width="50"/>
-        				<col width="60"/>
-        				<col width="60"/>
-        				<col width="80"/>
-        				<col width="30"/>
-        				<col width="30"/>
-        				<col width="50"/>
+             		 	<col width="5%"/>
+        				<col width="13%"/> 
+        				<col width="35%"/>
+        				<col width="6%"/>
+        				<col width="10%"/>
+        				<col width="8%"/>
+        				<col width="6%"/>
+        				<col width="6%"/>
+        				<col width="8%"/>
         			</colgroup>
         			<tr>
         			    <th align="center"><spring:message code="tms.test.no" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseId" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseContent" /></th>
         			    <th align="center"><spring:message code="tms.test.userWriterId" /></th>
-        				<th align="center"><spring:message code="tms.test.pgId" /></th>
         				<th align="center"><spring:message code="tms.test.taskGb" /></th>
 			        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>
 			        	<th align="center"><spring:message code="tms.test.firstTest" /></th>
@@ -179,17 +177,16 @@ function searchFileNm() {
         			</tr>
         			
         			<c:forEach var="result" items="${testCaseList}" varStatus="status">
-        			
+        				<input type="hidden" name="pgId" value="<c:out value="${result.pgId}"/>">
             			<tr>
             			    <td align="center" class="listtd" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
-            				<td align="center" class="listtd"><c:out value="${result.testcaseId}"/></td>
+            				<td align="left" class="listtd"><c:out value="${result.testcaseId}"/></td>
             				<td align="left" class="listtd">
             					<a href= "<c:url value='/tms/test/selectTestResult.do?testcaseId=${result.testcaseId}'/>">
 	            					<strong><c:out value="${result.testcaseContent}"/></strong>
 	            				</a>
             				</td>
             				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.firstTestResultYn}"/>&nbsp;</td>

@@ -187,6 +187,7 @@ function selectTestCurrent(pageNo){
               	<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
 	              	<colgroup>
 	              	
+	              			<col width="40"/>
 	              		<c:if test="${testCurrent[0].pgId != '' && testCurrent[0].pgId ne null }"> 
  					        <col width="60"/> 
         				</c:if>
@@ -196,13 +197,13 @@ function selectTestCurrent(pageNo){
 	        				<col width="40"/>
 	        				<col width="60"/>
 	        				<col width="60"/>
-	        				<col width="20"/>
-	        				<col width="20"/>
-	        				<col width="20"/>
+	        				<col width="30"/>
+	        				<col width="30"/>
 	        				<col width="45"/>
 	        		</colgroup>
         			<tr>
         			
+        				<th align="center" rowspan="2"><spring:message code="tms.test.no" /></th>
         				<c:if test="${testCurrent[0].pgId != '' && testCurrent[0].pgId ne null }"> 
         				<th align="center" rowspan="2"><spring:message code="tms.test.pgId" /></th>
         				</c:if>
@@ -213,19 +214,19 @@ function selectTestCurrent(pageNo){
         				<th align="center" rowspan="2"><spring:message code="tms.test.userWriterId" /></th>
 			        	<th align="center" rowspan="2" ><spring:message code="tms.test.enrollDt" /></th>
 			        	<th align="center" rowspan="2"><spring:message code="tms.test.completeDt" /></th>
-			        	<th align="center" colspan="3"><spring:message code="tms.test.testLevel" /></th>
+			        	<th align="center" colspan="2"><spring:message code="tms.test.testLevel" /></th>
         				<th align="center" rowspan="2"><spring:message code="tms.test.completeYn" /></th>
         			</tr>
         			
         			<tr>
         				<th align="center"><spring:message code="tms.test.firstTest" /></th>
 			        	<th align="center"><spring:message code="tms.test.secondTest" /></th>
-			        	<th align="center"><spring:message code="tms.test.thirdTest" /></th>
         			</tr>
         			
         			<c:forEach var="result" items="${testCurrent}" varStatus="status">
         			
             			<tr>
+            				<td align="center" class="listtd" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>  
             				<c:if test="${result.pgId != '' && result.pgId ne null}"> 
 	        					<td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
 	        				</c:if>
@@ -238,7 +239,6 @@ function selectTestCurrent(pageNo){
             				<td align="center" class="listtd"><c:out value="${result.completeDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.firstTestResultYn}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.secondTestResultYn}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.thirdTestResultYn}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>
             			</tr>
         			</c:forEach>

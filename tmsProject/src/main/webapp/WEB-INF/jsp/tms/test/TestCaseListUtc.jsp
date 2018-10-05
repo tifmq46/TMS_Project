@@ -42,8 +42,8 @@ function searchFileNm() {
 }
 
 function fCheckAll() {
-    var checkField = document.listForm.checkField;
-    if(document.listForm.checkAll.checked) {
+    var checkField = document.testCaseVO.checkField;
+    if(document.testCaseVO.checkAll.checked) {
         if(checkField) {
             if(checkField.length > 1) {
                 for(var i=0; i < checkField.length; i++) {
@@ -65,6 +65,40 @@ function fCheckAll() {
         }
     }
 }
+
+/* ********************************************************
+ * 멀티삭제 처리 함수
+ ******************************************************** */
+function fDeleteMenuList() {
+	
+	if (confirm('<spring:message code="common.delete.msg" />')) {
+		 var checkField = document.testCaseVO.checkField;
+		    var menuNo = document.testCaseVO.checkMenuNo;
+		    var checkMenuNos = "";
+		    var checkedCount = 0;
+		    if(checkField) {
+
+		        if(checkField.length > 1) {
+		            for(var i=0; i < checkField.length; i++) {
+		                if(checkField[i].checked) {
+		                    checkMenuNos += ((checkedCount==0? "" : ",") + menuNo[i].value);
+		                    checkedCount++;
+		                }
+		            }
+		        } else {
+		            if(checkField.checked) {
+		                checkMenuNos = menuNo.value;
+		            }
+		        }
+		    }   
+
+		    document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
+		    document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
+		    document.testCaseVO.submit(); 
+	}
+   
+}
+
 -->
 </script>
 
@@ -170,65 +204,86 @@ function fCheckAll() {
 					  				
 						</div>			
 						</fieldset>
-						
 					</div>
+				</form:form>
  					
 				<!-- //검색 필드 박스 끝 -->
                 
 
                 <div id="page_info"><div id="page_info_align"></div></div>     
                 
-                <div class="default_tablestyle">
-              	<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
-                <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
-              
-              
-             		 <colgroup>
-             		 	<col width="4%" >
-             		 	<col width="20"/>
-        				<col width="100"/> 
-        				<col width="100"/>
-        				<col width="50"/>
-        				<col width="60"/>
-        				<col width="60"/>
-        				<col width="80"/>
-        				<col width="50"/>
-        			</colgroup>
-        			<tr>
-        				<th scope="col" class="f_field" nowrap="nowrap"><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/></th>
-        			    <th align="center"><spring:message code="tms.test.no" /></th>
-        			    <th align="center"><spring:message code="tms.test.testcaseId" /></th>
-        			    <th align="center"><spring:message code="tms.test.testcaseContent" /></th>
-        			    <th align="center"><spring:message code="tms.test.userWriterId" /></th>
-        				<th align="center"><spring:message code="tms.test.pgId" /></th>
-        				<th align="center"><spring:message code="tms.test.taskGb" /></th>
-			        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>
-        				<th align="center"><spring:message code="tms.test.completeYn" /></th>
-        			</tr>
-        			
-        			<c:forEach var="result" items="${testCaseList}" varStatus="status">
-        			
-            			<tr>
-	            			<td nowrap="nowrap">
-						       <input type="checkbox" name="checkField" class="check2" title="선택"/>
-						       <input name="checkMenuNo" type="hidden" value="<c:out value='${result.testcaseId}'/>"/>
-						    </td>
-            			    <td nowrap="nowrap"><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
-            				<td align="center" class="listtd"><c:out value="${result.testcaseId}"/></td>
-            				<td align="left" class="listtd">
-            					<a href= "<c:url value='/tms/test/selectTestCase.do?testcaseId=${result.testcaseId}'/>">
-	            					<strong><c:out value="${result.testcaseContent}"/></strong>
-	            				</a>
-            				</td>
-            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>
-            			</tr>
-        			</c:forEach>
-              </table>        
-           </div>
+                
+                <form:form commandName="testCaseVO" name="testCaseVO" method="post" action="/tms/test/deleteMultiTestCase.do">     
+                	<input name="checkedMenuNoForDel" type="hidden" />
+                	<input name="testcaseGb" type="hidden" value="TC1"/>
+                	
+	                <div class="default_tablestyle">
+	              	<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
+	                <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
+	              
+	              
+	             		 <colgroup>
+	             		 	<col width="4%" >
+	             		 	<col width="4%"/>
+	        				<col width="12%"/> 
+	        				<col width="35%"/>
+	        				<col width="6%"/>
+	        				<col width="9%"/>
+	        				<col width="9%"/>
+	        				<col width="5%"/>
+	        				<col width="5%"/>
+	        				<col width="6%"/>
+	        				<col width="5%"/>
+	        			</colgroup>
+	        			<tr>
+	        				<th scope="col" class="f_field" nowrap="nowrap"><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/></th>
+	        			    <th align="center"><spring:message code="tms.test.no" /></th>
+	        			    <th align="center"><spring:message code="tms.test.testcaseId" /></th>
+	        			    <th align="center"><spring:message code="tms.test.testcaseContent" /></th>
+	        			    <th align="center"><spring:message code="tms.test.userWriterId" /></th>
+	        				<th align="center"><spring:message code="tms.test.taskGb" /></th>
+				        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>
+				        	<th align="center"><spring:message code="tms.test.firstTest" /></th>
+				        	<th align="center"><spring:message code="tms.test.secondTest" /></th>
+	        				<th align="center"><spring:message code="tms.test.completeYn" /></th>
+	        				<th align="center">결과</th>
+	        			</tr>
+	        			
+	        			<c:forEach var="result" items="${testCaseList}" varStatus="status">
+	        			
+	            			<tr>
+		            			<td nowrap="nowrap" >
+							       <input type="checkbox" name="checkField" class="check2" title="선택"/>
+							       <input name="checkMenuNo" type="hidden" value="<c:out value='${result.testcaseId}'/>"/>
+							       <input type="hidden" name="pgId" value="<c:out value="${result.pgId}"/>">
+							    </td>
+	            			    <td nowrap="nowrap" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
+	            				<td align="left" class="listtd"><c:out value="${result.testcaseId}"/></td>
+	            				<td align="left" class="listtd" >
+	            					<a href= "<c:url value='/tms/test/selectTestCase.do?testcaseId=${result.testcaseId}&returnPg=TestCaseDetail'/>">
+		            					<strong><c:out value="${result.testcaseContent}"/></strong>
+		            				</a>
+	            				</td>
+	            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.firstTestResultYn}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.secondTestResultYn}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>
+	            				
+	            				<td>
+	            				<div class="buttons">
+									<a href="<c:url value='/tms/test/selectTestCase.do?testcaseId=${result.testcaseId}&returnPg=TestCaseUpdateResult'/>"><spring:message code="button.create" /></a>
+								</div>
+	            				</td>
+	            			</tr>
+	        			</c:forEach>
+	              </table>        
+	           </div>
+           
+          
+        	</form:form>
+           
 
             <!-- 페이지 네비게이션 시작 -->
            <div id="paging_div">
@@ -238,7 +293,6 @@ function fCheckAll() {
            </div>                          
            <!-- //페이지 네비게이션 끝 -->  
  		
- 		</form:form>
             </div>
             <!-- //content 끝 -->
         </div>

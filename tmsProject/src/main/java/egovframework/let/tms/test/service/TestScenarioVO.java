@@ -37,7 +37,6 @@ public class TestScenarioVO implements Serializable{
 	private String testResultYn;
 
 	/** 테스트 일자 */
-	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date testDt;
 	
 	/** 테스트결과 내용 */

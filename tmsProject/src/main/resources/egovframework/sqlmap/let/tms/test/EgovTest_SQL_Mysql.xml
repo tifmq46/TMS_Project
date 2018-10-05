@@ -131,12 +131,18 @@
 		    SET
 		    	 FIRST_TEST_RESULT_YN 	= #firstTestResultYn#
 		    	, SECOND_TEST_RESULT_YN = #secondTestResultYn#
-	     		, PRECONDITION = #precondition#
-	     		, TESTCASE_CONTENT = #testcaseContent#
 	     		
 		    	<isNotEmpty property="completeYn">
 	     			, COMPLETE_YN = #completeYn#
 	     			, COMPLETE_DT = now()
+	       		</isNotEmpty>
+	       		
+		    	<isNotEmpty property="precondition">
+	     			, PRECONDITION = #precondition#
+	       		</isNotEmpty>
+	       		
+	    		<isNotEmpty property="testcaseContent">
+	     			, TESTCASE_CONTENT = #testcaseContent#
 	       		</isNotEmpty>
 			 
 			WHERE TESTCASE_ID = #testcaseId#
@@ -155,10 +161,7 @@
 	       	
 	    	<isNotEmpty property="testResultYn" prepend = ",">
 	     			TEST_RESULT_YN = #testResultYn#
-	       	</isNotEmpty>
-	       	
-	    	<isNotEmpty property="testDt" prepend = ",">
-	     			TEST_DT = #testDt#
+	     			, TEST_DT = now()
 	       	</isNotEmpty>
 	       	
 	    	<isNotEmpty property="testResultContent" prepend = ",">
@@ -183,7 +186,7 @@
 		
 	</update>
 	
-	<update id="TestDAO.updateTestScenarioMultiResult" parameterClass="TestScenarioVO">
+	<update id="TestDAO.updateTestScenarioResult" parameterClass="TestScenarioVO">
 	    
 	    UPDATE TESTSCENARIO_TB
 	    
@@ -191,10 +194,7 @@
 	    	
 	    	<isNotEmpty property="testResultYn" prepend = ",">
 	     			TEST_RESULT_YN = #testResultYn#
-	       	</isNotEmpty>
-	       	
-	    	<isNotEmpty property="testDt" prepend = ",">
-	     			TEST_DT = #testDt#
+	     			, TEST_DT = now()
 	       	</isNotEmpty>
 	       	
 	    	<isNotEmpty property="testResultContent" prepend = ",">
@@ -658,60 +658,66 @@
 			<!-- 단위테스트 현황 -->
 		    <isNotEqual property="searchByTestcaseGb" compareValue="TC2">
 				<![CDATA[
-					SELECT COUNT(*) TOT_CNT , COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT, COUNT(IF(COMPLETE_YN='N',1,NULL)) AS N_CNT 
+					SELECT TOT_CNT, Y_CNT, TOT_CNT-Y_CNT AS N_CNT
 					FROM (
-							SELECT * FROM (
-								SELECT 
-									A.PG_ID
-									, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB ) AS TASK_GB_NM
-									, A.TASK_GB AS TASK_GB_CODE
-									, B.TESTCASE_GB
-									, B.TESTCASE_ID
-									, B.TESTCASE_CONTENT
-									, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = B.USER_ID ) AS USER_NM
-									, B.ENROLL_DT
-									, B.COMPLETE_DT
-									, B.FIRST_TEST_RESULT_YN
-									, B.SECOND_TEST_RESULT_YN
-									, B.THIRD_TEST_RESULT_YN
-									, B.COMPLETE_YN
-								FROM PG_TB AS A
-								LEFT OUTER JOIN
-								TESTCASE_TB AS B
-								ON A.PG_ID = B.PG_ID
-							) AS C
-					WHERE 1=1
+						SELECT COUNT(*) TOT_CNT , COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT
+						FROM (
+								SELECT * FROM (
+									SELECT 
+										A.PG_ID
+										, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB ) AS TASK_GB_NM
+										, A.TASK_GB AS TASK_GB_CODE
+										, B.TESTCASE_GB
+										, B.TESTCASE_ID
+										, B.TESTCASE_CONTENT
+										, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = B.USER_ID ) AS USER_NM
+										, B.ENROLL_DT
+										, B.COMPLETE_DT
+										, B.FIRST_TEST_RESULT_YN
+										, B.SECOND_TEST_RESULT_YN
+										, B.THIRD_TEST_RESULT_YN
+										, B.COMPLETE_YN
+									FROM PG_TB AS A
+									LEFT OUTER JOIN
+									TESTCASE_TB AS B
+									ON A.PG_ID = B.PG_ID
+								) AS C
+							)AS D
+						WHERE 1=1
 		]]>
 		</isNotEqual>	
 		
    	    <!-- 통합 테스트 현황 -->
 	    <isEqual property="searchByTestcaseGb" compareValue="TC2">
 	        <![CDATA[
-				SELECT COUNT(*) TOT_CNT , COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT, COUNT(IF(COMPLETE_YN='N',1,NULL)) AS N_CNT 
+				SELECT TOT_CNT, Y_CNT, TOT_CNT-Y_CNT AS N_CNT
 				FROM (
-						SELECT * FROM (
-							SELECT 
-							  a. TESTCASE_ID
-							, a.TESTCASE_CONTENT
-							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TESTCASE_GB ) AS TESTCASE_GB_NM
-							, a.TESTCASE_GB
-							, a.PG_ID
-							, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
-							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
-							, a.TASK_GB AS TASK_GB_CODE
-							, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = a.USER_ID ) AS USER_NM
-							, a.USER_ID
-							, a.ENROLL_DT
-							, a.PRECONDITION
-							, a.FIRST_TEST_RESULT_YN 
-							, a.SECOND_TEST_RESULT_YN 
-							, a.THIRD_TEST_RESULT_YN 
-							, a.COMPLETE_YN
-							, a.COMPLETE_DT
-							
-							FROM TESTCASE_TB AS a
-							WHERE TESTCASE_GB = 'TC2'
-						) AS b
+						SELECT COUNT(*) TOT_CNT , COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT
+						FROM (
+							SELECT * FROM (
+								SELECT 
+								  a. TESTCASE_ID
+								, a.TESTCASE_CONTENT
+								, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TESTCASE_GB ) AS TESTCASE_GB_NM
+								, a.TESTCASE_GB
+								, a.PG_ID
+								, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
+								, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
+								, a.TASK_GB AS TASK_GB_CODE
+								, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = a.USER_ID ) AS USER_NM
+								, a.USER_ID
+								, a.ENROLL_DT
+								, a.PRECONDITION
+								, a.FIRST_TEST_RESULT_YN 
+								, a.SECOND_TEST_RESULT_YN 
+								, a.THIRD_TEST_RESULT_YN 
+								, a.COMPLETE_YN
+								, a.COMPLETE_DT
+								
+								FROM TESTCASE_TB AS a
+								WHERE TESTCASE_GB = 'TC2'
+							) AS b
+						) AS c 
 				WHERE 1=1
 		]]>
 	    </isEqual> 
@@ -741,7 +747,7 @@
 			    AND USER_NM = #searchByUserDevId#
 			</isNotEmpty> 
 			
-			<![CDATA[          
+			<![CDATA[    
 			) AS FINAL
 			]]>
 	</select>	
@@ -750,18 +756,33 @@
 	<select id="TestDAO.selectTestStatsTable" parameterClass="TestDefaultVO" resultClass="egovMap">
 			<![CDATA[
 			
+								
+		SELECT 
+					IFNULL(FINAL.SYS_GB,"합계") AS SYS_GB
+					,IFNULL(FINAL.TASK_GB,"소계") AS TASK_GB
+					,IFNULL(SUM(FINAL.PG_CNT),0) AS PG_CNT
+					,IFNULL(SUM(FINAL.TC_WRITE_Y_CNT),0) AS TC_WRITE_Y_CNT
+					,IFNULL(SUM(FINAL.PG_CNT -TC_WRITE_Y_CNT),0) AS TC_WRITE_N_CNT
+					,IFNULL(ROUND((100 * SUM(FINAL.TC_WRITE_Y_CNT))/SUM(FINAL.PG_CNT),1),0) AS TC_WRITE_PCT
+					,IFNULL(SUM(FINAL.FIRST_TEST_CNT),0) AS FIRST_TEST_CNT
+					,IFNULL(SUM(FINAL.SECOND_TEST_CNT),0) AS SECOND_TEST_CNT
+					,IFNULL(ROUND((100 * SUM(FINAL.FIRST_TEST_CNT + FINAL.SECOND_TEST_CNT))/SUM(FINAL.TC_WRITE_Y_CNT),1),0) AS TC_PROGRESS_PCT
+					,IFNULL(SUM(FINAL.TC_Y_CNT),0) AS TC_Y_CNT
+					,IFNULL(SUM(FINAL.PG_CNT - FINAL.TC_Y_CNT),0) AS TC_N_CNT
+					,IFNULL(ROUND((100 * SUM(FINAL.TC_Y_CNT))/SUM(FINAL.PG_CNT),1),0) AS TC_RESULT_PCT
+		
+		FROM (
+			
 				SELECT 
-					 IFNULL(CATEGORY.SYS_NM,"합계") AS SYS_GB
-					,IFNULL(CATEGORY.TASK_NM,"소계") AS TASK_GB
+					 CATEGORY.SYS_NM AS SYS_GB
+					,CATEGORY.TASK_NM AS TASK_GB
 					,IFNULL(SUM(PG_TB.PG_CNT),0) AS PG_CNT
+					,IFNULL(SUM(TESTCASE_TB.TC_WRITE_Y_CNT),0) AS TC_WRITE_Y_CNT
+					,IFNULL(SUM(TESTCASE_TB.FIRST_TEST_CNT),0) AS FIRST_TEST_CNT
+					,IFNULL(SUM(TESTCASE_TB.SECOND_TEST_CNT),0) AS SECOND_TEST_CNT
 					,IFNULL(SUM(TESTCASE_TB.Y_CNT),0) AS TC_Y_CNT
-					,IFNULL(SUM(TESTCASE_TB.N_CNT),0) AS TC_N_CNT
-					,IFNULL(SUM(TESTCASE_TB.TC_TOT_CNT),0) AS TC_TOT_CNT
-					,IFNULL(ROUND((100 * SUM(TESTCASE_TB.Y_CNT))/SUM(TESTCASE_TB.TC_TOT_CNT),1),0) AS TC_PCT
-					,IFNULL(SUM(DEFECT_TB.DEFECT_CNT),0) AS DEFECT_CNT
-					,IFNULL(SUM(DEFECT_TB.ACTION_Y_CNT),0) AS ACT_Y_CNT
-					,IFNULL(SUM(DEFECT_TB.ACTION_N_CNT),0) AS ACT_N_CNT
-					,IFNULL(ROUND((100 * SUM(DEFECT_TB.ACTION_Y_CNT))/SUM(DEFECT_TB.DEFECT_CNT),1),0) AS DEFECT_PCT
+				
+				
 				FROM 
 					(SELECT * 
 				 	FROM (SELECT CODE AS SYS_GB, CODE_NM AS SYS_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'SYSGB') AS A
@@ -773,18 +794,17 @@
 				ON CATEGORY.TASK_GB = PG_TB.TASK_GB
 					
 				LEFT OUTER JOIN
-					(SELECT TASK_GB, TESTCASE_GB, COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT , COUNT(IF(COMPLETE_YN='N' OR COMPLETE_YN='' ,1,NULL)) AS N_CNT, COUNT(TASK_GB) AS TC_TOT_CNT
+					(SELECT TASK_GB, TESTCASE_GB
+					,COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT
+					,COUNT(IF(COMPLETE_YN='N' OR COMPLETE_YN='' ,1,NULL)) AS N_CNT
+					,COUNT(IF(FIRST_TEST_RESULT_YN = 'Y' AND SECOND_TEST_RESULT_YN = 'N',1,NULL)) AS FIRST_TEST_CNT
+					,COUNT(IF(FIRST_TEST_RESULT_YN = 'Y' AND SECOND_TEST_RESULT_YN = 'Y',1,NULL)) AS SECOND_TEST_CNT
+					,COUNT(TASK_GB) AS TC_WRITE_Y_CNT
 					FROM TESTCASE_TB WHERE TESTCASE_GB = #searchByTestcaseGb# GROUP BY TASK_GB) AS TESTCASE_TB
-				ON CATEGORY.TASK_GB = TESTCASE_TB.TASK_GB
-					
-				LEFT OUTER JOIN
-					(SELECT TASK_GB, COUNT(*) AS DEFECT_CNT, COUNT(IF(ACTION_ST='A5',1,NULL)) AS ACTION_Y_CNT, COUNT(IF(ACTION_ST='A5',NULL,1)) AS ACTION_N_CNT
-					 FROM (SELECT X.TASK_GB, Y.PG_ID, Y.ACTION_ST
-						   FROM PG_TB AS X RIGHT OUTER JOIN DEFECT_TB AS Y ON X.PG_ID = Y.PG_ID ) AS Z
-						   GROUP BY TASK_GB) AS DEFECT_TB
-				ON CATEGORY.TASK_GB = DEFECT_TB.TASK_GB
-					
-				GROUP BY SYS_NM, TASK_NM WITH ROLLUP
+				ON CATEGORY.TASK_GB = TESTCASE_TB.TASK_GB	
+				GROUP BY SYS_NM, TASK_NM 
+		) AS FINAL
+		GROUP BY FINAL.SYS_GB, FINAL.TASK_GB  WITH ROLLUP
 			
 			]]>
 			
