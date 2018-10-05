@@ -150,7 +150,7 @@ public class EgovMainController {
 		model.addAttribute("taskByMainStats", JSONArray.fromObject(taskByMainStats));
 		// 결함 진행상태 부분 끝 --------------------------
 		
-		List<?> testList = TmsProgrmManageService.selectTestList();
+		/*List<?> testList = TmsProgrmManageService.selectTestList();
 		
 		List<HashMap<String,String>> r1 = new ArrayList <HashMap<String,String>>();
 		List<HashMap<String,String>> r2 = new ArrayList <HashMap<String,String>>();
@@ -158,7 +158,7 @@ public class EgovMainController {
 		//r1 = TmsProgrmManageService.selectProgrmList1(38);
 		for(int i=38; i<44;i++){
 			r1.addAll(TmsProgrmManageService.selectProgrmList1(i));
-		}
+		}*/
 		
 		/*System.out.println("====tttt====="+r1);
 		
@@ -236,7 +236,7 @@ public class EgovMainController {
 		
 		//System.out.println("====="+r2);
 		
-		model.addAttribute("testList1", r1);
+		//model.addAttribute("testList1", r1);
 		
 		//model.addAttribute("r2", r2);
 		

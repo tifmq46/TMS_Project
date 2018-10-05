@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @SuppressWarnings("serial")
 public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
@@ -28,10 +29,20 @@ public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
 	private String searchByPgId = "";
 	
 	/** 계획일자로 검색(시작)*/
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date searchByPlanStartDt;
 	
 	/** 계획일자로 검색(종료)*/
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date searchByPlanEndDt;
+	
+	/** 개발일자로 검색(시작)*/
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date searchByDevStartDt;
+	
+	/** 개발일자로 검색(종료)*/
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date searchByDevEndDt;
 
 	/** 검색사용여부 */
 	private String searchUseYn = "";
@@ -54,7 +65,17 @@ public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
 	/** recordCountPerPage */
 	private int recordCountPerPage = 10;
 	
+	/** 로그인ID(세션)*/
+	private String sessionId;
 	
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
 	public String getSearchBySysGb() {
 		return searchBySysGb;
 	}
@@ -173,6 +194,22 @@ public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
 
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
+	}
+	
+	public Date getSearchByDevStartDt() {
+		return searchByDevStartDt;
+	}
+
+	public void setSearchByDevStartDt(Date searchByDevStartDt) {
+		this.searchByDevStartDt = searchByDevStartDt;
+	}
+
+	public Date getSearchByDevEndDt() {
+		return searchByDevEndDt;
+	}
+
+	public void setSearchByDevEndDt(Date searchByDevEndDt) {
+		this.searchByDevEndDt = searchByDevEndDt;
 	}
 
 	@Override

@@ -171,14 +171,14 @@
 	</insert>
 	
 	<!-- 공통코드수 조회 -->
-	<select id="TmsProgrmManageDAO.selectTestList" resultClass="java.util.HashMap">
+	<!-- <select id="TmsProgrmManageDAO.selectTestList" resultClass="java.util.HashMap">
 			SELECT  WEEKYEAR
 			FROM TEST
 	
-	</select>
+	</select> -->
 	
 	<!-- 공통코드수 조회 -->
-	<select id="TmsProgrmManageDAO.selectTestList1" parameterClass="java.lang.Integer" resultClass="java.util.HashMap" remapResults="true">
+	<!-- <select id="TmsProgrmManageDAO.selectTestList1" parameterClass="java.lang.Integer" resultClass="java.util.HashMap" remapResults="true">
 			SELECT O.NAME AS BN, SUM(A#i#) AS B#i# FROM
 (
    SELECT IFNULL(X.USER_NM, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = Y.USER_DEV_ID)) AS NAME
@@ -215,6 +215,6 @@
    )AS O 
    GROUP BY O.NAME;
 	
-	</select>
+	</select> -->
 
 </sqlMap>                            

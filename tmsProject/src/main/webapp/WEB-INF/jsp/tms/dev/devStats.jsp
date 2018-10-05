@@ -43,7 +43,7 @@
                     <div id="cur_loc_align">
                         <ul>
 							<li>HOME</li>
-							<li>&gt;</li>
+							<li>&#62;</li>
 							<li>개발진척관리</li>
 							<li>&gt;</li>
 							<li><strong>개발진척통계</strong></li>
@@ -77,6 +77,15 @@
                 <div class="default_tablestyle">
                     <table summary="진척통계 테이블입니다" cellpadding="0" cellspacing="0">
                     <caption>진척통계 테이블</caption>
+                    
+                    <c:forEach var="stats" items="${stats}" varStatus="status">
+                    <tr>
+                    <td>
+                    	<c:out value="${stats.A1}" />
+                    	<td>
+                    	</tr>
+                    </c:forEach>
+                    
                     
                     </table>
                 </div>

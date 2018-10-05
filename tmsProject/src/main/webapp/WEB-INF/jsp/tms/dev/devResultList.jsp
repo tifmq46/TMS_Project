@@ -53,6 +53,7 @@ function fn_result_change(asd) {
 	}
 
 function linkPage1(pageNo){
+
 	   document.listForm.pageIndex.value = pageNo;
 	   document.listForm.action = "<c:url value='/tms/dev/devResultList.do'/>";
 	   document.listForm.submit();
@@ -111,6 +112,10 @@ $(function(){
 	      });
 	   })
 	})
+	
+	function searchFileNm() {
+    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+}
 </script>
 <style>
 .disabled {
@@ -181,24 +186,38 @@ $(function(){
 					  			</li>
 					  			
 					  			<li><label for="searchByUserDevId">개발자명</label></li>
-					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" /></li>
+					  			 <li><input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="18" style="text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+		                          	<datalist id="userAllList">
+		                          	<c:forEach var="userList" items="${userList}" varStatus="status">
+										<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+									</c:forEach>
+									</datalist>
+		                          </li>
 					  			
 					  		</ul>
 					  		<ul id="search_second_ul">
 					  			<li><label for="searchByPgId">화면ID</label></li>
-					  			<li><input type="text" name="searchByPgId" id="searchByPgId" /></li>
+					  			<li><input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+                      			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
+                      			</li>
+					  			
+					  			<li>
+					  			<label>개발일자</label>
+								<input type="date" id="searchByDevStartDt" name="searchByDevStartDt" 
+									value="<fmt:formatDate value="${searchVO.searchByDevStartDt}" pattern="yyyy-MM-dd"/>"/>
+								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+					  			&nbsp;~&nbsp;
+					  			<input type="date" id="searchByDevEndDt" name="searchByDevEndDt" 
+					  				value="<fmt:formatDate value="${searchVO.searchByDevEndDt}" pattern="yyyy-MM-dd"/>"/>
+					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+					  			</li>
+					  			
 					  			<li>
 									<div class="buttons" style="float:right;">
 										<a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
 									</div>	  				  			
 					  			</li>
-					  			
-					  			<li>
-					  			<label>개발일자</label>
-								<input type="date" name="devStartDt" /><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-					  			~ <input type="date" name="devEndDt" /><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-					  			</li>
-					  			
 					  		</ul>			
 						</div>			
 						</fieldset>
@@ -216,6 +235,7 @@ $(function(){
               
               
               <colgroup>
+              		<col width="20" >
         			<col width="70" >
                     <col width="60" >  
                     <col width="10%" >
@@ -228,6 +248,7 @@ $(function(){
                     <col width="5%" >
         			</colgroup>
         			<tr>
+        				<th align="center">번호</th>
         				<th align="center">시스템구분</th>
         				<th align="center">업무구분</th>
         				<th align="center">화면ID</th>
@@ -243,6 +264,7 @@ $(function(){
         			<c:forEach var="result" items="${resultList}" varStatus="status">
         			
             			<tr>
+            				<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
             				<td align="center" class="listtd" name="sys"><c:out value="${result.sysGb}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
             				<td align="center" class="listtd">
@@ -277,34 +299,24 @@ $(function(){
             				<!-- 값이 바뀌는 이벤트가 발생했을 때 저장 버튼 활성화
             					저장 누르면 버튼 enable
             				  -->
-            				
             				</div>
-            				<!-- <input type="button" value="등록" class="buttons"
-            				onclick=""
-            				/> -->
             				</td>
-            				<%-- <td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
-	            					<td align="center" class="listtd"><c:out value="${result.devEndDt}"/>&nbsp;</td> --%>
-            				
-            				<!--  계획일자가 등록되어 있는 경우에만 개발일자를 등록할 수 있음 -->
-            				<%-- <c:choose>
-	            				<c:when test="${!empty result.planStartDt}">
-	            					
-		            				<td align="center" class="listtd"><input type="date" id="${result.pgId}DevStartDt" style="width:120px; height:15px;" value="<c:out value="${result.devStartDt}"/>"/>&nbsp;</td>
-		            				<td align="center" class="listtd"><input type="date" id="${result.pgId}DevEndDt" style="width:120px; height:15px;" value="<c:out value="${result.devEndDt}"/>"/>&nbsp;</td> 
-	           					</c:when>
-	            				
-	            				<c:otherwise>
-	            					<td align="center" class="listtd"></td>
-	            					<td align="center" class="listtd"></td>
-	            				</c:otherwise>
-            				</c:choose> --%>
             			</tr>
         			</c:forEach>
-            
+             		<c:if test="${fn:length(resultList) == 0}">
+                      <tr>
+                        <td nowrap colspan="5" ><spring:message code="common.nodata.msg" /></td>  
+                      </tr>      
+                     </c:if>
               </table>        
               
            </div>
+
+				 <input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
+		         <input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
+		         <input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
+		         <input id="TmsProgrmFileNm_user_dev_id" type="hidden" /> 
+		         <input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
 
                 <!-- 페이지 네비게이션 시작 -->
                 <%-- <c:if test="${!empty loginPolicyVO.pageIndex }"> --%>

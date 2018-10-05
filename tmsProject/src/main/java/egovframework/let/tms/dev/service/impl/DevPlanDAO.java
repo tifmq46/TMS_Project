@@ -1,5 +1,6 @@
 package egovframework.let.tms.dev.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import egovframework.let.cop.com.service.TemplateInfVO;
 import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.dev.service.DevPlanVO;
+import egovframework.let.tms.dev.service.TempVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 
 @Repository("devPlanDAO")
@@ -58,8 +60,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-	public List<?> selectDevPlans(DevPlanDefaultVO searchVO) throws Exception {
-		return list("devPlanDAO.selectDevPlans", searchVO);
+	public List<HashMap<String,String>> selectDevPlans(DevPlanDefaultVO searchVO) throws Exception {
+		return (List<HashMap<String, String>>) list("devPlanDAO.selectDevPlans", searchVO);
 	}
 
 	/**
@@ -141,5 +143,51 @@ public class DevPlanDAO extends EgovAbstractDAO{
 
 	public void updateRate(DevPlanDefaultVO searchVO) {
 		update("DevPlanDAO.updateRate", searchVO);
+	}
+
+	public HashMap<String, String> DevPlanAvg(DevPlanDefaultVO searchVO) {
+		return (HashMap<String, String>)select("DevPlanDAO.DevPlanAvg",searchVO);
+	}
+
+	public int selectDevCurrentTotCnt(DevPlanDefaultVO searchVO) {
+		return (Integer) select("DevPlanDAO.selectDevCurrentTotCnt" ,searchVO);
+	}
+
+	public void insertDates(String dates) {
+		insert("DevPlanDAO.insertDates", dates);
+	}
+
+	public void deleteDates() {
+		delete("DevPlanDAO.deleteDates");
+	}
+
+	public void insertDayDiff(DevPlanDefaultVO searchVO) {
+		update("DevPlanDAO.insertDayDiff", searchVO);
+	}
+
+	public List<String> selectUserList() {
+		return (List<String>) list("DevPlanDAO.selectUserList");
+	}
+
+	public List<HashMap<String, String>> selectTempList(String a) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTempList",a);
+	}
+
+	public void insertTemp(TempVO t) {
+		insert("DevPlanDAO.insertTemp", t);
+		
+	}
+
+	public void deleteTemp() {
+		delete("DevPlanDAO.deleteTemp");
+		
+	}
+
+	public List<String> selectPeriod() {
+		return (List<String>) list("DevPlanDAO.selectPeriod");
+	}
+
+	public List<HashMap<String, String>> selectUserDevStats(String period) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserDevStats",period);
 	}
 }

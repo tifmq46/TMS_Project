@@ -1,5 +1,6 @@
 package egovframework.let.tms.dev.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.dev.service.DevPlanService;
 import egovframework.let.tms.dev.service.DevPlanVO;
+import egovframework.let.tms.dev.service.TempVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 
@@ -74,7 +76,7 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	 */
 
 	@Override
-	public List<?> selectDevPlans(DevPlanDefaultVO searchVO) throws Exception {
+	public List<HashMap<String,String>> selectDevPlans(DevPlanDefaultVO searchVO) throws Exception {
 		return devPlanDAO.selectDevPlans(searchVO);
 		
 	}
@@ -162,6 +164,64 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public void updateRate(DevPlanDefaultVO searchVO) {
 		devPlanDAO.updateRate(searchVO);
 		
+	}
+
+	@Override
+	public HashMap<String, String> DevPlanAvg(DevPlanDefaultVO searchVO) {
+		return devPlanDAO.DevPlanAvg(searchVO);
+	}
+
+	@Override
+	public int selectDevCurrentTotCnt(DevPlanDefaultVO searchVO) {
+		return devPlanDAO.selectDevCurrentTotCnt(searchVO);
+	}
+
+	@Override
+	public void insertDates(String dates) {
+		devPlanDAO.insertDates(dates);
+	}
+
+	@Override
+	public void deleteDates() {
+		devPlanDAO.deleteDates();
+		
+	}
+
+	@Override
+	public void insertDayDiff(DevPlanDefaultVO searchVO) {
+		devPlanDAO.insertDayDiff(searchVO);
+		
+	}
+
+	@Override
+	public List<String> selectUserList() {
+		return devPlanDAO.selectUserList();
+	}
+
+	@Override
+	public List<HashMap<String, String>> selectTempList(String a) {
+		return devPlanDAO.selectTempList(a);
+	}
+
+	@Override
+	public void insertTemp(TempVO t) {
+		devPlanDAO.insertTemp(t);
+	}
+
+	@Override
+	public void deleteTemp() {
+		devPlanDAO.deleteTemp();
+		
+	}
+
+	@Override
+	public List<String> selectPeriod() {
+		return devPlanDAO.selectPeriod();
+	}
+
+	@Override
+	public List<HashMap<String, String>> selectUserDevStats(String period) {
+		return devPlanDAO.selectUserDevStats(period);
 	}
 	
 }

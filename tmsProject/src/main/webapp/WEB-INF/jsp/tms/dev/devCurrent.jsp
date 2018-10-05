@@ -65,6 +65,10 @@ $(function(){
 	      });
 	   })
 	})
+	
+	function searchFileNm() {
+    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+}
 </script>
 
 
@@ -130,22 +134,37 @@ $(function(){
 					  			</li>
 					  			
 					  			<li><label for="searchByUserDevId">개발자명</label></li>
-					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" /></li>
+					  			 <li><input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="18" style="text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+		                          	<datalist id="userAllList">
+		                          	<c:forEach var="userList" items="${userList}" varStatus="status">
+										<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+									</c:forEach>
+									</datalist>
+		                          </li>
 					  			
 					  		</ul>
 					  		<ul id="search_second_ul">
 					  			<li><label for="searchByPgId">화면ID</label></li>
-					  			<li><input type="text" name="searchByPgId" id="searchByPgId" /></li>
+					  			<li><input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+                      			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
+                      			</li>
+					  			
+					  			<li>
+					  			<label>개발일자</label>
+								<input type="date" id="searchByDevStartDt" name="searchByDevStartDt" 
+									value="<fmt:formatDate value="${searchVO.searchByDevStartDt}" pattern="yyyy-MM-dd"/>"/>
+								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+					  			&nbsp;~&nbsp;
+					  			<input type="date" id="searchByDevEndDt" name="searchByDevEndDt" 
+					  				value="<fmt:formatDate value="${searchVO.searchByDevEndDt}" pattern="yyyy-MM-dd"/>"/>
+					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+					  			</li>
+					  			
 					  			<li>
 									<div class="buttons" style="float:right;">
 										<a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
 									</div>	  				  			
-					  			</li>
-					  			
-					  			<li>
-					  			<label>개발일자</label>
-								<input type="date" name="devStartDt" /><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-					  			~ <input type="date" name="devEndDt" /><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
 					  			</li>
 					  			
 					  		</ul>			
@@ -154,12 +173,18 @@ $(function(){
 					<%-- </form> --%>
 				</div>
 				<!-- //검색 필드 박스 끝 -->
-                
-                
-                
+ 			
 
                 <div id="page_info"><div id="page_info_align"></div></div>                    
                 <div class="default_tablestyle">
+                
+                <div style="margin:10px;">
+	               	<strong>
+	                	총 : ${r.cnt}&nbsp;
+	                	달성률 : ${r.rateAvg}
+	                </strong>
+                </div>
+                
               <table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
                  <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
               
@@ -176,7 +201,7 @@ $(function(){
                     <col width="10%" >
                      <col width="5%" >
         			</colgroup>
-        			<tr>
+        			
         				<th align="center">시스템구분</th>
         				<th align="center">업무구분</th>
         				<th align="center">화면ID</th>
@@ -211,10 +236,20 @@ $(function(){
             				
             			</tr>
         			</c:forEach>
-            
+             	<c:if test="${fn:length(resultList) == 0}">
+                      <tr>
+                        <td nowrap colspan="5" ><spring:message code="common.nodata.msg" /></td>  
+                      </tr>      
+                     </c:if>
               </table>        
               
            </div>
+           
+           		 <input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
+		         <input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
+		         <input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
+		         <input id="TmsProgrmFileNm_user_dev_id" type="hidden" /> 
+		         <input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
 
                 <!-- 페이지 네비게이션 시작 -->
                 <%-- <c:if test="${!empty loginPolicyVO.pageIndex }"> --%>
