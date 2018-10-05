@@ -8,6 +8,7 @@
 	<typeAlias  alias="DevPlanVO" type="egovframework.let.tms.dev.service.DevPlanVO"/>
 	<typeAlias  alias="CmmnDetailCode"   type="egovframework.com.cmm.service.CmmnDetailCode"/>
 	<typeAlias  alias="CmmnDetailCodeVO" type="egovframework.let.sym.ccm.cde.service.CmmnDetailCodeVO"/>
+	<typeAlias  alias="tempVO" type="egovframework.let.tms.dev.service.TempVO"/>
 	
 	<resultMap id="devPlanList" class="egovframework.let.tms.dev.service.DevPlanVO">
 	    <result property="pgId" column="PG_ID" columnIndex="1"/>
@@ -36,7 +37,12 @@
 	    <result property="devEndDt" column="DEV_END_DT" columnIndex="5"/>
 	</resultMap>
 	
-	<select id="devPlanDAO.selectDevPlans" parameterClass="searchVO" resultClass="egovMap">
+	<resultMap id="devPlanCurrent" class="java.util.HashMap">
+	    <result property="cnt" column="CNT" columnIndex="1"/>
+	    <result property="rateAvg" column="RATE_AVG" columnIndex="2"/>
+	</resultMap>
+	
+	<select id="devPlanDAO.selectDevPlans" parameterClass="searchVO" resultClass="java.util.HashMap" remapResults="true">
 			<![CDATA[
 				SELECT * FROM	(			
 				select A.PG_ID
@@ -46,12 +52,18 @@
 					,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB) TASK_GB
 					,B.PLAN_START_DT
 					,B.PLAN_END_DT
-					,(select DATEDIFF(B.PLAN_END_DT, B.PLAN_START_DT )+1 )as dayDiff
+					,B.DAY_DIFF
+					,A.USE_YN
 			FROM PG_TB A
 			LEFT JOIN DEV_PLAN_TB B
-			ON A.PG_ID = B.PG_ID )AS C
+			ON A.PG_ID = B.PG_ID 
+			where USE_YN ='Y')AS C
 					WHERE 1=1
 			]]>
+			
+			<isNotEqual property="sessionId" compareValue="관리자">
+			    AND USER_DEV_ID = #sessionId#
+			</isNotEqual>
 			
             <!-- 시스템구분으로 검색 -->
 			<isNotEmpty property="searchBySysGb">
@@ -74,18 +86,70 @@
 			</isNotEmpty>
 			
 			<!-- 계획시작일로 검색 -->
-			<isNotEmpty property="planStartDt">
-			    <isNotEmpty property="planEndDt">
-			        AND PLAN_START_DT BETWEEN DATE(#planStartDt#) AND DATE(#planEndDt#)
+			<isNotEmpty property="searchByPlanStartDt">
+			    <isNotEmpty property="searchByPlanEndDt">
+			        AND PLAN_START_DT BETWEEN DATE(#searchByPlanStartDt#) AND DATE(#searchByPlanEndDt#)
 			    </isNotEmpty>
 			</isNotEmpty>
 			        
 			ORDER BY PG_ID ASC
 			LIMIT #recordCountPerPage# OFFSET #firstIndex#
 			
-			
+			 
 	</select>
 	
+	<select id="DevPlanDAO.selectDevPlanListTotCnt" parameterClass="searchVO" resultClass="java.lang.Integer" >
+			<![CDATA[
+			SELECT COUNT(*) AS totcnt
+ 				FROM (		
+				select A.PG_ID
+					,A.PG_NM
+					,(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = A.USER_DEV_ID ) USER_DEV_ID
+					,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.SYS_GB) AS SYS_GB
+					,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB) TASK_GB
+					,B.PLAN_START_DT
+					,B.PLAN_END_DT
+					,(select DATEDIFF(B.PLAN_END_DT, B.PLAN_START_DT )+1 )as dayDiff
+					,A.USE_YN
+			FROM PG_TB A
+			LEFT JOIN DEV_PLAN_TB B
+			ON A.PG_ID = B.PG_ID 
+			WHERE USE_YN ='Y')AS C
+					WHERE 1=1
+			]]>
+			
+			<isNotEqual property="sessionId" compareValue="관리자">
+			    AND USER_DEV_ID = #sessionId#
+			</isNotEqual>
+			
+			<!-- 개발자명으로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_DEV_ID = #searchByUserDevId#
+			</isNotEmpty>    
+			
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND PG_ID = #searchByPgId#
+			</isNotEmpty> 
+			
+			<!-- 시스템구분으로 검색 -->
+			<isNotEmpty property="searchBySysGb">
+			    AND SYS_GB = #searchBySysGb#
+			</isNotEmpty>   
+			
+			<!-- 업무구분으로 검색 -->
+			<isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB = #searchByTaskGb#
+			</isNotEmpty>   
+			
+			<!-- 계획시작일로 검색 -->
+			<isNotEmpty property="searchByPlanStartDt">
+			    <isNotEmpty property="searchByPlanEndDt">
+			        AND PLAN_START_DT BETWEEN DATE(#searchByPlanStartDt#) AND DATE(#searchByPlanEndDt#)
+			    </isNotEmpty>
+			</isNotEmpty>
+
+	</select>	
 	
 	<select id="DevPlanDAO.selectDevPlan" parameterClass="searchVO" resultClass="egovMap" >
 		<![CDATA[
@@ -125,63 +189,7 @@
 			 )			
 		]]>
 	</insert>
-	
-	<!-- <select id="DevPlanDAO.selectDevPlans" parameterClass="searchVO" resultClass="egovMap" >
-		<![CDATA[
-			SELECT * FROM (
-					SELECT
-						b.PG_ID
-						,(SELECT USER_NM FROM USER_TB WHERE USER_ID = b.USER_DEV_ID ) USER_DEV_ID
-						,b.PG_NAME
-						,b.SYS_GB
-						,b.TASK_GB
-						,b.USE_YN
-						,b.PJT_ID
-						,a.PLAN_START_DT
-						,a.PLAN_END_DT
-						,a.DEV_START_DT
-						,a.DEV_END_DT
-						,a.ENROLL_DT
-						,a.DEV_END_YN
-						,a.FIRST_TEST_RESULT_YN
-						,a.SECOND_TEST_RESULT_YN
-						,a.THIRD_TEST_RESULT_YN
-						
-					FROM DEV_PLAN_TB a
-					RIGHT OUTER JOIN PG_TB b
-					ON a.PG_ID = b.PG_ID
-					) as c
-					WHERE 1=1
-		]]>
-			
-	</select>	 -->
-	
-	<select id="DevPlanDAO.selectDevPlanListTotCnt" parameterClass="searchVO" resultClass="java.lang.Integer" >
-			<![CDATA[
-				SELECT COUNT(*) AS totcnt
-		  		FROM PG_TB 
-		  		WHERE 1=1
-			]]>
-			<!-- 개발자명으로 검색 -->
-			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID = #searchByUserDevId#
-			</isNotEmpty>    
-			
-			<!-- 화면ID로 검색 -->
-			<isNotEmpty property="searchByPgId">
-			    AND PG_ID = #searchByPgId#
-			</isNotEmpty> 
-			
-			<!-- 시스템구분으로 검색 -->
-			<isNotEmpty property="searchBySysGb">
-			    AND SYS_GB = #searchBySysGb#
-			</isNotEmpty>   
-			
-			<!-- 업무구분으로 검색 -->
-			<isNotEmpty property="searchByTaskGb">
-			    AND TASK_GB = #searchByTaskGb#
-			</isNotEmpty>   
-	</select>	
+
 	
 	<select id="devPlanDAO.selectDevResultList" parameterClass="searchVO" resultClass="egovMap">
 			<![CDATA[
@@ -200,16 +208,16 @@
 						,a.DEV_END_DT
 						,a.ENROLL_DT
 						,a.DEV_END_YN
-						,a.FIRST_TEST_RESULT_YN
-						,a.SECOND_TEST_RESULT_YN
-						,a.THIRD_TEST_RESULT_YN
-						
 					FROM DEV_PLAN_TB a
 					INNER JOIN PG_TB b
 					ON a.PG_ID = b.PG_ID
-					) as c
-					WHERE 1=1
+					WHERE USE_YN ='Y') as c
+					WHERE 1=1 
 			]]>
+			
+			<isNotEqual property="sessionId" compareValue="관리자">
+			    AND USER_DEV_ID = #sessionId#
+			</isNotEqual>
 			
 			<!-- 시스템구분으로 검색 -->
 			<isNotEmpty property="searchBySysGb">
@@ -231,9 +239,9 @@
 			</isNotEmpty>
 			
 			<!-- 개발시작일로 검색 -->
-			<isNotEmpty property="devStartDt">
-			    <isNotEmpty property="devEndDt">
-			        AND DEV_START_DT BETWEEN DATE(#devStartDt#) AND DATE(#devEndDt#)
+			<isNotEmpty property="searchByDevStartDt">
+			    <isNotEmpty property="searchByDevEndDt">
+			        AND DEV_START_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
 			    </isNotEmpty>
 			</isNotEmpty>
 			        
@@ -247,17 +255,23 @@
  				FROM (
 					SELECT
 						b.PG_ID
-						,b.USER_DEV_ID
+						,(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = b.USER_DEV_ID ) USER_DEV_ID
 						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.SYS_GB) SYS_GB
 						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.TASK_GB) TASK_GB
 						,a.DEV_START_DT
 						,a.DEV_END_DT
+						,b.USE_YN
 					FROM DEV_PLAN_TB a
 					LEFT JOIN PG_TB b
 					ON a.PG_ID = b.PG_ID
-				) as c
+				WHERE USE_YN ='Y') as c
 		  		WHERE 1=1
 			]]>
+			
+			<isNotEqual property="sessionId" compareValue="관리자">
+			    AND USER_DEV_ID = #sessionId#
+			</isNotEqual>
+			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
 			    AND USER_DEV_ID = #searchByUserDevId#
@@ -277,11 +291,11 @@
 			<isNotEmpty property="searchByTaskGb">
 			    AND TASK_GB = #searchByTaskGb#
 			</isNotEmpty>   
-			
+
 			<!-- 개발시작일로 검색 -->
-			<isNotEmpty property="devStartDt">
-			    <isNotEmpty property="devEndDt">
-			        AND DEV_START_DT BETWEEN DATE(#devStartDt#) AND DATE(#devEndDt#)
+			<isNotEmpty property="searchByDevStartDt">
+			    <isNotEmpty property="searchByDevEndDt">
+			        AND DEV_START_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
 			    </isNotEmpty>
 			</isNotEmpty>
 	</select>	
@@ -384,18 +398,18 @@
 				]]>				
 	</select> 
 	
-	<insert id="DevPlanDAO.insertWeek" parameterClass="java.lang.Integer" >
+	<insert id="DevPlanDAO.insertDates" parameterClass="java.lang.String" >
 		<![CDATA[
-			INSERT INTO TEST
-				(weekyear)
+			INSERT INTO PERIOD
+				(DATES)
 			VALUES
 			(#i#)			
 		]]>
 	</insert>
 	
-	<delete id="DevPlanDAO.deleteWeek">
+	<delete id="DevPlanDAO.deleteDates">
         <![CDATA[
-            DELETE FROM TEST
+            DELETE FROM PERIOD
         ]]>
     </delete>
     
@@ -418,15 +432,134 @@
 						,a.ENROLL_DT
 						,a.DEV_END_YN
 						,a.ACHIEVEMENT_RATE
+					FROM DEV_PLAN_TB a
+					INNER JOIN PG_TB b
+					ON a.PG_ID = b.PG_ID
+					WHERE USE_YN ='Y') as c
+				WHERE 1=1
+			]]>
+			
+			<!-- 시스템구분으로 검색 -->
+			<isNotEmpty property="searchBySysGb">
+			    AND SYS_GB = #searchBySysGb# 
+			</isNotEmpty>
+			
+			<isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB = #searchByTaskGb# 
+			</isNotEmpty>
+			
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND PG_ID LIKE CONCAT ('%', #searchByPgId#, '%')
+			</isNotEmpty> 
+			
+			<!-- 개발자명으로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_DEV_ID LIKE CONCAT ('%', #searchByUserDevId#, '%')
+			</isNotEmpty>
+			
+			<!-- 개발시작일로 검색 -->
+			<isNotEmpty property="searchByDevStartDt">
+			    <isNotEmpty property="searchByDevEndDt">
+			        AND DEV_START_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
+			    </isNotEmpty>
+			</isNotEmpty>
+
+			        
+			ORDER BY PG_ID ASC
+			LIMIT #recordCountPerPage# OFFSET #firstIndex#
+	</select>
+	
+	<select id="DevPlanDAO.selectDevCurrentTotCnt" parameterClass="searchVO" resultClass="java.lang.Integer" >
+			<![CDATA[
+			SELECT COUNT(*) AS totcnt
+ 				FROM (
+					SELECT
+						b.PG_ID
+						,(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = b.USER_DEV_ID ) USER_DEV_ID
+						,b.PG_NM
+						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.SYS_GB) SYS_GB
+						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.TASK_GB) TASK_GB
+						,b.USE_YN
+						,b.PJT_ID
+						,a.PLAN_START_DT
+						,a.PLAN_END_DT
+						,a.DEV_START_DT
+						,a.DEV_END_DT
+						,a.ENROLL_DT
+						,a.DEV_END_YN
+						,a.ACHIEVEMENT_RATE
+					FROM DEV_PLAN_TB a
+					INNER JOIN PG_TB b
+					ON a.PG_ID = b.PG_ID
+					WHERE USE_YN ='Y') as c
+				WHERE 1=1
+			]]>
+			<!-- 시스템구분으로 검색 -->
+			<isNotEmpty property="searchBySysGb">
+			    AND SYS_GB = #searchBySysGb# 
+			</isNotEmpty>
+			
+			<isNotEmpty property="searchByTaskGb">
+			    AND TASK_GB = #searchByTaskGb# 
+			</isNotEmpty>
+			
+			<!-- 화면ID로 검색 -->
+			<isNotEmpty property="searchByPgId">
+			    AND PG_ID LIKE CONCAT ('%', #searchByPgId#, '%')
+			</isNotEmpty> 
+			
+			<!-- 개발자명으로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_DEV_ID LIKE CONCAT ('%', #searchByUserDevId#, '%')
+			</isNotEmpty>
+			
+			<!-- 개발시작일로 검색 -->
+			<isNotEmpty property="searchByDevStartDt">
+			    <isNotEmpty property="searchByDevEndDt">
+			        AND DEV_START_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
+			    </isNotEmpty>
+			</isNotEmpty>
+
+	</select>	
+	
+	<update id="DevPlanDAO.updateRate" parameterClass="searchVO">
+        <![CDATA[
+        	UPDATE DEV_PLAN_TB 
+      			SET ACHIEVEMENT_RATE=#achievementRate#
+            WHERE PG_ID=#pgId#
+        ]]>
+    </update>
+	
+	<select id="DevPlanDAO.DevPlanAvg" parameterClass="searchVO" resultMap="devPlanCurrent">
+	    <![CDATA[
+		    select COUNT(*) AS CNT,
+				ROUND (AVG(ACHIEVEMENT_RATE),1) as RATE_AVG
+			from (
+			SELECT
+						b.PG_ID
+						,(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = b.USER_DEV_ID ) USER_DEV_ID
+						,b.PG_NM
+						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.SYS_GB) SYS_GB
+						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.TASK_GB) TASK_GB
+						,b.USE_YN
+						,b.PJT_ID
+						,a.PLAN_START_DT
+						,a.PLAN_END_DT
+						,a.DEV_START_DT
+						,a.DEV_END_DT
+						,a.ENROLL_DT
+						,a.DEV_END_YN
+						,a.ACHIEVEMENT_RATE
 						
 					FROM DEV_PLAN_TB a
 					INNER JOIN PG_TB b
 					ON a.PG_ID = b.PG_ID
-					) as c
-					WHERE 1=1
-			]]>
-			
-			<!-- 시스템구분으로 검색 -->
+					WHERE USE_YN='Y') as c
+			WHERE 1=1
+	    ]]>
+	    
+	    <!-- 시스템구분으로 검색 -->
 			<isNotEmpty property="searchBySysGb">
 			    AND SYS_GB = #searchBySysGb# 
 			</isNotEmpty>
@@ -451,29 +584,75 @@
 			        AND DEV_START_DT BETWEEN DATE(#devStartDt#) AND DATE(#devEndDt#)
 			    </isNotEmpty>
 			</isNotEmpty>
-
-			        
-			ORDER BY PG_ID ASC
-			LIMIT #recordCountPerPage# OFFSET #firstIndex#
 	</select>
 	
-	<update id="DevPlanDAO.updateRate" parameterClass="searchVO">
-        <![CDATA[
-        	UPDATE DEV_PLAN_TB 
-      			SET ACHIEVEMENT_RATE=#achievementRate#
+	<update id="DevPlanDAO.insertDayDiff" parameterClass="searchVO" >
+		<![CDATA[
+			UPDATE DEV_PLAN_TB 
+      			SET DAY_DIFF=#dayDiff#
             WHERE PG_ID=#pgId#
+		]]>
+	</update>
+	
+	<select id="DevPlanDAO.selectUserList" resultClass="java.lang.String">
+			<![CDATA[
+			SELECT DISTINCT P.USER_DEV_ID
+         		FROM PG_TB AS P
+		]]>
+   	</select>
+   	
+	<select id="DevPlanDAO.selectTempList" parameterClass="java.lang.String" resultClass="java.util.HashMap" remapResults="true">
+			<![CDATA[
+				SELECT P.PG_ID
+					,P.USER_DEV_ID
+					,(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = P.USER_DEV_ID) AS USER_DEV_NM
+					,D.PLAN_END_DT
+				FROM PG_TB AS P, DEV_PLAN_TB AS D
+				WHERE P.PG_ID = D.PG_ID AND P.USER_DEV_ID=#userList#
+         ]]>
+   	</select>
+
+	<insert id="DevPlanDAO.insertTemp" parameterClass="tempVO" >
+		<![CDATA[
+			INSERT INTO TEMP
+				(PG_ID, USER_DEV_ID, USER_DEV_NM, PLAN_END_DT)
+			VALUES
+			(#pgId#, #userDevId#, #userDevNm#, #planEndDt#)			
+		]]>
+	</insert>
+	
+	<delete id="DevPlanDAO.deleteTemp">
+        <![CDATA[
+            DELETE FROM TEMP
         ]]>
-    </update>
-	
-	<select id="DevPlanDAO.DevPlanAvg" resultClass="java.util.HashMap" remapResults="true">
-	    <![CDATA[
-		    select COUNT(*) AS cnt,
-				AVG(ACHIEVEMENT_RATE) as rateAvg
-			from DEV_PLAN_TB
-	    ]]>
-	</select>
-	
-	
+    </delete>
+    
+	<select id="DevPlanDAO.selectPeriod" resultClass="java.lang.String">
+			<![CDATA[
+			SELECT dates
+         		FROM PERIOD
+		]]>
+   	</select>
+    
+	<select id="DevPlanDAO.selectUserDevStats" parameterClass="java.lang.String" resultClass="java.util.HashMap" remapResults="true">
+			<![CDATA[
+				SELECT DISTINCT A.USER_DEV_ID
+				, A.USER_DEV_NM
+				,COUNT(CASE WHEN PLAN_END_DT=#dates# THEN 1 END) AS 'A1'
+				FROM
+				(SELECT PG_ID
+					,USER_DEV_ID
+					,USER_DEV_NM
+					,PLAN_END_DT
+					FROM TEMP
+					)AS A
+			INNER JOIN
+			PERIOD AS B
+			WHERE B.DATES = A.PLAN_END_DT
+			GROUP BY USER_DEV_ID,B.DATES
+			ORDER BY USER_DEV_ID;
+         ]]>
+   	</select>
 <!-- 
 	<resultMap id="tmplatDetail" class="egovframework.let.cop.com.service.TemplateInfVO">
 		<result property="tmplatId" column="TMPLAT_ID" columnIndex="1"/>

@@ -1,5 +1,7 @@
 package egovframework.let.tms.dev.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +47,7 @@ public interface DevPlanService {
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-	public List<?> selectDevPlans(DevPlanDefaultVO searchVO) throws Exception;
+	public List<HashMap<String,String>> selectDevPlans(DevPlanDefaultVO searchVO) throws Exception;
 	
 	
 	/**
@@ -112,6 +114,26 @@ public interface DevPlanService {
 
 	public void updateRate(DevPlanDefaultVO searchVO);
 
-	public HashMap<String, String> DevPlanAvg();
+	public HashMap<String, String> DevPlanAvg(DevPlanDefaultVO searchVO);
+
+	public int selectDevCurrentTotCnt(DevPlanDefaultVO searchVO);
+
+	public void insertDates(String date);
+
+	public void deleteDates();
+
+	public void insertDayDiff(DevPlanDefaultVO searchVO);
+
+	public List<String> selectUserList();
+
+	public List<HashMap<String, String>> selectTempList(String a);
+
+	public void insertTemp(TempVO t);
+
+	public void deleteTemp();
+
+	public List<String> selectPeriod();
+
+	public List<HashMap<String, String>> selectUserDevStats(String period);
 
 }

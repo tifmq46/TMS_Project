@@ -1,5 +1,7 @@
 package egovframework.let.tms.dev.web;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +14,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
@@ -25,9 +26,11 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.let.sym.prm.service.TmsProgrmManageService;
 import egovframework.let.sym.prm.service.TmsProjectManageVO;
+import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.dev.service.DevPlanService;
 import egovframework.let.tms.dev.service.DevPlanVO;
+import egovframework.let.tms.dev.service.TempVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -57,7 +60,9 @@ public class DevPlanController {
 	@Resource(name = "TmsProgrmManageService")
 	private TmsProgrmManageService TmsProgrmManageService;
 	
-	
+	/** DefectService */
+	@Resource (name = "defectService")
+	private DefectService defectService;
 	/**
 	 * 글 목록을 조회한다. (pageing)
 	 * @param searchVO - 조회할 정보가 담긴 DevPlanDefaultVO
@@ -68,7 +73,13 @@ public class DevPlanController {
 	
 	@RequestMapping(value = "/tms/dev/devPlans.do")
 	public String selectDevPlans(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
-		System.out.println("여기는 옴ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
+		
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		
+		searchVO.setSessionId(user.getName());
+		System.out.println("--유저"+ searchVO.getSessionId());
+		
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -86,17 +97,50 @@ public class DevPlanController {
 		//공통코드(시스템, 업무구분)
 		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
+		
+		String a = String.valueOf(searchVO.getSearchBySysGb());
+		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
+			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
+			model.addAttribute("taskGb2", taskGbList2);
+		}
+		
 		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		
-		List<?> devList = devPlanService.selectDevPlans(searchVO);
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
+		List<HashMap<String,String>> devList = devPlanService.selectDevPlans(searchVO);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String inputStartDate, inputEndDate;
+		Date startDate, endDate;
+		int dayDiff; 
+		
+		for(int i=0; i<devList.size(); i++){
+			if(((devList.get(i).get("PLAN_START_DT")) == null || "".equals(devList.get(i).get("PLAN_START_DT")))
+					&&((devList.get(i).get("PLAN_END_DT")) == null || "".equals(devList.get(i).get("PLAN_END_DT")))
+					){
+				
+			}else{
+				inputStartDate =  String.valueOf(devList.get(i).get("PLAN_START_DT"));
+				inputEndDate = String.valueOf(devList.get(i).get("PLAN_END_DT"));
+				startDate = sdf.parse(inputStartDate);
+				endDate = sdf.parse(inputEndDate);
+				dayDiff = betweenDate(startDate,endDate).size();
+				searchVO.setDayDiff(dayDiff);
+				searchVO.setPgId(devList.get(i).get("PG_ID"));
+				devPlanService.insertDayDiff(searchVO);
+			}
+		}
+		
+		devList = devPlanService.selectDevPlans(searchVO);
 		model.addAttribute("resultList", devList);
 		
 		int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-		
-		
+
 
 		return "tms/dev/devPlanList";
 	}
@@ -219,6 +263,11 @@ public class DevPlanController {
 	@RequestMapping(value = "/tms/dev/devResultList.do")
 	public String selectDevResultList(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
 		
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		
+		searchVO.setSessionId(user.getName());
+		
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -247,14 +296,11 @@ public class DevPlanController {
 		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		
-		System.out.println("----------------------업무구분값");
-		System.out.println(searchVO.getSearchBySysGb());
-		System.out.println(searchVO.getSearchByTaskGb());
-				
-		System.out.println("================================1"+searchVO);
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
 		List<?> devResultList = devPlanService.selectDevResultList(searchVO);
 		model.addAttribute("resultList", devResultList);
-		System.out.println("================================2"+devResultList);
 		
 		int totCnt = devPlanService.selectDevResultListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -299,45 +345,57 @@ public class DevPlanController {
 	@RequestMapping(value = "/tms/dev/devStats.do")
 	public String devStats(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
 		
-		/*개발기간*/
-		String start = "2018-09-17";
-		String end = "2018-10-28";
-		/*프로젝트의 개발기간을 가져와서 주차의 값이랑 주차의 차이를 가져온다.*/
+		
+		/*프로젝트의 개발기간의 주차 값과 차이를 가져온다.*/
 		TmsProjectManageVO tt = TmsProgrmManageService.selectProject();
 		model.addAttribute("tt", tt);
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		/*프로젝트 개발계획 기간(주말 제외)*/
 		Date startDate = tt.getDEV_START_DT();
-		String ab = sdf.format(startDate);
-		
 		Date endDate = tt.getDEV_END_DT();
 		
-		//date -> calendar
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(startDate);
+		devPlanService.deleteDates();
 		
-		int startWeek = cal.get(cal.WEEK_OF_YEAR);
-		
-		cal.setTime(endDate);
-		int endWeek = cal.get(cal.WEEK_OF_YEAR);
-		
-		devPlanService.deleteWeek();
-		for(int i=startWeek; i<=endWeek; i++){
-			devPlanService.insertWeek(i);
+		ArrayList<String> dates = betweenDate(startDate, endDate);
+		for(String date : dates){
+			devPlanService.insertDates(date);
 		}
-		/*월에서 주차 구하기
-		 * System.out.println(String.valueOf(cal.get(Calendar.WEEK_OF_MONTH)));
-		 * */
-		
-		
-		System.out.println("========================");
-		System.out.println(sdf.format(startDate));
-		System.out.println("시작 주차"+startWeek);
-		System.out.println("종료 주차"+endWeek);
-		
 		
 		List<?> devPeriod = devPlanService.selectDevPeriod();
 		model.addAttribute("resultP", devPeriod);
+		
+		List<String> userList = devPlanService.selectUserList();
+		
+		
+
+		
+		List<HashMap<String,String>> temp = new ArrayList<HashMap<String,String>>();
+		TempVO t = new TempVO();
+		
+		for(int i=0; i<userList.size(); i++) {
+			temp.addAll(devPlanService.selectTempList(userList.get(i).toString()));
+		}
+		
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		devPlanService.deleteTemp();
+		
+		for(int i=0; i<temp.size(); i++){
+			t.setPgId(String.valueOf(temp.get(i).get("PG_ID")));
+			t.setUserDevId(String.valueOf(temp.get(i).get("USER_DEV_ID")));
+			t.setUserDevNm(String.valueOf(temp.get(i).get("USER_DEV_NM")));
+			t.setPlanEndDt(sdf.parse(String.valueOf(temp.get(i).get("PLAN_END_DT"))));
+			devPlanService.insertTemp(t);
+		}
+		
+		List<String> periodList = devPlanService.selectPeriod();
+		
+		List<HashMap<String,String>> userDevStats = new ArrayList<HashMap<String,String>>();
+		//userDevStats.addAll(devPlanService.selectUserDevStats("2018-10-04"));
+		for(int i=0; i<periodList.size(); i++){
+			userDevStats.addAll(devPlanService.selectUserDevStats(periodList.get(i).toString()));
+		}
+		model.addAttribute("stats", userDevStats);
 		
 		return "/tms/dev/devStats";
 	}
@@ -348,7 +406,7 @@ public class DevPlanController {
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
-		
+		  
 		/** pageing setting */
 		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
@@ -380,6 +438,7 @@ public class DevPlanController {
 		Date start[] = new Date[devCurrentList.size()];
 		Date end[] = new Date[devCurrentList.size()];
 		Date cur = new Date();
+		DecimalFormat format = new DecimalFormat(".#");
 		
 		/*달성률 계산*/
 		for(int i=0; i<devCurrentList.size(); i++){
@@ -410,7 +469,7 @@ public class DevPlanController {
 				if(compare2 > 0){
 					achRate = (float) 100.0;
 				}else if(compare2 < 0){
-					achRate = ((aa/bb)*100);
+					achRate = Float.parseFloat(String.format("%.1f",((aa/bb)*100)));
 				}
 			}else if(compare < 0){
 				System.out.println("현재날짜 < 계획시작일");
@@ -424,15 +483,47 @@ public class DevPlanController {
 		List<HashMap<String,String>> devResult = devPlanService.selectDevCurrent(searchVO);
 		model.addAttribute("resultList", devResult);
 		
-		HashMap<String,String> devPlanAvg = devPlanService.DevPlanAvg();
-		model.addAttribute("r", devPlanAvg);
-		System.out.println(devPlanAvg);
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
 		
-		int totCnt = devPlanService.selectDevResultListTotCnt(searchVO);
+		int totCnt = devPlanService.selectDevCurrentTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
+		HashMap<String,String> devPlanAvg = devPlanService.DevPlanAvg(searchVO);
+		model.addAttribute("r", devPlanAvg);
+		System.out.println(devPlanAvg);
+		
 		return "tms/dev/devCurrent";
+	}
+	
+	/*주말 제외한 두 날짜 사이의 기간 가져오기*/
+	public ArrayList<String> betweenDate(Date startDate, Date endDate){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		ArrayList<String> dates = new ArrayList<String>();
+		Date currentDate = startDate;
+		int dayOfWeek;	//요일
+		
+		while(currentDate.compareTo(endDate) <= 0){
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(currentDate);
+			
+			/*주말 제외*/
+			dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+			if(dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY){
+				
+			}else{
+				dates.add(sdf.format(currentDate));
+				
+			}
+			cal.add(Calendar.DAY_OF_MONTH, 1);
+			currentDate = cal.getTime();
+			
+		}
+		
+		return dates;
 	}
 		
 }
