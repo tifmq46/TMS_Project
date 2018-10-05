@@ -129,7 +129,7 @@ function searchFileNm() {
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="50%" nowrap colspan="3">
-                                    <form:input type="text" title="게시판명입력" path="testcaseContent" cssStyle="width:50%" />
+                                    <form:input type="text" title="게시판명입력" path="testcaseContent" cssStyle="width:99%" />
                                     <br/><form:errors path="testcaseContent" />
                                 </td>
                           </tr>
@@ -140,7 +140,7 @@ function searchFileNm() {
                                 </label>    
                             </th>
                             <td colspan="3">
-                                <form:input type="text" title="게시판명입력" path="pgId" id="TmsProgrmFileNm_pg_id"  size="60" cssStyle="width:50%" />
+                                <form:input type="text" readonly="true" title="게시판명입력" path="pgId" id="TmsProgrmFileNm_pg_id"  size="60" cssStyle="width:50%" />
                            		<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
                             </td>
@@ -152,7 +152,7 @@ function searchFileNm() {
                                 </label>    
                             </th>
                             <td colspan="3">
-                                <form:input type="text" title="게시판명입력" path="" disabled="true" id="TmsProgrmFileNm_pg_nm"  size="60" cssStyle="width:50%" />
+                                <form:input type="text" title="게시판명입력" path="" readonly="true" id="TmsProgrmFileNm_pg_nm"  size="60" cssStyle="width:50%" />
                             </td>
                           </tr>
                           <tr>

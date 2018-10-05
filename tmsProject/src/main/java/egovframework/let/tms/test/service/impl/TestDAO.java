@@ -62,8 +62,8 @@ public class TestDAO extends EgovAbstractDAO{
 	 * @return void형
 	 * @exception Exception
 	 */
-	public void updateTestScenarioMultiResult(TestScenarioVO testScenarioVO) throws Exception {
-		update("TestDAO.updateTestScenarioMultiResult", testScenarioVO);
+	public void updateTestScenarioResult(TestScenarioVO testScenarioVO) throws Exception {
+		update("TestDAO.updateTestScenarioResult", testScenarioVO);
 	}
 	
 	

@@ -176,7 +176,7 @@ function deleteTestScenario() {
                                 <th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testDt" /></label>
                                 </th>
                                 <td width="25%" nowrap >
-                                	<input disabled="disabled" id="testDt" name="testDt" type="date" size="25" maxlength="60"  value="<fmt:formatDate value='${testScenarioVO.testDt}' pattern='yyyy-MM-dd' />" /> 
+                                	<c:out value='${testScenarioVO.testDt}' />
                                 </td>
                             </tr>
                             

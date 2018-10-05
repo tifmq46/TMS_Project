@@ -76,6 +76,41 @@ function fCheckAll() {
     }
 }
 
+/* ********************************************************
+ * 멀티삭제 처리 함수
+ ******************************************************** */
+function fDeleteMenuList() {
+	
+	
+	if (confirm('<spring:message code="common.delete.msg" />')) {
+		 var checkField = document.testScenarioVO.checkField;
+		    var menuNo = document.testScenarioVO.checkMenuNo;
+		    var checkMenuNos = "";
+		    var checkedCount = 0;
+		    if(checkField) {
+
+		        if(checkField.length > 1) {
+		            for(var i=0; i < checkField.length; i++) {
+		                if(checkField[i].checked) {
+		                    checkMenuNos += ((checkedCount==0? "" : ",") + menuNo[i].value);
+		                    checkedCount++;
+		                }
+		            }
+		        } else {
+		            if(checkField.checked) {
+		                checkMenuNos = menuNo.value;
+		            }
+		        }
+		    }   
+
+		    document.testScenarioVO.checkedMenuNoForDel.value=checkMenuNos;
+		    document.testScenarioVO.action = "<c:url value='/tms/test/deleteMultiTestScenario.do'/>";
+		    document.testScenarioVO.submit(); 
+	}
+   
+}
+
+
 </script>
 
 </head>
@@ -198,14 +233,8 @@ function fCheckAll() {
                                 <td width="16.6%" nowrap >
                                		<c:out value="${testVoMap.secondTestResultYn}"></c:out>
                                 </td>
-                              <%--   
-                                <th width="16.6%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.thirdTest" /></label>
-                                </th>
-                                <td width="16.6%" nowrap >
-                                	<c:out value="${testVoMap.thirdTestResultYn}"></c:out>
-                                </td> 
-                                 --%>
-                                  <th width="16.6%" height="23"  nowrap="nowrap"><label for="completeYn"><spring:message code="tms.test.completeYn" /></label>
+                                  
+                                <th width="16.6%" height="23"  nowrap="nowrap"><label for="completeYn"><spring:message code="tms.test.completeYn" /></label>
                                 </th>
                                 <td width="16.6%" nowrap >
                                 	<c:out value='${testVoMap.completeYn}'/>
@@ -218,45 +247,37 @@ function fCheckAll() {
                     <br>
                 	</form:form>
                 	
-                	<form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="/tms/test/updateTestScenarioImpl.do">           
+                	<form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="/tms/test/deleteMultiTestScenario.do">           
 					<div id="border" class="modify_user" style="height:200px; width:92%; overflow:auto; " >
+						<input type="hidden" name="testcaseId" value="${testVoMap.testcaseId}" >
+						<input name="checkedMenuNoForDel" type="hidden" />
                         <table>
                         	<colgroup>
                         		<col width="4%" >
-		        				<col width="40"/> 
-		        				<col width="180"/>
-		        				<col width="100"/>
-		        				<col width="180"/>
-		        				<col width="120"/>
-		        				<col width="60"/>
-		        				<col width="60"/>
+		        				<col width="5%"/> 
+		        				<col width="35%"/>
+		        				<col width="21%"/>
+		        				<col width="35%"/>
 	        				</colgroup>
                         
                             <tr>
-                            	<th height="23"  nowrap="nowrap" rowspan="2" scope="col" class="f_field" nowrap="nowrap"><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/></th>
-                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.ord" /></label>
+                            	<th height="23"  nowrap="nowrap" scope="col" class="f_field" nowrap="nowrap">
+                            		<input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/>
+                            	</th>
+                                <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.ord" /></label>
                                 </th>
-                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
+                                <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
                                 </th>
-                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testCondition" /></label>
+                                <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.testCondition" /></label>
                                 </th>
-                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.expectedResult" /></label>
+                                <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.expectedResult" /></label>
                                 </th>
-                                <th height="23"  nowrap="nowrap" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testResultYn" /></label>
-                                </th>
-                                <th height="23"  nowrap="nowrap" colspan="2"><label for="nttSj"><spring:message code="tms.test.testResultYn" /></label>
-                                </th>
-                            </tr>
-                            
-                            <tr>
-                            	<th><spring:message code="tms.test.userTestId" /></th>
-                            	<th><spring:message code="tms.test.result" /></th>
                             </tr>
                             
                             <c:forEach var="result" items="${testScenarioList}" varStatus="status">
         			
 		            			<tr>
-			            			<td align="center" class="listtd" nowrap="nowrap">
+			            			<td align="center" class="listtd" style="padding-left: 2px;">
 							       		<input type="checkbox" name="checkField" class="check2" title="선택"/>
 							       		<input name="checkMenuNo" type="hidden" value="<c:out value='${result.testscenarioId}'/>"/>
 							    	</td>
@@ -268,9 +289,6 @@ function fCheckAll() {
 		            				</td>
 		            				<td align="center" class="listtd"><c:out value="${result.testCondition}"/>&nbsp;</td>
 		            				<td align="center" class="listtd"><c:out value="${result.expectedResult}"/>&nbsp;</td>
-		            				<td align="center" class="listtd"><c:out value="${result.testResultContent}"/>&nbsp;</td>
-		            				<td align="center" class="listtd"><c:out value="${result.userTestId}"/>&nbsp;</td>
-		            				<td align="center" class="listtd"><c:out value="${result.testResultYn}"/>&nbsp;</td>
 		            			</tr>
         			</c:forEach>
                             

@@ -42,12 +42,12 @@ public interface TestService {
 	public void updateTestScenario(TestScenarioVO testScenarioVO) throws Exception;
 	
 	/**
-	 * 테스트 시나리오를 복수로 수정한다.
+	 * 테스트 시나리오 결과만 수정한다.
 	 * @param vo - 수정할 정보가 담긴 TestScenarioVO
 	 * @return void형
 	 * @exception Exception
 	 */
-	public void updateTestScenarioMultiResult(TestScenarioVO testScenarioVO) throws Exception;
+	public void updateTestScenarioResult(TestScenarioVO testScenarioVO) throws Exception;
 	
 	
 	/**
@@ -58,6 +58,13 @@ public interface TestService {
 	 */
 	public void deleteTestCase(String testcaseId) throws Exception;
 	
+	/**
+	 * 테스트 케이스를 멀티로 삭제한다.
+	 * @param checkedMenuNoForDel String
+	 * @exception Exception
+	 */
+	void deleteMultiTestCase(String checkedMenuNoForDel) throws Exception;
+
 	
 	/**
 	 * 테스트시나리오를 삭제한다.
@@ -67,6 +74,15 @@ public interface TestService {
 	 */
 	public void deleteTestScenario(String testscenarioId) throws Exception;
 	
+	
+	/**
+	 * 테스트 시나리오를 멀티로 삭제한다.
+	 * @param checkedMenuNoForDel String
+	 * @exception Exception
+	 */
+	void deleteMultiTestScenario(String checkedMenuNoForDel) throws Exception;
+
+
 	
 	/**
 	 * 테스트케이스에 대한 상세정보를 조회한다.

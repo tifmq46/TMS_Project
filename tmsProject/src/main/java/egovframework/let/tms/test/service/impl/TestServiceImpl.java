@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import egovframework.let.tms.test.service.TestDefaultVO;
 import egovframework.let.tms.test.service.TestScenarioVO;
 import egovframework.let.tms.test.service.TestService;
+import egovframework.let.sym.mnu.mpm.service.MenuManageVO;
 import egovframework.let.tms.test.service.TestCaseVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
@@ -71,8 +72,8 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 	}
 	
 	@Override
-	public void updateTestScenarioMultiResult(TestScenarioVO testScenarioVO) throws Exception{
-		testDAO.updateTestScenarioMultiResult(testScenarioVO);
+	public void updateTestScenarioResult(TestScenarioVO testScenarioVO) throws Exception{
+		testDAO.updateTestScenarioResult(testScenarioVO);
 	}
 	
 	
@@ -83,11 +84,37 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 	}
 
 	@Override
+	public void deleteMultiTestCase(String checkedMenuNoForDel) throws Exception {
+
+		String[] delMenuNo = checkedMenuNoForDel.split(",");
+
+		if (delMenuNo == null || (delMenuNo.length == 0)) {
+			throw new java.lang.Exception("String Split Error!");
+		}
+		for (int i = 0; i < delMenuNo.length; i++) {
+			testDAO.deleteTestCase(delMenuNo[i]);
+		}
+	}
+	
+	@Override
 	public void deleteTestScenario(String testscenarioId) throws Exception {
 		testDAO.deleteTestScenario(testscenarioId);
 		
 	}
 
+	@Override
+	public void deleteMultiTestScenario(String checkedMenuNoForDel) throws Exception {
+
+		String[] delMenuNo = checkedMenuNoForDel.split(",");
+
+		if (delMenuNo == null || (delMenuNo.length == 0)) {
+			throw new java.lang.Exception("String Split Error!");
+		}
+		for (int i = 0; i < delMenuNo.length; i++) {
+			testDAO.deleteTestScenario(delMenuNo[i]);
+		}
+	}
+	
 	/**
 	 * 테스트 케이스 상세 정보 조회
 	 */
