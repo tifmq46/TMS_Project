@@ -24,28 +24,44 @@
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
-<title>게시판 사용등록</title>
+<title>결함 등록</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <script type="text/javascript" src="<c:url value='/js/showModalDialog.js'/>" ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 	
-    function fn_egov_insert_addDefectImpl(){
-    	document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
-        document.defectVO.submit();
-    }
- 
-    function searchFileNm() {
-	    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+    
+	function fn_egov_insert_addDefectImpl() {
+		var fileLength = document.getElementById('fileImg').files.length;
+		if (fileLength == 0) {
+			alert("저장되었습니다.");
+			document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
+			document.defectVO.submit();
+		} else {
+			var fileName = document.getElementById('fileImg').value;
+			var strArray = fileName.split('.');
+			if (strArray[1] != "jpg" && strArray[1] != "jpeg"
+					&& strArray[1] != "png") {
+				alert(strArray[1] + " 형식의 파일은 허용하지 않습니다.");
+			} else {
+				alert("저장되었습니다.");
+				document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
+				document.defectVO.submit();
+			}
+		}
 	}
-    
-    
-    <!-- 
-    function fn_egov_select_viewDefect(){
-        document.defectVO.action = "<c:url value='/tms/defect/selectDefect.do'/>";
-        document.defectVO.submit();
-    }  
-    -->
+
+	function searchFileNm() {
+		window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>", '',
+				'width=800,height=600');
+	}
+
+	<!--
+	function fn_egov_select_viewDefect() {
+		document.defectVO.action = "<c:url value='/tms/defect/selectDefect.do'/>";
+		document.defectVO.submit();
+	}
+	-->
 </script>
 
 <style type="text/css">
@@ -194,7 +210,7 @@
 					       <th width="16.6%" height="23" class="required_text" nowrap >첨부파일
 					        </th>
 					        <td width="83.4%" colspan="5" nowrap >
-								<input type="file" name="fileImg" title="첨부파일"/>
+								<input type="file" name="fileImg" id="fileImg" title="첨부파일" accept=".jpg, .jpeg, .png"/>
 					        </td>
 					       </tr>
 					      

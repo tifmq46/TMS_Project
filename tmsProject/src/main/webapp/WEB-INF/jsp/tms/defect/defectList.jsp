@@ -26,7 +26,7 @@
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 
-<title>로그인정책 목록조회</title>
+<title>결함관리</title>
 
 <script type="text/javascript">
 
@@ -169,9 +169,9 @@ function searchFileNm() {
               <colgroup>
                     <col width="5%"/> 
                     <col width="5%"/>
-                    <col width="10%"/>
                     <col width="15%"/>
-                    <col width="40%"/>
+                    <col width="15%"/>
+                    <col width="35%"/>
                     <col width="5%"/>
                     <col width="5%"/>
                     <col width="10%"/>
