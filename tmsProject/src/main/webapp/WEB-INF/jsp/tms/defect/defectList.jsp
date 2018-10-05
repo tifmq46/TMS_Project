@@ -26,7 +26,7 @@
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 
-<title>로그인정책 목록조회</title>
+<title>결함관리</title>
 
 <script type="text/javascript">
 

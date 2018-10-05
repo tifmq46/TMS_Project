@@ -25,19 +25,37 @@
 <meta http-equiv="Content-Language" content="ko" >
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
-<title>게시판 사용등록</title>
+<title>결함관리상세</title>
 <script type="text/javascript">
 
 
 function fn_egov_update_updateDefect(){
-	alert('저장되었습니다.');
 	document.getElementById("defectGb").disabled = "";
 	document.getElementById("actionSt").disabled = "";
 	if(document.getElementById("fileSize").value == 0) {
 		document.getElementById("fileImg").disabled = ""
+		if (document.getElementById('fileImg').files.length != 0) {
+			var fileName = document.getElementById('fileImg').value;
+			var strArray = fileName.split('.');
+			if (strArray[1] != "jpg" && strArray[1] != "jpeg"
+					&& strArray[1] != "png") {
+				alert(strArray[1] + " 형식의 파일은 허용하지 않습니다.");
+			} else {
+				alert("저장되었습니다.");
+				document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
+				document.defectVO.submit();
+			}
+		} else {
+			alert("저장되었습니다.");
+			document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
+			document.defectVO.submit();
+		}
+	} else {
+		alert("저장되었습니다.");
+		document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
+		document.defectVO.submit();
 	}
-	document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
-	document.defectVO.submit();
+	
 }
 
 function fn_egov_delete_deleteDefect() {
@@ -309,12 +327,14 @@ window.onload = function() {
 									(<input type="text" id="fileSize" name="fileSize" value="<c:out value="${defectImgOne.fileSize}"/>"  readonly="readonly" style="border:none; width:6%; text-align:left"/>Byte)
 					        	&nbsp;<a href="#LINK" id="deleteFileBtn" onclick="javascript:fn_egov_delete_defectImg(); return false;" ><font color="#0F438A">삭제</font></a>
 					        		</font>
+					        		<input type="hidden" id="fileCheck" value="1">
 					        		<br/>
 					        		<br/>
 					        		</c:when>
 									<c:otherwise>
-									첨부파일없음 <input type="file" name="fileImg" id="fileImg" title="다운로드"/>
+									첨부파일없음 <input type="file" name="fileImg" id="fileImg" title="다운로드" accept=".jpg, .jpeg, .png"/>
 									<br/>
+					        		<input type="hidden" id="fileCheck" value="0">
 									<input type="hidden" name="fileNm" value="" />
 									<input type="hidden" id="fileSize" name="fileSize" value="0"/>
 								</c:otherwise>					        	

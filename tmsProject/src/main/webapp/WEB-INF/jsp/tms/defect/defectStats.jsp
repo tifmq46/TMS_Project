@@ -25,6 +25,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
+<title>결함관리통계(그래프)</title>
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
 <script type="text/javascript">
@@ -401,7 +402,7 @@ window.onload = function() {
                  	
                		 <div style="float:right;">
 	                     	<h3><strong><c:out value="${defectStats.actionStA5}"></c:out>&nbsp;/&nbsp;<c:out value="${defectStats.actionStAll}"></c:out></strong>
-					</h3>
+							</h3>
 					</div>
                 		<fmt:parseNumber var="actionProgression" integerOnly="true" value="${defectStats.actionStA5 / defectStats.actionStAll * 100}"/>
                		 <div class="progress" style="height: 2rem;">
@@ -409,8 +410,8 @@ window.onload = function() {
 					</div>
 					
 					<div style="float:right;">
-						  <img src="<c:url value='/images/tms/icon_pop_blue.gif' />" width="10" height="10" alt="yCnt"/>&nbsp;조치건수
-						  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;미조치건수
+						  <img src="<c:url value='/images/tms/icon_pop_blue.gif' />" width="10" height="10" alt="yCnt"/>&nbsp;조치율
+						  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;미조치율
 					</div>
             <br/>
             

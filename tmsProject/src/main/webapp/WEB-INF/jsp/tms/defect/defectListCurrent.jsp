@@ -26,7 +26,7 @@
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
-
+<title>결함관리현황</title>
 <script type="text/javascript">
    
 	function fn_searchList(pageNo){

@@ -321,7 +321,7 @@ window.onload = function() {
     				</div>
     			</div>
     			<c:if test="${taskByMainStats != null }">
-    			<canvas id="taskByMainStats" width="100%" height="38%"></canvas>
+    			<canvas id="taskByMainStats" width="100%" height="30"></canvas>
     			</c:if>
     		</div>    	    	
     	</div>
