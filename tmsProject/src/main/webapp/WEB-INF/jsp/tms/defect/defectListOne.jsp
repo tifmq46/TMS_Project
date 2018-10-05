@@ -23,6 +23,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <title>게시판 사용등록</title>
 <script type="text/javascript">
@@ -32,66 +33,106 @@ function fn_egov_update_updateDefect(){
 	alert('저장되었습니다.');
 	document.getElementById("defectGb").disabled = "";
 	document.getElementById("actionSt").disabled = "";
+	if(document.getElementById("fileSize").value == 0) {
+		document.getElementById("fileImg").disabled = ""
+	}
 	document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
 	document.defectVO.submit();
 }
 
 function fn_egov_delete_deleteDefect() {
-	document.getElementById("defectGb").disabled = "";
-	document.getElementById("actionSt").disabled = "";
-	document.defectVO.action="<c:url value='/tms/defect/deleteDefect.do'/>"
-	document.defectVO.submit();
+	var con= confirm("정말로 삭제 하시겠습니까?");
+	if( con == true ) {
+		document.defectVO.action="<c:url value='/tms/defect/deleteDefect.do'/>"
+		document.defectVO.submit();
+	}
 }
 
 function fn_egov_delete_defectImg() {
-	document.getElementById("defectGb").disabled = "";
-	document.getElementById("actionSt").disabled = "";
-	document.defectVO.action = "<c:url value='/tms/defect/deleteDefectImg.do'/>"
-	document.defectVO.submit();
+	var con= confirm("정말로 삭제 하시겠습니까?");
+	if( con == true ) {
+		document.defectVO.action = "<c:url value='/tms/defect/deleteDefectImg.do'/>"
+		document.defectVO.submit();
+	}
 }
 
 window.onload = function() {
-	
-	/* if( document.getElementById("loginNm").value == document.getElementById("userTestNm").value) {
+	if (document.getElementById("uniqId").value == "USRCNFRM_00000000000"
+			|| document.getElementById("uniqId").value == "USRCNFRM_00000000001") {
+		// 관리자, 업무PL 로그인할 경우
 		document.getElementById("defectTitle").readOnly = false;
-		document.getElementById("defectTitle").style.border ="1";
+		document.getElementById("defectTitle").style.border = "1";
 		document.getElementById("defectContent").readOnly = false;
-		document.getElementById("defectContent").style.border ="1";
+		document.getElementById("defectContent").style.border = "1";
 		document.getElementById("userTestNm").readOnly = false;
-		document.getElementById("userTestNm").style.border ="1";
+		document.getElementById("userTestNm").style.border = "1";
 		document.getElementById("defectGb").disabled = "";
-		document.getElementById("deleteBtn").disabled = "";
-		document.getElementById("fileImg").disabled = "";
-	} else {
-		document.getElementById("defectTitle").readOnly = true;
-		document.getElementById("defectTitle").style.border ="0";
-		document.getElementById("defectContent").readOnly = true;
-		document.getElementById("defectContent").style.border ="0";
-		document.getElementById("userTestNm").readOnly = true;
-		document.getElementById("userTestNm").style.border ="0";
-		document.getElementById("defectGb").disabled = "disable";
-		document.getElementById("deleteBtn").disabled = "disable";
-		document.getElementById("fileImg").disabled = "disable";
-	}
-	
-	if( document.getElementById("loginNm").value == document.getElementById("userDevNm").value) {
 		document.getElementById("actionContent").readOnly = false;
-		document.getElementById("actionContent").style.border ="1";
+		document.getElementById("actionContent").style.border = "1";
 		document.getElementById("actionSt").disabled = "";
+		$(deleteBtn).addClass("abled");
+		if(document.getElementById("fileSize").value == 0) {
+			document.getElementById("fileImg").disabled = "";
+		} else {
+			$(deleteFileBtn).addClass("abled");
+		}
 	} else {
-		document.getElementById("actionContent").readOnly = true;
-		document.getElementById("actionContent").style.border ="0";
-		document.getElementById("actionSt").disabled = "disable";
-	} */
-	 
-	
-}
+		// 일반 개발자 로그인
+		if (document.getElementById("loginNm").value == document.getElementById("userTestNm").value) {
+			document.getElementById("defectTitle").readOnly = false;
+			document.getElementById("defectTitle").style.border = "1";
+			document.getElementById("defectContent").readOnly = false;
+			document.getElementById("defectContent").style.border = "1";
+			document.getElementById("userTestNm").readOnly = false;
+			document.getElementById("userTestNm").style.border = "1";
+			document.getElementById("defectGb").disabled = "";
+			$(deleteBtn).addClass("abled");
+			if(document.getElementById("fileSize").value == 0){
+				document.getElementById("fileImg").disabled = "";
+			} else {
+				$(deleteFileBtn).addClass("abled");
+			}
+		} else {
+			document.getElementById("defectTitle").readOnly = true;
+			document.getElementById("defectTitle").style.border = "0";
+			document.getElementById("defectContent").readOnly = true;
+			document.getElementById("defectContent").style.border = "0";
+			document.getElementById("userTestNm").readOnly = true;
+			document.getElementById("userTestNm").style.border = "0";
+			document.getElementById("defectGb").disabled = "disable";
+			$(deleteBtn).addClass("disabled");
+			if(document.getElementById("fileSize").value == 0) {
+				document.getElementById("fileImg").disabled = "disable";
+			} else {
+				$(deleteFileBtn).addClass("disabled");
+			}
+		}
+			if (document.getElementById("loginNm").value == document.getElementById("userDevNm").value) {
+			document.getElementById("actionContent").readOnly = false;
+			document.getElementById("actionContent").style.border = "1";
+			document.getElementById("actionSt").disabled = "";
+		} else {
+			document.getElementById("actionContent").readOnly = true;
+			document.getElementById("actionContent").style.border = "0";
+			document.getElementById("actionSt").disabled = "disable";
+		}
 
+	}
+}
 </script>
 
 <style type="text/css">
     h1 {font-size:12px;}
     caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
+    
+ .disabled {
+ 	   pointer-events:none;
+       opacity:0.5;
+}
+ .abled {
+ 	   pointer-events:auto;
+       opacity:1;
+}
 </style>
 
 </head>
@@ -265,8 +306,8 @@ window.onload = function() {
 					        <br/>
 					        	<font color="#666666">
 					        		<input type="text" name="fileNm" value="<c:out value="${defectImgOne.fileNm}" />"  readonly="readonly" style="border:none; width:20%; text-align:right"/>
-									(<input type="text" name="fileSize" value="<c:out value="${defectImgOne.fileSize}"/>"  readonly="readonly" style="border:none; width:6%; text-align:left"/>Byte)
-					        	&nbsp;<a href="#LINK" id="deleteBtn" onclick="javascript:fn_egov_delete_defectImg(); return false;" ><font color="#0F438A">삭제</font></a>
+									(<input type="text" id="fileSize" name="fileSize" value="<c:out value="${defectImgOne.fileSize}"/>"  readonly="readonly" style="border:none; width:6%; text-align:left"/>Byte)
+					        	&nbsp;<a href="#LINK" id="deleteFileBtn" onclick="javascript:fn_egov_delete_defectImg(); return false;" ><font color="#0F438A">삭제</font></a>
 					        		</font>
 					        		<br/>
 					        		<br/>
@@ -275,7 +316,7 @@ window.onload = function() {
 									첨부파일없음 <input type="file" name="fileImg" id="fileImg" title="다운로드"/>
 									<br/>
 									<input type="hidden" name="fileNm" value="" />
-									<input type="hidden" name="fileSize" value="0"/>
+									<input type="hidden" id="fileSize" name="fileSize" value="0"/>
 								</c:otherwise>					        	
 					        </c:choose>
 					        </td>
@@ -292,16 +333,18 @@ window.onload = function() {
 							} else {
 						%>
 						<c:set var="loginName" value="<%=loginVO.getName()%>" />
+						<c:set var="uniqId" value="<%=loginVO.getUniqId()%>" />
 						<%
 							}
 						%>
 						<input type="hidden" id="loginNm" value="<c:out value='${loginName }'/>" />
+						<input type="hidden" id="uniqId" value="<c:out value='${uniqId }'/>" />
 						
 						<!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
                     
                     <a href="#LINK" onclick="javaScript:fn_egov_update_updateDefect(); return false;">저장</a>
-                     <a href="#LINK" onclick="javaScript:fn_egov_delete_deleteDefect(); return false;">삭제</a>
+                     <a href="#LINK" id="deleteBtn" onclick="javaScript:fn_egov_delete_deleteDefect(); return false;">삭제</a>
                     <a href="<c:url value='/tms/defect/selectDefect.do'/>">목록</a>
                     </div>
                     <!-- 버튼 끝 -->  
