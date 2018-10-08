@@ -220,8 +220,8 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	}
 
 	@Override
-	public List<HashMap<String, String>> selectUserDevStats(String period) {
-		return devPlanDAO.selectUserDevStats(period);
+	public List<HashMap<String, String>> selectUserDevStats(HashMap<String, String> test) {
+		return devPlanDAO.selectUserDevStats(test);
 	}
 	
 }

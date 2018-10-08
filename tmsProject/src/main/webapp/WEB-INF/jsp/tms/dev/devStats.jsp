@@ -15,7 +15,7 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>개발진척통계</title>
-<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>o
 <script type="text/javaScript" language="javascript">
 
 </script>
@@ -77,15 +77,52 @@
                 <div class="default_tablestyle">
                     <table summary="진척통계 테이블입니다" cellpadding="0" cellspacing="0">
                     <caption>진척통계 테이블</caption>
-                    
-                    <c:forEach var="stats" items="${stats}" varStatus="status">
+           
+          			<thead>
                     <tr>
-                    <td>
-                    	<c:out value="${stats.A1}" />
-                    	<td>
+                    	<th align="center">개발자</th>
+                        <th align="center">10/1</th>
+        				<th align="center">10/2</th>
+        				<th align="center">10/3</th>
+        				<th align="center">10/4</th>
+        				<th align="center">10/5</th>
+        				<th align="center">10/8</th>
+        				<th align="center">10/9</th>
+        				<th align="center">10/10</th>
+        				<th align="center">10/11</th>
+        				<th align="center">10/12</th>
+        				<th align="center">10/15</th>
+        				<th align="center">10/16</th>
+        				<th align="center">10/17</th>
+        				<th align="center">10/18</th>
+        				<th align="center">10/19</th>
+        				<th align="center"></th>
+                    </tr>
+                    </thead>
+           			
+           			<c:forEach var="stats" items="${a}" varStatus="status">
+           			
+                    <tr>
+                    <td><c:out value="${stats.DevNm}" /></td>
+                    	<td><c:out value="${stats.a20181001}" /></td>
+                    	<td><c:out value="${stats.a20181002}" /></td>
+                    	<td><c:out value="${stats.a20181003}" /></td>
+                    	<td><c:out value="${stats.a20181004}" /></td>
+                    	<td><c:out value="${stats.a20181005}" /></td>
+                    	<td><c:out value="${stats.a20181008}" /></td>
+                    	<td><c:out value="${stats.a20181009}" /></td>
+                    	<td><c:out value="${stats.a20181010}" /></td>
+                    	<td><c:out value="${stats.a20181011}" /></td>
+                    	<td><c:out value="${stats.a20181012}" /></td>
+                    	<td><c:out value="${stats.a20181015}" /></td>
+                    	<td><c:out value="${stats.a20181016}" /></td>
+                    	<td><c:out value="${stats.a20181017}" /></td>
+                    	<td><c:out value="${stats.a20181018}" /></td>
+                    	<td><c:out value="${stats.a20181019}" /></td>
+                    	
                     	</tr>
                     </c:forEach>
-                    
+            
                     
                     </table>
                 </div>

@@ -634,11 +634,11 @@
 		]]>
    	</select>
     
-	<select id="DevPlanDAO.selectUserDevStats" parameterClass="java.lang.String" resultClass="java.util.HashMap" remapResults="true">
+	<!-- <select id="DevPlanDAO.selectUserDevStats" parameterClass="java.lang.String" resultClass="java.util.HashMap" remapResults="true">
 			<![CDATA[
 				SELECT DISTINCT A.USER_DEV_ID
 				, A.USER_DEV_NM
-				,COUNT(CASE WHEN PLAN_END_DT=#dates# THEN 1 END) AS 'A1'
+				,COUNT(CASE WHEN PLAN_END_DT=#dates# THEN 1 END) AS A20181004
 				FROM
 				(SELECT PG_ID
 					,USER_DEV_ID
@@ -651,6 +651,32 @@
 			WHERE B.DATES = A.PLAN_END_DT
 			GROUP BY USER_DEV_ID,B.DATES
 			ORDER BY USER_DEV_ID;
+         ]]>
+   	</select> -->
+   	
+   	<select id="DevPlanDAO.selectUserDevStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
+			<![CDATA[
+				SELECT 
+					IFNULL(C.USER_DEV_ID, #userList#) as userDevId
+					,IFNULL(C.USER_DEV_NM, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = #userList#)) AS userDevNm
+					,IFNULL((SELECT COUNT(*) FROM PERIOD AS B, TEMP AS T WHERE B.DATES=T.PLAN_END_DT AND T.PLAN_END_DT=#dates# AND T.USER_DEV_ID=#userList#),0) AS #dates#
+				FROM
+				(SELECT A.USER_DEV_ID
+							, A.USER_DEV_NM
+							,COUNT(CASE WHEN PLAN_END_DT=#dates# THEN 1 END) AS A20181004
+							FROM
+							(SELECT PG_ID
+								,USER_DEV_ID
+								,USER_DEV_NM
+								,PLAN_END_DT
+								FROM TEMP
+								)AS A
+						INNER JOIN
+						PERIOD AS B
+						WHERE B.DATES = A.PLAN_END_DT AND USER_DEV_ID=#userList#
+						GROUP BY USER_DEV_ID
+						ORDER BY USER_DEV_ID
+						)AS C
          ]]>
    	</select>
 <!-- 

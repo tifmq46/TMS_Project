@@ -1,13 +1,18 @@
 package egovframework.let.tms.dev.web;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.set.SynchronizedSortedSet;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.util.Calendar;
 
@@ -342,6 +350,7 @@ public class DevPlanController {
 		return "forward:/tms/dev/selectDevResult.do";
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/tms/dev/devStats.do")
 	public String devStats(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
 		
@@ -365,10 +374,7 @@ public class DevPlanController {
 		model.addAttribute("resultP", devPeriod);
 		
 		List<String> userList = devPlanService.selectUserList();
-		
-		
-
-		
+				
 		List<HashMap<String,String>> temp = new ArrayList<HashMap<String,String>>();
 		TempVO t = new TempVO();
 		
@@ -379,23 +385,112 @@ public class DevPlanController {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		devPlanService.deleteTemp();
+		String planEndDate;
+		String[] splitDate;
 		
 		for(int i=0; i<temp.size(); i++){
 			t.setPgId(String.valueOf(temp.get(i).get("PG_ID")));
 			t.setUserDevId(String.valueOf(temp.get(i).get("USER_DEV_ID")));
 			t.setUserDevNm(String.valueOf(temp.get(i).get("USER_DEV_NM")));
-			t.setPlanEndDt(sdf.parse(String.valueOf(temp.get(i).get("PLAN_END_DT"))));
+			
+			planEndDate = String.valueOf(temp.get(i).get("PLAN_END_DT"));
+			splitDate = planEndDate.split("-");
+			t.setPlanEndDt(splitDate[0]+splitDate[1]+splitDate[2]);
+			
 			devPlanService.insertTemp(t);
 		}
 		
 		List<String> periodList = devPlanService.selectPeriod();
 		
 		List<HashMap<String,String>> userDevStats = new ArrayList<HashMap<String,String>>();
-		//userDevStats.addAll(devPlanService.selectUserDevStats("2018-10-04"));
-		for(int i=0; i<periodList.size(); i++){
-			userDevStats.addAll(devPlanService.selectUserDevStats(periodList.get(i).toString()));
+		
+		HashMap<String,String> test = new HashMap<String,String>();
+		
+		
+		
+		for(int i=0; i<userList.size(); i++){
+			
+			for(int j=0; j<periodList.size(); j++){
+				test.put("userList",String.valueOf(userList.get(i)));
+				test.put("dates",String.valueOf(periodList.get(j)));
+				userDevStats.addAll(devPlanService.selectUserDevStats(test));			
+			}
 		}
+		
+		JSONObject jsonObject = new JSONObject();
+		JSONArray resultArray = new JSONArray();
+		JSONObject resultInfo = new JSONObject();
+		/*이름 중복 저장 여부 플래그*/
+		boolean flag = true;
+		
+		/*for(int i=0; i<userDevStats.size(); i++){
+			같은 사람 찾기
+			for(int j=0; j<userList.size(); j++){
+				System.out.println("userList값 ;;"+userList.get(j));
+				System.out.println("userDevStats값 ;;"+userDevStats.get(i).get("userDevId"));
+				
+				if(userDevStats.get(i).get("userDevId").equals(userList.get(j))){
+					while(resultArray.iterator().hasNext() ){
+						
+					}
+					
+					if(flag){
+					System.out.println("값 확인"+ userDevStats.get(i).get("userDevNm"));
+					 resultInfo.put("DevNm", userDevStats.get(i).get("userDevNm"));
+					 flag = false;
+					 resultArray.add(resultInfo);
+					}
+					
+				}
+			}
+		}
+		System.out.println("resultArray++++"+resultArray);*/
+		
+		resultInfo.put("DevNm", userDevStats.get(0).get("userDevNm"));
+		
+		for(int i=0; i< periodList.size(); i++){
+			resultInfo.put( "a"+periodList.get(i), userDevStats.get(i).get(periodList.get(i)));
+		}
+		resultArray.add(resultInfo);
+		
+		
+		resultInfo = new JSONObject();
+		resultInfo.put("DevNm", userDevStats.get(periodList.size()+1).get("userDevNm"));
+
+		for(int i=0; i< periodList.size(); i++){
+			resultInfo.put( "a"+periodList.get(i), userDevStats.get(i+periodList.size()).get(periodList.get(i)));
+		}
+		resultArray.add(resultInfo);
+		
+		
+		resultInfo = new JSONObject();
+		resultInfo.put("DevNm", userDevStats.get((periodList.size()*2)+1).get("userDevNm"));
+
+		for(int i=0; i< periodList.size(); i++){
+			resultInfo.put( "a"+periodList.get(i), userDevStats.get(i+(periodList.size()*2)).get(periodList.get(i)));
+		}
+		resultArray.add(resultInfo);
+		
+		JsonUtil jsU = new JsonUtil();
+		List<Map<String,Object>> a = jsU.getListMapFromJsonArray(resultArray);
+		
+		System.out.println("한줄로"+a);
+		
+		jsonObject.put("test",resultArray);
+		 
+		System.out.println("++++++++++"+jsonObject.toJSONString());
+		
+		//List<Map<String,Object>> a = new ArrayList<Map<String,Object>>();
+		
+		
+		
+		//userDevStats.addAll(devPlanService.selectUserDevStats("20181004"));
+		//for(int i=0; i<periodList.size(); i++){
+			//userDevStats.addAll(devPlanService.selectUserDevStats(periodList.get(i).toString()));
+		//}
+		
 		model.addAttribute("stats", userDevStats);
+		model.addAttribute("a",a);
 		
 		return "/tms/dev/devStats";
 	}
@@ -504,6 +599,8 @@ public class DevPlanController {
 		ArrayList<String> dates = new ArrayList<String>();
 		Date currentDate = startDate;
 		int dayOfWeek;	//요일
+		String sdfDate;
+		String[] splitDate;
 		
 		while(currentDate.compareTo(endDate) <= 0){
 			
@@ -515,7 +612,10 @@ public class DevPlanController {
 			if(dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY){
 				
 			}else{
-				dates.add(sdf.format(currentDate));
+				sdfDate = sdf.format(currentDate);
+				splitDate = sdfDate.split("-");
+				sdfDate = splitDate[0]+splitDate[1]+splitDate[2];
+				dates.add(sdfDate);
 				
 			}
 			cal.add(Calendar.DAY_OF_MONTH, 1);
@@ -525,5 +625,48 @@ public class DevPlanController {
 		
 		return dates;
 	}
-		
+	
+	
+	
+}
+/** JsonArray를 List<Map<String, String>> 로 변환*/
+class JsonUtil {
+	
+	@SuppressWarnings("unchecked")
+    public static Map<String, Object> getMapFromJsonObject( JSONObject jsonObj )
+    {
+        Map<String, Object> map = null;
+        
+        try {
+            
+            map = new ObjectMapper().readValue(jsonObj.toJSONString(), Map.class) ;
+            
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+ 
+        return map;
+    }
+	
+	public static List<Map<String, Object>> getListMapFromJsonArray( JSONArray jsonArray )
+    {
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        
+        if( jsonArray != null )
+        {
+            int jsonSize = jsonArray.size();
+            for( int i = 0; i < jsonSize; i++ )
+            {
+                Map<String, Object> map = JsonUtil.getMapFromJsonObject( ( JSONObject ) jsonArray.get(i) );
+                list.add( map );
+            }
+        }
+        
+        return list;
+    }
+	
 }
