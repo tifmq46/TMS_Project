@@ -232,8 +232,6 @@ $(function(){
             				<td align="center" class="listtd"><c:out value="${result.DEV_END_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.ACHIEVEMENT_RATE}"/>%&nbsp;</td>
             		
-            				
-            				
             			</tr>
         			</c:forEach>
              	<c:if test="${fn:length(resultList) == 0}">

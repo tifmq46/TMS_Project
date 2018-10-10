@@ -191,7 +191,7 @@
 	</insert>
 
 	
-	<select id="devPlanDAO.selectDevResultList" parameterClass="searchVO" resultClass="egovMap">
+	<select id="devPlanDAO.selectDevResultList" parameterClass="searchVO" resultClass="java.util.HashMap">
 			<![CDATA[
 				SELECT * FROM (
 					SELECT
@@ -208,6 +208,7 @@
 						,a.DEV_END_DT
 						,a.ENROLL_DT
 						,a.DEV_END_YN
+						,a.ACHIEVEMENT_RATE
 					FROM DEV_PLAN_TB a
 					INNER JOIN PG_TB b
 					ON a.PG_ID = b.PG_ID
@@ -358,6 +359,7 @@
             UPDATE DEV_PLAN_TB 
                SET DEV_START_DT=#devStartDt#
                  , DEV_END_DT=#devEndDt#
+                 , ACHIEVEMENT_RATE = #achievementRate#
              WHERE PG_ID=#pgId#
         ]]>
     </update>

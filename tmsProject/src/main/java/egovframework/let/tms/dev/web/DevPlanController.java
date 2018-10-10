@@ -19,6 +19,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
@@ -276,6 +277,7 @@ public class DevPlanController {
 		
 		searchVO.setSessionId(user.getName());
 		
+		System.out.println("");
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -307,7 +309,7 @@ public class DevPlanController {
 		List<?> userList = defectService.selectUser();
 		model.addAttribute("userList", userList);
 		
-		List<?> devResultList = devPlanService.selectDevResultList(searchVO);
+		List<HashMap<String,String>> devResultList = devPlanService.selectDevResultList(searchVO);
 		model.addAttribute("resultList", devResultList);
 		
 		int totCnt = devPlanService.selectDevResultListTotCnt(searchVO);
@@ -328,17 +330,41 @@ public class DevPlanController {
 	}
 	
 	@RequestMapping(value = "/tms/dev/updateDevResult.do")
-	public String updateDevResult(@ModelAttribute("searchVO") DevPlanVO dvo, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
+	public String updateDevResult(@ModelAttribute("searchVO") DevPlanDefaultVO dvo,@RequestParam String flag, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 
 		
 		//if (bindingResult.hasErrors()) {
 			//return "/tms/dev/updateDevPlan";
 		//} else {
+			//Float.valueOf(dvo.getAchievementRate());
+			//System.out.println(dvo.getAchievementRate());
+		
+		String devStartDt, devEndDt;
+		float achRate=0.0f;
+
+		devStartDt = String.valueOf(dvo.getDevStartDt());
+		devEndDt = String.valueOf(dvo.getDevEndDt());
+			
+			System.out.println("날짜값"+devStartDt);
+			if(flag.equals("auto")){
+				if(!devStartDt.equals("null")){
+					if(!devEndDt.equals("null")){
+						achRate=100;
+					}else{
+						achRate = 50;
+					}
+				}else{
+					achRate=0;
+				}
+			}else if(flag.equals("change")){
+				achRate = dvo.getAchievementRate();
+			}
+			
+			dvo.setAchievementRate(achRate);
 			devPlanService.updateDevResult(dvo);
 			status.setComplete();
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
 			return "redirect:/tms/dev/devResultList.do";
-		//}
 	}
 	
 	@RequestMapping(value = "/tms/dev/deleteDevResult.do")
@@ -350,9 +376,14 @@ public class DevPlanController {
 		return "forward:/tms/dev/selectDevResult.do";
 	}
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/tms/dev/devStats.do")
 	public String devStats(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/tms/dev/devStatsTable.do")
+	public String devStatsTable(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
 		
 		
 		/*프로젝트의 개발기간의 주차 값과 차이를 가져온다.*/
@@ -492,7 +523,7 @@ public class DevPlanController {
 		model.addAttribute("stats", userDevStats);
 		model.addAttribute("a",a);
 		
-		return "/tms/dev/devStats";
+		return "/tms/dev/devStatsTable";
 	}
 	
 	@RequestMapping(value = "/tms/dev/devCurrent.do")
@@ -536,22 +567,22 @@ public class DevPlanController {
 		DecimalFormat format = new DecimalFormat(".#");
 		
 		/*달성률 계산*/
-		for(int i=0; i<devCurrentList.size(); i++){
+		/*for(int i=0; i<devCurrentList.size(); i++){
 			String start_temp = String.valueOf(devCurrentList.get(i).get("PLAN_START_DT"));
 			start[i] = sdf.parse(start_temp);
 			
 			String end_temp = String.valueOf(devCurrentList.get(i).get("PLAN_END_DT"));
 			end[i] = sdf.parse(end_temp);
 			
-			int compare = cur.compareTo(start[i]); 	/*현재날짜, 계획시작날짜 비교*/
-			int compare2 = cur.compareTo(end[i]);	/*현재날짜, 계획종료날짜 비교*/
+			int compare = cur.compareTo(start[i]); 	현재날짜, 계획시작날짜 비교
+			int compare2 = cur.compareTo(end[i]);	현재날짜, 계획종료날짜 비교
 			
-			/*계획시작일 ~ 현재날짜 작업일수*/
+			계획시작일 ~ 현재날짜 작업일수
 			long calDate = start[i].getTime() - cur.getTime();
 			long calDateDays = Math.abs(calDate / (24*60*60*1000));
 			float aa = (float)(long)calDateDays;
 			
-			/*계획시작일 ~ 계획종료일 작업일수*/
+			계획시작일 ~ 계획종료일 작업일수
 			long calDate2 = start[i].getTime() - end[i].getTime();
 			long calDateDays2 = Math.abs(calDate2 / (24*60*60*1000));
 			float bb = (float)(long)calDateDays2;
@@ -575,8 +606,8 @@ public class DevPlanController {
 			searchVO.setAchievementRate(achRate);
 			devPlanService.updateRate(searchVO);
 		}
-		List<HashMap<String,String>> devResult = devPlanService.selectDevCurrent(searchVO);
-		model.addAttribute("resultList", devResult);
+		List<HashMap<String,String>> devResult = devPlanService.selectDevCurrent(searchVO);*/
+		model.addAttribute("resultList", devCurrentList);
 		
 		List<?> userList = defectService.selectUser();
 		model.addAttribute("userList", userList);

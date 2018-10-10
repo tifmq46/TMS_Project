@@ -276,9 +276,9 @@ function searchFileNm() {
             				<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
             				<%-- <td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td> --%>
-            				<td><input type="date"  id="${result.PG_ID}" onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_START_DT}" pattern="yyyy-MM-dd"/>" />
+            				<td><input type="date"  id="${result.PG_ID}" onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_START_DT}" pattern="yyyy-MM-dd"/>" style="width:120px;"/>
                             </td>
-                            <td><input type="date"  id="${result.PG_ID}1" onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
+                            <td><input type="date"  id="${result.PG_ID}1" onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />" style="width:120px;"/>
                             </td>
             				<td align="center" class="listtd"><c:out value="${result.DAY_DIFF}"/>&nbsp;</td>
             				<td align="center" class="listtd">

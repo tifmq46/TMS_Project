@@ -106,7 +106,7 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 
 
 	@Override
-	public List<?> selectDevResultList(DevPlanDefaultVO searchVO) throws Exception {
+	public List<HashMap<String, String>> selectDevResultList(DevPlanDefaultVO searchVO) throws Exception {
 		return devPlanDAO.selectDevResultList(searchVO);
 	}
 
