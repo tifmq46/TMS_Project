@@ -26,7 +26,7 @@
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
-<title>결함관리현황</title>
+<title>결함처리현황</title>
 <script type="text/javascript">
    
 	function fn_searchList(pageNo){
@@ -159,14 +159,14 @@
             </div>
             <!-- //검색 필드 박스 끝 -->
                 
-                 <table width="80%" cellspacing="0" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
+                 <table width="85%" cellspacing="0" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
                  <caption style="visibility:hidden">총 건수, 완료건수, 미완료, 진행률 표시하는 테이블</caption>
                  
                  <tr>
-                 	<td align="center" width="100" style="font-size:15px; font-weight:bolder">총 : <c:out value="${actionTotCnt}"/></td>
-                  <td align="center" width="100" style="font-size:15px; font-weight:bolder">완료 : <c:out value="${actionComplete}"/></td>
-                 	<td align="center" width="100" style="font-size:15px; font-weight:bolder">미완료 : <c:out value="${actionTotCnt - actionComplete}"/></td>
-                 	<td align="right" width="100" style="font-size:15px; font-weight:bolder">진행률 : </td>
+                 	<td align="center" width="100" style="font-size:13px; font-weight:bolder">총 : <c:out value="${actionTotCnt}"/></td>
+                  <td align="center" width="100" style="font-size:13px; font-weight:bolder">완료 : <c:out value="${actionComplete}"/></td>
+                 	<td align="center" width="100" style="font-size:13px; font-weight:bolder">미완료 : <c:out value="${actionTotCnt - actionComplete}"/></td>
+                 	<td align="right" width="100" style="font-size:13px; font-weight:bolder">진행률 : </td>
                  	<c:choose>
                  		<c:when test="${actionTotCnt ne '0' }">
                  		<fmt:parseNumber var="actionProgression" integerOnly="true" value="${actionComplete / actionTotCnt * 100}"/>
@@ -199,11 +199,11 @@
                     <col width="5%"/>
                     <col width="15%"/>
                     <col width="15%"/>
-                    <col width="35%"/>
+                    <col width="32%"/>
                     <col width="5%"/>
                     <col width="5%"/>
                     <col width="10%"/>
-                    <col width="5%"/>
+                    <col width="8%"/>
            </colgroup>
         			<tr>
         			
@@ -236,7 +236,19 @@
             				<td align="center" class="listtd"><c:out value="${result.defectGb}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.userTestId}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/></td>
-            				<td align="center" class="listtd"><c:out value="${result.actionSt}"/>&nbsp;</td>
+            			<c:choose>
+                        <c:when test="${result.actionSt == '재요청'}">
+                        <td align="center" class="listtd" style="background-color:#CC3C39; opacity:0.8;">
+                         <font color="#ffffff" style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
+                        </c:when>
+                        <c:when test="${result.actionSt == '최종완료' }">
+                        <td align="center" class="listtd" style="background-color:#007bff;">
+                        <font color="#ffffff" style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
+                        </c:when>
+                        <c:otherwise>
+                        <td align="center" class="listtd"><c:out value="${result.actionSt}"/>&nbsp;</td>
+                        </c:otherwise>
+                        </c:choose>
             			
             			</tr>
         			</c:forEach>

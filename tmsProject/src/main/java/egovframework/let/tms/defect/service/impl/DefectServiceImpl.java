@@ -292,4 +292,5 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 		return defectDAO.selectTaskByMainStats();
 	}
 
+
 }

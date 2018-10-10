@@ -220,4 +220,5 @@ public class DefectDAO extends EgovAbstractDAO{
 	public List<?> selectTaskByMainStats() {
 		return list("defectDAO.selectTaskByMainStats");
 	}
+	
 }

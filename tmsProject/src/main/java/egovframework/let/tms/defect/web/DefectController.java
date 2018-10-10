@@ -387,8 +387,8 @@ public class DefectController {
 		return "tms/defect/defectStats";
 	}
 	
-	@RequestMapping("/tms/defect/selectDefectStatsList.do")
-	public String selectDefectStatsList(ModelMap model){
+	@RequestMapping("/tms/defect/selectDefectStatsTable.do")
+	public String selectDefectStatsTable(ModelMap model){
 		List<String> taskGbList = defectService.selectTaskGbByDefect();
 		List<HashMap<String,String>> taskGbByStats = new ArrayList<HashMap<String,String>>();
 		for(int i=0; i<taskGbList.size(); i++) {

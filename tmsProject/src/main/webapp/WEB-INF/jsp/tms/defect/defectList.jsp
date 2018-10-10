@@ -171,11 +171,11 @@ function searchFileNm() {
                     <col width="5%"/>
                     <col width="15%"/>
                     <col width="15%"/>
-                    <col width="35%"/>
+                    <col width="32%"/>
                     <col width="5%"/>
                     <col width="5%"/>
                     <col width="10%"/>
-                    <col width="5%"/>
+                    <col width="8%"/>
            </colgroup>
                  <tr>
                  
@@ -211,8 +211,20 @@ function searchFileNm() {
                         <td align="center" class="listtd"><c:out value="${result.defectGb}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.userTestId}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.enrollDt}"/></td>
-                        
+                    
+                        <c:choose>
+                        <c:when test="${result.actionSt == '재요청'}">
+                        <td align="center" class="listtd" style="background-color:#CC3C39; opacity:0.8;">
+                         <font color="#ffffff" style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
+                        </c:when>
+                        <c:when test="${result.actionSt == '최종완료' }">
+                        <td align="center" class="listtd" style="background-color:#007bff;">
+                        <font color="#ffffff" style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
+                        </c:when>
+                        <c:otherwise>
                         <td align="center" class="listtd"><c:out value="${result.actionSt}"/>&nbsp;</td>
+                        </c:otherwise>
+                        </c:choose>
                      
                      </tr>
                   

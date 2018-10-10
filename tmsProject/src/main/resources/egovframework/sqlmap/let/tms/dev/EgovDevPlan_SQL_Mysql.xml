@@ -669,5 +669,18 @@
 		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM" columnIndex="12"/>
 	</resultMap> -->
 	
+	<select id="DevPlanDAO.selectDevPlanByMainStats" resultClass="egovMap">
+	    <![CDATA[
+	    	SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(B.ACHIEVECNT,0) AS achieveCnt, IFNULL(B.TASKALL,0) AS taskAll
+			FROM LETTCCMMNDETAILCODE AS A INNER JOIN
+				(SELECT P.TASK_GB, COUNT(CASE WHEN D.ACHIEVEMENT_RATE=100 THEN 1 END) AS ACHIEVECNT, COUNT(P.TASK_GB) AS TASKALL
+				FROM DEV_PLAN_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
+				GROUP BY TASK_GB)
+			AS B ON A.CODE = B.TASK_GB
+			WHERE A.CODE_ID = 'TASKGB'
+			ORDER BY taskAll DESC
+	    ]]>
+	</select>
 	
 </sqlMap>

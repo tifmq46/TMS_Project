@@ -25,7 +25,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<title>결함관리통계(그래프)</title>
+<title>결함처리통계(그래프)</title>
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
 <script type="text/javascript">
@@ -394,26 +394,41 @@ window.onload = function() {
      		<div id="search_field">
 					<div id="search_field_loc"><h2><strong>결함처리통계(그래프)</strong></h2></div>
 			</div>
+			<br/>
              <h3><strong>조치율</strong></h3>
              
                  	<%-- 총 : <c:out value="${defectStats.actionStAll}"/> 
                  	완료 : <c:out value="${defectStats.actionStA5}"/>
                  	미완료 : <c:out value="${defectStats.actionStAll - defectStats.actionStA5}"/> --%>
-                 	
-               		 <div style="float:right;">
-	                     	<h3><strong><c:out value="${defectStats.actionStA5}"></c:out>&nbsp;/&nbsp;<c:out value="${defectStats.actionStAll}"></c:out></strong>
-							</h3>
-					</div>
-                		<fmt:parseNumber var="actionProgression" integerOnly="true" value="${defectStats.actionStA5 / defectStats.actionStAll * 100}"/>
-               		 <div class="progress" style="height: 2rem;">
-					    <div class="progress-bar" style="width:${actionProgression}%"><strong><c:out value=" ${actionProgression}"></c:out>% </strong> </div>
-					</div>
-					
-					<div style="float:right;">
-						  <img src="<c:url value='/images/tms/icon_pop_blue.gif' />" width="10" height="10" alt="yCnt"/>&nbsp;조치율
-						  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;미조치율
-					</div>
-            <br/>
+				<table width="100%">
+					<tr>
+						<td width="90%">
+						<fmt:parseNumber var="actionProgression" integerOnly="true"
+								value="${defectStats.actionStA5 / defectStats.actionStAll * 100}" />
+							<div class="progress" style="height: 2rem;">
+								<div class="progress-bar" style="width:${actionProgression}%">
+									<font style="font-size: 15px; font-weight: bolder"><c:out
+											value=" ${actionProgression}"></c:out>% </font>
+								</div>
+							</div></td>
+						<td width="10%">
+						<font size="3px" style="font-weight:bold">
+								<c:out value="${defectStats.actionStA5}"></c:out>&nbsp;/&nbsp;<c:out
+										value="${defectStats.actionStAll}"></c:out>
+						</font>
+						</td>
+					</tr>
+					<tr>
+						<td align="right">
+						<img
+							src="<c:url value='/images/tms/icon_pop_blue.gif' />" width="10"
+							height="10" alt="yCnt" />&nbsp;조치율 &nbsp;<img
+							src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10"
+							height="10" alt="totCnt" />&nbsp;미조치율
+						</td>
+						<td></td>
+					</tr>
+				</table>
             
             <h3><strong>상태별 결함건수</strong></h3>
             <table width="100%" cellspacing = "10" height="80px" >

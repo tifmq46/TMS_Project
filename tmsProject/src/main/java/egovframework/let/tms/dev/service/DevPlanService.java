@@ -135,5 +135,7 @@ public interface DevPlanService {
 	public List<String> selectPeriod();
 
 	public List<HashMap<String, String>> selectUserDevStats(String period);
-
+	
+	public List<?> selectDevPlanByMainStats();
+	
 }
