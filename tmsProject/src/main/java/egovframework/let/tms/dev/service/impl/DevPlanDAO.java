@@ -190,4 +190,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	public List<HashMap<String, String>> selectUserDevStats(HashMap<String, String> test) {
 		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserDevStats",test);
 	}
+	
+	public List<?> selectDevPlanByMainStats() {
+		return list("DevPlanDAO.selectDevPlanByMainStats");
+	}
 }

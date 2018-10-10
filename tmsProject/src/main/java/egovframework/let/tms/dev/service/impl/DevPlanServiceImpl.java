@@ -223,5 +223,11 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<HashMap<String, String>> selectUserDevStats(HashMap<String, String> test) {
 		return devPlanDAO.selectUserDevStats(test);
 	}
+
+	@Override
+	public List<?> selectDevPlanByMainStats() {
+		// TODO Auto-generated method stub
+		return devPlanDAO.selectDevPlanByMainStats();
+	}
 	
 }

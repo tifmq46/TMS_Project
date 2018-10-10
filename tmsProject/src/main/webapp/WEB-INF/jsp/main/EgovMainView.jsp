@@ -84,6 +84,35 @@ window.onload = function() {
 			}
 		});
 		/** 결함 진행상태 통계 끝*/
+		
+		/** 개발 진척상태 통계 시작*/
+		var devPlanByMainStats = JSON.parse('${devPlanByMainStats}');
+		var devPlanByMainStatsTaskNm = new Array();
+		var devPlanByMainStatsTaskAll = new Array();
+		var devPlanByMainStatsAchieveCnt = new Array();
+		for (var i = 0; i < devPlanByMainStats.length; i++) {
+			devPlanByMainStatsTaskNm.push(devPlanByMainStats[i].taskNm);
+			devPlanByMainStatsTaskAll.push(devPlanByMainStats[i].taskAll);
+			devPlanByMainStatsAchieveCnt.push(devPlanByMainStats[i].achieveCnt);
+		}
+		var ctx7 = document.getElementById('devPlanByMainStats');
+		var devPlanByMainStatsChart = new Chart(ctx7, {
+			type : 'bar',
+			data : {
+				labels : devPlanByMainStatsTaskNm,
+				barThickness : '0.9',
+				datasets : [ {
+					label : '등록건수',
+					data : devPlanByMainStatsTaskAll,
+					backgroundColor : '#007bff',
+				}, {
+					label : '완료건수',
+					data : devPlanByMainStatsAchieveCnt,
+					backgroundColor : '#00B3E6',
+				}]
+			}
+		});
+		/** 개발 진척상태 통계 끝*/
 }	
 
 </script>
@@ -253,63 +282,18 @@ window.onload = function() {
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
-	    					통계
+	    					개발 진척상태
     				</div>
     			</div>
-    			<div class="widget-content default_tablestyle" style="height:212px; overflow:auto; ">
-    				<table width="100%" cellspacing="0" cellpadding="0" class="table table-search-head table-size-th4">
-			    					<caption>통계</caption>
-			            
-			            <thead>
-			            <tr>
-			            <th scope="col" nowrap="nowrap">이름</th>
-			                <th scope="col" nowrap="nowrap">38주</th>
-			                <th scope="col" nowrap="nowrap">39주</th>
-			                <th scope="col" nowrap="nowrap">40주</th>
-			                <th scope="col" nowrap="nowrap">41주</th>
-			                <th scope="col" nowrap="nowrap">42주</th>
-			                <th scope="col" nowrap="nowrap">43주</th>
-			            </tr>
-			            </thead>
-			            
-			            <tbody>                 
-			            
-				            <%-- <c:forEach var="t1" items="${testList1}" varStatus="status">
-			            <!-- loop 시작 -->                                
-			              <tr>
-			              	<td>${t1.38}</td>
-						    
-			              </tr>
-			            </c:forEach>  --%>
-			            <%-- <tr><td>${kk[0]}</td>
-			            <td>${kk[1]}</td>
-			            <td>${kk[2]}</td>
-			            <td>${kk[3]}</td>
-			            <td>${kk[4]}</td>
-			            <td>${kk[5]}</td>
-			            </tr>
-			            <tr> --%>
-			           
-			            <%-- <td>${r2.BN}</td> --%>
-			            <c:forEach var="r2" items="${r2}">
-			            	 <tr>
-			            	<td>${r2.BN}</td>
-			            	<td>${r2.B38}</td>
-			            	<td>${r2.B39}</td>
-			            	<td>${r2.B40}</td>
-			            	<td>${r2.B41}</td>
-			            	<td>${r2.B42}</td>
-			            	<td>${r2.B43}</td>
-			            	
-			            	  </tr> 
-			            </c:forEach> 
-			          
-			            </tbody> 
-    				</table>
-    			</div>
-    			
-    			
-    			
+    			<br/><br/>
+    			<c:choose>
+    			<c:when test="${devPlanByMainStats != null}">
+    				<canvas id="devPlanByMainStats" width="100%" height="35"></canvas>
+    			</c:when>
+    			<c:otherwise>
+    			등록된 개발계획이 없습니다.
+    			</c:otherwise>
+    			</c:choose>
     		</div>    	    	
     	</div>
     	
@@ -320,47 +304,22 @@ window.onload = function() {
 	    					결함 진행상태
     				</div>
     			</div>
-    			<c:if test="${taskByMainStats != null }">
-    			<canvas id="taskByMainStats" width="100%" height="30"></canvas>
-    			</c:if>
+    			<br/><br/>
+    			<c:choose>
+    			<c:when test="${taskByMainStats != null }">
+    			<canvas id="taskByMainStats" width="100%" height="35"></canvas>
+    			</c:when>
+    			<c:otherwise>
+    			 등록된 결함이 없습니다.
+    			</c:otherwise>
+    			</c:choose>
     		</div>    	    	
     	</div>
     	
     
     </div>	                
 	</div>
-	<!-- //게시판 끝 -->
 	
-	<%-- <!-- 공통코드 셀렉트박스 시작 -->
-        <div id="search_field">
-					<div id="search_field_loc"><h2><strong>공통코드관리</strong></h2></div>
-					<form action="form_action.jsp" method="post">
-					  	<fieldset><legend>조건정보 영역</legend>	  
-					  	<div class="sf_start">
-					  		<ul id="search_first_ul">
-					  			<li>
-								    <label for="searchByTaskGb">시스템구분&nbsp;</label>
-									<select name="category1" id="category1" style="width:12%;text-align-last:center;">
-									    <option value="0" selected="selected" >전체</option>
-									    <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb.SYS_GB}"/>"><c:out value="${sysGb.SYS_GB}" /></option>
-									    </c:forEach>
-									</select>						
-					  			</li> 			
-					  			 <li>
-								    <label for="searchByDefectGb">업무구분</label>
-									<select name="category2" id="category2" style="width:15%;text-align-last:center;">
-									    <option value="">선택하세요</option>
-									</select>						
-					  			</li>
-					  		</ul>
-						</div>			
-						</fieldset>
-					</form>
-				</div>
-				<!-- //검색 필드 박스 끝 -->
-        
-        <!-- 공통코드 셀렉트박스 끝 --> --%>
 	<!-- footer 시작 -->
 	<div id="footer"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncFooter" /></div>
 	<!-- //footer 끝 -->
