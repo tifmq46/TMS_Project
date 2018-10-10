@@ -213,5 +213,27 @@
  		]]>
  	</update>
 	
+   <select id="ProgramDAO.count1" parameterClass="java.lang.String" resultClass="java.lang.Integer" >
+         <![CDATA[
+            select COUNT(*)
+			from PG_TB
+			where PG_ID = #PG_ID#
+         ]]>
+   </select>
+   <select id="ProgramDAO.count2" parameterClass="java.lang.String" resultClass="java.lang.Integer" >
+         <![CDATA[
+            select COUNT(*)
+			from TESTCASE_TB
+			where PG_ID = #PG_ID#
+         ]]>
+   </select>
+   <select id="ProgramDAO.count3" parameterClass="java.lang.String" resultClass="java.lang.Integer" >
+         <![CDATA[
+            select COUNT(*)
+			from DEFECT_TB
+			where PG_ID = #PG_ID#
+         ]]>
+   </select>	
     
+   
 </sqlMap>

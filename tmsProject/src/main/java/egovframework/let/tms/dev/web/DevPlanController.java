@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Resource;
 
@@ -14,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
@@ -141,7 +143,41 @@ public class DevPlanController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy-MM-dd", Locale.KOREA );
+		Date currentTime = new Date ();
+		String mTime = mSimpleDateFormat.format ( currentTime );
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd"); 
+		Date d3 = dt.parse(mTime);
+		System.out.println("오늘 : "+d3);
+		model.addAttribute("current", d3);
 
+		String start = devPlanService.selectSTART();
+		String end = devPlanService.selectEND();
+		
+		System.out.println("d---"+start);
+		System.out.println("d---"+end);
+		
+		Date d1 = dt.parse(start);
+		Date d2 = dt.parse(end);
+		
+		System.out.println("d2---"+d1);
+		System.out.println("d2---"+d2);
+		
+		model.addAttribute("start", d1);
+		model.addAttribute("end", d2);
+		
+		boolean d_result = true;
+		
+		if(d3.compareTo(d1) < 0)
+		{
+			System.out.println("정답!");
+			d_result = true;
+		}else {
+			System.out.println("실패!");
+			d_result = false;
+		}
+		model.addAttribute("d_test", d_result);
+		
 		return "tms/dev/devPlanList";
 	}
 	
@@ -194,6 +230,111 @@ public class DevPlanController {
 		}
 
 		return "redirect:/tms/dev/devPlans.do";
+	}
+	
+	@RequestMapping("/tms/dev/inputDevPlan.do")
+	public String inputDevPlan(@RequestParam String s1, @RequestParam String s2, @ModelAttribute("searchVO") DevPlanDefaultVO searchVO, @ModelAttribute("devPlan") DevPlanVO dvo, ModelMap model, BindingResult bindingResult,
+			SessionStatus status) throws Exception {
+
+		
+		System.out.println("aaa1-"+s1);
+		System.out.println("aaa1-"+s2);
+		
+		String[] strs1 = s1.split(",");
+		String[] strs2 = s2.split(",");
+		
+		System.out.println(strs1[0]);
+		System.out.println(strs2[0]);
+		
+		devPlanService.updateinput1(strs1[0]);
+		devPlanService.updateinput2(strs2[0]);
+		
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		
+		searchVO.setSessionId(user.getName());
+		System.out.println("--유저"+ searchVO.getSessionId());
+		
+		/** EgovPropertyService.sample */
+		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+		paginationInfo.setPageSize(searchVO.getPageSize());
+		
+		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		
+		//공통코드(시스템, 업무구분)
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+		
+		String a = String.valueOf(searchVO.getSearchBySysGb());
+		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
+			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
+			model.addAttribute("taskGb2", taskGbList2);
+		}
+		
+		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
+		List<HashMap<String,String>> devList = devPlanService.selectDevPlans(searchVO);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String inputStartDate, inputEndDate;
+		Date startDate, endDate;
+		int dayDiff; 
+		
+		for(int i=0; i<devList.size(); i++){
+			if(((devList.get(i).get("PLAN_START_DT")) == null || "".equals(devList.get(i).get("PLAN_START_DT")))
+					&&((devList.get(i).get("PLAN_END_DT")) == null || "".equals(devList.get(i).get("PLAN_END_DT")))
+					){
+				
+			}else{
+				inputStartDate =  String.valueOf(devList.get(i).get("PLAN_START_DT"));
+				inputEndDate = String.valueOf(devList.get(i).get("PLAN_END_DT"));
+				startDate = sdf.parse(inputStartDate);
+				endDate = sdf.parse(inputEndDate);
+				dayDiff = betweenDate(startDate,endDate).size();
+				searchVO.setDayDiff(dayDiff);
+				searchVO.setPgId(devList.get(i).get("PG_ID"));
+				devPlanService.insertDayDiff(searchVO);
+			}
+		}
+		
+		devList = devPlanService.selectDevPlans(searchVO);
+		model.addAttribute("resultList", devList);
+		
+		int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy-MM-dd", Locale.KOREA );
+		Date currentTime = new Date ();
+		String mTime = mSimpleDateFormat.format ( currentTime );
+		model.addAttribute("current", mTime);
+
+		String start = devPlanService.selectSTART();
+		String end = devPlanService.selectEND();
+		
+		System.out.println("d---"+start);
+		System.out.println("d---"+end);
+		
+		SimpleDateFormat dt = new SimpleDateFormat("yyyyy-mm-dd"); 
+		Date d1 = dt.parse(start);
+		Date d2 = dt.parse(end);
+		
+		model.addAttribute("start", d1);
+		model.addAttribute("end", d2);
+		
+		return "tms/dev/devPlanList";
 	}
 	
 	@RequestMapping("/tms/dev/addDevPlan.do")

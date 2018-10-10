@@ -112,6 +112,8 @@
 	}
 	
 	function Pg_select(pageNo){
+		document.frm.searchBySysGb.value = document.frm.bbb.value;
+		document.frm.searchByTaskGb.value = document.frm.task.value;
 		//alert(pageNo);
 		document.frm.pageIndex.value = pageNo;
 		//document.frm.searchByTaskGb.value = document.frm.task.value;
@@ -260,7 +262,7 @@
 
                 	<div id="page_info"><div id="page_info_align"></div></div>    
                 	<div class="default_tablestyle">
-        			<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
+        			<table width="120%" border="0" cellpadding="0" cellspacing="0" >
         				<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
         				<colgroup>
         					<col width="20"/> 
@@ -284,11 +286,11 @@
         				<c:forEach var="result" items="${resultList}" varStatus="status">
             				<tr>
             					<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            					<td align="center" class="listtd">         							
+            					<td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
+            					<td align="left" class="listtd">
             						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?PG_ID=<c:out value='${result.PG_ID}'/>">
-                                		<strong><c:out value="${result.PG_ID}"/><strong>
-                            		</a></td>
-            					<td align="center" class="listtd"><c:out value="${result.PG_NM}"/></td>
+            							<strong><c:out value="${result.PG_NM}"/></strong>
+            						</a></td>
             					<td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>

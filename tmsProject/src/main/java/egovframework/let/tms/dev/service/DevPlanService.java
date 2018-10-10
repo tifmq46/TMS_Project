@@ -25,6 +25,10 @@ public interface DevPlanService {
 	 */
 	public void updateDevPlan(DevPlanVO vo) throws Exception;
 
+	public void updateinput1(String s) throws Exception;
+	
+	public void updateinput2(String s) throws Exception;
+	
 	/**
 	 * 개발계획을 삭제한다.
 	 * @param vo - 삭제할 정보가 담긴 DevPlanVO
@@ -80,7 +84,9 @@ public interface DevPlanService {
 	 */
 	public List<?> selectDevResult(DevPlanDefaultVO defaultVO) throws Exception; 
 	
-
+	public String selectSTART() throws Exception;
+	public String selectEND() throws Exception;
+	
 	/**
 	 * 개발결과를 수정한다.
 	 * @param vo - 수정할 정보가 담긴 DevPlanVO

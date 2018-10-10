@@ -112,10 +112,64 @@
 	
 	
 	function searchExcelFileNm() {
-    	window.open("<c:url value='/tms/pg/ExcelFileListSearch.do'/>",'','width=500, height=300 left=350, top=200');
+    	window.open("<c:url value='/tms/pg/ExcelFileListSearch.do'/>",'','width=500, height=300, left=350, top=200');
+	}
+	
+	function Pg_Relation_Search() {
+		
+		var checkField = document.frm.delYn;
+        var checkId = document.frm.checkId;
+        var returnValue = "";
+
+        var returnBoolean = false;
+        var checkCount = 0;
+
+        if(checkField) {
+            if(checkField.length > 1) {
+                for(var i=0; i<checkField.length; i++) {
+                    if(checkField[i].checked) {
+                        checkField[i].value = checkId[i].value;
+                        if(returnValue == "")
+                            returnValue = checkField[i].value;
+                        else 
+                            returnValue = returnValue + ";" + checkField[i].value;
+                        checkCount++;
+                    }
+                }
+                if(checkCount > 0) 
+                    returnBoolean = true;
+                else {
+                    alert("삭제할 화면ID를 선택해주십시오.");
+                    returnBoolean = false;
+                    return;
+                }
+            } else {
+                if(document.frm.delYn.checked == false) {
+                    alert("선택된 권한이 없습니다.");
+                    returnBoolean = false;
+                }
+                else {
+                    returnValue = checkId.value;
+                    returnBoolean = true;
+                }
+            }
+        } else {
+            alert("조회된 결과가 없습니다.");
+        }
+		
+        document.frm.del.value = returnValue;
+        //document.frm.action = "<c:url value='/tms/pg/deletePg2.do'/>";
+        //document.frm.submit();
+        
+        
+    	window.open("<c:url value='/tms/pg/deletePg2.do?result="+returnValue+"'/>",'','width=500, height=300, left=350, top=200');
 	}
 
 	function Pg_select(pageNo){
+		
+		document.frm.searchBySysGb.value = document.frm.bbb.value;
+		document.frm.searchByTaskGb.value = document.frm.task.value;
+		
 		//alert(pageNo);
 		document.frm.pageIndex.value = pageNo;
 		//document.frm.searchByTaskGb.value = document.frm.task.value;
@@ -368,7 +422,7 @@
                             		<li>
                             			<div class="buttons" style="float:right;">                              			
                                     		<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                                    		<a href="#Link" onclick="Pg_DeleteList(${searchVO.pageIndex}); return false;">삭제</a>
+                                    		<a href="#Link" onclick="Pg_Relation_Search(); return false;">삭제</a>
                                     		<a href="<c:url value='/tms/pg/PgInsert.do'/>" >등록</a>
                                     		<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀등록</a>
                                     	</div>
@@ -387,7 +441,7 @@
 
                 	<div id="page_info"><div id="page_info_align"></div></div>    
                 	<div class="default_tablestyle">
-        			<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
+        			<table width="120%" border="0" cellpadding="0" cellspacing="0" >
         				<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
         				<colgroup>
         					<col width="10"/>

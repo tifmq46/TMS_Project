@@ -75,15 +75,53 @@ function linkPage1(pageNo){
 
 function fn_searchList(pageNo){
     document.listForm.pageIndex.value = pageNo;
+    document.listForm.searchBySysGb.value = document.listForm.Sys.value;
     document.listForm.searchByTaskGb.value = document.listForm.task.value;
     document.listForm.action = "<c:url value='/tms/dev/devPlans.do'/>";
     document.listForm.submit();
 }
 
+function fn_input_result(pageNo) {
+	
+	document.listForm.pageIndex.value = pageNo;
+	document.listForm.searchBySysGb.value = document.listForm.Sys.value;
+    document.listForm.searchByTaskGb.value = document.listForm.task.value;
+    
+	document.listForm.s1.value = ""+document.listForm.InputStartDt.value;
+	document.listForm.s2.value = ""+document.listForm.InputEndDt.value;
+	
+	var s1 = ""+document.listForm.InputStartDt.value;
+	var s2 = ""+document.listForm.InputEndDt.value;
+	
+	alert(""+document.listForm.s1.value);
+	alert(""+document.listForm.s2.value);
+	
+	document.listForm.action = "<c:url value='/tms/dev/inputDevPlan.do?s1="+document.listForm.s1.value+"&s2="+s2+"'/>";
+    document.listForm.submit();
+}
+
+function fn_date(date){
+	var myDate = new Date(document.listForm.del.value);
+	
+	var ddDate = new Date(date);
+
+	return true;
+	
+	alert(""+myDate);
+	alert(""+ddDate);
+	
+	if(myDate < ddDate) {
+		
+		return true;
+	}else {
+		return false;
+	}
+	
+}
 
 $(function(){
 	
-	   $('#searchBySysGb').change(function() {
+	   $('#Sys').change(function() {
 	      $.ajax({
 	         
 	         type:"POST",
@@ -115,6 +153,9 @@ function searchFileNm() {
 </script>
 
 <style>
+
+
+
 .disabled {
        pointer-events:none;
        opacity:0.5;
@@ -157,22 +198,68 @@ function searchFileNm() {
                 <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="<c:url value='/tms/dev/devPlanList.do'/>" >   
 				 
                 <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
+                <input type="hidden" id="s1" name="s1" />
+                <input type="hidden" id="s2" name="s2" />
 				
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발계획관리</strong></h2></div>
 					
 					  	<fieldset><legend>조건정보 영역</legend>	  
 					  	<div class="sf_start">
+					  		
+					  		<%
+        					LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
+        					if(loginVO.getName().equals("관리자")){
+        					%>
+					  	
+					  		<ul id="search_first_ul">
+					  			<li>
+					  			<label>일자</label>
+								<input type="date" id="InputStartDt" name="InputStartDt" 
+									value="<fmt:formatDate value="${start}" pattern="yyyy-MM-dd"/>"/>
+								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+					  			&nbsp;~&nbsp;
+					  			<input type="date" id="InputEndDt" name="InputEndDt"  
+					  				value="<fmt:formatDate value="${end}" pattern="yyyy-MM-dd"/>"/>
+					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+													  				
+					  			</li>		
+					  			<li>
+					  				<a class="abled" href="#LINK" onclick="fn_input_result('1'); return false;" >저장</a>	
+					  			</li>
+					  		</ul>
+					  		<%
+        					}else{
+	  						%>
+					  		<ul id="search_first_ul">
+					  			<li>
+					  			<label>일자</label>
+								<input type="date" id="InputStartDt" name="InputStartDt" 
+									class="disabled" value="<fmt:formatDate value="${start}" pattern="yyyy-MM-dd"/>"/>
+								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+					  			&nbsp;~&nbsp;
+					  			<input type="date" id="InputEndDt" name="InputEndDt"  
+					  				class="disabled" value="<fmt:formatDate value="${end}" pattern="yyyy-MM-dd"/>"/>
+					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+													  				
+					  			</li>		
+					  			<li>
+					  				<a class="disabled" href="#LINK" onclick="fn_input_result('1'); return false;" >저장</a>	
+					  			</li>
+					  		</ul>
+					  		<%
+	  						}
+        					%>		  		
 					  		<ul id="search_first_ul">
 					  			<li>
 								    <label >시스템구분</label>
-									<select name="searchBySysGb" id="searchBySysGb" style="width:12%;text-align-last:center;">
+									<select name="Sys" id="Sys" style="width:12%;text-align-last:center;">
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
 									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${searchVO.searchBySysGb == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
 									      </c:forEach>
 									</select>
-									
+									<input type="hidden" name="searchBySysGb" value="">
 					  			</li>
 					  			<li>
 								    <label for="searchByTaskGb">업무구분</label>
@@ -262,44 +349,45 @@ function searchFileNm() {
                     <tbody>                 
 
                     <c:forEach var="result" items="${resultList}" varStatus="status">
-                    <!-- loop 시작 -->                                
+                    <!-- loop 시작 -->       
                       <tr>
+                      
                       <td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-                        <td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
-            				<td align="center" class="listtd">
-            					<a href="<c:url value='/tms/dev/selectDevPlan.do'/>?pgId=<c:out value='${result.PG_ID}'/>">
-                                <c:out value="${result.PG_ID}"/></a>
-                             </td>
-            				<%-- <td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td> --%>
-            				<td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
-            				<%-- <td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td> --%>
-            				<td><input type="date"  id="${result.PG_ID}" onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_START_DT}" pattern="yyyy-MM-dd"/>" />
-                            </td>
-                            <td><input type="date"  id="${result.PG_ID}1" onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
-                            </td>
-            				<td align="center" class="listtd"><c:out value="${result.DAY_DIFF}"/>&nbsp;</td>
-            				<td align="center" class="listtd">
-            				
-            				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
-	            				<c:if test="${result.planStartDt eq null || result.planEndDt eq null}">
-	            				<a id="${result.PG_ID}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-	            				</c:if>
-	            				<c:if test="${result.planStartDt ne null || result.planEndDt ne null}">
+                      <td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
+            		  <td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
+            		  <td align="center" class="listtd">
+            		  	<a href="<c:url value='/tms/dev/selectDevPlan.do'/>?pgId=<c:out value='${result.PG_ID}'/>">
+                        <c:out value="${result.PG_ID}"/></a></td>
+            		  <%-- <td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td> --%>
+            		  <td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
+            		  <td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
+            		  <%-- <td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
+            		  <td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td> --%>
+            		  <td><input type="date"  id="${result.PG_ID}" <c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_START_DT}" pattern="yyyy-MM-dd"/>" />
+                      </td>
+                      <td><input type="date"  id="${result.PG_ID}" <c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
+                      </td>
+            		  <td align="center" class="listtd"><c:out value="${result.DAY_DIFF}"/>&nbsp;</td>
+            		  <td align="center" class="listtd">
+            			  <div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
+	            			<c:if test="${result.planStartDt eq null || result.planEndDt eq null}">
+	            				<a id="${result.PG_ID}2" class="abled" <c:if test="${d_test}"> class="disabled" </c:if> href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+	            			</c:if>
+	            			<c:if test="${result.planStartDt ne null || result.planEndDt ne null}">
 	            				<a id="${result.PG_ID}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-	            				</c:if>
-            				</div>
-                      </tr>
-                     </c:forEach>     
-                     <c:if test="${fn:length(resultList) == 0}">
-                      <tr>
-                        <td nowrap colspan="5" ><spring:message code="common.nodata.msg" /></td>  
-                      </tr>      
-                     </c:if>
-                    </tbody>
-                    </table>
+	            			</c:if>
+            			  </div>
+            			  
+                     </tr>
+                   </c:forEach>     
+                   
+                   <c:if test="${fn:length(resultList) == 0}">
+                     <tr>
+                       <td nowrap colspan="5" ><spring:message code="common.nodata.msg" /></td>  
+                     </tr>      
+                   </c:if>
+                   </tbody>
+                   </table>
                 </div>
                 
                  <input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
@@ -311,7 +399,7 @@ function searchFileNm() {
                 <!-- 페이지 네비게이션 시작 -->
                 <div id="paging_div">
                     <ul class="paging_align">
-                       <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage1"  />
+                       <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_searchList"  />
                     </ul>
                 </div>                          
                 <!-- //페이지 네비게이션 끝 -->

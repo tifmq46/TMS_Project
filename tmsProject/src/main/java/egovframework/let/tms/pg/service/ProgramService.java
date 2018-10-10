@@ -62,4 +62,8 @@ public interface ProgramService {
 	List<?> selectPgCurrentList(ProgramVO searchVO) throws Exception;
 	
 	List<?> selectPgCurrentExcelList(ProgramDefaultVO searchVO) throws Exception;
+	
+	int count1(String i) throws Exception;
+	int count2(String i) throws Exception;
+	int count3(String i) throws Exception;
 }
