@@ -15,7 +15,7 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>개발진척통계</title>
-<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>o
 <script type="text/javaScript" language="javascript">
 
 </script>
@@ -46,70 +46,13 @@
 							<li>&#62;</li>
 							<li>개발진척관리</li>
 							<li>&gt;</li>
-							<li><strong>개발진척통계</strong></li>
+							<li><strong>개발진척통계(그래프)</strong></li>
                         </ul>
                     </div>
                 </div>
-                <!-- 검색 필드 박스 시작 -->
                
-				
-				<div id="search_field">
-					<div id="search_field_loc"><h2><strong>개발진척통계</strong></h2></div>
-					
-					  	<fieldset><legend>조건정보 영역</legend>	  
-					  	<div class="sf_start">
-					  	<ul id="search_first_ul">
-						  	<li><label >계획시작일</label></li>
-						  	<li>
-						  	<input type="text" value="<fmt:formatDate value="${tt.DEV_START_DT}" pattern="yyyy-MM-dd" />">
-						  	</li>
-						  
-						  	<li><label >계획종료일</label></li>
-						  	<li><input type="text" value="<fmt:formatDate value="${tt.DEV_END_DT}" pattern="yyyy-MM-dd" />"></li>
-					  	</ul>
-						</div>			
-						</fieldset>		
-				</div>
-				<!-- //검색 필드 박스 끝 -->
-                
-                <div id="page_info"><div id="page_info_align"></div></div>                    
-                <!-- table add start -->
-                <div class="default_tablestyle">
-                    <table summary="진척통계 테이블입니다" cellpadding="0" cellspacing="0">
-                    <caption>진척통계 테이블</caption>
-                    
-                    <c:forEach var="stats" items="${stats}" varStatus="status">
-                    <tr>
-                    <td>
-                    	<c:out value="${stats.A1}" />
-                    	<td>
-                    	</tr>
-                    </c:forEach>
-                    
-                    
-                    </table>
-                </div>
-                
                
-                
-                 
-				<%-- <table width="120%" border="0" cellpadding="0" cellspacing="0" >
-                 <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
-              
-              <tr>
-            <c:forEach var="resultP" items="${resultP}" varStatus="status">
-        			
-        				<th align="center" class="listtd"><c:out value="${resultP.formatFriday}"/></th>
-        				
-        			
-            			<tr>
-            				<td align="center" class="listtd"><c:out value="${resultP.formatFriday}"/>&nbsp;</td>
-            				
-            			</tr>
-        			</c:forEach>
-        			</tr>
-              
-              </table>         --%>
+                <div id="search_field_loc"><h2><strong>개발진척통계(그래프)</strong></h2></div>  
             </div>
             <!-- //content 끝 -->
         </div>
@@ -119,8 +62,6 @@
         <!-- //footer 끝 -->
     </div>
     <!-- //전체 레이어 끝 -->
-    
-    
     
  </body>
 </html>

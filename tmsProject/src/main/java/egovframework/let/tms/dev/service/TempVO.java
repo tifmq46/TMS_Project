@@ -18,8 +18,7 @@ public class TempVO implements Serializable{
 	private String userDevNm;
 	
 	/**  계획완료일자 */
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date planEndDt;
+	private String planEndDt;
 
 	public String getPgId() {
 		return pgId;
@@ -45,13 +44,13 @@ public class TempVO implements Serializable{
 		this.userDevNm = userDevNm;
 	}
 
-	public Date getPlanEndDt() {
+	public String getPlanEndDt() {
 		return planEndDt;
 	}
 
-	public void setPlanEndDt(Date planEndDt) {
+	public void setPlanEndDt(String planEndDt) {
 		this.planEndDt = planEndDt;
 	}
-	
+
 	
 }

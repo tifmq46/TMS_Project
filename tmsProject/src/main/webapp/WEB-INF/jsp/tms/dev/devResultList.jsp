@@ -31,9 +31,37 @@
 
 <script type="text/javaScript" language="javascript">
 
+Date.prototype.format = function(f) {
+    if (!this.valueOf()) return " ";
+ 
+    var weekName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+    var d = this;
+     
+    return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) {
+        switch ($1) {
+            case "yyyy": return d.getFullYear();
+            case "yy": return (d.getFullYear() % 1000).zf(2);
+            case "MM": return (d.getMonth() + 1).zf(2);
+            case "dd": return d.getDate().zf(2);
+            case "E": return weekName[d.getDay()];
+            case "HH": return d.getHours().zf(2);
+            case "hh": return ((h = d.getHours() % 12) ? h : 12).zf(2);
+            case "mm": return d.getMinutes().zf(2);
+            case "ss": return d.getSeconds().zf(2);
+            case "a/p": return d.getHours() < 12 ? "오전" : "오후";
+            default: return $1;
+        }
+    });
+};
+ 
+String.prototype.string = function(len){var s = '', i = 0; while (i++ < len) { s += this; } return s;};
+String.prototype.zf = function(len){return "0".string(len - this.length) + this;};
+Number.prototype.zf = function(len){return this.toString().zf(len);};
+
 function fn_result_change(asd) {
 	   var idVal0 = document.getElementById(asd).value;
 	   var idVal1 = document.getElementById(asd+1).value;
+	   var currentDate = (new Date().format("yyyy-MM-dd"));
 	   if(idVal1 != null && idVal1 != "")
 	      {
 	         if(idVal0 > idVal1)
@@ -47,10 +75,45 @@ function fn_result_change(asd) {
 	         alert("개발시작일자부터 입력하십시오.")
 	         document.getElementById(asd+1).value = null;
 	      }
+	   if(idVal0 > currentDate || idVal1 > currentDate){
+		   alert("오늘 이후 날짜는 입력할 수 없습니다. 다시 입력하십시오.");
+		   document.getElementById(asd+1).value = null;
+	   }
+	   
 	   var idVal3 = document.getElementById(asd+3).id;
 	   $("#"+idVal3).removeClass("disabled");
 	   $("#"+idVal3).addClass("abled");
 	}
+
+function fn_rate_change(pgId, event) {
+	var idVal0 = document.getElementById(pgId).value;
+	if(idVal0 == null || idVal0 == ""){
+		alert("개발시작일자 먼저 입력하십시오.");
+	}
+	else{
+		var idVal3 = document.getElementById(pgId+3).id;
+		$("#"+idVal3).removeClass("disabled");
+		$("#"+idVal3).addClass("abled");
+		
+		document.listForm.flag.value = "change";
+		
+		event = event || window.event;
+	    var keyID = (event.which) ? event.which : event.keyCode;
+	    if ( (keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
+	        return;
+	    else
+	        return false;
+	}
+
+}
+function removeChar(event) {
+    event = event || window.event;
+    var keyID = (event.which) ? event.which : event.keyCode;
+    if ( keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
+        return;
+    else
+        event.target.value = event.target.value.replace(/[^0-9]/g, "");
+}
 
 function linkPage1(pageNo){
 
@@ -72,11 +135,14 @@ function fn_result_regist(t){
 
 	var idVal = document.getElementById(t).value;
 	var idVal1 = document.getElementById(t+1).value;
+	var rate = document.getElementById(t+4).value;
 	
-
-	
-	location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1;
-			
+	var flag = document.listForm.flag.value;
+	if(rate == null || rate == ""){
+		alert("달성률을 입력해주십시오.");
+	}else{
+		location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1+"&achievementRate="+rate+"&flag="+flag;
+	}	
 }
 
 function fn_searchList(pageNo){
@@ -157,6 +223,7 @@ $(function(){
         
              <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="tms/dev/devPlanList.do">   
                 <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
+                <input type="hidden" name="flag" value="auto"/>
                 <!-- 검색 필드 박스 시작 -->
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발결과관리</strong></h2></div>
@@ -246,6 +313,7 @@ $(function(){
                     <col width="10%" >
                     <col width="10%" >
                     <col width="5%" >
+                    <col width="5%" >
         			</colgroup>
         			<tr>
         				<th align="center">번호</th>
@@ -258,6 +326,7 @@ $(function(){
         				<th align="center">계획종료일자</th>
 			        	<th align="center">개발시작일자</th>
         				<th align="center">개발종료일자</th>
+        				<th align="center">달성률(%)</th>
         				<th align="center"></th>
         			</tr>
         			
@@ -265,42 +334,49 @@ $(function(){
         			
             			<tr>
             				<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            				<td align="center" class="listtd" name="sys"><c:out value="${result.sysGb}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
+            				<td align="center" class="listtd" name="sys"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd">
             					<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>"> --%>
-                                <c:out value="${result.pgId}"/><!-- </a> -->
-                                <input type="hidden" id="pgId" name="pgId" value='<c:out value="${result.pgId}"/>' >
+                                <c:out value="${result.PG_ID}"/><!-- </a> -->
+                                <input type="hidden" id="pgId" name="pgId" value='<c:out value="${result.PG_ID}"/>' >
                             </td>
-            				<td align="left" class="listtd"><c:out value="${result.pgNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>
+            				<td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.PLAN_START_DT}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.PLAN_END_DT}"/>&nbsp;</td>
             				
-            				<td><input type="date"  id="${result.pgId}" onchange="fn_result_change('${result.pgId}')" value="<fmt:formatDate value="${result.devStartDt}" pattern="yyyy-MM-dd" />"/>
+            				<td><input type="date"  id="${result.PG_ID}" onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.DEV_START_DT}" pattern="yyyy-MM-dd" />" style="width:120px;"/>
                             <img src="images/calendar.gif"  width="19" height="19" alt="" /></td>
-                            <td><input type="date"  id="${result.pgId}1" onchange="fn_result_change('${result.pgId}')" value="<fmt:formatDate value="${result.devEndDt}" pattern="yyyy-MM-dd" />"/>
+                            <td><input type="date"  id="${result.PG_ID}1" onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.DEV_END_DT}" pattern="yyyy-MM-dd" />" style="width:120px;"/>
                             <img src="images/calendar.gif" width="19" height="19" alt="" /></td>
             				
-            				<%-- <td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.devEndDt}"/>&nbsp;</td> --%>
+            				<c:choose>
+	            				<c:when test="${result.ACHIEVEMENT_RATE eq null }">
+	            					<td><input type="text" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="0" onkeydown="return fn_rate_change('${result.PG_ID}', event)" onkeyup='removeChar(event)'/></td>
+	            				</c:when>
+	            				<c:otherwise>
+	            					<td><input type="text"  id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeydown="return fn_rate_change('${result.PG_ID}', event)" onkeyup='removeChar(event)'/></td>
+	            				</c:otherwise>
+            				</c:choose>
+          
             				
             				<td align="center" class="listtd">
-            				
             				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
-            				<%-- <a href="<c:url value='/tms/dev/updateDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%>
-            				<c:if test="${result.devStartDt eq null || result.devEndDt eq null}">
-            				<a id="${result.pgId}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-            				</c:if>
-            				<c:if test="${result.devStartDt ne null || result.devEndDt ne null}">
-            				<a id="${result.pgId}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.pgId}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-            				</c:if>
-            				<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%> 
-            				<!-- 값이 바뀌는 이벤트가 발생했을 때 저장 버튼 활성화
-            					저장 누르면 버튼 enable
-            				  -->
+            				<c:choose>
+	            				<c:when test="${result.DEV_START_DT eq null && result.DEV_END_DT eq null}">
+	            				<a id="${result.PG_ID}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+	            				</c:when>
+	            				<c:when test="${result.DEV_START_DT ne null || result.DEV_END_DT ne null}">
+	            				<a id="${result.PG_ID}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+	            				</c:when>
+            				</c:choose>
+            				
+            				<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>" >저장</a> --%>
             				</div>
             				</td>
+            				
+            				
             			</tr>
         			</c:forEach>
              		<c:if test="${fn:length(resultList) == 0}">

@@ -70,7 +70,7 @@ public interface DevPlanService {
 
 	public int selectDevPlanListTotCnt(DevPlanDefaultVO searchVO)throws Exception;
 	
-	public List<?> selectDevResultList(DevPlanDefaultVO searchVO) throws Exception;
+	public List<HashMap<String, String>> selectDevResultList(DevPlanDefaultVO searchVO) throws Exception;
 	
 	/**
 	 * 개발결과에 대한 상세정보를 조회한다.
@@ -134,6 +134,6 @@ public interface DevPlanService {
 
 	public List<String> selectPeriod();
 
-	public List<HashMap<String, String>> selectUserDevStats(String period);
+	public List<HashMap<String, String>> selectUserDevStats(HashMap<String, String> test);
 
 }

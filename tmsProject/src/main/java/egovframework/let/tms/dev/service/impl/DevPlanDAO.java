@@ -80,8 +80,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (List<DevPlanDefaultVO>) list("DevPlanDAO.selectDevPlansByCode", defaultVO);
     }
 	
-	public List<?> selectDevResultList(DevPlanDefaultVO searchVO) throws Exception {
-		return list("devPlanDAO.selectDevResultList", searchVO);
+	public List<HashMap<String, String>> selectDevResultList(DevPlanDefaultVO searchVO) throws Exception {
+		return (List<HashMap<String, String>>) list("devPlanDAO.selectDevResultList", searchVO);
 	}
 	
 	/**
@@ -187,7 +187,7 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (List<String>) list("DevPlanDAO.selectPeriod");
 	}
 
-	public List<HashMap<String, String>> selectUserDevStats(String period) {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserDevStats",period);
+	public List<HashMap<String, String>> selectUserDevStats(HashMap<String, String> test) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserDevStats",test);
 	}
 }
