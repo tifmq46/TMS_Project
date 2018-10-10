@@ -339,11 +339,12 @@ public class DevPlanController {
 			//Float.valueOf(dvo.getAchievementRate());
 			//System.out.println(dvo.getAchievementRate());
 		
-		String devStartDt, devEndDt;
+		String devStartDt, devEndDt,devAchRate;
 		float achRate=0.0f;
 
 		devStartDt = String.valueOf(dvo.getDevStartDt());
 		devEndDt = String.valueOf(dvo.getDevEndDt());
+		devAchRate = String.valueOf(dvo.getAchievementRate());
 			
 			System.out.println("날짜값"+devStartDt);
 			if(flag.equals("auto")){
@@ -351,13 +352,21 @@ public class DevPlanController {
 					if(!devEndDt.equals("null")){
 						achRate=100;
 					}else{
-						achRate = 50;
+						if(devAchRate.equals("0.0")){
+							achRate = 50;
+						}else{
+							achRate = dvo.getAchievementRate();
+						}
 					}
 				}else{
 					achRate=0;
 				}
 			}else if(flag.equals("change")){
-				achRate = dvo.getAchievementRate();
+				if(!devEndDt.equals("null")){
+					achRate = 100;
+				}else{
+					achRate = dvo.getAchievementRate();
+				}
 			}
 			
 			dvo.setAchievementRate(achRate);

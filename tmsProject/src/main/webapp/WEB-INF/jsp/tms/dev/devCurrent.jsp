@@ -7,6 +7,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.util.*, java.text.*"  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -69,6 +70,9 @@ $(function(){
 	function searchFileNm() {
     window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
 }
+
+$(function(){
+})
 </script>
 
 
@@ -185,23 +189,33 @@ $(function(){
 	                </strong>
                 </div>
                 
+                <%
+
+				 java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+				 String today = formatter.format(new java.util.Date());
+				
+				 pageContext.setAttribute("today", today) ;
+				%>
+                
               <table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
                  <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
               
               
               <colgroup>
-        			<col width="70" >
-                    <col width="60" >  
-                    <col width="10%" >
-                    <col width="10%" >
+        			<col width="40" >
+                    <col width="40" >  
+                    <col width="80" >
+                    <col width="100" >
                     <col width="40" >
-                    <col width="90" >
-                    <col width="90" >
-                    <col width="10%" >
-                    <col width="10%" >
-                     <col width="5%" >
+                    <col width="50" >
+                    <col width="50" >
+                    <col width="50" >
+                    <col width="50" >
+                    <col width="30" >
+                    <col width="40" >
         			</colgroup>
         			
+        			<tr>
         				<th align="center">시스템구분</th>
         				<th align="center">업무구분</th>
         				<th align="center">화면ID</th>
@@ -212,6 +226,7 @@ $(function(){
 			        	<th align="center">개발시작일자</th>
         				<th align="center">개발종료일자</th>
         				<th align="center">달성률(%)</th>
+        				<th align="center">진행상태</th>
         			</tr>
         			
         			<c:forEach var="result" items="${resultList}" varStatus="status">
@@ -231,7 +246,71 @@ $(function(){
             				<td align="center" class="listtd"><c:out value="${result.DEV_START_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.DEV_END_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.ACHIEVEMENT_RATE}"/>%&nbsp;</td>
-            		
+            				
+            				<c:choose>
+	            				<c:when test="${result.ACHIEVEMENT_RATE eq 100 }">
+	            					<c:set var="status" value="개발완료"></c:set>
+	            				</c:when>
+	            				<c:otherwise>
+	            					<c:choose>
+	            						<c:when test="${result.PLAN_END_DT lt today }">
+	            							<c:choose>
+		            							<c:when test="${result.DEV_START_DT eq null }">
+		            								<c:set var="status" value="개발미착수"></c:set>
+		            							</c:when>
+		            							<c:otherwise>
+		            								<c:choose>
+		            									<c:when test="${result.PLAN_END_DT lt result.DEV_START_DT}">
+		            										<c:set var="status" value="개발지연"></c:set>
+		            									</c:when>
+		            									<c:otherwise>
+		            										<c:set var="status" value="개발중"></c:set>
+		            									</c:otherwise>
+		            								</c:choose>
+		            							</c:otherwise>
+	            							</c:choose>
+	            						</c:when>
+	            						
+	            						<c:otherwise>
+	            							<c:if test="${result.DEV_START_DT ne null }">
+	            								<c:set var="status" value="개발중"></c:set>
+	            							</c:if>
+	            							<c:if test="${result.DEV_START_DT eq null }">
+	            								<c:set var="status" value="대기"></c:set>
+	            							</c:if>
+	            						</c:otherwise>
+	            					</c:choose>
+	            					
+	            				</c:otherwise>
+            				</c:choose>
+            				
+            				<c:choose>
+            					<c:when test="${status eq '개발완료'}">
+            						<td align="center" class="listtd" style="background-color:#007bff;">
+            						<font color="#ffffff" style="font-weight:bold">
+            						<c:out value="${status}"/></td>
+            					</c:when>
+            					<c:when test="${status eq '개발미착수'}">
+            						<td align="center" class="listtd" style="background-color:#CC3C39; ">
+            						<font color="#ffffff" style="font-weight:bold">
+            						<c:out value="${status}"/></td>
+            					</c:when>
+            					<c:when test="${status eq '개발지연'}">
+            						<td align="center" class="listtd" style="background-color:#FE642E;">
+            						<font color="#ffffff" style="font-weight:bold">
+            						<c:out value="${status}"/></td>
+            					</c:when>
+            					<c:when test="${status eq '개발중'}">
+            						<td align="center" class="listtd" >
+            						<font style="font-weight:bold">
+            						<c:out value="${status}"/></td>
+            					</c:when>
+            					<c:when test="${status eq '대기'}">
+            						<td align="center" class="listtd" >
+            						<c:out value="${status}"/></td>
+            					</c:when>
+            				</c:choose>
+            				
             			</tr>
         			</c:forEach>
              	<c:if test="${fn:length(resultList) == 0}">
