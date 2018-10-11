@@ -732,55 +732,6 @@ public class DevPlanController {
 		model.addAttribute("taskGb", taskGbList);
 		
 		List<HashMap<String,String>> devCurrentList = devPlanService.selectDevCurrent(searchVO);
-		//model.addAttribute("resultList", devCurrentList);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date start[] = new Date[devCurrentList.size()];
-		Date end[] = new Date[devCurrentList.size()];
-		Date cur = new Date();
-		DecimalFormat format = new DecimalFormat(".#");
-		
-		/*달성률 계산*/
-		/*for(int i=0; i<devCurrentList.size(); i++){
-			String start_temp = String.valueOf(devCurrentList.get(i).get("PLAN_START_DT"));
-			start[i] = sdf.parse(start_temp);
-			
-			String end_temp = String.valueOf(devCurrentList.get(i).get("PLAN_END_DT"));
-			end[i] = sdf.parse(end_temp);
-			
-			int compare = cur.compareTo(start[i]); 	현재날짜, 계획시작날짜 비교
-			int compare2 = cur.compareTo(end[i]);	현재날짜, 계획종료날짜 비교
-			
-			계획시작일 ~ 현재날짜 작업일수
-			long calDate = start[i].getTime() - cur.getTime();
-			long calDateDays = Math.abs(calDate / (24*60*60*1000));
-			float aa = (float)(long)calDateDays;
-			
-			계획시작일 ~ 계획종료일 작업일수
-			long calDate2 = start[i].getTime() - end[i].getTime();
-			long calDateDays2 = Math.abs(calDate2 / (24*60*60*1000));
-			float bb = (float)(long)calDateDays2;
-			
-			searchVO.setPgId(devCurrentList.get(i).get("PG_ID"));
-			float achRate = (float) 0.0;
-			
-			if(compare > 0){
-				System.out.println("현재날짜 > 계획시작일");
-				if(compare2 > 0){
-					achRate = (float) 100.0;
-				}else if(compare2 < 0){
-					achRate = Float.parseFloat(String.format("%.1f",((aa/bb)*100)));
-				}
-			}else if(compare < 0){
-				System.out.println("현재날짜 < 계획시작일");
-					achRate = (float) 0.0;
-
-			}
-			
-			searchVO.setAchievementRate(achRate);
-			devPlanService.updateRate(searchVO);
-		}
-		List<HashMap<String,String>> devResult = devPlanService.selectDevCurrent(searchVO);*/
 		model.addAttribute("resultList", devCurrentList);
 		
 		List<?> userList = defectService.selectUser();
