@@ -105,7 +105,7 @@
                            </select>                  
                           </li>          
                           <li>
-                            <label for="searchByDefectGb">결함유형구분</label>
+                            <label for="searchByDefectGb">&nbsp;결함유형구분</label>
                            <select name="searchByDefectGb" id="searchByDefectGb" style="width:10%;text-align-last:center;">
                                <option value="" selected="selected">전체</option>
                                <c:forEach var="defectGb" items="${defectGb}" varStatus="status">

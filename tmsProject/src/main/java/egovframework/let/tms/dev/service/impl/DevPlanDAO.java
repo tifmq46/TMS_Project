@@ -194,4 +194,12 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	public List<?> selectDevPlanByMainStats() {
 		return list("DevPlanDAO.selectDevPlanByMainStats");
 	}
+	
+	public List<?> selectSysAllByStats() {
+		return list("DevPlanDAO.selectSysAllByStats");
+	}
+	
+	public List<?> selectSysByStats() {
+		return list("DevPlanDAO.selectSysByStats");
+	}
 }

@@ -229,5 +229,17 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 		// TODO Auto-generated method stub
 		return devPlanDAO.selectDevPlanByMainStats();
 	}
+
+	@Override
+	public List<?> selectSysAllByStats() {
+		// TODO Auto-generated method stub
+		return devPlanDAO.selectSysAllByStats();
+	}
+
+	@Override
+	public List<?> selectSysByStats() {
+		// TODO Auto-generated method stub
+		return devPlanDAO.selectSysByStats();
+	}
 	
 }

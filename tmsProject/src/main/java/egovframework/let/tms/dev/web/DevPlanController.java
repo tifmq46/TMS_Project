@@ -385,11 +385,6 @@ public class DevPlanController {
 		return "forward:/tms/dev/selectDevResult.do";
 	}
 	
-	@RequestMapping(value = "/tms/dev/devStats.do")
-	public String devStats(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
-		return null;
-	}
-	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/tms/dev/devStatsTable.do")
 	public String devStatsTable(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
@@ -664,6 +659,24 @@ public class DevPlanController {
 		}
 		
 		return dates;
+	}
+	
+	@RequestMapping("/tms/dev/devStats.do")
+	public String selectDevPlanStats(ModelMap model){
+		
+		// 시스템별 진척률 시작 -------------------------------------
+		// 시스템별 전체
+		List<?> sysAllByStats = devPlanService.selectSysAllByStats();
+		model.addAttribute("sysAllByStats", net.sf.json.JSONArray.fromObject(sysAllByStats));
+		
+		// 시스템별 그룹바이
+		List<?> sysByStats = devPlanService.selectSysByStats();
+		model.addAttribute("sysByStats", net.sf.json.JSONArray.fromObject(sysByStats));
+		
+		
+		// 시스템별 진척률 끝 -------------------------------------
+		
+		return "tms/dev/devStats";
 	}
 	
 	

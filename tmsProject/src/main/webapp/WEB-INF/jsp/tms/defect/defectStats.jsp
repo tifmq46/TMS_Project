@@ -67,8 +67,8 @@ function taskBySelectBoxChange() {
 window.onload = function() {
 	
 	
-		var colorArray = [ '#B7BDD6', '#98D5DC', '#3765A4', '#D57C86', '#007bff',
-		                   '#FF6633', '#FFB399', '#FF33FF', '#FFFF99',
+		var colorArray = [ '#DAE9F4', '#9DC3C1', '#00B3E6', '#008C9E',
+		                   '#007BFF', '#FFB399', '#FF33FF', '#FFFF99',
 				'#00B3E6', '#E6B333', '#3366E6', '#999966', '#99FF99',
 				'#B34D4D', '#80B300', '#809900', '#E6B3B3', '#6680B3',
 				'#66991A', '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A',
@@ -226,7 +226,7 @@ window.onload = function() {
 				}, {
 					label : '재요청',
 					data : taskByActionStCntActionStA4,
-					backgroundColor : colorArray[3],
+					backgroundColor : '#CC3C39',
 				}, {
 					label : '최종완료',
 					data : taskByActionStCntActionStA5,
@@ -395,8 +395,19 @@ window.onload = function() {
 					<div id="search_field_loc"><h2><strong>결함처리통계(그래프)</strong></h2></div>
 			</div>
 			<br/>
+			 <h3><strong>상태별 결함건수</strong></h3>
+            <table width="100%" cellspacing = "10" height="80px" >
+            <tr>
+            	<td width="16.6%" align="center" bgcolor="#CC3C39"><font color="#FFFFFF" size="3" style="font-weight:bold" > 전체건수 <br/><c:out value="${defectStats.actionStAll}"/></font></td>
+            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 대기 <br/><c:out value="${defectStats.actionStA1}"/></font></td>
+            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 조치중 <br/><c:out value="${defectStats.actionStA2}"/></font></td>
+            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 조치완료 <br/><c:out value="${defectStats.actionStA3}"/></font></td>
+            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 재요청 <br/><c:out value="${defectStats.actionStA4}"/></font></td>
+            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 최종완료 <br/><c:out value="${defectStats.actionStA5}"/></font></td>
+            </tr>
+            </table>
+            
              <h3><strong>조치율</strong></h3>
-             
                  	<%-- 총 : <c:out value="${defectStats.actionStAll}"/> 
                  	완료 : <c:out value="${defectStats.actionStA5}"/>
                  	미완료 : <c:out value="${defectStats.actionStAll - defectStats.actionStA5}"/> --%>
@@ -430,41 +441,6 @@ window.onload = function() {
 					</tr>
 				</table>
             
-            <h3><strong>상태별 결함건수</strong></h3>
-            <table width="100%" cellspacing = "10" height="80px" >
-            <tr>
-            	<td width="16.6%" align="center" bgcolor="#CC3C39"><font color="#FFFFFF" size="3" style="font-weight:bold" > 전체건수 <br/><c:out value="${defectStats.actionStAll}"/></font></td>
-            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 대기 <br/><c:out value="${defectStats.actionStA1}"/></font></td>
-            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 조치중 <br/><c:out value="${defectStats.actionStA2}"/></font></td>
-            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 조치완료 <br/><c:out value="${defectStats.actionStA3}"/></font></td>
-            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 재요청 <br/><c:out value="${defectStats.actionStA4}"/></font></td>
-            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 최종완료 <br/><c:out value="${defectStats.actionStA5}"/></font></td>
-            </tr>
-            </table>
-            <br/>
-			<div id="dayByDefectCntTitle" style="display:inline">
-			<h3><strong>일자별 등록건수, 조치건수</strong></h3>
-			<%-- <c:forEach var="dayByDefectCnt" items="${dayByDefectCnt}" varStatus="status">
-            	<c:out value="${dayByDefectCnt.days}"/> : <c:out value="${dayByDefectCnt.enrollDtCnt}"/> | <c:out value="${dayByDefectCnt.actionDtCnt}"/>
-            	&nbsp;
-            </c:forEach> --%>
-			</div>
-            <div id="monthByDefectCntTitle" style="display:none">
-			<h3><strong>월별 등록건수, 조치건수</strong></h3>
-			<%-- <c:forEach var="monthByDefectCnt" items="${monthByDefectCnt}" varStatus="status">
-            	<c:out value="${monthByDefectCnt.months}"/> : <c:out value="${monthByDefectCnt.enrollMonthDtCnt}"/> | <c:out value="${monthByDefectCnt.actionMonthDtCnt}"/>
-            	&nbsp;
-            </c:forEach> --%>
-            </div>
-			<div align="right">
-			<select id="selectBoxStats" style="width:12%;text-align-last:center;" onChange="javascript:selectBoxChange();">
-				<option value="1" selected="selected" >일자별</option>
-				<option value="2" >월별</option>
-			</select>
-			</div>
-            <canvas id="dayByDefectCnt" width="100%" height="20" style="display:inline"></canvas>
-            <canvas id="monthByDefectCnt" width="100%" height="20" style="display:none"></canvas>
-            <br/><br/>
             <h3><strong>업무별 조치율</strong></h3>
             <div style="overflow:auto; white-space:nowrap; overflow-y:hidden;">
             <table>
@@ -478,6 +454,8 @@ window.onload = function() {
 			</td>            
             </c:forEach>
             <br/>
+            </tr>
+            
             <tr>
             <td align="center" valign="middle">
             <div style="font-size:15px; font-weight:bolder;">
@@ -575,6 +553,31 @@ window.onload = function() {
             </c:forEach> --%>
 			</div>
             <canvas id="taskByDefectGbCnt" width="100%" height="20" style="display:none"></canvas>
+            
+            <div id="dayByDefectCntTitle" style="display:inline">
+			<h3><strong>일자별 등록건수, 조치건수</strong></h3>
+			<%-- <c:forEach var="dayByDefectCnt" items="${dayByDefectCnt}" varStatus="status">
+            	<c:out value="${dayByDefectCnt.days}"/> : <c:out value="${dayByDefectCnt.enrollDtCnt}"/> | <c:out value="${dayByDefectCnt.actionDtCnt}"/>
+            	&nbsp;
+            </c:forEach> --%>
+			</div>
+            <div id="monthByDefectCntTitle" style="display:none">
+			<h3><strong>월별 등록건수, 조치건수</strong></h3>
+			<%-- <c:forEach var="monthByDefectCnt" items="${monthByDefectCnt}" varStatus="status">
+            	<c:out value="${monthByDefectCnt.months}"/> : <c:out value="${monthByDefectCnt.enrollMonthDtCnt}"/> | <c:out value="${monthByDefectCnt.actionMonthDtCnt}"/>
+            	&nbsp;
+            </c:forEach> --%>
+            </div>
+			<div align="right">
+			<select id="selectBoxStats" style="width:12%;text-align-last:center;" onChange="javascript:selectBoxChange();">
+				<option value="1" selected="selected" >일자별</option>
+				<option value="2" >월별</option>
+			</select>
+			</div>
+            <canvas id="dayByDefectCnt" width="100%" height="20" style="display:inline"></canvas>
+            <canvas id="monthByDefectCnt" width="100%" height="20" style="display:none"></canvas>
+            <br/><br/>
+            
 			</div>
             <!-- //content 끝 -->
         </div>
