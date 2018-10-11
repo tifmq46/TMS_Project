@@ -267,11 +267,7 @@ function searchFileNm() {
                       <td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
-            				<td align="center" class="listtd">
-            					<a href="<c:url value='/tms/dev/selectDevPlan.do'/>?pgId=<c:out value='${result.PG_ID}'/>">
-                                <c:out value="${result.PG_ID}"/></a>
-                             </td>
-            				<%-- <td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td> --%>
+            				<td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
             				<td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
             				<%-- <td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>

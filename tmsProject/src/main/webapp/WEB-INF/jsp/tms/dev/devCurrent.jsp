@@ -296,7 +296,7 @@ $(function(){
             						<c:out value="${status}"/></td>
             					</c:when>
             					<c:when test="${status eq '개발지연'}">
-            						<td align="center" class="listtd" style="background-color:#FE642E;">
+            						<td align="center" class="listtd" style="background-color:#CC3C39;">
             						<font color="#ffffff" style="font-weight:bold">
             						<c:out value="${status}"/></td>
             					</c:when>
