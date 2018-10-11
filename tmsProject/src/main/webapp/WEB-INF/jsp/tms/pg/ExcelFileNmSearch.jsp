@@ -35,54 +35,13 @@
 </style>
 <script language="javascript1.2"  type="text/javaScript"> 
 
-function file_upload() {	
-	
-	var file = progrmManageForm.file.value;
-	var fileExt = file.substring(file.lastIndexOf('.')+1); //파일의 확장자를 구합니다.
-	var bSubmitCheck = true;
-	  
-	if( !file ){ 
-	    alert( "파일을 선택하여 주세요!");
-	    return;
-	}
-	
-	if(!(fileExt.toUpperCase() == "XLSX")) {
-		alert("xlsx 파일만 업로드 하실 수 있습니다!");
-	    return;
-	}
-	  
-	document.progrmManageForm.action = "<c:url value='/tms/pg/requestupload.do'/>";
-	document.progrmManageForm.submit();   
-}
+
 function window_close() {
 	   
 	opener.location.reload();
 	self.close();
 }
 
-function fn_excel_enroll(){
-	alert("insert");
-	
-
-	document.frm.action = "<c:url value='/tms/pg/ExelRegister.do'/>";
-	document.frm.submit();
-}
-
-function test() {
-	if(document.progrmManageForm.change.value == "true") {
-		alert("등록이 성공했습니다!")
-	}else {
-		alert("등록이 실패했습니다!")
-	}
-}
-
-function test3() {
-	if(document.progrmManageForm.test.value == "true") {
-		alert("등록이 성공했습니다!")
-	}else {
-		alert("등록이 실패했습니다!")
-	}
-}
 
 </script>
 <title>엑셀파일 등록</title>
@@ -102,7 +61,7 @@ function test3() {
     <!-- 검색 필드 박스 시작 -->
     <div id="search_field" style="width:100%">
         <div id="search_field_loc" class="h_title">엑셀파일 등록</div>
-            <fieldset><legend>조건정보 영역</legend>    
+            <fieldset style="border-bottom: 1px solid #81B1D5; border-top: 1px solid #81B1D5;"><legend>조건정보 영역</legend>    
             <div class="sf_start">
                 <ul id="search_first_ul">
                     <li>

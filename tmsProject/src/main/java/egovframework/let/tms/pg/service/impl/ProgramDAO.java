@@ -88,4 +88,14 @@ public class ProgramDAO extends EgovAbstractDAO{
 	public List<?> selectPgCurrentExcelList(ProgramDefaultVO searchVO) throws Exception {
 		return list("ProgramDAO.selectPgCurrentExcelList", searchVO);
 	}
+	
+	public int count1(String i) throws Exception {
+		return (int) select("ProgramDAO.count1", i);
+	}
+	public int count2(String i) throws Exception {
+		return (int) select("ProgramDAO.count2", i);
+	}
+	public int count3(String i) throws Exception {
+		return (int) select("ProgramDAO.count3", i);
+	}
 }

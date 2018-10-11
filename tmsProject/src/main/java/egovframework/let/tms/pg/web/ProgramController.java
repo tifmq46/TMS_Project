@@ -310,9 +310,7 @@ public class ProgramController {
 		
 	}
 	
-	/**
-	 * 프로그램 사용여부를 수정한다.	 
-	 */	
+	
 	@RequestMapping(value = "/tms/pg/deletePg.do")
 	public String insertPgDelete(@RequestParam("del") String del, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 			System.out.println("---여기다!"+del);
@@ -351,6 +349,44 @@ public class ProgramController {
 			
 			
 			return "/tms/pg/PgManage";
+		
+	}
+	
+	@RequestMapping(value = "/tms/pg/deletePg2.do")
+	public String insertPgDelete2(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, @RequestParam String result, ModelMap model) throws Exception {
+			System.out.println("---여기다!"+result);
+		
+			
+			ArrayList <HashMap<String, String>> result_hash = new ArrayList <HashMap<String, String>>();
+			
+			String count1 = null;
+			String count2 = null;
+			String count3 = null;
+			
+			String[] strDelCodes = result.split(";");
+			for (int i = 0; i < strDelCodes.length; i++) {
+				
+				HashMap<String, String> hash = new HashMap<String, String>();
+				
+				count1 = ""+ProgramService.count1(strDelCodes[i]);
+				count2 = ""+ProgramService.count2(strDelCodes[i]);
+				count3 = ""+ProgramService.count3(strDelCodes[i]);
+				
+				hash.put("PG_ID", strDelCodes[i]);
+				hash.put("dev", count1);
+				hash.put("test", count2);
+				hash.put("defect", count3);
+				
+				result_hash.add(hash);
+				
+			}
+			
+			model.addAttribute("Pg_Relation_List", result_hash);
+
+
+			
+			
+			return "/tms/pg/PgRelationSearch";
 		
 	}
 	

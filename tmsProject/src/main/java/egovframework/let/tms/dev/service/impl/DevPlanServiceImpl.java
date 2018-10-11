@@ -110,10 +110,30 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 		return devPlanDAO.selectDevResultList(searchVO);
 	}
 
+	@Override
+	public String selectSTART() throws Exception {
+		return devPlanDAO.selectSTART();
+	}
+	
+	@Override
+	public String selectEND() throws Exception {
+		return devPlanDAO.selectEND();
+	}
 
 	@Override
 	public void updateDevResult(DevPlanVO vo) throws Exception {
 		devPlanDAO.updateDevResult(vo);
+		
+	}
+	@Override
+	public void updateinput1(String s) throws Exception {
+		devPlanDAO.updateinput1(s);
+		
+	}
+	
+	@Override
+	public void updateinput2(String s) throws Exception {
+		devPlanDAO.updateinput2(s);
 		
 	}
 

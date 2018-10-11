@@ -124,12 +124,12 @@
 			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID = #searchByUserDevId#
+			    AND USER_DEV_ID LIKE CONCAT ('%', #searchByUserDevId#, '%')
 			</isNotEmpty>    
 			
 			<!-- 화면ID로 검색 -->
 			<isNotEmpty property="searchByPgId">
-			    AND PG_ID = #searchByPgId#
+			    AND PG_ID LIKE CONCAT ('%', #searchByPgId#, '%')
 			</isNotEmpty> 
 			
 			<!-- 시스템구분으로 검색 -->
@@ -681,6 +681,29 @@
 						)AS C
          ]]>
    	</select>
+   	
+   	<update id="DevPlanDAO.updateinput1" parameterClass="java.lang.String" >
+		<![CDATA[
+			update PJT_TB SET INPUT_START_DT=#INPUT_START_DT# WHERE PJT_ID = '1';
+		]]>
+	</update>
+	<update id="DevPlanDAO.updateinput2" parameterClass="java.lang.String" >
+		<![CDATA[
+			update PJT_TB SET INPUT_END_DT=#INPUT_END_DT# WHERE PJT_ID = '1';
+		]]>
+	</update>
+	
+	<select id="DevPlanDAO.selectSTART" resultClass="java.lang.String">
+			<![CDATA[
+				SELECT INPUT_START_DT FROM PJT_TB WHERE PJT_ID = '1';
+         ]]>
+   	</select>
+   	<select id="DevPlanDAO.selectEND" resultClass="java.lang.String">
+			<![CDATA[
+				SELECT INPUT_END_DT FROM PJT_TB WHERE PJT_ID = '1';
+         ]]>
+   	</select>
+   	
 <!-- 
 	<resultMap id="tmplatDetail" class="egovframework.let.cop.com.service.TemplateInfVO">
 		<result property="tmplatId" column="TMPLAT_ID" columnIndex="1"/>

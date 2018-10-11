@@ -97,5 +97,21 @@ public class ProgramServiceImpl extends EgovAbstractServiceImpl implements Progr
 	public List<?> selectPgCurrentExcelList(ProgramDefaultVO searchVO) throws Exception {
 		return ProgramDAO.selectPgCurrentExcelList(searchVO);
 	}
+
+	@Override
+	public int count1(String i) throws Exception {
+		// TODO Auto-generated method stub
+		return ProgramDAO.count1(i);
+	}
+	@Override
+	public int count2(String i) throws Exception {
+		// TODO Auto-generated method stub
+		return ProgramDAO.count2(i);
+	}
+	@Override
+	public int count3(String i) throws Exception {
+		// TODO Auto-generated method stub
+		return ProgramDAO.count3(i);
+	}
 	
 }

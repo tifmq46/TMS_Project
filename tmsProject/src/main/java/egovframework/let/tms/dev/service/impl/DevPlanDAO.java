@@ -64,6 +64,14 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (List<HashMap<String, String>>) list("devPlanDAO.selectDevPlans", searchVO);
 	}
 
+	public String selectSTART() throws Exception {
+		return (String) select("DevPlanDAO.selectSTART");
+	}
+	public String selectEND() throws Exception {
+		return (String) select("DevPlanDAO.selectEND");
+	}
+	
+	
 	/**
 	 * 개발계획 목록 전체 건수 조회
 	 * @param searchMap - 조회할 정보가 담긴 Map
@@ -106,6 +114,13 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		update("DevPlanDAO.updateDevResult", vo);
 	}
 
+	public void updateinput1(String s) throws Exception {
+		update("DevPlanDAO.updateinput1", s);
+	}
+	public void updateinput2(String s) throws Exception {
+		update("DevPlanDAO.updateinput2", s);
+	}
+	
 	/**
 	 * 개발결과를 삭제한다.
 	 * @param vo - 삭제할 정보가 담긴 DevPlanVO

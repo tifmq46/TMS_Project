@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 
 import javax.annotation.Resource;
 
@@ -150,7 +151,49 @@ public class DevPlanController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy-MM-dd", Locale.KOREA );
+		Date currentTime = new Date ();
+		String mTime = mSimpleDateFormat.format ( currentTime );
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd"); 
+		Date d3 = dt.parse(mTime);
+		System.out.println("오늘 : "+d3);
+		model.addAttribute("current", d3);
 
+		String start = devPlanService.selectSTART();
+		String end = devPlanService.selectEND();
+		
+		System.out.println("d---"+start);
+		System.out.println("d---"+end);
+		
+		Date d1 = dt.parse(start);
+		Date d2 = dt.parse(end);
+		d1.setHours(0);
+		d1.setSeconds(0);
+		d1.setMinutes(0);
+		d2.setHours(23);
+		d2.setSeconds(59);
+		d2.setMinutes(59);
+		
+		
+		model.addAttribute("start", d1);
+		model.addAttribute("end", d2);
+		
+		boolean d_result = true;
+		
+		if(d3.compareTo(d1) < 0 || d3.compareTo(d2) >= 0 )
+		{
+			System.out.println("정답!"+d3);
+			System.out.println("정답!"+d1);
+			System.out.println("정답!"+d2);
+			d_result = true;
+		}else {
+			System.out.println("실패!"+d3);
+			System.out.println("실패!"+d1);
+			System.out.println("실패!"+d2);
+			d_result = false;
+		}
+		model.addAttribute("d_test", d_result);
+		
 		return "tms/dev/devPlanList";
 	}
 	
@@ -203,6 +246,133 @@ public class DevPlanController {
 		}
 
 		return "redirect:/tms/dev/devPlans.do";
+	}
+	
+	@RequestMapping("/tms/dev/inputDevPlan.do")
+	public String inputDevPlan(@RequestParam String s1, @RequestParam String s2, @ModelAttribute("searchVO") DevPlanDefaultVO searchVO, @ModelAttribute("devPlan") DevPlanVO dvo, ModelMap model, BindingResult bindingResult,
+			SessionStatus status) throws Exception {
+
+		String[] strs1 = s1.split(",");
+		String[] strs2 = s2.split(",");
+		
+		System.out.println(strs1[0]);
+		System.out.println(strs2[0]);
+		
+		devPlanService.updateinput1(strs1[0]);
+		devPlanService.updateinput2(strs2[0]);
+		
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		
+		searchVO.setSessionId(user.getName());
+		System.out.println("--유저"+ searchVO.getSessionId());
+		
+		/** EgovPropertyService.sample */
+		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+		paginationInfo.setPageSize(searchVO.getPageSize());
+		
+		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		
+		//공통코드(시스템, 업무구분)
+		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+		
+		String a = String.valueOf(searchVO.getSearchBySysGb());
+		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
+			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
+			model.addAttribute("taskGb2", taskGbList2);
+		}
+		
+		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
+		List<HashMap<String,String>> devList = devPlanService.selectDevPlans(searchVO);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String inputStartDate, inputEndDate;
+		Date startDate, endDate;
+		int dayDiff; 
+		
+		for(int i=0; i<devList.size(); i++){
+			if(((devList.get(i).get("PLAN_START_DT")) == null || "".equals(devList.get(i).get("PLAN_START_DT")))
+					&&((devList.get(i).get("PLAN_END_DT")) == null || "".equals(devList.get(i).get("PLAN_END_DT")))
+					){
+				
+			}else{
+				inputStartDate =  String.valueOf(devList.get(i).get("PLAN_START_DT"));
+				inputEndDate = String.valueOf(devList.get(i).get("PLAN_END_DT"));
+				startDate = sdf.parse(inputStartDate);
+				endDate = sdf.parse(inputEndDate);
+				dayDiff = betweenDate(startDate,endDate).size();
+				searchVO.setDayDiff(dayDiff);
+				searchVO.setPgId(devList.get(i).get("PG_ID"));
+				devPlanService.insertDayDiff(searchVO);
+			}
+		}
+		
+		devList = devPlanService.selectDevPlans(searchVO);
+		model.addAttribute("resultList", devList);
+		
+		int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy-MM-dd", Locale.KOREA );
+		Date currentTime = new Date ();
+		String mTime = mSimpleDateFormat.format ( currentTime );
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd"); 
+		Date d3 = dt.parse(mTime);
+		System.out.println("오늘 : "+d3);
+		model.addAttribute("current", d3);
+
+		String start = devPlanService.selectSTART();
+		String end = devPlanService.selectEND();
+		
+		System.out.println("d---"+start);
+		System.out.println("d---"+end);
+		
+		Date d1 = dt.parse(start);
+		Date d2 = dt.parse(end);
+		d1.setHours(0);
+		d1.setSeconds(0);
+		d1.setMinutes(0);
+		d2.setHours(23);
+		d2.setSeconds(59);
+		d2.setMinutes(59);
+		
+		
+		model.addAttribute("start", d1);
+		model.addAttribute("end", d2);
+		
+		//int d_result = 0;
+		boolean d_result;
+		
+		if(d3.compareTo(d1) < 0 || d3.compareTo(d2) > 0 )
+		{
+			System.out.println("정답!"+d3);
+			System.out.println("정답!"+d1);
+			System.out.println("정답!"+d2);
+			d_result = true;
+		}else {
+			System.out.println("실패!"+d3);
+			System.out.println("실패!"+d1);
+			System.out.println("실패!"+d2);
+			d_result = false;
+		}
+		model.addAttribute("d_test", d_result);
+		
+		return "tms/dev/devPlanList";
 	}
 	
 	@RequestMapping("/tms/dev/addDevPlan.do")
