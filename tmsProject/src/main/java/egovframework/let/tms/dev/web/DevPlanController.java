@@ -159,21 +159,29 @@ public class DevPlanController {
 		
 		Date d1 = dt.parse(start);
 		Date d2 = dt.parse(end);
+		d1.setHours(0);
+		d1.setSeconds(0);
+		d1.setMinutes(0);
+		d2.setHours(23);
+		d2.setSeconds(59);
+		d2.setMinutes(59);
 		
-		System.out.println("d2---"+d1);
-		System.out.println("d2---"+d2);
 		
 		model.addAttribute("start", d1);
 		model.addAttribute("end", d2);
 		
 		boolean d_result = true;
 		
-		if(d3.compareTo(d1) < 0)
+		if(d3.compareTo(d1) < 0 || d3.compareTo(d2) >= 0 )
 		{
-			System.out.println("정답!");
+			System.out.println("정답!"+d3);
+			System.out.println("정답!"+d1);
+			System.out.println("정답!"+d2);
 			d_result = true;
 		}else {
-			System.out.println("실패!");
+			System.out.println("실패!"+d3);
+			System.out.println("실패!"+d1);
+			System.out.println("실패!"+d2);
 			d_result = false;
 		}
 		model.addAttribute("d_test", d_result);
@@ -236,10 +244,6 @@ public class DevPlanController {
 	public String inputDevPlan(@RequestParam String s1, @RequestParam String s2, @ModelAttribute("searchVO") DevPlanDefaultVO searchVO, @ModelAttribute("devPlan") DevPlanVO dvo, ModelMap model, BindingResult bindingResult,
 			SessionStatus status) throws Exception {
 
-		
-		System.out.println("aaa1-"+s1);
-		System.out.println("aaa1-"+s2);
-		
 		String[] strs1 = s1.split(",");
 		String[] strs2 = s2.split(",");
 		
@@ -319,7 +323,10 @@ public class DevPlanController {
 		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy-MM-dd", Locale.KOREA );
 		Date currentTime = new Date ();
 		String mTime = mSimpleDateFormat.format ( currentTime );
-		model.addAttribute("current", mTime);
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd"); 
+		Date d3 = dt.parse(mTime);
+		System.out.println("오늘 : "+d3);
+		model.addAttribute("current", d3);
 
 		String start = devPlanService.selectSTART();
 		String end = devPlanService.selectEND();
@@ -327,12 +334,35 @@ public class DevPlanController {
 		System.out.println("d---"+start);
 		System.out.println("d---"+end);
 		
-		SimpleDateFormat dt = new SimpleDateFormat("yyyyy-mm-dd"); 
 		Date d1 = dt.parse(start);
 		Date d2 = dt.parse(end);
+		d1.setHours(0);
+		d1.setSeconds(0);
+		d1.setMinutes(0);
+		d2.setHours(23);
+		d2.setSeconds(59);
+		d2.setMinutes(59);
+		
 		
 		model.addAttribute("start", d1);
 		model.addAttribute("end", d2);
+		
+		//int d_result = 0;
+		boolean d_result;
+		
+		if(d3.compareTo(d1) < 0 || d3.compareTo(d2) > 0 )
+		{
+			System.out.println("정답!"+d3);
+			System.out.println("정답!"+d1);
+			System.out.println("정답!"+d2);
+			d_result = true;
+		}else {
+			System.out.println("실패!"+d3);
+			System.out.println("실패!"+d1);
+			System.out.println("실패!"+d2);
+			d_result = false;
+		}
+		model.addAttribute("d_test", d_result);
 		
 		return "tms/dev/devPlanList";
 	}

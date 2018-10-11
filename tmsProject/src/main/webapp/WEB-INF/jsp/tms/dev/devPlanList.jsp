@@ -371,7 +371,7 @@ function searchFileNm() {
             		  <td align="center" class="listtd">
             			  <div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
 	            			<c:if test="${result.planStartDt eq null || result.planEndDt eq null}">
-	            				<a id="${result.PG_ID}2" class="abled" <c:if test="${d_test}"> class="disabled" </c:if> href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+	            				<a id="${result.PG_ID}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
 	            			</c:if>
 	            			<c:if test="${result.planStartDt ne null || result.planEndDt ne null}">
 	            				<a id="${result.PG_ID}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
