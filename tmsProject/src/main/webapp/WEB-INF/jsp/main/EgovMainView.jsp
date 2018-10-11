@@ -282,7 +282,7 @@ window.onload = function() {
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
-	    					개발 진척상태
+	    					개발진척 현황
     				</div>
     			</div>
     			<br/><br/>
@@ -301,7 +301,7 @@ window.onload = function() {
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
-	    					결함 진행상태
+	    					결함처리 현황
     				</div>
     			</div>
     			<br/><br/>

@@ -138,4 +138,7 @@ public interface DevPlanService {
 	
 	public List<?> selectDevPlanByMainStats();
 	
+	public List<?> selectSysAllByStats();
+	
+	public List<?> selectSysByStats();
 }

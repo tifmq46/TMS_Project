@@ -711,4 +711,26 @@
 	    ]]>
 	</select>
 	
+	<select id="DevPlanDAO.selectSysAllByStats" resultClass="java.util.HashMap">
+	    <![CDATA[
+	    	SELECT IFNULL(COUNT(CASE WHEN D.ACHIEVEMENT_RATE=100 THEN 1 END),0) AS achieveAllCnt, IFNULL(COUNT(P.SYS_GB),0) AS sysAll
+			FROM DEV_PLAN_TB AS D, PG_TB AS P
+			WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
+	    ]]>
+	</select>
+	
+	<select id="DevPlanDAO.selectSysByStats" resultClass="java.util.HashMap">
+	    <![CDATA[
+	    	SELECT A.CODE AS sysGb, A.CODE_NM AS sysNm, IFNULL(B.ACHIEVECNT,0) AS achieveCnt, IFNULL(B.SYSALL,0) AS sysAll
+			FROM LETTCCMMNDETAILCODE AS A INNER JOIN
+				(SELECT SYS_GB, COUNT(CASE WHEN D.ACHIEVEMENT_RATE=100 THEN 1 END) AS ACHIEVECNT, COUNT(P.SYS_GB) AS SYSALL
+				FROM DEV_PLAN_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
+				GROUP BY SYS_GB
+			) AS B ON A.CODE=B.SYS_GB
+			WHERE A.CODE_ID = 'SYSGB'
+			ORDER BY sysAll DESC
+	    ]]>
+	</select>
+	
 </sqlMap>

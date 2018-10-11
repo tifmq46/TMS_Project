@@ -118,7 +118,7 @@
 					        </th>
 					        <td width="16.6%" nowrap >
 					          <input id="TmsProgrmFileNm_pg_id" name="pgId" type="text" size="10" value=""  maxlength="40" title="화면ID"  
-					           style="text-align:center; border:none; width:80%;" readonly="readonly"/> 
+					           style="text-align:center; width:80%;" readonly="readonly"/> 
 					          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
 					        </td>
@@ -127,7 +127,7 @@
 					        </th>
 					        <td width="16.6%" nowrap >
 					          <input id="TmsProgrmFileNm_pg_nm" type="text" size="10" value=""  maxlength="40" title="화면명" 
-					          style="text-align:center; border:none; width:90%;" readonly="readonly"/> 
+					          style="text-align:center; width:90%;" readonly="readonly"/> 
 					        </td>
 					       </tr>
 					       
@@ -137,7 +137,7 @@
 					        </th>
 					        <td width="16.6%" nowrap >
 					          <input id="TmsProgrmFileNm_task_gb" type="text" size="5" value=""  maxlength="40" title="업무구분" 
-					          style="text-align:center; border:none; width:90%;" readonly="readonly"/> 
+					          style="text-align:center; width:90%;" readonly="readonly"/> 
 					          &nbsp;
 					        </td>
 					         <th width="16.6%" height="23" class="required_text" nowrap >개발자
@@ -145,7 +145,7 @@
 					        </th>
 					        <td width="16.6%" nowrap >
 					          <input id="TmsProgrmFileNm_user_dev_id" type="text" size="10" value=""  maxlength="40" title="개발자" 
-					          style="text-align:center; border:none; width:90%;" readonly="readonly"/> 
+					          style="text-align:center; width:90%;" readonly="readonly"/> 
 					          &nbsp;
 					        </td>
 					         <th width="16.6%" height="23" class="required_text" nowrap >테스터

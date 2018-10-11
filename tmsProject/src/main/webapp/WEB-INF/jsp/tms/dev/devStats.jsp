@@ -13,10 +13,67 @@
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
-
 <title>개발진척통계</title>
-<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>o
-<script type="text/javaScript" language="javascript">
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
+<script type="text/javaScript">
+
+window.onload = function() {
+	
+	/** 시스템별  진척률 */
+	var sysByStats = JSON.parse('${sysByStats}');
+	var sysAllByStats = JSON.parse('${sysAllByStats}');
+	var sysAllByStatsAchieveCnt = sysAllByStats[0].achieveAllCnt;
+	var sysAllByStatsSysAll = sysAllByStats[0].sysAll;
+	var sysByStatsSysGb = new Array();
+	var sysByStatsAchieveCnt = new Array();
+	var sysByStatsSysAll = new Array();
+	for (var i = 0; i < sysByStats.length; i++) {
+		sysByStatsSysGb.push(sysByStats[i].sysGb);
+		sysByStatsAchieveCnt.push(sysByStats[i].achieveCnt);
+		sysByStatsSysAll.push(sysByStats[i].sysAll);
+	}
+	// 전체 그래프
+	var ctx1 = document.getElementById('sysAllByStats');
+	var myDoughnutChart = new Chart(ctx1, {
+		type : 'doughnut',
+		data : {
+			  labels: ['완료건수','미완료건수'],
+				datasets : [ {
+					data : [sysAllByStatsAchieveCnt,
+					        sysAllByStatsSysAll-sysAllByStatsAchieveCnt],
+					backgroundColor : ['#007bff','#e9ecef']
+				},]
+			},
+			options : {
+				rotation: 1 * Math.PI,
+		        circumference: 1 * Math.PI,
+				percentageInnerCutout : 50,
+				responsive:false
+				}
+		});
+	// 시스템별 그래프
+	for ( var j = 0; j < sysByStatsSysGb.length; j++) {
+		var ctx = document.getElementById(sysByStatsSysGb[j]);
+		var myDoughnutChart = new Chart(ctx, {
+    		type : 'doughnut',
+    		data : {
+    			  labels: ['완료건수','미완료건수'],
+    				datasets : [ {
+    					data : [sysByStatsAchieveCnt[j],
+    					        sysByStatsSysAll[j]-sysByStatsAchieveCnt[j]],
+    					backgroundColor : ['#007bff','#e9ecef']
+    				},]
+    			},
+    			options : {
+    				rotation: 1 * Math.PI,
+    		        circumference: 1 * Math.PI,
+    				percentageInnerCutout : 50,
+    				responsive:false
+    				}
+    		});
+	}
+}
 
 </script>
 
@@ -50,9 +107,56 @@
                         </ul>
                     </div>
                 </div>
+               <div id="search_field">
+	                <div id="search_field_loc"><h2><strong>개발진척통계(그래프)</strong></h2></div>  
+				</div>
+				<br/><br/>
                
+               <h3><strong>시스템별 진척률</strong></h3>
                
-                <div id="search_field_loc"><h2><strong>개발진척통계(그래프)</strong></h2></div>  
+      	 <div style="overflow:auto; white-space:nowrap; overflow-y:hidden;">
+            <table>
+            <tr>
+            <td>
+             &nbsp;&nbsp;<canvas id="sysAllByStats" width="200" height="200" style="display: inline !important;"></canvas>&nbsp;&nbsp;
+             </td>
+            <c:forEach var="sysByStats" items="${sysByStats}" varStatus="status">
+            <td>
+            <canvas id="<c:out value="${sysByStats.sysGb}"/>"  width="180" height="180" style="display: inline !important;"></canvas>&nbsp;&nbsp;
+			</td>            
+            </c:forEach>
+            <br/>
+            </tr>
+            
+            <tr>
+            <td align="center" valign="middle">
+            <div style="font-size:15px; font-weight:bolder;">
+            	<font color="#007BFF"><c:out value="${sysAllByStats[0].achieveAllCnt}"/></font>	/ <c:out value="${sysAllByStats[0].sysAll}"/> 
+           			 <fmt:parseNumber var="sysAllByStatsPercentage" integerOnly="true" value="${sysAllByStats[0].achieveAllCnt / sysAllByStats[0].sysAll * 100}"/>
+                 (<c:out value=" ${sysAllByStatsPercentage}"></c:out>%)
+                 	<br/>
+                 	전체
+                 	<br/>
+             </div>
+            </td>
+            <c:forEach var="sysByStats" items="${sysByStats}" varStatus="status">
+            <td align="center" valign="middle">
+            	<div style="font-size:13px; font-weight:bolder;">
+            	<font color="#007BFF"><c:out value="${sysByStats.achieveCnt}"/></font> / <c:out value="${sysByStats.sysAll}"/>
+            	 <c:if test="${sysByStats.sysAll != 0}">
+            	 (<fmt:parseNumber var="sysByStatsPencentage" integerOnly="true" value="${sysByStats.achieveCnt / sysByStats.sysAll * 100}"/>
+                 	<c:out value=" ${sysByStatsPencentage}"></c:out>%)
+                 </c:if>
+                 <br/>
+					<c:out value="${sysByStats.sysNm}"/>
+                 <br/>
+                 </div>
+            </td>
+            </c:forEach>
+            </tr>
+            </table>
+            </div>
+               
             </div>
             <!-- //content 끝 -->
         </div>
