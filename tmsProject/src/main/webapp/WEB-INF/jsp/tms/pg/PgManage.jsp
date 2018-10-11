@@ -445,7 +445,7 @@
         				<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
         				<colgroup>
         					<col width="10"/>
-        					<col width="20"/> 
+        					<col width="5"/> 
         					<col width="25"/>
         					<col width="40"/>
         					<col width="30"/>
@@ -471,12 +471,12 @@
             					<td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
             					<td align="left" class="listtd">
             						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?PG_ID=<c:out value='${result.PG_ID}'/>">
-            							<strong><c:out value="${result.PG_NM}"/></td></strong>
+            							<strong><c:out value="${result.PG_NM}"/></strong>
             						</a></td>
             					<td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
-            					<td align="center" class="listtd"><c:out value="${result.USE_YN}"/>&nbsp;</td>
+            					<td align="center" class="listtd"><c:out value="${result.USE_YN}"/></td>
             				</tr>
         				</c:forEach>
         			</table>  		

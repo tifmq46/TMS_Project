@@ -34,7 +34,25 @@
 	caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
 </style>
 <script language="javascript1.2"  type="text/javaScript"> 
-
+function file_upload() {   
+	   
+	   var file = progrmManageForm.file.value;
+	   var fileExt = file.substring(file.lastIndexOf('.')+1); //파일의 확장자를 구합니다.
+	   var bSubmitCheck = true;
+	     
+	   if( !file ){ 
+	       alert( "파일을 선택하여 주세요!");
+	       return;
+	   }
+	   
+	   if(!(fileExt.toUpperCase() == "XLSX")) {
+	      alert("xlsx 파일만 업로드 하실 수 있습니다!");
+	       return;
+	   }
+	     
+	   document.progrmManageForm.action = "<c:url value='/tms/pg/requestupload.do'/>";
+	   document.progrmManageForm.submit();   
+}
 
 function window_close() {
 	   
@@ -68,7 +86,6 @@ function window_close() {
                         <input type="file" name="file" />
                         <div class="buttons" style="float:right;">                     	
                         	<a href="#LINK" onclick="file_upload(); return false;">등록 </a>
-                        	<font id="fon" >${result}</font> 
                         	<input type="hidden" id="change" name="change" value="<c:out value='${result}'/>" onclick="test(); return false;">
                         </div>
                     </li>       

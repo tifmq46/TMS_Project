@@ -154,13 +154,15 @@ public class DevPlanController {
 		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy-MM-dd", Locale.KOREA );
 		Date currentTime = new Date ();
 		String mTime = mSimpleDateFormat.format ( currentTime );
-		SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd"); 
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd"); 
 		Date d3 = dt.parse(mTime);
 		System.out.println("오늘 : "+d3);
 		model.addAttribute("current", d3);
 
 		String start = devPlanService.selectSTART();
 		String end = devPlanService.selectEND();
+		
+		
 		
 		System.out.println("d---"+start);
 		System.out.println("d---"+end);
@@ -331,13 +333,16 @@ public class DevPlanController {
 		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy-MM-dd", Locale.KOREA );
 		Date currentTime = new Date ();
 		String mTime = mSimpleDateFormat.format ( currentTime );
-		SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd"); 
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd"); 
 		Date d3 = dt.parse(mTime);
+		
 		System.out.println("오늘 : "+d3);
 		model.addAttribute("current", d3);
 
+		
 		String start = devPlanService.selectSTART();
 		String end = devPlanService.selectEND();
+		
 		
 		System.out.println("d---"+start);
 		System.out.println("d---"+end);

@@ -36,25 +36,17 @@
 </style>
 <script language="javascript1.2"  type="text/javaScript"> 
 
-function file_upload() {	
+function fn_delete() {
 	
-	var file = progrmManageForm.file.value;
-	var fileExt = file.substring(file.lastIndexOf('.')+1); //파일의 확장자를 구합니다.
-	var bSubmitCheck = true;
-	  
-	if( !file ){ 
-	    alert( "파일을 선택하여 주세요!");
-	    return;
-	}
 	
-	if(!(fileExt.toUpperCase() == "XLSX")) {
-		alert("xlsx 파일만 업로드 하실 수 있습니다!");
-	    return;
-	}
-	  
-	document.progrmManageForm.action = "<c:url value='/tms/pg/requestupload.do'/>";
+	//window.open("<c:url value='/tms/pg/deletePg.do?returnValue="+returnValue+"'/>",'','width=200, height=200, left=350, top=200');
+	
+	document.progrmManageForm.action = "<c:url value='/tms/pg/deletePg.do'/>";
+	
 	document.progrmManageForm.submit();   
+	
 }
+
 function window_close() {
 	   
 	opener.location.reload();
@@ -97,6 +89,9 @@ function test3() {
 
 </head>
 <body>
+<form id="progrmManageForm" name="progrmManageForm" action ="<c:url value='/sym/prm/EgovProgramListSearch.do'/>" method="post" >
+	
+	<input type="hidden" id="returnValue" name="returnValue" value="<c:out value="${returnValue}"/>" />
 
     <div id="search_field" style="width:100%">
         <div id="search_field_loc" class="h_title">프로그램 삭제</div>
@@ -125,32 +120,60 @@ function test3() {
             </fieldset>
             
             <br>
+
+
+			<c:if test="${status == 0}">
+
+            	<ul id="search_second_ul">            		  
+                    	<li>
+                        	<div style="float:right;">      
+                        		<font style="color:#0f438a;" size="3px"><strong>정말 삭제하시겠습니까? </strong></font>                  
+                        	</div>                              
+                    	</li>                    
+            	</ul> 
             
-            <ul id="search_second_ul">            		  
-                    <li>
-                        <div style="float:right;">      
-                        	<font style="color:#0f438a;" size="3px"><strong>정말 삭제하시겠습니까? </strong></font>                  
-                        </div>                              
-                    </li>                    
-            </ul> 
-            
-            <ul id="search_second_ul">            		  
-                    <li>
-                        <div style="align:right; ">      
+            	<ul id="search_second_ul">            		  
+                    	<li>
+                        	<div style="align:right; ">      
                         	                  
-                        </div>                              
-                    </li>   
-                    <li>
-                        <div class="buttons" style="float:right;">                
-                        	<a href="#LINK" onclick="javascript:window_close(); return false;">삭제 </a>
-                            <a href="#LINK" onclick="javascript:window_close(); return false;">닫기 </a>
-                        </div>                              
-                    </li>                     
-            </ul> 
+                        	</div>                              
+                    	</li>   
+                    	<li>
+                        	<div class="buttons" style="float:right;">                
+                        		<a href="#LINK" onclick="javascript:fn_delete(); return false;">삭제 </a>
+                            	<a href="#LINK" onclick="javascript:window_close(); return false;">닫기 </a>
+                        	</div>                              
+                    	</li>                     
+            	</ul> 
             
+            </c:if>
+			<c:if test="${status == 1}">
+
+            	<ul id="search_second_ul">            		  
+                    	<li>
+                        	<div style="float:right;">      
+                        		<font style="color:#0f438a;" size="3px"><strong>삭제되었습니다. </strong></font>                  
+                        	</div>                              
+                    	</li>                    
+            	</ul> 
+            
+            	<ul id="search_second_ul">            		  
+                    	<li>
+                        	<div style="align:right; ">      
+                        	                  
+                        	</div>                              
+                    	</li>   
+                    	<li>
+                        	<div class="buttons" style="float:right;">                
+                            	<a href="#LINK" onclick="javascript:window_close(); return false;">닫기 </a>
+                        	</div>                              
+                    	</li>                     
+            	</ul> 
+            
+            </c:if>            
             
     </div>
-
+</form>
 </body>
 </html>
 

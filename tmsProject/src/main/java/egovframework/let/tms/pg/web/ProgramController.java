@@ -312,10 +312,10 @@ public class ProgramController {
 	
 	
 	@RequestMapping(value = "/tms/pg/deletePg.do")
-	public String insertPgDelete(@RequestParam("del") String del, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
-			System.out.println("---여기다!"+del);
+	public String insertPgDelete(@RequestParam("returnValue") String returnValue, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
+			System.out.println("---여기다!"+returnValue);
 		
-			String[] strDelCodes = del.split(";");
+			String[] strDelCodes = returnValue.split(";");
 			for (int i = 0; i < strDelCodes.length; i++) {
 				ProgramVO vo = new ProgramVO();
 				vo.setPG_ID(strDelCodes[i]);
@@ -326,29 +326,10 @@ public class ProgramController {
 			/** 프로그램 삭제시 결함 시퀀스 초기화 */
 			defectService.updateDefectIdSq();
 			
-			/** EgovPropertyService.sample */
-			searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-			searchVO.setPageSize(propertiesService.getInt("pageSize"));
-
-			/** pageing setting */
-			PaginationInfo paginationInfo = new PaginationInfo();
-			paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-			paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-			paginationInfo.setPageSize(searchVO.getPageSize());
-
-			searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-			searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-			searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-
-			List<?> PgList = ProgramService.selectPgList(searchVO);
-			model.addAttribute("resultList", PgList);
-
-			int totCnt = ProgramService.selectPgListTotCnt(searchVO);
-			paginationInfo.setTotalRecordCount(totCnt);
-			model.addAttribute("paginationInfo", paginationInfo);
+			model.addAttribute("status", 1);
 			
 			
-			return "/tms/pg/PgManage";
+			return "/tms/pg/PgRelationSearch";
 		
 	}
 	
@@ -382,9 +363,9 @@ public class ProgramController {
 			}
 			
 			model.addAttribute("Pg_Relation_List", result_hash);
+			model.addAttribute("returnValue", result);
 
-
-			
+			model.addAttribute("status", 0);
 			
 			return "/tms/pg/PgRelationSearch";
 		
