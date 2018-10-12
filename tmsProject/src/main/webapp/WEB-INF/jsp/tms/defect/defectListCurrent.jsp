@@ -230,7 +230,7 @@
             				<td align="center" class="listtd" style="text-align:left;">
             				<a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>"
                        			 title="<c:out value="${result.defectTitle}"/>">
-                       			 <font color="0F438A"><c:out value="${result.defectTitle}"/></font>
+                       			 <font color="0F438A" style="font-weight:bold"><c:out value="${result.defectTitle}"/></font>
                         	</a>
             				</td>
             				<td align="center" class="listtd"><c:out value="${result.defectGb}"/></td>
@@ -238,12 +238,16 @@
             				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/></td>
             			<c:choose>
                         <c:when test="${result.actionSt == '재요청'}">
-                        <td align="center" class="listtd" style="background-color:#CC3C39; opacity:0.8;">
+                        <td align="center" class="listtd" style="background-color:#CC3C39;">
                          <font color="#ffffff" style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
                         </c:when>
                         <c:when test="${result.actionSt == '최종완료' }">
                         <td align="center" class="listtd" style="background-color:#007bff;">
                         <font color="#ffffff" style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
+                        </c:when>
+                        <c:when test="${result.actionSt == '조치완료' }">
+                        <td align="center" class="listtd">
+                        <font style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
                         </c:when>
                         <c:otherwise>
                         <td align="center" class="listtd"><c:out value="${result.actionSt}"/>&nbsp;</td>

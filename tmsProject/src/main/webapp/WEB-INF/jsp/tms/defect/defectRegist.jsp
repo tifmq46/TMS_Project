@@ -26,12 +26,16 @@
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <title>결함 등록</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<validator:javascript formName="defectVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript" src="<c:url value='/js/showModalDialog.js'/>" ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript">
+<script type="text/javascript" language="javascript" defer="defer">
 	
     
 	function fn_egov_insert_addDefectImpl() {
+		if(!validateDefectVO(document.defectVO)) {
+			return ;
+		}
 		var fileLength = document.getElementById('fileImg').files.length;
 		if (fileLength == 0) {
 			alert("저장되었습니다.");
@@ -110,14 +114,15 @@
 					        <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
-					          <input id="defectIdSq" name="defectIdSq" size="5" value="${defectIdSq}"  maxlength="40" title="결함번호"
+					          <form:input id="defectIdSq" name="defectIdSq" path="defectIdSq" size="5" value="${defectIdSq}"  maxlength="40" title="결함번호"
 					          style="text-align:center; border:none; width:90%;" /> 
+					          <form:errors path="defectIdSq" />
 					        </td>
 					         <th width="16.6%" height="23" class="required_text" nowrap >화면ID
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
-					          <input id="TmsProgrmFileNm_pg_id" name="pgId" type="text" size="10" value=""  maxlength="40" title="화면ID"  
+					          <form:input id="TmsProgrmFileNm_pg_id" name="pgId" path="" type="text" size="10" value=""  maxlength="40" title="화면ID"  
 					           style="text-align:center; width:80%;" readonly="readonly"/> 
 					          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
@@ -126,8 +131,8 @@
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
-					          <input id="TmsProgrmFileNm_pg_nm" type="text" size="10" value=""  maxlength="40" title="화면명" 
-					          style="text-align:center; width:90%;" readonly="readonly"/> 
+					          <form:input path="" id="TmsProgrmFileNm_pg_nm" type="text" size="10" value=""  maxlength="40" title="화면명" 
+					          style="text-align:center; width:90%;" readonly="readonly"/>
 					        </td>
 					       </tr>
 					       
@@ -136,7 +141,7 @@
 					        <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
-					          <input id="TmsProgrmFileNm_task_gb" type="text" size="5" value=""  maxlength="40" title="업무구분" 
+					          <form:input path="" id="TmsProgrmFileNm_task_gb" type="text" size="5" value=""  maxlength="40" title="업무구분" 
 					          style="text-align:center; width:90%;" readonly="readonly"/> 
 					          &nbsp;
 					        </td>
@@ -144,7 +149,7 @@
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
-					          <input id="TmsProgrmFileNm_user_dev_id" type="text" size="10" value=""  maxlength="40" title="개발자" 
+					          <form:input path="" id="TmsProgrmFileNm_user_dev_id" type="text" size="10" value=""  maxlength="40" title="개발자" 
 					          style="text-align:center; width:90%;" readonly="readonly"/> 
 					          &nbsp;
 					        </td>
@@ -164,7 +169,7 @@
 								}
 								%>
 								<td width="16.6%" nowrap >
-					        	<input list="userTestId" name="userNm" value="<c:out value="${loginName}"/>"  autocomplete="off" style="text-align:center; width:85%;"/>
+					        	<form:input path="" list="userTestId" name="userNm" value='${loginName}'  autocomplete="off" style="text-align:center; width:85%;" />
 					        	<datalist id="userTestId">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
 									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
@@ -177,19 +182,21 @@
 					       <th width="16.6%" height="23" class="required_text" nowrap >결함제목
 					        </th>
 					        <td width="49.8%" nowrap colspan="3">
-					          <input id="defectTitle" name="defectTitle" type="text" value=""  autocomplete="off" maxlength="40" title="결함제목" 
+					          <form:input id="defectTitle" name="defectTitle" path="defectTitle" type="text" value=""  autocomplete="off" maxlength="40" title="결함제목" 
 					          style="width:98%;"/> 
+					          <form:errors path="defectTitle" />
 					          &nbsp;
 					        </td>
 					       <th width="16.6%" height="23" class="required_text" nowrap >결함유형
 					        </th>
 					        <td width="16.6%" nowrap>
-									<select name="defectGb" id="defectGb" style="width:90%; text-align-last:center;">
+									<form:select name="defectGb" id="defectGb" path="defectGb" style="width:90%; text-align-last:center;">
 									    <option value="0" selected="selected">선택</option>
 									    <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
 									    	<option value="<c:out value="${defectGb.code}"/>"><c:out value="${defectGb.codeNm}" /></option>
 									    </c:forEach>
-									</select>
+									</form:select>
+									<form:errors path="defectGb" />
 					        </td>
 					        
 					       </tr>
@@ -201,7 +208,8 @@
 					       
 					       <tr>
 					       <td width="100%" nowrap colspan="6">
-					          <textarea id="defectContent" name="defectContent" style="height:200px; width:98%;"></textarea>
+					          <form:textarea id="defectContent" name="defectContent" path="defectContent" style="height:200px; width:98%;"></form:textarea>
+					         <form:errors path="defectContent" />
 					          &nbsp;
 					        </td>
 					       </tr>
@@ -210,14 +218,14 @@
 					       <th width="16.6%" height="23" class="required_text" nowrap >첨부파일
 					        </th>
 					        <td width="83.4%" colspan="5" nowrap >
-								<input type="file" name="fileImg" id="fileImg" title="첨부파일" accept=".jpg, .jpeg, .png"/>
+								<form:input path="" type="file" name="fileImg" id="fileImg" title="첨부파일" accept=".jpg, .jpeg, .png"/>
 					        </td>
 					       </tr>
 					      
                         </table>
                     </div>
-					<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
-					<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
+					<form:input path="" id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
+					<form:input path="" id="TmsProgrmFileNm_user_real_id" type="hidden" />
 
                     <!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">

@@ -59,16 +59,18 @@ function fn_egov_update_updateDefect(){
 }
 
 function fn_egov_delete_deleteDefect() {
-	var con= confirm("정말로 삭제 하시겠습니까?");
+	var con= confirm("삭제하시겠습니까?");
 	if( con == true ) {
+		alert("정상적으로 삭제되었습니다.")
 		document.defectVO.action="<c:url value='/tms/defect/deleteDefect.do'/>"
 		document.defectVO.submit();
 	}
 }
 
 function fn_egov_delete_defectImg() {
-	var con= confirm("정말로 삭제 하시겠습니까?");
+	var con= confirm("삭제하시겠습니까?");
 	if( con == true ) {
+		alert("정상적으로 삭제되었습니다.")
 		document.defectVO.action = "<c:url value='/tms/defect/deleteDefectImg.do'/>"
 		document.defectVO.submit();
 	}

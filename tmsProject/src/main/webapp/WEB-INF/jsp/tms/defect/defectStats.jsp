@@ -154,10 +154,17 @@ window.onload = function() {
 	    var taskByActionProgressionTaskNm = new Array();
 		var taskByActionProgressionTaskTotCnt = new Array();
 /* 		var defectStatsActionStAll = JSON.parse('${defectStats.actionStAll}'); */
+		var sum = 0;
 		for (var i = 0; i < taskByActionProgression.length; i++) {
 			taskByActionProgressionTaskNm.push(taskByActionProgression[i].taskNm);
-			taskByActionProgressionTaskTotCnt.push(parseInt(taskByActionProgression[i].taskTotCnt
-					/ defectStatsActionStAll* 100));
+			if(i == taskByActionProgression.length-1) {
+				var temp = 100 - sum;
+				taskByActionProgressionTaskTotCnt.push(temp.toFixed(1));
+			} else {
+				sum = sum + parseFloat((taskByActionProgression[i].taskTotCnt / defectStatsActionStAll* 100).toFixed(1));
+				taskByActionProgressionTaskTotCnt.push((taskByActionProgression[i].taskTotCnt
+						/ defectStatsActionStAll* 100).toFixed(1));
+			}
 		}
 		var ctx2 = document.getElementById('taskByActionProgression');
 		taskByActionProgressionChart = new Chart(ctx2, {
@@ -191,19 +198,79 @@ window.onload = function() {
 		var taskByActionStCntActionStA3 = new Array();
 		var taskByActionStCntActionStA4 = new Array();
 		var taskByActionStCntActionStA5 = new Array();
+		
+		sum = 0;
 		for (var i = 0; i < taskByActionStCnt.length; i++) {
 			taskByActionStCntTaskNm.push(taskByActionStCnt[i].taskNm);
 			taskByActionStCntActionStAll.push(taskByActionStCnt[i].actionStAll);
-			taskByActionStCntActionStA1.push(parseInt(taskByActionStCnt[i].actionStA1
-					/ taskByActionStCnt[i].actionStAll * 100));
-			taskByActionStCntActionStA2.push(parseInt(taskByActionStCnt[i].actionStA2
-					/ taskByActionStCnt[i].actionStAll * 100));
-			taskByActionStCntActionStA3.push(parseInt(taskByActionStCnt[i].actionStA3
-					/ taskByActionStCnt[i].actionStAll * 100));
-			taskByActionStCntActionStA4.push(parseInt(taskByActionStCnt[i].actionStA4
-					/ taskByActionStCnt[i].actionStAll * 100));
-			taskByActionStCntActionStA5.push(parseInt(taskByActionStCnt[i].actionStA5
-					/ taskByActionStCnt[i].actionStAll * 100));
+			
+			var pre = 0;
+			sum = parseFloat((taskByActionStCnt[i].actionStA1	/ taskByActionStCnt[i].actionStAll * 100).toFixed(1)) +
+				parseFloat((taskByActionStCnt[i].actionStA2	/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+			if( sum > 100) {
+				pre = parseFloat((taskByActionStCnt[i].actionStA1	/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+				taskByActionStCntActionStA1.push(pre.toFixed(1));
+				taskByActionStCntActionStA2.push((100 - pre).toFixed(1));
+				taskByActionStCntActionStA3.push((taskByActionStCnt[i].actionStA3
+						/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+				taskByActionStCntActionStA4.push((taskByActionStCnt[i].actionStA4
+						/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+				taskByActionStCntActionStA5.push((taskByActionStCnt[i].actionStA5
+						/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+			} else {
+				pre = sum;
+				sum = sum + parseFloat((taskByActionStCnt[i].actionStA3	/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+				if(sum > 100) {
+					taskByActionStCntActionStA1.push((taskByActionStCnt[i].actionStA1
+							/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+					taskByActionStCntActionStA2.push((taskByActionStCnt[i].actionStA2
+							/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+					taskByActionStCntActionStA3.push((100 - pre).toFixed(1));
+					taskByActionStCntActionStA4.push((taskByActionStCnt[i].actionStA4
+							/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+					taskByActionStCntActionStA5.push((taskByActionStCnt[i].actionStA5
+							/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+				} else {
+					pre = sum;
+					sum = sum + parseFloat((taskByActionStCnt[i].actionStA4	/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+					if(sum > 100) {
+						taskByActionStCntActionStA1.push((taskByActionStCnt[i].actionStA1
+								/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+						taskByActionStCntActionStA2.push((taskByActionStCnt[i].actionStA2
+								/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+						taskByActionStCntActionStA3.push((taskByActionStCnt[i].actionStA3
+								/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+						taskByActionStCntActionStA4.push((100 - pre).toFixed(1));
+						taskByActionStCntActionStA5.push((taskByActionStCnt[i].actionStA5
+								/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+					} else {
+						pre = sum;
+						sum = sum + parseFloat((taskByActionStCnt[i].actionStA5	/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+						if(sum > 100) {
+							taskByActionStCntActionStA1.push((taskByActionStCnt[i].actionStA1
+									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+							taskByActionStCntActionStA2.push((taskByActionStCnt[i].actionStA2
+									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+							taskByActionStCntActionStA3.push((taskByActionStCnt[i].actionStA3
+									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+							taskByActionStCntActionStA4.push((taskByActionStCnt[i].actionStA4
+									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+							taskByActionStCntActionStA5.push((100 - pre).toFixed(1));
+						} else {
+							taskByActionStCntActionStA1.push((taskByActionStCnt[i].actionStA1
+									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+							taskByActionStCntActionStA2.push((taskByActionStCnt[i].actionStA2
+									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+							taskByActionStCntActionStA3.push((taskByActionStCnt[i].actionStA3
+									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+							taskByActionStCntActionStA4.push((taskByActionStCnt[i].actionStA4
+									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+							taskByActionStCntActionStA5.push((taskByActionStCnt[i].actionStA5
+									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+						}
+					}
+				}
+			}
 		}
 		var ctx3 = document.getElementById('taskByActionStCnt');
 		var taskByActionStCntChart = new Chart(ctx3, {
@@ -253,17 +320,57 @@ window.onload = function() {
 		var taskByDefectGbCntDefectGbD2 = new Array();
 		var taskByDefectGbCntDefectGbD3 = new Array();
 		var taskByDefectGbCntDefectGbD4 = new Array();
+		
+		sum = 0;
 		for (var i = 0; i < taskByDefectGbCnt.length; i++) {
 			taskByDefectGbCntTaskNm.push(taskByDefectGbCnt[i].taskNm);
 			taskByDefectGbCntDefectGbAll.push(taskByDefectGbCnt[i].defectGbAll);
-			taskByDefectGbCntDefectGbD1.push(parseInt(taskByDefectGbCnt[i].defectGbD1
-					/ taskByDefectGbCnt[i].defectGbAll * 100));
-			taskByDefectGbCntDefectGbD2.push(parseInt(taskByDefectGbCnt[i].defectGbD2
-					/ taskByDefectGbCnt[i].defectGbAll * 100));
-			taskByDefectGbCntDefectGbD3.push(parseInt(taskByDefectGbCnt[i].defectGbD3
-					/ taskByDefectGbCnt[i].defectGbAll * 100));
-			taskByDefectGbCntDefectGbD4.push(parseInt(taskByDefectGbCnt[i].defectGbD4
-					/ taskByDefectGbCnt[i].defectGbAll * 100));
+			
+			var pre = 0;
+			sum = parseFloat((taskByDefectGbCnt[i].defectGbD1 / taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1)) +
+				parseFloat((taskByDefectGbCnt[i].defectGbD2 / taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+			if(sum > 100) {
+				pre = parseFloat((taskByDefectGbCnt[i].defectGbD1 / taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+				taskByDefectGbCntDefectGbD1.push(pre.toFixed(1));
+				taskByDefectGbCntDefectGbD2.push((100 - pre).toFixed(1));
+				taskByDefectGbCntDefectGbD3.push((taskByDefectGbCnt[i].defectGbD3
+						/ taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+				taskByDefectGbCntDefectGbD4.push((taskByDefectGbCnt[i].defectGbD4
+						/ taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+			} else {
+				pre = sum;
+				sum = sum + parseFloat((taskByDefectGbCnt[i].defectGbD3 / taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+				if(sum > 100) {
+					taskByDefectGbCntDefectGbD1.push((taskByDefectGbCnt[i].defectGbD1
+							/ taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+					taskByDefectGbCntDefectGbD2.push((taskByDefectGbCnt[i].defectGbD2
+							/ taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+					taskByDefectGbCntDefectGbD3.push((100 - pre).toFixed(1));
+					taskByDefectGbCntDefectGbD4.push((taskByDefectGbCnt[i].defectGbD4
+							/ taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+				} else {
+					pre = sum;
+					sum = sum + parseFloat((taskByDefectGbCnt[i].defectGbD4 / taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+					if(sum > 100) {
+						taskByDefectGbCntDefectGbD1.push((taskByDefectGbCnt[i].defectGbD1
+								/ taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+						taskByDefectGbCntDefectGbD2.push((taskByDefectGbCnt[i].defectGbD2
+								/ taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+						taskByDefectGbCntDefectGbD3.push((taskByDefectGbCnt[i].defectGbD3
+								/ taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+						taskByDefectGbCntDefectGbD4.push((100 - pre).toFixed(1));
+					} else {
+						taskByDefectGbCntDefectGbD1.push((taskByDefectGbCnt[i].defectGbD1
+								/ taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+						taskByDefectGbCntDefectGbD2.push((taskByDefectGbCnt[i].defectGbD2
+								/ taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+						taskByDefectGbCntDefectGbD3.push((taskByDefectGbCnt[i].defectGbD3
+								/ taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+						taskByDefectGbCntDefectGbD4.push((taskByDefectGbCnt[i].defectGbD4
+								/ taskByDefectGbCnt[i].defectGbAll * 100).toFixed(1));
+					}
+				}
+			}
 		}
 		var ctx4 = document.getElementById('taskByDefectGbCnt');
 		var taskByDefectGbCntChart = new Chart(ctx4, {
@@ -394,7 +501,7 @@ window.onload = function() {
      		<div id="search_field">
 					<div id="search_field_loc"><h2><strong>결함처리통계(그래프)</strong></h2></div>
 			</div>
-			<br/>
+			<br/><br/><br/><br/>
 			 <h3><strong>상태별 결함건수</strong></h3>
             <table width="100%" cellspacing = "10" height="80px" >
             <tr>
