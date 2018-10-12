@@ -227,13 +227,13 @@ window.onload = function() {
     				<table width="100%" cellspacing="0" cellpadding="0" class="table table-search-head table-size-th4">
 			    					<caption>프로젝트 멤버</caption>
 			            <colgroup>
-			            <col width="25%" >
-			            <col width="25%" >
-			            <col width="10%" >
-			            <col width="10%" >
-			            <col width="10%" >
-			            <col width="10%" >
-			            <col width="10%" > 
+			            <col width="20%" >
+			            <col width="20%" >
+			            <col width="12%" >
+			            <col width="12%" >
+			            <col width="12%" >
+			            <col width="12%" >
+			            <col width="12%" > 
 			            </colgroup>
 			            <thead>
 			            <tr>
@@ -288,7 +288,7 @@ window.onload = function() {
     			<br/><br/>
     			<c:choose>
     			<c:when test="${devPlanByMainStats != null}">
-    				<canvas id="devPlanByMainStats" width="100%" height="35"></canvas>
+    				<canvas id="devPlanByMainStats" width="100%" height="30"></canvas>
     			</c:when>
     			<c:otherwise>
     			등록된 개발계획이 없습니다.
@@ -307,7 +307,7 @@ window.onload = function() {
     			<br/><br/>
     			<c:choose>
     			<c:when test="${taskByMainStats != null }">
-    			<canvas id="taskByMainStats" width="100%" height="35"></canvas>
+    			<canvas id="taskByMainStats" width="100%" height="30"></canvas>
     			</c:when>
     			<c:otherwise>
     			 등록된 결함이 없습니다.

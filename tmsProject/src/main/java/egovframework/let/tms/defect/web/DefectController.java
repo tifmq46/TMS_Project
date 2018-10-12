@@ -37,6 +37,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -145,32 +146,38 @@ public class DefectController {
 	/** 결함 등록 
 	 * @throws IOException */
 	@RequestMapping("/tms/defect/insertDefectImpl.do")
-	public String insertDefectImpl(MultipartHttpServletRequest mtpRequest,@ModelAttribute("defectVO") DefectVO defectVO) throws IOException {
-		MultipartFile defectFileImg = mtpRequest.getFile("fileImg");
-		String userTestId = defectService.selectUserNm(defectVO.getUserNm());
-		if(defectFileImg.getOriginalFilename() == "") {
-			defectVO.setUserTestId(userTestId);
-			defectService.insertDefect(defectVO);
-		} else { // 파일 이미지를 등록했을 경우
-			Map<String, Object> hmap = new HashMap<String, Object>();
-			hmap.put("FILE_IMG", defectFileImg.getBytes());
-			hmap.put("FILE_SIZE",defectFileImg.getSize());
-			hmap.put("FILE_NM", defectFileImg.getOriginalFilename());
-			hmap.put("DEFECT_ID_SQ", defectVO.getDefectIdSq());
-			hmap.put("DEFECT_TITLE", defectVO.getDefectTitle());
-			hmap.put("DEFECT_CONTENT", defectVO.getDefectContent());
-			hmap.put("PG_ID", defectVO.getPgId());
-			hmap.put("USER_TEST_ID", userTestId);
-			hmap.put("DEFECT_GB", defectVO.getDefectGb());
-			hmap.put("ENROLL_DT", defectVO.getEnrollDt());
-			hmap.put("ACTION_CONTENT", defectVO.getActionContent());
-			hmap.put("ACTION_ST", defectVO.getActionSt());
-			hmap.put("ACTION_DT", defectVO.getActionDt());
-			hmap.put("status", 0);
-			defectService.insertDefectImageMap(hmap);
-			
-		}	
-		return "redirect:/tms/defect/selectDefect.do";
+	public String insertDefectImpl(MultipartHttpServletRequest mtpRequest,@ModelAttribute("defectVO") DefectVO defectVO, BindingResult errors) throws IOException {
+		beanValidator.validate(defectVO, errors);
+		if(errors.hasErrors()){
+			return "redirect:/tms/defect/selectDefect.do";
+		} else{
+			MultipartFile defectFileImg = mtpRequest.getFile("fileImg");
+			String userTestId = defectService.selectUserNm(defectVO.getUserNm());
+			if(defectFileImg.getOriginalFilename() == "") {
+				defectVO.setUserTestId(userTestId);
+				defectService.insertDefect(defectVO);
+			} else { // 파일 이미지를 등록했을 경우
+				Map<String, Object> hmap = new HashMap<String, Object>();
+				hmap.put("FILE_IMG", defectFileImg.getBytes());
+				hmap.put("FILE_SIZE",defectFileImg.getSize());
+				hmap.put("FILE_NM", defectFileImg.getOriginalFilename());
+				hmap.put("DEFECT_ID_SQ", defectVO.getDefectIdSq());
+				hmap.put("DEFECT_TITLE", defectVO.getDefectTitle());
+				hmap.put("DEFECT_CONTENT", defectVO.getDefectContent());
+				hmap.put("PG_ID", defectVO.getPgId());
+				hmap.put("USER_TEST_ID", userTestId);
+				hmap.put("DEFECT_GB", defectVO.getDefectGb());
+				hmap.put("ENROLL_DT", defectVO.getEnrollDt());
+				hmap.put("ACTION_CONTENT", defectVO.getActionContent());
+				hmap.put("ACTION_ST", defectVO.getActionSt());
+				hmap.put("ACTION_DT", defectVO.getActionDt());
+				hmap.put("status", 0);
+				defectService.insertDefectImageMap(hmap);
+				
+			}	
+			return "redirect:/tms/defect/selectDefect.do";
+		}
+		
 	}
 	
 	/** 결함 상세 조회*/

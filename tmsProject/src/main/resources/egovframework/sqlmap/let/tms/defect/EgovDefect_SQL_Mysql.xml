@@ -411,7 +411,7 @@
          GROUP BY P.TASK_GB
       ) AS B ON A.CODE = B.TASK_GB
       WHERE A.CODE_ID='TASKGB'
-      ORDER BY defectGbAll DESC
+      ORDER BY defectGbAll DESC, taskGb ASC
 
         ]]>
     </select>
@@ -433,7 +433,7 @@
 				GROUP BY TASK_GB)
 			AS B ON A.CODE = B.TASK_GB
 			WHERE A.CODE_ID='TASKGB'
-			ORDER BY actionStAll DESC
+			ORDER BY actionStAll DESC, actionStA5 DESC
         ]]>
     </select>
     
