@@ -27,6 +27,20 @@
         </property>
     </bean>
 
+    <!-- MessageSource -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="defaultEncoding">
+		<value>utf-8</value>
+		</property>
+   		<property name="basenames">
+        	<list>
+               <value>messages/messages_ko</value>
+        	</list>
+   		</property>
+	</bean>
+
+    
+    
     <!-- 화면처리용 JSP 파일명의  prefix, suffix 처리에 대한 mvc 설정  -->
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
 	    p:viewClass="org.springframework.web.servlet.view.JstlView"

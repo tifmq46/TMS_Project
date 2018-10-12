@@ -3,15 +3,21 @@ package egovframework.let.tms.pg.service;
 import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.springmodules.validation.bean.conf.loader.annotation.handler.NotEmpty;
+import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 public class ProgramVO extends ProgramDefaultVO{
 	
 	private static final long serialVersionUID = 1L;
 
 	   /** 프로그램 id */
+	   @NotEmpty
+	   @NotNull
 	   private   String      PG_ID;
 	   
 	   /** 프로그램 명 */
+	   @NotEmpty
+	   @NotNull
 	   private   String      PG_NM;
 	   
 	   /** 개발자 ID */ 

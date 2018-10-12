@@ -112,7 +112,7 @@
 	
 	
 	function searchExcelFileNm() {
-    	window.open("<c:url value='/tms/pg/ExcelFileListSearch.do'/>",'','width=500, height=300, left=350, top=200');
+    	window.open("<c:url value='/tms/pg/ExcelFileListSearch.do'/>",'','width=500, height=400, left=350, top=200');
 	}
 	
 	function Pg_Relation_Search() {

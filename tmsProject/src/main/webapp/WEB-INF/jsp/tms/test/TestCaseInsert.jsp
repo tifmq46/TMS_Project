@@ -36,6 +36,7 @@
 function insertTestCaseImpl(){
 
 	if (!validateTestCaseVO(document.testCaseVO)){
+		alert("실패");
         return;
     }
     
