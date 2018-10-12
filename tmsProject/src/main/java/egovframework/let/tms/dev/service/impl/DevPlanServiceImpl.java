@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.dev.service.DevPlanService;
 import egovframework.let.tms.dev.service.DevPlanVO;
-import egovframework.let.tms.dev.service.TempVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 
@@ -224,24 +223,8 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	}
 
 	@Override
-	public void insertTemp(TempVO t) {
-		devPlanDAO.insertTemp(t);
-	}
-
-	@Override
-	public void deleteTemp() {
-		devPlanDAO.deleteTemp();
-		
-	}
-
-	@Override
 	public List<String> selectPeriod() {
 		return devPlanDAO.selectPeriod();
-	}
-
-	@Override
-	public List<HashMap<String, String>> selectUserDevStats(HashMap<String, String> test) {
-		return devPlanDAO.selectUserDevStats(test);
 	}
 
 	@Override
@@ -285,6 +268,11 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	@Override
 	public List<HashMap<String, String>> selectTaskPlanWeekStats(HashMap<String, String> taskPlan) {
 		return devPlanDAO.selectTaskPlanWeekStats(taskPlan);
+	}
+
+	@Override
+	public List<HashMap<String, String>> selectTaskDevWeekStats(HashMap<String, String> taskDev) {
+		return devPlanDAO.selectTaskDevWeekStats(taskDev);
 	}
 	
 }

@@ -41,7 +41,6 @@ import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.dev.service.DevPlanService;
 import egovframework.let.tms.dev.service.DevPlanVO;
-import egovframework.let.tms.dev.service.TempVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -448,42 +447,6 @@ public class DevPlanController {
 		model.addAttribute("resultP", devPeriod);
 		
 		List<String> userList = devPlanService.selectUserList();
-				
-		List<HashMap<String,String>> temp = new ArrayList<HashMap<String,String>>();
-		TempVO t = new TempVO();
-		
-		//for(int i=0; i<userList.size(); i++) {
-			//temp.addAll(devPlanService.selectTempList(userList.get(i).toString()));
-		//}
-		temp.addAll(devPlanService.selectTempList());
-		
-		devPlanService.deleteTemp();
-		String planEndDate, devEndDate;
-		String[] splitDate, splitDate2;
-		
-		for(int i=0; i<temp.size(); i++){
-			t.setPgId(String.valueOf(temp.get(i).get("PG_ID")));
-			t.setUserDevId(String.valueOf(temp.get(i).get("USER_DEV_ID")));
-			t.setUserDevNm(String.valueOf(temp.get(i).get("USER_DEV_NM")));
-			
-			planEndDate = String.valueOf(temp.get(i).get("PLAN_END_DT"));
-			if(planEndDate.equals("null")){
-				t.setPlanEndDt(planEndDate);
-			}else{
-				splitDate = planEndDate.split("-");
-				t.setPlanEndDt(splitDate[0]+splitDate[1]+splitDate[2]);
-			}
-			
-			devEndDate = String.valueOf(temp.get(i).get("DEV_END_DT"));
-			if(devEndDate.equals("null")){
-				t.setDevEndDt(devEndDate);
-			}else{
-				splitDate2 = devEndDate.split("-");
-				t.setDevEndDt(splitDate2[0]+splitDate2[1]+splitDate2[2]);
-			}
-			
-			devPlanService.insertTemp(t);
-		}
 		
 		List<String> periodList = devPlanService.selectPeriodWeek();
 		
@@ -498,7 +461,6 @@ public class DevPlanController {
 				test.put("userList",String.valueOf(userList.get(i)));
 				test.put("dt",String.valueOf(periodList.get(j)));
 				userDevStats.addAll(devPlanService.selectUserPlanWeekStats(test));
-
 			}
 		}
 		
@@ -639,6 +601,56 @@ public class DevPlanController {
 		System.out.println("한줄로"+a3);
 		model.addAttribute("stats3", taskPlanStats);
 		model.addAttribute("a3",a3);
+		
+		/*업무별(실적) */
+		
+		List<HashMap<String,String>> taskDevStats = new ArrayList<HashMap<String,String>>();
+		HashMap<String,String> taskDev = new HashMap<String,String>();
+		
+		for(int i=0; i<taskGbList.size(); i++){
+			
+			for(int j=0; j<periodList.size(); j++){
+				taskDev.put("taskGbList",String.valueOf(taskGbList.get(i)));
+				taskDev.put("dt",String.valueOf(periodList.get(j)));
+				taskDevStats.addAll(devPlanService.selectTaskDevWeekStats(taskDev));
+
+			}
+		}
+		System.out.println("사이즈"+taskPlanStats);
+		
+		JSONArray resultArray4 = new JSONArray();
+		JSONObject resultInfo4 = new JSONObject();
+		
+		int devSum4=0;
+		int div2 = taskPlanStats.size() / periodList.size();
+		
+		for(int i=0; i<div2; i++){
+
+			resultInfo4 = new JSONObject();
+			devSum4 = 0;
+			if(i==0){
+				resultInfo4.put("taskGbNm", taskDevStats.get(0).get("taskGbNm"));
+				for(int j=0; j< periodList.size(); j++){
+					resultInfo4.put( "a"+periodList.get(j), taskDevStats.get(j).get(periodList.get(j)));
+					devSum4 += Integer.parseInt(String.valueOf(taskDevStats.get(j).get(periodList.get(j))));
+				}
+			}else{
+				resultInfo4.put("taskGbNm", taskDevStats.get(((periodList.size())*i)+1).get("taskGbNm"));
+				for(int j=0; j< periodList.size(); j++){
+					resultInfo4.put( "a"+periodList.get(j), taskDevStats.get(j+(periodList.size()*i)).get(periodList.get(j)));
+					devSum4 += Integer.parseInt(String.valueOf(taskDevStats.get(j+(periodList.size()*i)).get(periodList.get(j))));
+				}
+			}
+			resultInfo4.put("devSum", devSum4);
+			resultArray4.add(resultInfo4);
+		}
+		
+		JsonUtil jsU4 = new JsonUtil();
+		List<Map<String,Object>> a4 = jsU4.getListMapFromJsonArray(resultArray4);
+		
+		System.out.println("한줄로"+a4);
+		model.addAttribute("stats4", taskDevStats);
+		model.addAttribute("a4",a4);
 		
 		
 		return "/tms/dev/devStatsTable";

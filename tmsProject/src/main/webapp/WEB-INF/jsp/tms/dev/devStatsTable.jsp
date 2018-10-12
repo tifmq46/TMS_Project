@@ -172,6 +172,39 @@
                     
                     </table>
                 </div>
+                
+                <h2><strong>업무별(실적)</strong></h2>
+                <div class="default_tablestyle">
+                    <table summary="진척통계 테이블입니다" cellpadding="0" cellspacing="0">
+                    <caption>진척통계 테이블</caption>
+           
+          			<thead>
+                    <tr>
+                    	<th align="center">업무</th>
+                    	<c:forEach begin="${begin}" end="${end}" var="k4" varStatus="s">
+	                        <th align="center">${s.count}주차</th>
+        				</c:forEach>
+        				<th align="center">합계</th>
+                    </tr>
+                    </thead>
+           			
+           			
+           			<c:forEach var="stats4" items="${a4}" varStatus="status">
+           			
+           			
+                    <tr>
+                    	<td><c:out value="${stats4.taskGbNm}" /></td>
+                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+		           			<c:set var ="t"  value="a${i}"></c:set>
+		           			<td>${stats4[t]}</td>
+						</c:forEach>
+						<td>${stats4.devSum}</td>
+                    </tr>
+                    </c:forEach>
+            
+                    
+                    </table>
+                </div>
                  
 				<%-- <table width="120%" border="0" cellpadding="0" cellspacing="0" >
                  <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
