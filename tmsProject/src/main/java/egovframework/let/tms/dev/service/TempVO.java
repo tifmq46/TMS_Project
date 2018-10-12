@@ -19,6 +19,9 @@ public class TempVO implements Serializable{
 	
 	/**  계획완료일자 */
 	private String planEndDt;
+	
+	/**  계획완료일자 */
+	private String devEndDt;
 
 	public String getPgId() {
 		return pgId;
@@ -52,5 +55,12 @@ public class TempVO implements Serializable{
 		this.planEndDt = planEndDt;
 	}
 
-	
+	public String getDevEndDt() {
+		return devEndDt;
+	}
+
+	public void setDevEndDt(String devEndDt) {
+		this.devEndDt = devEndDt;
+	}
+
 }

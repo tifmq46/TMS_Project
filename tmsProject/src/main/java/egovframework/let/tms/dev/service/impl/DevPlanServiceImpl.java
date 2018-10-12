@@ -219,8 +219,8 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	}
 
 	@Override
-	public List<HashMap<String, String>> selectTempList(String a) {
-		return devPlanDAO.selectTempList(a);
+	public List<HashMap<String, String>> selectTempList() {
+		return devPlanDAO.selectTempList();
 	}
 
 	@Override
@@ -260,6 +260,31 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<?> selectSysByStats() {
 		// TODO Auto-generated method stub
 		return devPlanDAO.selectSysByStats();
+	}
+
+	@Override
+	public List<HashMap<String, String>> selectUserDevWeekStats(HashMap<String, String> test) {
+		return devPlanDAO.selectUserDevWeekStats(test);
+	}
+
+	@Override
+	public List<String> selectPeriodWeek() {
+		return devPlanDAO.selectPeriodWeek();
+	}
+
+	@Override
+	public List<HashMap<String, String>> selectUserPlanWeekStats(HashMap<String, String> test) {
+		return devPlanDAO.selectUserPlanWeekStats(test);
+	}
+
+	@Override
+	public List<String> selectTaskGbList() {
+		return devPlanDAO.selectTaskGbList();
+	}
+
+	@Override
+	public List<HashMap<String, String>> selectTaskPlanWeekStats(HashMap<String, String> taskPlan) {
+		return devPlanDAO.selectTaskPlanWeekStats(taskPlan);
 	}
 	
 }

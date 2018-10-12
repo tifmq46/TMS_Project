@@ -132,7 +132,7 @@ public interface DevPlanService {
 
 	public List<String> selectUserList();
 
-	public List<HashMap<String, String>> selectTempList(String a);
+	public List<HashMap<String, String>> selectTempList();
 
 	public void insertTemp(TempVO t);
 
@@ -147,4 +147,14 @@ public interface DevPlanService {
 	public List<?> selectSysAllByStats();
 	
 	public List<?> selectSysByStats();
+
+	public List<HashMap<String, String>> selectUserDevWeekStats(HashMap<String, String> test);
+
+	public List<String> selectPeriodWeek();
+
+	public List<HashMap<String, String>> selectUserPlanWeekStats(HashMap<String, String> test);
+
+	public List<String> selectTaskGbList();
+
+	public List<HashMap<String, String>> selectTaskPlanWeekStats(HashMap<String, String> taskPlan);
 }

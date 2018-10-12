@@ -184,8 +184,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (List<String>) list("DevPlanDAO.selectUserList");
 	}
 
-	public List<HashMap<String, String>> selectTempList(String a) {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTempList",a);
+	public List<HashMap<String, String>> selectTempList() {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTempList");
 	}
 
 	public void insertTemp(TempVO t) {
@@ -216,5 +216,25 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	
 	public List<?> selectSysByStats() {
 		return list("DevPlanDAO.selectSysByStats");
+	}
+
+	public List<HashMap<String, String>> selectUserDevWeekStats(HashMap<String, String> test) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserDevWeekStats",test);
+	}
+
+	public List<String> selectPeriodWeek() {
+		return (List<String>) list("DevPlanDAO.selectPeriodWeek");
+	}
+
+	public List<HashMap<String, String>> selectUserPlanWeekStats(HashMap<String, String> test) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserPlanWeekStats",test);
+	}
+
+	public List<String> selectTaskGbList() {
+		return (List<String>) list("DevPlanDAO.selectTaskGbList");
+	}
+
+	public List<HashMap<String, String>> selectTaskPlanWeekStats(HashMap<String, String> taskPlan) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTaskPlanWeekStats",taskPlan);
 	}
 }

@@ -61,11 +61,11 @@
 					  	<ul id="search_first_ul">
 						  	<li><label >계획시작일</label></li>
 						  	<li>
-						  	<input type="text" value="<fmt:formatDate value="${tt.DEV_START_DT}" pattern="yyyy-MM-dd" />">
+						  	<input type="text" value="<fmt:formatDate value="${tt.DEV_START_DT}" pattern="yyyy-MM-dd" />" readonly>
 						  	</li>
 						  
 						  	<li><label >계획종료일</label></li>
-						  	<li><input type="text" value="<fmt:formatDate value="${tt.DEV_END_DT}" pattern="yyyy-MM-dd" />"></li>
+						  	<li><input type="text" value="<fmt:formatDate value="${tt.DEV_END_DT}" pattern="yyyy-MM-dd" />" readonly></li>
 					  	</ul>
 						</div>			
 						</fieldset>		
@@ -74,6 +74,7 @@
                 
                 <div id="page_info"><div id="page_info_align"></div></div>                    
                 <!-- table add start -->
+                <h2><strong>개발자별(계획)</strong></h2>
                 <div class="default_tablestyle">
                     <table summary="진척통계 테이블입니다" cellpadding="0" cellspacing="0">
                     <caption>진척통계 테이블</caption>
@@ -81,54 +82,96 @@
           			<thead>
                     <tr>
                     	<th align="center">개발자</th>
-                        <th align="center">10/1</th>
-        				<th align="center">10/2</th>
-        				<th align="center">10/3</th>
-        				<th align="center">10/4</th>
-        				<th align="center">10/5</th>
-        				<th align="center">10/8</th>
-        				<th align="center">10/9</th>
-        				<th align="center">10/10</th>
-        				<th align="center">10/11</th>
-        				<th align="center">10/12</th>
-        				<th align="center">10/15</th>
-        				<th align="center">10/16</th>
-        				<th align="center">10/17</th>
-        				<th align="center">10/18</th>
-        				<th align="center">10/19</th>
-        				<th align="center"></th>
+                    	<c:forEach begin="${begin}" end="${end}" var="k" varStatus="s">
+	                        <th align="center">${s.count}주차</th>
+        				</c:forEach>
+        				<th align="center">합계</th>
                     </tr>
                     </thead>
            			
+           			
            			<c:forEach var="stats" items="${a}" varStatus="status">
            			
+           			
                     <tr>
-                    <td><c:out value="${stats.DevNm}" /></td>
-                    	<td><c:out value="${stats.a20181001}" /></td>
-                    	<td><c:out value="${stats.a20181002}" /></td>
-                    	<td><c:out value="${stats.a20181003}" /></td>
-                    	<td><c:out value="${stats.a20181004}" /></td>
-                    	<td><c:out value="${stats.a20181005}" /></td>
-                    	<td><c:out value="${stats.a20181008}" /></td>
-                    	<td><c:out value="${stats.a20181009}" /></td>
-                    	<td><c:out value="${stats.a20181010}" /></td>
-                    	<td><c:out value="${stats.a20181011}" /></td>
-                    	<td><c:out value="${stats.a20181012}" /></td>
-                    	<td><c:out value="${stats.a20181015}" /></td>
-                    	<td><c:out value="${stats.a20181016}" /></td>
-                    	<td><c:out value="${stats.a20181017}" /></td>
-                    	<td><c:out value="${stats.a20181018}" /></td>
-                    	<td><c:out value="${stats.a20181019}" /></td>
-                    	
-                    	</tr>
+                    	<td><c:out value="${stats.DevNm}" /></td>
+                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+		           			<c:set var ="t"  value="a${i}"></c:set>
+		           			<td>${stats[t]}</td>
+						</c:forEach>
+						<td>${stats.devSum}</td>
+                    </tr>
                     </c:forEach>
             
                     
                     </table>
                 </div>
                 
-               
+              <h2><strong>개발자별(실적)</strong></h2>
+                <div class="default_tablestyle">
+                    <table summary="진척통계 테이블입니다" cellpadding="0" cellspacing="0">
+                    <caption>진척통계 테이블</caption>
+           
+          			<thead>
+                    <tr>
+                    	<th align="center">개발자</th>
+                    	<c:forEach begin="${begin}" end="${end}" var="k2" varStatus="s">
+	                        <th align="center">${s.count}주차</th>
+        				</c:forEach>
+        				<th align="center">합계</th>
+                    </tr>
+                    </thead>
+           			
+           			
+           			<c:forEach var="stats2" items="${a2}" varStatus="status">
+           			
+           			
+                    <tr>
+                    	<td><c:out value="${stats2.DevNm}" /></td>
+                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+		           			<c:set var ="t"  value="a${i}"></c:set>
+		           			<td>${stats2[t]}</td>
+						</c:forEach>
+						<td>${stats2.devSum}</td>
+                    </tr>
+                    </c:forEach>
+            
+                    
+                    </table>
+                </div>
                 
+                <h2><strong>업무별(계획)</strong></h2>
+                <div class="default_tablestyle">
+                    <table summary="진척통계 테이블입니다" cellpadding="0" cellspacing="0">
+                    <caption>진척통계 테이블</caption>
+           
+          			<thead>
+                    <tr>
+                    	<th align="center">업무</th>
+                    	<c:forEach begin="${begin}" end="${end}" var="k3" varStatus="s">
+	                        <th align="center">${s.count}주차</th>
+        				</c:forEach>
+        				<th align="center">합계</th>
+                    </tr>
+                    </thead>
+           			
+           			
+           			<c:forEach var="stats3" items="${a3}" varStatus="status">
+           			
+           			
+                    <tr>
+                    	<td><c:out value="${stats3.taskGbNm}" /></td>
+                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+		           			<c:set var ="t"  value="a${i}"></c:set>
+		           			<td>${stats3[t]}</td>
+						</c:forEach>
+						<td>${stats3.devSum}</td>
+                    </tr>
+                    </c:forEach>
+            
+                    
+                    </table>
+                </div>
                  
 				<%-- <table width="120%" border="0" cellpadding="0" cellspacing="0" >
                  <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>

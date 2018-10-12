@@ -93,8 +93,6 @@ function fn_input_result(pageNo) {
 	var s1 = ""+document.listForm.InputStartDt.value;
 	var s2 = ""+document.listForm.InputEndDt.value;
 	
-	alert(""+document.listForm.s1.value);
-	alert(""+document.listForm.s2.value);
 	
 	document.listForm.action = "<c:url value='/tms/dev/inputDevPlan.do?s1="+document.listForm.s1.value+"&s2="+s2+"'/>";
     document.listForm.submit();
@@ -203,18 +201,17 @@ function searchFileNm() {
 				
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발계획관리</strong></h2></div>
-					
-					  	<fieldset><legend>조건정보 영역</legend>	  
-					  	<div class="sf_start">
-					  		
-					  		<%
+						
+						<fieldset><legend>조건정보 영역</legend>	 
+						<div class="sf_start">
+							<%
         					LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
         					if(loginVO.getName().equals("관리자")){
         					%>
 					  	
 					  		<ul id="search_first_ul">
 					  			<li>
-					  			<label>일자</label>
+					  			<label>계획입력기간</label>
 								<input type="date" id="InputStartDt" name="InputStartDt" 
 									value="<fmt:formatDate value="${start}" pattern="yyyy-MM-dd"/>"/>
 								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
@@ -222,10 +219,9 @@ function searchFileNm() {
 					  			<input type="date" id="InputEndDt" name="InputEndDt"  
 					  				value="<fmt:formatDate value="${end}" pattern="yyyy-MM-dd"/>"/>
 					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-													  				
-					  			</li>		
-					  			<li>
-					  				<a class="abled" href="#LINK" onclick="fn_input_result('1'); return false;" >저장</a>	
+									<div class="buttons" style="float:right; margin-right:550px;">
+					  				<a class="abled" href="#LINK" onclick="fn_input_result('1'); return false;" >저장</a>
+					  				</div>					  				
 					  			</li>
 					  		</ul>
 					  		<%
@@ -233,23 +229,30 @@ function searchFileNm() {
 	  						%>
 					  		<ul id="search_first_ul">
 					  			<li>
-					  			<label>일자</label>
-								<input type="date" id="InputStartDt" name="InputStartDt" 
-									class="disabled" value="<fmt:formatDate value="${start}" pattern="yyyy-MM-dd"/>"/>
+					  			<label>계획입력기간</label>
+								<input type="date" id="InputStartDt" name="InputStartDt" readonly
+									value="<fmt:formatDate value="${start}" pattern="yyyy-MM-dd"/>"/>
 								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
 					  			&nbsp;~&nbsp;
-					  			<input type="date" id="InputEndDt" name="InputEndDt"  
-					  				class="disabled" value="<fmt:formatDate value="${end}" pattern="yyyy-MM-dd"/>"/>
+					  			<input type="date" id="InputEndDt" name="InputEndDt"  readonly
+					  				value="<fmt:formatDate value="${end}" pattern="yyyy-MM-dd"/>"/>
 					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-													  				
-					  			</li>		
-					  			<li>
-					  				<a class="disabled" href="#LINK" onclick="fn_input_result('1'); return false;" >저장</a>	
+									<div class="buttons" style="float:right; margin-right:550px;">
+					  				<a class="disabled" href="#LINK" onclick="fn_input_result('1'); return false;" >저장</a>
+					  				</div>					  				
 					  			</li>
 					  		</ul>
 					  		<%
 	  						}
-        					%>		  		
+        					%>		  	
+						</div>
+						</fieldset>
+						
+						
+					  	<fieldset><legend>조건정보 영역</legend>	  
+					  	<div class="sf_start">
+					  		
+					  			
 					  		<ul id="search_first_ul">
 					  			<li>
 								    <label >시스템구분</label>
