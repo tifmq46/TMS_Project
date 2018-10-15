@@ -150,43 +150,6 @@ function deleteTestScenario() {
                             	</td>
                             </tr>
                             
-                            
-                            <tr>
-                            	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testResultYn" /></label>
-                                </th>
-                                <td width="25%" nowrap >
-                                	<c:choose>
-                                		<c:when test="${testScenarioVO.testResultYn == 'P'}">
-	                                		<input disabled="disabled" type="radio" name="testResultYn" value="P" checked>Pass
-	  										&nbsp;<input disabled="disabled" type="radio" name="testResultYn" value="F">Fail
-                                		</c:when>
-                                		
-                                		<c:when test="${testScenarioVO.testResultYn == 'F'}">
-	                                		<input disabled="disabled" type="radio" name="testResultYn" value="P" >Pass
-	  										&nbsp;<input disabled="disabled" type="radio" name="testResultYn" value="F" checked>Fail
-                                		</c:when>
-                                		
-                                		<c:otherwise>
-                                			<input disabled="disabled" type="radio" name="testResultYn" value="P">Pass
-	  										&nbsp;<input disabled="disabled" type="radio" name="testResultYn" value="F">Fail
-                                		</c:otherwise>
-                                	</c:choose>
-                                </td>
-                                
-                                <th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testDt" /></label>
-                                </th>
-                                <td width="25%" nowrap >
-                                	<c:out value='${testScenarioVO.testDt}' />
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                             	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testResultContent" /></label>
-                                </th>
-                                <td width="75%" colspan="3">
-                            		<textarea disabled="disabled" type="textarea" rows="5" style="width:100%" id="testResultContent" name="testResultContent"><c:out value='${testScenarioVO.testResultContent}'/></textarea>
-                            	</td>
-                            </tr>
                         </table>
                     </div>
                     
@@ -197,7 +160,8 @@ function deleteTestScenario() {
 	           				<li>
 								<div class="buttons">
 	                                <a href="#" onclick="updateTestScenario(); return false;"><spring:message code="button.save" /></a>
-				   					<a href="#" onclick="deleteTestScenario(); return false;"><spring:message code="button.delete" /></a>
+				   					<a href="#LINK" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
+				   					<a href="#" onclick=""><spring:message code="button.list" /></a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>   

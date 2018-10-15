@@ -96,6 +96,29 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 		}
 	}
 	
+	
+	@Override
+	public int selectScenarioCntReferringToCase(String checkedMenuNoForDel) throws Exception {
+
+		String[] delMenuNo = checkedMenuNoForDel.split(",");
+		int scenarioCount = 0; //각 케이스별로 케이스를 참조하고 있는 시나리오의 개수
+		int totalCount = 0; //시나리오가 있는 케이스들의 총 개수
+		
+		if (delMenuNo == null || (delMenuNo.length == 0)) {
+			throw new java.lang.Exception("String Split Error!");
+		}
+		for (int i = 0; i < delMenuNo.length; i++) {
+			
+			scenarioCount = testDAO.selectScenarioCntReferringToCase(delMenuNo[i]);
+			
+			if(scenarioCount > 0)
+				totalCount++;
+		}
+		return totalCount;
+	}
+	
+	
+	
 	@Override
 	public void deleteTestScenario(String testscenarioId) throws Exception {
 		testDAO.deleteTestScenario(testscenarioId);
@@ -123,6 +146,14 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 		return testDAO.selectTestCase(testcaseId);
 	}
 	
+	
+	/**
+	 * 테스트 케이스 진행 상태 상세 정보 조회(통계 대시보드)
+	 */
+	@Override
+	public HashMap<String,Object> selectTestCaseProgressStatus(String testcaseGb) throws Exception {
+		return testDAO.selectTestCaseProgressStatus(testcaseGb);
+	}
 	
 	
 	/**

@@ -27,14 +27,46 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>단위 테스트 케이스 목록 조회</title>
-
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 
-<!--
+
+
 function fn_egov_select_testCaseList(pageNo){
     document.listForm.pageIndex.value = pageNo; 
     document.listForm.action = "<c:url value='/tms/test/selectTestCaseList.do?testcaseGb=TC1'/>";
     document.listForm.submit();  
+}
+
+
+function selectTestCase(){
+	
+	 var checkField = document.testCaseVO.checkField;
+	    var menuNo = document.testCaseVO.checkMenuNo;
+	    var checkMenuNos = "";
+	    var checkedCount = 0;
+	    if(checkField) {
+
+	        if(checkField.length > 1) {
+	            for(var i=0; i < checkField.length; i++) {
+	                if(checkField[i].checked) {
+	                    checkMenuNos += ((checkedCount==0? "" : ",") + menuNo[i].value);
+	                    checkedCount++;
+	                }
+	            }
+	        } else {
+	            if(checkField.checked) {
+	                checkMenuNos = menuNo.value;
+	            }
+	        }
+	    }   
+	    
+	    if(checkedCount > 1){
+	    	alert("한개의 테스트케이스만 선택하여주시기바랍니다.");
+	    } else {
+	    	 document.testCaseVO.action = "<c:url value='/tms/test/selectTestCase.do?testcaseId=" +  checkMenuNos  + "&returnPg=TestCaseDetail'/>";
+			 document.testCaseVO.submit();
+	    }
 }
 
 function searchFileNm() {
@@ -92,14 +124,39 @@ function fDeleteMenuList() {
 		        }
 		    }   
 
-		    document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
-		    document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
-		    document.testCaseVO.submit(); 
+		    $.ajax({
+		    	
+		    	 type :"POST"
+		    	,url  : "<c:url value='/tms/test/selectScenarioCntReferringToCase.do'/>"
+		    	,data : {checkedMenuNoForDel:checkMenuNos}
+		    	,success :  function(totalCount){
+		    		
+		    		if(totalCount > 0) {
+		    			if (confirm('삭제하려는 케이스 중 ' + totalCount + '개의 케이스에 시나리오가 존재하고 있습니다. 그래도 삭제하시겠습니까')) {
+		    			
+		    				 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
+		    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
+		    				 document.testCaseVO.submit(); 
+		    			}
+		    		} else {
+		    			 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
+	    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
+	    				 document.testCaseVO.submit();
+		    		}
+		    		
+		    	}
+		    	, error :  function(request,status,error){
+		    		 alert("에러");
+			         alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		    	}
+		    		
+		    });
+		    
+		   
 	}
    
 }
 
--->
 </script>
 
 </head>
@@ -194,9 +251,8 @@ function fDeleteMenuList() {
                                         <a href="<c:url value='/tms/test/selectTestCaseList.do'/>" onclick="fn_egov_select_testCaseList('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
 										<spring:message code="button.inquire" /></a>
 									    <a href= "<c:url value="/tms/test/insertTestCase.do" />" ><spring:message code="button.create" /></a>
-									    <a href="#LINK" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
-									    
-									    
+									    <a href="#" onclick="selectTestCase(); return false;"><spring:message code="button.update" /></a>
+									    <a href="#" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
 									</div>	  				  			
 					  			</li> 
 					  			
@@ -280,7 +336,6 @@ function fDeleteMenuList() {
 	        			</c:forEach>
 	              </table>        
 	           </div>
-           
           
         	</form:form>
            
@@ -292,6 +347,103 @@ function fDeleteMenuList() {
                </ul>
            </div>                          
            <!-- //페이지 네비게이션 끝 -->  
+ 		
+ 		
+ 		<form:form style="visibility:visible; margin-top:20px;" commandName="testCaseVO" name="testCaseResultUpdate" method="post" action="/tms/test/deleteMultiTestCase.do">     
+                	
+	                <div class="default_tablestyle">
+	              	<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
+	                <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
+	              
+                          <tr > 
+                            <th width="16.6%" height="23" class="required_text" style="border: 1px solid #81B1D5;">
+                                <label for="firstTest">
+                                	<spring:message code="tms.test.firstTest" />
+                                </label>    
+                            </th>
+                            <th width="16.6%" style="border: 1px solid #81B1D5;">
+                            	<c:choose>
+                                		<c:when test="${testVoMap.firstTestResultYn == 'Y'}">
+	                                		<input type="radio" name="firstTestResultYn" value="Y" checked>Y&nbsp;
+	  										<input type="radio" name="firstTestResultYn" value="N">N&nbsp;
+                                		</c:when>
+                                		
+                                		<c:when test="${testVoMap.firstTestResultYn == 'N'}">
+	                                		<input type="radio" name="firstTestResultYn" value="Y" >Y&nbsp;
+	  										<input type="radio" name="firstTestResultYn" value="N" checked>N&nbsp;
+                                		</c:when>
+                                		
+                                		<c:otherwise>
+                                			<input type="radio" name="firstTestResultYn" value="Y">Y&nbsp;
+	  										<input type="radio" name="firstTestResultYn" value="N">N&nbsp;
+                                		</c:otherwise>
+                                	</c:choose>
+                            </th>
+                          
+                            <th width="16.6%"  height="23" class="required_text" style="border: 1px solid #81B1D5;">
+                                <label for="firstTest">
+                                	<spring:message code="tms.test.secondTest" />
+                                </label>    
+                            </th>
+                            <th width="16.6%" style="border: 1px solid #81B1D5;" >
+                            	<c:choose>
+                                		<c:when test="${testVoMap.secondTestResultYn == 'Y'}">
+	                                		<input type="radio" name="secondTestResultYn" value="Y" checked>Y&nbsp;
+	  										<input type="radio" name="secondTestResultYn" value="N">N&nbsp;
+                                		</c:when>
+                                		
+                                		<c:when test="${testVoMap.secondTestResultYn == 'N'}">
+	                                		<input type="radio" name="secondTestResultYn" value="Y" >Y&nbsp;
+	  										<input type="radio" name="secondTestResultYn" value="N" checked>N&nbsp;
+                                		</c:when>
+                                		
+                                		<c:otherwise>
+                                			<input type="radio" name="secondTestResultYn" value="Y">Y&nbsp;
+	  										<input type="radio" name="secondTestResultYn" value="N">N&nbsp;
+                                		</c:otherwise>
+                                	</c:choose>
+                            </th>
+                          
+                            <th width="16.6%"  height="23" class="required_text" style="border: 1px solid #81B1D5;">
+                                <label for="firstTest">
+                                	<spring:message code="tms.test.completeYn" />
+                                </label>    
+                            </th>
+                            <th width="16.6%" style="border: 1px solid #81B1D5;" >
+                            	<c:choose>
+                                		<c:when test="${testVoMap.completeYn == 'Y'}">
+	                                		<input type="radio" name="completeYn" value="Y" checked>Y&nbsp;
+	  										<input type="radio" name="completeYn" value="N">N&nbsp;
+                                		</c:when>
+                                		
+                                		<c:when test="${testVoMap.completeYn == 'N'}">
+	                                		<input type="radio" name="completeYn" value="Y" >Y&nbsp;
+	  										<input type="radio" name="completeYn" value="N" checked>N&nbsp;
+                                		</c:when>
+                                		
+                                		<c:otherwise>
+                                			<input type="radio" name="completeYn" value="Y">Y&nbsp;
+	  										<input type="radio" name="completeYn" value="N">N&nbsp;
+                                		</c:otherwise>
+                                	</c:choose>
+                            </th>
+                          </tr>
+                          	
+	        			
+	        			
+	        			
+	        			
+	        			
+	              </table>        
+	           </div>
+          
+        	</form:form>
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
  		
             </div>
             <!-- //content 끝 -->

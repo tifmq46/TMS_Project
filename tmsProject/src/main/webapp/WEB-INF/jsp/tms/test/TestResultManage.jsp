@@ -256,7 +256,7 @@ function updateTestScenarioResult () {
                    </form:form>
                     <br>
                 
-					<div id="border" class="modify_user" style="height:200px; width:92%; overflow:auto; " >
+					<div id="border" class="modify_user" style="height:200px; width:92%; overflow:auto;" >
 						
 						<input type="hidden" name="updateScenarioDataJson" >
                         <table>
@@ -329,7 +329,7 @@ function updateTestScenarioResult () {
 				
 					
 				
-			<form:form style="visibility:hidden;" commandName="testScenarioVO" name="testScenarioResultInsert" method="post" action="/tms/test/updateTestScenarioResultImpl.do">           
+			<form:form style="visibility:hidden; margin-top:20px;" commandName="testScenarioVO" name="testScenarioResultInsert" method="post" action="/tms/test/updateTestScenarioResultImpl.do">           
 					<div id="border" class="modify_user" >
 						<input type="hidden" name="testscenarioId" >
 						<input type="hidden" name="testcaseId" >
@@ -366,6 +366,7 @@ function updateTestScenarioResult () {
 	           				<li>
 								<div class="buttons">
 	                                <a href="#" onclick="updateTestScenarioResult(); return false;"><spring:message code="button.save" /> </a>
+	                                <a href="<c:url value="/tms/defect/insertDefect.do" />" >결함등록</a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>        

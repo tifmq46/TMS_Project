@@ -32,11 +32,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 
+
 function updateTestCase(){
 	
 	if (!validateTestCaseUpdate(document.testCaseVO)){
         return;
     }
+	
     if (confirm('<spring:message code="common.update.msg" />')) {
     	document.testCaseVO.action = "<c:url value='/tms/test/updateTestCaseImpl.do'/>";
    	 	document.testCaseVO.submit();       
@@ -103,6 +105,7 @@ function deleteTestCase() {
                                </th>
                                 <td width="80%" nowrap colspan="3">
                                 	<c:out value='${testVoMap.testcaseGbNm}'/>
+                                	<input type="hidden" name="testcaseGb" value="${testVoMap.testcaseGbCode}">
 									<br/><form:errors path="testcaseGb" />
                                 </td>
                           </tr>
@@ -202,10 +205,7 @@ function deleteTestCase() {
 								<div id="buttonDiv" class="buttons">
 	                                <a href="#" onclick="updateTestCase(); return false;"><spring:message code="button.save" /> </a>
 	                                <a href="#" onclick="deleteTestCase(); return false;"><spring:message code="button.delete" /> </a>
-				   					<%-- 
-				   					<a href="<c:url value='/tms/test/deleteTestCaseImpl.do?testcaseId=${testVoMap.testcaseId}&amp;testcaseGb=${testVoMap.testcaseGbCode}'/>"><spring:message code="button.delete" /></a>
-								 --%>
-								
+	                                <a href="javascript:history.go(-1);"><spring:message code="button.list" /> </a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>   

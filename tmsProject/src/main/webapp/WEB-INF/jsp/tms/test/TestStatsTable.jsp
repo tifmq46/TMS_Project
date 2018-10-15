@@ -119,40 +119,44 @@ function selectTestStatsTable(pageNo){
                 
               	<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
 	              	<colgroup>
-	        				<col width="30"/>
-	        				<col width="50"/>
-	        				<col width="40"/>
-	        				<col width="30"/>
-	        				<col width="30"/>
-	        				<col width="30"/>
-	        				<col width="30"/>
-	        				<col width="30"/>
-	        				<col width="30"/>
-	        				<col width="30"/>
-	        				<col width="30"/>
-	        				<col width="30"/>
-	        				<col width="30"/>
-	        				<col width="30"/>
+	        				<col width="10%"/>
+	        				<col width="10%"/>
+	        				
+	        				<c:if test="${searchVO.searchByTestcaseGb == 'TC1'}">
+	        				<col width="10%"/>
+	        				</c:if>
+	        				
+	        				<col width="12%"/>
+	        				<col width="7%"/>
+	        				<col width="7%"/>
+	        				<col width="7%"/>
+	        				<col width="8%"/>
+	        				<col width="7%"/>
+	        				<col width="7%"/>
+	        				<col width="7%"/>
+	        				<col width="8%"/>
 	        		</colgroup>
         			<tr>
         				<th align="center" rowspan="2">시스템구분</th>
         				<th align="center" rowspan="2">업무구분</th>
-        				<th align="center" rowspan="2">프로그램 본수</th>
-        				<th align="center" colspan="3">테스트 작성현황</th>
-        				<th align="center" rowspan="2">작성률</th>
-			        	<th align="center" colspan="2">테스트 진행현황</th>
-			        	<th align="center" rowspan="2">진행률</th>
-			        	<th align="center" colspan="3">테스트 결과현황</th>
-			        	<th align="center" rowspan="2">완료율</th>
+        				
+        				
+        				<c:if test="${searchVO.searchByTestcaseGb == 'TC1'}">
+        					<th align="center" rowspan="2">프로그램 본수</th>
+        				</c:if>
+        				
+        				<th align="center" rowspan="2">테스트케이스 개수</th>
+			        	<th align="center" colspan="3">테스트 진행</th>
+			        	<th align="center" rowspan="2">진행률(%)</th>
+			        	<th align="center" colspan="3">테스트 결과</th>
+			        	<th align="center" rowspan="2">완료율(%)</th>
         			</tr>
         			
         			<tr>
-        				<th align="center">작성 완료</th>
-			        	<th align="center">미완료</th>
-			        	<th align="center">합계</th>
-			        	<th align="center">1차 완료</th>
-			        	<th align="center">2차 완료</th>
-			        	<th align="center">최종완료</th>
+			        	<th align="center">미진행</th>
+			        	<th align="center">1차</th>
+			        	<th align="center">2차</th>
+			        	<th align="center">완료</th>
 			        	<th align="center">미완료</th>
 			        	<th align="center">합계</th>
         			</tr>
@@ -174,29 +178,48 @@ function selectTestStatsTable(pageNo){
             				<c:choose>
             					<c:when test="${result.taskGb eq '소계'}">
             						<td align="center" class="listtd" style="border-bottom: solid 1px #00000054;"><strong><c:out value="${result.taskGb}"/></strong>&nbsp;</td>
+            						
+            						
+            						<c:if test="${searchVO.searchByTestcaseGb == 'TC1'}">
+									<td align="center" class="listtd" style="border-bottom: solid 1px #00000054;"><strong><c:out value="${result.pgCnt}"/></strong>&nbsp;</td> 
+									</c:if>
+									
+		            				<td align="center" class="listtd" style="border-bottom: solid 1px #00000054;"><strong><c:out value="${result.tcWriteYCnt}"/></strong>&nbsp;</td> 
+		            				<td align="center" class="listtd" style="border-bottom: solid 1px #00000054;"><strong><c:out value="${result.notTestCnt}"/></strong>&nbsp;</td>
+		            				<td align="center" class="listtd" style="border-bottom: solid 1px #00000054;"><strong><c:out value="${result.firstTestCnt}"/></strong>&nbsp;</td>
+		            				<td align="center" class="listtd" style="border-bottom: solid 1px #00000054;"><strong><c:out value="${result.secondTestCnt}"/></strong>&nbsp;</td>
+		            				<td align="center" class="listtd" style="border-bottom: solid 1px #00000054;"><strong><c:out value="${result.tcProgressPct}"/></strong>&nbsp;</td>
+		            				<td align="center" class="listtd" style="border-bottom: solid 1px #00000054;"><strong><c:out value="${result.tcResultYCnt}"/></strong>&nbsp;</td>
+		            				<td align="center" class="listtd" style="border-bottom: solid 1px #00000054;"><strong><c:out value="${result.tcResultNCnt}"/></strong>&nbsp;</td>
+		            				<td align="center" class="listtd" style="border-bottom: solid 1px #00000054;"><strong><c:out value="${result.tcWriteYCnt}"/></strong>&nbsp;</td>
+		            				<td align="center" class="listtd" style="border-bottom: solid 1px #00000054;"><strong><c:out value="${result.tcResultPct}"/></strong>&nbsp;</td>
+            					
             					</c:when>
             				
             					<c:otherwise>
-									<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>            					
+									<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
+									
+									<c:if test="${searchVO.searchByTestcaseGb == 'TC1'}">
+									<td align="center" class="listtd"><c:out value="${result.pgCnt}"/>&nbsp;</td> 
+									</c:if>
+									
+		            				<td align="center" class="listtd"><c:out value="${result.tcWriteYCnt}"/>&nbsp;</td> 
+		            				<td align="center" class="listtd"><c:out value="${result.notTestCnt}"/>&nbsp;</td>
+		            				<td align="center" class="listtd"><c:out value="${result.firstTestCnt}"/>&nbsp;</td>
+		            				<td align="center" class="listtd"><c:out value="${result.secondTestCnt}"/>&nbsp;</td>
+		            				<td align="center" class="listtd"><c:out value="${result.tcProgressPct}"/>&nbsp;</td>
+		            				<td align="center" class="listtd"><c:out value="${result.tcResultYCnt}"/>&nbsp;</td>
+		            				<td align="center" class="listtd"><c:out value="${result.tcResultNCnt}"/>&nbsp;</td>
+		            				<td align="center" class="listtd"><c:out value="${result.tcWriteYCnt}"/>&nbsp;</td>
+		            				<td align="center" class="listtd"><c:out value="${result.tcResultPct}"/>&nbsp;</td>
             					</c:otherwise>
             				</c:choose>
             				
-            				<td align="center" class="listtd"><c:out value="${result.pgCnt}"/>&nbsp;</td> 
-            				<td align="center" class="listtd"><c:out value="${result.tcWriteYCnt}"/>&nbsp;</td> 
-            				<td align="center" class="listtd"><c:out value="${result.tcWriteNCnt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.pgCnt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.tcWritePct}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.firstTestCnt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.secondTestCnt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.tcProgressPct}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.tcYCnt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.tcNCnt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.pgCnt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.tcResultPct}"/>&nbsp;</td>
+            				
             				
             			</tr>
         			</c:forEach>
-        			
+        			 
               </table>        
            </div>
                 

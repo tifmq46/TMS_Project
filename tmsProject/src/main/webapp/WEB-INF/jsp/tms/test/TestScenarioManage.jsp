@@ -248,18 +248,10 @@ function fDeleteMenuList() {
                 	</form:form>
                 	
                 	<form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="/tms/test/deleteMultiTestScenario.do">           
-					<div id="border" class="modify_user" style="height:200px; width:92%; overflow:auto; " >
+					<div id="border" class="modify_user" style="height:200px; width:92%; overflow:auto;">
 						<input type="hidden" name="testcaseId" value="${testVoMap.testcaseId}" >
 						<input name="checkedMenuNoForDel" type="hidden" />
                         <table>
-                        	<colgroup>
-                        		<col width="4%" >
-		        				<col width="5%"/> 
-		        				<col width="35%"/>
-		        				<col width="21%"/>
-		        				<col width="35%"/>
-	        				</colgroup>
-                        
                             <tr>
                             	<th height="23"  nowrap="nowrap" scope="col" class="f_field" nowrap="nowrap">
                             		<input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/>
@@ -277,18 +269,28 @@ function fDeleteMenuList() {
                             <c:forEach var="result" items="${testScenarioList}" varStatus="status">
         			
 		            			<tr>
-			            			<td align="center" class="listtd" style="padding-left: 2px;">
+			            			<td align="center" class="listtd" style="padding-left:2px; ">
 							       		<input type="checkbox" name="checkField" class="check2" title="선택"/>
 							       		<input name="checkMenuNo" type="hidden" value="<c:out value='${result.testscenarioId}'/>"/>
 							    	</td>
-							    	<td align="center" class="listtd"><c:out value="${result.testscenarioOrd}"/>&nbsp;</td>
-		            				<td align="center" class="listtd">
-	            						<a href= "<c:url value='/tms/test/selectTestScenario.do?testscenarioId=${result.testscenarioId}'/>">
-			            				<strong><c:out value="${result.testscenarioContent}"/></strong>
-			            				</a>
+							    	<td align="center" class="listtd" ><c:out value="${result.testscenarioOrd}"/>&nbsp;</td>
+							    	
+		            				<td align="center" class="listtd" >
+		            						<a href= "<c:url value='/tms/test/selectTestScenario.do?testscenarioId=${result.testscenarioId}'/>">
+				            				<strong><c:out value="${result.testscenarioContent}"/></strong>
+				            				</a>
 		            				</td>
-		            				<td align="center" class="listtd"><c:out value="${result.testCondition}"/>&nbsp;</td>
-		            				<td align="center" class="listtd"><c:out value="${result.expectedResult}"/>&nbsp;</td>
+	            					<td align="center" class="listtd" >
+	            						
+	            						<c:out value="${result.testCondition}"/>&nbsp;
+	            						
+	            					</td>
+	            					
+	            					<td align="center" class="listtd" >
+	            						
+	            						<c:out value="${result.expectedResult}"/>&nbsp;
+	            						
+	            					</td>
 		            			</tr>
         			</c:forEach>
                             
@@ -302,6 +304,7 @@ function fDeleteMenuList() {
 								<div class="buttons">
 				   					<a href= "<c:url value='/tms/test/insertTestScenario.do?userId=${testVoMap.userId}&amp;testcaseId=${testVoMap.testcaseId} '/>"><spring:message code="button.create" /></a>
 									<a href="#LINK" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
+									<a href="javascript:history.go(-1);"><spring:message code="button.list" /></a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>        

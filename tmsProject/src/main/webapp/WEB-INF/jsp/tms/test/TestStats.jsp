@@ -30,11 +30,13 @@
 <link href="<c:url value='/'/>css/test/chartist.min.css" rel="stylesheet" type="text/css" >
 <title>테스트 통계</title>
 <script type="text/javascript" src="<c:url value='/js/chartist.min.js' />" ></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
+
+
 <script type="text/javaScript" language="javascript" defer="defer">
 
-
 window.onload = function() {
-	
 	
 	var list = JSON.parse('${tcStatsByTaskGb}');
 	console.log(list);
@@ -57,6 +59,7 @@ window.onload = function() {
 			  ]
 			};
 
+		
 			var options = {
 			  seriesBarDistance: 5
 			};
@@ -81,7 +84,110 @@ window.onload = function() {
 			];
 
 			new Chartist.Bar('.ct-chart', data, options, responsiveOptions);
-			}
+			
+			
+			/* 단위테스트 진행상태 stacked bar */
+			var ProgressStatusUtcData = JSON.parse('${ProgressStatusUtc}');
+			
+			var ProgressStatusUtcNotTestCnt = new Array();
+			var ProgressStatusUtcFirstTestCnt = new Array();
+			var ProgressStatusUtcSecondTestCnt = new Array();
+			var ProgressStatusUtcCompleteYCnt = new Array();
+			
+			ProgressStatusUtcNotTestCnt.push(ProgressStatusUtcData.notTestCnt);
+			ProgressStatusUtcFirstTestCnt.push(ProgressStatusUtcData.firstTestCnt);
+			ProgressStatusUtcSecondTestCnt.push(ProgressStatusUtcData.secondTestCnt);
+			ProgressStatusUtcCompleteYCnt.push(ProgressStatusUtcData.completeYCnt);
+			
+			
+			var ctx = document.getElementById("ProgressStatusUtcChart");
+			var ProgressStatusUtcChart = new Chart(ctx, {
+				  type : 'horizontalBar'
+				 ,data : {
+						  barThickness : '0.2'
+						 
+						 ,datasets : 
+							[{ label : '미진행',
+								data : ProgressStatusUtcNotTestCnt,
+								backgroundColor : '#B7BDD6'}
+							,{ label : '1차',
+								data : ProgressStatusUtcFirstTestCnt,
+								backgroundColor : '#98D5DC'}
+							,{ label : '2차',
+								data : ProgressStatusUtcSecondTestCnt,
+								backgroundColor : '#3765A4'}
+							,{ label : '최종완료',
+								data : ProgressStatusUtcCompleteYCnt,
+								backgroundColor : '#D57C86'}]
+						}
+				,options : {
+						scales : 
+							 {xAxes : [ {stacked : true}]
+							 ,yAxes : [ {stacked : true} ]}
+				
+				 		
+							}
+			});		
+			
+			
+			/* 통합테스트 진행상태 stacked bar */
+			var ProgressStatusTtcData = JSON.parse('${ProgressStatusTtc}');
+			
+			var ProgressStatusTtcNotTestCnt = new Array();
+			var ProgressStatusTtcFirstTestCnt = new Array();
+			var ProgressStatusTtcSecondTestCnt = new Array();
+			var ProgressStatusTtcCompleteYCnt = new Array();
+			
+			ProgressStatusTtcNotTestCnt.push(ProgressStatusTtcData.notTestCnt);
+			ProgressStatusTtcFirstTestCnt.push(ProgressStatusTtcData.firstTestCnt);
+			ProgressStatusTtcSecondTestCnt.push(ProgressStatusTtcData.secondTestCnt);
+			ProgressStatusTtcCompleteYCnt.push(ProgressStatusTtcData.completeYCnt);
+			
+			
+			var ctx = document.getElementById("ProgressStatusTtcChart");
+			var ProgressStatusTtcChart = new Chart(ctx, {
+				  type : 'horizontalBar'
+				 ,data : {
+						  barThickness : '0.2'
+						 ,datasets : 
+							[{ label : '미진행',
+								data : ProgressStatusTtcNotTestCnt,
+								backgroundColor : '#B7BDD6'}
+							,{ label : '1차',
+								data : ProgressStatusTtcFirstTestCnt,
+								backgroundColor : '#98D5DC'}
+							,{ label : '2차',
+								data : ProgressStatusTtcSecondTestCnt,
+								backgroundColor : '#3765A4'}
+							,{ label : '최종완료',
+								data : ProgressStatusTtcCompleteYCnt,
+								backgroundColor : '#D57C86'}]
+						}
+				,options : {
+						scales : 
+							 {xAxes : [ {stacked : true} ]
+							 ,yAxes : [ {stacked : true} ]}
+							}
+			});		
+			
+			} //window.onload
+			
+			
+		
+			
+
+$(document).ready(function(){
+	
+	$("#progress_bar_utc").click(function (){
+			$("#detail_bar_utc").toggle();
+	});
+	
+	$("#progress_bar_ttc").click(function (){
+		$("#detail_bar_ttc").toggle();
+});
+	
+});
+			
 </script>
 
 </head>
@@ -119,9 +225,9 @@ window.onload = function() {
                              
                         
 
-                 <div class="progess_bar_section" >
+                 <div id="progress_bar_utc" class="progess_bar_section" >
                  
-                      	<strong>단위테스트 진행률   </strong>
+                      	<strong>단위테스트 완료현황</strong>
                       	
                       	<div style="float:right;">
 	                      	<fmt:parseNumber var="tc1_yCnt" value="${testCaseStatsMapTC1.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
@@ -149,23 +255,27 @@ window.onload = function() {
 							  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;등록건수
 						</div>
 				</div>
+				
+				<div id="detail_bar_utc" style="display:none;" class="progess_bar_section" >
+                      <canvas id="ProgressStatusUtcChart" width="100%" height="13"></canvas>
+				</div>
                  
                 
                     	
                  <div class="progess_bar_section" >
                       	
-					    <span><strong>업무별 단위테스트 진행률</strong></span>
+					    <span><strong>업무별 단위테스트 진행현황 (단위:수)</strong></span>
 					    <div class="ct-chart ct-perfect-fourth"></div>
                       	 <div style="text-align: center; margin-top:10px;" >
 							  <img src="<c:url value='/images/tms/icon_pop_blue.gif' />" width="10" height="10" alt="yCnt"/>&nbsp;완료건수
-							  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;등록건수
+							  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;케이스 등록건수
 						 </div>
                  </div>   
                  
                  
-                  <div class="progess_bar_section" >
+                  <div id="progress_bar_ttc" class="progess_bar_section" >
                  
-                		<strong>통합테스트 진행률  </strong>
+                		<strong>통합테스트 완료현황</strong>
                  
                  		<div style="float:right;">
                       		<fmt:parseNumber var="tc2_yCnt" value="${testCaseStatsMapTC2.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
@@ -194,6 +304,12 @@ window.onload = function() {
 							  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;등록건수
 						</div>
                  </div>
+                   
+                 <div id="detail_bar_ttc" style="display:none;" class="progess_bar_section" >
+                      <canvas id="ProgressStatusTtcChart" width="100%" height="13"></canvas>
+				</div>
+                   
+                   
                    
             </div>
             <!-- //content 끝 -->

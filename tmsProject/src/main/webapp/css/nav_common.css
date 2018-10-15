@@ -250,15 +250,19 @@ margin: 0; background-color:#f2f2f2;
 
 #page_info{clear:both;width:800px;padding-top:20px;padding-bottom:3px;} 
 #page_info_align{float:right;}
-.modify_user table{clear:both; width:1000px;    border: 1px solid #dddddd;
+.modify_user table{
+	clear:both; 
+	width:1000px;   
+	 border: 1px solid #dddddd;
     line-height: 28px;
-    overflow: hidden;
-    white-space: nowrap;}
+    }
 .modify_user table th {background-color:#f2f2f2;border:1px solid #dddddd;
     color:#0f438a;
     height: 26px;
 }
-.modify_user table td{background-color:#ffffff;border:1px solid #dddddd;
+.modify_user table td{
+	background-color:#ffffff;
+	border:1px solid #dddddd;
     color:#0f438a;
     height: 26px;padding-left:10px;}
 

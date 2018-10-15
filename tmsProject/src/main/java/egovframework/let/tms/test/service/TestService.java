@@ -67,6 +67,17 @@ public interface TestService {
 
 	
 	/**
+	 * 삭제하려는 케이스를 참조하고 있는 시나리오가 있는지 개수를 확인한다.
+	 * @param checkedMenuNoForDel  String
+	 * @return 
+	 * @exception Exception
+	 */
+	
+	public int selectScenarioCntReferringToCase(String checkedMenuNoForDel) throws Exception;
+	
+	
+	
+	/**
 	 * 테스트시나리오를 삭제한다.
 	 * @param String - 삭제할 정보가 담긴 testscenarioId
 	 * @return void형
@@ -91,6 +102,18 @@ public interface TestService {
 	 * @exception Exception
 	 */
 	public HashMap<String,Object> selectTestCase(String testcaseId) throws Exception; 
+	
+	
+
+	/**
+	 * 테스트 케이스의 진행상태를 가져온다. (통계 대시보드용)
+	 * @param vo - 조회할 정보가 담긴 TestVO
+	 * @return 조회한 글
+	 * @exception Exception
+	 */
+	public HashMap<String,Object> selectTestCaseProgressStatus(String testcaseGb) throws Exception; 
+	
+	
 	
 	/**
 	 * 테스트시나리오에 대한 상세정보를 조회한다.

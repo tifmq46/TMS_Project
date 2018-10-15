@@ -275,7 +275,7 @@ margin: 0; background-color:#f2f2f2;
     line-height: 28px;
     overflow: hidden;
     padding-left: 0px;
-    white-space: nowrap;
+    white-space: pre-line;
     width: 100%;
 }
 .default_tablestyle a {
@@ -292,18 +292,23 @@ margin: 0; background-color:#f2f2f2;
     float: left;
     padding-left: 3px;
 }
-.modify_user table{clear:both; width:800px;    border: 1px solid #dddddd;
+.modify_user table{
+	clear:both; 
+	width:800px;    
+	border: 1px solid #dddddd;
     line-height: 28px;
-    overflow: hidden;
-    white-space: nowrap;
     }
 .modify_user table th {background-color:#f2f2f2;border:1px solid #dddddd;
     color:#0f438a;
     height: 26px;
 }
-.modify_user table td{background-color:#ffffff;border:1px solid #dddddd;
+.modify_user table td{
+	background-color:#ffffff;
+	border:1px solid #dddddd;
     color:#0f438a;
-    height: 26px;padding-left:10px;}
+    height: 26px;
+    width: 100%;
+    padding-left:10px;}
 
 
 /* btn */

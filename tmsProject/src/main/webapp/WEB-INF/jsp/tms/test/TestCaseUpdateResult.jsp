@@ -27,29 +27,31 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>테스트케이스 상세</title>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="testCaseUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 
 function updateTestCase(){
 	
-	if (!validateTestCaseUpdate(document.testCaseVO)){
-        return;
-    }
     if (confirm('<spring:message code="common.update.msg" />')) {
     	document.testCaseVO.action = "<c:url value='/tms/test/updateTestCaseImpl.do'/>";
    	 	document.testCaseVO.submit();       
     }
 }
 
-function deleteTestCase() {
+function completeYnValidator(evt) {
 	
-	if (confirm('<spring:message code="common.delete.msg" />')) {
-    	document.testCaseVO.action = "<c:url value='/tms/test/deleteTestCaseImpl.do'/>";
-   	 	document.testCaseVO.submit();       
-    }
+	var firstTestResult = $('input[name="firstTestResultYn"]:checked').val();
+	var secondTestResult = $('input[name="secondTestResultYn"]:checked').val();
+	
+	if(firstTestResult != 'Y' && secondTestResult != 'Y'){
+		alert("1차와 2차가 완료되지 않은 상태에서는 최종완료여부를 선택하실 수 없습니다.");
+		evt.preventDefault();
+		return false;
+	} else {
+	}
+	
 }
+
 
 </script>
 
@@ -92,6 +94,7 @@ function deleteTestCase() {
                              
                <form:form commandName="testCaseVO" name="testCaseVO" method="post" action="/tms/test/updateTestCaseImpl.do">           
                  
+                 <input type="hidden" name="testcaseGb" value="${testVoMap.testcaseGbCode}">
                  <div id="border" class="modify_user" >
                       <table>
                       	<tr>
@@ -103,7 +106,6 @@ function deleteTestCase() {
                                </th>
                                 <td width="83%" colspan="5" nowrap >
                                 	<c:out value='${testVoMap.testcaseGbNm}'/>
-									<br/><form:errors path="testcaseGb" />
                                 </td>
                           </tr>
                          <tr>
@@ -115,7 +117,6 @@ function deleteTestCase() {
                                 <td width="83%" colspan="5" nowrap >
                                     <c:out value='${testVoMap.testcaseId}'/>
                                     <input type="hidden" name="testcaseId" value="${testVoMap.testcaseId}" >
-                                    <br/><form:errors path="testcaseId" /> 
                                 </td>
                           </tr>
                           <tr>
@@ -156,7 +157,6 @@ function deleteTestCase() {
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="83%" colspan="5" nowrap >
                                 	<c:out value='${testVoMap.taskGbNm}'/>
-									<br/><form:errors path="taskGb" />
                                 </td>
                           </tr>
                            <tr>
@@ -167,7 +167,6 @@ function deleteTestCase() {
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="83%" colspan="5" nowrap >
                                 	<c:out value='${testVoMap.userNm}'/>
-                                    <br/><form:errors path="userId" />
                                 </td> 
                           </tr>
                           <tr> 
@@ -188,7 +187,6 @@ function deleteTestCase() {
                             </th>
                             <td width="83%" colspan="5">
                             	<c:out value='${testVoMap.enrollDt}'/>
-                            	<br/><form:errors path="enrollDt" />
                             </td>
                           </tr>
                           
@@ -201,8 +199,17 @@ function deleteTestCase() {
                                 </label>    
                             </th>
                             <td width="16.6%"  >
-                            	<input type="radio" name="firstTestResultYn" value="Y">Y&nbsp;
-                            	<input type="radio" name="firstTestResultYn" value="N">N&nbsp;
+                            	<c:choose>
+                                		<c:when test="${testVoMap.firstTestResultYn == 'Y'}">
+	                                		<input type="radio" name="firstTestResultYn" value="Y" checked>Y&nbsp;
+	  										<input type="radio" name="firstTestResultYn" value="N">N&nbsp;
+                                		</c:when>
+                                		
+                                		<c:when test="${testVoMap.firstTestResultYn == 'N'}">
+	                                		<input type="radio" name="firstTestResultYn" value="Y" >Y&nbsp;
+	  										<input type="radio" name="firstTestResultYn" value="N" checked>N&nbsp;
+                                		</c:when>
+                               	</c:choose>
                             </td>
                           
                             <th width="16.6%"  height="23" class="required_text" >
@@ -211,8 +218,17 @@ function deleteTestCase() {
                                 </label>    
                             </th>
                             <td width="16.6%"  >
-                            	<input type="radio" name="secondTestResultYn" value="Y">Y&nbsp;
-                            	<input type="radio" name="secondTestResultYn" value="N">N&nbsp;
+                            	<c:choose>
+                                		<c:when test="${testVoMap.secondTestResultYn == 'Y'}">
+	                                		<input type="radio" name="secondTestResultYn" value="Y" checked>Y&nbsp;
+	  										<input type="radio" name="secondTestResultYn" value="N">N&nbsp;
+                                		</c:when>
+                                		
+                                		<c:when test="${testVoMap.secondTestResultYn == 'N'}">
+	                                		<input type="radio" name="secondTestResultYn" value="Y" >Y&nbsp;
+	  										<input type="radio" name="secondTestResultYn" value="N" checked>N&nbsp;
+                                		</c:when>
+                               	</c:choose>
                             </td>
                           
                             <th width="16.6%"  height="23" class="required_text" >
@@ -221,8 +237,17 @@ function deleteTestCase() {
                                 </label>    
                             </th>
                             <td width="16.6%"  >
-                            	<input type="radio" name="completeYn" value="Y">Y&nbsp;
-                            	<input type="radio" name="completeYn" value="N">N&nbsp;
+                            	<c:choose>
+                                		<c:when test="${testVoMap.completeYn == 'Y'}">
+	                                		<input type="radio" name="completeYn" value="Y" checked>Y&nbsp;
+	  										<input type="radio" name="completeYn" value="N">N&nbsp;
+                                		</c:when>
+                                		
+                                		<c:when test="${testVoMap.completeYn == 'N'}">
+	                                		<input type="radio" name="completeYn" value="Y" onclick="completeYnValidator(event);" >Y&nbsp;
+	  										<input type="radio" name="completeYn" value="N" checked>N&nbsp;
+                                		</c:when>
+                               	</c:choose>
                             </td>
                           </tr>
                           
@@ -235,12 +260,8 @@ function deleteTestCase() {
 	                  	<ul>        
 	           				<li>
 								<div id="buttonDiv" class="buttons">
-	                                <a href="#" onclick="updateTestCase(); return false;"><spring:message code="button.save" /> </a>
-	                                <a href="#" onclick="deleteTestCase(); return false;"><spring:message code="button.delete" /> </a>
-				   					<%-- 
-				   					<a href="<c:url value='/tms/test/deleteTestCaseImpl.do?testcaseId=${testVoMap.testcaseId}&amp;testcaseGb=${testVoMap.testcaseGbCode}'/>"><spring:message code="button.delete" /></a>
-								 --%>
-								
+	                                <a href="#" onclick="updateTestCase(); return false;"><spring:message code="button.save" /></a>
+									<a href="javascript:history.go(-1);"><spring:message code="button.list" /></a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>   
