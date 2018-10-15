@@ -147,7 +147,7 @@ function searchFileNm() {
                           <li>
                            <div class="buttons" style="float:right;">
                             <a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                               <a href="<c:url value='/tms/defect/insertDefect.do'/>">등록</a>
+                               <a href="<c:url value='/tms/defect/insertDefect.do'/>?testscenarioId=0">등록</a>
                            </div>                            
                           </li>
                           
@@ -201,7 +201,7 @@ function searchFileNm() {
                         <td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
                         <td align="center" class="listtd" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
                         
-                        <td align="center" class="listtd" style="text-align:left;">
+                         <td align="center" class="listtd" style="text-align:left;">
                         <a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>"
                         title="<c:out value="${result.defectTitle}"/>">
                         <font color="#0F438A" style="font-weight:bold"><c:out value="${result.defectTitle}"/></font>
@@ -229,7 +229,7 @@ function searchFileNm() {
                         <td align="center" class="listtd"><c:out value="${result.actionSt}"/>&nbsp;</td>
                         </c:otherwise>
                         </c:choose>
-                     
+                        
                      </tr>
                   
                  </c:forEach>

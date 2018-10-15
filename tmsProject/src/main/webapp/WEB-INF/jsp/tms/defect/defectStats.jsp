@@ -21,6 +21,7 @@
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -28,25 +29,117 @@
 <title>결함처리통계(그래프)</title>
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
-<script type="text/javascript">
-
-function selectBoxChange() {
-	var selectBoxId = document.getElementById("selectBoxStats");
-	var selectBoxValue = selectBoxId.options[selectBoxId.selectedIndex].value;
-	
-	if(selectBoxValue == 1) {
-		document.getElementById("dayByDefectCntTitle").style.display="inline"
-		document.getElementById("dayByDefectCnt").style.display="inline"
-		document.getElementById("monthByDefectCntTitle").style.display="none"
-		document.getElementById("monthByDefectCnt").style.display="none"
-	} else if (selectBoxValue == 2) {
-		document.getElementById("dayByDefectCntTitle").style.display="none"
-		document.getElementById("dayByDefectCnt").style.display="none"
-		document.getElementById("monthByDefectCntTitle").style.display="inline"
-		document.getElementById("monthByDefectCnt").style.display="inline"
-	} 
+<style type="text/css">
+.carousel {
+    position: relative;
+     margin-top: 0px;
 }
 
+.carousel-inner {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.carousel-open:checked + .carousel-item {
+    position: relative;
+    opacity: 100;
+}
+
+.carousel-item {
+    position: absolute;
+    opacity: 0;
+    -webkit-transition: opacity 0.6s ease-out;
+    transition: opacity 0.6s ease-out;
+}
+
+.carousel-control {
+    background: rgba(0, 0, 0, 0.28);
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    display: none;
+    font-size: 40px;
+    height: 40px;
+    line-height: 42px;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translate(0, -50%);
+    cursor: pointer;
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    text-align: center;
+    width: 40px;
+    z-index: 10;
+}
+
+.carousel-control.prev {
+    left: 0.1%;
+}
+
+.carousel-control.next {
+    right: 0.1%;
+}
+
+.carousel-control:hover {
+    background: rgba(0, 0, 0, 0.8);
+    color: #aaaaaa;
+}
+
+#carousel-1:checked ~ .control-1,
+#carousel-2:checked ~ .control-2,
+#carousel-3:checked ~ .control-3 {
+    display: block;
+}
+
+.carousel-indicators {
+	list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    bottom: 2%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 10;
+}
+
+.carousel-indicators li {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.carousel-bullet {
+    color: #aaaaaa;
+    cursor: pointer;
+    display: block;
+    font-size: 35px;
+}
+
+.carousel-bullet:hover {
+    color: #aaaaaa;
+}
+
+#carousel-1:checked ~ .control-1 ~ .carousel-indicators li:nth-child(1) .carousel-bullet,
+#carousel-2:checked ~ .control-2 ~ .carousel-indicators li:nth-child(2) .carousel-bullet,
+#carousel-3:checked ~ .control-3 ~ .carousel-indicators li:nth-child(3) .carousel-bullet {
+    color: #007bff;
+}
+
+#title {
+    width: 100%;
+    position: absolute;
+    padding: 0px;
+    margin: 0px auto;
+    text-align: center;
+    font-size: 27px;
+    color: rgba(255, 255, 255, 1);
+    font-family: 'Open Sans', sans-serif;
+    z-index: 9999;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.33), -1px 0px 2px rgba(255, 255, 255, 0);
+}
+</style>
+<script type="text/javascript">
 function taskBySelectBoxChange() {
 	var selectBoxId = document.getElementById("taskBySelectBoxStats");
 	var selectBoxValue = selectBoxId.options[selectBoxId.selectedIndex].value;
@@ -65,7 +158,6 @@ function taskBySelectBoxChange() {
 }
 
 window.onload = function() {
-	
 	
 		var colorArray = [ '#DAE9F4', '#9DC3C1', '#00B3E6', '#008C9E',
 		                   '#007BFF', '#FFB399', '#FF33FF', '#FFFF99',
@@ -135,7 +227,7 @@ window.onload = function() {
 	    		});
 		}
 		
-		/** 업무별 전체 결함건수*/
+		/** 업무별 전체 결함현황*/
 		function addData(taskNmList, taskTotCntList, colorArray) {
 			var dataSetValue = [];
 			for(var i=0; i<taskNmList.length; i++) {
@@ -158,8 +250,7 @@ window.onload = function() {
 		for (var i = 0; i < taskByActionProgression.length; i++) {
 			taskByActionProgressionTaskNm.push(taskByActionProgression[i].taskNm);
 			if(i == taskByActionProgression.length-1) {
-				var temp = 100 - sum;
-				taskByActionProgressionTaskTotCnt.push(temp.toFixed(1));
+				taskByActionProgressionTaskTotCnt.push((100 - sum).toFixed(1));
 			} else {
 				sum = sum + parseFloat((taskByActionProgression[i].taskTotCnt / defectStatsActionStAll* 100).toFixed(1));
 				taskByActionProgressionTaskTotCnt.push((taskByActionProgression[i].taskTotCnt
@@ -501,190 +592,216 @@ window.onload = function() {
      		<div id="search_field">
 					<div id="search_field_loc"><h2><strong>결함처리통계(그래프)</strong></h2></div>
 			</div>
-			<br/><br/><br/><br/>
-			 <h3><strong>상태별 결함건수</strong></h3>
-            <table width="100%" cellspacing = "10" height="80px" >
-            <tr>
-            	<td width="16.6%" align="center" bgcolor="#CC3C39"><font color="#FFFFFF" size="3" style="font-weight:bold" > 전체건수 <br/><c:out value="${defectStats.actionStAll}"/></font></td>
-            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 대기 <br/><c:out value="${defectStats.actionStA1}"/></font></td>
-            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 조치중 <br/><c:out value="${defectStats.actionStA2}"/></font></td>
-            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 조치완료 <br/><c:out value="${defectStats.actionStA3}"/></font></td>
-            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 재요청 <br/><c:out value="${defectStats.actionStA4}"/></font></td>
-            	<td width="16.6%" align="center" bgcolor="#007BFF"><font color="#FFFFFF" size="3" style="font-weight:bold" > 최종완료 <br/><c:out value="${defectStats.actionStA5}"/></font></td>
-            </tr>
-            </table>
-            
-             <h3><strong>조치율</strong></h3>
-                 	<%-- 총 : <c:out value="${defectStats.actionStAll}"/> 
-                 	완료 : <c:out value="${defectStats.actionStA5}"/>
-                 	미완료 : <c:out value="${defectStats.actionStAll - defectStats.actionStA5}"/> --%>
-				<table width="100%">
-					<tr>
-						<td width="90%">
-						<fmt:parseNumber var="actionProgression" integerOnly="true"
-								value="${defectStats.actionStA5 / defectStats.actionStAll * 100}" />
-							<div class="progress" style="height: 2rem;">
-								<div class="progress-bar" style="width:${actionProgression}%">
-									<font style="font-size: 15px; font-weight: bolder"><c:out
-											value=" ${actionProgression}"></c:out>% </font>
-								</div>
-							</div></td>
-						<td width="10%">
-						<font size="3px" style="font-weight:bold">
-								<c:out value="${defectStats.actionStA5}"></c:out>&nbsp;/&nbsp;<c:out
-										value="${defectStats.actionStAll}"></c:out>
-						</font>
-						</td>
-					</tr>
-					<tr>
-						<td align="right">
-						<img
-							src="<c:url value='/images/tms/icon_pop_blue.gif' />" width="10"
-							height="10" alt="yCnt" />&nbsp;조치율 &nbsp;<img
-							src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10"
-							height="10" alt="totCnt" />&nbsp;미조치율
-						</td>
-						<td></td>
-					</tr>
-				</table>
-            
-            <h3><strong>업무별 조치율</strong></h3>
-            <div style="overflow:auto; white-space:nowrap; overflow-y:hidden;">
-            <table>
-            <tr>
-            <td>
-            &nbsp;&nbsp;<canvas id="taskByAllProgression" width="200" height="200" style="display: inline !important;"></canvas>&nbsp;&nbsp;
-            </td>
-            <c:forEach var="taskByActionProgression" items="${taskByActionProgression}" varStatus="status">
-            <td>
-            <canvas id="<c:out value="${taskByActionProgression.taskGb}"/>"  width="180" height="180" style="display: inline !important;"></canvas>&nbsp;&nbsp;
-			</td>            
-            </c:forEach>
-            <br/>
-            </tr>
-            
-            <tr>
-            <td align="center" valign="middle">
-            <div style="font-size:15px; font-weight:bolder;">
-            	<font color="#007BFF"><c:out value="${defectStats.actionStA5}"/></font>	/ <c:out value="${defectStats.actionStAll}"/> 
-           			 <fmt:parseNumber var="actionProgression" integerOnly="true" value="${defectStats.actionStA5 / defectStats.actionStAll * 100}"/>
-                 (<c:out value=" ${actionProgression}"></c:out>%)
-                 	<br/>
-                 	전체
-                 	<br/>
-             </div>
-            </td>
-            <c:forEach var="taskByActionProgression" items="${taskByActionProgression}" varStatus="status">
-            <td align="center" valign="middle">
-            	<div style="font-size:13px; font-weight:bolder;">
-            	<font color="#007BFF"><c:out value="${taskByActionProgression.taskA5Cnt}"/></font> / <c:out value="${taskByActionProgression.taskTotCnt}"/>
-            	 <c:if test="${taskByActionProgression.taskTotCnt != 0}">
-            	 (<fmt:parseNumber var="actionProgression" integerOnly="true" value="${taskByActionProgression.taskA5Cnt / taskByActionProgression.taskTotCnt * 100}"/>
-                 	<c:out value=" ${actionProgression}"></c:out>%)
-                 </c:if>
-                 <br/>
-					<c:out value="${taskByActionProgression.taskNm}"/>
-                 <br/>
-                 </div>
-            </td>
-            </c:forEach>
-            </tr>
-            </table>
-            </div>
-            
-            
-            <br/><br/>
-            <table width="100%">
-            <tr>
-            <td width="90%" valign="middle">
-			 <strong><font size=3>업무별 전체 결함현황</font></strong>
-            </td>
-            <td width="10%" align="center" valign="middle">
-            <strong><font size=2>(단위:%)</font></strong>
-            </td>
-            </tr>
-            </table>
-			 <%-- <c:forEach var="taskByActionProgression" items="${taskByActionProgression}" varStatus="status">
-            	<c:out value="${taskByActionProgression.taskNm}"/> : <c:out value="${taskByActionProgression.taskTotCnt}"/>
-            	&nbsp;
-            	 <c:if test="${taskByActionProgression.taskTotCnt != 0}">
-            	 (<fmt:parseNumber var="actionProgression" integerOnly="true" value="${taskByActionProgression.taskTotCnt / defectStats.actionStAll * 100}"/>
-                 	<strong><c:out value=" ${actionProgression}"></c:out>%</strong>)&nbsp;
-                 	</c:if>
-            </c:forEach> --%>
-            <canvas id="taskByActionProgression" width="100%" height="15"></canvas>
-			  <br/><br/>
-			  
-			  <div align="right">
-			<select id="taskBySelectBoxStats" style="width:12%;text-align-last:center;" onChange="javascript:taskBySelectBoxChange();">
-				<option value="1" selected="selected" >상태별</option>
-				<option value="2" >유형별</option>
-			</select>
-			</div>
-			<div id="taskByActionStCntTitle" style="display:inline">
-			<table width="100%">
-            <tr>
-            <td width="90%" valign="middle">
-			 <strong><font size=3>업무별/상태별 결함현황</font></strong>
-            </td>
-            <td width="10%" align="center" valign="middle">
-            <strong><font size=2>(단위:%)</font></strong>
-            </td>
-            </tr>
-            </table>
-			<%--  <c:forEach var="taskByActionStCnt" items="${taskByActionStCnt}" varStatus="status">
-            	<c:out value="${taskByActionStCnt.taskNm}"/> : (<c:out value="${taskByActionStCnt.actionStAll}"/>) 
-            	<c:out value="${taskByActionStCnt.actionStA1}"/> / <c:out value="${taskByActionStCnt.actionStA2}"/> /
-            	<c:out value="${taskByActionStCnt.actionStA3}"/> / <c:out value="${taskByActionStCnt.actionStA4}"/> /
-            	<c:out value="${taskByActionStCnt.actionStA5}"/>
-            	&nbsp;
-            </c:forEach> --%>
-			</div>
-            <canvas id="taskByActionStCnt" width="100%" height="20" style="display:inline"></canvas>
-			<div id="taskByDefectGbCntTitle" style="display:none">
-			<table width="100%">
-            <tr>
-            <td width="90%" valign="middle">
-			 <strong><font size=3>업무별/유형별 결함현황</font></strong>
-            </td>
-            <td width="10%" align="center" valign="middle">
-            <strong><font size=2>(단위:%)</font></strong>
-            </td>
-            </tr>
-            </table>
-			<%--  <c:forEach var="taskByDefectGbCnt" items="${taskByDefectGbCnt}" varStatus="status">
-            	<c:out value="${taskByDefectGbCnt.taskNm}"/> : <c:out value="${taskByDefectGbCnt.defectGbD1}"/> / 
-            	<c:out value="${taskByDefectGbCnt.defectGbD2}"/> / <c:out value="${taskByDefectGbCnt.defectGbD3}"/> /
-            	<c:out value="${taskByDefectGbCnt.defectGbD4}"/>
-            	&nbsp;
-            </c:forEach> --%>
-			</div>
-            <canvas id="taskByDefectGbCnt" width="100%" height="20" style="display:none"></canvas>
-            
-            <div id="dayByDefectCntTitle" style="display:inline">
-			<h3><strong>일자별 등록건수, 조치건수</strong></h3>
-			<%-- <c:forEach var="dayByDefectCnt" items="${dayByDefectCnt}" varStatus="status">
-            	<c:out value="${dayByDefectCnt.days}"/> : <c:out value="${dayByDefectCnt.enrollDtCnt}"/> | <c:out value="${dayByDefectCnt.actionDtCnt}"/>
-            	&nbsp;
-            </c:forEach> --%>
-			</div>
-            <div id="monthByDefectCntTitle" style="display:none">
-			<h3><strong>월별 등록건수, 조치건수</strong></h3>
-			<%-- <c:forEach var="monthByDefectCnt" items="${monthByDefectCnt}" varStatus="status">
-            	<c:out value="${monthByDefectCnt.months}"/> : <c:out value="${monthByDefectCnt.enrollMonthDtCnt}"/> | <c:out value="${monthByDefectCnt.actionMonthDtCnt}"/>
-            	&nbsp;
-            </c:forEach> --%>
-            </div>
-			<div align="right">
-			<select id="selectBoxStats" style="width:12%;text-align-last:center;" onChange="javascript:selectBoxChange();">
-				<option value="1" selected="selected" >일자별</option>
-				<option value="2" >월별</option>
-			</select>
-			</div>
-            <canvas id="dayByDefectCnt" width="100%" height="20" style="display:inline"></canvas>
-            <canvas id="monthByDefectCnt" width="100%" height="20" style="display:none"></canvas>
-            <br/><br/>
-            
+
+				<div class="carousel">
+					<div class="carousel-inner">
+						<input class="carousel-open" type="radio" id="carousel-1"
+							name="carousel" aria-hidden="true" hidden="" checked="checked">
+						<div class="carousel-item">
+							<h3>
+								<strong>조치율</strong>
+							</h3>
+							<table width="100%">
+								<tr>
+									<td width="90%">
+									<fmt:parseNumber var="actionProgression" integerOnly="true"
+											value="${defectStats.actionStA5 / defectStats.actionStAll * 100}" />
+										<div class="progress" style="height: 2rem;">
+											<div class="progress-bar" style="width:${actionProgression}%">
+												<font style="font-size: 15px; font-weight: bolder">
+												<c:out value=" ${actionProgression}"></c:out>% </font>
+											</div>
+										</div>
+										</td>
+									<td width="10%"><font size="3px" style="font-weight: bold">
+											<c:out value="${defectStats.actionStA5}"></c:out>&nbsp;/&nbsp;<c:out
+												value="${defectStats.actionStAll}"></c:out>
+									</font>
+									</td>
+								</tr>
+								<tr>
+									<td align="right">
+									<img src="<c:url value='/images/tms/icon_pop_blue.gif' />"
+										width="10" height="10" alt="yCnt" />&nbsp;조치율 &nbsp;
+									<img src="<c:url value='/images/tms/icon_pop_gray.gif' />"
+										width="10" height="10" alt="totCnt" />&nbsp;미조치율
+										</td>
+									<td></td>
+								</tr>
+							</table>
+							
+							<h3>
+								<strong>상태별 결함건수</strong>
+							</h3>
+							<table width="100%" cellspacing="10" height="80px">
+								<tr>
+									<td width="16.6%" align="center" bgcolor="#CC3C39">
+									<font color="#FFFFFF" size="3" style="font-weight: bold"> 전체건수 <br />
+										<c:out value="${defectStats.actionStAll}" />
+									</font></td>
+									<td width="16.6%" align="center" bgcolor="#007BFF">
+									<font color="#FFFFFF" size="3" style="font-weight: bold"> 대기 <br />
+										<c:out value="${defectStats.actionStA1}" />
+									</font>
+									</td>
+									<td width="16.6%" align="center" bgcolor="#007BFF">
+									<font color="#FFFFFF" size="3" style="font-weight: bold"> 조치중 <br />
+										<c:out value="${defectStats.actionStA2}" />
+									</font>
+									</td>
+									<td width="16.6%" align="center" bgcolor="#007BFF">
+									<font color="#FFFFFF" size="3" style="font-weight: bold"> 조치완료 <br />
+										<c:out value="${defectStats.actionStA3}" />
+									</font>
+									</td>
+									<td width="16.6%" align="center" bgcolor="#007BFF">
+									<font color="#FFFFFF" size="3" style="font-weight: bold"> 재요청 <br />
+										<c:out value="${defectStats.actionStA4}" />
+									</font>
+									</td>
+									<td width="16.6%" align="center" bgcolor="#007BFF">
+									<font color="#FFFFFF" size="3" style="font-weight: bold"> 최종완료 <br />
+										<c:out value="${defectStats.actionStA5}" />
+									</font>
+									</td>
+								</tr>
+							</table>
+
+							<div id="dayByDefectCntTitle" >
+								<h3>
+									<strong>일자별 등록건수, 조치건수</strong>
+								</h3>
+							<canvas id="dayByDefectCnt" width="100%" height="20"></canvas>
+							</div>
+							
+							<div id="monthByDefectCntTitle" >
+								<h3>
+									<strong>월별 등록건수, 조치건수</strong>
+								</h3>
+							<canvas id="monthByDefectCnt" width="100%" height="20" ></canvas>
+							</div>
+						<br/><br/><br/><br/><br/><br/><br/>
+						</div>
+						
+						<input class="carousel-open" type="radio" id="carousel-2"
+							name="carousel" aria-hidden="true" hidden="">
+						<div class="carousel-item">
+							<h3>
+								<strong>업무별 조치율</strong>
+							</h3>
+							<div
+								style="overflow: auto; white-space: nowrap; overflow-y: hidden;">
+								<table>
+									<tr>
+										<td>&nbsp;&nbsp;
+										<canvas id="taskByAllProgression" width="200" height="200" style="display: inline !important;"></canvas>&nbsp;&nbsp;
+										</td>
+										<c:forEach var="taskByActionProgression"
+											items="${taskByActionProgression}" varStatus="status">
+											<td>
+											<canvas	id="<c:out value="${taskByActionProgression.taskGb}"/>"
+													width="180" height="180" style="display: inline !important;"></canvas>&nbsp;&nbsp;</td>
+										</c:forEach>
+										<br/>
+									</tr>
+
+									<tr>
+										<td align="center" valign="middle">
+											<div style="font-size: 15px; font-weight: bolder;">
+												<font color="#007BFF"><c:out value="${defectStats.actionStA5}" /></font> /
+												<c:out value="${defectStats.actionStAll}" />
+												<fmt:parseNumber var="actionProgression" integerOnly="true"
+													value="${defectStats.actionStA5 / defectStats.actionStAll * 100}" />
+												(
+												<c:out value=" ${actionProgression}"></c:out>
+												%) <br /> 전체 <br />
+											</div>
+										</td>
+										<c:forEach var="taskByActionProgression"
+											items="${taskByActionProgression}" varStatus="status">
+											<td align="center" valign="middle">
+												<div style="font-size: 13px; font-weight: bolder;">
+													<font color="#007BFF"><c:out
+															value="${taskByActionProgression.taskA5Cnt}" /></font> /
+													<c:out value="${taskByActionProgression.taskTotCnt}" />
+													<c:if test="${taskByActionProgression.taskTotCnt != 0}">
+            										 (<fmt:parseNumber var="actionProgression" integerOnly="true"
+															value="${taskByActionProgression.taskA5Cnt / taskByActionProgression.taskTotCnt * 100}" />
+														<c:out value=" ${actionProgression}"></c:out>%)
+               									  </c:if>
+													<br />
+													<c:out value="${taskByActionProgression.taskNm}" />
+													<br />
+												</div>
+											</td>
+										</c:forEach>
+									</tr>
+								</table>
+							</div>
+							<br/><br/>
+							
+							<table width="100%">
+								<tr>
+									<td width="90%" valign="middle">
+									<strong><font size=3>업무별 전체 결함현황</font></strong>
+									</td>
+									<td width="10%" align="center" valign="middle">
+									<strong><font size=2>(단위:%)</font></strong></td>
+								</tr>
+							</table>
+							<canvas id="taskByActionProgression" width="100%" height="15"></canvas>
+							<br/><br/>
+							
+							<div align="right">
+								<select id="taskBySelectBoxStats" style="width: 12%; text-align-last: center;"
+									onChange="javascript:taskBySelectBoxChange();">
+									<option value="1" selected="selected">상태별</option>
+									<option value="2">유형별</option>
+								</select>
+							</div>
+							
+							<div id="taskByActionStCntTitle" style="display: inline">
+								<table width="100%">
+									<tr>
+										<td width="90%" valign="middle">
+											<strong><font size=3>업무별/상태별 결함현황</font></strong>
+										</td>
+										<td width="10%" align="center" valign="middle">
+											<strong><font size=2>(단위:%)</font></strong>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<canvas id="taskByActionStCnt" width="100%" height="20"	style="display:inline"></canvas>
+						
+							<div id="taskByDefectGbCntTitle" style="display: none">
+								<table width="100%">
+									<tr>
+										<td width="90%" valign="middle">
+										<strong><font size=3>업무별/유형별 결함현황</font></strong>
+										</td>
+										<td width="10%" align="center" valign="middle">
+										<strong><font size=2>(단위:%)</font></strong>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<canvas id="taskByDefectGbCnt" width="100%" height="20"	style="display:none"></canvas>
+						<br/><br/><br/><br/><br/><br/><br/>
+						</div>
+						<label for="carousel-2" class="carousel-control next control-1">›</label>
+						<label for="carousel-1" class="carousel-control prev control-2">‹</label>
+						<label for="carousel-2" class="carousel-control prev control-1">‹</label>
+						<label for="carousel-1" class="carousel-control next control-2">›</label>
+						<ol class="carousel-indicators">
+							<li><label for="carousel-1" class="carousel-bullet">•</label>
+							</li>
+							<li><label for="carousel-2" class="carousel-bullet">•</label>
+							</li>
+						</ol>
+					</div>
+				</div>
+
 			</div>
             <!-- //content 끝 -->
         </div>

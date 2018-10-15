@@ -29,7 +29,12 @@ public class DefectDAO extends EgovAbstractDAO{
 	}
 	
 	public void insertDefect(DefectVO defectVO) {
-		insert("defectDAO.insertDefect", defectVO);
+		// 테스트 시나리오에서 결함등록
+		if(Integer.parseInt(defectVO.getTestscenarioId()) != 0) {
+			insert("defectDAO.insertDefectFromTest", defectVO);
+		} else {
+			insert("defectDAO.insertDefect", defectVO);
+		}
 	}
 	
 	public List<?> selectOneDefect(DefectVO defectVO){
@@ -91,7 +96,12 @@ public class DefectDAO extends EgovAbstractDAO{
 	
 	public void insertDefectImageMap(Map<String, Object> hmap){
 		if(hmap.get("status").toString().equals("0")) { // 결함등록시 추가
-			insert("defectDAO.insertDefectMap", hmap);
+			if(hmap.get("TESTSCENARIO_ID").equals("0")) {
+				insert("defectDAO.insertDefectMap", hmap);
+			} else {
+				// 테스트시나리오에서 결함 등록
+				insert("defectDAO.insertDefectMapFromTest", hmap);
+			}
 			insert("defectDAO.insertDefectImageMap", hmap);
 		} else { // 결함수정시 추가
 			System.out.println("!@#2");
