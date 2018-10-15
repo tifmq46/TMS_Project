@@ -149,7 +149,7 @@ public class DefectController {
 	public String insertDefectImpl(MultipartHttpServletRequest mtpRequest,@ModelAttribute("defectVO") DefectVO defectVO, BindingResult errors) throws IOException {
 		beanValidator.validate(defectVO, errors);
 		if(errors.hasErrors()){
-			return "redirect:/tms/defect/selectDefect.do";
+			return "redirect:/tms/defect/selectDefect.do"; 
 		} else{
 			MultipartFile defectFileImg = mtpRequest.getFile("fileImg");
 			String userTestId = defectService.selectUserNm(defectVO.getUserNm());

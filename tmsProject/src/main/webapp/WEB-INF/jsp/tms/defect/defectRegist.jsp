@@ -122,8 +122,9 @@
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap >
-					          <form:input id="TmsProgrmFileNm_pg_id" name="pgId" path="" type="text" size="10" value=""  maxlength="40" title="화면ID"  
+					          <form:input id="TmsProgrmFileNm_pg_id" name="pgId" path="pgId" type="text" size="10" value=""  maxlength="40" title="화면ID"  
 					           style="text-align:center; width:80%;" readonly="readonly"/> 
+					           <form:errors path="pgId" />
 					          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
 					        </td>
@@ -169,12 +170,13 @@
 								}
 								%>
 								<td width="16.6%" nowrap >
-					        	<form:input path="" list="userTestId" name="userNm" value='${loginName}'  autocomplete="off" style="text-align:center; width:85%;" />
+					        	<form:input path="userNm" list="userTestId" name="userNm" value='${loginName}'  autocomplete="off" style="text-align:center; width:85%;" />
 					        	<datalist id="userTestId">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
 									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
 									    </c:forEach>
 					        	</datalist>
+					        	<form:errors path="userNm" />
 					        </td>
 					       </tr>
 					       
