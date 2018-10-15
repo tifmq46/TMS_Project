@@ -34,7 +34,25 @@
 	caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
 </style>
 <script language="javascript1.2"  type="text/javaScript"> 
-
+function file_upload() {   
+	   
+	   var file = progrmManageForm.file.value;
+	   var fileExt = file.substring(file.lastIndexOf('.')+1); //파일의 확장자를 구합니다.
+	   var bSubmitCheck = true;
+	     
+	   if( !file ){ 
+	       alert( "파일을 선택하여 주세요!");
+	       return;
+	   }
+	   
+	   if(!(fileExt.toUpperCase() == "XLSX")) {
+	      alert("xlsx 파일만 업로드 하실 수 있습니다!");
+	       return;
+	   }
+	     
+	   document.progrmManageForm.action = "<c:url value='/tms/pg/requestupload.do'/>";
+	   document.progrmManageForm.submit();   
+}
 
 function window_close() {
 	   
@@ -61,34 +79,55 @@ function window_close() {
     <!-- 검색 필드 박스 시작 -->
     <div id="search_field" style="width:100%">
         <div id="search_field_loc" class="h_title">엑셀파일 등록</div>
-            <fieldset style="border-bottom: 1px solid #81B1D5; border-top: 1px solid #81B1D5;"><legend>조건정보 영역</legend>    
+            <fieldset style="overflow-y : scroll; height : 250px; border-bottom: 1px solid #81B1D5; border-top: 1px solid #81B1D5;"><legend>조건정보 영역</legend>    
             <div class="sf_start">
                 <ul id="search_first_ul">
                     <li>
                         <input type="file" name="file" />
-                        <div class="buttons" style="float:right;">                     	
+                        
+                        <div class="buttons" style="float:right;">
                         	<a href="#LINK" onclick="file_upload(); return false;">등록 </a>
-                        	<font id="fon" >${result}</font> 
                         	<input type="hidden" id="change" name="change" value="<c:out value='${result}'/>" onclick="test(); return false;">
                         </div>
                     </li>       
                 </ul>
                 
                 
+                <c:if test="${result == 0}">
                 
-            	<div class="default_tablestyle">
-            		<table width="100%" border="0" cellpadding="0" cellspacing="0" >
-        				<c:forEach var="error_hash" items="${error_hashs}" varStatus="status">
-            				<tr>
-            					<td align="center" class="listtd"><strong><c:out value="${error_hash.problem}"/>&nbsp;</strong></td>
+                	<div class="default_tablestyle">  
+                		<table width="100%" border="0" cellpadding="0" cellspacing="0" >
+                			<tr>
+            					<td align="center" class="listtd"><font style="color:#CC3C39; align:center;" size="3px"><strong>&#60;등록을 실패했습니다!&#62;</strong></font></td>
             				</tr>
-            				<tr>
-            					<td align="center" class="listtd"><c:out value="=>원인 : ${error_hash.reason}"/>&nbsp;</td>
-            				</tr>
-        				</c:forEach>           
-            		</table>  
-               	</div>     
+                		</table>     
+                	</div>  
+                
+            		<div class="default_tablestyle">
+            			<table width="100%" border="0" cellpadding="0" cellspacing="0" >
+        					<c:forEach var="error_hash" items="${error_hashs}" varStatus="status">
+            					<tr>
+            						<td align="center" class="listtd"><strong><c:out value="${error_hash.problem}"/>&nbsp;</strong></td>
+            					</tr>
+            					<tr>
+            						<td align="center" class="listtd"><font style="color:#CC3C39;"><c:out value="=>원인 : ${error_hash.reason}"/></font></td>
+            					</tr>
+        					</c:forEach>           
+            			</table>  
+               		</div>     
+               	</c:if>
                	
+               	<c:if test="${result == 1}">
+               		<div>  
+                		<table width="100%" border="0" cellpadding="0" cellspacing="0" >
+                			<tr>
+            					<td align="center" class="listtd"><font style="color:#0f438a; align:center;" size="3px"><strong>&#60;성공적으로 등록되었습니다!&#62;</strong></font></td>
+            				</tr>
+                		</table>  
+                                      
+                	</div> 
+               	   
+               	</c:if> 
                	               
             </div>          
             </fieldset>
@@ -96,7 +135,7 @@ function window_close() {
             <ul id="search_second_ul">            		  
                     <li>
                         <div class="buttons" style="float:right;">                        
-                            <a href="#LINK" onclick="javascript:window_close(); return false;">닫기 </a>
+                            <a href="#LINK" onclick="window_close(); return false;">닫기 </a>
                         </div>                              
                     </li>                    
             </ul> 

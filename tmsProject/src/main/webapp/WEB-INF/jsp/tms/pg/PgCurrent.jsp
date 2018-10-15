@@ -265,10 +265,10 @@
         			<table width="120%" border="0" cellpadding="0" cellspacing="0" >
         				<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
         				<colgroup>
-        					<col width="20"/> 
+        					<col width="10"/> 
         					<col width="25"/>
-        					<col width="40"/>
-        					<col width="30"/>
+        					<col width="35"/>
+        					<col width="20"/>
         					<col width="20"/>
         					<col width="20"/>
         					<col width="20"/>

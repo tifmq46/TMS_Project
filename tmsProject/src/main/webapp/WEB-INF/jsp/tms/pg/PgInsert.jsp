@@ -112,25 +112,37 @@
                         <table >
                           <tr> 
                             <th width="20%" height="23" class="required_text" nowrap >
-                                <label for="tmplatNm">
+                                <label for="PG_ID">
                                     	화면ID
                                 </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="PG_ID" name="PG_ID" type="text" size="60"  maxlength="60" style="width:100%" id="PG_ID"  title="화면ID">
+                              <input id="PG_ID" name="PG_ID" type="text" size="60"  maxlength="60" style="width:95%" id="PG_ID"  title="화면ID">
+                              <spring:hasBindErrors name="programVO">
+								<c:if test="${errors.hasFieldErrors('PG_ID') }">      
+               						<strong>${errors.getFieldError( 'PG_ID' ).defaultMessage }</strong>
+								</c:if>
+							  </spring:hasBindErrors>
+
                               <br/> 
                             </td>
                           </tr>
                           <tr> 
                             <th width="20%" height="23" class="required_text" nowrap >
-                                <label for="tmplatNm">
+                                <label for="PG_NM">
                                     	화면명
                                 </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="PG_NM" name="PG_NM" type="text" size="60"  maxlength="60" style="width:100%" title="화면ID">
+                              <input id="PG_NM" name="PG_NM" type="text" size="60"  maxlength="60" style="width:95%" title="화면ID">
+                              <spring:hasBindErrors name="programVO">
+								<c:if test="${errors.hasFieldErrors('PG_NM') }">      
+               						<strong>${errors.getFieldError( 'PG_NM' ).defaultMessage }</strong>
+								</c:if>
+							  </spring:hasBindErrors>
+							  
                               <br/>
                             </td>
                           </tr>
@@ -214,7 +226,7 @@
                       <table border="0" cellspacing="0" cellpadding="0" align="center">
                         <tr> 
                           <td>
-                              <a onclick="javaScript:fn_egov_regist_tmplatInfo(); return false;">저장</a> 
+                              <a onclick="fn_egov_regist_tmplatInfo(); return false;">저장</a> 
                           </td>
                           <td>
                               <a href="<c:url value='/tms/pg/PgManage.do'/>" >목록</a>
