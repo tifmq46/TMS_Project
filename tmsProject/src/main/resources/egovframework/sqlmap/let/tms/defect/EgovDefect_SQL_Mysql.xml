@@ -635,8 +635,16 @@
            INSERT INTO DEFECT_TB
            (DEFECT_ID_SQ, DEFECT_TITLE, DEFECT_CONTENT, PG_ID, USER_TEST_ID, DEFECT_GB, ENROLL_DT, ACTION_ST)
            VALUES
-           (#defectIdSq#, #defectTitle#, #defectContent#, #pgId#, #userTestId#, #defectGb#, SYSDATE(), 'A1'
-           )
+			(#defectIdSq#, #defectTitle#, #defectContent#, #pgId#, #userTestId#, #defectGb#, SYSDATE(), 'A1')
+        ]]>
+    </insert>
+    
+    <insert id="defectDAO.insertDefectFromTest" parameterClass="DefectVO">
+        <![CDATA[
+           INSERT INTO DEFECT_TB
+           (DEFECT_ID_SQ, DEFECT_TITLE, DEFECT_CONTENT, PG_ID, USER_TEST_ID, DEFECT_GB, ENROLL_DT, ACTION_ST, TESTSCENARIO_ID)
+           VALUES
+			(#defectIdSq#, #defectTitle#, #defectContent#, #pgId#, #userTestId#, #defectGb#, SYSDATE(), 'A1', #testscenarioId#)
         ]]>
     </insert>
     
@@ -646,6 +654,16 @@
            (DEFECT_ID_SQ, DEFECT_TITLE, DEFECT_CONTENT, PG_ID, USER_TEST_ID, DEFECT_GB, ENROLL_DT, ACTION_ST)
            VALUES
            (#DEFECT_ID_SQ#, #DEFECT_TITLE#, #DEFECT_CONTENT#, #PG_ID#, #USER_TEST_ID#, #DEFECT_GB#, SYSDATE(), 'A1'
+           )
+      ]]>   
+   </insert>
+   
+   <insert id="defectDAO.insertDefectMapFromTest" parameterClass="java.util.HashMap">
+      <![CDATA[
+         INSERT INTO DEFECT_TB
+           (DEFECT_ID_SQ, DEFECT_TITLE, DEFECT_CONTENT, PG_ID, USER_TEST_ID, DEFECT_GB, ENROLL_DT, ACTION_ST, TESTSCENARIO_ID)
+           VALUES
+           (#DEFECT_ID_SQ#, #DEFECT_TITLE#, #DEFECT_CONTENT#, #PG_ID#, #USER_TEST_ID#, #DEFECT_GB#, SYSDATE(), 'A1', #TESTSCENARIO_ID#)
            )
       ]]>   
    </insert>

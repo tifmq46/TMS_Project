@@ -250,6 +250,7 @@ ul.tabs li.last {
 									</c:if>
 								</c:forEach>
 							</table>
+							<br/><br/>
 						</div>
 					</div>
 				</div>
@@ -309,6 +310,7 @@ ul.tabs li.last {
 									</c:if>
 								</c:forEach>
 							</table>
+							<br/><br/>
 						</div>
 					</div>
 				</div>
@@ -370,6 +372,7 @@ ul.tabs li.last {
 									</c:if>
 								</c:forEach>
 							</table>
+							<br/><br/>
 						</div>
 					</div>
 				</div>
@@ -431,6 +434,7 @@ ul.tabs li.last {
 									</c:if>
 								</c:forEach>
 							</table>
+							<br/><br/>
 						</div>
 					</div>
 				</div>

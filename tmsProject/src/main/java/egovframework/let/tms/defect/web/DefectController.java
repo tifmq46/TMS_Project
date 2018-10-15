@@ -129,10 +129,13 @@ public class DefectController {
 	
 	/** 결함 등록 페이지로 이동 */
 	@RequestMapping("/tms/defect/insertDefect.do")
-	public String insertDefect(ModelMap model){
+	public String insertDefect(HttpServletRequest request,ModelMap model){
 		int defectIdSq = defectService.selectDefectIdSq();
 		defectIdSq = defectIdSq + 1;
 		model.addAttribute("defectIdSq", defectIdSq);
+		
+		String testscenarioId = request.getParameter("testscenarioId");
+		model.addAttribute("testscenarioId", Integer.parseInt(testscenarioId));
 		
 		List<?> defectGbList = defectService.selectDefectGb();
 		model.addAttribute("defectGb", defectGbList);
@@ -150,7 +153,7 @@ public class DefectController {
 		beanValidator.validate(defectVO, errors);
 		if(errors.hasErrors()){
 			return "redirect:/tms/defect/selectDefect.do"; 
-		} else{
+		} else {
 			MultipartFile defectFileImg = mtpRequest.getFile("fileImg");
 			String userTestId = defectService.selectUserNm(defectVO.getUserNm());
 			if(defectFileImg.getOriginalFilename() == "") {
@@ -171,6 +174,7 @@ public class DefectController {
 				hmap.put("ACTION_CONTENT", defectVO.getActionContent());
 				hmap.put("ACTION_ST", defectVO.getActionSt());
 				hmap.put("ACTION_DT", defectVO.getActionDt());
+				hmap.put("TESTSCENARIO_ID", defectVO.getTestscenarioId());
 				hmap.put("status", 0);
 				defectService.insertDefectImageMap(hmap);
 				
