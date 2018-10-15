@@ -16,6 +16,16 @@
 	    <result property="USE_YN" column="USE_YN" columnIndex="6"/>
 	</resultMap>
 	
+	<resultMap id="PgList2" class="egovframework.let.tms.pg.service.ProgramVO">
+	    <result property="PG_ID" column="PG_ID" columnIndex="1"/>
+	    <result property="PG_NM" column="PG_NM" columnIndex="2"/>
+	    <result property="USER_DEV_ID" column="USER_DEV_ID" columnIndex="3"/>
+	    <result property="SYS_GB" column="SYS_GB" columnIndex="4"/>
+	    <result property="TASK_GB" column="TASK_GB" columnIndex="5"/>
+	    <result property="USE_YN" column="USE_YN" columnIndex="6"/>
+	    <result property="PJT_ID" column="PJT_ID" columnIndex="7"/>
+	</resultMap>
+	
 	<resultMap id="PgCurrent" class="egovframework.let.tms.pg.service.PgCurrentVO">
 	    <result property="PG_ID" column="PG_ID" columnIndex="1"/>
 	    <result property="PG_NM" column="PG_NM" columnIndex="2"/>
@@ -97,19 +107,20 @@
 	
 	
 	<!-- 프로그램현황 조회(엑셀 다운용) -->
-	<select id="ProgramDAO.selectPgCurrentExcelList" parameterClass="ProgramDefaultVO" resultMap="PgList" >
+	<select id="ProgramDAO.selectPgCurrentExcelList" parameterClass="ProgramDefaultVO" resultMap="PgList2" >
 		<![CDATA[
 			SELECT
 				a.PG_ID, 
 				a.PG_NM, 
 				(SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE a.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID,
-				a.SYS_GB, 
-				a.TASK_GB, 
-				a.USE_YN
+				(SELECT LETTCCMMNDETAILCODE.CODE_NM FROM LETTCCMMNDETAILCODE WHERE a.SYS_GB = LETTCCMMNDETAILCODE.CODE) AS SYS_GB,
+				(SELECT LETTCCMMNDETAILCODE.CODE_NM FROM LETTCCMMNDETAILCODE WHERE a.TASK_GB = LETTCCMMNDETAILCODE.CODE) AS TASK_GB,
+				a.USE_YN,
+				a.PJT_ID
 			FROM 
 				PG_TB a
 			WHERE 
-				1=1			
+				1=1		
 		]]>
 			<!-- 화면ID로 검색 -->
 			<isNotEmpty property="searchByPgId">

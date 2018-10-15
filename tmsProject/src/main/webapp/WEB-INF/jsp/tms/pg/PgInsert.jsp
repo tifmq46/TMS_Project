@@ -118,13 +118,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="PG_ID" name="PG_ID" type="text" size="60"  maxlength="60" style="width:95%" id="PG_ID"  title="화면ID">
-                              <spring:hasBindErrors name="programVO">
-								<c:if test="${errors.hasFieldErrors('PG_ID') }">      
-               						<strong>${errors.getFieldError( 'PG_ID' ).defaultMessage }</strong>
-								</c:if>
-							  </spring:hasBindErrors>
-
+                              <input id="PG_ID" name="PG_ID" type="text" size="60"  maxlength="60" style="width:50%" title="화면ID">
                               <br/> 
                             </td>
                           </tr>
@@ -136,13 +130,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="PG_NM" name="PG_NM" type="text" size="60"  maxlength="60" style="width:95%" title="화면ID">
-                              <spring:hasBindErrors name="programVO">
-								<c:if test="${errors.hasFieldErrors('PG_NM') }">      
-               						<strong>${errors.getFieldError( 'PG_NM' ).defaultMessage }</strong>
-								</c:if>
-							  </spring:hasBindErrors>
-							  
+                              <input id="PG_NM" name="PG_NM" type="text" size="60"  maxlength="60" style="width:50%" title="화면ID">
                               <br/>
                             </td>
                           </tr>

@@ -3,11 +3,11 @@
 
 <sqlMap namespace="DevPlan">
 
-	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 	<typeAlias alias="searchVO" type="egovframework.let.tms.dev.service.DevPlanDefaultVO"/>
-	<typeAlias  alias="DevPlanVO" type="egovframework.let.tms.dev.service.DevPlanVO"/>
-	<typeAlias  alias="CmmnDetailCode"   type="egovframework.com.cmm.service.CmmnDetailCode"/>
-	<typeAlias  alias="CmmnDetailCodeVO" type="egovframework.let.sym.ccm.cde.service.CmmnDetailCodeVO"/>
+	<typeAlias alias="DevPlanVO" type="egovframework.let.tms.dev.service.DevPlanVO"/>
+	<typeAlias alias="CmmnDetailCode"   type="egovframework.com.cmm.service.CmmnDetailCode"/>
+	<typeAlias alias="CmmnDetailCodeVO" type="egovframework.let.sym.ccm.cde.service.CmmnDetailCodeVO"/>
 	
 	<resultMap id="devPlanList" class="egovframework.let.tms.dev.service.DevPlanVO">
 	    <result property="pgId" column="PG_ID" columnIndex="1"/>

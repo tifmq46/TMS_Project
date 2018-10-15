@@ -96,7 +96,9 @@ function fn_rate_change(pgId, event) {
 	var idVal0 = document.getElementById(pgId).value;
 	
 	if(idVal0 == null || idVal0 == ""){
-		alert("개발시작일자 먼저 입력하십시오.");
+		alert("개발시작일자 먼저 입력하십시오."); 
+		document.getElementById(pgId+4).value = "0.0";
+		return;
 	}
 	else{
 		var idVal3 = document.getElementById(pgId+3).id;
@@ -114,6 +116,7 @@ function fn_rate_change(pgId, event) {
 	}
 
 }
+
 function removeChar(event) {
     event = event || window.event;
     var keyID = (event.which) ? event.which : event.keyCode;
@@ -361,10 +364,10 @@ $(function(){
             				
             				<c:choose>
 	            				<c:when test="${result.ACHIEVEMENT_RATE eq null }">
-	            					<td><input type="text" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="0" onkeydown="return fn_rate_change('${result.PG_ID}', event)" onkeyup='removeChar(event)'/></td>
+	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="0" onkeyup="fn_rate_change('${result.PG_ID}', event);"/></td>
 	            				</c:when>
 	            				<c:otherwise>
-	            					<td><input type="text"  id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeydown="return fn_rate_change('${result.PG_ID}', event)" onkeyup='removeChar(event)'/></td>
+	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event);" /></td>
 	            				</c:otherwise>
             				</c:choose>
           

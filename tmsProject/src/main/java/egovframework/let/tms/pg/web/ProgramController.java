@@ -368,7 +368,6 @@ public class ProgramController {
 					{
 						ProgramVO excel = (ProgramVO) excelList.get(i);
 						list.add(excel);
-						
 					}
 					// 워크북 생성
 							XSSFWorkbook workbook = new XSSFWorkbook();
@@ -417,17 +416,25 @@ public class ProgramController {
 							cell = row.createCell(1);
 							cell.setCellValue("화면명");
 							cell.setCellStyle(HeadStyle); // 제목스타일 
+							
 							cell = row.createCell(2);
-							cell.setCellValue("시스템구분");
-							cell.setCellStyle(HeadStyle); // 제목스타일 
-							cell = row.createCell(3);
-							cell.setCellValue("업무구분");
-							cell.setCellStyle(HeadStyle); // 제목스타일 
-							cell = row.createCell(4);
 							cell.setCellValue("개발자");
 							cell.setCellStyle(HeadStyle); // 제목스타일 
+							
+							cell = row.createCell(3);
+							cell.setCellValue("시스템구분");
+							cell.setCellStyle(HeadStyle); // 제목스타일 
+							
+							cell = row.createCell(4);
+							cell.setCellValue("업무구분");
+							cell.setCellStyle(HeadStyle); // 제목스타일 
+							
 							cell = row.createCell(5);
 							cell.setCellValue("사용여부");
+							cell.setCellStyle(HeadStyle); // 제목스타일 
+							
+							cell = row.createCell(6);
+							cell.setCellValue("프로젝트 ID");
 							cell.setCellStyle(HeadStyle); // 제목스타일 
 							
 							// 리스트의 size 만큼 row를 생성
@@ -445,17 +452,25 @@ public class ProgramController {
 								cell = row.createCell(1);
 								cell.setCellValue(vo.getPG_NM());
 								cell.setCellStyle(BodyStyle); // 본문스타일 
+								
 								cell = row.createCell(2);
-								cell.setCellValue(vo.getSYS_GB());
-								cell.setCellStyle(BodyStyle); // 본문스타일 
-								cell = row.createCell(3);
-								cell.setCellValue(vo.getTASK_GB());
-								cell.setCellStyle(BodyStyle); // 본문스타일 
-								cell = row.createCell(4);
 								cell.setCellValue(vo.getUSER_DEV_ID());
 								cell.setCellStyle(BodyStyle); // 본문스타일 
+								
+								cell = row.createCell(3);
+								cell.setCellValue(vo.getSYS_GB());
+								cell.setCellStyle(BodyStyle); // 본문스타일 
+								
+								cell = row.createCell(4);
+								cell.setCellValue(vo.getTASK_GB());
+								cell.setCellStyle(BodyStyle); // 본문스타일 
+								
 								cell = row.createCell(5);
 								cell.setCellValue(vo.getUSE_YN());
+								cell.setCellStyle(BodyStyle); // 본문스타일 
+								
+								cell = row.createCell(6);
+								cell.setCellValue(vo.getPJT_ID());
 								cell.setCellStyle(BodyStyle); // 본문스타일 
 							}
 							/** 3. 컬럼 Width */ 
@@ -814,25 +829,24 @@ public class ProgramController {
     public String requestupload1(MultipartHttpServletRequest mtfRequest, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
     	    	
     	String src = mtfRequest.getParameter("src");
-        System.out.println("src value : " + src);
+        System.out.println("value : " + src);
+        
         MultipartFile mf = mtfRequest.getFile("file");
 
         String path = "C:\\TMS_upload\\";
 
         File folder = new File(path);
-        if(!folder.exists()){
-            //디렉토리 생성 메서드
+		if(!folder.isDirectory()){
+			//디렉토리 생성 메서드
 			folder.mkdirs();
-		}        
-        
+		}
         String originFileName = mf.getOriginalFilename(); // 원본 파일 명
         long fileSize = mf.getSize(); // 파일 사이즈
 
         System.out.println("originFileName : " + originFileName);
         System.out.println("fileSize : " + fileSize);
 
-        String safeFile = path + originFileName;
-
+        String safeFile = path + "ex_" + originFileName;
         try {
             mf.transferTo(new File(safeFile));
         } catch (IllegalStateException e) {
@@ -857,7 +871,6 @@ public class ProgramController {
 		List<String> error_message = new ArrayList<String>();
 		ArrayList <HashMap<String, String>> error_hash = new ArrayList <HashMap<String, String>>();
 		
-		
 		for (int i = 0; i < xlsxList.size(); i++) {
 			
 			j=i;
@@ -878,9 +891,7 @@ public class ProgramController {
 					
 					continue;
 				}
-				
 				ProgramService.insertPg(vo);
-				
 				
 				
 				model.addAttribute("result", "true");
@@ -889,7 +900,6 @@ public class ProgramController {
 				HashMap<String, String> hash = new HashMap<String, String>();
 				
 				result_cnt = 0;
-				
 				
 				
 				String[] array = e.toString().split(":");
@@ -920,35 +930,13 @@ public class ProgramController {
 				hash.put("problem", (j+1)+"행을 등록시키지 못했습니다!");
 				hash.put("reason", last);
 				error_hash.add(hash);
-				
 				continue;
 			}
-			
 		}  
 		model.addAttribute("error_lists", error_list);
 		model.addAttribute("error_messages", error_message);
 		model.addAttribute("error_hashs", error_hash);
 		model.addAttribute("result", result_cnt);
-		//System.out.println(error_hash.get(2));
-		
-		/*
-		try {
-			for (int i = 0; i < xlsxList.size(); i++) {
-				
-				j=i;
-				
-				vo = xlsxList.get(i);
-				ProgramService.insertPg(vo);
-				
-				model.addAttribute("result", "true");
-				model.addAttribute("result2", "true");
-			}       			
-		}catch(Exception e) {
-			model.addAttribute("result", (j+1)+": false");
-			model.addAttribute("result2", (j+1)+": false");
-			
-			System.out.println("상황1");
-		}*/
 		
 		
 		
