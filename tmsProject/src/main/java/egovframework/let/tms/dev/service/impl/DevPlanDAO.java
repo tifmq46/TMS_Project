@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import egovframework.let.cop.com.service.TemplateInfVO;
 import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.dev.service.DevPlanVO;
-import egovframework.let.tms.dev.service.TempVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 
 @Repository("devPlanDAO")
@@ -184,26 +183,12 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (List<String>) list("DevPlanDAO.selectUserList");
 	}
 
-	public List<HashMap<String, String>> selectTempList(String a) {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTempList",a);
-	}
-
-	public void insertTemp(TempVO t) {
-		insert("DevPlanDAO.insertTemp", t);
-		
-	}
-
-	public void deleteTemp() {
-		delete("DevPlanDAO.deleteTemp");
-		
+	public List<HashMap<String, String>> selectTempList() {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTempList");
 	}
 
 	public List<String> selectPeriod() {
 		return (List<String>) list("DevPlanDAO.selectPeriod");
-	}
-
-	public List<HashMap<String, String>> selectUserDevStats(HashMap<String, String> test) {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserDevStats",test);
 	}
 	
 	public List<?> selectDevPlanByMainStats() {
@@ -216,5 +201,29 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	
 	public List<?> selectSysByStats() {
 		return list("DevPlanDAO.selectSysByStats");
+	}
+
+	public List<HashMap<String, String>> selectUserDevWeekStats(HashMap<String, String> test) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserDevWeekStats",test);
+	}
+
+	public List<String> selectPeriodWeek() {
+		return (List<String>) list("DevPlanDAO.selectPeriodWeek");
+	}
+
+	public List<HashMap<String, String>> selectUserPlanWeekStats(HashMap<String, String> test) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserPlanWeekStats",test);
+	}
+
+	public List<String> selectTaskGbList() {
+		return (List<String>) list("DevPlanDAO.selectTaskGbList");
+	}
+
+	public List<HashMap<String, String>> selectTaskPlanWeekStats(HashMap<String, String> taskPlan) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTaskPlanWeekStats",taskPlan);
+	}
+
+	public List<HashMap<String, String>> selectTaskDevWeekStats(HashMap<String, String> taskDev) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTaskDevWeekStats",taskDev);
 	}
 }

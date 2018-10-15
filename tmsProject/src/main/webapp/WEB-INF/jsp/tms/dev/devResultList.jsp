@@ -62,31 +62,39 @@ function fn_result_change(asd) {
 	   var idVal0 = document.getElementById(asd).value;
 	   var idVal1 = document.getElementById(asd+1).value;
 	   var currentDate = (new Date().format("yyyy-MM-dd"));
+	   var flag = true;
+	   
 	   if(idVal1 != null && idVal1 != "")
 	      {
 	         if(idVal0 > idVal1)
 	            {
 	               alert("개발시작일자보다 큰 값을 입력하시오.");
 	               document.getElementById(asd+1).value = null;
+	               flag = false;
 	            }
 	      }
 	   if(idVal0 == null || idVal0 == "")
 	      {
 	         alert("개발시작일자부터 입력하십시오.")
 	         document.getElementById(asd+1).value = null;
+	         flag = false;
 	      }
 	   if(idVal0 > currentDate || idVal1 > currentDate){
 		   alert("오늘 이후 날짜는 입력할 수 없습니다. 다시 입력하십시오.");
+		   document.getElementById(asd).value = null;
 		   document.getElementById(asd+1).value = null;
+		   flag = false;
 	   }
-	   
-	   var idVal3 = document.getElementById(asd+3).id;
-	   $("#"+idVal3).removeClass("disabled");
-	   $("#"+idVal3).addClass("abled");
+	   if(flag){
+		   var idVal3 = document.getElementById(asd+3).id;
+		   $("#"+idVal3).removeClass("disabled");
+		   $("#"+idVal3).addClass("abled");
+		 }
 	}
 
 function fn_rate_change(pgId, event) {
 	var idVal0 = document.getElementById(pgId).value;
+	
 	if(idVal0 == null || idVal0 == ""){
 		alert("개발시작일자 먼저 입력하십시오.");
 	}

@@ -132,19 +132,25 @@ public interface DevPlanService {
 
 	public List<String> selectUserList();
 
-	public List<HashMap<String, String>> selectTempList(String a);
-
-	public void insertTemp(TempVO t);
-
-	public void deleteTemp();
+	public List<HashMap<String, String>> selectTempList();
 
 	public List<String> selectPeriod();
-
-	public List<HashMap<String, String>> selectUserDevStats(HashMap<String, String> test);
 	
 	public List<?> selectDevPlanByMainStats();
 	
 	public List<?> selectSysAllByStats();
 	
 	public List<?> selectSysByStats();
+
+	public List<HashMap<String, String>> selectUserDevWeekStats(HashMap<String, String> test);
+
+	public List<String> selectPeriodWeek();
+
+	public List<HashMap<String, String>> selectUserPlanWeekStats(HashMap<String, String> test);
+
+	public List<String> selectTaskGbList();
+
+	public List<HashMap<String, String>> selectTaskPlanWeekStats(HashMap<String, String> taskPlan);
+
+	public List<HashMap<String, String>> selectTaskDevWeekStats(HashMap<String, String> taskDev);
 }

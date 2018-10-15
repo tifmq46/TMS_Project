@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Locale;
 
 import javax.annotation.Resource;
+import javax.sound.midi.Synthesizer;
 
 import org.apache.commons.collections.set.SynchronizedSortedSet;
 import org.json.simple.JSONArray;
@@ -40,7 +41,6 @@ import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.dev.service.DevPlanService;
 import egovframework.let.tms.dev.service.DevPlanVO;
-import egovframework.let.tms.dev.service.TempVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -151,56 +151,32 @@ public class DevPlanController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 
-		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy-MM-dd", Locale.KOREA );
 		Date currentTime = new Date ();
-		String mTime = mSimpleDateFormat.format ( currentTime );
-		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd"); 
-		Date d3 = dt.parse(mTime);
-		System.out.println("오늘 : "+d3);
-		model.addAttribute("current", d3);
-
+		String mTime = sdf.format (currentTime);
+		Date currentDate = sdf.parse(mTime);
+		System.out.println("sdate"+currentDate);
+		
 		String start = devPlanService.selectSTART();
-		String end = devPlanService.selectEND();
+		Date sDate = sdf.parse(start);
+		String end =devPlanService.selectEND();
+		Date eDate = sdf.parse(end);
 		
-		
-		
-		System.out.println("d---"+start);
-		System.out.println("d---"+end);
-		
-		Date d1 = dt.parse(start);
-		Date d2 = dt.parse(end);
-		d1.setHours(0);
-		d1.setSeconds(0);
-		d1.setMinutes(0);
-		d2.setHours(23);
-		d2.setSeconds(59);
-		d2.setMinutes(59);
-		
-		
-		model.addAttribute("start", d1);
-		model.addAttribute("end", d2);
+		int compare = currentDate.compareTo(sDate);
+		int compare2 = currentDate.compareTo(eDate);
 		
 		boolean d_result = true;
 		
-		if(d3.compareTo(d1) < 0 || d3.compareTo(d2) >= 0 )
-		{
-			System.out.println("정답!"+d3);
-			System.out.println("정답!"+d1);
-			System.out.println("정답!"+d2);
-			d_result = true;
-		}else {
-			System.out.println("실패!"+d3);
-			System.out.println("실패!"+d1);
-			System.out.println("실패!"+d2);
+		if((compare >= 0) && (compare2 <=0) ){
 			d_result = false;
+		}else{
+			d_result = true;
 		}
+		model.addAttribute("start", sDate);
+		model.addAttribute("end", eDate);
 		model.addAttribute("d_test", d_result);
 		
 		return "tms/dev/devPlanList";
 	}
-	
-	
-	
 	/**
 	 * 계획을 상세 조회한다.
 	 * 
@@ -263,121 +239,8 @@ public class DevPlanController {
 		devPlanService.updateinput1(strs1[0]);
 		devPlanService.updateinput2(strs2[0]);
 		
-		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
-		searchVO.setSessionId(user.getName());
-		System.out.println("--유저"+ searchVO.getSessionId());
-		
-		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
-		
-		/** pageing setting */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
-		
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
-		//공통코드(시스템, 업무구분)
-		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
-		model.addAttribute("sysGb", sysGbList);
-		
-		String a = String.valueOf(searchVO.getSearchBySysGb());
-		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
-			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
-			model.addAttribute("taskGb2", taskGbList2);
-		}
-		
-		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
-		model.addAttribute("taskGb", taskGbList);
-		
-		List<?> userList = defectService.selectUser();
-		model.addAttribute("userList", userList);
-		
-		List<HashMap<String,String>> devList = devPlanService.selectDevPlans(searchVO);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String inputStartDate, inputEndDate;
-		Date startDate, endDate;
-		int dayDiff; 
-		
-		for(int i=0; i<devList.size(); i++){
-			if(((devList.get(i).get("PLAN_START_DT")) == null || "".equals(devList.get(i).get("PLAN_START_DT")))
-					&&((devList.get(i).get("PLAN_END_DT")) == null || "".equals(devList.get(i).get("PLAN_END_DT")))
-					){
-				
-			}else{
-				inputStartDate =  String.valueOf(devList.get(i).get("PLAN_START_DT"));
-				inputEndDate = String.valueOf(devList.get(i).get("PLAN_END_DT"));
-				startDate = sdf.parse(inputStartDate);
-				endDate = sdf.parse(inputEndDate);
-				dayDiff = betweenDate(startDate,endDate).size();
-				searchVO.setDayDiff(dayDiff);
-				searchVO.setPgId(devList.get(i).get("PG_ID"));
-				devPlanService.insertDayDiff(searchVO);
-			}
-		}
-		
-		devList = devPlanService.selectDevPlans(searchVO);
-		model.addAttribute("resultList", devList);
-		
-		int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
-
-		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyy-MM-dd", Locale.KOREA );
-		Date currentTime = new Date ();
-		String mTime = mSimpleDateFormat.format ( currentTime );
-		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd"); 
-		Date d3 = dt.parse(mTime);
-		
-		System.out.println("오늘 : "+d3);
-		model.addAttribute("current", d3);
-
-		
-		String start = devPlanService.selectSTART();
-		String end = devPlanService.selectEND();
-		
-		
-		System.out.println("d---"+start);
-		System.out.println("d---"+end);
-		
-		Date d1 = dt.parse(start);
-		Date d2 = dt.parse(end);
-		d1.setHours(0);
-		d1.setSeconds(0);
-		d1.setMinutes(0);
-		d2.setHours(23);
-		d2.setSeconds(59);
-		d2.setMinutes(59);
-		
-		
-		model.addAttribute("start", d1);
-		model.addAttribute("end", d2);
-		
-		//int d_result = 0;
-		boolean d_result;
-		
-		if(d3.compareTo(d1) < 0 || d3.compareTo(d2) > 0 )
-		{
-			System.out.println("정답!"+d3);
-			System.out.println("정답!"+d1);
-			System.out.println("정답!"+d2);
-			d_result = true;
-		}else {
-			System.out.println("실패!"+d3);
-			System.out.println("실패!"+d1);
-			System.out.println("실패!"+d2);
-			d_result = false;
-		}
-		model.addAttribute("d_test", d_result);
-		
-		return "tms/dev/devPlanList";
+		return "redirect:/tms/dev/devPlans.do";
 	}
 	
 	@RequestMapping("/tms/dev/addDevPlan.do")
@@ -584,123 +447,211 @@ public class DevPlanController {
 		model.addAttribute("resultP", devPeriod);
 		
 		List<String> userList = devPlanService.selectUserList();
-				
-		List<HashMap<String,String>> temp = new ArrayList<HashMap<String,String>>();
-		TempVO t = new TempVO();
 		
-		for(int i=0; i<userList.size(); i++) {
-			temp.addAll(devPlanService.selectTempList(userList.get(i).toString()));
-		}
-		
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		devPlanService.deleteTemp();
-		String planEndDate;
-		String[] splitDate;
-		
-		for(int i=0; i<temp.size(); i++){
-			t.setPgId(String.valueOf(temp.get(i).get("PG_ID")));
-			t.setUserDevId(String.valueOf(temp.get(i).get("USER_DEV_ID")));
-			t.setUserDevNm(String.valueOf(temp.get(i).get("USER_DEV_NM")));
-			
-			planEndDate = String.valueOf(temp.get(i).get("PLAN_END_DT"));
-			splitDate = planEndDate.split("-");
-			t.setPlanEndDt(splitDate[0]+splitDate[1]+splitDate[2]);
-			
-			devPlanService.insertTemp(t);
-		}
-		
-		List<String> periodList = devPlanService.selectPeriod();
+		List<String> periodList = devPlanService.selectPeriodWeek();
 		
 		List<HashMap<String,String>> userDevStats = new ArrayList<HashMap<String,String>>();
 		
 		HashMap<String,String> test = new HashMap<String,String>();
 		
-		
-		
+		/*개발자별(계획) */
 		for(int i=0; i<userList.size(); i++){
 			
 			for(int j=0; j<periodList.size(); j++){
 				test.put("userList",String.valueOf(userList.get(i)));
-				test.put("dates",String.valueOf(periodList.get(j)));
-				userDevStats.addAll(devPlanService.selectUserDevStats(test));			
+				test.put("dt",String.valueOf(periodList.get(j)));
+				userDevStats.addAll(devPlanService.selectUserPlanWeekStats(test));
 			}
 		}
 		
-		JSONObject jsonObject = new JSONObject();
 		JSONArray resultArray = new JSONArray();
 		JSONObject resultInfo = new JSONObject();
-		/*이름 중복 저장 여부 플래그*/
-		boolean flag = true;
 		
-		/*for(int i=0; i<userDevStats.size(); i++){
-			같은 사람 찾기
-			for(int j=0; j<userList.size(); j++){
-				System.out.println("userList값 ;;"+userList.get(j));
-				System.out.println("userDevStats값 ;;"+userDevStats.get(i).get("userDevId"));
-				
-				if(userDevStats.get(i).get("userDevId").equals(userList.get(j))){
-					while(resultArray.iterator().hasNext() ){
-						
-					}
-					
-					if(flag){
-					System.out.println("값 확인"+ userDevStats.get(i).get("userDevNm"));
-					 resultInfo.put("DevNm", userDevStats.get(i).get("userDevNm"));
-					 flag = false;
-					 resultArray.add(resultInfo);
-					}
-					
+		int devSum=0;
+		
+		for(int i=0; i<userList.size(); i++){
+
+			resultInfo = new JSONObject();
+			devSum = 0;
+			if(i==0){
+				resultInfo.put("DevNm", userDevStats.get(0).get("userDevNm"));
+				for(int j=0; j< periodList.size(); j++){
+					resultInfo.put( "a"+periodList.get(j), userDevStats.get(j).get(periodList.get(j)));
+					devSum += Integer.parseInt(String.valueOf(userDevStats.get(j).get(periodList.get(j))));
+				}
+			}else{
+				resultInfo.put("DevNm", userDevStats.get(((periodList.size())*i)+1).get("userDevNm"));
+				for(int j=0; j< periodList.size(); j++){
+					resultInfo.put( "a"+periodList.get(j), userDevStats.get(j+(periodList.size()*i)).get(periodList.get(j)));
+					devSum += Integer.parseInt(String.valueOf(userDevStats.get(j+(periodList.size()*i)).get(periodList.get(j))));
 				}
 			}
+			resultInfo.put("devSum", devSum);
+			resultArray.add(resultInfo);
 		}
-		System.out.println("resultArray++++"+resultArray);*/
-		
-		resultInfo.put("DevNm", userDevStats.get(0).get("userDevNm"));
-		
-		for(int i=0; i< periodList.size(); i++){
-			resultInfo.put( "a"+periodList.get(i), userDevStats.get(i).get(periodList.get(i)));
-		}
-		resultArray.add(resultInfo);
-		
-		
-		resultInfo = new JSONObject();
-		resultInfo.put("DevNm", userDevStats.get(periodList.size()+1).get("userDevNm"));
-
-		for(int i=0; i< periodList.size(); i++){
-			resultInfo.put( "a"+periodList.get(i), userDevStats.get(i+periodList.size()).get(periodList.get(i)));
-		}
-		resultArray.add(resultInfo);
-		
-		
-		resultInfo = new JSONObject();
-		resultInfo.put("DevNm", userDevStats.get((periodList.size()*2)+1).get("userDevNm"));
-
-		for(int i=0; i< periodList.size(); i++){
-			resultInfo.put( "a"+periodList.get(i), userDevStats.get(i+(periodList.size()*2)).get(periodList.get(i)));
-		}
-		resultArray.add(resultInfo);
 		
 		JsonUtil jsU = new JsonUtil();
 		List<Map<String,Object>> a = jsU.getListMapFromJsonArray(resultArray);
 		
 		System.out.println("한줄로"+a);
 		
-		jsonObject.put("test",resultArray);
-		 
-		System.out.println("++++++++++"+jsonObject.toJSONString());
-		
-		//List<Map<String,Object>> a = new ArrayList<Map<String,Object>>();
-		
-		
-		
-		//userDevStats.addAll(devPlanService.selectUserDevStats("20181004"));
-		//for(int i=0; i<periodList.size(); i++){
-			//userDevStats.addAll(devPlanService.selectUserDevStats(periodList.get(i).toString()));
-		//}
-		
 		model.addAttribute("stats", userDevStats);
+		
 		model.addAttribute("a",a);
+		
+		model.addAttribute("begin", periodList.get(0));
+		model.addAttribute("end", periodList.get(periodList.size()-1));
+		
+		
+		/*개발자별(실적) */
+		List<HashMap<String,String>> userDevStats2 = new ArrayList<HashMap<String,String>>();
+		HashMap<String,String> test2 = new HashMap<String,String>();
+		
+		for(int i=0; i<userList.size(); i++){
+			for(int j=0; j<periodList.size(); j++){
+				System.out.println("i값="+i+"j값="+j);
+				test2.put("userList",String.valueOf(userList.get(i)));
+				test2.put("dt",String.valueOf(periodList.get(j)));
+				userDevStats2.addAll(devPlanService.selectUserDevWeekStats(test2));
+
+			}
+		}
+		
+		JSONArray resultArray2 = new JSONArray();
+		JSONObject resultInfo2 = new JSONObject();
+		
+		int devSum2=0;
+		
+		for(int i=0; i<userList.size(); i++){
+
+			resultInfo2 = new JSONObject();
+			devSum2 = 0;
+			if(i==0){
+				resultInfo2.put("DevNm", userDevStats2.get(0).get("userDevNm"));
+				for(int j=0; j< periodList.size(); j++){
+					resultInfo2.put( "a"+periodList.get(j), userDevStats2.get(j).get(periodList.get(j)));
+					devSum2 += Integer.parseInt(String.valueOf(userDevStats2.get(j).get(periodList.get(j))));
+				}
+			}else{
+				resultInfo2.put("DevNm", userDevStats2.get(((periodList.size())*i)+1).get("userDevNm"));
+				for(int j=0; j< periodList.size(); j++){
+					resultInfo2.put( "a"+periodList.get(j), userDevStats2.get(j+(periodList.size()*i)).get(periodList.get(j)));
+					devSum2 += Integer.parseInt(String.valueOf(userDevStats2.get(j+(periodList.size()*i)).get(periodList.get(j))));
+				}
+			}
+			resultInfo2.put("devSum", devSum2);
+			resultArray2.add(resultInfo2);
+		}
+		
+		JsonUtil jsU2 = new JsonUtil();
+		List<Map<String,Object>> a2 = jsU2.getListMapFromJsonArray(resultArray2);
+		
+		System.out.println("한줄로"+a2);
+		model.addAttribute("stats2", userDevStats2);
+		model.addAttribute("a2",a2);
+		
+		/*업무별(계획) */
+		List<String> taskGbList = devPlanService.selectTaskGbList();
+		
+		List<HashMap<String,String>> taskPlanStats = new ArrayList<HashMap<String,String>>();
+		HashMap<String,String> taskPlan = new HashMap<String,String>();
+		
+		for(int i=0; i<taskGbList.size(); i++){
+			
+			for(int j=0; j<periodList.size(); j++){
+				taskPlan.put("taskGbList",String.valueOf(taskGbList.get(i)));
+				taskPlan.put("dt",String.valueOf(periodList.get(j)));
+				taskPlanStats.addAll(devPlanService.selectTaskPlanWeekStats(taskPlan));
+
+			}
+		}
+		System.out.println("사이즈"+taskPlanStats);
+		
+		JSONArray resultArray3 = new JSONArray();
+		JSONObject resultInfo3 = new JSONObject();
+		
+		int devSum3=0;
+		int div = taskPlanStats.size() / periodList.size();
+		System.out.println("나눈값"+div);
+		
+		for(int i=0; i<div; i++){
+
+			resultInfo3 = new JSONObject();
+			devSum3 = 0;
+			if(i==0){
+				resultInfo3.put("taskGbNm", taskPlanStats.get(0).get("taskGbNm"));
+				for(int j=0; j< periodList.size(); j++){
+					resultInfo3.put( "a"+periodList.get(j), taskPlanStats.get(j).get(periodList.get(j)));
+					devSum3 += Integer.parseInt(String.valueOf(taskPlanStats.get(j).get(periodList.get(j))));
+				}
+			}else{
+				resultInfo3.put("taskGbNm", taskPlanStats.get(((periodList.size())*i)+1).get("taskGbNm"));
+				for(int j=0; j< periodList.size(); j++){
+					resultInfo3.put( "a"+periodList.get(j), taskPlanStats.get(j+(periodList.size()*i)).get(periodList.get(j)));
+					devSum3 += Integer.parseInt(String.valueOf(taskPlanStats.get(j+(periodList.size()*i)).get(periodList.get(j))));
+				}
+			}
+			resultInfo3.put("devSum", devSum3);
+			resultArray3.add(resultInfo3);
+		}
+		
+		JsonUtil jsU3 = new JsonUtil();
+		List<Map<String,Object>> a3 = jsU2.getListMapFromJsonArray(resultArray3);
+		
+		System.out.println("한줄로"+a3);
+		model.addAttribute("stats3", taskPlanStats);
+		model.addAttribute("a3",a3);
+		
+		/*업무별(실적) */
+		
+		List<HashMap<String,String>> taskDevStats = new ArrayList<HashMap<String,String>>();
+		HashMap<String,String> taskDev = new HashMap<String,String>();
+		
+		for(int i=0; i<taskGbList.size(); i++){
+			
+			for(int j=0; j<periodList.size(); j++){
+				taskDev.put("taskGbList",String.valueOf(taskGbList.get(i)));
+				taskDev.put("dt",String.valueOf(periodList.get(j)));
+				taskDevStats.addAll(devPlanService.selectTaskDevWeekStats(taskDev));
+
+			}
+		}
+		System.out.println("사이즈"+taskPlanStats);
+		
+		JSONArray resultArray4 = new JSONArray();
+		JSONObject resultInfo4 = new JSONObject();
+		
+		int devSum4=0;
+		int div2 = taskPlanStats.size() / periodList.size();
+		
+		for(int i=0; i<div2; i++){
+
+			resultInfo4 = new JSONObject();
+			devSum4 = 0;
+			if(i==0){
+				resultInfo4.put("taskGbNm", taskDevStats.get(0).get("taskGbNm"));
+				for(int j=0; j< periodList.size(); j++){
+					resultInfo4.put( "a"+periodList.get(j), taskDevStats.get(j).get(periodList.get(j)));
+					devSum4 += Integer.parseInt(String.valueOf(taskDevStats.get(j).get(periodList.get(j))));
+				}
+			}else{
+				resultInfo4.put("taskGbNm", taskDevStats.get(((periodList.size())*i)+1).get("taskGbNm"));
+				for(int j=0; j< periodList.size(); j++){
+					resultInfo4.put( "a"+periodList.get(j), taskDevStats.get(j+(periodList.size()*i)).get(periodList.get(j)));
+					devSum4 += Integer.parseInt(String.valueOf(taskDevStats.get(j+(periodList.size()*i)).get(periodList.get(j))));
+				}
+			}
+			resultInfo4.put("devSum", devSum4);
+			resultArray4.add(resultInfo4);
+		}
+		
+		JsonUtil jsU4 = new JsonUtil();
+		List<Map<String,Object>> a4 = jsU4.getListMapFromJsonArray(resultArray4);
+		
+		System.out.println("한줄로"+a4);
+		model.addAttribute("stats4", taskDevStats);
+		model.addAttribute("a4",a4);
+		
 		
 		return "/tms/dev/devStatsTable";
 	}
