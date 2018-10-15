@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -239,10 +240,11 @@ public class ProgramController {
 		
 	}
 	@RequestMapping(value = "/tms/pg/Pginsert.do")
-	public String insertPgList(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model, BindingResult errors) throws Exception {
+	public String insertPgList(@Valid ProgramVO programVO, ModelMap model, BindingResult errors) throws Exception {
 
 		beanValidator.validate(programVO, errors);
 		if(errors.hasErrors()) {
+			System.out.println("오류검출!");
 			return "redirect:/tms/pg/PgInsert.do";
 		} else {
 		
