@@ -30,8 +30,10 @@
 <script type="text/javascript">
 
 function fn_result_change(asd) {
+		
 	   var idVal0 = document.getElementById(asd).value;
 	   var idVal1 = document.getElementById(asd+1).value;
+	   
 	   if(idVal1 != null && idVal1 != "")
 	      {
 	         if(idVal0 > idVal1)
@@ -56,7 +58,6 @@ function fn_result_regist(t){
 
 	var idVal = document.getElementById(t).value;
 	var idVal1 = document.getElementById(t+1).value;
-
 	location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
 			
 }
@@ -143,8 +144,7 @@ $(function(){
 	      });
 	   })
 	})
-	
-	
+
 function searchFileNm() {
     window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
 }
@@ -358,9 +358,7 @@ function searchFileNm() {
                       <td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
                       <td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
-            		  <td align="center" class="listtd">
-            		  	<a href="<c:url value='/tms/dev/selectDevPlan.do'/>?pgId=<c:out value='${result.PG_ID}'/>">
-                        <c:out value="${result.PG_ID}"/></a></td>
+            		  <td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
             		  <%-- <td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td> --%>
             		  <td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
@@ -368,17 +366,31 @@ function searchFileNm() {
             		  <td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td> --%>
             		  <td><input type="date"  id="${result.PG_ID}" <c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_START_DT}" pattern="yyyy-MM-dd"/>" />
                       </td>
-                      <td><input type="date"  id="${result.PG_ID}" <c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
+                      <td><input type="date"  id="${result.PG_ID}1" <c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
                       </td>
             		  <td align="center" class="listtd"><c:out value="${result.DAY_DIFF}"/>&nbsp;</td>
             		  <td align="center" class="listtd">
             			  <div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
-	            			<c:if test="${result.planStartDt eq null || result.planEndDt eq null}">
-	            				<a id="${result.PG_ID}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-	            			</c:if>
-	            			<c:if test="${result.planStartDt ne null || result.planEndDt ne null}">
-	            				<a id="${result.PG_ID}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-	            			</c:if>
+            			  
+            			  	<c:choose>
+            			  		<c:when test="${d_test}">
+            			  			<c:if test="${result.PLAN_START_DT eq null || result.PLAN_END_DT eq null}">
+			            			<a id="${result.PG_ID}2" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+			            			</c:if>
+			            			<c:if test="${result.PLAN_START_DT ne null || result.PLAN_END_DT ne null}">
+			            				<a id="${result.PG_ID}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+			            			</c:if>
+            			  		</c:when>
+            			  		<c:otherwise>
+            			  			<c:if test="${result.PLAN_START_DT eq null || result.PLAN_END_DT eq null}">
+			            			<a id="${result.PG_ID}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+			            			</c:if>
+			            			<c:if test="${result.PLAN_START_DT ne null || result.PLAN_END_DT ne null}">
+			            				<a id="${result.PG_ID}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+			            			</c:if>
+            			  		</c:otherwise>
+            			  	</c:choose>
+	            			
             			  </div>
             			  
                      </tr>

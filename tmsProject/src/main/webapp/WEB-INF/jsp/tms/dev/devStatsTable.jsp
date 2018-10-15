@@ -15,9 +15,85 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>개발진척통계</title>
-<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>o
-<script type="text/javaScript" language="javascript">
 
+<style type="text/css">
+ul.tabs {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+	border-bottom: 1px solid #DDDDDD;
+	
+}
+
+ul.tabs li {
+	background: none;
+	color: #727272;
+	font-weight:bold;
+	display: inline-block;
+	padding: 10px 15px;
+	cursor: pointer;
+	border-right: 1px solid #DDDDDD;
+	border-left: 1px solid #DDDDDD;
+	border-top: 1px solid #DDDDDD;
+}
+
+ul.tabs li.current {
+	background: #007bff;
+	font-weight:bold;
+	color:#ffffff;
+	border-right: 1px  #DDDDDD;
+	border-left: 1px  #DDDDDD;
+	border-top: 1px  #DDDDDD;
+}
+
+ul.tabs li.last {
+	background: #ffffff;
+	font-weight:bold;
+	color:#ffffff;
+	border-right: 0px;
+	border-left: 0px;
+	border-top: 0px;
+	border-bottom: 0px;
+}
+
+.tab-content {
+	display: none;
+	padding: 15px;
+}
+
+.tab-content.current {
+	display: inherit;
+	border: 1px solid #fff;
+}
+</style>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script type="text/javaScript" language="javascript">
+$(document).ready(function() {
+	
+	$('ul.tabs li').click(function() {
+		var tab_id = $(this).attr('data-tab');
+		if(!(tab_id == "tab-5")){
+			$('ul.tabs li').removeClass('current');
+			$('.tab-content').removeClass('current');
+			
+			$(this).addClass('current');
+			$("#" + tab_id).addClass('current');
+			
+			if(tab_id=="tab-1") {
+					document.getElementById("StatsByTaskToExcel").style.display="inline"
+					document.getElementById("StatsByPgToExcel").style.display="none"
+					document.getElementById("StatsByUserTestToExcel").style.display="none"
+					document.getElementById("StatsByUserDevToExcel").style.display="none"
+			} else if(tab_id=="tab-2") {
+					document.getElementById("StatsByTaskToExcel").style.display="none"
+					document.getElementById("StatsByPgToExcel").style.display="inline"
+					document.getElementById("StatsByUserTestToExcel").style.display="none"
+					document.getElementById("StatsByUserDevToExcel").style.display="none"
+			}
+		}
+	})
+})
 </script>
 
 </head>
@@ -50,162 +126,213 @@
                         </ul>
                     </div>
                 </div>
-                <!-- 검색 필드 박스 시작 -->
-               
-				
+                <!-- 프로젝트 개발 기간 박스 시작-->
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발진척통계(통계표)</strong></h2></div>
-					
-					  	<fieldset><legend>조건정보 영역</legend>	  
+				</div>
+				 <!-- 프로젝트 개발 기간 박스 끝-->
+                
+                <ul class="tabs">
+					<li class="tab-link current" data-tab="tab-1">개발자별</li>
+					<li class="tab-link" data-tab="tab-2">업무별</li>
+					<li class="tab-link last" data-tab="tab-5" style="float:right">
+						<div class="buttons" id="StatsByTaskToExcel" style="display:inline">
+								<a href="<c:url value='/tms/defect/StatsToExcel.do'/>"
+									onclick="javascript:StatsToExcel('task'); return false;">엑셀 다운로드</a>
+						</div>
+						<div class="buttons" id="StatsByPgToExcel" style="display:none">
+							<a href="<c:url value='/tms/defect/StatsToExcel.do'/>"
+								onclick="javascript:StatsToExcel('pg'); return false;">엑셀 다운로드</a>
+						</div>
+					</li>
+				</ul>
+                
+                <fieldset><legend>조건정보 영역</legend>	  
 					  	<div class="sf_start">
 					  	<ul id="search_first_ul">
-						  	<li><label >계획시작일</label></li>
-						  	<li>
-						  	<input type="text" value="<fmt:formatDate value="${tt.DEV_START_DT}" pattern="yyyy-MM-dd" />" readonly>
+						  	<li><label>계획시작일</label></li>
+						  	<li><input type="text" value="<fmt:formatDate value="${tt.DEV_START_DT}" pattern="yyyy-MM-dd" />" readonly>
 						  	</li>
 						  
-						  	<li><label >계획종료일</label></li>
+						  	<li><label>계획종료일</label></li>
 						  	<li><input type="text" value="<fmt:formatDate value="${tt.DEV_END_DT}" pattern="yyyy-MM-dd" />" readonly></li>
 					  	</ul>
 						</div>			
-						</fieldset>		
-				</div>
-				<!-- //검색 필드 박스 끝 -->
+						</fieldset>
                 
-                <div id="page_info"><div id="page_info_align"></div></div>                    
-                <!-- table add start -->
-                <h2><strong>개발자별(계획)</strong></h2>
+                
+                <div id="tab-1" class="tab-content current">
+                                    
+	                <h2><strong>계획</strong></h2>
+	                <div class="default_tablestyle">
+	                    <table summary="개발자별 계획통계 테이블입니다" cellpadding="0" cellspacing="0">
+	                    <caption>계획통계(개발자별) 테이블</caption>
+	           
+	          			<thead>
+	          			<tr>
+	          				<th align="center" >개발자</th>
+		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
+		                    	<th align="center">${status.count}주차(${mw})</th>
+		                    </c:forEach>
+		                    <th align="center"><strong>합계</strong></th>
+	          			</tr>
+	                    </thead>
+	           			
+	           			<%int totSum=0; %>
+	           			<c:forEach var="upl" items="${userplanList}" varStatus="status">
+	           			
+		                    <tr>
+		                    	<td><c:out value="${upl.DevNm}" /></td>
+		                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+				           			<c:set var ="t"  value="a${i}"></c:set>
+				           			<td>${upl[t]}</td>
+								</c:forEach>
+								<td><strong>${upl.sumUserPlan}</strong></td>
+								<c:set var = "totSum" value="${upl.sumUserPlan}" />
+								<% totSum += (Integer)pageContext.getAttribute("totSum");
+									pageContext.setAttribute("totSum", totSum);
+								%>
+		                    </tr>
+	                    </c:forEach>
+	                    <tr>
+	                    	<td><strong><c:out value="합계" /></strong></td>
+	                    	<c:forEach var="sum" items="${sumPlanWeek}" varStatus="status">
+		                    		<td align="center"><strong>${sum}</strong></td>
+		                  	</c:forEach>
+		                  	<td><strong>${totSum}</strong></td>
+	                    </tr>
+	                    </table>
+	                </div>
+	                
+	                <div id="search_field"> <div id="search_field_loc"></div></div>
+	               
+	              	<h2><strong>실적</strong></h2>
+	                <div class="default_tablestyle">
+	                    <table summary="개발자별 실적통계 테이블입니다" cellpadding="0" cellspacing="0">
+	                    <caption>실적통계(개발자별) 테이블</caption>
+	           
+	          			<thead>
+	          			<tr>
+	          				<th align="center" >개발자</th>
+		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
+		                    	<th align="center">${status.count}주차(${mw})</th>
+		                    </c:forEach>
+		                    <th align="center"><strong>합계</strong></th>
+	          			</tr>
+	                    </thead>
+	           			
+	           			<%int totSum2=0; %>
+	           			<c:forEach var="udl" items="${userDevList}" varStatus="status">
+	           			
+	           			
+	                    <tr>
+	                    	<td><c:out value="${udl.DevNm}" /></td>
+	                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+			           			<c:set var ="t"  value="a${i}"></c:set>
+			           			<td>${udl[t]}</td>
+							</c:forEach>
+							<td><strong>${udl.sumUserDev}</strong></td>
+							<c:set var = "totSum2" value="${udl.sumUserDev}" />
+							<% totSum2 += (Integer)pageContext.getAttribute("totSum2");
+								pageContext.setAttribute("totSum2", totSum2);
+							%>
+	                    </tr>
+	                    </c:forEach>
+	            		<tr>
+	                    	<td><strong><c:out value="합계" /></strong></td>
+	                    	<c:forEach var="sum" items="${sumDevWeek}" varStatus="status">
+		                    		<td align="center"><strong>${sum}</strong></td>
+		                  	</c:forEach>
+		                  	<td><strong>${totSum2}</strong></td>
+	                    </tr>
+	                    
+	                    </table>
+	                </div>
+                </div>
+                <div id="tab-2" class="tab-content">
+                <h2><strong>계획</strong></h2>
                 <div class="default_tablestyle">
-                    <table summary="진척통계 테이블입니다" cellpadding="0" cellspacing="0">
-                    <caption>진척통계 테이블</caption>
+                    <table summary="업무별 계획통계 테이블입니다" cellpadding="0" cellspacing="0">
+                    <caption>계획통계(업무별)테이블</caption>
            
           			<thead>
-                    <tr>
-                    	<th align="center">개발자</th>
-                    	<c:forEach begin="${begin}" end="${end}" var="k" varStatus="s">
-	                        <th align="center">${s.count}주차</th>
-        				</c:forEach>
-        				<th align="center">합계</th>
-                    </tr>
-                    </thead>
+	          			<tr>
+	          				<th align="center" >업무</th>
+		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
+		                    	<th align="center">${status.count}주차(${mw})</th>
+		                    </c:forEach>
+		                    <th align="center"><strong>합계</strong></th>
+	          			</tr>
+	                </thead>
            			
-           			
-           			<c:forEach var="stats" items="${a}" varStatus="status">
-           			
-           			
-                    <tr>
-                    	<td><c:out value="${stats.DevNm}" /></td>
-                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
-		           			<c:set var ="t"  value="a${i}"></c:set>
-		           			<td>${stats[t]}</td>
-						</c:forEach>
-						<td>${stats.devSum}</td>
-                    </tr>
+           			<%int totSum3=0; %>
+           			<c:forEach var="tpl" items="${taskPlanList}" varStatus="status">
+	                    <tr>
+	                    	<td><c:out value="${tpl.taskGbNm}" /></td>
+	                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+			           			<c:set var ="t"  value="a${i}"></c:set>
+			           			<td>${tpl[t]}</td>
+							</c:forEach>
+							<td><strong>${tpl.sumTaskPlan}</strong></td>
+							<c:set var = "totSum3" value="${tpl.sumTaskPlan}" />
+							<% totSum3 += (Integer)pageContext.getAttribute("totSum3");
+								pageContext.setAttribute("totSum3", totSum3);
+							%>
+	                    </tr>
                     </c:forEach>
-            
-                    
+                    <tr>
+	                    	<td><strong><c:out value="합계" /></strong></td>
+	                    	<c:forEach var="sum" items="${sumPlanWeek}" varStatus="status">
+		                    		<td align="center"><strong>${sum}</strong></td>
+		                  	</c:forEach>
+		                  	<td><strong>${totSum3}</strong></td>
+	                </tr>
                     </table>
                 </div>
                 
-              <h2><strong>개발자별(실적)</strong></h2>
-                <div class="default_tablestyle">
-                    <table summary="진척통계 테이블입니다" cellpadding="0" cellspacing="0">
-                    <caption>진척통계 테이블</caption>
-           
-          			<thead>
-                    <tr>
-                    	<th align="center">개발자</th>
-                    	<c:forEach begin="${begin}" end="${end}" var="k2" varStatus="s">
-	                        <th align="center">${s.count}주차</th>
-        				</c:forEach>
-        				<th align="center">합계</th>
-                    </tr>
-                    </thead>
-           			
-           			
-           			<c:forEach var="stats2" items="${a2}" varStatus="status">
-           			
-           			
-                    <tr>
-                    	<td><c:out value="${stats2.DevNm}" /></td>
-                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
-		           			<c:set var ="t"  value="a${i}"></c:set>
-		           			<td>${stats2[t]}</td>
-						</c:forEach>
-						<td>${stats2.devSum}</td>
-                    </tr>
-                    </c:forEach>
-            
-                    
-                    </table>
-                </div>
+                 <div id="search_field"> <div id="search_field_loc"></div></div>
                 
-                <h2><strong>업무별(계획)</strong></h2>
+                <h2><strong>실적</strong></h2>
                 <div class="default_tablestyle">
-                    <table summary="진척통계 테이블입니다" cellpadding="0" cellspacing="0">
-                    <caption>진척통계 테이블</caption>
+                    <table summary="업무별 실적통계 테이블입니다" cellpadding="0" cellspacing="0">
+                    <caption>실적통계(업무별)테이블</caption>
            
           			<thead>
-                    <tr>
-                    	<th align="center">업무</th>
-                    	<c:forEach begin="${begin}" end="${end}" var="k3" varStatus="s">
-	                        <th align="center">${s.count}주차</th>
-        				</c:forEach>
-        				<th align="center">합계</th>
-                    </tr>
-                    </thead>
+	          			<tr>
+	          				<th align="center" >개발자</th>
+		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
+		                    	<th align="center">${status.count}주차(${mw})</th>
+		                    </c:forEach>
+		                    <th align="center"><strong>합계</strong></th>
+	          			</tr>
+	                </thead>
            			
-           			
-           			<c:forEach var="stats3" items="${a3}" varStatus="status">
-           			
-           			
-                    <tr>
-                    	<td><c:out value="${stats3.taskGbNm}" /></td>
-                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
-		           			<c:set var ="t"  value="a${i}"></c:set>
-		           			<td>${stats3[t]}</td>
-						</c:forEach>
-						<td>${stats3.devSum}</td>
-                    </tr>
+           			<%int totSum4=0; %>
+           			<c:forEach var="tdl" items="${taskDevList}" varStatus="status">
+	                    <tr>
+	                    	<td><c:out value="${tdl.taskGbNm}" /></td>
+	                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+			           			<c:set var ="t"  value="a${i}"></c:set>
+			           			<td>${tdl[t]}</td>
+							</c:forEach>
+							<td><strong>${tdl.sumTaskDev}</strong></td>
+							<c:set var = "totSum4" value="${tdl.sumTaskDev}" />
+							<% totSum4 += (Integer)pageContext.getAttribute("totSum4");
+								pageContext.setAttribute("totSum4", totSum4);
+							%>
+	                    </tr>
                     </c:forEach>
-            
+            		<tr>
+	                   	<td><strong><c:out value="합계" /></strong></td>
+	                   	<c:forEach var="sum" items="${sumDevWeek}" varStatus="status">
+		                   		<td align="center"><strong>${sum}</strong></td>
+		                </c:forEach>
+		                <td><strong>${totSum4}</strong></td>
+	                </tr>
                     
                     </table>
                 </div>
-                
-                <h2><strong>업무별(실적)</strong></h2>
-                <div class="default_tablestyle">
-                    <table summary="진척통계 테이블입니다" cellpadding="0" cellspacing="0">
-                    <caption>진척통계 테이블</caption>
-           
-          			<thead>
-                    <tr>
-                    	<th align="center">업무</th>
-                    	<c:forEach begin="${begin}" end="${end}" var="k4" varStatus="s">
-	                        <th align="center">${s.count}주차</th>
-        				</c:forEach>
-        				<th align="center">합계</th>
-                    </tr>
-                    </thead>
-           			
-           			
-           			<c:forEach var="stats4" items="${a4}" varStatus="status">
-           			
-           			
-                    <tr>
-                    	<td><c:out value="${stats4.taskGbNm}" /></td>
-                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
-		           			<c:set var ="t"  value="a${i}"></c:set>
-		           			<td>${stats4[t]}</td>
-						</c:forEach>
-						<td>${stats4.devSum}</td>
-                    </tr>
-                    </c:forEach>
-            
-                    
-                    </table>
-                </div>
-                 
+                 </div>
 				<%-- <table width="120%" border="0" cellpadding="0" cellspacing="0" >
                  <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
               
