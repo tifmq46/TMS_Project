@@ -734,11 +734,22 @@
 				ORDER BY USER_DEV_ID
          ]]>
    	</select>
-	
+   	
 	<select id="DevPlanDAO.selectPeriodWeek" resultClass="java.lang.String">
 			<![CDATA[
 			SELECT DISTINCT WEEKOFYEAR(dates) AS W 
 				from PERIOD
+		]]>
+   	</select>
+   	
+	<select id="DevPlanDAO.selectPeriodMonthWeek" resultClass="java.lang.String">
+			<![CDATA[
+			SELECT CONCAT(MD, "월", MW,"주") AS ST FROM
+			(
+				SELECT DISTINCT 
+						MONTH(DATES) AS MD,
+						WEEK(DATES,5) - WEEK(DATE_SUB(DATES,INTERVAL DAYOFMONTH(DATES)-1 DAY),5) + 1 AS MW
+				FROM PERIOD) A
 		]]>
    	</select>
    	
@@ -832,6 +843,44 @@
 			WHERE TASK_GB=#taskGbList#
 			GROUP BY TASK_GB
 			ORDER BY TASK_GB 
+         ]]>
+   	</select>
+   	
+   	<select id="DevPlanDAO.selectPlanSum" parameterClass="java.lang.String" resultClass="java.lang.String">
+			<![CDATA[
+				select count(*) from DEV_PLAN_TB AS D
+					INNER JOIN PG_TB AS P
+				ON D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
+					WHERE WEEKOFYEAR(PLAN_END_DT) = #weekList#
+         ]]>
+   	</select>
+	
+   	
+	<select id="DevPlanDAO.selectDevSum" parameterClass="java.lang.String" resultClass="java.lang.String">
+			<![CDATA[
+				select count(*) from DEV_PLAN_TB AS D
+					INNER JOIN PG_TB AS P
+				ON D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
+					WHERE WEEKOFYEAR(DEV_END_DT) = #weekList#
+         ]]>
+   	</select>
+   	
+	<select id="DevPlanDAO.selectThisWeekStats" parameterClass="java.lang.String" resultClass="java.util.HashMap">
+			<![CDATA[
+				SELECT (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE=#taskList#) AS TASK_NM
+						,CNTA
+						,CNTB
+						,ROUND((IFNULL((CNTB/CNTA),0)*100),1) AS R
+				FROM
+					(SELECT COUNT(*) CNTA, TASK_GB
+						FROM DEV_PLAN_TB AS D, PG_TB AS P
+						WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND P.TASK_GB=#taskList#
+						AND WEEKOFYEAR(D.PLAN_END_DT) = WEEKOFYEAR(NOW())) AS A,
+				
+					(SELECT COUNT(*) CNTB
+						FROM DEV_PLAN_TB AS D, PG_TB AS P
+						WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND P.TASK_GB=#taskList#
+						AND WEEKOFYEAR(D.DEV_END_DT) = WEEKOFYEAR(NOW())) AS B
          ]]>
    	</select>
 </sqlMap>

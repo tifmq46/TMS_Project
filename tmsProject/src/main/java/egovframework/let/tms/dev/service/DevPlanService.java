@@ -153,4 +153,12 @@ public interface DevPlanService {
 	public List<HashMap<String, String>> selectTaskPlanWeekStats(HashMap<String, String> taskPlan);
 
 	public List<HashMap<String, String>> selectTaskDevWeekStats(HashMap<String, String> taskDev);
+
+	public List<String> selectPeriodMonthWeek();
+
+	public String selectPlanSum(String periodList);
+
+	public String selectDevSum(String periodList);
+
+	public List<HashMap<String, String>> selectThisWeekStats(String taskGb);
 }
