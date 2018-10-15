@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
@@ -30,6 +31,7 @@ import egovframework.let.tms.test.service.TestCaseVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 
@@ -107,19 +109,14 @@ public class TestController {
 	@RequestMapping(value = "/tms/test/insertTestCase.do")
 	public String insertTestCase( @ModelAttribute("testCaseVO") TestCaseVO testCaseVO, ModelMap model, HttpServletRequest request) throws Exception {
 		
-		//'테스트케이스구분' 공통코드 가져오기
-		ComDefaultCodeVO vo1 = new ComDefaultCodeVO();
-		vo1.setCodeId("TCGB");
-		List<CmmnDetailCode> tcGbCode =  egovCmmUseService.selectCmmCodeDetail(vo1);
-		model.addAttribute("tcGbCode", tcGbCode);
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		vo.setCodeId("TCGB"); //'테스트케이스구분' 공통코드 
+		List<CmmnDetailCode> codeResult  =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("tcGbCode", codeResult);
 		
-		//'업무구분' 공통코드 가져오기
-		ComDefaultCodeVO vo2 = new ComDefaultCodeVO();
-		vo2.setCodeId("TASKGB");
-		List<CmmnDetailCode> taskGbCode =  egovCmmUseService.selectCmmCodeDetail(vo2);
-		model.addAttribute("taskGbCode", taskGbCode);
-		
-		System.out.println(testCaseVO.getPgId());
+		vo.setCodeId("TASKGB"); //'업무구분' 공통코드
+		codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("taskGbCode", codeResult);
 		
 		return "tms/test/TestCaseInsert";
 	}
@@ -135,7 +132,6 @@ public class TestController {
 	public String insertTestCaseImpl(RedirectAttributes redirectAttributes, @ModelAttribute("testCaseVO") TestCaseVO testCaseVO, 
 			BindingResult errors, ModelMap model) throws Exception {
 				
-		
 			String testcaseGb = testCaseVO.getTestcaseGb();
 			
 			beanValidator.validate(testCaseVO, errors);
@@ -205,7 +201,6 @@ public class TestController {
 			BindingResult errors , ModelMap model) throws Exception {
 		
 			String testcaseGb = testCaseVO.getTestcaseGb();
-			
 			testService.updateTestCase(testCaseVO);
 			redirectAttributes.addFlashAttribute("message",  egovMessageSource.getMessage("success.common.update"));
 			return "redirect:/tms/test/selectTestCaseList.do?testcaseGb=" + testcaseGb;
@@ -226,7 +221,6 @@ public class TestController {
 		
 		beanValidator.validate(testScenarioVO, errors);
 		if(errors.hasErrors()){
-			System.out.println("시나리오 업데이트 안됨");
 			redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("fail.common.update"));
 			return "redirect:/tms/test/selectTestResult.do?testcaseId=" + testcaseId;
 
@@ -294,7 +288,23 @@ public class TestController {
 	}
 
 	
+	/**
+	 * 삭제하려는 케이스를 참조하고 있는 시나리오가 있는지 개수를 확인한다.
+	 * @param checkedMenuNoForDel  String
+	 * @return totalCount 시나리오가 있는 케이스의 개수
+	 * @exception Exception
+	 */
 	
+	@RequestMapping("/tms/test/selectScenarioCntReferringToCase.do")
+	@ResponseBody
+	public int selectScenarioCntReferringToCase(@RequestParam("checkedMenuNoForDel") String checkedMenuNoForDel, ModelMap model)
+			throws Exception {
+		
+		int totalCount = testService.selectScenarioCntReferringToCase(checkedMenuNoForDel);
+		return totalCount;
+	}
+	
+
 	/**
 	 * 테스트시나리오를 삭제한다
 	 * @param vo - 등록할 정보가 담긴 testCaseVO
@@ -420,24 +430,24 @@ public class TestController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-		//'업무구분' 공통코드 가져오기
-		ComDefaultCodeVO vo1 = new ComDefaultCodeVO();
-		vo1.setCodeId("TASKGB");
-		List<CmmnDetailCode> taskGbCode =  egovCmmUseService.selectCmmCodeDetail(vo1);
-		model.addAttribute("taskGbCode", taskGbCode);
 		
-		//'시스템구분' 공통코드 가져오기
-		ComDefaultCodeVO vo2 = new ComDefaultCodeVO();
-		vo2.setCodeId("SYSGB");
-		List<CmmnDetailCode> sysGbCode =  egovCmmUseService.selectCmmCodeDetail(vo2);
-		model.addAttribute("sysGbCode", sysGbCode);
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		vo.setCodeId("TASKGB"); //'업무구분'
+		List<CmmnDetailCode> codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("taskGbCode", codeResult);
 		
-		//'완료여부' 공통코드 가져오기
-		ComDefaultCodeVO vo3 = new ComDefaultCodeVO();
-		vo3.setCodeId("RESULTYN");
-		List<CmmnDetailCode> resultYnCode =  egovCmmUseService.selectCmmCodeDetail(vo3);
-		model.addAttribute("resultYnCode", resultYnCode);
+		vo.setCodeId("SYSGB"); //'시스템구분' 
+		codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("sysGbCode", codeResult);
+		
+		vo.setCodeId("RESULTYN"); //'완료여부' 
+		codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("resultYnCode", codeResult);
 
+		
+		String returnPg = (String)request.getParameter("returnPg");
+		
+		
 		
 		//테스트케이스 구분에 따른 jsp페이지 설정(단위/통합)
 		String testcaseGb = (String)request.getParameter("testcaseGb");
@@ -464,9 +474,9 @@ public class TestController {
 	
 
 	/**
-	 * 테스트시나리오 목록을 가져온다
+	 * 테스트케이스 목록을 가져온다
 	 * @param vo - 정보가 담긴 searchVO
-	 * @return 등록 결과
+	 * @returnPg TestScenarioListUtc / TestScenarioListTtc
 	 * @exception Exception
 	 */
 	
@@ -487,24 +497,18 @@ public class TestController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-		//'업무구분' 공통코드 가져오기
-		ComDefaultCodeVO vo1 = new ComDefaultCodeVO();
-		vo1.setCodeId("TASKGB");
-		List<CmmnDetailCode> taskGbCode =  egovCmmUseService.selectCmmCodeDetail(vo1);
-		model.addAttribute("taskGbCode", taskGbCode);
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		vo.setCodeId("TASKGB"); //'업무구분'
+		List<CmmnDetailCode> codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("taskGbCode", codeResult);
 		
-		//'시스템구분' 공통코드 가져오기
-		ComDefaultCodeVO vo2 = new ComDefaultCodeVO();
-		vo2.setCodeId("SYSGB");
-		List<CmmnDetailCode> sysGbCode =  egovCmmUseService.selectCmmCodeDetail(vo2);
-		model.addAttribute("sysGbCode", sysGbCode);
+		vo.setCodeId("SYSGB"); //'시스템구분'
+		codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("sysGbCode", codeResult);
 		
-		//'완료여부' 공통코드 가져오기
-		ComDefaultCodeVO vo3 = new ComDefaultCodeVO();
-		vo3.setCodeId("RESULTYN");
-		List<CmmnDetailCode> resultYnCode =  egovCmmUseService.selectCmmCodeDetail(vo3);
-		model.addAttribute("resultYnCode", resultYnCode);
-
+		vo.setCodeId("RESULTYN"); //'완료여부'
+		codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("resultYnCode", codeResult);
 		
 		//테스트케이스 구분에 따른 jsp페이지 설정(단위/통합)
 		String testcaseGb = (String)request.getParameter("testcaseGb");
@@ -529,9 +533,9 @@ public class TestController {
 	}
 	
 	/**
-	 * 테스트시나리오 목록을 가져온다
+	 * 테스트케이스 목록을 가져온다
 	 * @param vo - 정보가 담긴 searchVO
-	 * @return 등록 결과
+	 * @returnPg TestResultListUtc / TestResultListTtc
 	 * @exception Exception
 	 */
 	
@@ -552,23 +556,18 @@ public class TestController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-		//'업무구분' 공통코드 가져오기
-		ComDefaultCodeVO vo1 = new ComDefaultCodeVO();
-		vo1.setCodeId("TASKGB");
-		List<CmmnDetailCode> taskGbCode =  egovCmmUseService.selectCmmCodeDetail(vo1);
-		model.addAttribute("taskGbCode", taskGbCode);
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		vo.setCodeId("TASKGB"); //'업무구분' 
+		List<CmmnDetailCode> codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("taskGbCode", codeResult);
 		
-		//'시스템구분' 공통코드 가져오기
-		ComDefaultCodeVO vo2 = new ComDefaultCodeVO();
-		vo2.setCodeId("SYSGB");
-		List<CmmnDetailCode> sysGbCode =  egovCmmUseService.selectCmmCodeDetail(vo2);
-		model.addAttribute("sysGbCode", sysGbCode);
+		vo.setCodeId("SYSGB"); //'시스템구분'
+		codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("sysGbCode", codeResult);
 		
-		//'완료여부' 공통코드 가져오기
-		ComDefaultCodeVO vo3 = new ComDefaultCodeVO();
-		vo3.setCodeId("RESULTYN");
-		List<CmmnDetailCode> resultYnCode =  egovCmmUseService.selectCmmCodeDetail(vo3);
-		model.addAttribute("resultYnCode", resultYnCode);
+		vo.setCodeId("RESULTYN"); //'완료여부' 
+		codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("resultYnCode", codeResult);
 
 		
 		//테스트케이스 구분에 따른 jsp페이지 설정(단위/통합)
@@ -594,7 +593,7 @@ public class TestController {
 	}
 	
 	/**
-	 * 테스트 통계를 보여준다.
+	 * 테스트 통계를 보여준다.(대시보드)
 	 * @param vo - 등록할 정보가 담긴 testCaseVO
 	 * @return String
 	 * @exception Exception
@@ -613,6 +612,14 @@ public class TestController {
 		List<?> tcStatsByTaskGb = testService.selectTestCaseStatsListByTaskGb();
 		model.addAttribute("tcStatsByTaskGb", JSONArray.fromObject(tcStatsByTaskGb));
 		
+		
+		//단위 테스트 진행 상태
+		HashMap<String,Object> ProgressStatusUtc = testService.selectTestCaseProgressStatus("TC1");
+		model.addAttribute("ProgressStatusUtc",  JSONObject.toJSONString(ProgressStatusUtc));
+		
+		//통합 테스트 진행 상태
+		HashMap<String,Object> ProgressStatusTtc = testService.selectTestCaseProgressStatus("TC2");
+		model.addAttribute("ProgressStatusTtc", JSONObject.toJSONString(ProgressStatusTtc));
 		
 		return "tms/test/TestStats";
 	}
@@ -642,25 +649,19 @@ public class TestController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-		//'업무구분' 공통코드 가져오기
-		ComDefaultCodeVO vo1 = new ComDefaultCodeVO();
-		vo1.setCodeId("TASKGB");
-		List<CmmnDetailCode> taskGbCode =  egovCmmUseService.selectCmmCodeDetail(vo1);
-		model.addAttribute("taskGbCode", taskGbCode);
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		vo.setCodeId("TASKGB"); //'업무구분'
+		List<CmmnDetailCode> codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("taskGbCode", codeResult);
 		
-		//'테스트케이스 구분' 공통코드 가져오기
-		ComDefaultCodeVO vo2 = new ComDefaultCodeVO();
-		vo2.setCodeId("TCGB");
-		List<CmmnDetailCode> tcGbCode =  egovCmmUseService.selectCmmCodeDetail(vo2);
-		model.addAttribute("tcGbCode", tcGbCode);
+		vo.setCodeId("TCGB"); //'테스트케이스 구분'
+		codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("tcGbCode", codeResult);
 		
-		//'완료여부' 공통코드 가져오기
-		ComDefaultCodeVO vo3 = new ComDefaultCodeVO();
-		vo3.setCodeId("RESULTYN");
-		List<CmmnDetailCode> resultYnCode =  egovCmmUseService.selectCmmCodeDetail(vo3);
-		model.addAttribute("resultYnCode", resultYnCode);
+		vo.setCodeId("RESULTYN"); //'완료여부'
+		codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("resultYnCode", codeResult);
 
-		
 		//테스트 현황 목록 가져오기
 		List<?> testCurrent = testService.selectTestCurrent(searchVO);
 		model.addAttribute("testCurrent", testCurrent);
@@ -705,10 +706,10 @@ public class TestController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
 		//'테스트케이스 구분' 공통코드 가져오기
-		ComDefaultCodeVO vo2 = new ComDefaultCodeVO();
-		vo2.setCodeId("TCGB");
-		List<CmmnDetailCode> tcGbCode =  egovCmmUseService.selectCmmCodeDetail(vo2);
-		model.addAttribute("tcGbCode", tcGbCode);
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		vo.setCodeId("TCGB");
+		List<CmmnDetailCode> codeResult =  egovCmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("tcGbCode", codeResult);
 		
 		//테스트 현황 목록 가져오기
 		List<?> testStatsTable = testService.selectTestStatsTable(searchVO);

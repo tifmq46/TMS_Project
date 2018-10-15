@@ -145,30 +145,6 @@ function insertTestScenarioImpl(){
                                 	<textarea type="textarea" rows="5" style="width:100%" id="expectedResult" name="expectedResult"></textarea>
                             	</td>
                             </tr>
-                            
-                            
-                            <tr>
-                            	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testResultYn" /></label>
-                                </th>
-                                <td width="25%" nowrap >
-                           			<input disabled="disabled" type="radio" name="testResultYn" value="P">Pass
-									&nbsp;<input disabled="disabled" type="radio" name="testResultYn" value="F">Fail
-                                </td>
-                                
-                                <th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testDt" /></label>
-                                </th>
-                                <td width="25%" nowrap >
-                                	<input disabled="disabled" id="testDt" name="testDt" type="date" size="25" maxlength="60"  value="<fmt:formatDate value='${testScenarioVO.testDt}' pattern='yyyy-MM-dd' />" /> 
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                             	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testResultContent" /></label>
-                                </th>
-                                <td width="75%" colspan="3">
-                            		<textarea disabled="disabled" type="textarea" rows="5" style="width:100%" id="testResultContent" name="testResultContent"></textarea>
-                            	</td>
-                            </tr>
                         </table>
                     </div>
              	
@@ -178,7 +154,8 @@ function insertTestScenarioImpl(){
 	                    <ul>        
 	           				<li>
 								<div class="buttons">
-				   					<a onclick="insertTestScenarioImpl(); return false;"><spring:message code="button.create" /></a>
+				   					<a href="#" onclick="insertTestScenarioImpl(); return false;"><spring:message code="button.create" /></a>
+				   					<a href="javascript:history.go(-1);"><spring:message code="button.list" /></a>
 								</div>  				  			
 		  					</li>             
 	                    </ul>        

@@ -161,7 +161,6 @@ function selectTestCurrent(pageNo){
                 
                 <div class="default_tablestyle">
                 
-                  <div style="margin:10px;">
                   
            			<fmt:parseNumber var="tc1_yCnt" value="${selectTestCurrentCnt.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
                    	<fmt:parseNumber var="tc1_totCnt" value="${selectTestCurrentCnt.totCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
@@ -175,14 +174,24 @@ function selectTestCurrent(pageNo){
                    			<fmt:parseNumber var="testPct" value="${(tc1_yCnt/tc1_totCnt)*100}" type="number"  integerOnly="true" ></fmt:parseNumber>
                    		</c:otherwise>
                    	</c:choose>
-                   	
-                  	<strong>
-			                             총 : <c:out value="${selectTestCurrentCnt.totCnt}"></c:out>
-			              , 완료 : <c:out value="${selectTestCurrentCnt.yCnt}"></c:out>
-			              , 미완료 : <c:out value="${selectTestCurrentCnt.nCnt}"></c:out>
-			              , 진행률 : <c:out value="${testPct}"></c:out>%
-			         </strong>
-                 </div>
+                 
+                  <table width="80%" cellspacing="0" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
+	                 <caption style="visibility:hidden">총 건수, 완료건수, 미완료, 진행률 표시하는 테이블</caption>
+	                 
+	                 <tr>
+	                 	<td align="center" width="200" style="font-size:15px; font-weight:bolder">총 프로그램 본수 : <c:out value="${selectTestCurrentCnt.totCnt}"></c:out></td>
+	                  	<td align="center" width="200" style="font-size:15px; font-weight:bolder">테스트 케이스 개수 : <c:out value="${selectTestCurrentCnt.testcaseCnt}"></c:out></td>
+	                 	<td align="center" width="100" style="font-size:15px; font-weight:bolder">완료 : <c:out value="${selectTestCurrentCnt.yCnt}"></c:out></td>
+	                 	<td align="right" width="100" style="font-size:15px; font-weight:bolder">미완료 : <c:out value="${selectTestCurrentCnt.nCnt}"></c:out></td>
+	                 	<td align="right" width="100" style="font-size:15px; font-weight:bolder">진행률 : 
+	                 	
+	                 	<td style="font-size:15px; font-weight:bolder">
+	                 			<div class="progress" style="height: 1.5rem;"><div class="progress-bar" style="width:${testPct}%" > <strong><c:out value=" ${testPct}"></c:out>%</strong></div></div>
+	                 	</td>
+	                 </tr>        
+             	</table>
+             	
+                 
 	                
               	<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
 	              	<colgroup>

@@ -66,9 +66,20 @@
 	
 	<resultMap id="testCaseCurrentMap" class="java.util.HashMap">
 	    <result property="totCnt" column="TOT_CNT" columnIndex="1" javaType="int" jdbcType="NUMERIC"/>
-	    <result property="yCnt" column="Y_CNT" columnIndex="2" javaType="int" jdbcType="NUMERIC"/>
-	    <result property="nCnt" column="N_CNT" columnIndex="3" javaType="int" jdbcType="NUMERIC"/>
+	    <result property="testcaseCnt" column="TESTCASE_CNT" columnIndex="2" javaType="int" jdbcType="NUMERIC"/>
+	    <result property="yCnt" column="Y_CNT" columnIndex="3" javaType="int" jdbcType="NUMERIC"/>
+	    <result property="nCnt" column="N_CNT" columnIndex="4" javaType="int" jdbcType="NUMERIC"/>
 	</resultMap>
+	
+	<resultMap id="testCaseProgressStatusMap" class="java.util.HashMap">
+	    <result property="testcaseGb" column="TESTCASE_GB" columnIndex="1" />
+	    <result property="notTestCnt" column="NOT_TEST_CNT" columnIndex="2"/>
+	    <result property="firstTestCnt" column="FIRST_TEST_CNT" columnIndex="3" />
+	    <result property="secondTestCnt" column="SECOND_TEST_CNT" columnIndex="4" />
+	    <result property="completeYCnt" column="COMPLETE_Y_CNT" columnIndex="5" />
+	    <result property="testcaseCnt" column="TESTCASE_CNT" columnIndex="6" />
+	</resultMap>
+	
 	
 	<insert id="TestDAO.insertTestCase" parameterClass="TestCaseVO">
 		    
@@ -225,6 +236,15 @@
 	</delete>
 
 		
+	<select id="TestDAO.selectScenarioCntReferringToCase" parameterClass="java.lang.String" resultClass="java.lang.Integer"  >
+	    
+	    SELECT COUNT(*)
+		FROM TESTSCENARIO_TB
+		WHERE TESTCASE_ID = #checkedMenuNoForDel#
+	    
+	</select>
+	
+	
 	<select id="TestDAO.selectTestCase" parameterClass="java.lang.String" resultMap="testCaseVoMap" >
 		<![CDATA[
 		
@@ -467,6 +487,26 @@
 		]]>
 	</select>
 	
+	
+	
+	<select id="TestDAO.selectTestCaseProgressStatus" parameterClass="java.lang.String"  resultMap="testCaseProgressStatusMap">
+	    
+	    <![CDATA[
+				SELECT 			
+					TESTCASE_GB
+					,COUNT(IF(FIRST_TEST_RESULT_YN = 'N',1,NULL)) AS NOT_TEST_CNT
+					,COUNT(IF(FIRST_TEST_RESULT_YN = 'Y' AND SECOND_TEST_RESULT_YN = 'N',1,NULL)) AS FIRST_TEST_CNT
+					,COUNT(IF(FIRST_TEST_RESULT_YN = 'Y' AND SECOND_TEST_RESULT_YN = 'Y' AND COMPLETE_YN = 'N',1,NULL)) AS SECOND_TEST_CNT
+					,COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS COMPLETE_Y_CNT
+					,COUNT(*) AS TESTCASE_CNT
+					FROM TESTCASE_TB WHERE TESTCASE_GB = #testcaseGb# 
+		]]>
+	</select>
+	
+	
+	
+	
+	
 	<select id="TestDAO.selectTestCurrent" parameterClass="TestDefaultVO" resultClass="egovMap">
 	
 	  	<!-- 단위테스트 현황 -->
@@ -658,9 +698,9 @@
 			<!-- 단위테스트 현황 -->
 		    <isNotEqual property="searchByTestcaseGb" compareValue="TC2">
 				<![CDATA[
-					SELECT TOT_CNT, Y_CNT, TOT_CNT-Y_CNT AS N_CNT
+					SELECT TOT_CNT, TESTCASE_CNT, Y_CNT, N_CNT
 					FROM (
-						SELECT COUNT(*) TOT_CNT , COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT
+						SELECT COUNT(*) TOT_CNT , COUNT(TESTCASE_ID) TESTCASE_CNT, COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT, COUNT(IF(COMPLETE_YN='N',1,NULL)) AS N_CNT
 						FROM (
 								SELECT * FROM (
 									SELECT 
@@ -690,9 +730,9 @@
    	    <!-- 통합 테스트 현황 -->
 	    <isEqual property="searchByTestcaseGb" compareValue="TC2">
 	        <![CDATA[
-				SELECT TOT_CNT, Y_CNT, TOT_CNT-Y_CNT AS N_CNT
+				SELECT TOT_CNT,  TESTCASE_CNT, Y_CNT, N_CNT
 				FROM (
-						SELECT COUNT(*) TOT_CNT , COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT
+						SELECT COUNT(*) TOT_CNT , COUNT(TESTCASE_ID) TESTCASE_CNT, COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS Y_CNT, COUNT(IF(COMPLETE_YN='N',1,NULL)) AS N_CNT
 						FROM (
 							SELECT * FROM (
 								SELECT 
@@ -764,12 +804,13 @@
 					,IFNULL(SUM(FINAL.TC_WRITE_Y_CNT),0) AS TC_WRITE_Y_CNT
 					,IFNULL(SUM(FINAL.PG_CNT -TC_WRITE_Y_CNT),0) AS TC_WRITE_N_CNT
 					,IFNULL(ROUND((100 * SUM(FINAL.TC_WRITE_Y_CNT))/SUM(FINAL.PG_CNT),1),0) AS TC_WRITE_PCT
+					,IFNULL(SUM(FINAL.TC_WRITE_Y_CNT-FINAL.FIRST_TEST_CNT-FINAL.SECOND_TEST_CNT),0) AS NOT_TEST_CNT
 					,IFNULL(SUM(FINAL.FIRST_TEST_CNT),0) AS FIRST_TEST_CNT
 					,IFNULL(SUM(FINAL.SECOND_TEST_CNT),0) AS SECOND_TEST_CNT
-					,IFNULL(ROUND((100 * SUM(FINAL.FIRST_TEST_CNT + FINAL.SECOND_TEST_CNT))/SUM(FINAL.TC_WRITE_Y_CNT),1),0) AS TC_PROGRESS_PCT
-					,IFNULL(SUM(FINAL.TC_Y_CNT),0) AS TC_Y_CNT
-					,IFNULL(SUM(FINAL.PG_CNT - FINAL.TC_Y_CNT),0) AS TC_N_CNT
-					,IFNULL(ROUND((100 * SUM(FINAL.TC_Y_CNT))/SUM(FINAL.PG_CNT),1),0) AS TC_RESULT_PCT
+					,IFNULL(ROUND((100 * SUM(FINAL.FIRST_TEST_CNT + FINAL.SECOND_TEST_CNT))/SUM(FINAL.TC_WRITE_Y_CNT),1),0) AS TC_PROGRESS_PCT		
+					,IFNULL(SUM(FINAL.TC_RESULT_Y_CNT),0) AS TC_RESULT_Y_CNT
+					,IFNULL(SUM(FINAL.TC_WRITE_Y_CNT - FINAL.TC_RESULT_Y_CNT),0) AS TC_RESULT_N_CNT
+					,IFNULL(ROUND((100 * SUM(FINAL.TC_RESULT_Y_CNT))/SUM(FINAL.TC_WRITE_Y_CNT),1),0) AS TC_RESULT_PCT
 		
 		FROM (
 			
@@ -780,7 +821,7 @@
 					,IFNULL(SUM(TESTCASE_TB.TC_WRITE_Y_CNT),0) AS TC_WRITE_Y_CNT
 					,IFNULL(SUM(TESTCASE_TB.FIRST_TEST_CNT),0) AS FIRST_TEST_CNT
 					,IFNULL(SUM(TESTCASE_TB.SECOND_TEST_CNT),0) AS SECOND_TEST_CNT
-					,IFNULL(SUM(TESTCASE_TB.Y_CNT),0) AS TC_Y_CNT
+					,IFNULL(SUM(TESTCASE_TB.Y_CNT),0) AS TC_RESULT_Y_CNT
 				
 				
 				FROM 

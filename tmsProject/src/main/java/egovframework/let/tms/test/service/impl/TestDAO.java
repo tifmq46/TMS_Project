@@ -89,6 +89,13 @@ public class TestDAO extends EgovAbstractDAO{
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 테스트 케이스의 상세정보를 조회한다.
 	 * @param String - 조회할 정보가 담긴 testcaseId
@@ -98,7 +105,19 @@ public class TestDAO extends EgovAbstractDAO{
 	public HashMap<String,Object> selectTestCase(String testcaseId) throws Exception {
 		return  (HashMap<String, Object>) select("TestDAO.selectTestCase", testcaseId);
 	}
-
+	
+	
+	
+	/**
+	 * 테스트 케이스의 진행상태를 가져온다.
+	 * @param String - 조회할 정보가 담긴 testcaseGb
+	 * @return HashMap<String,Object>
+	 * @exception Exception
+	 */
+	public HashMap<String,Object> selectTestCaseProgressStatus(String testcaseGb) throws Exception {
+		return  (HashMap<String, Object>) select("TestDAO.selectTestCaseProgressStatus", testcaseGb);
+	}
+	
 	
 	/**
 	 * 테스트 시나리오의 상세정보를 조회한다.
@@ -202,6 +221,18 @@ public class TestDAO extends EgovAbstractDAO{
 	public int selectTestCurrentTotCnt(TestDefaultVO searchVO) throws Exception {
 		return (Integer) select("TestDAO.selectTestCurrentTotCnt", searchVO);
 	}
+	
+
+	/**
+	 * 삭제하려는 케이스를 참조하고 있는 시나리오가 있는지 개수 조회
+	 * @param String checkedMenuNoForDel
+	 * @return 시나리오 갯수
+	 * @exception
+	 */
+	public int selectScenarioCntReferringToCase(String checkedMenuNoForDel) throws Exception {
+		return (Integer) select("TestDAO.selectScenarioCntReferringToCase", checkedMenuNoForDel);
+	}
+	
 	
 	/**
 	 * 테스트 현황 목록 전체 건수 조회

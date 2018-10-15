@@ -204,7 +204,8 @@ function searchFileNm() {
 	                    <ul>        
 	           				<li>
 								<div class="buttons">
-				   					<a onclick="insertTestCaseImpl(); return false;"><spring:message code="button.create" /></a>
+				   					<a href="#" onclick="insertTestCaseImpl(); return false;"><spring:message code="button.save" /></a>
+				   					<a href="javascript:history.go(-1);"><spring:message code="button.list" /></a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>        
