@@ -29,118 +29,118 @@ public class TmsProjectManageVO implements Serializable{
 	 */
 	private static final long serialVersionUID = -8274004534207618049L;
 	/** 아이디 */
-	private String PJT_ID;
+	private String pjtId;
 	/** 기관 */
-	private String PJT_NM;
+	private String pjtNm;
 	/** 이름 */
-	private String PJT_TYPE;
+	private String pjtType;
 	/** 비밀번호 */
-	private String PJT_ST;
+	private String pjtSt;
 	
-	private String PJT_PM;
+	private String pjtPm;
 	/** 역할코드 */
-	private int PJT_PRICE = 0;
+	private int pjtPrice = 0;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date DEV_START_DT;
+	private Date devStartDt;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date DEV_END_DT;
+	private Date devEndDt;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")	
-	private Date PJT_START_DT;
+	private Date pjtStartDt;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")	
-	private Date PJT_END_DT;
+	private Date pjtEndDt;
 	
-	private String PJT_CONTENT;
+	private String pjtContent;
 
-	public String getPJT_ID() {
-		return PJT_ID;
+	public String getPjtId() {
+		return pjtId;
 	}
 
-	public void setPJT_ID(String pJT_ID) {
-		PJT_ID = pJT_ID;
+	public void setPjtId(String pJT_ID) {
+		pjtId = pJT_ID;
 	}
 
-	public String getPJT_NM() {
-		return PJT_NM;
+	public String getPjtNm() {
+		return pjtNm;
 	}
 
-	public void setPJT_NM(String pJT_NM) {
-		PJT_NM = pJT_NM;
+	public void setPjtNm(String pJT_NM) {
+		pjtNm = pJT_NM;
 	}
 
-	public String getPJT_TYPE() {
-		return PJT_TYPE;
+	public String getPjtType() {
+		return pjtType;
 	}
 
-	public void setPJT_TYPE(String pJT_TYPE) {
-		PJT_TYPE = pJT_TYPE;
+	public void setPjtType(String pJT_TYPE) {
+		pjtType = pJT_TYPE;
 	}
 
-	public String getPJT_ST() {
-		return PJT_ST;
+	public String getPjtSt() {
+		return pjtSt;
 	}
 
-	public void setPJT_ST(String pJT_ST) {
-		PJT_ST = pJT_ST;
+	public void setPjtSt(String pJT_ST) {
+		pjtSt = pJT_ST;
 	}
 
-	public String getPJT_PM() {
-		return PJT_PM;
+	public String getPjtPm() {
+		return pjtPm;
 	}
 
-	public void setPJT_PM(String pJT_PM) {
-		PJT_PM = pJT_PM;
+	public void setPjtPm(String pJT_PM) {
+		pjtPm = pJT_PM;
 	}
 
-	public int getPJT_PRICE() {
-		return PJT_PRICE;
+	public int getPjtPrice() {
+		return pjtPrice;
 	}
 
-	public void setPJT_PRICE(int pJT_PRICE) {
-		PJT_PRICE = pJT_PRICE;
+	public void setPjtPrice(int pJT_PRICE) {
+		pjtPrice = pJT_PRICE;
 	}
 
-	public Date getDEV_START_DT() {
-		return DEV_START_DT;
+	public Date getDevStartDt() {
+		return devStartDt;
 	}
 
-	public void setDEV_START_DT(Date dEV_START_DT) {
-		DEV_START_DT = dEV_START_DT;
+	public void setDevStartDt(Date dEV_START_DT) {
+		devStartDt = dEV_START_DT;
 	}
 
-	public Date getDEV_END_DT() {
-		return DEV_END_DT;
+	public Date getDevEndDt() {
+		return devEndDt;
 	}
 
-	public void setDEV_END_DT(Date dEV_END_DT) {
-		DEV_END_DT = dEV_END_DT;
+	public void setDevEndDt(Date dEV_END_DT) {
+		devEndDt = dEV_END_DT;
 	}
 
-	public Date getPJT_START_DT() {
-		return PJT_START_DT;
+	public Date getPjtStartDt() {
+		return pjtStartDt;
 	}
 
-	public void setPJT_START_DT(Date pJT_START_DT) {
-		PJT_START_DT = pJT_START_DT;
+	public void setPjtStartDt(Date pJT_START_DT) {
+		pjtStartDt = pJT_START_DT;
 	}
 
-	public Date getPJT_END_DT() {
-		return PJT_END_DT;
+	public Date getPjtEndDt() {
+		return pjtEndDt;
 	}
 
-	public void setPJT_END_DT(Date pJT_END_DT) {
-		PJT_END_DT = pJT_END_DT;
+	public void setPjtEndDt(Date pJT_END_DT) {
+		pjtEndDt = pJT_END_DT;
 	}
 
-	public String getPJT_CONTENT() {
-		return PJT_CONTENT;
+	public String getPjtContent() {
+		return pjtContent;
 	}
 
-	public void setPJT_CONTENT(String pJT_CONTENT) {
-		PJT_CONTENT = pJT_CONTENT;
+	public void setPjtContent(String pJT_CONTENT) {
+		pjtContent = pJT_CONTENT;
 	}
 
 	public static long getSerialversionuid() {
@@ -149,10 +149,10 @@ public class TmsProjectManageVO implements Serializable{
 
 	@Override
 	public String toString() {
-		return "TmsProjectManageVO [PJT_ID=" + PJT_ID + ", PJT_NM=" + PJT_NM + ", PJT_TYPE=" + PJT_TYPE + ", PJT_ST="
-				+ PJT_ST + ", PJT_PM=" + PJT_PM + ", PJT_PRICE=" + PJT_PRICE + ", DEV_START_DT=" + DEV_START_DT
-				+ ", DEV_END_DT=" + DEV_END_DT + ", PJT_START_DT=" + PJT_START_DT + ", PJT_END_DT=" + PJT_END_DT
-				+ ", PJT_CONTENT=" + PJT_CONTENT + "]";
+		return "TmsProjectManageVO [pjtId=" + ", PJT_NM=" + pjtNm + ", PJT_TYPE=" + pjtType + ", PJT_ST="
+				+ pjtSt + ", PJT_PM=" + pjtPm + ", PJT_PRICE=" + pjtPrice + ", DEV_START_DT=" + devStartDt
+				+ ", DEV_END_DT=" + devEndDt + ", PJT_START_DT=" + pjtStartDt + ", PJT_END_DT=" + pjtEndDt
+				+ ", PJT_CONTENT=" + pjtContent + "]";
 	}
 
 	

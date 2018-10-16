@@ -21,93 +21,93 @@ package egovframework.let.sym.prm.service;
 public class TmsProgrmManageVO{
 
 	/** 프로그램파일명 */
-	private String PG_ID="";
+	private String pgId="";
 	/** 프로그램저장경로 */
-	private String USER_DEV_ID="";
+	private String userDevId="";
 	/** 프로그램한글명 */
-	private String PG_NM="";
+	private String pgNm="";
 	/** URL */
-	private String SYS_GB="";
+	private String sysGb="";
 	/** 프로그램설명	 */	
-	private String TASK_GB="";
+	private String taskGb="";
 	
-	private String USE_YN="";
+	private String useYn="";
 	
-	private String PJT_ID="";
+	private String pjtId="";
 	
-	private String USER_REAL_ID="";
+	private String userRealId="";
 	
 	
 
-	public String getUSER_REAL_ID() {
-		return USER_REAL_ID;
+	public String getUserRealId() {
+		return userRealId;
 	}
 
-	public void setUSER_REAL_ID(String uSER_REAL_ID) {
-		USER_REAL_ID = uSER_REAL_ID;
+	public void setUserRealId(String uSER_REAL_ID) {
+		userRealId = uSER_REAL_ID;
 	}
 
-	public String getPG_ID() {
-		return PG_ID;
+	public String getPgId() {
+		return pgId;
 	}
 
-	public void setPG_ID(String pG_ID) {
-		PG_ID = pG_ID;
+	public void setPgId(String pG_ID) {
+		pgId = pG_ID;
 	}
 
-	public String getUSER_DEV_ID() {
-		return USER_DEV_ID;
+	public String getUserDevId() {
+		return userDevId;
 	}
 
-	public void setUSER_DEV_ID(String uSER_DEV_ID) {
-		USER_DEV_ID = uSER_DEV_ID;
+	public void setUserDevId(String uSER_DEV_ID) {
+		userDevId = uSER_DEV_ID;
 	}
 
-	public String getPG_NM() {
-		return PG_NM;
+	public String getPgNm() {
+		return pgNm;
 	}
 
-	public void setPG_NM(String pG_NM) {
-		PG_NM = pG_NM;
+	public void setPgNm(String pG_NM) {
+		pgNm = pG_NM;
 	}
 
-	public String getSYS_GB() {
-		return SYS_GB;
+	public String getSysGb() {
+		return sysGb;
 	}
 
-	public void setSYS_GB(String sYS_GB) {
-		SYS_GB = sYS_GB;
+	public void setSysGb(String sYS_GB) {
+		sysGb = sYS_GB;
 	}
 
-	public String getTASK_GB() {
-		return TASK_GB;
+	public String getTaskGb() {
+		return taskGb;
 	}
 
-	public void setTASK_GB(String tASK_GB) {
-		TASK_GB = tASK_GB;
+	public void setTaskGb(String tASK_GB) {
+		taskGb = tASK_GB;
 	}
 
-	public String getUSE_YN() {
-		return USE_YN;
+	public String getUseYn() {
+		return useYn;
 	}
 
-	public void setUSE_YN(String uSE_YN) {
-		USE_YN = uSE_YN;
+	public void setUseYn(String uSE_YN) {
+		useYn = uSE_YN;
 	}
 
-	public String getPJT_ID() {
-		return PJT_ID;
+	public String getPjtId() {
+		return pjtId;
 	}
 
-	public void setPJT_ID(String pJT_ID) {
-		PJT_ID = pJT_ID;
+	public void setPjtId(String pJT_ID) {
+		pjtId = pJT_ID;
 	}
 
 	@Override
 	public String toString() {
-		return "TmsProgrmManageVO [PG_ID=" + PG_ID + ", USER_DEV_ID=" + USER_DEV_ID + ", PG_NM=" + PG_NM + ", SYS_GB="
-				+ SYS_GB + ", TASK_GB=" + TASK_GB + ", USE_YN=" + USE_YN + ", PJT_ID=" + PJT_ID + ", USER_REAL_ID="
-				+ USER_REAL_ID + "]";
+		return "TmsProgrmManageVO [pgId=" + pgId + ", userDevId=" + userDevId + ", pgNm=" + pgNm + ", sysGb="
+				+ sysGb + ", taskGb=" + taskGb + ", useYn=" + useYn + ", pjtId=" + pjtId + ", USER_REAL_ID="
+				+ userRealId + "]";
 	}
 
 	

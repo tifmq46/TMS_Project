@@ -433,8 +433,8 @@ public class DevPlanController {
 		model.addAttribute("tt", tt);
 		
 		/*프로젝트 개발계획 기간(주말 제외)*/
-		Date startDate = tt.getDEV_START_DT();
-		Date endDate = tt.getDEV_END_DT();
+		Date startDate = tt.getDevStartDt();
+		Date endDate = tt.getDevEndDt();
 		
 		devPlanService.deleteDates();
 		

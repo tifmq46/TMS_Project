@@ -101,7 +101,7 @@ public class TmsProgrmManageController {
 		System.out.println("여기옴");
 		// 0. Spring Security 사용자권한 처리
 		
-		List<?> selectTaskGbSearch = TmsProgrmManageService.selectTaskGbSearch(searchData);
+		List<String> selectTaskGbSearch = TmsProgrmManageService.selectTaskGbSearch(searchData);
 		model.addAttribute("selectTaskGbSearch", selectTaskGbSearch);
 		System.out.println("================"+selectTaskGbSearch);
 		return selectTaskGbSearch;

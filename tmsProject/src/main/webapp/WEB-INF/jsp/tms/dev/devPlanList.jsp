@@ -130,8 +130,8 @@ $(function(){
 	         success : function(selectTaskGbSearch){
 	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
 	            $.each(selectTaskGbSearch, function(i){
-	               (JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
-	            $("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+	               (JSON.stringify(selectTaskGbSearch[0])).replace(/"/g, "");
+	            $("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>")
 	            });
 	            
 	         },
@@ -259,7 +259,7 @@ function searchFileNm() {
 									<select name="Sys" id="Sys" style="width:12%;text-align-last:center;">
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${searchVO.searchBySysGb == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
+									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
 									</select>
 									<input type="hidden" name="searchBySysGb" value="">
@@ -269,7 +269,7 @@ function searchFileNm() {
 									<select name="task" id="task" style="width:15%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 									   <c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
-									    		<option value="<c:out value="${taskGb.TASK_GB}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb.TASK_GB}">selected="selected"</c:if> ><c:out value="${taskGb.TASK_GB}" /></option>
+									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									   </c:forEach>
 									</select>				
 									<input type="hidden" name="searchByTaskGb" value="">
@@ -287,7 +287,7 @@ function searchFileNm() {
 					  		<ul id="search_second_ul">
 					  			<li><label for="searchByPgId">화면ID</label></li>
 					  			<li><input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id" value="<c:out value='${searchVO.searchByPgId}'/>"/>
-					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
                       			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
                       			</li>
 					  			

@@ -89,8 +89,8 @@
 	        	 $("#searchBySysGb").val($("#bbb").val());
 	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
 	            $.each(selectTaskGbSearch, function(i){
-	               (JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
-	            $("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+	               (JSON.stringify(selectTaskGbSearch[0])).replace(/"/g, "");
+	            $("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>")
 	            });
 	            
 	         },
@@ -361,6 +361,7 @@
 			<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
 			<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
 			<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
+			<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
 				
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
@@ -393,7 +394,7 @@
 									<select name="bbb" id="bbb" style="width:12%;text-align-last:center;">
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${searchVO.searchBySysGb == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
+									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
 									</select>
 									
@@ -406,7 +407,7 @@
 									<select name="task" id="task" style="width:15%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
-									    		<option value="<c:out value="${taskGb.TASK_GB}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb.TASK_GB}">selected="selected"</c:if> ><c:out value="${taskGb.TASK_GB}" /></option>
+									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									    	</c:forEach>								   
 									</select>				
 									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value=""/>
@@ -466,17 +467,19 @@
         			
         				<c:forEach var="result" items="${resultList}" varStatus="status">
             				<tr>
-            					<td align="center" class="listtd" nowrap="nowrap"><input type="checkbox" name="delYn" class="check2" title="선택"><input type="hidden" name="checkId" value="<c:out value="${result.PG_ID}"/>" /></td>
+            					<td align="center" class="listtd" nowrap="nowrap">
+            						<input type="checkbox" name="delYn" class="check2" title="선택">
+            						<input type="hidden" name="checkId" value="<c:out value="${result.pgId}"/>" /></td>
             					<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            					<td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
+            					<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
             					<td align="left" class="listtd">
-            						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?PG_ID=<c:out value='${result.PG_ID}'/>">
-            							<strong><c:out value="${result.PG_NM}"/></strong>
+            						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?PG_ID=<c:out value='${result.pgId}'/>">
+            							<strong><c:out value="${result.pgNm}"/></strong>
             						</a></td>
-            					<td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
-            					<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
-            					<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
-            					<td align="center" class="listtd"><c:out value="${result.USE_YN}"/></td>
+            					<td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>
+            					<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
+            					<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
+            					<td align="center" class="listtd"><c:out value="${result.useYn}"/></td>
             				</tr>
         				</c:forEach>
         			</table>  		

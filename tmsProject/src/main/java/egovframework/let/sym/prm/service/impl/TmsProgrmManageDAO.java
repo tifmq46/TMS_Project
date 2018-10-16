@@ -60,19 +60,19 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
 		return (TmsProjectManageVO)select("TmsProgrmManageDAO.selectProject");
 	}
 
-	public List<?> selectSysGb() {
+	public List<String> selectSysGb() {
 		// TODO Auto-generated method stub
-		return list("TmsProgrmManageDAO.selectSysGb");
+		return (List<String>) list("TmsProgrmManageDAO.selectSysGb");
 	}
 	
-	public List<?> selectTaskGb() {
+	public List<String> selectTaskGb() {
 		// TODO Auto-generated method stub
-		return list("TmsProgrmManageDAO.selectTaskGb");
+		return (List<String>) list("TmsProgrmManageDAO.selectTaskGb");
 	}
 	
-	public List<?> selectTaskGb2(ProgramDefaultVO searchVO) {
+	public List<String> selectTaskGb2(ProgramDefaultVO searchVO) {
 		// TODO Auto-generated method stub
-		return list("TmsProgrmManageDAO.selectTaskGb2", searchVO);
+		return (List<String>) list("TmsProgrmManageDAO.selectTaskGb2", searchVO);
 	}
 
 	public List<?> selectTaskGb3(ProgramVO searchVO) {
@@ -80,9 +80,9 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
 		return list("TmsProgrmManageDAO.selectTaskGb3", searchVO);
 	}
 	
-	public List<?> selectTaskGbSearch(String searchData) {
+	public List<String> selectTaskGbSearch(String searchData) {
 		// TODO Auto-generated method stub
-		return list("TmsProgrmManageDAO.selectTaskGbSearch",searchData);
+		return (List<String>) list("TmsProgrmManageDAO.selectTaskGbSearch",searchData);
 	}
 	
 	public List<?> selectUserList() {

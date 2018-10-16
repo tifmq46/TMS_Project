@@ -135,13 +135,13 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb,user_real
             <c:forEach var="result" items="${list_progrmmanage}" varStatus="status">
             <!-- loop 시작 -->                                
               <tr>
-			    <td nowrap="nowrap"><c:out value="${result.SYS_GB}"/></td>
-			    <td nowrap="nowrap"><c:out value="${result.TASK_GB}"/></td>
+			    <td nowrap="nowrap"><c:out value="${result.sysGb}"/></td>
+			    <td nowrap="nowrap"><c:out value="${result.taskGb}"/></td>
 			    <td nowrap="nowrap">
-			        <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.PG_ID}"/>','<c:out value="${result.USER_DEV_ID}"/>','<c:out value="${result.PG_NM}"/>','<c:out value="${result.SYS_GB}"/>','<c:out value="${result.TASK_GB}"/>','<c:out value="${result.USER_REAL_ID}"/>'); return false;">
-			      <c:out value="${result.PG_ID}"/></a></span></td>
-			    <td nowrap="nowrap"><c:out value="${result.PG_NM}"/></td>
-			    <td nowrap="nowrap"><c:out value="${result.USER_DEV_ID}"/></td>
+			        <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.pgId}"/>','<c:out value="${result.userDevId}"/>','<c:out value="${result.pgNm}"/>','<c:out value="${result.sysGb}"/>','<c:out value="${result.taskGb}"/>','<c:out value="${result.userRealId}"/>'); return false;">
+			      <c:out value="${result.pgId}"/></a></span></td>
+			    <td nowrap="nowrap"><c:out value="${result.pgNm}"/></td>
+			    <td nowrap="nowrap"><c:out value="${result.userDevId}"/></td>
               </tr>
             </c:forEach>
             </tbody> 
