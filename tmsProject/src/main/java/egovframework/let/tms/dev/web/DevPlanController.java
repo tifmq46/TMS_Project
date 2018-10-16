@@ -110,11 +110,11 @@ public class DevPlanController {
 		
 		String a = String.valueOf(searchVO.getSearchBySysGb());
 		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
-			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
+			List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
 			model.addAttribute("taskGb2", taskGbList2);
 		}
 		
-		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		
 		List<?> userList = defectService.selectUser();
@@ -331,17 +331,17 @@ public class DevPlanController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
 		//공통코드(시스템, 업무구분)
-		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
 		
 		String a = String.valueOf(searchVO.getSearchBySysGb());
 		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
 			//System.out.println("ddddd");
-			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
+			List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
 			model.addAttribute("taskGb2", taskGbList2);
 		}
 		
-		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		
 		List<?> userList = defectService.selectUser();
@@ -677,17 +677,17 @@ public class DevPlanController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
 		//공통코드(시스템, 업무구분)
-		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
 		
 		String a = String.valueOf(searchVO.getSearchBySysGb());
 		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
 			//System.out.println("ddddd");
-			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
+			List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
 			model.addAttribute("taskGb2", taskGbList2);
 		}
 		
-		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		
 		List<HashMap<String,String>> devCurrentList = devPlanService.selectDevCurrent(searchVO);

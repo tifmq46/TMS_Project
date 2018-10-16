@@ -115,7 +115,7 @@
 			FROM LETTCCMMNDETAILCODE
 			where parent = (SELECT SYS_GB FROM PG_TB WHERE PG_ID = #pgId#);
 	</select>  
-	<select id="TmsProgrmManageDAO.selectTaskGb4" parameterClass="DevPlanDefaultVO" resultClass="TmsProgrmManageVO">
+	<select id="TmsProgrmManageDAO.selectTaskGb4" parameterClass="DevPlanDefaultVO" resultClass="java.lang.String">
 			
 	    	SELECT CODE_NM AS "TASK_GB" 
 			FROM LETTCCMMNDETAILCODE

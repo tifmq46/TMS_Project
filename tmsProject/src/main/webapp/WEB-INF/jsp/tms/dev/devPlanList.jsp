@@ -270,7 +270,7 @@ function searchFileNm() {
 									   <option value="">선택하세요</option>
 									   <c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
 									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
-									   </c:forEach>
+									    </c:forEach>	
 									</select>				
 									<input type="hidden" name="searchByTaskGb" value="">
 					  			</li>
