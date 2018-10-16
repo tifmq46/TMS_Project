@@ -161,4 +161,8 @@ public interface DevPlanService {
 	public String selectDevSum(String periodList);
 
 	public List<HashMap<String, String>> selectThisWeekStats(String taskGb);
+
+	public List<HashMap<String, String>> selectTotalStats(String taskGb);
+
+	public List<HashMap<String, String>> selectAccumulateStats(String taskGb);
 }
