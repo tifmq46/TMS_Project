@@ -752,14 +752,18 @@ public class DevPlanController {
 		// 시스템별 그룹바이
 		List<?> sysByStats = devPlanService.selectSysByStats();
 		model.addAttribute("sysByStats", net.sf.json.JSONArray.fromObject(sysByStats));
-		
+		// 시스템별 진척률 끝 -------------------------------------
+
+		// 금주 진척률 시작 ---------------------------------------
 		List<String> taskList = devPlanService.selectTaskGbList();
 		List<HashMap<String,String>> taskThisWeek = new ArrayList<HashMap<String,String>>();
 		for(int i=0; i<taskList.size(); i++){
 			taskThisWeek.addAll(devPlanService.selectThisWeekStats(taskList.get(i)));
 		}
+		model.addAttribute("taskThisWeekByStats", net.sf.json.JSONArray.fromObject(taskThisWeek));
+		// 금주 진척률 끝 ---------------------------------------
 		
-		// 시스템별 진척률 끝 -------------------------------------
+		System.out.println("###" + taskThisWeek);
 		
 		return "tms/dev/devStats";
 	}
