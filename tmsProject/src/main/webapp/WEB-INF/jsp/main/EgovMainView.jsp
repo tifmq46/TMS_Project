@@ -161,12 +161,12 @@ window.onload = function() {
    	
     <div class="row mt30">
     <!-- 프로젝트 생성 시작 -->
-	<c:if test="${tmsProjectManageVO.PJT_ID == null }">
+	<c:if test="${tmsProjectManageVO.pjtId == null }">
 		<a href="<c:url value='/sym/prm/insertProjectView.do'/>">프로젝트 생성</a>
 	</c:if>
 	
 	<!-- 프로젝트 생성 끝 -->
-     <c:if test="${tmsProjectManageVO.PJT_ID != null }">
+     <c:if test="${tmsProjectManageVO.pjtId != null }">
     	<div class="myBsnsList" class="col-md-6" style="height: 260px; margin-bottom:30px;">
     		<div class="widget">
     			<div class="widget-header">
@@ -179,35 +179,35 @@ window.onload = function() {
     					<tbody>
     						 <tr class="last">
     							<th>프로젝트 명</th>
-    							<td id="empName" name="empName" align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.PJT_NM}</td>
+    							<td id="empName" name="empName" align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtNm}</td>
     						</tr>
     						<tr class="last">
     						    <th>사업 유형</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.PJT_TYPE}</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtType}</td>
     						    <th>프로젝트 상태</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.PJT_ST}</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtSt}</td>
     						</tr>
     						<tr class="last">
     						    <th>PM</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.PJT_PM}</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtPm}</td>
     						    <th>가격</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatNumber value="${tmsProjectManageVO.PJT_PRICE}" pattern="#,###"/>원</td>
+    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatNumber value="${tmsProjectManageVO.pjtPrice}" pattern="#,###"/>원</td>
     						</tr>
     						<tr class="last">
     						    <th>계획시작일</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.DEV_START_DT}" pattern="yyyy-MM-dd" /></td>
+    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.devStartDt}" pattern="yyyy-MM-dd" /></td>
     						    <th>계획완료일</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.DEV_END_DT}" pattern="yyyy-MM-dd" /></td>
+    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.devEndDt}" pattern="yyyy-MM-dd" /></td>
     						</tr>
     						<tr class="last">
     						    <th>개발시작일</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.PJT_START_DT}" pattern="yyyy-MM-dd" /></td>
+    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.pjtStartDt}" pattern="yyyy-MM-dd" /></td>
     						    <th>개발완료일</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.PJT_END_DT}" pattern="yyyy-MM-dd" /></td>
+    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.pjtEndDt}" pattern="yyyy-MM-dd" /></td>
     						</tr>
     						<tr class="last">
     							<th>프로젝트 설명</th>
-    							<td id="empName" name="empName" align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.PJT_CONTENT}</td>
+    							<td id="empName" name="empName" align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtContent}</td>
     						</tr>
     					</tbody>
     				</table>

@@ -52,8 +52,8 @@
 		        	 $("#searchBySysGb").val($("#SYS_GB").val());
 		            $("#TASK_GB").find("option").remove().end().append("<option value=''>선택하세요</option>");
 		            $.each(selectTaskGbSearch, function(i){
-		               (JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
-		            $("#TASK_GB").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+		               (JSON.stringify(selectTaskGbSearch[0])).replace(/"/g, "");
+		            $("#TASK_GB").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>")
 		            });
 		            
 		         },
@@ -118,7 +118,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="PG_ID" name="PG_ID" type="text" size="60"  maxlength="60" style="width:95%" id="PG_ID"  title="화면ID" value="<c:out value='${programVO.PG_ID}'/>" >
+                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="60" style="width:95%" id="PG_ID"  title="화면ID" value="<c:out value='${programVO.pgId}'/>" >
                               <br/> 
                             </td>
                           </tr>
@@ -130,7 +130,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="PG_NM" name="PG_NM" type="text" size="60"  maxlength="60" style="width:95%" title="화면ID" value="<c:out value='${programVO.PG_NM}'/>" >
+                              <input id="pgNm" name="pgNm" type="text" size="60"  maxlength="60" style="width:95%" title="화면ID" value="<c:out value='${programVO.pgNm}'/>" >
                               <br/>
                             </td>
                           </tr>
@@ -142,10 +142,10 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="SYS_GB" name="SYS_GB" class="select" title="시스템구분">
+                            <select id="sysGb" name="sysGb" class="select" title="시스템구분">
 									   <option selected value="" >선택하세요</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${programVO.SYS_GB == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
+									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${programVO.sysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
@@ -162,10 +162,10 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="TASK_GB" name="TASK_GB" class="select" id="TASK_GB" title="업무구분">
+                            <select id="taskGb" name="taskGb" class="select" title="업무구분">
 									   <option value="">선택하세요</option>
 					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
-									    		<option value="<c:out value="${taskGb.TASK_GB}"/>" <c:if test="${programVO.TASK_GB == taskGb.TASK_GB}">selected="selected"</c:if> ><c:out value="${taskGb.TASK_GB}" /></option>
+									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${programVO.taskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									    	</c:forEach>	
                             </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
                                <br/>
@@ -179,10 +179,10 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                            <select id="USER_DEV_ID" name="USER_DEV_ID" class="select" title="개발자">
+                            <select id="userDevId" name="userDevId" class="select" title="개발자">
 									   <option value="" >선택하세요</option>
 									      <c:forEach var="DEV_ID" items="${dev_List}" varStatus="status">
-									    	<option value="<c:out value="${DEV_ID.USER_NM}"/>" <c:if test="${programVO.USER_DEV_ID == DEV_ID.USER_NM}">selected="selected"</c:if>><c:out value="${DEV_ID.USER_NM}" /></option>
+									    	<option value="<c:out value="${DEV_ID.USER_NM}"/>" <c:if test="${programVO.userDevId == DEV_ID.USER_NM}">selected="selected"</c:if>><c:out value="${DEV_ID.USER_NM}" /></option>
 									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
@@ -199,8 +199,8 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                                Y : <input type="radio" id="USE_YN" name="USE_YN" id="USE_YN" class="radio2" value="Y" <c:if test="${programVO.USE_YN == 'Y'}"> checked="checked"</c:if> >&nbsp;
-                                N : <input type="radio" id="USE_YN" name="USE_YN" id="USE_YN" class="radio2" value="N" <c:if test="${programVO.USE_YN == 'N'}"> checked="checked"</c:if> >
+                                Y : <input type="radio" id="useYn" name="useYn" class="radio2" value="Y" <c:if test="${programVO.useYn == 'Y'}"> checked="checked"</c:if> >&nbsp;
+                                N : <input type="radio" id="useYn" name="useYn" class="radio2" value="N" <c:if test="${programVO.useYn == 'N'}"> checked="checked"</c:if> >
                                 <br/>
                             </td>
                           </tr>  
@@ -214,7 +214,7 @@
                       <table border="0" cellspacing="0" cellpadding="0" align="center">
                         <tr> 
                           <td>
-                              <a onclick="javaScript:fn_egov_regist_tmplatInfo(); return false;">저장</a> 
+                              <a onclick="fn_egov_regist_tmplatInfo(); return false;">저장</a> 
                           </td>
                           <td>
                               <a href="<c:url value='/tms/pg/PgManage.do'/>" >목록</a>

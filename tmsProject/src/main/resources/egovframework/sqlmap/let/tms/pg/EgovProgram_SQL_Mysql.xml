@@ -8,27 +8,37 @@
     
 	<!-- return 결과물을 의미 -->
 	<resultMap id="PgList" class="egovframework.let.tms.pg.service.ProgramVO">
-	    <result property="PG_ID" column="PG_ID" columnIndex="1"/>
-	    <result property="PG_NM" column="PG_NM" columnIndex="2"/>
-	    <result property="USER_DEV_ID" column="USER_DEV_ID" columnIndex="3"/>
-	    <result property="SYS_GB" column="SYS_GB" columnIndex="4"/>
-	    <result property="TASK_GB" column="TASK_GB" columnIndex="5"/>
-	    <result property="USE_YN" column="USE_YN" columnIndex="6"/>
+	    <result property="pgId" column="PG_ID" columnIndex="1"/>
+	    <result property="pgNm" column="PG_NM" columnIndex="2"/>
+	    <result property="userDevId" column="USER_DEV_ID" columnIndex="3"/>
+	    <result property="sysGb" column="SYS_GB" columnIndex="4"/>
+	    <result property="taskGb" column="TASK_GB" columnIndex="5"/>
+	    <result property="useYn" column="USE_YN" columnIndex="6"/>
+	</resultMap>
+	
+	<resultMap id="PgList2" class="egovframework.let.tms.pg.service.ProgramVO">
+	    <result property="pgId" column="PG_ID" columnIndex="1"/>
+	    <result property="pgNm" column="PG_NM" columnIndex="2"/>
+	    <result property="userDevId" column="USER_DEV_ID" columnIndex="3"/>
+	    <result property="sysGb" column="SYS_GB" columnIndex="4"/>
+	    <result property="taskGb" column="TASK_GB" columnIndex="5"/>
+	    <result property="useYn" column="USE_YN" columnIndex="6"/>
+	    <result property="pjtId" column="PJT_ID" columnIndex="7"/>
 	</resultMap>
 	
 	<resultMap id="PgCurrent" class="egovframework.let.tms.pg.service.PgCurrentVO">
-	    <result property="PG_ID" column="PG_ID" columnIndex="1"/>
-	    <result property="PG_NM" column="PG_NM" columnIndex="2"/>
-	    <result property="USER_DEV_ID" column="USER_DEV_ID" columnIndex="3"/>
-	    <result property="DEV_END_DT" column="DEV_END_DT" columnIndex="4"/>
-	    <result property="DEV_END_YN" column="DEV_END_YN" columnIndex="5"/>
-	    <result property="SECOND_TEST_RESULT_YN" column="SECOND_TEST_RESULT_YN" columnIndex="6"/>
-	    <result property="THIRD_TEST_RESULT_YN" column="THIRD_TEST_RESULT_YN" columnIndex="7"/>
+	    <result property="pgId" column="PG_ID" columnIndex="1"/>
+	    <result property="pgNm" column="PG_NM" columnIndex="2"/>
+	    <result property="userDevId" column="USER_DEV_ID" columnIndex="3"/>
+	    <result property="devEndDt" column="DEV_END_DT" columnIndex="4"/>
+	    <result property="devEndYn" column="DEV_END_YN" columnIndex="5"/>
+	    <result property="secondTestResultYn" column="SECOND_TEST_RESULT_YN" columnIndex="6"/>
+	    <result property="thirdTestResultYn" column="THIRD_TEST_RESULT_YN" columnIndex="7"/>
 	</resultMap>
 		
 	
 	
-	<select id="ProgramDAO.selectPgList" parameterClass="ProgramDefaultVO" resultMap="PgList" >
+	<select id="ProgramDAO.selectPgList" parameterClass="ProgramDefaultVO" resultMap="PgList2" >
 		<![CDATA[
 			SELECT
 				a.PG_ID, 
@@ -36,7 +46,8 @@
 				(SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE a.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID,				
 				(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.SYS_GB) AS SYS_GB, 
 				(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB) AS TASK_GB,
-				a.USE_YN
+				a.USE_YN,
+				a.PJT_ID
 			FROM 
 				PG_TB a
 			WHERE 
@@ -97,19 +108,20 @@
 	
 	
 	<!-- 프로그램현황 조회(엑셀 다운용) -->
-	<select id="ProgramDAO.selectPgCurrentExcelList" parameterClass="ProgramDefaultVO" resultMap="PgList" >
+	<select id="ProgramDAO.selectPgCurrentExcelList" parameterClass="ProgramDefaultVO" resultMap="PgList2" >
 		<![CDATA[
 			SELECT
 				a.PG_ID, 
 				a.PG_NM, 
 				(SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE a.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID,
-				a.SYS_GB, 
-				a.TASK_GB, 
-				a.USE_YN
+				(SELECT LETTCCMMNDETAILCODE.CODE_NM FROM LETTCCMMNDETAILCODE WHERE a.SYS_GB = LETTCCMMNDETAILCODE.CODE) AS SYS_GB,
+				(SELECT LETTCCMMNDETAILCODE.CODE_NM FROM LETTCCMMNDETAILCODE WHERE a.TASK_GB = LETTCCMMNDETAILCODE.CODE) AS TASK_GB,
+				a.USE_YN,
+				a.PJT_ID
 			FROM 
 				PG_TB a
 			WHERE 
-				1=1			
+				1=1		
 		]]>
 			<!-- 화면ID로 검색 -->
 			<isNotEmpty property="searchByPgId">
@@ -160,7 +172,7 @@
 			FROM 
 				PG_TB a
 			WHERE
-				a.PG_ID = #PG_ID#
+				a.PG_ID = #pgId#
 		]]>
 			
 	</select>
@@ -181,13 +193,13 @@
 		         ,  PJT_ID
 		         ) 
 		    VALUES  
-		         (  #PG_ID#
-		         ,  (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT(#USER_DEV_ID#))
-		         ,  #PG_NM#
-		         ,  (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #SYS_GB# AND CODE != 'T9')
-		         ,  (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #TASK_GB# AND CODE != 'T10')
-		         ,  #USE_YN#
-		         ,  #PJT_ID#
+		         (  #pgId#
+		         ,  (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT(#userDevId#))
+		         ,  #pgNm#
+		         ,  (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysGb# AND CODE != 'T9')
+		         ,  (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #taskGb# AND CODE != 'T10')
+		         ,  #useYn#
+		         ,  #pjtId#
 		         ) 
 		]]>
 	</insert>
@@ -196,12 +208,12 @@
 	<update id="ProgramDAO.updatePg" parameterClass="ProgramVO">
  		<![CDATA[
 			UPDATE PG_TB SET 
-				USER_DEV_ID = (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT(#USER_DEV_ID#)), 
-				PG_NM = #PG_NM#,
-				SYS_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #SYS_GB# AND CODE != 'T9'),
-				TASK_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #TASK_GB# AND CODE != 'T10'),
-				USE_YN = #USE_YN#				
-			WHERE PG_ID = #PG_ID#
+				USER_DEV_ID = (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT(#userDevId#)), 
+				PG_NM = #pgNm#,
+				SYS_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysGb# AND CODE != 'T9'),
+				TASK_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #taskGb# AND CODE != 'T10'),
+				USE_YN = #useYn#				
+			WHERE PG_ID = #pgId#
  		]]>
  	</update>
  	
@@ -209,7 +221,7 @@
 	<update id="ProgramDAO.deletePg" parameterClass="ProgramVO">
  		<![CDATA[
  			DELETE FROM PG_TB
- 			WHERE PG_ID = #PG_ID#
+ 			WHERE PG_ID = #pgId#
  		]]>
  	</update>
 	
@@ -217,21 +229,21 @@
          <![CDATA[
             select COUNT(*)
 			from PG_TB
-			where PG_ID = #PG_ID#
+			where PG_ID = #pgId#
          ]]>
    </select>
    <select id="ProgramDAO.count2" parameterClass="java.lang.String" resultClass="java.lang.Integer" >
          <![CDATA[
             select COUNT(*)
 			from TESTCASE_TB
-			where PG_ID = #PG_ID#
+			where PG_ID = #pgId#
          ]]>
    </select>
    <select id="ProgramDAO.count3" parameterClass="java.lang.String" resultClass="java.lang.Integer" >
          <![CDATA[
             select COUNT(*)
 			from DEFECT_TB
-			where PG_ID = #PG_ID#
+			where PG_ID = #pgId#
          ]]>
    </select>	
     

@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -110,16 +111,16 @@ public class ProgramController {
 		model.addAttribute("paginationInfo", paginationInfo);
 		
 		// 공통코드 부분 시작 -------------------------------	
-		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
 		
 		System.out.println(searchVO.getSearchBySysGb());
 		System.out.println(searchVO.getSearchByTaskGb());
 		if(!searchVO.getSearchBySysGb().isEmpty()) {
-			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
+			List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
 			model.addAttribute("taskGb2", taskGbList2);
 		}
-		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		
 		// 공통코드 끝 시작 -------------------------------	
@@ -145,15 +146,15 @@ public class ProgramController {
 		model.addAttribute("programVO", VO);
 
 		// 공통코드 부분 시작 -------------------------------	
-		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
 		
-		System.out.println("here---"+searchVO.getPG_ID());
+		System.out.println("here---"+searchVO.getPgId());
 		
-		List<?> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
+		List<String> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
 		model.addAttribute("taskGb2", taskGbList3);
 		
-		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		List<?> user_dev_List = TmsProgrmManageService.selectUserList();
 		model.addAttribute("dev_List", user_dev_List);
@@ -239,15 +240,16 @@ public class ProgramController {
 		
 	}
 	@RequestMapping(value = "/tms/pg/Pginsert.do")
-	public String insertPgList(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model, BindingResult errors) throws Exception {
+	public String insertPgList(@Valid ProgramVO programVO, ModelMap model, BindingResult errors) throws Exception {
 
 		beanValidator.validate(programVO, errors);
 		if(errors.hasErrors()) {
+			System.out.println("오류검출!");
 			return "redirect:/tms/pg/PgInsert.do";
 		} else {
 		
-		
-			programVO.setPJT_ID("1");
+			System.out.println("오류검출x!");
+			programVO.setPjtId("1");
 			ProgramService.insertPg(programVO);
 			
 			
@@ -264,6 +266,7 @@ public class ProgramController {
 
 		
 			ProgramService.updatePg(programVO);
+			
 			/** EgovPropertyService.sample */
 			searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 			searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -298,7 +301,7 @@ public class ProgramController {
 			String[] strDelCodes = returnValue.split(";");
 			for (int i = 0; i < strDelCodes.length; i++) {
 				ProgramVO vo = new ProgramVO();
-				vo.setPG_ID(strDelCodes[i]);
+				vo.setPgId(strDelCodes[i]);
 				ProgramService.deletePg(vo);
 				
 			}
@@ -368,7 +371,6 @@ public class ProgramController {
 					{
 						ProgramVO excel = (ProgramVO) excelList.get(i);
 						list.add(excel);
-						
 					}
 					// 워크북 생성
 							XSSFWorkbook workbook = new XSSFWorkbook();
@@ -417,17 +419,25 @@ public class ProgramController {
 							cell = row.createCell(1);
 							cell.setCellValue("화면명");
 							cell.setCellStyle(HeadStyle); // 제목스타일 
+							
 							cell = row.createCell(2);
-							cell.setCellValue("시스템구분");
-							cell.setCellStyle(HeadStyle); // 제목스타일 
-							cell = row.createCell(3);
-							cell.setCellValue("업무구분");
-							cell.setCellStyle(HeadStyle); // 제목스타일 
-							cell = row.createCell(4);
 							cell.setCellValue("개발자");
 							cell.setCellStyle(HeadStyle); // 제목스타일 
+							
+							cell = row.createCell(3);
+							cell.setCellValue("시스템구분");
+							cell.setCellStyle(HeadStyle); // 제목스타일 
+							
+							cell = row.createCell(4);
+							cell.setCellValue("업무구분");
+							cell.setCellStyle(HeadStyle); // 제목스타일 
+							
 							cell = row.createCell(5);
 							cell.setCellValue("사용여부");
+							cell.setCellStyle(HeadStyle); // 제목스타일 
+							
+							cell = row.createCell(6);
+							cell.setCellValue("프로젝트 ID");
 							cell.setCellStyle(HeadStyle); // 제목스타일 
 							
 							// 리스트의 size 만큼 row를 생성
@@ -439,23 +449,31 @@ public class ProgramController {
 								row = sheet.createRow(rowIdx+1);
 								
 								cell = row.createCell(0);
-								cell.setCellValue(vo.getPG_ID());
+								cell.setCellValue(vo.getPgId());
 								cell.setCellStyle(BodyStyle); // 본문스타일 
 
 								cell = row.createCell(1);
-								cell.setCellValue(vo.getPG_NM());
+								cell.setCellValue(vo.getPgNm());
 								cell.setCellStyle(BodyStyle); // 본문스타일 
+								
 								cell = row.createCell(2);
-								cell.setCellValue(vo.getSYS_GB());
+								cell.setCellValue(vo.getUserDevId());
 								cell.setCellStyle(BodyStyle); // 본문스타일 
+								
 								cell = row.createCell(3);
-								cell.setCellValue(vo.getTASK_GB());
+								cell.setCellValue(vo.getSysGb());
 								cell.setCellStyle(BodyStyle); // 본문스타일 
+								
 								cell = row.createCell(4);
-								cell.setCellValue(vo.getUSER_DEV_ID());
+								cell.setCellValue(vo.getTaskGb());
 								cell.setCellStyle(BodyStyle); // 본문스타일 
+								
 								cell = row.createCell(5);
-								cell.setCellValue(vo.getUSE_YN());
+								cell.setCellValue(vo.getUseYn());
+								cell.setCellStyle(BodyStyle); // 본문스타일 
+								
+								cell = row.createCell(6);
+								cell.setCellValue(vo.getPjtId());
 								cell.setCellStyle(BodyStyle); // 본문스타일 
 							}
 							/** 3. 컬럼 Width */ 
@@ -636,26 +654,26 @@ public class ProgramController {
 			
 			
 			cell = row.createCell(0);
-			cell.setCellValue(vo.getPG_ID());
+			cell.setCellValue(vo.getPgId());
 			
 			
 			cell = row.createCell(1);
-			cell.setCellValue(vo.getPG_NM());
+			cell.setCellValue(vo.getPgNm());
 			
 			cell = row.createCell(2);
-			cell.setCellValue(vo.getUSER_DEV_ID());
+			cell.setCellValue(vo.getUserDevId());
 			
 			cell = row.createCell(3);
-			cell.setCellValue(vo.getDEV_END_DT());
+			cell.setCellValue(vo.getDevEndDt());
 			
 			cell = row.createCell(4);
-			cell.setCellValue(vo.getDEV_END_YN());
+			cell.setCellValue(vo.getDevEndYn());
 			
 			cell = row.createCell(5);
-			cell.setCellValue(vo.getSECOND_TEST_RESULT_YN());
+			cell.setCellValue(vo.getSecondTestResultYn());
 			
 			cell = row.createCell(6);
-			cell.setCellValue(vo.getTHIRD_TEST_RESULT_YN());
+			cell.setCellValue(vo.getThirdTestResultYn());
 		}
 		
 		// 입력된 내용 파일로 쓰기
@@ -751,23 +769,23 @@ public class ProgramController {
 			row = sheet.createRow(rowIdx+1);
 			
 			cell = row.createCell(0);
-			cell.setCellValue(vo.getPG_ID());
+			cell.setCellValue(vo.getPgId());
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 
 			cell = row.createCell(1);
-			cell.setCellValue(vo.getPG_NM());
+			cell.setCellValue(vo.getPgNm());
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(2);
-			cell.setCellValue(vo.getSYS_GB());
+			cell.setCellValue(vo.getSysGb());
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(3);
-			cell.setCellValue(vo.getTASK_GB());
+			cell.setCellValue(vo.getTaskGb());
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(4);
-			cell.setCellValue(vo.getUSER_DEV_ID());
+			cell.setCellValue(vo.getUserDevId());
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 			cell = row.createCell(5);
-			cell.setCellValue(vo.getUSE_YN());
+			cell.setCellValue(vo.getUseYn());
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 		}
 		/** 3. 컬럼 Width */ 
@@ -814,25 +832,24 @@ public class ProgramController {
     public String requestupload1(MultipartHttpServletRequest mtfRequest, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
     	    	
     	String src = mtfRequest.getParameter("src");
-        System.out.println("src value : " + src);
+        System.out.println("value : " + src);
+        
         MultipartFile mf = mtfRequest.getFile("file");
 
         String path = "C:\\TMS_upload\\";
 
         File folder = new File(path);
-        if(!folder.exists()){
-            //디렉토리 생성 메서드
+		if(!folder.isDirectory()){
+			//디렉토리 생성 메서드
 			folder.mkdirs();
-		}        
-        
+		}
         String originFileName = mf.getOriginalFilename(); // 원본 파일 명
         long fileSize = mf.getSize(); // 파일 사이즈
 
         System.out.println("originFileName : " + originFileName);
         System.out.println("fileSize : " + fileSize);
 
-        String safeFile = path + originFileName;
-
+        String safeFile = path + "ex_" + originFileName;
         try {
             mf.transferTo(new File(safeFile));
         } catch (IllegalStateException e) {
@@ -857,7 +874,6 @@ public class ProgramController {
 		List<String> error_message = new ArrayList<String>();
 		ArrayList <HashMap<String, String>> error_hash = new ArrayList <HashMap<String, String>>();
 		
-		
 		for (int i = 0; i < xlsxList.size(); i++) {
 			
 			j=i;
@@ -866,7 +882,7 @@ public class ProgramController {
 			try {
 				vo = xlsxList.get(i);
 				
-				if(!(vo.getUSE_YN().equals("Y") || vo.getUSE_YN().equals("N")))
+				if(!(vo.getUseYn().equals("Y") || vo.getUseYn().equals("N")))
 				{
 					HashMap<String, String> hash = new HashMap<String, String>();
 					
@@ -878,9 +894,7 @@ public class ProgramController {
 					
 					continue;
 				}
-				
 				ProgramService.insertPg(vo);
-				
 				
 				
 				model.addAttribute("result", "true");
@@ -889,7 +903,6 @@ public class ProgramController {
 				HashMap<String, String> hash = new HashMap<String, String>();
 				
 				result_cnt = 0;
-				
 				
 				
 				String[] array = e.toString().split(":");
@@ -920,35 +933,13 @@ public class ProgramController {
 				hash.put("problem", (j+1)+"행을 등록시키지 못했습니다!");
 				hash.put("reason", last);
 				error_hash.add(hash);
-				
 				continue;
 			}
-			
 		}  
 		model.addAttribute("error_lists", error_list);
 		model.addAttribute("error_messages", error_message);
 		model.addAttribute("error_hashs", error_hash);
 		model.addAttribute("result", result_cnt);
-		//System.out.println(error_hash.get(2));
-		
-		/*
-		try {
-			for (int i = 0; i < xlsxList.size(); i++) {
-				
-				j=i;
-				
-				vo = xlsxList.get(i);
-				ProgramService.insertPg(vo);
-				
-				model.addAttribute("result", "true");
-				model.addAttribute("result2", "true");
-			}       			
-		}catch(Exception e) {
-			model.addAttribute("result", (j+1)+": false");
-			model.addAttribute("result2", (j+1)+": false");
-			
-			System.out.println("상황1");
-		}*/
 		
 		
 		
@@ -1054,37 +1045,37 @@ public class ProgramController {
 									// 현재 column index에 따라서 vo에 입력
 									switch (cellIndex) {
 									case 0: // 프로그램 id
-										vo.setPG_ID(value);
+										vo.setPgId(value);
 										break;
 										
 									case 1: // 프로그램 명
-										vo.setPG_NM(value);
+										vo.setPgNm(value);
 										break;
 										
 									case 2: // 개발자 ID
-										vo.setUSER_DEV_ID(value);
+										vo.setUserDevId(value);
 										break;
 										
 									case 3: // 시스템구분
-										vo.setSYS_GB(value);
+										vo.setSysGb(value);
 										break;
 										
 									case 4: // 업무구분
-										vo.setTASK_GB(value);
+										vo.setTaskGb(value);
 										
 										break;
 									case 5: // 사용여부
-										vo.setUSE_YN(value);										
+										vo.setUseYn(value);										
 										break;
 										
 									case 6: // 프로젝트 id			
 										if(value.contains("."))
 										{
 											String[] str = value.split("\\.");
-											vo.setPJT_ID(""+str[0]);										
+											vo.setPjtId(""+str[0]);										
 											break;
 										}else {
-											vo.setPJT_ID(""+value);										
+											vo.setPjtId(""+value);										
 											break;
 										}			
 		
@@ -1191,27 +1182,27 @@ public class ProgramController {
 									// 현재 column index에 따라서 vo에 입력
 									switch (cellIndex) {
 									case 0: // 프로그램 id
-										vo.setPG_ID(value);
+										vo.setPgId(value);
 										break;
 										
 									case 1: // 프로그램 명
-										vo.setPG_NM(value);
+										vo.setPgNm(value);
 										break;
 										
 									case 2: // 개발자 ID
-										vo.setUSER_DEV_ID(value);
+										vo.setUserDevId(value);
 										break;
 										
 									case 3: // 시스템구분
-										vo.setSYS_GB(value);
+										vo.setSysGb(value);
 										break;
 										
 									case 4: // 업무구분
-										vo.setTASK_GB(value);
+										vo.setTaskGb(value);
 										
 										break;
 									case 5: // 사용여부
-										vo.setUSE_YN(value);										
+										vo.setUseYn(value);										
 										break;
 										
 									case 6: // 프로젝트 id
@@ -1220,10 +1211,10 @@ public class ProgramController {
 											System.out.println("프로젝트1-"+value);
 											String[] txtArr = value.split("\\.");
 											System.out.println("프로젝트2-"+txtArr[0]);
-											vo.setPJT_ID(txtArr[0]);										
+											vo.setPjtId(txtArr[0]);										
 											break;										
 										}else {
-											vo.setPJT_ID(value);	
+											vo.setPjtId(value);	
 										}
 									default:
 										break;

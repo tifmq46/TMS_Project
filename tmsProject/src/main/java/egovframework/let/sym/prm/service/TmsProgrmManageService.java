@@ -54,23 +54,23 @@ public interface TmsProgrmManageService {
 	 * @param vo TmsProjectManageVO
 	 * @exception Exception
 	 */
-	List<?> selectSysGb() throws Exception;
+	List<String> selectSysGb() throws Exception;
 	/**
 	 * 
 	 * @param vo TmsProjectManageVO
 	 * @exception Exception
 	 */
-	List<?> selectTaskGb() throws Exception;
+	List<String> selectTaskGb() throws Exception;
 	/**
 	 * 
 	 * @param vo TmsProjectManageVO
 	 * @exception Exception
 	 */
-	List<?> selectTaskGb2(ProgramDefaultVO searchVO) throws Exception;
+	List<String> selectTaskGb2(ProgramDefaultVO searchVO) throws Exception;
 	
-	List<?> selectTaskGb3(ProgramVO searchVO) throws Exception;
+	List<String> selectTaskGb3(ProgramVO searchVO) throws Exception;
 	
-	List<?> selectTaskGbSearch(String searchData) throws Exception;
+	List<String> selectTaskGbSearch(String searchData) throws Exception;
 	/**
 	 * 
 	 * @param vo TmsProjectManageVO

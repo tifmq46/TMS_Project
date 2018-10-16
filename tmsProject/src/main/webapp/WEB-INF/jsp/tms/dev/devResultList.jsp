@@ -96,7 +96,9 @@ function fn_rate_change(pgId, event) {
 	var idVal0 = document.getElementById(pgId).value;
 	
 	if(idVal0 == null || idVal0 == ""){
-		alert("개발시작일자 먼저 입력하십시오.");
+		alert("개발시작일자 먼저 입력하십시오."); 
+		document.getElementById(pgId+4).value = "0.0";
+		return;
 	}
 	else{
 		var idVal3 = document.getElementById(pgId+3).id;
@@ -114,6 +116,7 @@ function fn_rate_change(pgId, event) {
 	}
 
 }
+
 function removeChar(event) {
     event = event || window.event;
     var keyID = (event.which) ? event.which : event.keyCode;
@@ -173,8 +176,8 @@ $(function(){
 	         success : function(selectTaskGbSearch){
 	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
 	            $.each(selectTaskGbSearch, function(i){
-	               (JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
-	            $("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+	               (JSON.stringify(selectTaskGbSearch[0])).replace(/"/g, "");
+	            $("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>")
 	            });
 	            
 	         },
@@ -244,7 +247,7 @@ $(function(){
 									<select name="searchBySysGb" id="searchBySysGb" style="width:12%;text-align-last:center;">
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${searchVO.searchBySysGb == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
+									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
 									</select>
 									
@@ -254,7 +257,7 @@ $(function(){
 									<select name="task" id="task" style="width:15%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 									   <c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
-									    		<option value="<c:out value="${taskGb.TASK_GB}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb.TASK_GB}">selected="selected"</c:if> ><c:out value="${taskGb.TASK_GB}" /></option>
+									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									   </c:forEach>
 									</select>				
 									<input type="hidden" name="searchByTaskGb" value="">
@@ -273,7 +276,7 @@ $(function(){
 					  		<ul id="search_second_ul">
 					  			<li><label for="searchByPgId">화면ID</label></li>
 					  			<li><input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id" value="<c:out value='${searchVO.searchByPgId}'/>"/>
-					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
                       			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
                       			</li>
 					  			
@@ -361,10 +364,10 @@ $(function(){
             				
             				<c:choose>
 	            				<c:when test="${result.ACHIEVEMENT_RATE eq null }">
-	            					<td><input type="text" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="0" onkeydown="return fn_rate_change('${result.PG_ID}', event)" onkeyup='removeChar(event)'/></td>
+	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="0" onkeyup="fn_rate_change('${result.PG_ID}', event);"/></td>
 	            				</c:when>
 	            				<c:otherwise>
-	            					<td><input type="text"  id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeydown="return fn_rate_change('${result.PG_ID}', event)" onkeyup='removeChar(event)'/></td>
+	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event);" /></td>
 	            				</c:otherwise>
             				</c:choose>
           
@@ -401,7 +404,7 @@ $(function(){
 		         <input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
 		         <input id="TmsProgrmFileNm_user_dev_id" type="hidden" /> 
 		         <input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
-
+		         
                 <!-- 페이지 네비게이션 시작 -->
                 <%-- <c:if test="${!empty loginPolicyVO.pageIndex }"> --%>
                     <div id="paging_div">

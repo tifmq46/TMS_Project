@@ -16,15 +16,30 @@
 	
     <!-- 프로그램목록 관리 -->
 	<resultMap id="TmsProgrmManage"       class="egovframework.let.sym.prm.service.TmsProgrmManageVO">
-		<result property="PG_ID"    column="PG_ID"    columnIndex="1"/>
-		<result property="USER_DEV_ID"  column="USER_DEV_ID"  columnIndex="2"/>
-		<result property="PG_NM"  column="PG_NM"  columnIndex="3"/>
-		<result property="SYS_GB"        column="SYS_GB"        columnIndex="4"/>
-		<result property="TASK_GB"             column="TASK_GB"             columnIndex="5"/>
-		<result property="USE_YN"             column="USE_YN"             columnIndex="6"/>
-		<result property="PJT_ID"             column="PJT_ID"             columnIndex="7"/>
-		<result property="USER_REAL_ID"             column="USER_REAL_ID"             columnIndex="8"/>
-	</resultMap> 
+		<result property="pgId"    column="PG_ID"    columnIndex="1"/>
+		<result property="userDevId"  column="USER_DEV_ID"  columnIndex="2"/>
+		<result property="pgNm"  column="PG_NM"  columnIndex="3"/>
+		<result property="sysGb"        column="SYS_GB"        columnIndex="4"/>
+		<result property="taskGb"             column="TASK_GB"             columnIndex="5"/>
+		<result property="useYn"             column="USE_YN"             columnIndex="6"/>
+		<result property="pjtId"             column="PJT_ID"             columnIndex="7"/>
+		<result property="userRealId"             column="USER_REAL_ID"             columnIndex="8"/>
+	</resultMap>
+	
+    <!-- 프로젝트 관리 -->
+	<resultMap id="TmsProjectManage"       class="egovframework.let.sym.prm.service.TmsProjectManageVO">
+		<result property="pjtId"    column="PJT_ID"    columnIndex="1"/>
+		<result property="pjtNm"  column="PJT_NM"  columnIndex="2"/>
+		<result property="pjtType"  column="PJT_TYPE"  columnIndex="3"/>
+		<result property="pjtSt"        column="PJT_ST"        columnIndex="4"/>
+		<result property="pjtPm"             column="PJT_PM"             columnIndex="5"/>
+		<result property="pjtPrice"             column="PJT_PRICE"             columnIndex="6"/>
+		<result property="devStartDt"             column="DEV_START_DT"             columnIndex="7"/>
+		<result property="devEndDt"             column="DEV_END_DT"             columnIndex="8"/>
+		<result property="pjtStartDt"             column="PJT_START_DT"             columnIndex="9"/>
+		<result property="pjtEndDt"             column="PJT_END_DT"             columnIndex="10"/>
+		<result property="pjtContent"             column="PJT_CONTENT"             columnIndex="11"/>
+	</resultMap>	
 	
 	<select id="TmsProgrmManageDAO.selectProgrmList_D" parameterClass="comDefaultVO" resultMap="TmsProgrmManage">
 		<![CDATA[
@@ -52,7 +67,7 @@
 		]]>
 	</select>
 	<!-- 프로그램 정보 조회 -->
-	<select id="TmsProgrmManageDAO.selectProject" resultClass="TmsProjectManageVO">
+	<select id="TmsProgrmManageDAO.selectProject" resultMap="TmsProjectManage">
 		<![CDATA[
 			SELECT 
 				  PJT_ID,
@@ -71,19 +86,19 @@
 	</select>
 	
 	<!-- 시스템구분 조회 -->
-	<select id="TmsProgrmManageDAO.selectSysGb" resultClass="TmsProgrmManageVO">
+	<select id="TmsProgrmManageDAO.selectSysGb" resultClass="java.lang.String">
 			SELECT CODE_NM AS "SYS_GB" FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'SYSGB'
 	</select>
 	
 	<!-- 업무구분 조회 -->
-	<select id="TmsProgrmManageDAO.selectTaskGb" resultClass="TmsProgrmManageVO">
+	<select id="TmsProgrmManageDAO.selectTaskGb" resultClass="java.lang.String">
 				SELECT CODE_NM AS "TASK_GB" FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'TASKGB'
 			
 	</select>  
 	
 	<!-- 업무구분 조회 -->
 	            
-	<select id="TmsProgrmManageDAO.selectTaskGb2" parameterClass="ProgramDefaultVO" resultClass="TmsProgrmManageVO">
+	<select id="TmsProgrmManageDAO.selectTaskGb2" parameterClass="ProgramDefaultVO" resultClass="java.lang.String">
 			
 	    	SELECT CODE_NM AS "TASK_GB" 
 			FROM LETTCCMMNDETAILCODE
@@ -94,11 +109,11 @@
 			</isNotEmpty>
 	</select>  
 	
-	<select id="TmsProgrmManageDAO.selectTaskGb3" parameterClass="ProgramVO" resultClass="TmsProgrmManageVO">
+	<select id="TmsProgrmManageDAO.selectTaskGb3" parameterClass="ProgramVO" resultClass="java.lang.String">
 			
 	    	SELECT CODE_NM AS "TASK_GB" 
 			FROM LETTCCMMNDETAILCODE
-			where parent = (SELECT SYS_GB FROM PG_TB WHERE PG_ID = #PG_ID#);
+			where parent = (SELECT SYS_GB FROM PG_TB WHERE PG_ID = #pgId#);
 	</select>  
 	<select id="TmsProgrmManageDAO.selectTaskGb4" parameterClass="DevPlanDefaultVO" resultClass="TmsProgrmManageVO">
 			
@@ -114,7 +129,7 @@
 	
 	
 	<!-- 업무구분 조회 -->
-	<select id="TmsProgrmManageDAO.selectTaskGbSearch" resultClass="TmsProgrmManageVO">
+	<select id="TmsProgrmManageDAO.selectTaskGbSearch" resultClass="java.lang.String">
 		SELECT CODE_NM AS "TASK_GB"
 		FROM LETTCCMMNDETAILCODE
 		WHERE PARENT = (SELECT CODE
@@ -165,7 +180,7 @@
             INSERT INTO PJT_TB
         	(PJT_ID, PJT_NM, PJT_TYPE, PJT_ST, PJT_PM, PJT_PRICE, DEV_START_DT, DEV_END_DT, PJT_START_DT, PJT_END_DT, PJT_CONTENT)
         	VALUES
-        	(#PJT_ID#,#PJT_NM#, #PJT_TYPE#, #PJT_ST#, #PJT_PM#, #PJT_PRICE#,#DEV_START_DT#,#DEV_END_DT#,#PJT_START_DT#,#PJT_END_DT#,#PJT_CONTENT#
+        	(#pjtId#,#pjtNm#, #pjtType#, #pjtSt#, #pjtPm#, #pjtPrice#,#devStartDt#,#devEndDt#,#pjtStartDt#,#pjtEndDt#,#pjtContent#
         	)
 			]]>
 	</insert>
