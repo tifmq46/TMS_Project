@@ -73,6 +73,54 @@ window.onload = function() {
     				}
     		});
 	}
+	
+	/** 금주  진척률 */
+	var taskThisWeekByStats = JSON.parse('${taskThisWeekByStats}');
+	var taskThisWeekByStatsCnta = new Array();
+	var taskThisWeekByStatsCntb = new Array();
+	var taskThisWeekByStatsTaskGb = new Array();
+	for (var i = 0; i < taskThisWeekByStats.length; i++) {
+		if(taskThisWeekByStats[i].CNTA == 0) {
+			taskThisWeekByStats[i].CNTA = 0.1;
+		}
+		taskThisWeekByStatsCnta.push(taskThisWeekByStats[i].CNTA);
+		taskThisWeekByStatsCntb.push(taskThisWeekByStats[i].CNTB);
+		taskThisWeekByStatsTaskGb.push(taskThisWeekByStats[i].TASK_GB);
+	}
+	for ( var j = 0; j < taskThisWeekByStatsTaskGb.length; j++) {
+		var ctx = document.getElementById(taskThisWeekByStatsTaskGb[j]);
+		var myDoughnutChart = new Chart(ctx, {
+    		type : 'doughnut',
+    		data : {
+    			  labels: ['완료건수','미완료건수'],
+    				datasets : [ {
+    					data : [taskThisWeekByStatsCntb[j],
+    					        taskThisWeekByStatsCnta[j]-taskThisWeekByStatsCntb[j]],
+    					backgroundColor : ['#007bff','#e9ecef']
+    				},]
+    			},
+    			options : {
+    				rotation: 1 * Math.PI,
+    		        circumference: 1 * Math.PI,
+    				percentageInnerCutout : 50,
+    				responsive:false,
+    				tooltips: {
+    					callbacks: {
+    					label: function(tooltipItem, data) {
+    					            var value = data.datasets[0].data[tooltipItem.index];
+    					            var label = data.labels[tooltipItem.index];
+
+    					            if (value === 0.1) {
+    					            	value = 0;
+    					            }
+
+    					            return label + ': ' + value;
+    					          }
+    						}
+    					}
+    				}
+    		});
+	}
 }
 
 </script>
@@ -113,8 +161,7 @@ window.onload = function() {
 				<br/><br/>
                
                <h3><strong>시스템별 진척률</strong></h3>
-               
-      	 <div style="overflow:auto; white-space:nowrap; overflow-y:hidden;">
+      		 <div style="overflow:auto; white-space:nowrap; overflow-y:hidden;">
             <table>
             <tr>
             <td>
@@ -156,6 +203,36 @@ window.onload = function() {
             </tr>
             </table>
             </div>
+            
+               <h3><strong>주별 진척률</strong></h3>
+      		 <div style="overflow:auto; white-space:nowrap; overflow-y:hidden;">
+             <table>
+            <tr>
+            <c:forEach var="taskThisWeekByStats" items="${taskThisWeekByStats}" varStatus="status">
+            <td>
+            <canvas id="<c:out value="${taskThisWeekByStats.TASK_GB}"/>"  width="180" height="180" style="display: inline !important;"></canvas>&nbsp;&nbsp;
+			</td>            
+            </c:forEach>
+            <br/>
+            </tr>
+            
+            <tr>
+            <c:forEach var="taskThisWeekByStats" items="${taskThisWeekByStats}" varStatus="status">
+            <td align="center" valign="middle">
+            	<div style="font-size:13px; font-weight:bolder;">
+            	<font color="#007BFF"><c:out value="${taskThisWeekByStats.CNTB}"/></font> / <c:out value="${taskThisWeekByStats.CNTA}"/>
+                 	(<c:out value=" ${taskThisWeekByStats.R}"></c:out>%)
+                 <br/>
+					<c:out value="${taskThisWeekByStats.TASK_NM}"/>
+                 <br/>
+                 </div>
+            </td>
+            </c:forEach>
+            </tr>
+            </table>
+            </div>
+            
+               
                
             </div>
             <!-- //content 끝 -->
