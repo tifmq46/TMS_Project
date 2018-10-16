@@ -64,7 +64,7 @@
 			</isNotEmpty>
 			
 			<isNotEmpty property="searchByTaskGb">
-			    AND a.TASK_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #searchByTaskGb#)
+			    AND a.TASK_GB IN (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #searchByTaskGb#)
 			</isNotEmpty>
 			
 			<!-- 개발자명으로 검색 -->
@@ -97,7 +97,7 @@
          </isNotEmpty>
          
          <isNotEmpty property="searchByTaskGb">
-             AND a.TASK_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #searchByTaskGb#)
+             AND a.TASK_GB IN (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #searchByTaskGb#)
          </isNotEmpty>
          
          <!-- 개발자명으로 검색 -->

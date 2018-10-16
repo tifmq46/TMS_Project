@@ -113,8 +113,8 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
 	      return (List<HashMap<String,String>>)list("TmsProgrmManageDAO.selectTestList1",a);
 	   }
 
-	public List<?> selectTaskGb4(DevPlanDefaultVO dvo) {
-		return list("TmsProgrmManageDAO.selectTaskGb4", dvo);
+	public List<String> selectTaskGb4(DevPlanDefaultVO dvo) {
+		return (List<String>) list("TmsProgrmManageDAO.selectTaskGb4", dvo);
 	}
 	
 }
