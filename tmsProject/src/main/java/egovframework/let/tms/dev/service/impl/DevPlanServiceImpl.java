@@ -294,5 +294,16 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<HashMap<String, String>> selectThisWeekStats(String taskGb) {
 		return devPlanDAO.selectThisWeekStats(taskGb);
 	}
+
+	@Override
+	public List<HashMap<String, String>> selectTotalStats(String taskGb) {
+		return devPlanDAO.selectTotalStats(taskGb);
+	}
+
+	@Override
+	public List<HashMap<String, String>> selectAccumulateStats(String taskGb) {
+		return devPlanDAO.selectAccumulateStats(taskGb);
+
+	}
 	
 }
