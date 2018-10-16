@@ -84,9 +84,8 @@ function insertTestScenarioImpl(){
                         
                               
              <form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="<c:url value='/tms/test/insertTestScenarioImpl.do'/>">          
-                        
+                 <input type="hidden" name="testcaseGb" value="${testcaseGb}"/>
                  <div id="border" class="modify_user" >
-                 		<form:hidden path="userTestId" value="${userTestId}"/>
                         <table>
                         
                         	<tr>
@@ -103,7 +102,6 @@ function insertTestScenarioImpl(){
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
                                 <td width="25%" nowrap >
-                                  <c:out value='${testScenarioVO.testscenarioId}'/>
                                   <input id="testscenarioId" name="testscenarioId" type="text" size="25"  >
                                   <br/><form:errors path="testscenarioId" />
                                 </td>
@@ -155,8 +153,8 @@ function insertTestScenarioImpl(){
 	           				<li>
 								<div class="buttons">
 				   					<a href="#" onclick="insertTestScenarioImpl(); return false;"><spring:message code="button.create" /></a>
-				   					<a href="javascript:history.go(-1);"><spring:message code="button.list" /></a>
-								</div>  				  			
+				   					<a href="<c:url value='/tms/test/selectTestScenarioList.do?testcaseGb=${testcaseGb}'/>" ><spring:message code="button.list" /></a>
+								</div>  				  		
 		  					</li>             
 	                    </ul>        
                    </div>      

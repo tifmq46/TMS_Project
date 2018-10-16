@@ -302,7 +302,7 @@ function fDeleteMenuList() {
 	                    <ul>        
 	           				<li>
 								<div class="buttons">
-				   					<a href= "<c:url value='/tms/test/insertTestScenario.do?userId=${testVoMap.userId}&amp;testcaseId=${testVoMap.testcaseId} '/>"><spring:message code="button.create" /></a>
+				   					<a href= "<c:url value='/tms/test/insertTestScenario.do?testcaseId=${testVoMap.testcaseId} '/>"><spring:message code="button.create" /></a>
 									<a href="#LINK" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
 									<a href="javascript:history.go(-1);"><spring:message code="button.list" /></a>
 								</div>	  				  			

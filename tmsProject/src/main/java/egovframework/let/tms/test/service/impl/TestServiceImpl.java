@@ -218,7 +218,7 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 	}
 	
 	@Override
-	public List<?> selectTestStatsTable(TestDefaultVO searchVO) throws Exception {
+	public List<HashMap<String,String>> selectTestStatsTable(TestDefaultVO searchVO) throws Exception {
 		return testDAO.selectTestStatsTable(searchVO);
 	}
 }

@@ -160,8 +160,8 @@ function deleteTestScenario() {
 	           				<li>
 								<div class="buttons">
 	                                <a href="#" onclick="updateTestScenario(); return false;"><spring:message code="button.save" /></a>
-				   					<a href="#LINK" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
-				   					<a href="#" onclick=""><spring:message code="button.list" /></a>
+				   					<a href="#" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
+				   					<a href="<c:url value='/tms/test/selectTestScenarioList.do?testcaseGb=${testcaseGb}'/>"><spring:message code="button.list" /></a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>   

@@ -118,7 +118,6 @@
 		    	, TESTSCENARIO_ORD
 		    	, TESTSCENARIO_CONTENT
 		    	, TESTCASE_ID
-		    	, USER_TEST_ID
 		    	, TEST_CONDITION
 		    	, EXPECTED_RESULT
 		    	, ENROLL_DT 
@@ -128,7 +127,6 @@
 		    		, #testscenarioOrd#
 		    		, #testscenarioContent#
 		    		, #testcaseId#
-		    		, #userTestId#
 		    		, #testCondition#
 		    		, #expectedResult#
 		    		, now()
@@ -206,6 +204,7 @@
 	    	<isNotEmpty property="testResultYn" prepend = ",">
 	     			TEST_RESULT_YN = #testResultYn#
 	     			, TEST_DT = now()
+	     			, USER_TEST_ID = #userTestId#
 	       	</isNotEmpty>
 	       	
 	    	<isNotEmpty property="testResultContent" prepend = ",">

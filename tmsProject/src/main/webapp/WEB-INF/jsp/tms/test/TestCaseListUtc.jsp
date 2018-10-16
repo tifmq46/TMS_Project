@@ -348,7 +348,7 @@ function fDeleteMenuList() {
            </div>                          
            <!-- //페이지 네비게이션 끝 -->  
  		
- 		
+ 		<%-- 
  		<form:form style="visibility:visible; margin-top:20px;" commandName="testCaseVO" name="testCaseResultUpdate" method="post" action="/tms/test/deleteMultiTestCase.do">     
                 	
 	                <div class="default_tablestyle">
@@ -439,7 +439,7 @@ function fDeleteMenuList() {
           
         	</form:form>
  		
- 		
+ 		 --%>
  		
  		
  		
