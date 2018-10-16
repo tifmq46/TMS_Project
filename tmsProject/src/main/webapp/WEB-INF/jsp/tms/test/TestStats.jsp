@@ -99,6 +99,8 @@ window.onload = function() {
 			ProgressStatusUtcSecondTestCnt.push(ProgressStatusUtcData.secondTestCnt);
 			ProgressStatusUtcCompleteYCnt.push(ProgressStatusUtcData.completeYCnt);
 			
+			var ProgressStatusUtcLength = ProgressStatusUtcData.notTestCnt + ProgressStatusUtcData.firstTestCnt + 
+					ProgressStatusUtcData.secondTestCnt + ProgressStatusUtcData.completeYCnt;
 			
 			var ctx = document.getElementById("ProgressStatusUtcChart");
 			var ProgressStatusUtcChart = new Chart(ctx, {
@@ -121,11 +123,20 @@ window.onload = function() {
 								backgroundColor : '#D57C86'}]
 						}
 				,options : {
-						scales : 
-							 {xAxes : [ {stacked : true}]
-							 ,yAxes : [ {stacked : true} ]}
-				
-				 		
+						scales :  {
+								xAxes : [
+								         {stacked : true,
+											display : true,
+											ticks:{
+											min: 0,
+								            max: ProgressStatusUtcLength
+								                 }
+								         }
+								         ]
+							 	,yAxes : [
+							 	          {stacked : true} 
+							 	          ]
+								}
 							}
 			});		
 			
@@ -143,6 +154,8 @@ window.onload = function() {
 			ProgressStatusTtcSecondTestCnt.push(ProgressStatusTtcData.secondTestCnt);
 			ProgressStatusTtcCompleteYCnt.push(ProgressStatusTtcData.completeYCnt);
 			
+			var ProgressStatusTtcLength = ProgressStatusTtcData.notTestCnt + ProgressStatusTtcData.firstTestCnt +
+						ProgressStatusTtcData.secondTestCnt + ProgressStatusTtcData.completeYCnt;
 			
 			var ctx = document.getElementById("ProgressStatusTtcChart");
 			var ProgressStatusTtcChart = new Chart(ctx, {
@@ -165,7 +178,14 @@ window.onload = function() {
 						}
 				,options : {
 						scales : 
-							 {xAxes : [ {stacked : true} ]
+							 {xAxes : [ {stacked : true,
+										display : true,
+										ticks:{
+										min: 0,
+						    	        max: ProgressStatusTtcLength
+						                 }
+							 	}
+							 	]
 							 ,yAxes : [ {stacked : true} ]}
 							}
 			});		
@@ -257,7 +277,7 @@ $(document).ready(function(){
 				</div>
 				
 				<div id="detail_bar_utc" style="display:none;" class="progess_bar_section" >
-                      <canvas id="ProgressStatusUtcChart" width="100%" height="13"></canvas>
+                      <canvas id="ProgressStatusUtcChart" width="100%" height="14"></canvas>
 				</div>
                  
                 
@@ -306,7 +326,7 @@ $(document).ready(function(){
                  </div>
                    
                  <div id="detail_bar_ttc" style="display:none;" class="progess_bar_section" >
-                      <canvas id="ProgressStatusTtcChart" width="100%" height="13"></canvas>
+                      <canvas id="ProgressStatusTtcChart" width="100%" height="14"></canvas>
 				</div>
                    
                    

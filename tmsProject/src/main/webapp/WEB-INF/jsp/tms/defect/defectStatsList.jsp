@@ -216,7 +216,7 @@ ul.tabs li.last {
 									<th align="center">개선</th>
 									<th align="center">문의</th>
 									<th align="center">기타</th>
-									<th align="center">합계</th>
+									<th align="center">소계</th>
 								</tr>
 
 								<c:forEach var="taskGbByStats" items="${taskGbByStats}"
@@ -235,16 +235,16 @@ ul.tabs li.last {
 									</tr>
 									<c:if test="${taskGbByStats.actionSt eq 'A5'}">
 										<tr>
-											<td style="border-bottom: solid 1px #00000054;"><strong>합계</strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong>소계</strong></td>
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${taskGbByStats.d1Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${taskGbByStats.d2Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${taskGbByStats.d3Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${taskGbByStats.d4Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${taskGbByStats.totalRowSum}" /></strong></td>
 										</tr>
 									</c:if>
@@ -276,7 +276,7 @@ ul.tabs li.last {
 									<th align="center">개선</th>
 									<th align="center">문의</th>
 									<th align="center">기타</th>
-									<th align="center">합계</th>
+									<th align="center">소계</th>
 								</tr>
 
 								<c:forEach var="pgIdByStats" items="${pgIdByStats}"
@@ -295,7 +295,7 @@ ul.tabs li.last {
 									</tr>
 									<c:if test="${pgIdByStats.actionSt eq 'A5'}">
 										<tr>
-											<td style="border-bottom: solid 1px #00000054;"><strong>합계</strong></td>
+											<td style="border-bottom: solid 1px #00000054;"><strong>소계</strong></td>
 											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
 														value="${pgIdByStats.d1Sum}" /></strong></td>
 											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
@@ -338,7 +338,7 @@ ul.tabs li.last {
 									<th align="center">개선</th>
 									<th align="center">문의</th>
 									<th align="center">기타</th>
-									<th align="center">합계</th>
+									<th align="center">소계</th>
 								</tr>
 
 								<c:forEach var="userTestByStats" items="${userTestByStats}"
@@ -357,7 +357,7 @@ ul.tabs li.last {
 									</tr>
 									<c:if test="${userTestByStats.actionSt eq 'A5'}">
 										<tr>
-											<td style="border-bottom: solid 1px #00000054;"><strong>합계</strong></td>
+											<td style="border-bottom: solid 1px #00000054;"><strong>소계</strong></td>
 											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
 														value="${userTestByStats.d1Sum}" /></strong></td>
 											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
@@ -400,7 +400,7 @@ ul.tabs li.last {
 									<th align="center">개선</th>
 									<th align="center">문의</th>
 									<th align="center">기타</th>
-									<th align="center">합계</th>
+									<th align="center">소계</th>
 								</tr>
 
 								<c:forEach var="userDevByStats" items="${userDevByStats}"
@@ -419,7 +419,7 @@ ul.tabs li.last {
 									</tr>
 									<c:if test="${userDevByStats.actionSt eq 'A5'}">
 										<tr>
-											<td style="border-bottom: solid 1px #00000054;"><strong>합계</strong></td>
+											<td style="border-bottom: solid 1px #00000054;"><strong>소계</strong></td>
 											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
 														value="${userDevByStats.d1Sum}" /></strong></td>
 											<td style="border-bottom: solid 1px #00000054;"><strong><c:out

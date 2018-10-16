@@ -754,8 +754,7 @@ public class DevPlanController {
 		model.addAttribute("sysByStats", net.sf.json.JSONArray.fromObject(sysByStats));
 		// 시스템별 진척률 끝 -------------------------------------
 
-		// 금주 진척률 시작 ---------------------------------------
-		
+		// 업무별 진척률 시작 ---------------------------------------
 		List<String> taskList = devPlanService.selectTaskGbList();
 		
 		// 업무별 금주 계획대비 실적, 금주 진척률
@@ -764,22 +763,21 @@ public class DevPlanController {
 			taskThisWeek.addAll(devPlanService.selectThisWeekStats(taskList.get(i)));
 		}
 		model.addAttribute("taskThisWeekByStats", net.sf.json.JSONArray.fromObject(taskThisWeek));
-		// 금주 진척률 끝 ---------------------------------------
 		
-		System.out.println("###" + taskThisWeek);
 		// 업무별 금주 누적 계획대비 실적, 누적 진척률
 		List<HashMap<String,String>> taskAccumulate = new ArrayList<HashMap<String,String>>();
 		for(int i=0; i<taskList.size(); i++){
 			taskAccumulate.addAll(devPlanService.selectAccumulateStats(taskList.get(i)));
 		}
-		System.out.println("누적진척률"+taskAccumulate);
+		model.addAttribute("taskAccumulateByStats", net.sf.json.JSONArray.fromObject(taskAccumulate));
 		
 		// 업무별 총 본수대비 실적, 총 진척률
 		List<HashMap<String,String>> taskTotal = new ArrayList<HashMap<String,String>>();
 		for(int i=0; i<taskList.size(); i++){
 			taskTotal.addAll(devPlanService.selectTotalStats(taskList.get(i)));
 		}
-		System.out.println("총진척률"+taskTotal);
+		model.addAttribute("taskTotalByStats", net.sf.json.JSONArray.fromObject(taskTotal));
+		// 업무별 진척률 시작 ---------------------------------------	
 		
 		return "tms/dev/devStats";
 	}

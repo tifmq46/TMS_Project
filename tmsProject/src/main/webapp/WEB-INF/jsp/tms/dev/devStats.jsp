@@ -74,7 +74,7 @@ window.onload = function() {
     		});
 	}
 	
-	/** 금주  진척률 */
+	/** zero pie test */
 	var taskThisWeekByStats = JSON.parse('${taskThisWeekByStats}');
 	var taskThisWeekByStatsCnta = new Array();
 	var taskThisWeekByStatsCntb = new Array();
@@ -114,13 +114,136 @@ window.onload = function() {
     					            	value = 0;
     					            }
 
-    					            return label + ': ' + value;
+    					            return label + ' : ' + value;
     					          }
     						}
     					}
     				}
     		});
 	}
+	
+	/** 전체 진척률*/
+	var taskTotalByStats = JSON.parse('${taskTotalByStats}');
+	var taskTotalByStatsTaskNm = new Array();
+	var taskTotalByStatsR = new Array();
+	for (var i = 0; i < taskTotalByStats.length; i++) {
+		taskTotalByStatsTaskNm.push(taskTotalByStats[i].TASK_NM);
+		if(taskTotalByStats[i].R == 0){
+			taskTotalByStats[i].R = 0.1;
+		}
+		taskTotalByStatsR.push(taskTotalByStats[i].R);
+	}
+	var ctx1 = document.getElementById('taskTotalByStats');
+	var taskTotalByStatsChart = new Chart(ctx1, {
+		type : 'bar',
+		data : {
+			labels : taskTotalByStatsTaskNm,
+			barThickness : '0.9',
+			datasets : [ {
+				label : '진척률',
+				data : taskTotalByStatsR,
+				backgroundColor : '#007BFF',
+			}]
+		},
+		options : {
+			tooltips: {
+				callbacks: {
+				label: function(tooltipItem, data) {
+						var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+		            	var label = data.datasets[tooltipItem.datasetIndex].label;
+
+				            if (value === 0.1) {
+				            	value = 0;
+				            }
+
+				            return label + ' : ' + value + '%';
+				          }
+					}
+				}
+		}
+	});
+	
+	/** 주별 진척률*/
+	var taskThisWeekByStats = JSON.parse('${taskThisWeekByStats}');
+	var taskThisWeekByStatsTaskNm = new Array();
+	var taskThisWeekByStatsR = new Array();
+	for (var i = 0; i < taskThisWeekByStats.length; i++) {
+		taskThisWeekByStatsTaskNm.push(taskThisWeekByStats[i].TASK_NM);
+		if(taskThisWeekByStats[i].R == 0) {
+			taskThisWeekByStats[i].R = 0.1;
+		}
+		taskThisWeekByStatsR.push(taskThisWeekByStats[i].R);
+	}
+	var ctx2 = document.getElementById('taskThisWeekByStats');
+	var taskThisWeekByStatsChart = new Chart(ctx2, {
+		type : 'bar',
+		data : {
+			labels : taskThisWeekByStatsTaskNm,
+			barThickness : '0.9',
+			datasets : [ {
+				label : '진척률',
+				data : taskThisWeekByStatsR,
+				backgroundColor : '#007BFF',
+			}]
+		},
+		options : {
+			tooltips: {
+				callbacks: {
+				label: function(tooltipItem, data) {
+						var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+		            	var label = data.datasets[tooltipItem.datasetIndex].label;
+
+				            if (value === 0.1) {
+				            	value = 0;
+				            }
+
+				            return label + ' : ' + value +'%';
+				          }
+					}
+				}
+		}
+	});
+	/** 누적 진척률*/
+	var taskAccumulateByStats = JSON.parse('${taskAccumulateByStats}');
+	var taskAccumulateByStatsTaskNm = new Array();
+	var taskAccumulateByStatsR = new Array();
+	for (var i = 0; i < taskAccumulateByStats.length; i++) {
+		taskAccumulateByStatsTaskNm.push(taskAccumulateByStats[i].TASK_NM);
+		if(taskAccumulateByStats[i].R == 0) {
+			taskAccumulateByStats[i].R = 0.1;
+		}
+		taskAccumulateByStatsR.push(taskAccumulateByStats[i].R);
+	}
+	var ctx3 = document.getElementById('taskAccumulateByStats');
+	var taskAccumulateByStatsChart = new Chart(ctx3, {
+		type : 'bar',
+		data : {
+			labels : taskAccumulateByStatsTaskNm,
+			barThickness : '0.9',
+			datasets : [ {
+				label : '진척률',
+				data : taskAccumulateByStatsR,
+				backgroundColor : '#007BFF',
+			}]
+		},
+		options : {
+			tooltips: {
+				callbacks: {
+				label: function(tooltipItem, data) {
+						var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+		            	var label = data.datasets[tooltipItem.datasetIndex].label;
+
+				            if (value === 0.1) {
+				            	value = 0;
+				            }
+
+				            return label + ' : ' + value+'%';
+				          }
+					}
+				}
+		}
+	});
+	$('html').scrollTop(0);
 }
 
 </script>
@@ -232,6 +355,14 @@ window.onload = function() {
             </table>
             </div>
             
+            <h3><strong>전체 진척률</strong></h3>
+			<canvas id="taskTotalByStats" width="100%" height="20" ></canvas>
+			
+            <h3><strong>주별 진척률</strong></h3>
+			<canvas id="taskThisWeekByStats" width="100%" height="20" ></canvas>
+			
+            <h3><strong>누적 진척률</strong></h3>
+			<canvas id="taskAccumulateByStats" width="100%" height="20" ></canvas>
                
                
             </div>
