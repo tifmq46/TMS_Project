@@ -1,14 +1,25 @@
 package egovframework.let.tms.test.web;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +46,14 @@ import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 //import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -66,6 +85,268 @@ public class TestController {
 	
 	
 	
+	
+	/** 통계 엑셀 다운로드 기능 
+	 * @throws Exception */
+	@RequestMapping(value = "/tms/test/statsToExcel.do")
+	public String statsToExcel(RedirectAttributes redirectAttributes, @RequestParam("testcaseGb") String testcaseGb, ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		System.out.println("스탭츄엑셀 들어옴 : " + testcaseGb);
+		TestDefaultVO vo = new TestDefaultVO();
+		vo.setSearchByTestcaseGb(testcaseGb);
+		List<HashMap<String,String>> testStatsTable = testService.selectTestStatsTable(vo);
+		
+		xlsxWiter(testStatsTable, testcaseGb, response);
+		
+		return "redirect:/tms/test/selectTestStatsTable.do";
+		
+	}
+	
+	
+	
+	public void xlsxWiter(List<HashMap<String,String>> list, String testcaseGb, HttpServletResponse response) throws Exception {
+		
+		System.out.println("엑셀롸이터 들어옴 :" + testcaseGb);
+		System.out.println(list);
+		System.out.println(list.get(0).get("sysGb"));
+		
+		// 워크북 생성
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		// 워크시트 생성
+		XSSFSheet sheet = workbook.createSheet();
+		// 행 생성
+		XSSFRow row = sheet.createRow(0);
+		// 쎌 생성
+		XSSFCell cell;
+		
+		Font defaultFont = workbook.createFont();        
+		defaultFont.setFontHeightInPoints((short) 11); 
+		defaultFont.setFontName("맑은 고딕");
+
+		//제목 스타일 
+		CellStyle HeadStyle = workbook.createCellStyle(); 
+		HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
+		HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index); 
+		HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
+		HeadStyle.setFont(defaultFont);
+
+		//본문 스타일 
+		CellStyle BodyStyle = workbook.createCellStyle(); 
+		BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		BodyStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		BodyStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setFont(defaultFont);   
+		
+		// 헤더 정보 구성
+		cell = row.createCell(0);
+		cell.setCellValue("시스템구분");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(1);
+		cell.setCellValue("업무구분");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(2);
+		cell.setCellValue("프로그램 본수");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(3);
+		cell.setCellValue("테스트케이스 개수");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(4);
+		cell.setCellValue("미진행");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(5);
+		cell.setCellValue("1차");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(6);
+		cell.setCellValue("2차");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(7);
+		cell.setCellValue("진행률(%)");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(8);
+		cell.setCellValue("완료");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(9);
+		cell.setCellValue("미완료");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(10);
+		cell.setCellValue("합계");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(11);
+		cell.setCellValue("완료율");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		
+		// 리스트의 size 만큼 row를 생성
+		for(int i=0; i < list.size(); i++) {
+			// 행 생성
+	
+			row = sheet.createRow(i+1);
+			
+			cell = row.createCell(0);
+			cell.setCellValue(String.format("%s", list.get(i).get("sysGb")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(1);
+			cell.setCellValue(String.format("%s", list.get(i).get("taskGb")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(2);
+			cell.setCellValue(String.format("%s", list.get(i).get("pgCnt")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(3);
+			cell.setCellValue(String.format("%s", list.get(i).get("tcWriteYCnt")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(4);
+			cell.setCellValue(String.format("%s", list.get(i).get("notTestCnt")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(5);
+			cell.setCellValue(String.format("%s", list.get(i).get("firstTestCnt")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(6);
+			cell.setCellValue(String.format("%s", list.get(i).get("secondTestCnt")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(7);
+			cell.setCellValue(String.format("%s", list.get(i).get("tcProgressPct")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(8);
+			cell.setCellValue(String.format("%s", list.get(i).get("tcResultYCnt")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(9);
+			cell.setCellValue(String.format("%s", list.get(i).get("tcResultNCnt")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(10);
+			cell.setCellValue(String.format("%s", list.get(i).get("tcWriteYCnt")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(11);
+			cell.setCellValue(String.format("%s", list.get(i).get("tcResultPct")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+		}
+		
+		/** 3. 컬럼 Width */ 
+		for (int i = 0; i <  list.size(); i++){ 
+			sheet.autoSizeColumn(i); 
+			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
+		}
+		
+		// 입력된 내용 파일로 쓰기
+		File folder = new File("C:\\TMS\\TMS_통계자료");
+		File file;
+		
+		if(testcaseGb.equals("TC1")) {
+			file = new File("C:\\TMS\\TMS_통계자료\\단위테스트케이스 통계.xlsx");
+		} else if(testcaseGb.equals("TC2")) {
+			file = new File("C:\\TMS\\TMS_통계자료\\통합테스트케이스 통계.xlsx");
+		}else {
+			file = new File("C:\\TMS\\TMS_통계자료\\테스트케이스 통계.xlsx");
+		}
+			
+		//디렉토리 생성 메서드
+		if(!folder.exists()){
+			folder.mkdirs();
+		}
+		
+		FileOutputStream fos = null;
+		
+		try {
+			fos = new FileOutputStream(file);
+			workbook.write(fos);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(workbook!=null) //workbook.close();
+				if(fos!=null) fos.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		/** 경로 다운로드 */
+		 String path = "C:/TMS/TMS_통계자료/";  // Link의 자바파일에서 excel 파일이 생성된 경로
+         String realFileNm = "프로그램현황.xlsx";
+         
+         File uFile = new File(path,realFileNm);
+         int fSize = (int) uFile.length();
+         if (fSize > 0) {  //파일 사이즈가 0보다 클 경우 다운로드
+          String mimetype = "application/x-msdownload";  //minetype은 파일확장자에 맞게 설정
+          response.setHeader("Content-Disposition", "attachment; filename=\"TMS.xlsx\"");
+          response.setContentType(mimetype);
+          response.setContentLength(fSize);
+          BufferedInputStream in = null;
+          BufferedOutputStream out = null;
+          
+          try {
+          
+           in = new BufferedInputStream(new FileInputStream(uFile));
+           out = new BufferedOutputStream(response.getOutputStream());
+           FileCopyUtils.copy(in, out);
+           out.flush();
+          } catch (Exception ex) {
+          } finally {
+             String path1 = "C:/TMS/TMS_통계자료/프로그램현황.xlsx";
+             File deleteFolder = new File(path1);
+             deleteFolder.delete();
+             String path2 = "C:/TMS/TMS_통계자료";
+             File deleteFolder2 = new File(path2);
+             deleteFolder2.delete();
+             String path3 = "C:/TMS";
+             File deleteFolder3 = new File(path3);
+             deleteFolder3.delete();
+           if (in != null) in.close();
+           if (out != null) out.close();
+          }
+         } else {
+          response.setContentType("application/x-msdownload");
+        
+          PrintWriter printwriter = response.getWriter();
+          printwriter.println("<html>");
+          printwriter.println("<br><br><br><h2>Could not get file name:<br>" + realFileNm + "</h2>");
+          printwriter.println("<br><br><br><center><h3><a href='javascript: history.go(-1)'>Back</a></h3></center>");
+          printwriter.println("<br><br><br>&copy; webAccess");
+          printwriter.println("</html>");
+          printwriter.flush();
+          printwriter.close();
+         }
+		
+	}
+	
+	
+	
+	
+	
 	/**
 	 * 테스트시나리오를 가져온다
 	 * @param vo - 등록할 정보가 담긴 testCaseVO
@@ -76,9 +357,12 @@ public class TestController {
 	public String selectTestScenario(ModelMap model, HttpServletRequest request) throws Exception {
 		
 		String testscenarioId = request.getParameter("testscenarioId");
+		String testcaseGb = request.getParameter("testcaseGb");
+		System.out.println("testcaseGb : " + testcaseGb);
 		TestScenarioVO testScenarioVO = testService.selectTestScenario(testscenarioId);
 		
 		model.addAttribute("testScenarioVO",testScenarioVO);
+		model.addAttribute("testcaseGb",testcaseGb);
 		
 		return "tms/test/TestScenarioDetail";
 	}
@@ -156,11 +440,8 @@ public class TestController {
 	@RequestMapping(value = "/tms/test/insertTestScenario.do")
 	public String insertTestScenario( @ModelAttribute("testScenarioVO") TestScenarioVO testScenarioVO, ModelMap model, HttpServletRequest request) throws Exception {
 		
-		String userId = request.getParameter("userId");
-		String testcaseId = request.getParameter("testcaseId");
-		
-		model.addAttribute("userTestId", userId);
-		model.addAttribute("testcaseId", testcaseId);
+		model.addAttribute("testcaseId", (String)request.getParameter("testcaseId"));
+		model.addAttribute("testcaseGb", (String)request.getParameter("testcaseGb"));
 		return "tms/test/TestScenarioInsert";
 	}
 	
@@ -173,18 +454,19 @@ public class TestController {
 	 */
 	
 	@RequestMapping(value = "/tms/test/insertTestScenarioImpl.do")
-	public String insertTestScenarioImpl(RedirectAttributes redirectAttributes, @ModelAttribute("testScenarioVO") TestScenarioVO testScenarioVO, 
+	public String insertTestScenarioImpl(RedirectAttributes redirectAttributes, HttpServletRequest request, @ModelAttribute("testScenarioVO") TestScenarioVO testScenarioVO, 
 			BindingResult errors , ModelMap model) throws Exception {
 		
 		String testcaseId = testScenarioVO.getTestcaseId();
-
+		String testcaseGb = request.getParameter("testcaseGb");
+		
 		beanValidator.validate(testScenarioVO, errors);
 		if(errors.hasErrors()){
-			return "redirect:/tms/test/selectTestCase.do?testcaseId=" + testcaseId;
+			return "redirect:/tms/test/insertTestScenario.do?testcaseId=" + testcaseId + "&testcaseGb="+testcaseGb;
 		} else {
 			testService.insertTestScenario(testScenarioVO);
 			redirectAttributes.addFlashAttribute("message",  egovMessageSource.getMessage("success.common.insert"));
-			return "redirect:/tms/test/selectTestCaseWithScenario.do?testcaseId=" + testcaseId;
+			return "redirect:/tms/test/selectTestScenarioList.do?testcaseGb=" + testcaseGb;
 		}
 		
 	}
@@ -329,15 +611,15 @@ public class TestController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/tms/test/deleteMultiTestScenario.do")
-	public String deleteMultiTestScenario(RedirectAttributes redirectAttributes, @RequestParam("checkedMenuNoForDel") String checkedMenuNoForDel, @ModelAttribute("testScenarioVO") TestScenarioVO testScenarioVO, ModelMap model)
+	public String deleteMultiTestScenario(RedirectAttributes redirectAttributes, @RequestParam("checkedMenuNoForDel") String checkedMenuNoForDel, @RequestParam("testcaseGb") String testcaseGb, @ModelAttribute("testScenarioVO") TestScenarioVO testScenarioVO, ModelMap model)
 			throws Exception {
 		
-		String testcaseId = testScenarioVO.getTestcaseId();
+		System.out.println("컨트롤러 진입");
 		testService.deleteMultiTestScenario(checkedMenuNoForDel);
 		
 		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		
-		return "redirect:/tms/test/selectTestCaseWithScenario.do?testcaseId=" + testcaseId;
+		return "redirect:/tms/test/selectTestScenarioList.do?testcaseGb=" + testcaseGb;
 	}
 
 
@@ -384,6 +666,38 @@ public class TestController {
 		
 		return "tms/test/TestScenarioManage";
 	}
+	
+	
+	
+
+	/**
+	 * 테스트케이스와 케이스에 해당하는 시나리오 목록을 가져온다 ( 시나리오리스트 페이지에서 비동기처리 )
+	 * @param 
+	 * @return 등록 결과
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "/tms/test/selectTestScenarioOnScenarioListPg.do")
+	@ResponseBody
+	public HashMap<String,Object> selectTestScenarioOnScenarioListPg(ModelMap model, HttpServletRequest request) throws Exception {
+		
+		String testcaseId = request.getParameter("testcaseId");
+		String testcaseGb = request.getParameter("testcaseGb");
+		HashMap<String, Object> testVoMap = testService.selectTestCase(testcaseId);
+		
+		//테스트 시나리오 목록 가져오기
+		List<?> testScenarioList = testService.selectTestScenarioList(testcaseId);
+		
+		System.out.println("testcaseGb(selectTestScenarioOnScenarioListPg) : " + testcaseGb);
+		
+		HashMap<String,Object> resultData = new HashMap<String,Object>();
+		resultData.put("testVoMap",testVoMap);
+		resultData.put("testcaseGb",testcaseGb);
+		resultData.put("testScenarioList", testScenarioList);
+		
+		
+		return resultData;
+	}
+	
 	
 	/**
 	 * 테스트케이스와 시나리오의 결과를 관리한다.

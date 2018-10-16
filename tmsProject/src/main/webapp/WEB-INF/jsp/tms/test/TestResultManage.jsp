@@ -19,6 +19,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ page import ="egovframework.com.cmm.LoginVO" %>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -97,29 +99,20 @@ function deleteTestCase() {
 
 function testScenarioResultForm(scenarioId, resultContent, resultYn) {
 	
-	document.testScenarioResultInsert.style.visibility = "visible";
+	
 	document.testScenarioResultInsert.testscenarioId.value = scenarioId;
 	document.testScenarioResultInsert.testResultContent.value = resultContent;
 	document.testScenarioResultInsert.testcaseId.value = document.testCaseVO.testcaseId.value;
-	
-	
 	$('input:radio[name=testResultYn]:radio[value='+ resultYn +']').prop("checked",true);
-		
 	
+	document.testScenarioResultInsert.style.visibility = "visible";
+	document.getElementById('tempButton').style.display = 'none';
 }
 
+function closeTestScenarioResult() {
+	document.testScenarioResultInsert.style.visibility = "hidden";
+	document.getElementById('tempButton').style.display = 'block';
 
-function updateTestScenarioResult () {
-	
-/* 	
-	if (!validateTestScenarioResultUpdate(document.testScenarioVO)){
-        return;
-    } */
-    
-    if (confirm('<spring:message code="common.save.msg" />')) {
-    	document.testScenarioResultInsert.action = "<c:url value='/tms/test/updateTestScenarioResultImpl.do'/>";
-        document.testScenarioResultInsert.submit();      
-    }
 }
 
 </script>
@@ -258,7 +251,6 @@ function updateTestScenarioResult () {
                 
 					<div id="border" class="modify_user" style="height:200px; width:92%; overflow:auto;" >
 						
-						<input type="hidden" name="updateScenarioDataJson" >
                         <table>
                         	<colgroup>
 		        				<col width="4%"/>
@@ -326,13 +318,38 @@ function updateTestScenarioResult () {
                         </table>
                     </div>
 				
-				
+				<div id="tempButton" class="tmsTestButton" style="display:block;">
+	                    <ul>        
+	           				<li>
+								<div class="buttons">
+	                                <a href="<c:url value='/tms/test/selectTestResultList.do?testcaseGb=${testVoMap.testcaseGbCode }'/>"><spring:message code="button.list" /></a>
+								</div>	  				  			
+		  					</li>             
+	                    </ul>        
+                </div>
 					
 				
 			<form:form style="visibility:hidden; margin-top:20px;" commandName="testScenarioVO" name="testScenarioResultInsert" method="post" action="/tms/test/updateTestScenarioResultImpl.do">           
+					
+								<%
+									LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO");
+										if (loginVO == null) {
+								%>
+
+								<%
+									} else {
+								%>
+								<c:set var="loginId" value="<%=loginVO.getId()%>" />
+									<%
+								}
+								%>
+					
+					
 					<div id="border" class="modify_user" >
 						<input type="hidden" name="testscenarioId" >
 						<input type="hidden" name="testcaseId" >
+						<input type="hidden" name="userTestId" value="${loginId}"/>
+						
                         <table>
                         	<colgroup>
 		        				<col width="180"/>
@@ -365,7 +382,8 @@ function updateTestScenarioResult () {
 	                    <ul>        
 	           				<li>
 								<div class="buttons">
-	                                <a href="#" onclick="updateTestScenarioResult(); return false;"><spring:message code="button.save" /> </a>
+	                                <a href="#" onclick="updateTestScenarioResult(); return false;"><spring:message code="button.save" /></a>
+	                                <a href="#" onclick="closeTestScenarioResult(); return false;"><spring:message code="button.reset" /></a>
 	                                <a href="<c:url value="/tms/defect/insertDefect.do" />" >결함등록</a>
 								</div>	  				  			
 		  					</li>             

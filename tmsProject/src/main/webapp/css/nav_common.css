@@ -266,6 +266,19 @@ margin: 0; background-color:#f2f2f2;
     color:#0f438a;
     height: 26px;padding-left:10px;}
 
+.modify_user a {
+    color: #666666;
+}
+.modify_user a:link, a:visited {
+    color: #666666;
+}
+.modify_user a:hover {
+    color: #1F58B1;
+    text-decoration: underline;
+}
+
+
+
 
 /* btn */
 .buttons a, .buttons button{

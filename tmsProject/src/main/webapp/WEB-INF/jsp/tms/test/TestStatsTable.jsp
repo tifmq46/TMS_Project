@@ -39,6 +39,12 @@ function selectTestStatsTable(pageNo){
     document.listForm.submit();  
 }
 
+function statsToExel(testcaseGb) {
+	alert(testcaseGb);
+	location.href = "./statsToExcel.do?testcaseGb=" + testcaseGb;
+	/* location.href = "<c:url value='/tms/test/statsToExcel.do?" + testcaseGb + "'/>"; */
+}
+
 </script>
 
 </head>
@@ -98,10 +104,10 @@ function selectTestStatsTable(pageNo){
 						  		<li>
 									<div class="buttons" style="float:right;">
 									    
-	                                       <a href="<c:url value='/tms/test/selectTestStatsTable.do'/>" onclick="selectTestStatsTable('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
+	                                       <a href="#" onclick="selectTestStatsTable('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
 											<spring:message code="button.inquire" /></a>
 											
-											<a href="<c:url value='/tms/test/selectTestStatsTable.do'/>" onclick="selectTestStatsTable('1'); return false;">엑셀</a>
+											<a href="#" onclick="statsToExel('${searchVO.searchByTestcaseGb}'); return false;">엑셀</a>
 									</div>	  				  			
 					  			</li> 
 					  		</ul>	

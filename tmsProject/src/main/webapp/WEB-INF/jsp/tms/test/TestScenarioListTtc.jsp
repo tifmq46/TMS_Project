@@ -164,7 +164,7 @@ function fn_egov_select_testCaseList(pageNo){
             				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
             				<td align="center" class="listtd">
-	            				<a href= "<c:url value='/tms/test/selectTestCase.do?testcaseId=${result.testcaseId}'/>">
+	            				<a href="#"  onclick="selectTestScenarioOnScenarioListPage(); return false();" >
 	            				<strong><c:out value="${result.testcaseId}"/></strong>
 	            				</a>
             				</td>

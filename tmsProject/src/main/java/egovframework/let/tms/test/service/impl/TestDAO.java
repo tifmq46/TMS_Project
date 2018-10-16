@@ -251,8 +251,8 @@ public class TestDAO extends EgovAbstractDAO{
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-	public List<?> selectTestStatsTable(TestDefaultVO searchVO) throws Exception {
-		return list("TestDAO.selectTestStatsTable", searchVO);
+	public List<HashMap<String,String>> selectTestStatsTable(TestDefaultVO searchVO) throws Exception {
+		return (List<HashMap<String,String>>) list("TestDAO.selectTestStatsTable", searchVO);
 	}
 	
 }

@@ -32,7 +32,7 @@
 
 function fn_egov_select_testCaseList(pageNo){
     document.listForm.pageIndex.value = pageNo; 
-    document.listForm.action = "<c:url value='/tms/test/selectTestCaseList.do?testcaseGb=TC1'/>";
+    document.listForm.action = "<c:url value='/tms/test/selectTestResultList.do?testcaseGb=TC1'/>";
     document.listForm.submit();  
 }
 
@@ -191,7 +191,27 @@ function searchFileNm() {
             				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.firstTestResultYn}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.secondTestResultYn}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>
+            				
+            				<c:choose>
+            					<c:when test="${result.completeYn == 'Y' }">
+            						<td align="center" class="listtd" style="background-color:#007bff;">
+            						<font color="#ffffff" style="font-weight:bold"><c:out value="${result.completeYn}"/>&nbsp;</font>
+            						</td>
+            					</c:when>
+            					
+            					<c:when test="${result.completeYn == 'N' }">
+            						<td align="center" class="listtd" style="background-color:#CC3C39;">
+            						<font color="#ffffff" style="font-weight:bold"><c:out value="${result.completeYn}"/>&nbsp;</font>
+            						</td>
+            					</c:when>
+            					
+            					<c:otherwise>
+            						<td align="center" class="listtd" style="background-color:#007bff;">
+            						<font style="font-weight:bold"><c:out value="${result.completeYn}"/>&nbsp;</font>
+            						</td>
+            					</c:otherwise>
+            				</c:choose>
+            				
             			</tr>
         			</c:forEach>
               </table>        

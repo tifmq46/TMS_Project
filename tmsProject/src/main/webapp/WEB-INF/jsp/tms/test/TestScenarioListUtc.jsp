@@ -27,17 +27,162 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>단위 테스트 시나리오 목록 조회</title>
-
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 
 function fn_egov_select_testCaseList(pageNo){
     document.listForm.pageIndex.value = pageNo; 
-    document.listForm.action = "<c:url value='/tms/test/selectTestCaseList.do?testcaseGb=TC1'/>";
+    document.listForm.action = "<c:url value='/tms/test/selectTestScenarioList.do?testcaseGb=TC1'/>";
     document.listForm.submit();  
 }
 
 function searchFileNm() {
     window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+}
+
+function fCheckAll() {
+    var checkField = document.testScenarioVO.checkField;
+    if(document.testScenarioVO.checkAll.checked) {
+        if(checkField) {
+            if(checkField.length > 1) {
+                for(var i=0; i < checkField.length; i++) {
+                    checkField[i].checked = true;
+                }
+            } else {
+                checkField.checked = true;
+            }
+        }
+    } else {
+        if(checkField) {
+            if(checkField.length > 1) {
+                for(var j=0; j < checkField.length; j++) {
+                    checkField[j].checked = false;
+                }
+            } else {
+                checkField.checked = false;
+            }
+        }
+    }
+}
+
+/* ********************************************************
+ * 멀티삭제 처리 함수
+ ******************************************************** */
+function fDeleteMenuList() {
+	
+	
+	if (confirm('<spring:message code="common.delete.msg" />')) {
+		 var checkField = document.testScenarioVO.checkField;
+		    var menuNo = document.testScenarioVO.checkMenuNo;
+		    var checkMenuNos = "";
+		    var checkedCount = 0;
+		    if(checkField) {
+
+		        if(checkField.length > 1) {
+		            for(var i=0; i < checkField.length; i++) {
+		                if(checkField[i].checked) {
+		                    checkMenuNos += ((checkedCount==0? "" : ",") + menuNo[i].value);
+		                    checkedCount++;
+		                }
+		            }
+		        } else {
+		            if(checkField.checked) {
+		                checkMenuNos = menuNo.value;
+		            }
+		        }
+		    }   
+
+		    document.testScenarioVO.checkedMenuNoForDel.value=checkMenuNos;
+		    document.testScenarioVO.action = "<c:url value='/tms/test/deleteMultiTestScenario.do'/>";
+		    document.testScenarioVO.submit(); 
+	}
+   
+}
+
+function selectTestScenarioOnScenarioListPg(caseId,caseGb){
+	
+    $.ajax({
+    	
+   	 type :"POST"
+   	,url  : "<c:url value='/tms/test/selectTestScenarioOnScenarioListPg.do'/>"
+   	,dataType : "json"
+   	,data : {testcaseId:caseId, testcaseGb:caseGb}
+   	,success :  function(result){
+   		
+   		$("#testScenarioListAjaxTbody").empty();
+   		$("#testCaseAjaxTbody").empty();
+   		$("#paging_div").empty();
+   		$("#testScenarioListAjaxButtons").empty();
+   		
+   		var testCaseStr = "";
+
+   		testCaseStr += "<td align='center' class='listtd' ><strong>1</strong></td>";      
+   		testCaseStr += "<td align='left' class='listtd'>" + result.testVoMap.testcaseId + "</td>";
+   		testCaseStr += "<td align='left' class='listtd'>";
+   		testCaseStr += "<a href='<c:url value='/tms/test/selectTestScenarioList.do?testcaseGb=" + result.testVoMap.testcaseGbCode + "'/>' >";
+   		testCaseStr += "<strong>" + result.testVoMap.testcaseContent +"</strong>";
+   		testCaseStr += "</a>";
+   		testCaseStr += "</td>";
+   		testCaseStr += "<td align='center' class='listtd'>" + result.testVoMap.userNm +"</td>";
+   		testCaseStr += "<td align='left' class='listtd'>" + result.testVoMap.pgId + "</td>";
+   		testCaseStr += "<td align='center' class='listtd'>" + result.testVoMap.taskGbNm + "</td>";
+   		testCaseStr += "<td align='center' class='listtd'>" + result.testVoMap.enrollDt + "</td>";
+   		testCaseStr += "<td align='center' class='listtd'>" + result.testVoMap.completeYn + "</td>";
+   		testCaseStr += "</tr>";
+   		$("#testCaseAjaxTbody").append(testCaseStr);
+   		
+   		document.testScenarioVO.testcaseGb.value= result.testVoMap.testcaseGbCode;
+   		
+   		var buttonsStr = "";
+   		
+   		buttonsStr += "<ul>";       
+   		buttonsStr += "<li>";
+   		buttonsStr += "<div class='buttons'>";
+   		buttonsStr += "<a href= '<c:url value='/tms/test/insertTestScenario.do?testcaseGb=" + result.testVoMap.testcaseGbCode + "&amp;testcaseId=" + result.testVoMap.testcaseId + "'/>'><spring:message code='button.create' /></a>";
+   		buttonsStr += "<a href='#LINK' onclick='fDeleteMenuList(); return false;'><spring:message code='button.delete' /></a>";
+   		buttonsStr += "<a href='<c:url value='/tms/test/selectTestScenarioList.do?testcaseGb=" + result.testVoMap.testcaseGbCode + "'/>' ><spring:message code='button.list' /></a>";
+   		buttonsStr += "</div>";				  			
+   		buttonsStr += "</li>";            
+   		buttonsStr += "</ul>";      
+   		$("#testScenarioListAjaxButtons").append(buttonsStr);
+   		
+   		$.each(result.testScenarioList, function(index,item){
+   			
+   			var str = "";
+	   			
+	   			str += "<tr>";
+	   			str += "<td align='center' class='listtd' style='padding-left:2px; '>";
+	   			str += "<input type='checkbox' name='checkField' class='check2' title='선택'/>";
+	   			str += "<input name='checkMenuNo' type='hidden' value='" + item.testscenarioId +"'/>";
+	   			str += "</td>";
+	   			str += "<td align='center' class='listtd' >" + item.testscenarioOrd +"</td>";
+	   			str += "<td align='center' class='listtd' >";
+	   			str += "<a href= '<c:url value='/tms/test/selectTestScenario.do?testscenarioId=" + item.testscenarioId + "&amp;testcaseGb=" +result.testcaseGb+  "'/>'>";
+	   			str += "<strong>" + item.testscenarioContent + "</strong>";
+	   			str += "</a>";
+	   			str += "</td>";
+	   			str += "<td align='center' class='listtd' >";
+	   			str += item.testCondition;
+	   			str += "</td>";
+	   			str += "<td align='center' class='listtd' >";
+	   			str += item.expectedResult;
+	   			str += "</td>";
+	   			str += "</tr>";
+	   				
+	   			$("#testScenarioListAjaxTbody").append(str);
+   		});
+/*    		document.getElementById("testScenarioAjaxTable").style.visibility = "visible"; 
+ */   		$("#testScenarioAjaxTable").toggle();
+   		
+   		
+   	}
+   	, error :  function(request,status,error){
+   		 alert("에러");
+	         alert("code:"+request.status+"\n"+"error:"+error);
+   	}
+   		
+   });
+	
 }
 
 </script>
@@ -148,14 +293,14 @@ function searchFileNm() {
 
                 <div id="page_info"><div id="page_info_align"></div></div>     
                 
+                
                 <div class="default_tablestyle">
               	<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
                 <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
               
               
              		 <colgroup>
-             		 	<col width="4%" >
-             		 	<col width="5%%"/>
+             		 	<col width="5%"/>
         				<col width="11%"/> 
         				<col width="41%"/>
         				<col width="6%"/>
@@ -164,8 +309,9 @@ function searchFileNm() {
         				<col width="8%"/>
         				<col width="6%"/>
         			</colgroup>
+        			
+        			<thead>
         			<tr>
-        				<th scope="col" class="f_field" nowrap="nowrap"><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/></th>
         			    <th align="center"><spring:message code="tms.test.no" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseId" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseContent" /></th>
@@ -175,30 +321,30 @@ function searchFileNm() {
 			        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>
         				<th align="center"><spring:message code="tms.test.completeYn" /></th>
         			</tr>
+        			</thead>
         			
-        			<c:forEach var="result" items="${testCaseList}" varStatus="status">
-        			
-            			<tr>
-            				<td nowrap="nowrap" >
-							       <input type="checkbox" name="checkField" class="check2" title="선택"/>
-							       <input name="checkMenuNo" type="hidden" value="<c:out value='${result.testcaseId}'/>"/>
-							    </td>
-            			    <td align="center" class="listtd" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
-            				<td align="left" class="listtd"><c:out value="${result.testcaseId}"/></td>
-            				<td align="left" class="listtd">
-            					<a href= "<c:url value='/tms/test/selectTestCaseWithScenario.do?testcaseId=${result.testcaseId}'/>">
-	            					<strong><c:out value="${result.testcaseContent}"/></strong>
-	            				</a>
-            				</td>
-            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
-            				<td align="left" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>
-            			</tr>
-        			</c:forEach>
+        			<tbody id="testCaseAjaxTbody">
+	        			<c:forEach var="result" items="${testCaseList}" varStatus="status">
+	        			
+	            			<tr>
+	            			    <td align="center" class="listtd" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
+	            				<td align="left" class="listtd"><c:out value="${result.testcaseId}"/></td>
+	            				<td align="left" class="listtd">
+	            					<a href="#"  onclick="selectTestScenarioOnScenarioListPg('${result.testcaseId}','${result.testcaseGbCode}');">
+		            					<strong><c:out value="${result.testcaseContent}"/></strong>
+		            				</a>
+	            				</td>
+	            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
+	            				<td align="left" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>
+	            			</tr>
+	        			</c:forEach>
+        			</tbody>
               </table>        
            </div>
+
 
             <!-- 페이지 네비게이션 시작 -->
            <div id="paging_div">
@@ -206,7 +352,54 @@ function searchFileNm() {
                   <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_testCaseList"  />
                </ul>
            </div>                          
-           <!-- //페이지 네비게이션 끝 -->  
+           <!-- //페이지 네비게이션 끝 -->  	
+
+
+
+           <form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="/tms/test/deleteMultiTestScenario.do">           
+
+				<div id="testScenarioAjaxTable" class="default_tablestyle" style="display:none; margin-top:20px; height:300px; width:100%; overflow:auto;">
+	              	
+	              	<input name="checkedMenuNoForDel" type="hidden" />
+	              	<input name="testcaseGb" type="hidden" />
+	              	<table border="0" bordercolor="#81B1D5"  cellpadding="1" cellspacing="1" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
+	                <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
+	              
+	              		<colgroup>
+	             		 	<col width="5%" >
+	             		 	<col width="5%"/>
+	        				<col width="30%"/> 
+	        				<col width="30%"/>
+	        				<col width="30%"/>
+	        			</colgroup>
+	              			
+	        			<thead>
+	    					<tr style="background-color:#a8c9e247;">
+	    						<th height="23"  nowrap="nowrap" scope="col" class="f_field" nowrap="nowrap">
+	                        		<input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/>
+	                        	</th>
+	                            <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.ord" /></label>
+	                            </th>
+	                            <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
+	                            </th>
+	                            <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.testCondition" /></label>
+	                            </th>
+	                            <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.expectedResult" /></label>
+	                            </th>
+	    					</tr>
+	        			</thead>
+	        			
+	        			<tbody id="testScenarioListAjaxTbody">
+	        			
+	        			</tbody>
+	        			
+	              </table>   
+	              
+	              <div id="testScenarioListAjaxButtons"  class="tmsTestButton" >
+		                      
+	               </div>     
+           		</div>
+			</form:form>
  		
             </div>
             <!-- //content 끝 -->

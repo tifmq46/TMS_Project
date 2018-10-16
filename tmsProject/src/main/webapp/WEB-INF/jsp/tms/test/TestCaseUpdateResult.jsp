@@ -261,7 +261,7 @@ function completeYnValidator(evt) {
 	           				<li>
 								<div id="buttonDiv" class="buttons">
 	                                <a href="#" onclick="updateTestCase(); return false;"><spring:message code="button.save" /></a>
-									<a href="javascript:history.go(-1);"><spring:message code="button.list" /></a>
+									<a href="<c:url value='/tms/test/selectTestCaseList.do?testcaseGb=${testVoMap.testcaseGbCode }'/>"><spring:message code="button.list" /></a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>   
