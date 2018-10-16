@@ -148,6 +148,8 @@ public interface DevPlanService {
 
 	public List<HashMap<String, String>> selectUserPlanWeekStats(HashMap<String, String> test);
 
+	public List<String> selectSysGbList();
+	
 	public List<String> selectTaskGbList();
 
 	public List<HashMap<String, String>> selectTaskPlanWeekStats(HashMap<String, String> taskPlan);
@@ -160,9 +162,10 @@ public interface DevPlanService {
 
 	public String selectDevSum(String periodList);
 
-	public List<HashMap<String, String>> selectThisWeekStats(String taskGb);
+	public List<HashMap<String, String>> selectThisWeekStats(HashMap<String, String> type);
 
-	public List<HashMap<String, String>> selectTotalStats(String taskGb);
+	public List<HashMap<String, String>> selectTotalStats(HashMap<String, String> type);
 
-	public List<HashMap<String, String>> selectAccumulateStats(String taskGb);
+	public List<HashMap<String, String>> selectAccumulateStats(HashMap<String, String> type);
+
 }

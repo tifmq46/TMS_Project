@@ -754,32 +754,143 @@ public class DevPlanController {
 		model.addAttribute("sysByStats", net.sf.json.JSONArray.fromObject(sysByStats));
 		// 시스템별 진척률 끝 -------------------------------------
 
-		// 금주 진척률 시작 ---------------------------------------
-		
+		List<String> sysList = devPlanService.selectSysGbList();
 		List<String> taskList = devPlanService.selectTaskGbList();
 		
-		// 업무별 금주 계획대비 실적, 금주 진척률
+		// 금주 진척률 시작 ---------------------------------------
+		
+		HashMap<String, String> type = new HashMap<>();
+		
+		//업무별 금주 계획대비 실적, 금주 진척률
 		List<HashMap<String,String>> taskThisWeek = new ArrayList<HashMap<String,String>>();
+		
 		for(int i=0; i<taskList.size(); i++){
-			taskThisWeek.addAll(devPlanService.selectThisWeekStats(taskList.get(i)));
+			type.put("codeType", "task");
+			type.put("taskList", taskList.get(i));
+			taskThisWeek.addAll(devPlanService.selectThisWeekStats(type));
 		}
-		model.addAttribute("taskThisWeekByStats", net.sf.json.JSONArray.fromObject(taskThisWeek));
+		
+		// 시스템별 금주 계획대비 실적, 금주 진척률
+		List<HashMap<String,String>> sysThisWeek = new ArrayList<HashMap<String,String>>();
+
+		type = new HashMap<>();
+		for(int i=0; i<sysList.size(); i++){
+			type.put("codeType", "sys");
+			type.put("sysList", sysList.get(i));
+			sysThisWeek.addAll(devPlanService.selectThisWeekStats(type));
+		}
+		
+		//금주 계획대비 실적, 합계
+		int totPlanThisWeek = 0;
+		int totDevThisWeek = 0;
+		HashMap<String, String> hashThisWeek = new HashMap<>();
+		
+		for(int j=0; j<sysThisWeek.size(); j++){
+			totPlanThisWeek += Integer.parseInt(String.valueOf(sysThisWeek.get(j).get("CNTA")));
+			totDevThisWeek += Integer.parseInt(String.valueOf(sysThisWeek.get(j).get("CNTB")));
+		}
+		
+		double totThisWeek = ((double)totDevThisWeek / (double)totPlanThisWeek) * 100;
+		totThisWeek = Math.round(totThisWeek * 10)/10.0;
+		
+		hashThisWeek.put("CNTA",String.valueOf(totPlanThisWeek));
+		hashThisWeek.put("CNTB",String.valueOf(totDevThisWeek));
+		hashThisWeek.put("R",String.valueOf(totThisWeek));
+		
+		System.out.println("금주 총 진척률 " + hashThisWeek);
+		
+		//model.addAttribute("taskThisWeekByStats", net.sf.json.JSONArray.fromObject(taskThisWeek));
+		
 		// 금주 진척률 끝 ---------------------------------------
 		
-		System.out.println("###" + taskThisWeek);
+		// 누적 진척률 시작 ---------------------------------------
+		
 		// 업무별 금주 누적 계획대비 실적, 누적 진척률
 		List<HashMap<String,String>> taskAccumulate = new ArrayList<HashMap<String,String>>();
+		
+		type = new HashMap<>();
+		
 		for(int i=0; i<taskList.size(); i++){
-			taskAccumulate.addAll(devPlanService.selectAccumulateStats(taskList.get(i)));
+			type.put("codeType", "task");
+			type.put("taskList", taskList.get(i));
+			taskAccumulate.addAll(devPlanService.selectAccumulateStats(type));
 		}
-		System.out.println("누적진척률"+taskAccumulate);
+		System.out.println("업무별 누적진척률"+taskAccumulate);
+		
+		List<HashMap<String,String>> sysAccumulate = new ArrayList<HashMap<String,String>>();
+
+		type = new HashMap<>();
+		for(int i=0; i<sysList.size(); i++){
+			type.put("codeType", "sys");
+			type.put("sysList", sysList.get(i));
+			sysAccumulate.addAll(devPlanService.selectAccumulateStats(type));
+		}
+		System.out.println("시스템별 누적진척률"+sysAccumulate);
+		
+		//누적 계획대비 실적, 합계
+		int totPlanAccumulate = 0;
+		int totDevAccumulate = 0;
+		HashMap<String, String> hashAccumulate = new HashMap<>();
+		
+		for(int j=0; j<sysAccumulate.size(); j++){
+			totPlanAccumulate += Integer.parseInt(String.valueOf(sysAccumulate.get(j).get("CNTA")));
+			totDevAccumulate += Integer.parseInt(String.valueOf(sysAccumulate.get(j).get("CNTB")));
+		}
+				
+		double totAccumulate = ((double)totDevAccumulate / (double)totPlanAccumulate) * 100;
+		totAccumulate = Math.round(totAccumulate * 10)/10.0;
+		
+		hashAccumulate.put("CNTA",String.valueOf(totPlanAccumulate));
+		hashAccumulate.put("CNTB",String.valueOf(totDevAccumulate));
+		hashAccumulate.put("R",String.valueOf(totAccumulate));
+		
+		System.out.println("누적 총 진척률 " + hashAccumulate);
+		
+		// 누적 진척률 끝 ---------------------------------------
+		
+		// 전체 진척률 시작 ---------------------------------------
 		
 		// 업무별 총 본수대비 실적, 총 진척률
 		List<HashMap<String,String>> taskTotal = new ArrayList<HashMap<String,String>>();
+		
+		type = new HashMap<>();
 		for(int i=0; i<taskList.size(); i++){
-			taskTotal.addAll(devPlanService.selectTotalStats(taskList.get(i)));
+			type.put("codeType", "task");
+			type.put("taskList", taskList.get(i));
+			taskTotal.addAll(devPlanService.selectTotalStats(type));
 		}
-		System.out.println("총진척률"+taskTotal);
+		System.out.println("업무별 전체 진척률"+taskTotal);
+		
+		List<HashMap<String,String>> sysTotal = new ArrayList<HashMap<String,String>>();
+
+		type = new HashMap<>();
+		for(int i=0; i<sysList.size(); i++){
+			type.put("codeType", "sys");
+			type.put("sysList", sysList.get(i));
+			sysTotal.addAll(devPlanService.selectTotalStats(type));
+		}
+		System.out.println("시스템별 전체 진척률"+sysTotal);
+		
+		//누적 계획대비 실적, 합계
+		int totPlan = 0;
+		int totDev = 0;
+		HashMap<String, String> hashTot = new HashMap<>();
+		
+		for(int j=0; j<sysTotal.size(); j++){
+			totPlan += Integer.parseInt(String.valueOf(sysTotal.get(j).get("CNTA")));
+			totDev += Integer.parseInt(String.valueOf(sysTotal.get(j).get("CNTB")));
+		}
+						
+		double tot = ((double)totDev / (double)totPlan) * 100;
+		tot = Math.round(tot * 10)/10.0;
+		
+		hashTot.put("CNTA",String.valueOf(totPlan));
+		hashTot.put("CNTB",String.valueOf(totDev));
+		hashTot.put("R",String.valueOf(tot));
+		
+		System.out.println("전체 진척률 " + hashTot);
+		
+		// 전체 진척률 끝 ---------------------------------------
 		
 		return "tms/dev/devStats";
 	}

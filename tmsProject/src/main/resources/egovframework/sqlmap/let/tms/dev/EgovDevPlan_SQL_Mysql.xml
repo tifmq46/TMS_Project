@@ -810,6 +810,13 @@
          ]]>
    	</select>
    	
+	<select id="DevPlanDAO.selectSysGbList" resultClass="java.lang.String">
+			<![CDATA[
+				SELECT CODE FROM LETTCCMMNDETAILCODE 
+					WHERE CODE_ID = "SYSGB"
+		]]>
+   	</select>
+   	
 	<select id="DevPlanDAO.selectTaskGbList" resultClass="java.lang.String">
 			<![CDATA[
 				SELECT CODE FROM LETTCCMMNDETAILCODE 
@@ -865,66 +872,150 @@
          ]]>
    	</select>
    	
-	<select id="DevPlanDAO.selectThisWeekStats" parameterClass="java.lang.String" resultClass="java.util.HashMap">
-			<![CDATA[
-				SELECT (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE=#taskList#) AS TASK_NM
-						,CNTA
-						,CNTB
-						,CAST(ROUND((IFNULL((CNTB/CNTA),0)*100),1) AS SIGNED) AS R
-						,#taskList# AS TASK_GB
-				FROM
-					(SELECT COUNT(*) CNTA, TASK_GB
-						FROM DEV_PLAN_TB AS D, PG_TB AS P
-						WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND P.TASK_GB=#taskList#
-						AND WEEKOFYEAR(D.PLAN_END_DT) = WEEKOFYEAR(NOW())) AS A,
+	<select id="DevPlanDAO.selectThisWeekStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
 				
-					(SELECT COUNT(*) CNTB
-						FROM DEV_PLAN_TB AS D, PG_TB AS P
-						WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND P.TASK_GB=#taskList#
-						AND WEEKOFYEAR(D.DEV_END_DT) = WEEKOFYEAR(NOW())) AS B
-         ]]>
+	    		<isEqual property="codeType" compareValue="task">
+					    <![CDATA[
+					    	SELECT 
+					    		#taskList# AS TASK_GB
+								,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE=#taskList#) AS TASK_NM
+								,CNTA
+								,CNTB
+								,ROUND((IFNULL((CNTB/CNTA),0)*100),1) AS R
+							FROM
+							(SELECT COUNT(*) CNTA, TASK_GB, SYS_GB
+								FROM DEV_PLAN_TB AS D, PG_TB AS P
+								WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' 
+								AND P.TASK_GB=#taskList#
+								AND WEEKOFYEAR(D.PLAN_END_DT) = WEEKOFYEAR(NOW())) AS A,
+						
+							(SELECT COUNT(*) CNTB
+								FROM DEV_PLAN_TB AS D, PG_TB AS P
+								WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' 
+								AND P.TASK_GB=#taskList#
+								AND WEEKOFYEAR(D.DEV_END_DT) = WEEKOFYEAR(NOW())) AS B
+					    ]]>
+				</isEqual>
+	    	
+				<isEqual property="codeType" compareValue="sys">
+					    <![CDATA[
+					    	SELECT
+					    		#sysList# AS SYS_GB 
+					    		,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE=#sysList#) AS SYS_NM
+								,CNTA
+								,CNTB
+								,ROUND((IFNULL((CNTB/CNTA),0)*100),1) AS R
+								
+							FROM
+							(SELECT COUNT(*) CNTA, SYS_GB, TASK_GB
+								FROM DEV_PLAN_TB AS D, PG_TB AS P
+								WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' 
+								AND P.SYS_GB=#sysList#
+								AND WEEKOFYEAR(D.PLAN_END_DT) = WEEKOFYEAR(NOW())) AS A,
+						
+							(SELECT COUNT(*) CNTB
+								FROM DEV_PLAN_TB AS D, PG_TB AS P
+								WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' 
+								AND P.SYS_GB=#sysList#
+								AND WEEKOFYEAR(D.DEV_END_DT) = WEEKOFYEAR(NOW())) AS B
+					    ]]>
+				</isEqual>
+				
+				
    	</select>
    	
-	<select id="DevPlanDAO.selectTotalStats" parameterClass="java.lang.String" resultClass="java.util.HashMap">
-			<![CDATA[
-				SELECT #taskList# AS TASK_GB
-						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE=#taskList#) AS TASK_NM
-						,CNTA
-						,CNTB
-						,ROUND((IFNULL((CNTB/CNTA),0)*100),1) AS R
-				FROM
-					(SELECT COUNT(*) CNTA, TASK_GB
-						FROM PG_TB AS P
-						WHERE USE_YN='Y' AND TASK_GB=#taskList#
-						) AS A,
-				
-					(SELECT COUNT(*) CNTB
-						FROM DEV_PLAN_TB AS D, PG_TB AS P
-						WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' 
-						AND D.DEV_END_DT <= NOW()
-						AND P.TASK_GB=#taskList# 
-					) AS B
-         ]]>
+	<select id="DevPlanDAO.selectAccumulateStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
+			
+	    		<isEqual property="codeType" compareValue="task">
+					    <![CDATA[
+					    	SELECT 	#taskList# AS TASK_GB
+					    			,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE=#taskList# ) AS TASK_NM
+									,CNTA
+									,CNTB
+									,ROUND((IFNULL((CNTB/CNTA),0)*100),1) AS R
+							FROM
+								(SELECT COUNT(*) CNTA, TASK_GB
+									FROM DEV_PLAN_TB AS D, PG_TB AS P
+									WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND P.TASK_GB=#taskList# 
+									AND WEEKOFYEAR(D.PLAN_END_DT) <= WEEKOFYEAR(NOW())
+								) AS A,
+							
+								(SELECT COUNT(*) CNTB
+									FROM DEV_PLAN_TB AS D, PG_TB AS P
+									WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND P.TASK_GB=#taskList# 
+									AND WEEKOFYEAR(D.DEV_END_DT) <= WEEKOFYEAR(NOW())
+								) AS B
+					    ]]>
+				</isEqual>
+	    	
+				<isEqual property="codeType" compareValue="sys">
+					    <![CDATA[
+					    	SELECT #sysList# AS SYS_GB 
+					    			,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE=#sysList#) AS SYS_NM
+									,CNTA
+									,CNTB
+									,ROUND((IFNULL((CNTB/CNTA),0)*100),1) AS R
+							FROM
+								(SELECT COUNT(*) CNTA, TASK_GB
+									FROM DEV_PLAN_TB AS D, PG_TB AS P
+									WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND P.SYS_GB=#sysList# 
+									AND WEEKOFYEAR(D.PLAN_END_DT) <= WEEKOFYEAR(NOW())
+								) AS A,
+							
+								(SELECT COUNT(*) CNTB
+									FROM DEV_PLAN_TB AS D, PG_TB AS P
+									WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND P.SYS_GB=#sysList# 
+									AND WEEKOFYEAR(D.DEV_END_DT) <= WEEKOFYEAR(NOW())
+								) AS B
+					    ]]>
+				</isEqual>
    	</select>
    	
-	<select id="DevPlanDAO.selectAccumulateStats" parameterClass="java.lang.String" resultClass="java.util.HashMap">
-			<![CDATA[
-				SELECT (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE=#taskList# ) AS TASK_NM
-						,CNTA
-						,CNTB
-						,ROUND((IFNULL((CNTB/CNTA),0)*100),1) AS R
-				FROM
-					(SELECT COUNT(*) CNTA, TASK_GB
-						FROM DEV_PLAN_TB AS D, PG_TB AS P
-						WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND P.TASK_GB=#taskList# 
-						AND WEEKOFYEAR(D.PLAN_END_DT) <= WEEKOFYEAR(NOW())
-					) AS A,
-				
-					(SELECT COUNT(*) CNTB
-						FROM DEV_PLAN_TB AS D, PG_TB AS P
-						WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND P.TASK_GB=#taskList# 
-						AND WEEKOFYEAR(D.DEV_END_DT) <= WEEKOFYEAR(NOW())
-					) AS B
-         ]]>
+	<select id="DevPlanDAO.selectTotalStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
+			
+	    		<isEqual property="codeType" compareValue="task">
+					    <![CDATA[
+					    	SELECT #taskList# AS TASK_GB
+									,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE=#taskList#) AS TASK_NM
+									,CNTA
+									,CNTB
+									,ROUND((IFNULL((CNTB/CNTA),0)*100),1) AS R
+							FROM
+								(SELECT COUNT(*) CNTA, TASK_GB
+									FROM PG_TB AS P
+									WHERE USE_YN='Y' AND TASK_GB=#taskList#
+									) AS A,
+							
+								(SELECT COUNT(*) CNTB
+									FROM DEV_PLAN_TB AS D, PG_TB AS P
+									WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' 
+									AND WEEKOFYEAR(D.DEV_END_DT) <= WEEKOFYEAR(NOW())
+									AND P.TASK_GB=#taskList# 
+								) AS B
+					    ]]>
+				</isEqual>
+	    	
+				<isEqual property="codeType" compareValue="sys">
+					    <![CDATA[
+					    	SELECT #sysList# AS SYS_GB 
+					    			,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE=#sysList#) AS SYS_NM
+									,CNTA
+									,CNTB
+									,ROUND((IFNULL((CNTB/CNTA),0)*100),1) AS R
+							FROM
+								(SELECT COUNT(*) CNTA, SYS_GB
+									FROM PG_TB AS P
+									WHERE USE_YN='Y' AND SYS_GB=#sysList#
+									) AS A,
+							
+								(SELECT COUNT(*) CNTB
+									FROM DEV_PLAN_TB AS D, PG_TB AS P
+									WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' 
+									AND WEEKOFYEAR(D.DEV_END_DT) <= WEEKOFYEAR(NOW())
+									AND P.SYS_GB=#sysList# 
+								) AS B
+					    ]]>
+				</isEqual>			
    	</select>
+   	
 </sqlMap>
