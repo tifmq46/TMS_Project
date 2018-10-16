@@ -85,7 +85,7 @@ public class TmsProgrmManageServiceImpl extends EgovAbstractServiceImpl implemen
 		return TmsProgrmManageDAO.selectTaskGb2(searchVO);
 	}
 	@Override
-	public List<?> selectTaskGb3(ProgramVO searchVO) throws Exception {
+	public List<String> selectTaskGb3(ProgramVO searchVO) throws Exception {
 		// TODO Auto-generated method stub
 		return TmsProgrmManageDAO.selectTaskGb3(searchVO);
 	}

@@ -68,7 +68,7 @@ public interface TmsProgrmManageService {
 	 */
 	List<String> selectTaskGb2(ProgramDefaultVO searchVO) throws Exception;
 	
-	List<?> selectTaskGb3(ProgramVO searchVO) throws Exception;
+	List<String> selectTaskGb3(ProgramVO searchVO) throws Exception;
 	
 	List<String> selectTaskGbSearch(String searchData) throws Exception;
 	/**

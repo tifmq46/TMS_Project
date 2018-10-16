@@ -473,7 +473,7 @@
             					<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
             					<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
             					<td align="left" class="listtd">
-            						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?PG_ID=<c:out value='${result.pgId}'/>">
+            						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?pgId=<c:out value='${result.pgId}'/>">
             							<strong><c:out value="${result.pgNm}"/></strong>
             						</a></td>
             					<td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>

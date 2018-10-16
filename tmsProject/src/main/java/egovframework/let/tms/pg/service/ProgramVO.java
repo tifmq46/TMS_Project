@@ -21,13 +21,21 @@ public class ProgramVO extends ProgramDefaultVO{
 	   private   String      pgNm;
 	   
 	   /** 개발자 ID */ 
+	   @NotEmpty
+	   @NotNull
 	   private   String      userDevId;
 	   
 	   /** 시스템구분 */
+	   @NotEmpty
+	   @NotNull
 	   private   String      sysGb;
 	   /** 업무구분 */
+	   @NotEmpty
+	   @NotNull
 	   private   String      taskGb;
 	   /** 사용여부 */
+	   @NotEmpty
+	   @NotNull
 	   private   String      useYn;
 	   /** 프로젝트 id */
 	   private   String      pjtId;

@@ -146,15 +146,15 @@ public class ProgramController {
 		model.addAttribute("programVO", VO);
 
 		// 공통코드 부분 시작 -------------------------------	
-		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
 		
 		System.out.println("here---"+searchVO.getPgId());
 		
-		List<?> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
+		List<String> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
 		model.addAttribute("taskGb2", taskGbList3);
 		
-		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		List<?> user_dev_List = TmsProgrmManageService.selectUserList();
 		model.addAttribute("dev_List", user_dev_List);
@@ -248,7 +248,7 @@ public class ProgramController {
 			return "redirect:/tms/pg/PgInsert.do";
 		} else {
 		
-		
+			System.out.println("오류검출x!");
 			programVO.setPjtId("1");
 			ProgramService.insertPg(programVO);
 			
@@ -266,6 +266,7 @@ public class ProgramController {
 
 		
 			ProgramService.updatePg(programVO);
+			
 			/** EgovPropertyService.sample */
 			searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 			searchVO.setPageSize(propertiesService.getInt("pageSize"));

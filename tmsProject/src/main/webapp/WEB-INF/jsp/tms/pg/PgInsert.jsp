@@ -41,7 +41,7 @@
 	}
     
 	$(function(){
-		   $('#SYS_GB').change(function() {
+		   $('#sysGb').change(function() {
 		      $.ajax({
 		         type:"POST",
 		         url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
@@ -49,11 +49,11 @@
 		         async: false,
 		         dataType : "json",
 		         success : function(selectTaskGbSearch){
-		        	 $("#searchBySysGb").val($("#SYS_GB").val());
-		            $("#TASK_GB").find("option").remove().end().append("<option value=''>선택하세요</option>");
+		        	 $("#searchBySysGb").val($("#sysGb").val());
+		            $("#taskGb").find("option").remove().end().append("<option value=''>선택하세요</option>");
 		            $.each(selectTaskGbSearch, function(i){
-		               (JSON.stringify(selectTaskGbSearch[0].task_GB)).replace(/"/g, "");
-		            $("#TASK_GB").append("<option value='"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i].task_GB).replace(/"/g, "")+"</option>")
+		               (JSON.stringify(selectTaskGbSearch[0])).replace(/"/g, "");
+		            $("#taskGb").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>")
 		            });
 		            
 		         },
@@ -118,7 +118,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="PG_ID" name="PG_ID" type="text" size="60"  maxlength="60" style="width:50%" title="화면ID">
+                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="60" style="width:50%" title="화면ID">
                               <br/> 
                             </td>
                           </tr>
@@ -130,7 +130,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="PG_NM" name="PG_NM" type="text" size="60"  maxlength="60" style="width:50%" title="화면ID">
+                              <input id="pgNm" name="pgNm" type="text" size="60"  maxlength="60" style="width:50%" title="화면ID">
                               <br/>
                             </td>
                           </tr>
@@ -142,10 +142,10 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="SYS_GB" name="SYS_GB" class="select" title="시스템구분">
+                            <select id="sysGb" name="sysGb" class="select" title="시스템구분">
 									   <option value="" >선택하세요</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb.SYS_GB}"/>" <c:if test="${searchVO.searchBySysGb == sysGb.SYS_GB}">selected="selected"</c:if> ><c:out value="${sysGb.SYS_GB}" /></option>
+									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
@@ -162,7 +162,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="TASK_GB" name="TASK_GB" class="select" id="TASK_GB" title="업무구분">
+                            <select id="taskGb" name="taskGb" class="select" id="TASK_GB" title="업무구분">
 									   <option value="">선택하세요</option>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
@@ -179,7 +179,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                            <select id="USER_DEV_ID" name="USER_DEV_ID" class="select" title="개발자">
+                            <select id="userDevId" name="userDevId" class="select" title="개발자">
 									   <option value="" >선택하세요</option>
 									      <c:forEach var="DEV_ID" items="${dev_List}" varStatus="status">
 									    	<option value="<c:out value="${DEV_ID.USER_NM}"/>" ><c:out value="${DEV_ID.USER_NM}" /></option>
@@ -199,8 +199,8 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                                Y : <input type="radio" id="USE_YN" name="USE_YN" id="USE_YN" class="radio2" value="Y" checked>&nbsp;
-                                N : <input type="radio" id="USE_YN" name="USE_YN" id="USE_YN" class="radio2" value="N" >
+                                Y : <input type="radio" id="useYn" name="useYn" class="radio2" value="Y" checked>&nbsp;
+                                N : <input type="radio" id="useYn" name="useYn" class="radio2" value="N" >
                                 <br/>
                             </td>
                           </tr>  
