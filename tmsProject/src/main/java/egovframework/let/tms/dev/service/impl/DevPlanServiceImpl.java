@@ -259,6 +259,11 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<HashMap<String, String>> selectUserPlanWeekStats(HashMap<String, String> test) {
 		return devPlanDAO.selectUserPlanWeekStats(test);
 	}
+	
+	@Override
+	public List<String> selectSysGbList() {
+		return devPlanDAO.selectSysGbList();
+	}
 
 	@Override
 	public List<String> selectTaskGbList() {
@@ -291,19 +296,21 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	}
 
 	@Override
-	public List<HashMap<String, String>> selectThisWeekStats(String taskGb) {
-		return devPlanDAO.selectThisWeekStats(taskGb);
+	public List<HashMap<String, String>> selectThisWeekStats(HashMap<String, String> type) {
+		return devPlanDAO.selectThisWeekStats(type);
 	}
 
 	@Override
-	public List<HashMap<String, String>> selectTotalStats(String taskGb) {
-		return devPlanDAO.selectTotalStats(taskGb);
+	public List<HashMap<String, String>> selectTotalStats(HashMap<String, String> type) {
+		return devPlanDAO.selectTotalStats(type);
 	}
 
 	@Override
-	public List<HashMap<String, String>> selectAccumulateStats(String taskGb) {
-		return devPlanDAO.selectAccumulateStats(taskGb);
+	public List<HashMap<String, String>> selectAccumulateStats(HashMap<String, String> type) {
+		return devPlanDAO.selectAccumulateStats(type);
 
 	}
+
+	
 	
 }

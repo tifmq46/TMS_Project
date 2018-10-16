@@ -215,6 +215,10 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserPlanWeekStats",test);
 	}
 
+	public List<String> selectSysGbList() {
+		return (List<String>) list("DevPlanDAO.selectSysGbList");
+	}
+	
 	public List<String> selectTaskGbList() {
 		return (List<String>) list("DevPlanDAO.selectTaskGbList");
 	}
@@ -239,15 +243,17 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (String) select("DevPlanDAO.selectDevSum",periodList);
 	}
 
-	public List<HashMap<String, String>> selectThisWeekStats(String taskGb) {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectThisWeekStats",taskGb);
+	public List<HashMap<String, String>> selectThisWeekStats(HashMap<String, String> type) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectThisWeekStats",type);
 	}
 
-	public List<HashMap<String, String>> selectTotalStats(String taskGb) {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTotalStats",taskGb);
+	public List<HashMap<String, String>> selectTotalStats(HashMap<String, String> type) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTotalStats",type);
 	}
 
-	public List<HashMap<String, String>> selectAccumulateStats(String taskGb) {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectAccumulateStats",taskGb);
+	public List<HashMap<String, String>> selectAccumulateStats(HashMap<String, String> type) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectAccumulateStats",type);
 	}
+
+	
 }
