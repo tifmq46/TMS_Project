@@ -18,6 +18,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -178,13 +179,7 @@
                 
                 <form name="frm" id="frm" action ="<c:url value='/tms/pg/PgManage.do'/>" method="post">
 				<input type="submit" id="invisible" class="invisible"/>
-				<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 				
-							<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
-			<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
-			<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
-			<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
-			<input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
 				
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
@@ -234,8 +229,23 @@
 									    	</c:forEach>								   
 									</select>				
 									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value=""/>
-					  			</li>                     	
-
+					  			</li>             
+					  			        	
+								<li>
+								    <label for="searchUseYn">사용여부</label>
+									<select name="searchUseYn" id="searchUseYn" style="width:10%;text-align-last:center;">
+									   <option value="">전체</option>
+					      					<c:forEach var="useYn" items="${useYnList}" varStatus="status">
+					      						<c:if test="${useYn == 'Y'}">
+									    			<option value="<c:out value="${useYn}"/>" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >사용</option>
+									    		</c:if> 
+									    		<c:if test="${useYn == 'N'}">
+									    			<option value="<c:out value="${useYn}"/>" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >미사용</option>
+									    		</c:if> 
+									    	</c:forEach>								   
+									</select>				
+									
+					  			</li>  
 
                        
 							</ul> 	
@@ -260,9 +270,41 @@
                  	</div>
                 	<!-- //검색 필드 박스 끝 -->
 
+				 <div id="page_info"><div id="page_info_align"></div></div>    
+                 <div class="default_tablestyle">
 
-                	<div id="page_info"><div id="page_info_align"></div></div>    
-                	<div class="default_tablestyle">
+                 	<table width="85%" cellspacing="0" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
+                 		<caption style="visibility:hidden">총 건수, 완료건수, 미완료, 진행률 표시하는 테이블</caption>
+                 
+                 		<tr>
+                 			<td align="center" width="100" style="font-size:13px; font-weight:bolder">총 : <c:out value="${TotCnt}"/></td>
+                  			<td align="center" width="100" style="font-size:13px; font-weight:bolder">사용 : <c:out value="${USE_Y}"/></td>
+                 			<td align="center" width="100" style="font-size:13px; font-weight:bolder">미사용 : <c:out value="${USE_N}"/></td>                 			
+                 			<td align="right" width="100" style="font-size:13px; font-weight:bolder">사용률 : </td>
+                 			
+                 		<c:choose>
+                 		<c:when test="${TotCnt ne '0' }">
+                 		<fmt:parseNumber var="actionProgression" integerOnly="true" value="${USE_Y / TotCnt * 100}"/>
+                 		</c:when>
+                 		<c:otherwise>
+                 		</c:otherwise>
+                 		</c:choose>
+                 		
+                 			<td style="font-size:15px; font-weight:bolder">
+                 		<c:choose>
+                 		<c:when test="${actionProgression ne '0' }">
+                 			<div class="progress" style="height: 1.5rem;"><div class="progress-bar" style="width:${actionProgression}%" > <strong><c:out value=" ${actionProgression}"></c:out>%</strong></div></div>
+                 		</c:when>
+                 		<c:otherwise>
+                 			<div class="progress" style="height: 1.5rem;"><div class="progress-bar" style="width:0%"> <strong><c:out value="0"></c:out>%</strong></div></div>
+                 		</c:otherwise>
+                 		</c:choose>
+                 			</td>
+                 		</tr>        
+             		</table>
+
+
+                	
         			<table width="120%" border="0" cellpadding="0" cellspacing="0" >
         				<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
         				<colgroup>
@@ -300,7 +342,14 @@
         				</c:forEach>
         			</table>  		
         			  
-        			</div>
+        		</div>
+        			
+        		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+				<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
+				<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
+				<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
+				<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
+				<input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
 	</form>
     <!-- 페이지 네비게이션 시작 -->
     <div id="paging_div">

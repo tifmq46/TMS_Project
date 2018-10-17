@@ -83,10 +83,9 @@ public class ProgramServiceImpl extends EgovAbstractServiceImpl implements Progr
 	}
 	
 	@Override
-	public int selectPgCurrentTotCnt() {
-		return ProgramDAO.selectPgCurrentTotCnt();
+	public int selectTotCntUseYn(ProgramDefaultVO searchVO) {
+		return ProgramDAO.selectTotCntUseYn(searchVO);
 	}
-	
 	
 	@Override
 	public List<?> selectPgCurrentList(ProgramVO searchVO) throws Exception {

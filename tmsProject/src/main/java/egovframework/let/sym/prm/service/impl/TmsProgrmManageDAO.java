@@ -80,6 +80,18 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
 		return (List<String>) list("TmsProgrmManageDAO.selectTaskGb3", searchVO);
 	}
 	
+	public List<String> selectTaskGb4(DevPlanDefaultVO dvo) {
+		return (List<String>) list("TmsProgrmManageDAO.selectTaskGb4", dvo);
+	}
+
+	public List<String> selectTaskGb5(ProgramVO searchVO) {
+		// TODO Auto-generated method stub
+		return (List<String>) list("TmsProgrmManageDAO.selectTaskGb5", searchVO);
+	}
+	public List<String> selectUseYn() {
+		// TODO Auto-generated method stub
+		return (List<String>) list("TmsProgrmManageDAO.selectUseYn");
+	}
 	public List<String> selectTaskGbSearch(String searchData) {
 		// TODO Auto-generated method stub
 		return (List<String>) list("TmsProgrmManageDAO.selectTaskGbSearch",searchData);
@@ -113,8 +125,5 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
 	      return (List<HashMap<String,String>>)list("TmsProgrmManageDAO.selectTestList1",a);
 	   }
 
-	public List<String> selectTaskGb4(DevPlanDefaultVO dvo) {
-		return (List<String>) list("TmsProgrmManageDAO.selectTaskGb4", dvo);
-	}
 	
 }

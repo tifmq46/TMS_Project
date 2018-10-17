@@ -40,6 +40,15 @@
     
     }
     
+    function selectChange() {
+
+    	if(document.programVO.sysGb.value == '') {
+    		$("select#taskGb option").remove();
+        	$("select#taskGb").append("<option value=''>선택하세요</option>");
+    	}
+    	
+    }
+    
 	$(function(){
 		   $('#SYS_GB').change(function() {
 		      $.ajax({
@@ -118,7 +127,8 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="60" style="width:95%" id="PG_ID"  title="화면ID" value="<c:out value='${programVO.pgId}'/>" >
+                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="60" style="width:50%" id="PG_ID"  title="화면ID" value="<c:out value='${programVO.pgId}'/>" >&nbsp;<span id="sometext"></span>
+                              <form:errors path="pgId" style="color: red"/>
                               <br/> 
                             </td>
                           </tr>
@@ -130,7 +140,8 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="pgNm" name="pgNm" type="text" size="60"  maxlength="60" style="width:95%" title="화면ID" value="<c:out value='${programVO.pgNm}'/>" >
+                              <input id="pgNm" name="pgNm" type="text" size="60"  maxlength="60" style="width:50%" title="화면ID" value="<c:out value='${programVO.pgNm}'/>" >&nbsp;<span id="sometext"></span>
+                              <form:errors path="pgNm" style="color: red"/>
                               <br/>
                             </td>
                           </tr>
@@ -142,7 +153,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="sysGb" name="sysGb" class="select" title="시스템구분">
+                            <select id="sysGb" name="sysGb" class="select" title="시스템구분" onchange="selectChange();">
 									   <option selected value="" >선택하세요</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
 									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${programVO.sysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
@@ -151,6 +162,7 @@
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>  --%>   
                             </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
+                            <form:errors path="sysGb" style="color: red"/>
                                <br/>
                             </td>
                           </tr> 
@@ -168,6 +180,7 @@
 									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${programVO.taskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									    	</c:forEach>	
                             </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
+                            <form:errors path="taskGb" style="color: red"/>
                                <br/>
                             </td>
                           </tr> 
@@ -188,6 +201,7 @@
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>  --%>   
                             </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
+                            <form:errors path="userDevId" style="color: red"/>
                               <br/>
                             </td>
                           </tr>

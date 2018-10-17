@@ -107,7 +107,7 @@
 								 from LETTCCMMNDETAILCODE
 								 where code_nm = #searchBySysGb#);
 			</isNotEmpty>
-	</select>  
+	</select> 
 	
 	<select id="TmsProgrmManageDAO.selectTaskGb3" parameterClass="ProgramVO" resultClass="java.lang.String">
 			
@@ -126,7 +126,14 @@
 			</isNotEmpty>
 	</select>
 	
-	
+	<select id="TmsProgrmManageDAO.selectTaskGb5" parameterClass="ProgramVO" resultClass="java.lang.String">
+			
+	    	SELECT CODE_NM AS "TASK_GB" 
+			FROM LETTCCMMNDETAILCODE
+			where parent = (select code
+								 from LETTCCMMNDETAILCODE
+								 where code_nm = #sysGb#);
+	</select> 
 	
 	<!-- 업무구분 조회 -->
 	<select id="TmsProgrmManageDAO.selectTaskGbSearch" resultClass="java.lang.String">

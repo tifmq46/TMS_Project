@@ -70,7 +70,13 @@ public interface TmsProgrmManageService {
 	
 	List<String> selectTaskGb3(ProgramVO searchVO) throws Exception;
 	
+	List<String> selectTaskGb4(DevPlanDefaultVO searchVO) throws Exception;
+	
+	List<String> selectTaskGb5(ProgramVO searchVO) throws Exception;
+	
 	List<String> selectTaskGbSearch(String searchData) throws Exception;
+	
+	List<String> selectUseYn() throws Exception;
 	/**
 	 * 
 	 * @param vo TmsProjectManageVO
@@ -82,5 +88,4 @@ public interface TmsProgrmManageService {
 	Object insertProject(TmsProjectManageVO tmsProjectManageVO) throws Exception;
 	List<?> selectTestList();
 	List<HashMap<String, String>> selectProgrmList1(int a);
-	List<String> selectTaskGb4(DevPlanDefaultVO searchVO);
 }

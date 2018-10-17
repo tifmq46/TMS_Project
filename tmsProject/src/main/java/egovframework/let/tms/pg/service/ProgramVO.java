@@ -11,13 +11,9 @@ public class ProgramVO extends ProgramDefaultVO{
 	private static final long serialVersionUID = 1L;
 
 	   /** 프로그램 id */
-	   @NotEmpty
-	   @NotNull
 	   private   String      pgId;
 	   
 	   /** 프로그램 명 */
-	   @NotEmpty
-	   @NotNull
 	   private   String      pgNm;
 	   
 	   /** 개발자 ID */ 

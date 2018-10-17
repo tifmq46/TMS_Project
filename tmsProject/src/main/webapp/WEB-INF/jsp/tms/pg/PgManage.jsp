@@ -77,7 +77,7 @@
 <script type="text/javascript">
 
 	$(function(){
-	   $('#bbb').change(function() {
+	   $('#searchBySysGb').change(function() {
 	      $.ajax({
 	         
 	         type:"POST",
@@ -86,7 +86,7 @@
 	         async: false,
 	         dataType : "json",
 	         success : function(selectTaskGbSearch){
-	        	 $("#searchBySysGb").val($("#bbb").val());
+	        	$("#searchBySysGb").val($("#searchBySysGb").val());
 	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
 	            $.each(selectTaskGbSearch, function(i){
 	               (JSON.stringify(selectTaskGbSearch[0])).replace(/"/g, "");
@@ -103,12 +103,6 @@
 	   })
 	})
 
-	
-	function setting() {
-		document.frm.searchBySysGb.value = document.frm.bbb.value;
-		document.frm.searchByTaskGb.value = document.frm.task.value;
-		
-	}
 	
 	
 	function searchExcelFileNm() {
@@ -166,9 +160,6 @@
 	}
 
 	function Pg_select(pageNo){
-		
-		document.frm.searchBySysGb.value = document.frm.bbb.value;
-		document.frm.searchByTaskGb.value = document.frm.task.value;
 		
 		//alert(pageNo);
 		document.frm.pageIndex.value = pageNo;
@@ -391,29 +382,41 @@
                         	<ul id="search_first_ul">	
 					  			<li>
 								    <label >시스템구분</label>
-									<select name="bbb" id="bbb" style="width:12%;text-align-last:center;">
+									<select name="searchBySysGb" id="searchBySysGb" style="width:12%;text-align-last:center;">
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
 									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
 									</select>
-									
-									<input type="hidden" name="searchBySysGb" id="searchBySysGb" value=""/>					
+												
 					  			</li>
 					  			
 					  			
 					  			<li>
 								    <label for="searchByTaskGb">업무구분</label>
-									<select name="task" id="task" style="width:15%;text-align-last:center;">
+									<select name="searchByTaskGb" id="searchByTaskGb" style="width:15%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
 									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									    	</c:forEach>								   
 									</select>				
-									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value=""/>
 					  			</li>                     	
 
-
+								<li>
+								    <label for="searchUseYn">사용여부</label>
+									<select name="searchUseYn" id="searchUseYn" style="width:10%;text-align-last:center;">
+									   <option value="">전체</option>
+					      					<c:forEach var="useYn" items="${useYnList}" varStatus="status">
+					      						<c:if test="${useYn == 'Y'}">
+									    			<option value="<c:out value="${useYn}"/>" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >사용</option>
+									    		</c:if> 
+									    		<c:if test="${useYn == 'N'}">
+									    			<option value="<c:out value="${useYn}"/>" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >미사용</option>
+									    		</c:if> 
+									    	</c:forEach>							   
+									</select>				
+									
+					  			</li>  
                        
 							</ul> 	
 							</div>
@@ -422,7 +425,7 @@
                             	<ul id="search_second_ul"  style=" width:100%">                            
                             		<li>
                             			<div class="buttons" style="float:right;">                              			
-                                    		<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+                                    		<a href="#Link" onclick="Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
                                     		<a href="#Link" onclick="Pg_Relation_Search(); return false;">삭제</a>
                                     		<a href="<c:url value='/tms/pg/PgInsert.do'/>" >등록</a>
                                     		<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀등록</a>

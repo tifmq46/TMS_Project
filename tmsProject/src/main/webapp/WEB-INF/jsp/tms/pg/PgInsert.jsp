@@ -118,7 +118,8 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="60" style="width:50%" title="화면ID">
+                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="60" style="width:50%" value="${PGID}" title="화면ID">&nbsp;<span id="sometext"></span>
+                              <form:errors path="pgId" style="color: red"/>
                               <br/> 
                             </td>
                           </tr>
@@ -130,7 +131,8 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="pgNm" name="pgNm" type="text" size="60"  maxlength="60" style="width:50%" title="화면ID">
+                              <input id="pgNm" name="pgNm" type="text" size="60" maxlength="60" style="width:50%" value="${PGNM}" title="화면ID">&nbsp;<span id="sometext"></span>
+                              <form:errors path="pgNm" style="color: red"/>
                               <br/>
                             </td>
                           </tr>
@@ -145,12 +147,13 @@
                             <select id="sysGb" name="sysGb" class="select" title="시스템구분">
 									   <option value="" >선택하세요</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
+									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${SYSGB == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>  --%>   
-                            </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
+                            </select>&nbsp;<span id="sometext"></span>
+                            <form:errors path="sysGb" style="color: red"/>
                                <br/>
                             </td>
                           </tr> 
@@ -162,12 +165,13 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="taskGb" name="taskGb" class="select" id="TASK_GB" title="업무구분">
-									   <option value="">선택하세요</option>
-                                <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
-                                    <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
-                                </c:forEach>   --%>  
-                            </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
+                            <select id="taskGb" name="taskGb" class="select" title="업무구분">
+									   <option value="" >선택하세요</option>
+                                			<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
+									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${TASKGB == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
+									    	</c:forEach>
+                            </select>&nbsp;<span id="sometext"></span>
+                            <form:errors path="taskGb" style="color: red"/>
                                <br/>
                             </td>
                           </tr> 
@@ -182,12 +186,13 @@
                             <select id="userDevId" name="userDevId" class="select" title="개발자">
 									   <option value="" >선택하세요</option>
 									      <c:forEach var="DEV_ID" items="${dev_List}" varStatus="status">
-									    	<option value="<c:out value="${DEV_ID.USER_NM}"/>" ><c:out value="${DEV_ID.USER_NM}" /></option>
+									    	<option value="<c:out value="${DEV_ID.USER_NM}"/>" <c:if test="${DEV_ID.USER_NM == USERDEVID}">selected="selected"</c:if> ><c:out value="${DEV_ID.USER_NM}" /></option>
 									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>  --%>   
-                            </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
+                            </select>&nbsp;<span id="sometext"></span>
+                            <form:errors path="userDevId" style="color: red"/>
                               <br/>
                             </td>
                           </tr>
