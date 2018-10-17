@@ -1,6 +1,13 @@
 package egovframework.let.tms.dev.web;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,14 +17,24 @@ import java.util.Map;
 import java.util.Locale;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.sound.midi.Synthesizer;
 
 import org.apache.commons.collections.set.SynchronizedSortedSet;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +60,7 @@ import egovframework.let.tms.dev.service.DevPlanService;
 import egovframework.let.tms.dev.service.DevPlanVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
@@ -656,6 +674,10 @@ public class DevPlanController {
 		}
 		model.addAttribute("sumDevWeek",sumDevWeek);
 		
+		List<EgovMap> totalTable = devPlanService.selectStatsTable();
+		model.addAttribute("totalTable", totalTable);
+		
+		
 		return "/tms/dev/devStatsTable";
 	}
 	
@@ -896,6 +918,245 @@ public class DevPlanController {
 		// 전체 진척률 끝 ---------------------------------------
 		
 		return "tms/dev/devStats";
+	}
+	
+	/** 통계 엑셀 다운로드 기능 
+	 * @throws Exception */
+	@RequestMapping(value = "/tms/dev/StatsToExcel.do")
+	public String StatsToExcel(@RequestParam("statsGb") String statsGb, ModelMap model, HttpServletResponse response) throws Exception {
+		
+		List<String> taskGbList = defectService.selectTaskGbByDefect();
+		List<HashMap<String,String>> taskGbByStats = new ArrayList<HashMap<String,String>>();
+		for(int i=0; i<taskGbList.size(); i++) {
+			taskGbByStats.addAll(defectService.selectTaskByStats(taskGbList.get(i).toString()));
+		}
+		
+		List<EgovMap> totalTable = devPlanService.selectStatsTable();
+		
+		if(statsGb.equals("taskTotal")){
+			xlsxWiter(totalTable, statsGb, response);
+		}
+		
+		model.addAttribute("taskTotalStats",totalTable);
+		
+		return "tms/defect/defectStatsList";
+	}
+	
+	public void xlsxWiter(List<EgovMap> list, String statsGb, HttpServletResponse response) throws Exception {
+		// 워크북 생성
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		// 워크시트 생성
+		XSSFSheet sheet = workbook.createSheet();
+		// 행 생성
+		XSSFRow row = sheet.createRow(0);
+		// 쎌 생성
+		XSSFCell cell;
+			
+		Font defaultFont = workbook.createFont();        
+		defaultFont.setFontHeightInPoints((short) 11); 
+		defaultFont.setFontName("맑은 고딕");
+		
+		//제목 스타일 
+		CellStyle HeadStyle = workbook.createCellStyle(); 
+		HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
+		HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index); 
+		HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
+		HeadStyle.setFont(defaultFont);
+
+		//본문 스타일 
+		CellStyle BodyStyle = workbook.createCellStyle(); 
+		BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		BodyStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		BodyStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+		BodyStyle.setFont(defaultFont);   
+		
+		
+		// 헤더 정보 구성
+		cell = row.createCell(0);
+		cell.setCellValue("시스템구분");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(1);
+		cell.setCellValue("업무구분");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(2);
+		cell.setCellValue("총 본수");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(3);
+		cell.setCellValue("금주 계획");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(4);
+		cell.setCellValue("금주 실적");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(5);
+		cell.setCellValue("금주 진척률");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(6);
+		cell.setCellValue("누적 계획");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(7);
+		cell.setCellValue("누적 실적");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(8);
+		cell.setCellValue("누적 진척률");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(9);
+		cell.setCellValue("전체 실적");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		cell = row.createCell(10);
+		cell.setCellValue("전체 진척률");
+		cell.setCellStyle(HeadStyle); // 제목스타일 
+		
+		// 리스트의 size 만큼 row를 생성
+		for(int i=0; i < list.size(); i++) {
+			// 행 생성
+	
+			row = sheet.createRow(i+1);
+			
+			cell = row.createCell(0);
+			cell.setCellValue(String.valueOf(list.get(i).get("sysNm")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(1);
+			cell.setCellValue(String.valueOf(list.get(i).get("taskNm")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(2);
+			cell.setCellValue(String.valueOf(list.get(i).get("totCnt")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(3);
+			cell.setCellValue(String.valueOf(list.get(i).get("tp")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(4);
+			cell.setCellValue(String.valueOf(list.get(i).get("td")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(5);
+			cell.setCellValue(String.valueOf(list.get(i).get("tr")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(6);
+			cell.setCellValue(String.valueOf(list.get(i).get("ap")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(7);
+			cell.setCellValue(String.valueOf(list.get(i).get("ad")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(8);
+			cell.setCellValue(String.valueOf(list.get(i).get("ar")));
+			cell.setCellStyle(BodyStyle); // 본문스타일
+			
+			cell = row.createCell(9);
+			cell.setCellValue(String.valueOf(list.get(i).get("totD")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+			
+			cell = row.createCell(10);
+			cell.setCellValue(String.valueOf(list.get(i).get("tot")));
+			cell.setCellStyle(BodyStyle); // 본문스타일 
+		}
+		
+		/** 3. 컬럼 Width */ 
+		for (int i = 0; i <  list.size(); i++){ 
+			sheet.autoSizeColumn(i); 
+			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
+		}
+		
+		// 입력된 내용 파일로 쓰기
+		File folder = new File("C:\\TMS\\TMS_통계자료");
+		
+		File file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
+		
+		
+		//디렉토리 생성 메서드
+		if(!folder.exists()){
+			folder.mkdirs();
+		}
+		
+		FileOutputStream fos = null;
+		
+		try {
+			fos = new FileOutputStream(file);
+			workbook.write(fos);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(workbook!=null) //workbook.close();
+				if(fos!=null) fos.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		/** 경로 다운로드 */
+		 String path = "C:/TMS/TMS_통계자료/";  // Link의 자바파일에서 excel 파일이 생성된 경로
+        String realFileNm = "프로그램현황.xlsx";
+        
+        File uFile = new File(path,realFileNm);
+        int fSize = (int) uFile.length();
+        if (fSize > 0) {  //파일 사이즈가 0보다 클 경우 다운로드
+         String mimetype = "application/x-msdownload";  //minetype은 파일확장자에 맞게 설정
+         response.setHeader("Content-Disposition", "attachment; filename=\"devStats.xlsx\"");
+         response.setContentType(mimetype);
+         response.setContentLength(fSize);
+         BufferedInputStream in = null;
+         BufferedOutputStream out = null;
+         
+         try {
+         
+          in = new BufferedInputStream(new FileInputStream(uFile));
+          out = new BufferedOutputStream(response.getOutputStream());
+          FileCopyUtils.copy(in, out);
+          out.flush();
+         } catch (Exception ex) {
+         } finally {
+            String path1 = "C:/TMS/TMS_통계자료/프로그램현황.xlsx";
+            File deleteFolder = new File(path1);
+            deleteFolder.delete();
+            String path2 = "C:/TMS/TMS_통계자료";
+            File deleteFolder2 = new File(path2);
+            deleteFolder2.delete();
+            String path3 = "C:/TMS";
+            File deleteFolder3 = new File(path3);
+            deleteFolder3.delete();
+          if (in != null) in.close();
+          if (out != null) out.close();
+         }
+        } else {
+         response.setContentType("application/x-msdownload");
+       
+         PrintWriter printwriter = response.getWriter();
+         printwriter.println("<html>");
+         printwriter.println("<br><br><br><h2>Could not get file name:<br>" + realFileNm + "</h2>");
+         printwriter.println("<br><br><br><center><h3><a href='javascript: history.go(-1)'>Back</a></h3></center>");
+         printwriter.println("<br><br><br>&copy; webAccess");
+         printwriter.println("</html>");
+         printwriter.flush();
+         printwriter.close();
+        }
 	}
 	
 	

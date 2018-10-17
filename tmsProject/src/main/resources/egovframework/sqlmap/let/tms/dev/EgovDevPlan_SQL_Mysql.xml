@@ -654,23 +654,7 @@
 				SELECT INPUT_END_DT FROM PJT_TB WHERE PJT_ID = '1';
          ]]>
    	</select>
-   	
-<!-- 
-	<resultMap id="tmplatDetail" class="egovframework.let.cop.com.service.TemplateInfVO">
-		<result property="tmplatId" column="TMPLAT_ID" columnIndex="1"/>
-		<result property="tmplatNm" column="TMPLAT_NM" columnIndex="2"/>
-		<result property="tmplatSeCode" column="TMPLAT_SE_CODE" columnIndex="3"/>
-		<result property="tmplatSeCodeNm" column="TMPLAT_SE_CODE_NM" columnIndex="4"/>
-		<result property="tmplatCours" column="TMPLAT_COURS" columnIndex="5"/>
-		<result property="useAt" column="USE_AT" columnIndex="6"/>
-		<result property="frstRegisterId" column="FRST_REGISTER_ID" columnIndex="7"/>
-		<result property="frstRegisterNm" column="FRST_REGISTER_NM" columnIndex="8"/>
-		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM" columnIndex="9"/>
-		<result property="lastUpdusrId" column="LAST_UPDUSR_ID" columnIndex="10"/>
-		<result property="lastUpdusrNm" column="LAST_UPDUSR_NM" columnIndex="11"/>
-		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM" columnIndex="12"/>
-	</resultMap> -->
-	
+
 	<select id="DevPlanDAO.selectDevPlanByMainStats" resultClass="egovMap">
 	    <![CDATA[
 	    	SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(B.ACHIEVECNT,0) AS achieveCnt, IFNULL(B.TASKALL,0) AS taskAll
@@ -1018,4 +1002,62 @@
 				</isEqual>			
    	</select>
    	
+	<select id="DevPlanDAO.selectStatsTable" resultClass="egovMap" >
+			<![CDATA[
+				SELECT
+					IFNULL(W.SYS_NM,"합계")AS SYS_NM
+					,IFNULL(W.TASK_NM,"소계")AS TASK_NM
+					,IFNULL(SUM(TOT_CNT),NULL) AS TOT_CNT
+					,IFNULL(SUM(TP),NULL) AS TP
+					,IFNULL(SUM(TD),NULL) AS TD
+					,IFNULL(SUM(TR),NULL) AS TR
+					,IFNULL(SUM(AP),NULL) AS AP
+					,IFNULL(SUM(AD),NULL) AS AD
+					,IFNULL(SUM(AR),NULL) AS AR
+					,IFNULL(SUM(TOT_D),NULL) AS TOT_D
+					,IFNULL(SUM(TOT),NULL) AS TOT
+				FROM
+					(SELECT * 
+							,ROUND((IFNULL((TOT_D/TOT_CNT),0)*100),1) AS TOT
+						FROM 
+							(SELECT 
+								SYS_NM ,TASK_NM, F.SYS_GB, F.TASK_GB
+								,IFNULL(TOT_CNT,0) AS TOT_CNT
+								,IFNULL(TP,0) AS TP, IFNULL(TD,0) AS TD, IFNULL(TR,0) AS TR
+								,IFNULL(AP,0) AS AP, IFNULL(AD,0) AS AD, IFNULL(AR,0) AS AR
+								,IFNULL(AD,0) AS TOT_D
+								FROM
+									(SELECT C.SYS_GB, SYS_NM, C.TASK_GB, TASK_NM, IFNULL(TOT_CNT,0) AS TOT_CNT
+											FROM
+										(SELECT * 
+											FROM 
+												(SELECT CODE AS SYS_GB, CODE_NM AS SYS_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'SYSGB')AS A
+											INNER JOIN
+												(SELECT CODE AS TASK_GB, CODE_NM AS TASK_NM, PARENT FROM LETTCCMMNDETAILCODE) AS B 
+											ON A.SYS_GB = B.PARENT
+										)AS C
+										LEFT OUTER JOIN
+										(SELECT TASK_GB,COUNT(*) AS TOT_CNT, PG_ID FROM PG_TB WHERE USE_YN='Y' GROUP BY TASK_GB)AS PG_TB
+										ON C.TASK_GB = PG_TB.TASK_GB
+									) AS F	
+									
+									LEFT JOIN
+									(SELECT *, ROUND((IFNULL((TD/TP),0)*100),1) AS TR, ROUND((IFNULL((AD/AP),0)*100),1) AS AR
+										 	FROM
+												(SELECT SYS_GB, TASK_GB
+													,COUNT(IF( WEEKOFYEAR(D.PLAN_END_DT)=WEEKOFYEAR(NOW()),1,NULL)) AS TP
+													,COUNT(IF( WEEKOFYEAR(D.DEV_END_DT)=WEEKOFYEAR(NOW()),1,NULL)) AS TD
+													,COUNT(IF( WEEKOFYEAR(D.PLAN_END_DT) <= WEEKOFYEAR(NOW()),1,NULL)) AS AP
+													,COUNT(IF( WEEKOFYEAR(D.DEV_END_DT) <= WEEKOFYEAR(NOW()),1,NULL)) AS AD
+													FROM DEV_PLAN_TB D, PG_TB P
+													WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y'
+													GROUP BY SYS_GB, TASK_GB
+													)AS Z) AS G
+									ON G.TASK_GB = F.TASK_GB
+							)AS X
+						)AS W
+						GROUP BY W.SYS_NM, W.TASK_NM WITH ROLLUP
+         ]]>
+   	</select>
+	
 </sqlMap>

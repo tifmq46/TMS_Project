@@ -54,11 +54,14 @@ function fn_result_change(asd) {
 
 function fn_result_regist(t){
 	
-	var f = document.listForm;
-
 	var idVal = document.getElementById(t).value;
 	var idVal1 = document.getElementById(t+1).value;
-	location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
+	if(idVal1 == null || idVal1 == ""){
+		alert("계획종료일자를 입력하십시오."); 
+		return;
+	}else{
+		location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
+	}	
 			
 }
 
