@@ -135,7 +135,7 @@ public class DefectController {
 		model.addAttribute("defectIdSq", defectIdSq);
 		
 		String testscenarioId = request.getParameter("testscenarioId");
-		model.addAttribute("testscenarioId", Integer.parseInt(testscenarioId));
+		model.addAttribute("testscenarioId", testscenarioId);
 		
 		List<?> defectGbList = defectService.selectDefectGb();
 		model.addAttribute("defectGb", defectGbList);

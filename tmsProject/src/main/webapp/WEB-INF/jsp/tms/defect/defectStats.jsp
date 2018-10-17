@@ -268,6 +268,9 @@ window.onload = function() {
 				}]
 			},
 			options : {
+				legend: {
+					position:'bottom'
+				},
 				scales : {
 					xAxes : [ {
 						stacked : true,
@@ -410,6 +413,9 @@ window.onload = function() {
 				}, ]
 			},
 			options : {
+				legend: {
+					position : 'bottom'
+				},
 				scales : {
 					xAxes : [ {
 						stacked : true,
@@ -524,6 +530,9 @@ window.onload = function() {
 				},]
 			},
 			options : {
+				legend: {
+					position : 'bottom'
+				},
 				scales : {
 					xAxes : [ {
 						stacked : true,
