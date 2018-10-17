@@ -26,10 +26,15 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <title>결함관리상세</title>
+<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<validator:javascript formName="defectVOUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
 
 
 function fn_egov_update_updateDefect(){
+	if (!validateDefectVOUpdate(document.defectVO)){
+        return;
+    } else {
 	document.getElementById("defectGb").disabled = "";
 	document.getElementById("actionSt").disabled = "";
 	if(document.getElementById("fileSize").value == 0) {
@@ -55,6 +60,7 @@ function fn_egov_update_updateDefect(){
 		document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
 		document.defectVO.submit();
 	}
+    }
 	
 }
 
@@ -196,7 +202,7 @@ window.onload = function() {
                 </div>
                 
 				<form:form commandName="defectVO" name="defectVO" enctype="multipart/form-data" method="post" >
-			
+					<% LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO"); %>
 					<c:forEach var="defectOne" items="${defectOne}" varStatus="status">
 					<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 					<input type="hidden" name="param_trgetType" value="" />
@@ -210,6 +216,7 @@ window.onload = function() {
 					        <td width="12.5%" nowrap >
 					          <input name="defectIdSq" size="5" readonly="readonly" value="<c:out value="${defectOne.defectIdSq}"/>"  maxlength="40" title="결함번호"
 					          style="text-align:center; border:none; width:90%;" /> 
+					          <form:errors path="defectIdSq" />
 					        </td>
 					         <th width="12.5%" height="23" nowrap >업무구분
 					        </th>
@@ -222,6 +229,7 @@ window.onload = function() {
 					        <td width="12.5%" nowrap >
 					          <input name="pgId" type="text" size="10" readonly="readonly" value="<c:out value="${defectOne.pgId}"/>"  maxlength="40" title="화면ID" 
 					          style="text-align:center; border:none; width:90%;" /> 
+					          <form:errors path="pgId" />
 					        </td>
 					        <th width="12.5%" height="23" nowrap >화면명
 					        </th>
@@ -242,6 +250,7 @@ window.onload = function() {
 									    	><c:out value="${defectGb.codeNm}" /></option>
 									    </c:forEach>
 							</select>
+							  <form:errors path="defectGb" />
 					        </td>
 					         <th width="12.5%" height="23" class="" nowrap >테스터
 					        </th>
@@ -253,6 +262,7 @@ window.onload = function() {
 									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
 									    </c:forEach>
 					        	</datalist>
+					        	<form:errors path="userNm" />
 					        </td>
 					         <th width="12.5%" height="23" nowrap >개발자
 					        </th>
@@ -270,6 +280,7 @@ window.onload = function() {
 									    	><c:out value="${actionSt.codeNm}" /></option>
 									    </c:forEach>
 							</select>
+							<form:errors path="actionSt" />
 					        </td>
 					       </tr>
 					       
@@ -279,6 +290,7 @@ window.onload = function() {
 					        <td width="37.5%" nowrap colspan="3">
 					          <input id="defectTitle" name="defectTitle" size="5"  value="<c:out value="${defectOne.defectTitle}"/>" autocomplete="off" maxlength="40" title="결함명"
 					          style="text-align:center; width:90%;" /> 
+					          <form:errors path="defectTitle" />
 					        </td>
 					        <th width="12.5%" height="23" nowrap >등록일자
 					        </th>
@@ -312,6 +324,7 @@ window.onload = function() {
 					       <tr>   
 					        <td width="50%" nowrap colspan="4">
 					         <textarea name="defectContent" id="defectContent" style="height:200px; width:98%;"><c:out value="${defectOne.defectContent}"/></textarea>
+						        <form:errors path="defectContent" />
 					        </td>
 					        <td width="50%" nowrap colspan="4">
 					        <textarea name="actionContent" id="actionContent" style="height:200px; width:98%;"><c:out value="${defectOne.actionContent}"/></textarea>
@@ -354,12 +367,7 @@ window.onload = function() {
                     </div>
 
 						<%
-							LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO");
-									if (loginVO == null) {
-						%>
-
-						<%
-							} else {
+							if (loginVO != null) {
 						%>
 						<c:set var="loginName" value="<%=loginVO.getName()%>" />
 						<c:set var="uniqId" value="<%=loginVO.getUniqId()%>" />

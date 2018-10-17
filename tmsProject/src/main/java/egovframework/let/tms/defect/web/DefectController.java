@@ -187,6 +187,7 @@ public class DefectController {
 	/** 결함 상세 조회*/
 	@RequestMapping("/tms/defect/selectDefectInfo.do")
 	public String selectDefectInfo(@ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) throws Exception {
+		System.out.println("###"+defectVO.toString());
 		List<?> list = defectService.selectOneDefect(defectVO);
 		model.addAttribute("defectOne", list);
 		
@@ -595,17 +596,7 @@ public class DefectController {
 		// 입력된 내용 파일로 쓰기
 		File folder = new File("C:\\TMS\\TMS_통계자료");
 		
-		File file;
-		
-		if(statsGb.equals("task")) {
-			file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
-		} else if(statsGb.equals("pg")) {
-			file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
-		} else if(statsGb.equals("userTest")) {
-			file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
-		} else {
-			file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
-		}
+		File file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
 		
 		//디렉토리 생성 메서드
 		if(!folder.exists()){
@@ -640,7 +631,7 @@ public class DefectController {
          int fSize = (int) uFile.length();
          if (fSize > 0) {  //파일 사이즈가 0보다 클 경우 다운로드
           String mimetype = "application/x-msdownload";  //minetype은 파일확장자에 맞게 설정
-          response.setHeader("Content-Disposition", "attachment; filename=\"TMS.xlsx\"");
+  		  response.setHeader("Content-Disposition", "attachment; filename=\"TMS.xlsx\"");
           response.setContentType(mimetype);
           response.setContentLength(fSize);
           BufferedInputStream in = null;

@@ -231,7 +231,7 @@
                     </div>
 					<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
 					<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
-					<input type="text" id="testscenarioId" name="testscenarioId" value="<c:out value="${testscenarioId}"/>"/>
+					<input type="hidden" id="testscenarioId" name="testscenarioId" value="<c:out value="${testscenarioId}"/>"/>
 					
                     <!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
