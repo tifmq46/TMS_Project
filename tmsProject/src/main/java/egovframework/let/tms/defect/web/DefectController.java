@@ -610,7 +610,7 @@ public class DefectController {
 		/** 3. 컬럼 Width */ 
 		for (int i = 0; i <  list.size(); i++){ 
 			sheet.autoSizeColumn(i); 
-			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
+			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 2000); 
 		}
 		
 		// 입력된 내용 파일로 쓰기

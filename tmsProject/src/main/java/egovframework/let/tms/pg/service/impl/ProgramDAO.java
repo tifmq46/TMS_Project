@@ -73,14 +73,14 @@ public class ProgramDAO extends EgovAbstractDAO{
 	 * @return 글 총 갯수
 	 * @exception
 	 */
-	public int selectPgListTotCnt(ProgramDefaultVO searchVO) {
+	public int selectPgListTotCnt(ProgramDefaultVO searchVO) { 
 		return (Integer) select("ProgramDAO.selectPgListTotCnt", searchVO);
 	}
 	
-	public int selectPgCurrentTotCnt() {
-		return (Integer) select("ProgramDAO.selectPgCurrentTotCnt");
+	public int selectTotCntUseYn(ProgramDefaultVO searchVO) { 
+		return (Integer) select("ProgramDAO.selectTotCntUseYn", searchVO);
 	}
-
+	
 	public List<?> selectPgCurrentList(ProgramVO searchVO) throws Exception {
 		return list("ProgramDAO.selectPgCurrentList", searchVO);
 	}

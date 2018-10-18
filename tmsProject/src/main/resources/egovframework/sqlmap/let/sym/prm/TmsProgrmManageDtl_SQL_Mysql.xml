@@ -53,7 +53,9 @@
 				, USE_YN              AS "USE_YN"
 				, PJT_ID              AS "PJT_ID"
 			FROM LETTCCMMNDETAILCODE, PG_TB
-			WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%') AND SYS_GB = CODE AND USE_YN = 'Y'
+			WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%') 
+			AND PG_ID like CONCAT('%', #searchKeyword_2#, '%')
+			AND SYS_GB = CODE AND USE_YN = 'Y'
 			LIMIT  #recordCountPerPage# OFFSET #firstIndex#
 		 ]]>
 	</select> 
@@ -63,7 +65,9 @@
 		<![CDATA[
 		SELECT COUNT(*) AS totcnt
 		  FROM LETTCCMMNDETAILCODE A, PG_TB B
-		 WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%') AND SYS_GB = CODE AND USE_YN = 'Y'
+		 WHERE binary(PG_NM) like  CONCAT('%', #searchKeyword#, '%') 
+		 AND PG_ID like CONCAT('%', #searchKeyword_2#, '%')
+		 AND SYS_GB = CODE AND USE_YN = 'Y'
 		]]>
 	</select>
 	<!-- 프로그램 정보 조회 -->
@@ -107,7 +111,7 @@
 								 from LETTCCMMNDETAILCODE
 								 where code_nm = #searchBySysGb#);
 			</isNotEmpty>
-	</select>  
+	</select> 
 	
 	<select id="TmsProgrmManageDAO.selectTaskGb3" parameterClass="ProgramVO" resultClass="java.lang.String">
 			
@@ -126,7 +130,14 @@
 			</isNotEmpty>
 	</select>
 	
-	
+	<select id="TmsProgrmManageDAO.selectTaskGb5" parameterClass="ProgramVO" resultClass="java.lang.String">
+			
+	    	SELECT CODE_NM AS "TASK_GB" 
+			FROM LETTCCMMNDETAILCODE
+			where parent = (select code
+								 from LETTCCMMNDETAILCODE
+								 where code_nm = #sysGb#);
+	</select> 
 	
 	<!-- 업무구분 조회 -->
 	<select id="TmsProgrmManageDAO.selectTaskGbSearch" resultClass="java.lang.String">

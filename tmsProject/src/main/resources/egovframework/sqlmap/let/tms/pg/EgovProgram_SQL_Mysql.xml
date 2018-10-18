@@ -71,6 +71,10 @@
 			<isNotEmpty property="searchByUserDevId">
 			    AND a.USER_DEV_ID IN (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT('%' , #searchByUserDevId#, '%'))
 			</isNotEmpty> 
+			
+			<isNotEmpty property="searchUseYn">
+			    AND a.USE_YN IN (SELECT USE_YN FROM LETTCCMMNDETAILCODE WHERE USE_YN = #searchUseYn#)
+			</isNotEmpty> 
 			LIMIT 
 				#recordCountPerPage# OFFSET #firstIndex#
 	</select>	
@@ -104,8 +108,42 @@
          <isNotEmpty property="searchByUserDevId">
              AND a.USER_DEV_ID IN (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT('%' , #searchByUserDevId#, '%'))
          </isNotEmpty> 
+         
+         <isNotEmpty property="searchUseYn">
+			    AND a.USE_YN IN (SELECT USE_YN FROM LETTCCMMNDETAILCODE WHERE USE_YN = #searchUseYn#)
+		 </isNotEmpty> 
    </select>
 	
+   <select id="ProgramDAO.selectTotCntUseYn" parameterClass="ProgramDefaultVO" resultClass="java.lang.Integer" >
+         <![CDATA[
+            SELECT COUNT(*) totcnt 
+            FROM PG_TB a
+            WHERE 1=1
+            AND USE_YN = 'Y'
+         ]]>
+         <!-- 화면ID로 검색 -->
+         <isNotEmpty property="searchByPgId">
+             AND a.PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
+         </isNotEmpty>  
+         
+         <!-- 시스템구분으로 검색 -->
+         <isNotEmpty property="searchBySysGb">
+             AND a.SYS_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #searchBySysGb#)
+         </isNotEmpty>
+         
+         <isNotEmpty property="searchByTaskGb">
+             AND a.TASK_GB IN (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #searchByTaskGb#)
+         </isNotEmpty>
+         
+         <!-- 개발자명으로 검색 -->
+         <isNotEmpty property="searchByUserDevId">
+             AND a.USER_DEV_ID IN (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT('%' , #searchByUserDevId#, '%'))
+         </isNotEmpty> 
+         
+         <isNotEmpty property="searchUseYn">
+			    AND a.USE_YN IN (SELECT USE_YN FROM LETTCCMMNDETAILCODE WHERE USE_YN = #searchUseYn#)
+		 </isNotEmpty> 
+   </select>
 	
 	<!-- 프로그램현황 조회(엑셀 다운용) -->
 	<select id="ProgramDAO.selectPgCurrentExcelList" parameterClass="ProgramDefaultVO" resultMap="PgList2" >
@@ -141,23 +179,11 @@
 			<isNotEmpty property="searchByUserDevId">
 			    AND a.USER_DEV_ID IN (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT('%' , #searchByUserDevId#, '%'))
 			</isNotEmpty> 
+			<isNotEmpty property="searchUseYn">
+			    AND a.USE_YN IN (SELECT USE_YN FROM LETTCCMMNDETAILCODE WHERE USE_YN = #searchUseYn#)
+			</isNotEmpty> 
 	</select>	
-	
-	<!-- 프로그램현황 수 확인 -->
-	<select id="ProgramDAO.selectPgCurrentTotCnt" resultClass="java.lang.Integer" >
-			<![CDATA[
-			SELECT
-				COUNT(*) totcnt 
-			FROM 
-				PG_TB a, DEV_PLAN_TB b
-			WHERE
-				a.PG_ID = b.PG_ID 
-			]]>
-			
-		
-	</select>
-	
-	
+
 	
 	<!-- 상세 조회 -->
 	<select id="ProgramDAO.selectProgramInf" parameterClass="ProgramVO" resultMap="PgList">
@@ -196,8 +222,10 @@
 		         (  #pgId#
 		         ,  (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT(#userDevId#))
 		         ,  #pgNm#
-		         ,  (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysGb# AND CODE != 'T9')
-		         ,  (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #taskGb# AND CODE != 'T10')
+		         ,  (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysGb#)
+		         ,  (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #taskGb# AND PARENT = (SELECT CODE 
+		         																			     FROM LETTCCMMNDETAILCODE 
+		         																			     WHERE CODE_NM = #sysGb#))
 		         ,  #useYn#
 		         ,  #pjtId#
 		         ) 
@@ -208,10 +236,13 @@
 	<update id="ProgramDAO.updatePg" parameterClass="ProgramVO">
  		<![CDATA[
 			UPDATE PG_TB SET 
+				PG_ID = #pgId#,
 				USER_DEV_ID = (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT(#userDevId#)), 
 				PG_NM = #pgNm#,
-				SYS_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysGb# AND CODE != 'T9'),
-				TASK_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #taskGb# AND CODE != 'T10'),
+				SYS_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysGb#),
+				TASK_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #taskGb# AND PARENT = (SELECT CODE 
+		         																			           FROM LETTCCMMNDETAILCODE 
+		         																			           WHERE CODE_NM = #sysGb#)),
 				USE_YN = #useYn#				
 			WHERE PG_ID = #pgId#
  		]]>
@@ -246,6 +277,14 @@
 			where PG_ID = #pgId#
          ]]>
    </select>	
-    
    
+   <select id="TmsProgrmManageDAO.selectUseYn" resultClass="java.lang.String">			
+	    	SELECT CODE
+			FROM LETTCCMMNDETAILCODE
+			WHERE CODE_ID = 'RESULTYN'
+			ORDER BY CODE DESC
+   </select> 
+   
+   
+
 </sqlMap>

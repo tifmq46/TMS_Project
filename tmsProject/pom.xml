@@ -255,8 +255,7 @@
             
         </dependency>
         
-
-        
+        <!-- validation -->   
         <dependency>
         	<groupId>javax.validation</groupId> 
         	<artifactId>validation-api</artifactId> 

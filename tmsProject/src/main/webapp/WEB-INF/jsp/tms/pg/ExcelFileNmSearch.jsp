@@ -46,7 +46,7 @@ function file_upload() {
 	   }
 	   
 	   if(!(fileExt.toUpperCase() == "XLSX")) {
-	      alert("xlsx 파일만 업로드 하실 수 있습니다!");
+	      alert("xlsx 파일만 업로드 가능합니다!");
 	       return;
 	   }
 	     
@@ -98,7 +98,7 @@ function window_close() {
                 	<div class="default_tablestyle">  
                 		<table width="100%" border="0" cellpadding="0" cellspacing="0" >
                 			<tr>
-            					<td align="center" class="listtd"><font style="color:#CC3C39; align:center;" size="3px"><strong>&#60;등록을 실패했습니다!&#62;</strong></font></td>
+            					<td align="center" class="listtd"><font style="color:#CC3C39; align:center;" size="3px"><strong>&#60;등록 실패&#62;</strong></font></td>
             				</tr>
                 		</table>     
                 	</div>  
@@ -121,7 +121,7 @@ function window_close() {
                		<div>  
                 		<table width="100%" border="0" cellpadding="0" cellspacing="0" >
                 			<tr>
-            					<td align="center" class="listtd"><font style="color:#0f438a; align:center;" size="3px"><strong>&#60;성공적으로 등록되었습니다!&#62;</strong></font></td>
+            					<td align="center" class="listtd"><font style="color:#0f438a; align:center;" size="3px"><strong>&#60;등록 성공&#62;</strong></font></td>
             				</tr>
                 		</table>  
                                       

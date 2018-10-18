@@ -91,8 +91,12 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb,user_real
             <fieldset><legend>조건정보 영역</legend>    
             <div class="sf_start">
                 <ul id="search_first_ul">
+                	<li>
+                        <label for="searchKeyword_2">화면ID : </label>
+                        <input id="searchKeyword_2" name="searchKeyword_2" type="text" size="30" value="${searchVO.searchKeyword_2}" onkeydown="return Enter_Remove();" maxlength="30" title="검색조건">
+                    </li>    
                     <li>
-                        <label for="searchKeyword">프로그램명 : </label>
+                        <label for="searchKeyword">화면명 : </label>
                         <input id="searchKeyword" name="searchKeyword" type="text" size="30" value="${searchVO.searchKeyword}" onkeydown="return Enter_Remove();" maxlength="60" title="검색조건">
                     </li>       
                 </ul>

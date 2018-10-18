@@ -18,6 +18,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -112,13 +113,15 @@
 	}
 	
 	function Pg_select(pageNo){
+		document.frm.cnt.value = "a";
 		document.frm.searchBySysGb.value = document.frm.bbb.value;
 		document.frm.searchByTaskGb.value = document.frm.task.value;
 		//alert(pageNo);
 		document.frm.pageIndex.value = pageNo;
 		//document.frm.searchByTaskGb.value = document.frm.task.value;
 		//document.frm.fon.value = pageNo;
-    	document.frm.action = "<c:url value='/tms/pg/PgCurrent.do'/>";
+		var url = "<c:url value='/tms/pg/PgCurrent.do" + "?cnt=" + document.frm.cnt.value + "'/>";
+    	document.frm.action = url;
     	document.frm.submit();
 	}
 	
@@ -178,13 +181,7 @@
                 
                 <form name="frm" id="frm" action ="<c:url value='/tms/pg/PgManage.do'/>" method="post">
 				<input type="submit" id="invisible" class="invisible"/>
-				<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 				
-							<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
-			<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
-			<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
-			<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
-			<input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
 				
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
@@ -234,41 +231,46 @@
 									    	</c:forEach>								   
 									</select>				
 									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value=""/>
-					  			</li>                     	
-
-
+					  			</li>             
+					  			        	
+								<li>
+								    <label for="searchUseYn">사용여부</label>
+									<select name="searchUseYn" id="searchUseYn" style="width:10%;text-align-last:center;">
+									   <option value="">전체</option>
+					      					<c:forEach var="useYn" items="${useYnList}" varStatus="status">
+					      						<c:if test="${useYn == 'Y'}">
+									    			<option value="<c:out value="${useYn}"/>" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >사용</option>
+									    		</c:if> 
+									    		<c:if test="${useYn == 'N'}">
+									    			<option value="<c:out value="${useYn}"/>" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >미사용</option>
+									    		</c:if> 
+									    	</c:forEach>								   
+									</select>
+					  			</li>  
+					  			
+								<li>
+                            		<div class="buttons" style="float:right;">                              			
+                                    	<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+										<a href="<c:url value='/tms/pg/ExelWrite.do'/>" onclick="setting();fn_egov_insert_addbbsUseInf(); return false;">엑셀</a>
+                                    </div>
+                                </li>
                        
 							</ul> 	
 							</div>
-							  
-                            <div class="default_tablestyle"  style=" width:100%"> 
-                            	<ul id="search_second_ul"  style=" width:100%">                            
-                            		<li>
-                            			<div class="buttons" style="float:right;">                              			
-                                    		<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-											<a href="<c:url value='/tms/pg/ExelWrite.do'/>" onclick="setting();fn_egov_insert_addbbsUseInf(); return false;">엑셀</a>
-                                    	</div>
-                                	</li>
-                            	</ul>
-                            
-                            </div>
-                        
-                        
-                        
-                           
+							
                         </fieldset>
                  	</div>
                 	<!-- //검색 필드 박스 끝 -->
 
-
-                	<div id="page_info"><div id="page_info_align"></div></div>    
-                	<div class="default_tablestyle">
+				 <div id="page_info"><div id="page_info_align"></div></div>    
+                 <div class="default_tablestyle">
+                	
         			<table width="120%" border="0" cellpadding="0" cellspacing="0" >
         				<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
         				<colgroup>
-        					<col width="10"/> 
-        					<col width="25"/>
-        					<col width="35"/>
+        					<col width="7"/> 
+        					<col width="20"/>
+        					<col width="40"/>
         					<col width="20"/>
         					<col width="20"/>
         					<col width="20"/>
@@ -289,7 +291,7 @@
             					<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
             					<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
             					<td align="left" class="listtd">
-            						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?PG_ID=<c:out value='${result.pgId}'/>">
+            						<a href="<c:url value='/tms/pg/selectPgCheck.do'/>?pgId=<c:out value='${result.pgId}'/>">
             							<strong><c:out value="${result.pgNm}"/></strong>
             						</a></td>
             					<td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>
@@ -300,7 +302,15 @@
         				</c:forEach>
         			</table>  		
         			  
-        			</div>
+        		</div>
+        			
+        		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+				<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
+				<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
+				<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
+				<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
+				<input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
+				<input id="cnt" type="hidden" />
 	</form>
     <!-- 페이지 네비게이션 시작 -->
     <div id="paging_div">

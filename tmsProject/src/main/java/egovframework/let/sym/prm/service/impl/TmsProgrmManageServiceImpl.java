@@ -90,6 +90,20 @@ public class TmsProgrmManageServiceImpl extends EgovAbstractServiceImpl implemen
 		return TmsProgrmManageDAO.selectTaskGb3(searchVO);
 	}
 	@Override
+	public List<String> selectTaskGb4(DevPlanDefaultVO dvo) throws Exception {
+		return TmsProgrmManageDAO.selectTaskGb4(dvo);
+	}
+	@Override
+	public List<String> selectTaskGb5(ProgramVO searchVO) throws Exception {
+		// TODO Auto-generated method stub
+		return TmsProgrmManageDAO.selectTaskGb5(searchVO);
+	}
+	@Override
+	public List<String> selectUseYn() throws Exception {
+		// TODO Auto-generated method stub
+		return TmsProgrmManageDAO.selectUseYn();
+	}
+	@Override
 	public List<String> selectTaskGbSearch(String searchData) throws Exception {
 		// TODO Auto-generated method stub
 		return TmsProgrmManageDAO.selectTaskGbSearch(searchData);
@@ -126,8 +140,5 @@ public class TmsProgrmManageServiceImpl extends EgovAbstractServiceImpl implemen
 		// TODO Auto-generated method stub
 		return TmsProgrmManageDAO.selectProgrmList1(a);
 	}
-	@Override
-	public List<String> selectTaskGb4(DevPlanDefaultVO dvo) {
-		return TmsProgrmManageDAO.selectTaskGb4(dvo);
-	}
+	
 }

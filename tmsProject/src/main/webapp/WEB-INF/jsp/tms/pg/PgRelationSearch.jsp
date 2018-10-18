@@ -34,12 +34,75 @@
 	caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
 
 </style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script language="javascript1.2"  type="text/javaScript"> 
+
+$(function(){ 
+	$('#listButton').click(function(){ 
+		alert("aaa");
+		
+		
+		$.ajax(
+				{ type: "POST",
+				  url: "<c:url value='/tms/pg/deletePg3.do'/>",
+			      data : jsonData,
+				  processData: false,
+				  success: function() { 
+					  alert("성공");
+					  console.log(result);
+					  window.close();
+				  }, 
+				  error : function(request,status,error){
+				  	  console.log(error);
+				  	  alert("실패");
+				  },
+				  dataType : 'json',
+				  contentType: 'application/json',
+				  mimeType: 'application/json',
+				});	
+	})	
+})
+$(function(){
+	   $('#bbb').change(function() {
+	      $.ajax({
+	         
+	         type:"POST",
+	         url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
+	         data : {searchData : this.value},
+	         async: false,
+	         dataType : "json",
+	         success : function(selectTaskGbSearch){
+	        	 $("#searchBySysGb").val($("#bbb").val());
+	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
+	            $.each(selectTaskGbSearch, function(i){
+	               (JSON.stringify(selectTaskGbSearch[0])).replace(/"/g, "");
+	            	$("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>")
+	            });
+	            
+	         },
+	         error : function(request,status,error){
+	            alert("에러");
+	            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+	         }
+	      });
+	   })
+	})
 
 function fn_delete() {
 	
 	
 	//window.open("<c:url value='/tms/pg/deletePg.do?returnValue="+returnValue+"'/>",'','width=200, height=200, left=350, top=200');
+	
+	document.progrmManageForm.action = "<c:url value='/tms/pg/deletePg.do'/>";
+	
+	document.progrmManageForm.submit();   
+	
+}
+
+function fn_delete2() {
+	
+	
 	
 	document.progrmManageForm.action = "<c:url value='/tms/pg/deletePg.do'/>";
 	
@@ -127,7 +190,7 @@ function test3() {
             	<ul id="search_second_ul">            		  
                     	<li>
                         	<div style="float:right;">      
-                        		<font style="color:#0f438a;" size="3px"><strong>정말 삭제하시겠습니까? </strong></font>                  
+                        		<font style="color:#0f438a;" size="3px"><strong>삭제하시겠습니까? </strong></font>                  
                         	</div>                              
                     	</li>                    
             	</ul> 
@@ -139,9 +202,9 @@ function test3() {
                         	</div>                              
                     	</li>   
                     	<li>
-                        	<div class="buttons" style="float:right;">                
-                        		<a href="#LINK" onclick="javascript:fn_delete(); return false;">삭제 </a>
-                            	<a href="#LINK" onclick="javascript:window_close(); return false;">닫기 </a>
+                        	<div class="buttons" style="float:right;"> 
+                        		<a id="listButton" name="listButton" href="#LINK" >삭제 </a>                    
+                            	<a href="#LINK" onclick="javascript:window_close(); return false;">취소 </a>
                         	</div>                              
                     	</li>                     
             	</ul> 
@@ -164,7 +227,8 @@ function test3() {
                         	</div>                              
                     	</li>   
                     	<li>
-                        	<div class="buttons" style="float:right;">                
+                        	<div class="buttons" style="float:right;"> 
+                        		<a id="listButton" href="#LINK" onclick="javascript:fn_delete(); return false;">삭제 </a>               
                             	<a href="#LINK" onclick="javascript:window_close(); return false;">닫기 </a>
                         	</div>                              
                     	</li>                     
