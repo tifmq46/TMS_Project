@@ -60,17 +60,17 @@ window.onload = function() {
 		var taskByMainStats = JSON.parse('${taskByMainStats}');
 		var taskByMainStatsTaskNm = new Array();
 		var taskByMainStatsTaskAll = new Array();
-		var taskByMainStatsActionStA5 = new Array();
+		var taskByMainStatsActionStA3 = new Array();
 		for (var i = 0; i < taskByMainStats.length; i++) {
 			taskByMainStatsTaskNm.push(taskByMainStats[i].taskNm);
 			if(taskByMainStats[i].taskAll == 0){
 				taskByMainStats[i].taskAll = 0.1
 			}
-			if(taskByMainStats[i].actionStA5 == 0){
-				taskByMainStats[i].actionStA5 = 0.1
+			if(taskByMainStats[i].actionStA3 == 0){
+				taskByMainStats[i].actionStA3 = 0.1
 			}
 			taskByMainStatsTaskAll.push(taskByMainStats[i].taskAll);
-			taskByMainStatsActionStA5.push(taskByMainStats[i].actionStA5);
+			taskByMainStatsActionStA3.push(taskByMainStats[i].actionStA3);
 		}
 		var ctx6 = document.getElementById('taskByMainStats');
 		var taskByMainStatsChart = new Chart(ctx6, {
@@ -84,7 +84,7 @@ window.onload = function() {
 					backgroundColor : '#007bff',
 				}, {
 					label : '조치건수',
-					data : taskByMainStatsActionStA5,
+					data : taskByMainStatsActionStA3,
 					backgroundColor : '#00B3E6',
 				}]
 			},
@@ -277,7 +277,6 @@ window.onload = function() {
 			            <col width="12%" >
 			            <col width="12%" >
 			            <col width="12%" >
-			            <col width="12%" > 
 			            </colgroup>
 			            <thead>
 			            <tr>
@@ -287,7 +286,6 @@ window.onload = function() {
 			                <th scope="col" nowrap="nowrap">조치중</th>
 			                <th scope="col" nowrap="nowrap">조치완료</th>
 			                <th scope="col" nowrap="nowrap">재요청</th>
-			                <th scope="col" nowrap="nowrap">최종완료</th>
 			            </tr>
 			            </thead>
 			            <tbody>                 
@@ -313,7 +311,6 @@ window.onload = function() {
 						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA2 }"/></td>
 						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA3 }"/></td>
 						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA4 }"/></td>
-						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA5 }"/></td>
 			              </tr>
 			            </c:forEach> 
 			            </tbody> 

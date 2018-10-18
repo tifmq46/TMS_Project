@@ -223,7 +223,7 @@ ul.tabs li.last {
 									varStatus="status">
 									<tr>
 										<c:if test="${taskGbByStats.actionSt eq 'A1'}">
-											<td rowspan="6" style="border-bottom: solid 1px #00000054;"><c:out
+											<td rowspan="5" style="border-bottom: solid 1px #00000054;"><c:out
 													value="${taskGbByStats.taskNm}" /></td>
 										</c:if>
 										<td><c:out value="${taskGbByStats.actionNm}" /></td>
@@ -233,7 +233,7 @@ ul.tabs li.last {
 										<td>${taskGbByStats.defectGbD4}</td>
 										<td>${taskGbByStats.rowSum}</td>
 									</tr>
-									<c:if test="${taskGbByStats.actionSt eq 'A5'}">
+									<c:if test="${taskGbByStats.actionSt eq 'A4'}">
 										<tr>
 											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong>소계</strong></td>
 											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
@@ -283,7 +283,7 @@ ul.tabs li.last {
 									varStatus="status">
 									<tr>
 										<c:if test="${pgIdByStats.actionSt eq 'A1'}">
-											<td rowspan="6" style="border-bottom: solid 1px #00000054;"><c:out
+											<td rowspan="5" style="border-bottom: solid 1px #00000054;"><c:out
 													value="${pgIdByStats.pgNm}" /></td>
 										</c:if>
 										<td><c:out value="${pgIdByStats.actionNm}" /></td>
@@ -293,7 +293,7 @@ ul.tabs li.last {
 										<td>${pgIdByStats.defectGbD4}</td>
 										<td>${pgIdByStats.rowSum}</td>
 									</tr>
-									<c:if test="${pgIdByStats.actionSt eq 'A5'}">
+									<c:if test="${pgIdByStats.actionSt eq 'A4'}">
 										<tr>
 											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong>소계</strong></td>
 											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
@@ -345,7 +345,7 @@ ul.tabs li.last {
 									varStatus="status">
 									<tr>
 										<c:if test="${userTestByStats.actionSt eq 'A1'}">
-											<td rowspan="6" style="border-bottom: solid 1px #00000054;"><c:out
+											<td rowspan="5" style="border-bottom: solid 1px #00000054;"><c:out
 													value="${userTestByStats.userTestNm}" /></td>
 										</c:if>
 										<td><c:out value="${userTestByStats.actionNm}" /></td>
@@ -355,7 +355,7 @@ ul.tabs li.last {
 										<td>${userTestByStats.defectGbD4}</td>
 										<td>${userTestByStats.rowSum}</td>
 									</tr>
-									<c:if test="${userTestByStats.actionSt eq 'A5'}">
+									<c:if test="${userTestByStats.actionSt eq 'A4'}">
 										<tr>
 											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong>소계</strong></td>
 											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
@@ -407,7 +407,7 @@ ul.tabs li.last {
 									varStatus="status">
 									<tr>
 										<c:if test="${userDevByStats.actionSt eq 'A1'}">
-											<td rowspan="6" style="border-bottom: solid 1px #00000054;"><c:out
+											<td rowspan="5" style="border-bottom: solid 1px #00000054;"><c:out
 													value="${userDevByStats.userDevNm}" /></td>
 										</c:if>
 										<td><c:out value="${userDevByStats.actionNm}" /></td>
@@ -417,7 +417,7 @@ ul.tabs li.last {
 										<td>${userDevByStats.defectGbD4}</td>
 										<td>${userDevByStats.rowSum}</td>
 									</tr>
-									<c:if test="${userDevByStats.actionSt eq 'A5'}">
+									<c:if test="${userDevByStats.actionSt eq 'A4'}">
 										<tr>
 											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong>소계</strong></td>
 											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
