@@ -69,6 +69,13 @@ ul.tabs li.last {
 #lineStyle{
 	border-bottom: solid 1px #00000054;
 	border-top: solid 1px #00000054;
+	background: #EFEFFB;
+}
+
+#lineStyle2{
+	border-bottom: solid 1px #00000054;
+	border-top: solid 1px #00000054;
+	background: #E0E0F8;
 }
 
 .line{
@@ -90,16 +97,16 @@ $(document).ready(function() {
 			$("#" + tab_id).addClass('current');
 			
 			if(tab_id=="tab-1") {
-					document.getElementById("StatsByTaskToExcel").style.display="inline"
-					document.getElementById("StatsByPgToExcel").style.display="none"
+					document.getElementById("StatsByUserToExcel").style.display="inline"
+					document.getElementById("StatsByTaskToExcel").style.display="none"
 					document.getElementById("StatsByTaskTotalToExcel").style.display="none"
 			} else if(tab_id=="tab-2") {
-					document.getElementById("StatsByTaskToExcel").style.display="none"
-					document.getElementById("StatsByPgToExcel").style.display="inline"
+					document.getElementById("StatsByUserToExcel").style.display="none"
+					document.getElementById("StatsByTaskToExcel").style.display="inline"
 					document.getElementById("StatsByTaskTotalToExcel").style.display="none"
 			}else if(tab_id=="tab-3") {
+					document.getElementById("StatsByUserToExcel").style.display="none"
 					document.getElementById("StatsByTaskToExcel").style.display="none"
-					document.getElementById("StatsByPgToExcel").style.display="none"
 					document.getElementById("StatsByTaskTotalToExcel").style.display="inline"
 			}
 			
@@ -154,13 +161,13 @@ function StatsToExcel(statsGb) {
 					<li class="tab-link" data-tab="tab-3">전체</li>
 					<li class="tab-link last" data-tab="tab-5" style="float:right">
 					
-						<div class="buttons" id="StatsByTaskToExcel" style="display:inline">
+						<div class="buttons" id="StatsByUserToExcel" style="display:inline">
 								<a href="<c:url value='/tms/dev/StatsToExcel.do'/>"
-									onclick="javascript:StatsToExcel('task'); return false;">엑셀 다운로드</a>
+									onclick="javascript:StatsToExcel('user'); return false;">엑셀 다운로드</a>
 						</div>
-						<div class="buttons" id="StatsByPgToExcel" style="display:none">
+						<div class="buttons" id="StatsByTaskToExcel" style="display:none">
 							<a href="<c:url value='/tms/dev/StatsToExcel.do'/>"
-								onclick="javascript:StatsToExcel('pg'); return false;">엑셀 다운로드</a>
+								onclick="javascript:StatsToExcel('task'); return false;">엑셀 다운로드</a>
 						</div>
 						<div class="buttons" id="StatsByTaskTotalToExcel" style="display:none">
 							<a href="<c:url value='/tms/dev/StatsToExcel.do'/>"
@@ -168,20 +175,6 @@ function StatsToExcel(statsGb) {
 						</div>
 					</li>
 				</ul>
-                
-                <fieldset><legend>조건정보 영역</legend>	  
-					  	 <div class="sf_start">
-					  	<ul id="search_first_ul">
-						  	<li><label>계획시작일</label></li>
-						  	<li><input type="text" value="<fmt:formatDate value="${tt.devStartDt}" pattern="yyyy-MM-dd" />" readonly>
-						  	</li>
-						  
-						  	<li><label>계획종료일</label></li>
-						  	<li><input type="text" value="<fmt:formatDate value="${tt.devEndDt}" pattern="yyyy-MM-dd" />" readonly></li>
-					  	</ul>
-						</div>
-						</fieldset>
-                
                 
                 <div id="tab-1" class="tab-content current">
                                     
@@ -194,7 +187,7 @@ function StatsToExcel(statsGb) {
 	          			<tr>
 	          				<th align="center" >개발자</th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<th align="center">${status.count}주차(${mw})</th>
+		                    	<th align="center">${status.count}주(${mw})</th>
 		                    </c:forEach>
 		                    <th align="center"><strong>합계</strong></th>
 	          			</tr>
@@ -237,7 +230,7 @@ function StatsToExcel(statsGb) {
 	          			<tr>
 	          				<th align="center" >개발자</th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<th align="center">${status.count}주차(${mw})</th>
+		                    	<th align="center">${status.count}주(${mw})</th>
 		                    </c:forEach>
 		                    <th align="center"><strong>합계</strong></th>
 	          			</tr>
@@ -281,7 +274,7 @@ function StatsToExcel(statsGb) {
 	          			<tr>
 	          				<th align="center" >업무</th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<th align="center">${status.count}주차(${mw})</th>
+		                    	<th align="center">${status.count}주(${mw})</th>
 		                    </c:forEach>
 		                    <th align="center"><strong>합계</strong></th>
 	          			</tr>
@@ -323,7 +316,7 @@ function StatsToExcel(statsGb) {
 	          			<tr>
 	          				<th align="center" >개발자</th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<th align="center">${status.count}주차(${mw})</th>
+		                    	<th align="center">${status.count}주(${mw})</th>
 		                    </c:forEach>
 		                    <th align="center"><strong>합계</strong></th>
 	          			</tr>
@@ -387,7 +380,7 @@ function StatsToExcel(statsGb) {
 		                    
 		                    	
 		                    	<c:choose>
-			                    	<c:when test="${t.taskNm eq '소계'||t.sysNm eq '합계'}">
+			                    	<c:when test="${t.taskNm eq '소계' && t.sysNm ne '합계'}">
 			                    		<td id='lineStyle'><strong><c:out value="${t.sysNm}" /></strong></td>
 			                    		<td id='lineStyle'><strong><c:out value="${t.taskNm}" /></strong></td>
 			                    		<td id='lineStyle'><strong><c:out value="${t.totCnt}" /></strong></td>
@@ -399,6 +392,19 @@ function StatsToExcel(statsGb) {
 			                    		<td id='lineStyle'><strong><c:out value="${t.ar}" /></strong></td>
 			                    		<td id='lineStyle'><strong><c:out value="${t.totD}" /></strong></td>
 			                    		<td id='lineStyle'><strong><c:out value="${t.tot}" /></strong></td>
+			                    	</c:when>
+			                    	<c:when test="${t.sysNm eq '합계'}">
+			                    		<td id='lineStyle2'><strong><c:out value="${t.sysNm}" /></strong></td>
+			                    		<td id='lineStyle2'><strong><c:out value="${t.taskNm}" /></strong></td>
+			                    		<td id='lineStyle2'><strong><c:out value="${t.totCnt}" /></strong></td>
+			                    		<td id='lineStyle2'><strong><c:out value="${t.tp}" /></strong></td>
+			                    		<td id='lineStyle2'><strong><c:out value="${t.td}" /></strong></td>
+			                    		<td id='lineStyle2'><strong><c:out value="${t.tr}" /></strong></td>
+			                    		<td id='lineStyle2'><strong><c:out value="${t.ap}" /></strong></td>
+			                    		<td id='lineStyle2'><strong><c:out value="${t.ad}" /></strong></td>
+			                    		<td id='lineStyle2'><strong><c:out value="${t.ar}" /></strong></td>
+			                    		<td id='lineStyle2'><strong><c:out value="${t.totD}" /></strong></td>
+			                    		<td id='lineStyle2'><strong><c:out value="${t.tot}" /></strong></td>
 			                    	</c:when>
 			                    	<c:otherwise>
 			                    		<td><c:out value="${t.sysNm}" /></td>
@@ -417,29 +423,10 @@ function StatsToExcel(statsGb) {
 		                    	
 		                    </tr>
 	                    </c:forEach>
-	            		
-	                    
 	                    </table>
 	                </div>
                  </div>
-                 
-				<%-- <table width="120%" border="0" cellpadding="0" cellspacing="0" >
-                 <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
-              
-              <tr>
-            <c:forEach var="resultP" items="${resultP}" varStatus="status">
-        			
-        				<th align="center" class="listtd"><c:out value="${resultP.formatFriday}"/></th>
-        				
-        			
-            			<tr>
-            				<td align="center" class="listtd"><c:out value="${resultP.formatFriday}"/>&nbsp;</td>
-            				
-            			</tr>
-        			</c:forEach>
-        			</tr>
-              
-              </table>         --%>
+                
             </div>
             <!-- //content 끝 -->
         </div>

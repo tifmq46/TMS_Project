@@ -249,22 +249,22 @@ $(function(){
             				
             				<c:choose>
 	            				<c:when test="${result.ACHIEVEMENT_RATE eq 100 }">
-	            					<c:set var="status" value="개발완료"></c:set>
+	            					<c:set var="status" value="완료"></c:set>
 	            				</c:when>
 	            				<c:otherwise>
 	            					<c:choose>
 	            						<c:when test="${result.PLAN_END_DT lt today }">
 	            							<c:choose>
 		            							<c:when test="${result.DEV_START_DT eq null }">
-		            								<c:set var="status" value="개발미착수"></c:set>
+		            								<c:set var="status" value="지연"></c:set>
 		            							</c:when>
 		            							<c:otherwise>
 		            								<c:choose>
 		            									<c:when test="${result.PLAN_END_DT lt result.DEV_START_DT}">
-		            										<c:set var="status" value="개발지연"></c:set>
+		            										<c:set var="status" value="지연"></c:set>
 		            									</c:when>
 		            									<c:otherwise>
-		            										<c:set var="status" value="개발중"></c:set>
+		            										<c:set var="status" value="진행"></c:set>
 		            									</c:otherwise>
 		            								</c:choose>
 		            							</c:otherwise>
@@ -273,7 +273,7 @@ $(function(){
 	            						
 	            						<c:otherwise>
 	            							<c:if test="${result.DEV_START_DT ne null }">
-	            								<c:set var="status" value="개발중"></c:set>
+	            								<c:set var="status" value="진행"></c:set>
 	            							</c:if>
 	            							<c:if test="${result.DEV_START_DT eq null }">
 	            								<c:set var="status" value="대기"></c:set>
@@ -285,24 +285,19 @@ $(function(){
             				</c:choose>
             				
             				<c:choose>
-            					<c:when test="${status eq '개발완료'}">
-            						<td align="center" class="listtd" style="background-color:#007bff;">
+            					<c:when test="${status eq '완료'}">
+            						<td align="center" class="listtd" style="background-color:#819FF7;">
             						<font color="#ffffff" style="font-weight:bold">
             						<c:out value="${status}"/></td>
             					</c:when>
-            					<c:when test="${status eq '개발미착수'}">
-            						<td align="center" class="listtd" style="background-color:#CC3C39; ">
+            					<c:when test="${status eq '지연'}">
+            						<td align="center" class="listtd" style="background-color:#F78181;">
             						<font color="#ffffff" style="font-weight:bold">
             						<c:out value="${status}"/></td>
             					</c:when>
-            					<c:when test="${status eq '개발지연'}">
-            						<td align="center" class="listtd" style="background-color:#CC3C39;">
+            					<c:when test="${status eq '진행'}">
+            						<td align="center" class="listtd" style="background-color:#ACFA58;">
             						<font color="#ffffff" style="font-weight:bold">
-            						<c:out value="${status}"/></td>
-            					</c:when>
-            					<c:when test="${status eq '개발중'}">
-            						<td align="center" class="listtd" >
-            						<font style="font-weight:bold">
             						<c:out value="${status}"/></td>
             					</c:when>
             					<c:when test="${status eq '대기'}">
