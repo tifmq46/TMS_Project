@@ -16,12 +16,20 @@ import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 @Repository("defectDAO")
 public class DefectDAO extends EgovAbstractDAO{
 	
-	public List<?> selectDefect(DefectDefaultVO searchVO) {
-		return list("defectDAO.selectDefect", searchVO);
+	public List<?> selectDefect(DefectDefaultVO searchVO, int status) {
+		if(status == 0) {
+			return list("defectDAO.selectDefect", searchVO);
+		} else {
+			return list("defectDAO.selectDefectCurrent", searchVO);
+		}
 	}
 	
-	public int selectDefectTotCnt(DefectDefaultVO searchVO) {
-		return (int) select("defectDAO.selectDefectTotCnt", searchVO);
+	public int selectDefectTotCnt(DefectDefaultVO searchVO, int status) {
+		if(status == 0) {
+			return (int) select("defectDAO.selectDefectTotCnt", searchVO);
+		} else {
+			return (int) select("defectDAO.selectDefectCurrentTotCnt", searchVO);
+		}
 	}
 	
 	public int selectDefectIdSq(){

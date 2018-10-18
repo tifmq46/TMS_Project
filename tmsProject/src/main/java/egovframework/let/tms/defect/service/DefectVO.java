@@ -66,7 +66,9 @@ public class DefectVO{
 //	private byte[] fileImg;
 	
 	private String fileImgByte;
-
+	
+	private int boardNo;
+	
 	public String getFileImgByte() {
 		return fileImgByte;
 	}
@@ -211,6 +213,15 @@ public class DefectVO{
 				+ ", actionDt=" + actionDt + ", testscenarioId=" + testscenarioId + ", fileIdSq=" + fileIdSq
 				+ ", fileNm=" + fileNm + ", fileSize=" + fileSize + ", fileImg=" + fileImg + "]";
 	}
+
+	public int getBoardNo() {
+		return boardNo;
+	}
+
+	public void setBoardNo(int boardNo) {
+		this.boardNo = boardNo;
+	}
+
 
 //	public byte[] getFileImg() {
 //		return fileImg;

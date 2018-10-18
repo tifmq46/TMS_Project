@@ -83,6 +83,12 @@ function fn_egov_delete_defectImg() {
 }
 
 window.onload = function() {
+	if(document.getElementById("fileNm") != null){
+		var fileNmLength = (document.getElementById("fileNm").value).length * 10 +"px";
+		document.getElementById("fileNm").style.width = fileNmLength;
+		var fileSizeLength = (document.getElementById("fileSize").value).length * 10 +"px";
+		document.getElementById("fileSize").style.width = fileSizeLength;
+	}
 	if (document.getElementById("uniqId").value == "USRCNFRM_00000000000"
 			|| document.getElementById("uniqId").value == "USRCNFRM_00000000001") {
 		// 관리자, 업무PL 로그인할 경우
@@ -214,7 +220,9 @@ window.onload = function() {
 					        <th width="12.5%" height="23" nowrap >결함번호
 					        </th>
 					        <td width="12.5%" nowrap >
-					          <input name="defectIdSq" size="5" readonly="readonly" value="<c:out value="${defectOne.defectIdSq}"/>"  maxlength="40" title="결함번호"
+					          <input name="boardNo" size="5" readonly="readonly" value="<c:out value="${boardNo}"/>"  maxlength="40" title="결함번호"
+					          style="text-align:center; border:none; width:90%;" /> 
+					          <input type="hidden" name="defectIdSq" size="5" readonly="readonly" value="<c:out value="${defectOne.defectIdSq}"/>"  maxlength="40" title="결함번호"
 					          style="text-align:center; border:none; width:90%;" /> 
 					          <form:errors path="defectIdSq" />
 					        </td>
@@ -345,8 +353,8 @@ window.onload = function() {
 					        <br/>
 					        <br/>
 					        	<font color="#666666">
-					        		<input type="text" name="fileNm" value="<c:out value="${defectImgOne.fileNm}" />"  readonly="readonly" style="border:none; width:25%; text-align:right"/>
-									(<input type="text" id="fileSize" name="fileSize" value="<c:out value="${defectImgOne.fileSize}"/>"  readonly="readonly" style="border:none; width:7%; text-align:center"/>Byte)
+					        		<input type="text" id="fileNm" name="fileNm" value="<c:out value="${defectImgOne.fileNm}" />"  readonly="readonly" style="border:none; width:; text-align:right"/>
+									(<input type="text" id="fileSize" name="fileSize" value="<c:out value="${defectImgOne.fileSize}"/>"  readonly="readonly" style="border:none; width:; text-align:center"/>Byte)
 					        	&nbsp;<a href="#LINK" id="deleteFileBtn" onclick="javascript:fn_egov_delete_defectImg(); return false;" ><font color="#0F438A">삭제</font></a>
 					        		</font>
 					        		<input type="hidden" id="fileCheck" value="1">
@@ -386,6 +394,7 @@ window.onload = function() {
                     </div>
                     <!-- 버튼 끝 -->  
                   </c:forEach>
+                  
                 </form:form>
 
             </div>  

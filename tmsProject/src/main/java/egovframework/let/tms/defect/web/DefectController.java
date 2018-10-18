@@ -45,11 +45,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
+import egovframework.com.cmm.LoginVO;
 import egovframework.let.tms.defect.service.DefectDefaultVO;
 import egovframework.let.tms.defect.service.DefectFileVO;
 import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.defect.service.DefectVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import net.sf.json.JSONArray;
 
@@ -77,7 +79,11 @@ public class DefectController {
 	 */
 	@RequestMapping("/tms/defect/selectDefect.do")
 	public String selectDefect(@ModelAttribute("searchVO") DefectDefaultVO searchVO, ModelMap model) throws Exception {
-	
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		searchVO.setSessionId(user.getName());
+		searchVO.setUniqId(user.getUniqId());
+		
+		
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -104,10 +110,10 @@ public class DefectController {
 			model.addAttribute("EN_date", EN_date);			
 		}
 		
-		List<?> list = defectService.selectDefect(searchVO);
+		List<?> list = defectService.selectDefect(searchVO,0);
 		model.addAttribute("defectList", list);
 		
-		int totCnt = defectService.selectDefectTotCnt(searchVO);
+		int totCnt = defectService.selectDefectTotCnt(searchVO,0);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
@@ -186,8 +192,10 @@ public class DefectController {
 	
 	/** 결함 상세 조회*/
 	@RequestMapping("/tms/defect/selectDefectInfo.do")
-	public String selectDefectInfo(@ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) throws Exception {
-		System.out.println("###"+defectVO.toString());
+	public String selectDefectInfo(@ModelAttribute("defectVO") DefectVO defectVO,ModelMap model) throws Exception {
+		
+		model.addAttribute("boardNo", defectVO.getBoardNo());
+		
 		List<?> list = defectService.selectOneDefect(defectVO);
 		model.addAttribute("defectOne", list);
 		
@@ -225,7 +233,8 @@ public class DefectController {
 			hmap.put("status", 1);
 			defectService.insertDefectImageMap(hmap);
 		}
-
+		model.addAttribute("boardNo", defectVO.getBoardNo());
+		
 		List<?> list = defectService.selectOneDefect(defectVO);
 		model.addAttribute("defectOne", list);
 		
@@ -281,10 +290,10 @@ public class DefectController {
 			model.addAttribute("EN_date", EN_date);			
 		}
 		
-		List<?> list = defectService.selectDefect(searchVO);
+		List<?> list = defectService.selectDefect(searchVO,1);
 		model.addAttribute("defectList", list);
 		
-		int totCnt = defectService.selectDefectTotCnt(searchVO);
+		int totCnt = defectService.selectDefectTotCnt(searchVO,1);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
@@ -352,6 +361,9 @@ public class DefectController {
 	@RequestMapping("/tms/defect/deleteDefectImg.do")
 	public String deleteDefectImg(@ModelAttribute ("defectVO") DefectVO defectVO, ModelMap model ) throws Exception {
 		defectService.deleteDefectImg(defectVO.getDefectIdSq());
+		
+		model.addAttribute("boardNo", defectVO.getBoardNo());
+		
 		List<?> list = defectService.selectOneDefect(defectVO);
 		model.addAttribute("defectOne", list);
 		

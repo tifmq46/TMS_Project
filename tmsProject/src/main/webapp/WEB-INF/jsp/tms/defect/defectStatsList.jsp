@@ -295,16 +295,16 @@ ul.tabs li.last {
 									</tr>
 									<c:if test="${pgIdByStats.actionSt eq 'A5'}">
 										<tr>
-											<td style="border-bottom: solid 1px #00000054;"><strong>소계</strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong>소계</strong></td>
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${pgIdByStats.d1Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${pgIdByStats.d2Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${pgIdByStats.d3Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${pgIdByStats.d4Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${pgIdByStats.totalRowSum}" /></strong></td>
 										</tr>
 									</c:if>
@@ -357,16 +357,16 @@ ul.tabs li.last {
 									</tr>
 									<c:if test="${userTestByStats.actionSt eq 'A5'}">
 										<tr>
-											<td style="border-bottom: solid 1px #00000054;"><strong>소계</strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong>소계</strong></td>
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${userTestByStats.d1Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${userTestByStats.d2Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${userTestByStats.d3Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${userTestByStats.d4Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${userTestByStats.totalRowSum}" /></strong></td>
 										</tr>
 									</c:if>
@@ -419,16 +419,16 @@ ul.tabs li.last {
 									</tr>
 									<c:if test="${userDevByStats.actionSt eq 'A5'}">
 										<tr>
-											<td style="border-bottom: solid 1px #00000054;"><strong>소계</strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong>소계</strong></td>
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${userDevByStats.d1Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${userDevByStats.d2Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${userDevByStats.d3Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${userDevByStats.d4Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054;"><strong><c:out
+											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
 														value="${userDevByStats.totalRowSum}" /></strong></td>
 										</tr>
 									</c:if>

@@ -62,7 +62,11 @@
 		window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>", '',
 				'width=800,height=600');
 	}
-
+	
+	function pgIdSearch(){
+		alert("화면ID를 검색하십시오.");
+	}
+	
 	<!--
 	function fn_egov_select_viewDefect() {
 		document.defectVO.action = "<c:url value='/tms/defect/selectDefect.do'/>";
@@ -124,19 +128,14 @@
 					         <th width="16.6%" height="23" class="required_text" nowrap >화면ID
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
-					        <td width="16.6%" nowrap >
+					        <td width="16.6%" colspan="3" nowrap >
 					          <input id="TmsProgrmFileNm_pg_id" name="pgId" type="text" size="10" value=""  maxlength="40" title="화면ID"  
-					           style="text-align:center; width:80%;" readonly="readonly"/> 
+					           style="text-align:center;" readonly="readonly" /> 
+					          <input id="TmsProgrmFileNm_pg_nm" type="text" size="10" value=""  maxlength="40" title="화면명" 
+					          style="text-align:center;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/>
 					           <form:errors path="pgId" />
 					          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
-					        </td>
-					         <th width="16.6%" height="23" class="required_text" nowrap >화면명
-					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
-					        </th>
-					        <td width="16.6%" nowrap >
-					          <input id="TmsProgrmFileNm_pg_nm" type="text" size="10" value=""  maxlength="40" title="화면명" 
-					          style="text-align:center; width:90%;" readonly="readonly"/>
 					        </td>
 					       </tr>
 					       
@@ -146,7 +145,7 @@
 					        </th>
 					        <td width="16.6%" nowrap >
 					          <input id="TmsProgrmFileNm_task_gb" type="text" size="5" value=""  maxlength="40" title="업무구분" 
-					          style="text-align:center; width:90%;" readonly="readonly"/> 
+					          style="text-align:center; width:90%;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/> 
 					          &nbsp;
 					        </td>
 					         <th width="16.6%" height="23" class="required_text" nowrap >개발자
@@ -154,7 +153,7 @@
 					        </th>
 					        <td width="16.6%" nowrap >
 					          <input id="TmsProgrmFileNm_user_dev_id" type="text" size="10" value=""  maxlength="40" title="개발자" 
-					          style="text-align:center; width:90%;" readonly="readonly"/> 
+					          style="text-align:center; width:90%;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/> 
 					          &nbsp;
 					        </td>
 					         <th width="16.6%" height="23" class="required_text" nowrap >테스터

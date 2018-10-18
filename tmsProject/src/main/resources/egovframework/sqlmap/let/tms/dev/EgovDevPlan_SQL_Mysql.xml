@@ -681,7 +681,7 @@
 				GROUP BY TASK_GB)
 			AS B ON A.CODE = B.TASK_GB
 			WHERE A.CODE_ID = 'TASKGB'
-			ORDER BY taskAll DESC
+			ORDER BY taskAll DESC, achieveCnt DESC
 	    ]]>
 	</select>
 	
