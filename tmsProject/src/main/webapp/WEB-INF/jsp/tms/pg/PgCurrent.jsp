@@ -113,13 +113,15 @@
 	}
 	
 	function Pg_select(pageNo){
+		document.frm.cnt.value = "a";
 		document.frm.searchBySysGb.value = document.frm.bbb.value;
 		document.frm.searchByTaskGb.value = document.frm.task.value;
 		//alert(pageNo);
 		document.frm.pageIndex.value = pageNo;
 		//document.frm.searchByTaskGb.value = document.frm.task.value;
 		//document.frm.fon.value = pageNo;
-    	document.frm.action = "<c:url value='/tms/pg/PgCurrent.do'/>";
+		var url = "<c:url value='/tms/pg/PgCurrent.do" + "?cnt=" + document.frm.cnt.value + "'/>";
+    	document.frm.action = url;
     	document.frm.submit();
 	}
 	
@@ -243,74 +245,32 @@
 									    			<option value="<c:out value="${useYn}"/>" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >미사용</option>
 									    		</c:if> 
 									    	</c:forEach>								   
-									</select>				
-									
+									</select>
 					  			</li>  
-
+					  			
+								<li>
+                            		<div class="buttons" style="float:right;">                              			
+                                    	<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+										<a href="<c:url value='/tms/pg/ExelWrite.do'/>" onclick="setting();fn_egov_insert_addbbsUseInf(); return false;">엑셀</a>
+                                    </div>
+                                </li>
                        
 							</ul> 	
 							</div>
-							  
-                            <div class="default_tablestyle"  style=" width:100%"> 
-                            	<ul id="search_second_ul"  style=" width:100%">                            
-                            		<li>
-                            			<div class="buttons" style="float:right;">                              			
-                                    		<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-											<a href="<c:url value='/tms/pg/ExelWrite.do'/>" onclick="setting();fn_egov_insert_addbbsUseInf(); return false;">엑셀</a>
-                                    	</div>
-                                	</li>
-                            	</ul>
-                            
-                            </div>
-                        
-                        
-                        
-                           
+							
                         </fieldset>
                  	</div>
                 	<!-- //검색 필드 박스 끝 -->
 
 				 <div id="page_info"><div id="page_info_align"></div></div>    
                  <div class="default_tablestyle">
-
-                 	<table width="85%" cellspacing="0" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
-                 		<caption style="visibility:hidden">총 건수, 완료건수, 미완료, 진행률 표시하는 테이블</caption>
-                 
-                 		<tr>
-                 			<td align="center" width="100" style="font-size:13px; font-weight:bolder">총 : <c:out value="${TotCnt}"/></td>
-                  			<td align="center" width="100" style="font-size:13px; font-weight:bolder">사용 : <c:out value="${USE_Y}"/></td>
-                 			<td align="center" width="100" style="font-size:13px; font-weight:bolder">미사용 : <c:out value="${USE_N}"/></td>                 			
-                 			<td align="right" width="100" style="font-size:13px; font-weight:bolder">사용률 : </td>
-                 			
-                 		<c:choose>
-                 		<c:when test="${TotCnt ne '0' }">
-                 		<fmt:parseNumber var="actionProgression" integerOnly="true" value="${USE_Y / TotCnt * 100}"/>
-                 		</c:when>
-                 		<c:otherwise>
-                 		</c:otherwise>
-                 		</c:choose>
-                 		
-                 			<td style="font-size:15px; font-weight:bolder">
-                 		<c:choose>
-                 		<c:when test="${actionProgression ne '0' }">
-                 			<div class="progress" style="height: 1.5rem;"><div class="progress-bar" style="width:${actionProgression}%" > <strong><c:out value=" ${actionProgression}"></c:out>%</strong></div></div>
-                 		</c:when>
-                 		<c:otherwise>
-                 			<div class="progress" style="height: 1.5rem;"><div class="progress-bar" style="width:0%"> <strong><c:out value="0"></c:out>%</strong></div></div>
-                 		</c:otherwise>
-                 		</c:choose>
-                 			</td>
-                 		</tr>        
-             		</table>
-
-
                 	
         			<table width="120%" border="0" cellpadding="0" cellspacing="0" >
         				<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
         				<colgroup>
-        					<col width="10"/> 
-        					<col width="25"/>
-        					<col width="35"/>
+        					<col width="7"/> 
+        					<col width="20"/>
+        					<col width="40"/>
         					<col width="20"/>
         					<col width="20"/>
         					<col width="20"/>
@@ -331,7 +291,7 @@
             					<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
             					<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
             					<td align="left" class="listtd">
-            						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?PG_ID=<c:out value='${result.pgId}'/>">
+            						<a href="<c:url value='/tms/pg/selectPgCheck.do'/>?pgId=<c:out value='${result.pgId}'/>">
             							<strong><c:out value="${result.pgNm}"/></strong>
             						</a></td>
             					<td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>
@@ -350,6 +310,7 @@
 				<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
 				<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
 				<input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
+				<input id="cnt" type="hidden" />
 	</form>
     <!-- 페이지 네비게이션 시작 -->
     <div id="paging_div">

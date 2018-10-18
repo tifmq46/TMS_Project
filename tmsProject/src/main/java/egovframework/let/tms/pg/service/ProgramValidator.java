@@ -21,8 +21,7 @@ public class ProgramValidator implements Validator {
 //		이름 유효성 체크)
 		String mName = member.getPgNm();
 		if(mName == null || mName.trim().isEmpty()) {
-			System.out.println("회원 이름을 입력하세요.");
-			errors.rejectValue("pgNm", "공백오류", "이름을 입력하세요");
+			errors.rejectValue("pgNm", "공백오류", "화면명을 입력하세요");
 			
 		}
 //		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "공백오류");
@@ -30,28 +29,24 @@ public class ProgramValidator implements Validator {
 //		아이디 유효성 체크)		
 		String mId = member.getPgId();
 		if(mId == null || mId.trim().isEmpty()) {
-			System.out.println("회원 아이디를 입력하세요.");
-			errors.rejectValue("pgId", "공백오류", "아이디를 입력하세요");
+			errors.rejectValue("pgId", "공백오류", "화면ID를 입력하세요");
 			
 		}
 //		시스템구분 유효성 체크)		
 		String sysGb = member.getSysGb();
 		if(sysGb == null || sysGb.trim().isEmpty()) {
-			System.out.println("시스템구분을 입력하세요.");
 			errors.rejectValue("sysGb", "공백오류", "시스템구분을 선택하세요");
 			
 		}		
 //		업무구분 유효성 체크)		
 		String taskGb = member.getTaskGb();
 		if(taskGb == null || taskGb.trim().isEmpty()) {
-			System.out.println("업무구분을 입력하세요.");
 			errors.rejectValue("taskGb", "공백오류", "업무구분을 선택하세요");
 			
 		}		
 //		업무구분 유효성 체크)		
 		String userDevId = member.getUserDevId();
 		if(userDevId == null || userDevId.trim().isEmpty()) {
-			System.out.println("개발자를 선택하세요.");
 			errors.rejectValue("userDevId", "공백오류", "개발자를 선택하세요");
 			
 		}			

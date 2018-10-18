@@ -29,6 +29,9 @@ public class ComDefaultVO implements Serializable {
     /** 검색Keyword */
     private String searchKeyword = "";
     
+    /** 검색_2Keyword */
+    private String searchKeyword_2 = "";
+    
     /** 검색사용여부 */
     private String searchUseYn = "";
     
@@ -94,6 +97,14 @@ public class ComDefaultVO implements Serializable {
 
     public void setSearchKeyword(String searchKeyword) {
         this.searchKeyword = searchKeyword;
+    }
+    
+    public String getSearchKeyword_2() {
+        return searchKeyword_2;
+    }
+
+    public void setSearchKeyword_2(String searchKeyword_2) {
+        this.searchKeyword_2 = searchKeyword_2;
     }
 
     public String getSearchUseYn() {

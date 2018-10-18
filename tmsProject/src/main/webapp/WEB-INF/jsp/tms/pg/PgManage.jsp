@@ -76,8 +76,8 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 
-	$(function(){
-	   $('#searchBySysGb').change(function() {
+$(function(){
+	   $('#bbb').change(function() {
 	      $.ajax({
 	         
 	         type:"POST",
@@ -86,7 +86,7 @@
 	         async: false,
 	         dataType : "json",
 	         success : function(selectTaskGbSearch){
-	        	$("#searchBySysGb").val($("#searchBySysGb").val());
+	        	 $("#searchBySysGb").val($("#bbb").val());
 	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
 	            $.each(selectTaskGbSearch, function(i){
 	               (JSON.stringify(selectTaskGbSearch[0])).replace(/"/g, "");
@@ -103,7 +103,11 @@
 	   })
 	})
 
-	
+	function setting() {
+		document.frm.searchBySysGb.value = document.frm.bbb.value;
+		document.frm.searchByTaskGb.value = document.frm.task.value;
+		
+	}
 	
 	function searchExcelFileNm() {
     	window.open("<c:url value='/tms/pg/ExcelFileListSearch.do'/>",'','width=500, height=400, left=350, top=200');
@@ -156,16 +160,19 @@
         //document.frm.submit();
         
         
-    	window.open("<c:url value='/tms/pg/deletePg2.do?result="+returnValue+"'/>",'','width=500, height=300, left=350, top=200');
+    	window.open("<c:url value='/tms/pg/deletePgList.do?result="+returnValue+"'/>",'','width=500, height=300, left=350, top=200');
 	}
 
 	function Pg_select(pageNo){
-		
+		document.frm.cnt.value = "a";
+		document.frm.searchBySysGb.value = document.frm.bbb.value;
+		document.frm.searchByTaskGb.value = document.frm.task.value;
 		//alert(pageNo);
 		document.frm.pageIndex.value = pageNo;
 		//document.frm.searchByTaskGb.value = document.frm.task.value;
 		//document.frm.fon.value = pageNo;
-    	document.frm.action = "<c:url value='/tms/pg/PgManage.do'/>";
+		var url = "<c:url value='/tms/pg/PgManage.do" + "?cnt=" + document.frm.cnt.value + "'/>";
+    	document.frm.action = url;
     	document.frm.submit();
 	}
 	
@@ -173,6 +180,7 @@
 		//alert(pageNo);
 		
 		document.frm.pageIndex.value = pageNo;
+		
 		var checkField = document.frm.delYn;
         var checkId = document.frm.checkId;
         var returnValue = "";
@@ -348,11 +356,12 @@
 				<input type="submit" id="invisible" class="invisible"/>
 				<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 				
-							<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
-			<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
-			<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
-			<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
-			<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
+				<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
+				<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
+				<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
+				<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
+				<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
+				<input id="cnt" type="hidden" />
 				
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
@@ -382,24 +391,26 @@
                         	<ul id="search_first_ul">	
 					  			<li>
 								    <label >시스템구분</label>
-									<select name="searchBySysGb" id="searchBySysGb" style="width:12%;text-align-last:center;">
+									<select name="bbb" id="bbb" style="width:12%;text-align-last:center;">
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
 									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
-									      </c:forEach>
+									    </c:forEach>
 									</select>
-												
+									
+									<input type="hidden" name="searchBySysGb" id="searchBySysGb" value=""/>					
 					  			</li>
 					  			
 					  			
 					  			<li>
 								    <label for="searchByTaskGb">업무구분</label>
-									<select name="searchByTaskGb" id="searchByTaskGb" style="width:15%;text-align-last:center;">
+									<select name="task" id="task" style="width:15%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
 									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									    	</c:forEach>								   
 									</select>				
+									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value=""/>
 					  			</li>                     	
 
 								<li>
@@ -413,31 +424,23 @@
 									    		<c:if test="${useYn == 'N'}">
 									    			<option value="<c:out value="${useYn}"/>" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >미사용</option>
 									    		</c:if> 
-									    	</c:forEach>							   
+									    	</c:forEach>								   
 									</select>				
 									
 					  			</li>  
+                       			<li>
+                            		<div class="buttons" style="float:right;">                              			
+                                    	<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+                                    	<a href="#Link" onclick="Pg_Relation_Search(); return false;">삭제</a>
+                                    	<a href="<c:url value='/tms/pg/PgInsert.do'/>" >등록</a>
+                                    	<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀등록</a>
+                                    </div>
+                                </li>
+                       
                        
 							</ul> 	
 							</div>
-							  
-                            <div class="default_tablestyle"  style=" width:100%"> 
-                            	<ul id="search_second_ul"  style=" width:100%">                            
-                            		<li>
-                            			<div class="buttons" style="float:right;">                              			
-                                    		<a href="#Link" onclick="Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                                    		<a href="#Link" onclick="Pg_Relation_Search(); return false;">삭제</a>
-                                    		<a href="<c:url value='/tms/pg/PgInsert.do'/>" >등록</a>
-                                    		<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀등록</a>
-                                    	</div>
-                                	</li>
-                            	</ul>
-                            
-                            </div>
-                        
-                        
-                        
-                           
+							
                         </fieldset>
                  	</div>
                 	<!-- //검색 필드 박스 끝 -->

@@ -83,7 +83,7 @@ public class ProgramController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/pg/PgManage.do")
-	public String selectPgList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+	public String selectPgList(@RequestParam(value="cnt", defaultValue = "") String cnt, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -99,6 +99,8 @@ public class ProgramController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
+		if(cnt.equals("")) { searchVO.setSearchUseYn("Y"); }
+		
 		List<?> PgList = ProgramService.selectPgList(searchVO);
 		//List<?> PgList = ProgramService.selectPgList(searchVO);
 		model.addAttribute("resultList", PgList);
@@ -166,6 +168,34 @@ public class ProgramController {
 		return "tms/pg/PgUpdate";
 	}
 	
+	@RequestMapping("/tms/pg/selectPgCheck.do")
+	public String selectPgCheck(@ModelAttribute("programVO") ProgramVO searchVO, ModelMap model) throws Exception {
+
+		//VO.setCodeId("COM005");
+
+		ProgramVO VO = ProgramService.selectProgramInf(searchVO);
+		
+		model.addAttribute("programVO", VO);
+
+		// 공통코드 부분 시작 -------------------------------	
+		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
+		model.addAttribute("sysGb", sysGbList);
+		
+		System.out.println("here---"+searchVO.getPgId());
+		
+		List<String> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
+		model.addAttribute("taskGb2", taskGbList3);
+		
+		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
+		model.addAttribute("taskGb", taskGbList);
+		List<?> user_dev_List = TmsProgrmManageService.selectUserList();
+		model.addAttribute("dev_List", user_dev_List);
+		// 공통코드 끝 시작 -------------------------------	
+		
+		
+		return "tms/pg/PgCheck";
+	}
+	
 	/**
 	 * 프로그램 현황을 조회한다.
 	 * @param ProgramDefaultVO - 조회할 정보가 담긴 VO
@@ -173,7 +203,7 @@ public class ProgramController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/pg/PgCurrent.do")
-	public String selectDevResultList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+	public String selectDevResultList(@RequestParam(value="cnt", defaultValue = "") String cnt, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -188,7 +218,9 @@ public class ProgramController {
 		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-
+		
+		if(cnt.equals("")) { searchVO.setSearchUseYn("Y"); }
+		
 		List<?> PgList = ProgramService.selectPgList(searchVO);
 		//List<?> PgList = ProgramService.selectPgList(searchVO);
 		model.addAttribute("resultList", PgList);
@@ -352,7 +384,7 @@ public class ProgramController {
 		
 	}
 	
-	@RequestMapping(value = "/tms/pg/deletePg2.do")
+	@RequestMapping(value = "/tms/pg/deletePgList.do")
 	public String insertPgDelete2(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, @RequestParam String result, ModelMap model) throws Exception {
 			System.out.println("---여기다!"+result);
 		
@@ -911,14 +943,12 @@ public class ProgramController {
 		int j = 0;
 		int result_cnt = 1;
 		
-		List<String> error_list = new ArrayList<String>();
-		List<String> error_message = new ArrayList<String>();
 		ArrayList <HashMap<String, String>> error_hash = new ArrayList <HashMap<String, String>>();
+		
 		
 		for (int i = 0; i < xlsxList.size(); i++) {
 			
 			j=i;
-			
 			
 			try {
 				vo = xlsxList.get(i);
@@ -927,8 +957,8 @@ public class ProgramController {
 				{
 					HashMap<String, String> hash = new HashMap<String, String>();
 					
-					hash.put("problem", (j+1)+"행을 등록시키지 못했습니다!");
-					hash.put("reason", "컬럼 'USE YN' 형식 불일치");
+					hash.put("problem", (j+1)+"행 등록 실패");
+					hash.put("reason", "사용여부, 불일치");
 					error_hash.add(hash);
 					
 					result_cnt = 0;
@@ -936,52 +966,81 @@ public class ProgramController {
 					continue;
 				}
 				ProgramService.insertPg(vo);
-				
+				ProgramService.deletePg(vo);
 				
 				model.addAttribute("result", "true");
 				model.addAttribute("result2", "true");
 			}catch(Exception e) {
+				
 				HashMap<String, String> hash = new HashMap<String, String>();
+				
+				//System.out.println("error1: "+e.toString());
 				
 				result_cnt = 0;
 				String[] array = e.toString().split(":");
 				
 				String last = array[array.length-1];
-				last = last.replace("Column", "컬럼");
-				last = last.replace("Duplicate entry", "컬럼");
-				last = last.replace("cannot be nul", "형식 불일치");
-				last = last.replace("for key 'PRIMARY'", "중복");
-				last = last.replace("for key 'PRIMARY'", "중복");
 				
-				if(last.contains("a foreign key"))
-				{
+				//last = last.replace("for key 'PRIMARY'", "프로그램ID 중복");
+				last = last.replace("'USER_DEV_ID'", "개발자 이름,");
+				last = last.replace("'SYS_GB'", "시스템구분,");
+				last = last.replace("'TASK_GB'", "업무구분,");
+					
+				last = last.replace("Column", "");
+				last = last.replace("Duplicate entry", "");
+				last = last.replace("cannot be null", "불일치");
+				
+				
+				//last = last.replace("for key 'PRIMARY'", "프로그램ID 중복");
+				
+				//last = last.replace("Data too long for column", "");	
+				//last = last.replace("l", "");
+				
+				if(last.contains("a foreign key")) {				
 					String[] array2 = last.split("\\(");
 					last = array2[3];
 					String[] array3 = last.split("\\)");
-					last = "컬럼 "+array3[0]+" 외래키";
-					//System.out.println(last);
+					last = ""+array3[0]+" 불일치";
 				}
 				
-				error_list.add((j+1)+"행을 등록시키지 못했습니다!"+last);
-				error_message.add(last);
+				if(last.contains("Data too")) {
+					
+					if(last.contains("PG_ID")) {
+						last = "화면ID, 길이초과";
+					}else if(last.contains("PG_NM")) {
+						last = "화면명, 길이초과";
+					}
+				}
 				
-				hash.put("problem", (j+1)+"행을 등록시키지 못했습니다!");
+				if(last.contains("for key 'PRIMARY'")) {
+					last = "화면ID, 중복";
+				}
+				last = last.replace("'PJT_ID'", "프로젝트ID,");
+				
+				
+				hash.put("problem", (j+1)+"행 등록 실패");
 				hash.put("reason", last);
 				error_hash.add(hash);
 				continue;
 			}
 		}  
-		model.addAttribute("error_lists", error_list);
-		model.addAttribute("error_messages", error_message);
 		model.addAttribute("error_hashs", error_hash);
 		model.addAttribute("result", result_cnt);
+		
+		if(result_cnt == 1)
+		{
+			for (int i = 0; i < xlsxList.size(); i++) {
+				vo = xlsxList.get(i);
+				ProgramService.insertPg(vo);
+			}
+		}
 		
 		
 		return "/tms/pg/ExcelFileNmSearch";
     }
     
 	@RequestMapping(value = "/tms/pg/ExcelFileListSearch.do")
-	public String selectExcelFileListSearch(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+	public String selectExcelFileListSearch() throws Exception {
 		
 		return "/tms/pg/ExcelFileNmSearch";
 

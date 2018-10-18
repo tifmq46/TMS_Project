@@ -47,6 +47,16 @@ function fn_delete() {
 	
 }
 
+function fn_delete2() {
+	
+	
+	
+	document.progrmManageForm.action = "<c:url value='/tms/pg/deletePg.do'/>";
+	
+	document.progrmManageForm.submit();   
+	
+}
+
 function window_close() {
 	   
 	opener.location.reload();
@@ -127,7 +137,7 @@ function test3() {
             	<ul id="search_second_ul">            		  
                     	<li>
                         	<div style="float:right;">      
-                        		<font style="color:#0f438a;" size="3px"><strong>정말 삭제하시겠습니까? </strong></font>                  
+                        		<font style="color:#0f438a;" size="3px"><strong>삭제하시겠습니까? </strong></font>                  
                         	</div>                              
                     	</li>                    
             	</ul> 
@@ -141,7 +151,7 @@ function test3() {
                     	<li>
                         	<div class="buttons" style="float:right;">                
                         		<a href="#LINK" onclick="javascript:fn_delete(); return false;">삭제 </a>
-                            	<a href="#LINK" onclick="javascript:window_close(); return false;">닫기 </a>
+                            	<a href="#LINK" onclick="javascript:window_close(); return false;">취소 </a>
                         	</div>                              
                     	</li>                     
             	</ul> 
