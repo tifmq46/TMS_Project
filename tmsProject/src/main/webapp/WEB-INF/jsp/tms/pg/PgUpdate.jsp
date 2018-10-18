@@ -50,7 +50,7 @@
     }
     
 	$(function(){
-		   $('#SYS_GB').change(function() {
+		   $('#sysGb').change(function() {
 		      $.ajax({
 		         type:"POST",
 		         url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
@@ -58,11 +58,11 @@
 		         async: false,
 		         dataType : "json",
 		         success : function(selectTaskGbSearch){
-		        	 $("#searchBySysGb").val($("#SYS_GB").val());
-		            $("#TASK_GB").find("option").remove().end().append("<option value=''>선택하세요</option>");
+		        	 $("#searchBySysGb").val($("#sysGb").val());
+		            $("#taskGb").find("option").remove().end().append("<option value=''>선택하세요</option>");
 		            $.each(selectTaskGbSearch, function(i){
 		               (JSON.stringify(selectTaskGbSearch[0])).replace(/"/g, "");
-		            $("#TASK_GB").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>")
+		            $("#taskGb").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>")
 		            });
 		            
 		         },
@@ -127,7 +127,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="30" style="width:50%" title="화면ID" value="<c:out value='${programVO.pgId}'/>" >&nbsp;<span id="sometext"></span>
+                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="30" style="width:50%" title="화면ID" value="<c:out value='${programVO.pgId}'/>" readonly>
                               <form:errors path="pgId" style="color: red"/>
                               <br/> 
                             </td>
@@ -146,6 +146,7 @@
                             </td>
                           </tr>
                           <tr> 
+                          <tr> 
                             <th height="23" class="required_text" >
                                 <label for="tmplatSeCode">  
                                     	시스템구분
@@ -153,15 +154,15 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="sysGb" name="sysGb" class="select" title="시스템구분" onchange="selectChange();">
-									   <option selected value="" >선택하세요</option>
+                            <select id="sysGb" name="sysGb" class="select" title="시스템구분">
+									   <option value="" >선택하세요</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${programVO.sysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
+									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${SYSGB == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>  --%>   
-                            </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
+                            </select>&nbsp;<span id="sometext"></span>
                             <form:errors path="sysGb" style="color: red"/>
                                <br/>
                             </td>
@@ -175,16 +176,15 @@
                             </th>
                             <td>
                             <select id="taskGb" name="taskGb" class="select" title="업무구분">
-									   <option value="">선택하세요</option>
-					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
-									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${programVO.taskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
-									    	</c:forEach>	
-                            </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
+									   <option value="" >선택하세요</option>
+                                			<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
+									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${TASKGB == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
+									    	</c:forEach>
+                            </select>&nbsp;<span id="sometext"></span>
                             <form:errors path="taskGb" style="color: red"/>
                                <br/>
                             </td>
                           </tr> 
-                          <tr> 
                             <th width="20%" height="23" class="required_text" nowrap >
                                 <label for="tmplatCours">   
                                     	개발자
