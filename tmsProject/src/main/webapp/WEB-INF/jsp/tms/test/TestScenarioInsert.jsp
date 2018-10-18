@@ -94,7 +94,7 @@ function insertTestScenarioImpl(){
                                 </th>
 								<td width="75%" colspan="3">
 									<c:out value="${testcaseId}" ></c:out>
-									<form:hidden path="testcaseId" value="${testcaseId}"/>
+									<input type="hidden" name="testcaseId" value="${testcaseId}"/>
                             	</td>
                             </tr>
                             <tr>
@@ -152,23 +152,12 @@ function insertTestScenarioImpl(){
 	                    <ul>        
 	           				<li>
 								<div class="buttons">
-				   					<a href="#" onclick="insertTestScenarioImpl(); return false;"><spring:message code="button.create" /></a>
-				   					<a href="<c:url value='/tms/test/selectTestScenarioList.do?testcaseGb=${testcaseGb}'/>" ><spring:message code="button.list" /></a>
+				   					<a href="#" onclick="insertTestScenarioImpl(); return false;"><spring:message code="button.save" /></a>
+				   					<a href="<c:url value='/tms/test/selectTestCaseWithScenario.do?testcaseId=${testcaseId}'/>" ><spring:message code="button.list" /></a>
 								</div>  				  		
 		  					</li>             
 	                    </ul>        
                    </div>      
-
-                <!-- 페이지 네비게이션 시작 -->
-                <c:if test="${!empty loginPolicyVO.pageIndex }">
-                    <div id="paging_div">
-                        <ul class="paging_align">
-                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage" />
-                        </ul>
-                    </div>
-                <!-- //페이지 네비게이션 끝 -->
-                </c:if>
-
 
 
             </div>

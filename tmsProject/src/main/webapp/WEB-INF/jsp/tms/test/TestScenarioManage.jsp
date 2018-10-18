@@ -82,32 +82,69 @@ function fCheckAll() {
 function fDeleteMenuList() {
 	
 	
-	if (confirm('<spring:message code="common.delete.msg" />')) {
-		 var checkField = document.testScenarioVO.checkField;
-		    var menuNo = document.testScenarioVO.checkMenuNo;
-		    var checkMenuNos = "";
-		    var checkedCount = 0;
-		    if(checkField) {
+	var checkField = document.testScenarioVO.checkField;
+    var menuNo = document.testScenarioVO.checkMenuNo;
+    var checkMenuNos = "";
+    var checkedCount = 0;
+    if(checkField) {
 
-		        if(checkField.length > 1) {
-		            for(var i=0; i < checkField.length; i++) {
-		                if(checkField[i].checked) {
-		                    checkMenuNos += ((checkedCount==0? "" : ",") + menuNo[i].value);
-		                    checkedCount++;
-		                }
-		            }
-		        } else {
-		            if(checkField.checked) {
-		                checkMenuNos = menuNo.value;
-		            }
-		        }
-		    }   
+        if(checkField.length > 1) {
+            for(var i=0; i < checkField.length; i++) {
+                if(checkField[i].checked) {
+                    checkMenuNos += ((checkedCount==0? "" : ",") + menuNo[i].value);
+                    checkedCount++;
+                }
+            }
+        } else {
+            if(checkField.checked) {
+                checkMenuNos = menuNo.value;
+                checkedCount++;
+            }
+        }
+    }   
 
-		    document.testScenarioVO.checkedMenuNoForDel.value=checkMenuNos;
-		    document.testScenarioVO.action = "<c:url value='/tms/test/deleteMultiTestScenario.do'/>";
-		    document.testScenarioVO.submit(); 
-	}
+    if(checkedCount < 1) {
+    	alert("삭제할 테스트시나리오를 선택하여주시기바랍니다.");
+    } else {
+    	if (confirm('<spring:message code="common.delete.msg" />')) {
+    		document.testScenarioVO.checkedMenuNoForDel.value=checkMenuNos;
+ 		    document.testScenarioVO.action = "<c:url value='/tms/test/deleteMultiTestScenario.do'/>";
+ 		    document.testScenarioVO.submit(); 
+    	}
+    }
    
+}
+
+function selectTestScenario() {
+	
+	var checkField = document.testScenarioVO.checkField;
+    var menuNo = document.testScenarioVO.checkMenuNo;
+    var checkMenuNos = "";
+    var checkedCount = 0;
+    if(checkField) {
+
+        if(checkField.length > 1) {
+            for(var i=0; i < checkField.length; i++) {
+                if(checkField[i].checked) {
+                    checkMenuNos += ((checkedCount==0? "" : ",") + menuNo[i].value);
+                    checkedCount++;
+                }
+            }
+        } else {
+            if(checkField.checked) {
+                checkMenuNos = menuNo.value;
+                checkedCount++;
+            }
+        }
+    }   
+    if(checkedCount > 1){
+    	alert("한개의 테스트시나리오만 선택하여주시기바랍니다.");
+    } else if(checkedCount < 1) {
+    	alert("수정할 테스트시나리오를 선택하여주시기바랍니다.");
+    } else {
+    	 document.testScenarioVO.action = "<c:url value='/tms/test/selectTestScenario.do?testscenarioId=" +  checkMenuNos + "'/>";
+		 document.testScenarioVO.submit();
+    }
 }
 
 
@@ -252,6 +289,15 @@ function fDeleteMenuList() {
 						<input type="hidden" name="testcaseId" value="${testVoMap.testcaseId}" >
 						<input name="checkedMenuNoForDel" type="hidden" />
                         <table>
+                        
+	                        <colgroup>
+		             		 	<col width="4%"/>
+		        				<col width="4%"/> 
+		        				<col width="47%"/>
+		        				<col width="18%"/>
+		        				<col width="27%"/>
+        					</colgroup>
+        					
                             <tr>
                             	<th height="23"  nowrap="nowrap" scope="col" class="f_field" nowrap="nowrap">
                             		<input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/>
@@ -303,22 +349,14 @@ function fDeleteMenuList() {
 	           				<li>
 								<div class="buttons">
 				   					<a href= "<c:url value='/tms/test/insertTestScenario.do?testcaseId=${testVoMap.testcaseId} '/>"><spring:message code="button.create" /></a>
+				   					<a href="#LINK" onclick="selectTestScenario(); return false;"><spring:message code="button.update" /></a>
 									<a href="#LINK" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
-									<a href="javascript:history.go(-1);"><spring:message code="button.list" /></a>
+									<a href= "<c:url value='/tms/test/selectTestScenarioList.do?testcaseGb=${testVoMap.testcaseGbCode} '/>"><spring:message code="button.list" /></a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>        
                    </div>
 
-                <!-- 페이지 네비게이션 시작 -->
-                <c:if test="${!empty loginPolicyVO.pageIndex }">
-                    <div id="paging_div">
-                        <ul class="paging_align">
-                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage" />
-                        </ul>
-                    </div>
-                <!-- //페이지 네비게이션 끝 -->
-                </c:if>
 
 			</form:form>
 

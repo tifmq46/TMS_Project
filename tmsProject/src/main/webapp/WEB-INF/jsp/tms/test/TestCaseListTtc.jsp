@@ -25,6 +25,8 @@
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+
 
 <title>통합 테스트 케이스 목록 조회</title>
 
@@ -37,6 +39,133 @@ function fn_egov_select_testCaseList(pageNo){
     document.listForm.submit();  
 }
 
+
+function selectTestCase(){
+	
+	 var checkField = document.testCaseVO.checkField;
+	    var menuNo = document.testCaseVO.checkMenuNo;
+	    var checkMenuNos = "";
+	    var checkedCount = 0;
+	    if(checkField) {
+
+	        if(checkField.length > 1) {
+	            for(var i=0; i < checkField.length; i++) {
+	                if(checkField[i].checked) {
+	                    checkMenuNos += ((checkedCount==0? "" : ",") + menuNo[i].value);
+	                    checkedCount++;
+	                }
+	            }
+	        } else {
+	            if(checkField.checked) {
+	                checkMenuNos = menuNo.value;
+	            }
+	        }
+	    }   
+	    
+	    if(checkedCount > 1){
+	    	alert("한개의 테스트케이스만 선택하여주시기바랍니다.");
+	    } else if(checkedCount < 1) {
+	    	alert("수정할 테스트케이스를 선택하여주시기바랍니다.");
+	    } else {
+	    	 document.testCaseVO.action = "<c:url value='/tms/test/selectTestCase.do?testcaseId=" +  checkMenuNos  + "&returnPg=TestCaseDetail'/>";
+			 document.testCaseVO.submit();
+	    }
+}
+
+function searchFileNm() {
+    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+}
+
+function fCheckAll() {
+    var checkField = document.testCaseVO.checkField;
+    if(document.testCaseVO.checkAll.checked) {
+        if(checkField) {
+            if(checkField.length > 1) {
+                for(var i=0; i < checkField.length; i++) {
+                    checkField[i].checked = true;
+                }
+            } else {
+                checkField.checked = true;
+            }
+        }
+    } else {
+        if(checkField) {
+            if(checkField.length > 1) {
+                for(var j=0; j < checkField.length; j++) {
+                    checkField[j].checked = false;
+                }
+            } else {
+                checkField.checked = false;
+            }
+        }
+    }
+}
+
+/* ********************************************************
+ * 멀티삭제 처리 함수
+ ******************************************************** */
+function fDeleteMenuList() {
+	
+		 	var checkField = document.testCaseVO.checkField;
+		    var menuNo = document.testCaseVO.checkMenuNo;
+		    var checkMenuNos = "";
+		    var checkedCount = 0;
+		    if(checkField) {
+
+		        if(checkField.length > 1) {
+		            for(var i=0; i < checkField.length; i++) {
+		                if(checkField[i].checked) {
+		                    checkMenuNos += ((checkedCount==0? "" : ",") + menuNo[i].value);
+		                    checkedCount++;
+		                }
+		            }
+		        } else {
+		            if(checkField.checked) {
+		                checkMenuNos = menuNo.value;
+		            }
+		        }
+		    }  
+		    
+		    if(checkedCount == 0) {
+		    	alert("삭제할 테스트케이스를 선택하여주시기바랍니다.");
+		    	return false;
+		    	
+		    } else {
+		    	
+		    	if (confirm('<spring:message code="common.delete.msg" />')) {
+		    	
+		    		$.ajax({
+				    	
+				    	 type :"POST"
+				    	,url  : "<c:url value='/tms/test/selectScenarioCntReferringToCase.do'/>"
+				    	,data : {checkedMenuNoForDel:checkMenuNos}
+				    	,success :  function(totalCount){
+				    		
+				    		if(totalCount > 0) {
+				    			if (confirm('삭제하려는 케이스 중 ' + totalCount + '개의 케이스에 시나리오가 존재하고 있습니다. 그래도 삭제하시겠습니까')) {
+				    			
+				    				 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
+				    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
+				    				 document.testCaseVO.submit(); 
+				    			}
+				    		} else {
+				    			 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
+			    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
+			    				 document.testCaseVO.submit();
+				    		}
+				    		
+				    	}
+				    	, error :  function(request,status,error){
+				    		 alert("에러");
+					         alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				    	}
+				    		
+				    });
+		    	
+		    	}
+		    }
+   
+}
 
 
 </script>
@@ -118,10 +247,13 @@ function fn_egov_select_testCaseList(pageNo){
 						  			
 						  			<li>
 										<div class="buttons" style="float:right;">
-										    
-	                                        <a href="<c:url value='/tms/test/selectTestCaseList.do'/>" onclick="fn_egov_select_testCaseList('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" /><spring:message code="button.inquire" /></a>
-										     <a href= "<c:url value="/tms/test/insertTestCase.do" />" ><spring:message code="button.create" /></a>
-										</div>	  				  			
+									    
+	                                        <a href="<c:url value='/tms/test/selectTestCaseList.do'/>" onclick="fn_egov_select_testCaseList('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
+											<spring:message code="button.inquire" /></a>
+										    <a href= "<c:url value="/tms/test/insertTestCase.do" />" ><spring:message code="button.create" /></a>
+										    <a href="#" onclick="selectTestCase(); return false;"><spring:message code="button.update" /></a>
+										    <a href="#" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
+										</div>		  				  			
 						  			</li> 
 						  			
 						  		</ul>	
@@ -135,48 +267,75 @@ function fn_egov_select_testCaseList(pageNo){
                 
 
                 <div id="page_info"><div id="page_info_align"></div></div>     
-                
-                <div class="default_tablestyle">
-              	<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
-                <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
-              
-              
-              <colgroup>
-        				<col width="60"/> 
-        				<col width="60"/>
-        				<col width="60"/>
-        				<col width="150"/>
-        				<col width="80"/>
-        				<col width="80"/>
-        			</colgroup>
-        			<tr>
-        				<th align="center"><spring:message code="tms.test.taskGb" /></th>
-        				<th align="center"><spring:message code="tms.test.userWriterId" /></th>
-        				<th align="center"><spring:message code="tms.test.testcaseId" /></th>
-        				<th align="center"><spring:message code="tms.test.testcaseContent" /></th>
-			        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>
-        				<th align="center"><spring:message code="tms.test.completeYn" /></th>
-        			</tr>
-        			
-        			<c:forEach var="result" items="${testCaseList}" varStatus="status">
-        			
-            			<tr>
-            				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd">
-	            				<a href= "<c:url value='/tms/test/selectTestCase.do?testcaseId=${result.testcaseId}'/>">
-	            				<strong><c:out value="${result.testcaseId}"/></strong>
-	            				</a>
-            				</td>
-            				
-            				
-            				<td align="center" class="listtd"><c:out value="${result.testcaseContent}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>
-            			</tr>
-        			</c:forEach>
-              </table>        
-           </div>
+                 <form:form commandName="testCaseVO" name="testCaseVO" method="post" action="/tms/test/deleteMultiTestCase.do">     
+                	<input name="checkedMenuNoForDel" type="hidden" />
+                	<input name="testcaseGb" type="hidden" value="TC2"/>
+                	
+	                <div class="default_tablestyle">
+	              	<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
+	                <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
+	              
+	              
+	             		 <colgroup>
+	             		 	<col width="4%" >
+	             		 	<col width="4%"/>
+	        				<col width="12%"/> 
+	        				<col width="35%"/>
+	        				<col width="6%"/>
+	        				<col width="9%"/>
+	        				<col width="9%"/>
+	        				<col width="5%"/>
+	        				<col width="5%"/>
+	        				<col width="6%"/>
+	        				<col width="5%"/>
+	        			</colgroup>
+	        			<tr>
+	        				<th scope="col" class="f_field" nowrap="nowrap"><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/></th>
+	        			    <th align="center"><spring:message code="tms.test.no" /></th>
+	        			    <th align="center"><spring:message code="tms.test.testcaseId" /></th>
+	        			    <th align="center"><spring:message code="tms.test.testcaseContent" /></th>
+	        			    <th align="center"><spring:message code="tms.test.userWriterId" /></th>
+	        				<th align="center"><spring:message code="tms.test.taskGb" /></th>
+				        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>
+				        	<th align="center"><spring:message code="tms.test.firstTest" /></th>
+				        	<th align="center"><spring:message code="tms.test.secondTest" /></th>
+	        				<th align="center"><spring:message code="tms.test.completeYn" /></th>
+	        				<th align="center">결과</th>
+	        			</tr>
+	        			
+	        			<c:forEach var="result" items="${testCaseList}" varStatus="status">
+	        			
+	            			<tr>
+		            			<td nowrap="nowrap" >
+							       <input type="checkbox" name="checkField" class="check2" title="선택"/>
+							       <input name="checkMenuNo" type="hidden" value="<c:out value='${result.testcaseId}'/>"/>
+							       <input type="hidden" name="pgId" value="<c:out value="${result.pgId}"/>">
+							    </td>
+	            			    <td nowrap="nowrap" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
+	            				<td align="left" class="listtd"><c:out value="${result.testcaseId}"/></td>
+	            				<td align="left" class="listtd" >
+	            					<a href= "<c:url value='/tms/test/selectTestCase.do?testcaseId=${result.testcaseId}&returnPg=TestCaseDetail'/>">
+		            					<strong><c:out value="${result.testcaseContent}"/></strong>
+		            				</a>
+	            				</td>
+	            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.firstTestResultYn}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.secondTestResultYn}"/>&nbsp;</td>
+	            				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>
+	            				
+	            				<td>
+	            				<div class="buttons">
+									<a href="<c:url value='/tms/test/selectTestCase.do?testcaseId=${result.testcaseId}&returnPg=TestCaseUpdateResult'/>"><spring:message code="button.create" /></a>
+								</div>
+	            				</td>
+	            			</tr>
+	        			</c:forEach>
+	              </table>        
+	           </div>
+          
+        	</form:form>
  		
  		                 <!-- 페이지 네비게이션 시작 -->
                 <div id="paging_div">

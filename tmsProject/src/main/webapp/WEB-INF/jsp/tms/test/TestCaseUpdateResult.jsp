@@ -43,7 +43,7 @@ function completeYnValidator(evt) {
 	var firstTestResult = $('input[name="firstTestResultYn"]:checked').val();
 	var secondTestResult = $('input[name="secondTestResultYn"]:checked').val();
 	
-	if(firstTestResult != 'Y' && secondTestResult != 'Y'){
+	if(firstTestResult != 'Y' || secondTestResult != 'Y'){
 		alert("1차와 2차가 완료되지 않은 상태에서는 최종완료여부를 선택하실 수 없습니다.");
 		evt.preventDefault();
 		return false;

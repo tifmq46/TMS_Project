@@ -102,6 +102,7 @@ public class TestDAO extends EgovAbstractDAO{
 	 * @return HashMap<String,Object>
 	 * @exception Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public HashMap<String,Object> selectTestCase(String testcaseId) throws Exception {
 		return  (HashMap<String, Object>) select("TestDAO.selectTestCase", testcaseId);
 	}
@@ -114,6 +115,7 @@ public class TestDAO extends EgovAbstractDAO{
 	 * @return HashMap<String,Object>
 	 * @exception Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public HashMap<String,Object> selectTestCaseProgressStatus(String testcaseGb) throws Exception {
 		return  (HashMap<String, Object>) select("TestDAO.selectTestCaseProgressStatus", testcaseGb);
 	}
@@ -240,6 +242,7 @@ public class TestDAO extends EgovAbstractDAO{
 	 * @return 글 총 갯수
 	 * @exception
 	 */
+	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> selectTestCurrentCnt(TestDefaultVO searchVO) throws Exception {
 		return  (HashMap<String, Object>) select("TestDAO.selectTestCurrentCnt", searchVO);
 	}
@@ -251,8 +254,8 @@ public class TestDAO extends EgovAbstractDAO{
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-	public List<HashMap<String,String>> selectTestStatsTable(TestDefaultVO searchVO) throws Exception {
-		return (List<HashMap<String,String>>) list("TestDAO.selectTestStatsTable", searchVO);
+	public List<?> selectTestStatsTable(TestDefaultVO searchVO) throws Exception {
+		return (List<?>) list("TestDAO.selectTestStatsTable", searchVO);
 	}
 	
 }

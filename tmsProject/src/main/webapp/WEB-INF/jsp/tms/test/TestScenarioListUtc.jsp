@@ -71,7 +71,7 @@ function fCheckAll() {
 function fDeleteMenuList() {
 	
 	
-	if (confirm('<spring:message code="common.delete.msg" />')) {
+	
 		 var checkField = document.testScenarioVO.checkField;
 		    var menuNo = document.testScenarioVO.checkMenuNo;
 		    var checkMenuNos = "";
@@ -88,16 +88,55 @@ function fDeleteMenuList() {
 		        } else {
 		            if(checkField.checked) {
 		                checkMenuNos = menuNo.value;
+		                checkedCount++;
 		            }
 		        }
 		    }   
 
-		    document.testScenarioVO.checkedMenuNoForDel.value=checkMenuNos;
-		    document.testScenarioVO.action = "<c:url value='/tms/test/deleteMultiTestScenario.do'/>";
-		    document.testScenarioVO.submit(); 
-	}
-   
+		    if(checkedCount < 1) {
+		    	alert("삭제할 테스트시나리오를 선택하여주시기바랍니다.");
+		    } else {
+		    	if (confirm('<spring:message code="common.delete.msg" />')) {
+		    		document.testScenarioVO.checkedMenuNoForDel.value=checkMenuNos;
+		 		    document.testScenarioVO.action = "<c:url value='/tms/test/deleteMultiTestScenario.do'/>";
+		 		    document.testScenarioVO.submit(); 
+		    	}
+		    }
 }
+
+var testcaseGb ="";
+function selectTestScenario() {
+		
+	var checkField = document.testScenarioVO.checkField;
+    var menuNo = document.testScenarioVO.checkMenuNo;
+    var checkMenuNos = "";
+    var checkedCount = 0;
+    if(checkField) {
+
+        if(checkField.length > 1) {
+            for(var i=0; i < checkField.length; i++) {
+                if(checkField[i].checked) {
+                    checkMenuNos += ((checkedCount==0? "" : ",") + menuNo[i].value);
+                    checkedCount++;
+                }
+            }
+        } else {
+            if(checkField.checked) {
+                checkMenuNos = menuNo.value;
+                checkedCount++;
+            }
+        }
+    }   
+    if(checkedCount > 1){
+    	alert("한개의 테스트시나리오만 선택하여주시기바랍니다.");
+    } else if(checkedCount < 1) {
+    	alert("수정할 테스트시나리오를 선택하여주시기바랍니다.");
+    } else {
+    	 document.testScenarioVO.action = "<c:url value='/tms/test/selectTestScenario.do?testscenarioId=" +  checkMenuNos + "'/>";
+		 document.testScenarioVO.submit();
+    }
+}
+
 
 function selectTestScenarioOnScenarioListPg(caseId,caseGb){
 	
@@ -109,6 +148,7 @@ function selectTestScenarioOnScenarioListPg(caseId,caseGb){
    	,data : {testcaseId:caseId, testcaseGb:caseGb}
    	,success :  function(result){
    		
+   		testcaseGb = result.testVoMap.testcaseGbCode;
    		$("#testScenarioListAjaxTbody").empty();
    		$("#testCaseAjaxTbody").empty();
    		$("#paging_div").empty();
@@ -124,7 +164,6 @@ function selectTestScenarioOnScenarioListPg(caseId,caseGb){
    		testCaseStr += "</a>";
    		testCaseStr += "</td>";
    		testCaseStr += "<td align='center' class='listtd'>" + result.testVoMap.userNm +"</td>";
-   		testCaseStr += "<td align='left' class='listtd'>" + result.testVoMap.pgId + "</td>";
    		testCaseStr += "<td align='center' class='listtd'>" + result.testVoMap.taskGbNm + "</td>";
    		testCaseStr += "<td align='center' class='listtd'>" + result.testVoMap.enrollDt + "</td>";
    		testCaseStr += "<td align='center' class='listtd'>" + result.testVoMap.completeYn + "</td>";
@@ -139,6 +178,7 @@ function selectTestScenarioOnScenarioListPg(caseId,caseGb){
    		buttonsStr += "<li>";
    		buttonsStr += "<div class='buttons'>";
    		buttonsStr += "<a href= '<c:url value='/tms/test/insertTestScenario.do?testcaseGb=" + result.testVoMap.testcaseGbCode + "&amp;testcaseId=" + result.testVoMap.testcaseId + "'/>'><spring:message code='button.create' /></a>";
+   		buttonsStr += "<a href='#LINK' onclick='selectTestScenario(); return false;'><spring:message code='button.update' /></a>";
    		buttonsStr += "<a href='#LINK' onclick='fDeleteMenuList(); return false;'><spring:message code='button.delete' /></a>";
    		buttonsStr += "<a href='<c:url value='/tms/test/selectTestScenarioList.do?testcaseGb=" + result.testVoMap.testcaseGbCode + "'/>' ><spring:message code='button.list' /></a>";
    		buttonsStr += "</div>";				  			
@@ -171,8 +211,7 @@ function selectTestScenarioOnScenarioListPg(caseId,caseGb){
 	   				
 	   			$("#testScenarioListAjaxTbody").append(str);
    		});
-/*    		document.getElementById("testScenarioAjaxTable").style.visibility = "visible"; 
- */   		$("#testScenarioAjaxTable").toggle();
+    		$("#testScenarioAjaxTable").toggle();
    		
    		
    	}
@@ -184,6 +223,7 @@ function selectTestScenarioOnScenarioListPg(caseId,caseGb){
    });
 	
 }
+
 
 </script>
 
@@ -300,14 +340,13 @@ function selectTestScenarioOnScenarioListPg(caseId,caseGb){
               
               
              		 <colgroup>
-             		 	<col width="5%"/>
-        				<col width="11%"/> 
-        				<col width="41%"/>
+             		 	<col width="6%"/>
+        				<col width="12%"/> 
+        				<col width="49%"/>
         				<col width="6%"/>
         				<col width="10%"/>
         				<col width="9%"/>
         				<col width="8%"/>
-        				<col width="6%"/>
         			</colgroup>
         			
         			<thead>
@@ -316,7 +355,6 @@ function selectTestScenarioOnScenarioListPg(caseId,caseGb){
         			    <th align="center"><spring:message code="tms.test.testcaseId" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseContent" /></th>
         			    <th align="center"><spring:message code="tms.test.userWriterId" /></th>
-        				<th align="center"><spring:message code="tms.test.pgId" /></th>
         				<th align="center"><spring:message code="tms.test.taskGb" /></th>
 			        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>
         				<th align="center"><spring:message code="tms.test.completeYn" /></th>
@@ -325,17 +363,16 @@ function selectTestScenarioOnScenarioListPg(caseId,caseGb){
         			
         			<tbody id="testCaseAjaxTbody">
 	        			<c:forEach var="result" items="${testCaseList}" varStatus="status">
-	        			
+	        				<input type="hidden" name="pgId" value="<c:out value='${result.pgId}'/>">
 	            			<tr>
 	            			    <td align="center" class="listtd" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
 	            				<td align="left" class="listtd"><c:out value="${result.testcaseId}"/></td>
 	            				<td align="left" class="listtd">
-	            					<a href="#"  onclick="selectTestScenarioOnScenarioListPg('${result.testcaseId}','${result.testcaseGbCode}');">
+	            					<a href="<c:url value='/tms/test/selectTestCaseWithScenario.do?testcaseId=${result.testcaseId}' />">
 		            					<strong><c:out value="${result.testcaseContent}"/></strong>
 		            				</a>
 	            				</td>
 	            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
-	            				<td align="left" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
 	            				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
 	            				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
 	            				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>

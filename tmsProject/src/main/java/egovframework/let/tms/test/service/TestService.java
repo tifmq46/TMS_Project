@@ -209,5 +209,5 @@ public interface TestService {
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-	public List<HashMap<String,String>> selectTestStatsTable(TestDefaultVO searchVO) throws Exception;
+	public List<?> selectTestStatsTable(TestDefaultVO searchVO) throws Exception;
 }
