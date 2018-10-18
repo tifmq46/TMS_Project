@@ -95,6 +95,7 @@ function deleteTestScenario() {
              <form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="/tms/test/updateTestScenarioImpl.do">          
 
                  <div id="border" class="modify_user" >
+                 		<input type="hidden" name="testcaseGb" value="${testcaseGb}" />
                         <table>
                            	<tr>
                              	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testcaseId" /></label>
@@ -161,7 +162,7 @@ function deleteTestScenario() {
 								<div class="buttons">
 	                                <a href="#" onclick="updateTestScenario(); return false;"><spring:message code="button.save" /></a>
 				   					<a href="#" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
-				   					<a href="<c:url value='/tms/test/selectTestScenarioList.do?testcaseGb=${testcaseGb}'/>"><spring:message code="button.list" /></a>
+				   					<a href="<c:url value='/tms/test/selectTestScenario.do?testcaseGb=${testScenarioVO.testscenarioId}'/>"><spring:message code="button.list" /></a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>   

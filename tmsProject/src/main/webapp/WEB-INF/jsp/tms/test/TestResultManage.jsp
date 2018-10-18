@@ -97,22 +97,40 @@ function deleteTestCase() {
     }
 }
 
+	var testscenarioId = ""; //전역변수
+
 function testScenarioResultForm(scenarioId, resultContent, resultYn) {
 	
+	testscenarioId = scenarioId;
 	
 	document.testScenarioResultInsert.testscenarioId.value = scenarioId;
 	document.testScenarioResultInsert.testResultContent.value = resultContent;
 	document.testScenarioResultInsert.testcaseId.value = document.testCaseVO.testcaseId.value;
-	$('input:radio[name=testResultYn]:radio[value='+ resultYn +']').prop("checked",true);
 	
+	if(resultYn != null && resultYn.length > 0){
+		$('input:radio[name=testResultYn]:radio[value='+ resultYn +']').prop("checked",true);
+	}
 	document.testScenarioResultInsert.style.visibility = "visible";
 	document.getElementById('tempButton').style.display = 'none';
+}
+
+
+function updateTestScenarioResult () {
+    
+    if (confirm('<spring:message code="common.save.msg" />')) {
+    	document.testScenarioResultInsert.action = "<c:url value='/tms/test/updateTestScenarioResultImpl.do'/>";
+        document.testScenarioResultInsert.submit();      
+    }
 }
 
 function closeTestScenarioResult() {
 	document.testScenarioResultInsert.style.visibility = "hidden";
 	document.getElementById('tempButton').style.display = 'block';
 
+}
+
+function insertDefect() {
+	location.href = "./insertDefect.do?testscenarioId=" + testscenarioId;
 }
 
 </script>
@@ -287,7 +305,7 @@ function closeTestScenarioResult() {
 							    	<td align="center" class="listtd"><c:out value="${result.testscenarioOrd}"/>&nbsp;</td>
 		            				<td align="center" class="listtd">
 			            				
-			            				<div >
+			            				<div>
 			            					<a href="#" onclick="testScenarioResultForm('${result.testscenarioId}', '${result.testResultContent}', '${result.testResultYn}'); return false;" >
 			            					<strong><c:out value="${result.testscenarioContent}"/></strong>
 			            					</a>
@@ -379,12 +397,13 @@ function closeTestScenarioResult() {
                     </div>
 
 				<div class="tmsTestButton" >
+				
 	                    <ul>        
 	           				<li>
 								<div class="buttons">
 	                                <a href="#" onclick="updateTestScenarioResult(); return false;"><spring:message code="button.save" /></a>
 	                                <a href="#" onclick="closeTestScenarioResult(); return false;"><spring:message code="button.reset" /></a>
-	                                <a href="<c:url value="/tms/defect/insertDefect.do" />" >결함등록</a>
+	                                <a href="#" onclick="insertDefect(); return false;">결함등록</a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>        

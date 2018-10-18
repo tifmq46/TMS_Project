@@ -41,7 +41,7 @@ function fn_egov_select_testCaseList(pageNo){
 
 function selectTestCase(){
 	
-	 var checkField = document.testCaseVO.checkField;
+		var checkField = document.testCaseVO.checkField;
 	    var menuNo = document.testCaseVO.checkMenuNo;
 	    var checkMenuNos = "";
 	    var checkedCount = 0;
@@ -63,6 +63,8 @@ function selectTestCase(){
 	    
 	    if(checkedCount > 1){
 	    	alert("한개의 테스트케이스만 선택하여주시기바랍니다.");
+	    } else if(checkedCount < 1) {
+	    	alert("수정할 테스트케이스를 선택하여주시기바랍니다.");
 	    } else {
 	    	 document.testCaseVO.action = "<c:url value='/tms/test/selectTestCase.do?testcaseId=" +  checkMenuNos  + "&returnPg=TestCaseDetail'/>";
 			 document.testCaseVO.submit();
@@ -103,8 +105,7 @@ function fCheckAll() {
  ******************************************************** */
 function fDeleteMenuList() {
 	
-	if (confirm('<spring:message code="common.delete.msg" />')) {
-		 var checkField = document.testCaseVO.checkField;
+		 	var checkField = document.testCaseVO.checkField;
 		    var menuNo = document.testCaseVO.checkMenuNo;
 		    var checkMenuNos = "";
 		    var checkedCount = 0;
@@ -122,38 +123,46 @@ function fDeleteMenuList() {
 		                checkMenuNos = menuNo.value;
 		            }
 		        }
-		    }   
-
-		    $.ajax({
-		    	
-		    	 type :"POST"
-		    	,url  : "<c:url value='/tms/test/selectScenarioCntReferringToCase.do'/>"
-		    	,data : {checkedMenuNoForDel:checkMenuNos}
-		    	,success :  function(totalCount){
-		    		
-		    		if(totalCount > 0) {
-		    			if (confirm('삭제하려는 케이스 중 ' + totalCount + '개의 케이스에 시나리오가 존재하고 있습니다. 그래도 삭제하시겠습니까')) {
-		    			
-		    				 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
-		    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
-		    				 document.testCaseVO.submit(); 
-		    			}
-		    		} else {
-		    			 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
-	    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
-	    				 document.testCaseVO.submit();
-		    		}
-		    		
-		    	}
-		    	, error :  function(request,status,error){
-		    		 alert("에러");
-			         alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		    	}
-		    		
-		    });
+		    }  
 		    
-		   
-	}
+		    if(checkedCount == 0) {
+		    	alert("삭제할 테스트케이스를 선택하여주시기바랍니다.");
+		    	return false;
+		    	
+		    } else {
+		    	
+		    	if (confirm('<spring:message code="common.delete.msg" />')) {
+		    	
+		    		$.ajax({
+				    	
+				    	 type :"POST"
+				    	,url  : "<c:url value='/tms/test/selectScenarioCntReferringToCase.do'/>"
+				    	,data : {checkedMenuNoForDel:checkMenuNos}
+				    	,success :  function(totalCount){
+				    		
+				    		if(totalCount > 0) {
+				    			if (confirm('삭제하려는 케이스 중 ' + totalCount + '개의 케이스에 시나리오가 존재하고 있습니다. 그래도 삭제하시겠습니까')) {
+				    			
+				    				 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
+				    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
+				    				 document.testCaseVO.submit(); 
+				    			}
+				    		} else {
+				    			 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
+			    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
+			    				 document.testCaseVO.submit();
+				    		}
+				    		
+				    	}
+				    	, error :  function(request,status,error){
+				    		 alert("에러");
+					         alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				    	}
+				    		
+				    });
+		    	
+		    	}
+		    }
    
 }
 

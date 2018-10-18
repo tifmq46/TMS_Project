@@ -39,7 +39,6 @@
 window.onload = function() {
 	
 	var list = JSON.parse('${tcStatsByTaskGb}');
-	console.log(list);
 	var taskGbNmList = new Array();
 	var testcaseTotCntList = new Array();
 	var testcaseYCntList = new Array();
@@ -198,11 +197,14 @@ window.onload = function() {
 
 $(document).ready(function(){
 	
-	$("#progress_bar_utc").click(function (){
-			$("#detail_bar_utc").toggle();
+	$(".imageArrowUtc").click(function (){
+		$('img',this).toggle();
+		$("#detail_bar_utc").toggle();
+			
 	});
 	
-	$("#progress_bar_ttc").click(function (){
+	$(".imageArrowTtc").click(function (){
+		$('img',this).toggle();
 		$("#detail_bar_ttc").toggle();
 });
 	
@@ -247,7 +249,11 @@ $(document).ready(function(){
 
                  <div id="progress_bar_utc" class="progess_bar_section" >
                  
-                      	<strong>단위테스트 완료현황</strong>
+                      	<strong>단위테스트 완료현황</strong>&nbsp;
+                      	<span class="imageArrowUtc">
+	                      	<a href="#"><img src="<c:url value='/images/tms/blue_arrow_down.gif' />" width="13" height="13" alt="down"/></a>
+	                      	<a href="#"><img src="<c:url value='/images/tms/blue_arrow_up.gif' />"   style="display:none;" width="13" height="13" alt="up"/></a>
+                      	</span>
                       	
                       	<div style="float:right;">
 	                      	<fmt:parseNumber var="tc1_yCnt" value="${testCaseStatsMapTC1.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
@@ -295,7 +301,11 @@ $(document).ready(function(){
                  
                   <div id="progress_bar_ttc" class="progess_bar_section" >
                  
-                		<strong>통합테스트 완료현황</strong>
+                		<strong>통합테스트 완료현황</strong>&nbsp;
+               			<span class="imageArrowTtc">
+	                      	<a href="#"><img src="<c:url value='/images/tms/blue_arrow_down.gif' />" width="13" height="13" alt="down"/></a>
+	                      	<a href="#"><img src="<c:url value='/images/tms/blue_arrow_up.gif' />"   style="display:none;" width="13" height="13" alt="up"/></a>
+                      	</span>
                  
                  		<div style="float:right;">
                       		<fmt:parseNumber var="tc2_yCnt" value="${testCaseStatsMapTC2.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>

@@ -41,7 +41,6 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 		/** ID Generation Service */
 		//String id = egovIdGnrService.getNextStringId();
 		LOGGER.debug(testCaseVO.toString());
-
 		testDAO.insertTestCase(testCaseVO);
 	}
 	
@@ -53,7 +52,6 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 		/** ID Generation Service */
 		//String id = egovIdGnrService.getNextStringId();
 		LOGGER.debug(testScenarioVO.toString());
-
 		testDAO.insertTestScenario(testScenarioVO);
 	}
 	
@@ -61,14 +59,12 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 	@Override
 	public void updateTestCase(TestCaseVO testCaseVO) throws Exception {
 		testDAO.updateTestCase(testCaseVO);
-		
 	}
 	
 	
 	@Override
 	public void updateTestScenario(TestScenarioVO testScenarioVO) throws Exception {
 		testDAO.updateTestScenario(testScenarioVO);
-		
 	}
 	
 	@Override
@@ -80,7 +76,6 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 	@Override
 	public void deleteTestCase(String testcaseId) throws Exception {
 		testDAO.deleteTestCase(testcaseId);
-		
 	}
 
 	@Override
@@ -122,7 +117,6 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 	@Override
 	public void deleteTestScenario(String testscenarioId) throws Exception {
 		testDAO.deleteTestScenario(testscenarioId);
-		
 	}
 
 	@Override
@@ -146,7 +140,6 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 		return testDAO.selectTestCase(testcaseId);
 	}
 	
-	
 	/**
 	 * 테스트 케이스 진행 상태 상세 정보 조회(통계 대시보드)
 	 */
@@ -155,7 +148,6 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 		return testDAO.selectTestCaseProgressStatus(testcaseGb);
 	}
 	
-	
 	/**
 	 * 테스트 시나리오 상세 정보 조회
 	 */
@@ -163,7 +155,6 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 	public TestScenarioVO selectTestScenario(String testscenarioId) throws Exception {
 		return testDAO.selectTestScenario(testscenarioId);
 	}
-	
 	
 	/**
 	 * 목록 조회
@@ -218,7 +209,7 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 	}
 	
 	@Override
-	public List<HashMap<String,String>> selectTestStatsTable(TestDefaultVO searchVO) throws Exception {
+	public List<?> selectTestStatsTable(TestDefaultVO searchVO) throws Exception {
 		return testDAO.selectTestStatsTable(searchVO);
 	}
 }

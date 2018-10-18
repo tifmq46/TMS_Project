@@ -137,23 +137,35 @@
 	<update id="TestDAO.updateTestCase" parameterClass="TestCaseVO">
 	    
 		    UPDATE TESTCASE_TB
-		    SET
-		    	 FIRST_TEST_RESULT_YN 	= #firstTestResultYn#
-		    	, SECOND_TEST_RESULT_YN = #secondTestResultYn#
-	     		
-		    	<isNotEmpty property="completeYn">
-	     			, COMPLETE_YN = #completeYn#
-	     			, COMPLETE_DT = now()
+		    
+		    <dynamic prepend = "SET" >
+		        
+		        <isNotEmpty property="firstTestResultYn" prepend = ",">
+	     			FIRST_TEST_RESULT_YN = #firstTestResultYn#
 	       		</isNotEmpty>
 	       		
-		    	<isNotEmpty property="precondition">
-	     			, PRECONDITION = #precondition#
+		        <isNotEmpty property="secondTestResultYn" prepend = ",">
+	     			SECOND_TEST_RESULT_YN = #secondTestResultYn#
 	       		</isNotEmpty>
 	       		
-	    		<isNotEmpty property="testcaseContent">
-	     			, TESTCASE_CONTENT = #testcaseContent#
+		    	<isNotEmpty property="completeYn" prepend = ",">
+	     			COMPLETE_YN = #completeYn#
+	     			
+	     			<isEqual property="completeYn" compareValue="Y">
+	     			    , COMPLETE_DT = now()
+	     			</isEqual>
+	     			
+	       		</isNotEmpty>
+	       		
+		    	<isNotEmpty property="precondition" prepend = ",">
+	     			PRECONDITION = #precondition#
+	       		</isNotEmpty>
+	       		
+	    		<isNotEmpty property="testcaseContent" prepend = ",">
+	     			TESTCASE_CONTENT = #testcaseContent#
 	       		</isNotEmpty>
 			 
+	    	</dynamic>
 			WHERE TESTCASE_ID = #testcaseId#
 	    
 	</update>
@@ -531,6 +543,7 @@
 							LEFT OUTER JOIN
 							TESTCASE_TB AS B
 							ON A.PG_ID = B.PG_ID
+							WHERE A.USE_YN = 'Y'
 						) AS C
 				WHERE 1=1
 				]]>			
@@ -623,6 +636,7 @@
 							LEFT OUTER JOIN
 							TESTCASE_TB AS B
 							ON A.PG_ID = B.PG_ID
+							WHERE A.USE_YN = 'Y'
 						) AS C
 				WHERE 1=1
 				]]>
@@ -720,6 +734,7 @@
 									LEFT OUTER JOIN
 									TESTCASE_TB AS B
 									ON A.PG_ID = B.PG_ID
+									WHERE A.USE_YN = 'Y'
 								) AS C
 							)AS D
 						WHERE 1=1
@@ -830,7 +845,7 @@
 				 	(SELECT CODE AS TASK_GB, CODE_NM AS TASK_NM, PARENT FROM LETTCCMMNDETAILCODE) AS B ON A.SYS_GB = B.PARENT ) AS CATEGORY
 					
 				LEFT OUTER JOIN
-					(SELECT TASK_GB, COUNT(*) AS PG_CNT FROM PG_TB  GROUP BY TASK_GB) AS PG_TB
+					(SELECT TASK_GB, COUNT(*) AS PG_CNT FROM PG_TB WHERE USE_YN = 'Y' GROUP BY TASK_GB) AS PG_TB
 				ON CATEGORY.TASK_GB = PG_TB.TASK_GB
 					
 				LEFT OUTER JOIN

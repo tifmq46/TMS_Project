@@ -40,7 +40,6 @@ function selectTestStatsTable(pageNo){
 }
 
 function statsToExel(testcaseGb) {
-	alert(testcaseGb);
 	location.href = "./statsToExcel.do?testcaseGb=" + testcaseGb;
 	/* location.href = "<c:url value='/tms/test/statsToExcel.do?" + testcaseGb + "'/>"; */
 }
