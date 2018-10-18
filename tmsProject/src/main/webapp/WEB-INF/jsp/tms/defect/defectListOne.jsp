@@ -29,7 +29,9 @@
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="defectVOUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
-
+function searchFileImg(defectIdSq) {
+    window.open("<c:url value='/tms/defect/selectListOneDetail.do'/>?defectIdSq="+defectIdSq,'','width=800,height=600');
+}
 
 function fn_egov_update_updateDefect(){
 	if (!validateDefectVOUpdate(document.defectVO)){
@@ -83,12 +85,6 @@ function fn_egov_delete_defectImg() {
 }
 
 window.onload = function() {
-	if(document.getElementById("fileNm") != null){
-		var fileNmLength = (document.getElementById("fileNm").value).length * 10 +"px";
-		document.getElementById("fileNm").style.width = fileNmLength;
-		var fileSizeLength = (document.getElementById("fileSize").value).length * 10 +"px";
-		document.getElementById("fileSize").style.width = fileSizeLength;
-	}
 	if (document.getElementById("uniqId").value == "USRCNFRM_00000000000"
 			|| document.getElementById("uniqId").value == "USRCNFRM_00000000001") {
 		// 관리자, 업무PL 로그인할 경우
@@ -345,21 +341,20 @@ window.onload = function() {
 					        <td width="87.5%" nowrap colspan="7" >
 					        	<c:choose>
 					        		<c:when test="${!empty defectImgOne}">
-										
-					      			 <!--  <a href="#LINK" onclick="javaScript:download_attachment(); return false;"> -->
-									<a href="<c:url value='/tms/defect/downloadDefectImg.do'/>?defectIdSq=<c:out value="${defectOne.defectIdSq}"/>">
-					        	<img alt="이미지" width="200" height="200" src="<c:url value='/tms/defect/selectDefectImg.do'/>?defectIdSq=<c:out value="${defectOne.defectIdSq}"/>"/>
-					        		</a>
-					        <br/>
-					        <br/>
+					        		<img src="<c:url value='/images/tms/fileclip.JPG' />" width="12" height="12" alt="required"/>
 					        	<font color="#666666">
-					        		<input type="text" id="fileNm" name="fileNm" value="<c:out value="${defectImgOne.fileNm}" />"  readonly="readonly" style="border:none; width:; text-align:right"/>
-									(<input type="text" id="fileSize" name="fileSize" value="<c:out value="${defectImgOne.fileSize}"/>"  readonly="readonly" style="border:none; width:; text-align:center"/>Byte)
+					        	   <a href="<c:url value='/tms/defect/selectListOneDetail.do'/>?defectIdSq=<c:out value="${defectOne.defectIdSq}"/>" target="_blank" title="새창으로" onclick="javascript:searchFileImg(${defectOne.defectIdSq}); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+									<c:out value="${defectImgOne.fileNm}" />
+									</a>
+									<input type="hidden" id="fileNm" name="fileNm" value="<c:out value="${defectImgOne.fileNm}" />"  readonly="readonly" style="border:none; width:; text-align:right"/>
+									(<c:out value="${defectImgOne.fileSize}"/>Byte)
+									<input type="hidden" id="fileSize" name="fileSize" value="<c:out value="${defectImgOne.fileSize}"/>"  readonly="readonly" style="border:none; width:; text-align:center"/>
+					        	</font>
+					        	&nbsp;<a href="<c:url value='/tms/defect/downloadDefectImg.do'/>?defectIdSq=<c:out value="${defectOne.defectIdSq}"/>">
+					        		<font color="#0F438A">다운로드</font>
+					        		</a>
 					        	&nbsp;<a href="#LINK" id="deleteFileBtn" onclick="javascript:fn_egov_delete_defectImg(); return false;" ><font color="#0F438A">삭제</font></a>
-					        		</font>
 					        		<input type="hidden" id="fileCheck" value="1">
-					        		<br/>
-					        		<br/>
 					        		</c:when>
 									<c:otherwise>
 									첨부파일없음 <input type="file" name="fileImg" id="fileImg" title="다운로드" accept=".jpg, .jpeg, .png"/>

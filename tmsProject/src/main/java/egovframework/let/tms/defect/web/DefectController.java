@@ -316,6 +316,14 @@ public class DefectController {
 		return "tms/defect/defectListCurrent";
 	}
 	
+	/** 결함 파일 창으로 이동 */
+	@RequestMapping("/tms/defect/selectListOneDetail.do")
+	public String selectDefectImgAlert(HttpServletRequest request, ModelMap model){
+		String defectIdSq = request.getParameter("defectIdSq");
+		model.addAttribute("defectIdSq", defectIdSq);
+		return "tms/defect/defectListOneDetail";
+	}
+	
 	/** 결함 파일 보여주기
 	 * @throws IOException */
 	@RequestMapping("/tms/defect/selectDefectImg.do")

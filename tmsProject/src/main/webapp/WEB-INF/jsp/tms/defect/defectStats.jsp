@@ -175,16 +175,16 @@ window.onload = function() {
 		/** 업무별 조치율 */
 		var taskByActionProgression = JSON.parse('${taskByActionProgression}');
 		var defectStatsActionStAll = JSON.parse('${defectStats.actionStAll}');
-		var defectStatsActionStA5 = JSON.parse('${defectStats.actionStA5}');
+		var defectStatsActionStA3 = JSON.parse('${defectStats.actionStA3}');
 		var taskByActionProgressionTaskNm1 = new Array();
 		var taskByActionProgressionTaskGb = new Array();
 		var taskByActionProgressionTaskTotCnt1 = new Array();
-		var taskByActionProgressionTaskA5Cnt = new Array();
+		var taskByActionProgressionTaskA3Cnt = new Array();
 		for (var i = 0; i < taskByActionProgression.length; i++) {
 			taskByActionProgressionTaskNm1.push(taskByActionProgression[i].taskNm);
 			taskByActionProgressionTaskGb.push(taskByActionProgression[i].taskGb);
 			taskByActionProgressionTaskTotCnt1.push(taskByActionProgression[i].taskTotCnt);
-			taskByActionProgressionTaskA5Cnt.push(taskByActionProgression[i].taskA5Cnt);
+			taskByActionProgressionTaskA3Cnt.push(taskByActionProgression[i].taskA3Cnt);
 		}
 		
 		var ctx = document.getElementById('taskByAllProgression');
@@ -193,8 +193,8 @@ window.onload = function() {
     		data : {
     			  labels: ['완료건수','미완료건수'],
     				datasets : [ {
-    					data : [defectStatsActionStA5,
-    					        defectStatsActionStAll-defectStatsActionStA5],
+    					data : [defectStatsActionStA3,
+    					        defectStatsActionStAll-defectStatsActionStA3],
     					backgroundColor : ['#007bff','#e9ecef']
     				},]
     			},
@@ -213,8 +213,8 @@ window.onload = function() {
 	    		data : {
 	    			  labels: ['완료건수','미완료건수'],
 	    				datasets : [ {
-	    					data : [taskByActionProgressionTaskA5Cnt[j],
-	    					        taskByActionProgressionTaskTotCnt1[j]-taskByActionProgressionTaskA5Cnt[j]],
+	    					data : [taskByActionProgressionTaskA3Cnt[j],
+	    					        taskByActionProgressionTaskTotCnt1[j]-taskByActionProgressionTaskA3Cnt[j]],
 	    					backgroundColor : ['#007bff','#e9ecef']
 	    				},]
 	    			},
@@ -309,7 +309,6 @@ window.onload = function() {
 		var taskByActionStCntActionStA2 = new Array();
 		var taskByActionStCntActionStA3 = new Array();
 		var taskByActionStCntActionStA4 = new Array();
-		var taskByActionStCntActionStA5 = new Array();
 		
 		sum = 0;
 		for (var i = 0; i < taskByActionStCnt.length; i++) {
@@ -327,8 +326,6 @@ window.onload = function() {
 						/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
 				taskByActionStCntActionStA4.push((taskByActionStCnt[i].actionStA4
 						/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
-				taskByActionStCntActionStA5.push((taskByActionStCnt[i].actionStA5
-						/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
 			} else {
 				pre = sum;
 				sum = sum + parseFloat((taskByActionStCnt[i].actionStA3	/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
@@ -339,8 +336,6 @@ window.onload = function() {
 							/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
 					taskByActionStCntActionStA3.push((100 - pre).toFixed(1));
 					taskByActionStCntActionStA4.push((taskByActionStCnt[i].actionStA4
-							/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
-					taskByActionStCntActionStA5.push((taskByActionStCnt[i].actionStA5
 							/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
 				} else {
 					pre = sum;
@@ -353,33 +348,15 @@ window.onload = function() {
 						taskByActionStCntActionStA3.push((taskByActionStCnt[i].actionStA3
 								/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
 						taskByActionStCntActionStA4.push((100 - pre).toFixed(1));
-						taskByActionStCntActionStA5.push((taskByActionStCnt[i].actionStA5
-								/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
 					} else {
-						pre = sum;
-						sum = sum + parseFloat((taskByActionStCnt[i].actionStA5	/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
-						if(sum > 100) {
-							taskByActionStCntActionStA1.push((taskByActionStCnt[i].actionStA1
-									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
-							taskByActionStCntActionStA2.push((taskByActionStCnt[i].actionStA2
-									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
-							taskByActionStCntActionStA3.push((taskByActionStCnt[i].actionStA3
-									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
-							taskByActionStCntActionStA4.push((taskByActionStCnt[i].actionStA4
-									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
-							taskByActionStCntActionStA5.push((100 - pre).toFixed(1));
-						} else {
-							taskByActionStCntActionStA1.push((taskByActionStCnt[i].actionStA1
-									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
-							taskByActionStCntActionStA2.push((taskByActionStCnt[i].actionStA2
-									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
-							taskByActionStCntActionStA3.push((taskByActionStCnt[i].actionStA3
-									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
-							taskByActionStCntActionStA4.push((taskByActionStCnt[i].actionStA4
-									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
-							taskByActionStCntActionStA5.push((taskByActionStCnt[i].actionStA5
-									/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
-						}
+						taskByActionStCntActionStA1.push((taskByActionStCnt[i].actionStA1
+								/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+						taskByActionStCntActionStA2.push((taskByActionStCnt[i].actionStA2
+								/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+						taskByActionStCntActionStA3.push((taskByActionStCnt[i].actionStA3
+								/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
+						taskByActionStCntActionStA4.push((taskByActionStCnt[i].actionStA4
+								/ taskByActionStCnt[i].actionStAll * 100).toFixed(1));
 					}
 				}
 			}
@@ -406,11 +383,7 @@ window.onload = function() {
 					label : '재요청',
 					data : taskByActionStCntActionStA4,
 					backgroundColor : '#CC3C39',
-				}, {
-					label : '최종완료',
-					data : taskByActionStCntActionStA5,
-					backgroundColor : colorArray[4],
-				}, ]
+				}]
 			},
 			options : {
 				legend: {
@@ -712,7 +685,7 @@ window.onload = function() {
 								<tr>
 									<td width="90%">
 									<fmt:parseNumber var="actionProgression" integerOnly="true"
-											value="${defectStats.actionStA5 / defectStats.actionStAll * 100}" />
+											value="${defectStats.actionStA3 / defectStats.actionStAll * 100}" />
 										<div class="progress" style="height: 2rem;">
 											<div class="progress-bar" style="width:${actionProgression}%">
 												<font style="font-size: 15px; font-weight: bolder">
@@ -721,7 +694,7 @@ window.onload = function() {
 										</div>
 										</td>
 									<td width="10%"><font size="3px" style="font-weight: bold">
-											<c:out value="${defectStats.actionStA5}"></c:out>&nbsp;/&nbsp;<c:out
+											<c:out value="${defectStats.actionStA3}"></c:out>&nbsp;/&nbsp;<c:out
 												value="${defectStats.actionStAll}"></c:out>
 									</font>
 									</td>
@@ -764,11 +737,6 @@ window.onload = function() {
 									<td width="16.6%" align="center" bgcolor="#007BFF">
 									<font color="#FFFFFF" size="3" style="font-weight: bold"> 재요청 <br />
 										<c:out value="${defectStats.actionStA4}" />
-									</font>
-									</td>
-									<td width="16.6%" align="center" bgcolor="#007BFF">
-									<font color="#FFFFFF" size="3" style="font-weight: bold"> 최종완료 <br />
-										<c:out value="${defectStats.actionStA5}" />
 									</font>
 									</td>
 								</tr>
@@ -815,10 +783,10 @@ window.onload = function() {
 									<tr>
 										<td align="center" valign="middle">
 											<div style="font-size: 15px; font-weight: bolder;">
-												<font color="#007BFF"><c:out value="${defectStats.actionStA5}" /></font> /
+												<font color="#007BFF"><c:out value="${defectStats.actionStA3}" /></font> /
 												<c:out value="${defectStats.actionStAll}" />
 												<fmt:parseNumber var="actionProgression" integerOnly="true"
-													value="${defectStats.actionStA5 / defectStats.actionStAll * 100}" />
+													value="${defectStats.actionStA3 / defectStats.actionStAll * 100}" />
 												(
 												<c:out value=" ${actionProgression}"></c:out>
 												%) <br /> 전체 <br />
@@ -829,11 +797,11 @@ window.onload = function() {
 											<td align="center" valign="middle">
 												<div style="font-size: 13px; font-weight: bolder;">
 													<font color="#007BFF"><c:out
-															value="${taskByActionProgression.taskA5Cnt}" /></font> /
+															value="${taskByActionProgression.taskA3Cnt}" /></font> /
 													<c:out value="${taskByActionProgression.taskTotCnt}" />
 													<c:if test="${taskByActionProgression.taskTotCnt != 0}">
             										 (<fmt:parseNumber var="actionProgression" integerOnly="true"
-															value="${taskByActionProgression.taskA5Cnt / taskByActionProgression.taskTotCnt * 100}" />
+															value="${taskByActionProgression.taskA3Cnt / taskByActionProgression.taskTotCnt * 100}" />
 														<c:out value=" ${actionProgression}"></c:out>%)
                									  </c:if>
 													<br />

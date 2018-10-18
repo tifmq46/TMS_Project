@@ -213,13 +213,9 @@ function searchFileNm() {
                         <td align="center" class="listtd" style="background-color:#CC3C39;">
                          <font color="#ffffff" style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
                         </c:when>
-                        <c:when test="${result.actionSt == '최종완료' }">
+                        <c:when test="${result.actionSt == '조치완료' }">
                         <td align="center" class="listtd" style="background-color:#007bff;">
                         <font color="#ffffff" style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
-                        </c:when>
-                        <c:when test="${result.actionSt == '조치완료' }">
-                        <td align="center" class="listtd">
-                        <font style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
                         </c:when>
                         <c:otherwise>
                         <td align="center" class="listtd"><c:out value="${result.actionSt}"/>&nbsp;</td>
