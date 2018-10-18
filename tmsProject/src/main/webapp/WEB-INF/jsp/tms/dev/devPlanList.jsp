@@ -29,10 +29,19 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 
-function fn_result_change(asd) {
+function fn_result_change(asd, t) {
 		
 	   var idVal0 = document.getElementById(asd).value;
 	   var idVal1 = document.getElementById(asd+1).value;
+	   var prjStartDate = document.getElementById("ps").value;
+	   var prjEndDate = document.getElementById("pe").value;
+
+	  var cngDate = t.value
+	  	
+	   if(prjStartDate >  t.value || prjEndDate <  t.value ){
+		   alert("유효하지 않은 날짜입니다.");
+		   document.getElementById(t.id).value = null;
+	   } 
 	   
 	   if(idVal1 != null && idVal1 != "")
 	      {
@@ -50,16 +59,35 @@ function fn_result_change(asd) {
 	   var idVal3 = document.getElementById(asd+3).id;
 	   $("#"+idVal3).removeClass("disabled");
 	   $("#"+idVal3).addClass("abled");
+	   
+	   
 	}
 
 function fn_result_regist(t){
 	
-	var f = document.listForm;
-
 	var idVal = document.getElementById(t).value;
 	var idVal1 = document.getElementById(t+1).value;
-	location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
+	if(idVal1 == null || idVal1 == ""){
+		alert("계획종료일자를 입력하십시오."); 
+		return;
+	}else{
+		location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
+	}	
 			
+}
+
+function fn_result_reset(pgId){
+	
+	var startDate = document.getElementById(pgId).value;
+	var endDate = document.getElementById(pgId+1).value;
+	var bnt = document.getElementById(pgId+3).id;
+	
+	if(startDate != "" && endDate != ""){
+		document.getElementById(pgId).value = "";
+		document.getElementById(pgId+1).value = "";
+		
+		location.href ="<c:url value='/tms/dev/deleteDevPlan.do'/>?pgId="+pgId;
+	}
 }
 
 function fn_egov_insert_addDevPlan(){    
@@ -201,54 +229,6 @@ function searchFileNm() {
 				
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발계획관리</strong></h2></div>
-						
-						<fieldset><legend>조건정보 영역</legend>	 
-						<div class="sf_start">
-							<%
-        					LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
-        					if(loginVO.getName().equals("관리자")){
-        					%>
-					  	
-					  		<ul id="search_first_ul">
-					  			<li>
-					  			<label>계획입력기간</label>
-								<input type="date" id="InputStartDt" name="InputStartDt" 
-									value="<fmt:formatDate value="${start}" pattern="yyyy-MM-dd"/>"/>
-								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-					  			&nbsp;~&nbsp;
-					  			<input type="date" id="InputEndDt" name="InputEndDt"  
-					  				value="<fmt:formatDate value="${end}" pattern="yyyy-MM-dd"/>"/>
-					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-									<div class="buttons" style="float:right; margin-right:550px;">
-					  				<a class="abled" href="#LINK" onclick="fn_input_result('1'); return false;" >저장</a>
-					  				</div>					  				
-					  			</li>
-					  		</ul>
-					  		<%
-        					}else{
-	  						%>
-					  		<ul id="search_first_ul">
-					  			<li>
-					  			<label>계획입력기간</label>
-								<input type="date" id="InputStartDt" name="InputStartDt" readonly
-									value="<fmt:formatDate value="${start}" pattern="yyyy-MM-dd"/>"/>
-								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-					  			&nbsp;~&nbsp;
-					  			<input type="date" id="InputEndDt" name="InputEndDt"  readonly
-					  				value="<fmt:formatDate value="${end}" pattern="yyyy-MM-dd"/>"/>
-					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-									<div class="buttons" style="float:right; margin-right:550px;">
-					  				<a class="disabled" href="#LINK" onclick="fn_input_result('1'); return false;" >저장</a>
-					  				</div>					  				
-					  			</li>
-					  		</ul>
-					  		<%
-	  						}
-        					%>		  	
-						</div>
-						</fieldset>
-						
-						
 					  	<fieldset><legend>조건정보 영역</legend>	  
 					  	<div class="sf_start">
 					  		
@@ -321,31 +301,39 @@ function searchFileNm() {
                 <div id="page_info"><div id="page_info_align"></div></div>                    
                 <!-- table add start -->
                 <div class="default_tablestyle">
+                    <label style="padding-left:53%; padding-bottom:5%; font-weight:bold; color: red; font-size:13px;">
+                	기준일자 :&nbsp; ${ps} &nbsp;~&nbsp;${pe}
+                	<input type="hidden" id="ps" name="ps" value="${ps}"/>
+                	<input type="hidden" id="pe" name="pe" value="${pe}"/>
+                	</label>
                     <table summary="번호,게시판명,사용 커뮤니티 명,사용 동호회 명,등록일시,사용여부   목록입니다" cellpadding="0" cellspacing="0">
                     <caption>게시판 템플릿 목록</caption>
+                   
                     <colgroup>
                     <col width="20" >
+                    <col width="10%" >
+                    <col width="13%" >
                     <col width="70" >
-                    <col width="60" >  
-                    <col width="8%" >
-                    <col width="15%" >
+                    <col width="60" > 
                     <col width="70" >
                     <col width="120" >
                     <col width="120" >
                     <col width="50" >
-                    <col width="5%" >
+                    <col width="50" >
+                    <col width="50" >
                     </colgroup>
                     <thead>
                     <tr>
                     	<th align="center">번호</th>
-                        <th align="center">시스템구분</th>
-        				<th align="center">업무구분</th>
         				<th align="center">화면ID</th>
         				<th align="center">화면명</th>
+        				<th align="center">시스템구분</th>
+        				<th align="center">업무구분</th>
         				<th align="center">개발자</th>
         				<th align="center">계획시작일자</th>
         				<th align="center">계획종료일자</th>
         				<th align="center">소요일수</th>
+        				<th align="center"></th>
         				<th align="center"></th>
                     </tr>
                     </thead>
@@ -356,42 +344,58 @@ function searchFileNm() {
                       <tr>
                       
                       <td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-                      <td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
-            		  <td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
             		  <%-- <td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td> --%>
             		  <td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
+            		  <td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
+            		  <td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
             		  <%-- <td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td> --%>
-            		  <td><input type="date"  id="${result.PG_ID}" <c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_START_DT}" pattern="yyyy-MM-dd"/>" />
+            		  <td><input type="date"  id="${result.PG_ID}" 
+            		  <c:if test="${d_test}"> class="disabled" </c:if> 
+            		  	onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value='${result.PLAN_START_DT}' pattern="yyyy-MM-dd"/>"
+            		  	/>
+            		  	
                       </td>
-                      <td><input type="date"  id="${result.PG_ID}1" <c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
+                      <td><input type="date"  id="${result.PG_ID}1" 
+                      <c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
                       </td>
             		  <td align="center" class="listtd"><c:out value="${result.DAY_DIFF}"/>&nbsp;</td>
-            		  <td align="center" class="listtd">
-            			  <div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
+            		  
             			  
-            			  	<c:choose>
-            			  		<c:when test="${d_test}">
-            			  			<c:if test="${result.PLAN_START_DT eq null || result.PLAN_END_DT eq null}">
-			            			<a id="${result.PG_ID}2" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-			            			</c:if>
-			            			<c:if test="${result.PLAN_START_DT ne null || result.PLAN_END_DT ne null}">
-			            				<a id="${result.PG_ID}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-			            			</c:if>
-            			  		</c:when>
-            			  		<c:otherwise>
-            			  			<c:if test="${result.PLAN_START_DT eq null || result.PLAN_END_DT eq null}">
-			            			<a id="${result.PG_ID}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-			            			</c:if>
-			            			<c:if test="${result.PLAN_START_DT ne null || result.PLAN_END_DT ne null}">
-			            				<a id="${result.PG_ID}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
-			            			</c:if>
-            			  		</c:otherwise>
-            			  	</c:choose>
-	            			
-            			  </div>
+            			<c:choose>
+            			  <c:when test="${d_test}">
+            			  	<c:if test="${result.PLAN_START_DT eq null || result.PLAN_END_DT eq null}">
+			            		<td align="center" class="listtd"><div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:5px;">
+			            			<a id="${result.PG_ID}2" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a></div></td>
+			            		<td align="center" class="listtd"><div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:3px;">
+			            		<a id="reset" class="disabled" href="#LINK" style="selector-dummy:expression(this.hideFocus=false);">초기화</a></div></td>
+			            		
+			            	</c:if>
+			            	<c:if test="${result.PLAN_START_DT ne null || result.PLAN_END_DT ne null}">
+			            		<td align="center" class="listtd">
+            			  		<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:5px;">
+			            		<a id="${result.PG_ID}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a></div></td>
+			            		<td align="center" class="listtd"><div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:3px;">
+			            		<a id="reset" class="disabled" href="#LINK" style="selector-dummy:expression(this.hideFocus=false);">초기화</a></div></td>
+			            	</c:if>
+            			  </c:when>
+            			  <c:otherwise>
+            			  	<c:if test="${result.PLAN_START_DT eq null || result.PLAN_END_DT eq null}">
+            			  	<td align="center" class="listtd"><div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:5px;">
+			            		<a id="${result.PG_ID}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a></div></td>
+			            		<td align="center" class="listtd"><div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:3px;">
+			            		<a id="reset" href="#LINK" onclick="fn_result_reset('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">초기화</a></div></td>
+			            	</c:if>
+			            	<c:if test="${result.PLAN_START_DT ne null || result.PLAN_END_DT ne null}">
+			            	<td align="center" class="listtd"><div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:5px;">
+			            		<a id="${result.PG_ID}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a></div></td>
+			            		<td align="center" class="listtd"><div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:3px;">
+			            		<a id="reset" href="#LINK" onclick="fn_result_reset('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">초기화</a></div></td>
+			            	</c:if>
+            			  </c:otherwise>
+            			</c:choose>
             			  
                      </tr>
                    </c:forEach>     

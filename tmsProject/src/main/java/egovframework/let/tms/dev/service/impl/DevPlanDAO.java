@@ -10,6 +10,7 @@ import egovframework.let.cop.com.service.TemplateInfVO;
 import egovframework.let.tms.dev.service.DevPlanDefaultVO;
 import egovframework.let.tms.dev.service.DevPlanVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Repository("devPlanDAO")
 public class DevPlanDAO extends EgovAbstractDAO{
@@ -253,6 +254,10 @@ public class DevPlanDAO extends EgovAbstractDAO{
 
 	public List<HashMap<String, String>> selectAccumulateStats(HashMap<String, String> type) {
 		return (List<HashMap<String, String>>) list("DevPlanDAO.selectAccumulateStats",type);
+	}
+
+	public List<EgovMap> selectStatsTable() {
+		return (List<EgovMap>) list("DevPlanDAO.selectStatsTable");
 	}
 
 	

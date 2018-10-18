@@ -243,7 +243,7 @@ $(function(){
 					  	<div class="sf_start">
 					  		<ul id="search_first_ul">
 					  			<li>
-								    <label >시스템구분</label>
+								    <label>시스템구분</label>
 									<select name="searchBySysGb" id="searchBySysGb" style="width:12%;text-align-last:center;">
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
@@ -313,11 +313,11 @@ $(function(){
               
               
               <colgroup>
-              		<col width="20" >
+              		<col width="20" > 
+                    <col width="10%" >
+                    <col width="10%" >
         			<col width="70" >
-                    <col width="60" >  
-                    <col width="10%" >
-                    <col width="10%" >
+                    <col width="60" > 
                     <col width="40" >
                     <col width="90" >
                     <col width="90" >
@@ -328,10 +328,10 @@ $(function(){
         			</colgroup>
         			<tr>
         				<th align="center">번호</th>
-        				<th align="center">시스템구분</th>
-        				<th align="center">업무구분</th>
         				<th align="center">화면ID</th>
         				<th align="center">화면명</th>
+        				<th align="center">시스템구분</th>
+        				<th align="center">업무구분</th>
         				<th align="center">개발자</th>
         				<th align="center">계획시작일자</th>
         				<th align="center">계획종료일자</th>
@@ -345,14 +345,13 @@ $(function(){
         			
             			<tr>
             				<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            				<td align="center" class="listtd" name="sys"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd">
-            					<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>"> --%>
-                                <c:out value="${result.PG_ID}"/><!-- </a> -->
+                                <c:out value="${result.PG_ID}"/>
                                 <input type="hidden" id="pgId" name="pgId" value='<c:out value="${result.PG_ID}"/>' >
                             </td>
             				<td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
+            				<td align="center" class="listtd" name="sys"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_START_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_END_DT}"/>&nbsp;</td>

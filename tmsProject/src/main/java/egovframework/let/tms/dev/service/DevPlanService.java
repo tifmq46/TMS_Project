@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import egovframework.rte.psl.dataaccess.util.EgovMap;
+
 
 public interface DevPlanService {
 	
@@ -167,5 +169,7 @@ public interface DevPlanService {
 	public List<HashMap<String, String>> selectTotalStats(HashMap<String, String> type);
 
 	public List<HashMap<String, String>> selectAccumulateStats(HashMap<String, String> type);
+
+	public List<EgovMap> selectStatsTable();
 
 }

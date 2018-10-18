@@ -15,6 +15,7 @@ import egovframework.let.tms.dev.service.DevPlanService;
 import egovframework.let.tms.dev.service.DevPlanVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Service("devPlanService")
 public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPlanService{
@@ -309,6 +310,11 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<HashMap<String, String>> selectAccumulateStats(HashMap<String, String> type) {
 		return devPlanDAO.selectAccumulateStats(type);
 
+	}
+
+	@Override
+	public List<EgovMap> selectStatsTable() {
+		return devPlanDAO.selectStatsTable();
 	}
 
 	
