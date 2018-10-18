@@ -127,7 +127,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="30" style="width:50%" id="PG_ID"  title="화면ID" value="<c:out value='${programVO.pgId}'/>" >&nbsp;<span id="sometext"></span>
+                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="30" style="width:50%" title="화면ID" value="<c:out value='${programVO.pgId}'/>" >&nbsp;<span id="sometext"></span>
                               <form:errors path="pgId" style="color: red"/>
                               <br/> 
                             </td>

@@ -37,6 +37,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
@@ -383,10 +384,33 @@ public class ProgramController {
 			return "/tms/pg/PgRelationSearch";
 		
 	}
+	@RequestMapping(value = "/tms/pg/deletePg3.do")
+	@ResponseBody
+	public String insertPgDelete3(@RequestParam("returnValue") String returnValue, ModelMap model) throws Exception {
+			System.out.println("---여기다!"+returnValue);
+		
+			String[] strDelCodes = returnValue.split(";");
+			for (int i = 0; i < strDelCodes.length; i++) {
+				ProgramVO vo = new ProgramVO();
+				vo.setPgId(strDelCodes[i]);
+				ProgramService.deletePg(vo);
+				
+			}
+			
+			/** 프로그램 삭제시 결함 시퀀스 초기화 */
+			defectService.updateDefectIdSq();
+			
+			model.addAttribute("status", 1);
+			
+			
+			return "PgRelationSearch";
+		
+	}
+	
 	
 	@RequestMapping(value = "/tms/pg/deletePgList.do")
 	public String insertPgDelete2(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, @RequestParam String result, ModelMap model) throws Exception {
-			System.out.println("---여기다!"+result);
+			//System.out.println("---여기다!"+result);
 		
 			
 			ArrayList <HashMap<String, String>> result_hash = new ArrayList <HashMap<String, String>>();

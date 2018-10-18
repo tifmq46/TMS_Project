@@ -236,6 +236,7 @@
 	<update id="ProgramDAO.updatePg" parameterClass="ProgramVO">
  		<![CDATA[
 			UPDATE PG_TB SET 
+				PG_ID = #pgId#,
 				USER_DEV_ID = (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT(#userDevId#)), 
 				PG_NM = #pgNm#,
 				SYS_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysGb#),
