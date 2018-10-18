@@ -118,7 +118,6 @@ public class EgovMainController {
 		// 결함 진행상태 부분 끝 --------------------------
 		
 		// 개발 진척상태 부분 시작 --------------------------
-		
 		List<?> devPlanByMainStats = devPlanService.selectDevPlanByMainStats();
 		model.addAttribute("devPlanByMainStats", JSONArray.fromObject(devPlanByMainStats));
 		// 개발 진척상태 부분 끝--------------------------

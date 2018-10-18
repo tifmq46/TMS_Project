@@ -744,16 +744,6 @@ public class DevPlanController {
 	@RequestMapping("/tms/dev/devStats.do")
 	public String selectDevPlanStats(ModelMap model){
 		
-		// 시스템별 진척률 시작 -------------------------------------
-		// 시스템별 전체
-		List<?> sysAllByStats = devPlanService.selectSysAllByStats();
-		model.addAttribute("sysAllByStats", net.sf.json.JSONArray.fromObject(sysAllByStats));
-		
-		// 시스템별 그룹바이
-		List<?> sysByStats = devPlanService.selectSysByStats();
-		model.addAttribute("sysByStats", net.sf.json.JSONArray.fromObject(sysByStats));
-		// 시스템별 진척률 끝 -------------------------------------
-
 		List<String> sysList = devPlanService.selectSysGbList();
 		List<String> taskList = devPlanService.selectTaskGbList();
 		
@@ -799,8 +789,9 @@ public class DevPlanController {
 		
 		System.out.println("금주 총 진척률 " + hashThisWeek);
 		
-		//model.addAttribute("taskThisWeekByStats", net.sf.json.JSONArray.fromObject(taskThisWeek));
-		
+		model.addAttribute("hashThisWeekByStats", net.sf.json.JSONArray.fromObject(hashThisWeek));
+		model.addAttribute("sysThisWeekByStats", net.sf.json.JSONArray.fromObject(sysThisWeek));
+		model.addAttribute("taskThisWeekByStats", net.sf.json.JSONArray.fromObject(taskThisWeek));
 		// 금주 진척률 끝 ---------------------------------------
 		
 		// 누적 진척률 시작 ---------------------------------------
@@ -847,6 +838,9 @@ public class DevPlanController {
 		
 		System.out.println("누적 총 진척률 " + hashAccumulate);
 		
+		model.addAttribute("hashAccumulateByStats", net.sf.json.JSONArray.fromObject(hashAccumulate));
+		model.addAttribute("sysAccumulateByStats", net.sf.json.JSONArray.fromObject(sysAccumulate));
+		model.addAttribute("taskAccumulateByStats", net.sf.json.JSONArray.fromObject(taskAccumulate));
 		// 누적 진척률 끝 ---------------------------------------
 		
 		// 전체 진척률 시작 ---------------------------------------
@@ -892,7 +886,10 @@ public class DevPlanController {
 		hashTot.put("R",String.valueOf(tot));
 		
 		System.out.println("전체 진척률 " + hashTot);
-		
+
+		model.addAttribute("hashTotalByStats", net.sf.json.JSONArray.fromObject(hashTot));
+		model.addAttribute("sysTotalByStats", net.sf.json.JSONArray.fromObject(sysTotal));
+		model.addAttribute("taskTotalByStats", net.sf.json.JSONArray.fromObject(taskTotal));
 		// 전체 진척률 끝 ---------------------------------------
 		
 		return "tms/dev/devStats";

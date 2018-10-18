@@ -33,15 +33,15 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 
 
 	@Override
-	public List<?> selectDefect(DefectDefaultVO searchVO) {
-		return defectDAO.selectDefect(searchVO);
+	public List<?> selectDefect(DefectDefaultVO searchVO, int status) {
+		return defectDAO.selectDefect(searchVO, status);
 	}
 
 
 	@Override
-	public int selectDefectTotCnt(DefectDefaultVO searchVO) {
+	public int selectDefectTotCnt(DefectDefaultVO searchVO, int status) {
 		// TODO Auto-generated method stub
-		return defectDAO.selectDefectTotCnt(searchVO);
+		return defectDAO.selectDefectTotCnt(searchVO, status);
 	}
 
 

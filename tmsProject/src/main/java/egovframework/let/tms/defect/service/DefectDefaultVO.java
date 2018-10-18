@@ -61,7 +61,13 @@ public class DefectDefaultVO extends DefectVO implements Serializable{
 
 	/** recordCountPerPage */
 	private int recordCountPerPage = 10;
-
+	
+	/** 로그인ID(세션)-사용자명*/
+	private String sessionId;
+	
+	/** 로그인 권한ID(ESNTL_ID)*/
+	private String uniqId;
+	
 	public String getSearchCondition() {
 		return searchCondition;
 	}
@@ -201,6 +207,22 @@ public class DefectDefaultVO extends DefectVO implements Serializable{
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public String getUniqId() {
+		return uniqId;
+	}
+
+	public void setUniqId(String uniqId) {
+		this.uniqId = uniqId;
 	}
 	
 	

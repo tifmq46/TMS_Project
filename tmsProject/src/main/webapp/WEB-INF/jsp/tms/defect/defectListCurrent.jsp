@@ -228,7 +228,7 @@
             				<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
             				<td align="center" class="listtd" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
             				<td align="center" class="listtd" style="text-align:left;">
-            				<a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>"
+            				<a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>&amp;boardNo=<c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/>"
                        			 title="<c:out value="${result.defectTitle}"/>">
                        			 <font color="0F438A" style="font-weight:bold"><c:out value="${result.defectTitle}"/></font>
                         	</a>
@@ -256,7 +256,11 @@
             			
             			</tr>
         			</c:forEach>
-              
+               <c:if test="${fn:length(defectList) == 0}">
+                     <tr>
+                       <td nowrap colspan="9" ><spring:message code="common.nodata.msg" /></td>  
+                     </tr>      
+              </c:if>
               </table>        
               
            </div>

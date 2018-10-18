@@ -108,7 +108,6 @@ public class TestController {
 		
 		System.out.println("엑셀롸이터 들어옴 :" + testcaseGb);
 		System.out.println(list);
-		System.out.println(list.get(0).get("sysGb"));
 		
 		// 워크북 생성
 		XSSFWorkbook workbook = new XSSFWorkbook();
@@ -194,7 +193,6 @@ public class TestController {
 		cell.setCellValue("완료율");
 		cell.setCellStyle(HeadStyle); // 제목스타일 
 		
-		
 		// 리스트의 size 만큼 row를 생성
 		for(int i=0; i < list.size(); i++) {
 			// 행 생성
@@ -250,7 +248,6 @@ public class TestController {
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 			
 		}
-		
 		/** 3. 컬럼 Width */ 
 		for (int i = 0; i <  list.size(); i++){ 
 			sheet.autoSizeColumn(i); 
@@ -259,16 +256,8 @@ public class TestController {
 		
 		// 입력된 내용 파일로 쓰기
 		File folder = new File("C:\\TMS\\TMS_통계자료");
-		File file;
+		File file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
 		
-		if(testcaseGb.equals("TC1")) {
-			file = new File("C:\\TMS\\TMS_통계자료\\단위테스트케이스 통계.xlsx");
-		} else if(testcaseGb.equals("TC2")) {
-			file = new File("C:\\TMS\\TMS_통계자료\\통합테스트케이스 통계.xlsx");
-		}else {
-			file = new File("C:\\TMS\\TMS_통계자료\\테스트케이스 통계.xlsx");
-		}
-			
 		//디렉토리 생성 메서드
 		if(!folder.exists()){
 			folder.mkdirs();
