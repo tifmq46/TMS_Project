@@ -77,7 +77,7 @@ public class DevPlanController {
 	/** Validator */
 	@Resource(name = "beanValidator")
 	protected DefaultBeanValidator beanValidator;
-	
+	 
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
 	
@@ -486,44 +486,25 @@ public class DevPlanController {
 		List<String> periodMonthWeek = devPlanService.selectPeriodMonthWeek();
 		model.addAttribute("monthWeek",periodMonthWeek);
 		
-		//개발자별 통계 시작---------------------------------
-		/*개발자별(계획) */
-		List<Map<String,Object>> userplanList = stats("userPlan", userList, periodList);
-		model.addAttribute("userplanList",userplanList);
+		//개발자별 통계 
+		List<Map<String,Object>> userStats = stats("user", userList, periodList);
+		model.addAttribute("userStats",userStats);
+		
 		model.addAttribute("begin", periodList.get(0));
 		model.addAttribute("end", periodList.get(periodList.size()-1));
 		
-		/*개발자별(실적) */
-		List<Map<String,Object>> userDevList = stats("userDev", userList, periodList);
-		model.addAttribute("userDevList",userDevList);
-		//개발자별 통계 끝----------------------------------
+		//업무별 통계 
+		List<Map<String,Object>> taskStats = stats("task", taskGbList, periodList);
+		model.addAttribute("taskStats",taskStats);
 		
-		//업무별 통계 시작---------------------------------
-		/*업무별(계획) */
-		List<Map<String,Object>> taskPlanList = stats("taskPlan", taskGbList, periodList);
-		model.addAttribute("taskPlanList",taskPlanList);
-		
-		/*업무별(실적) */
-		List<Map<String,Object>> taskDevList = stats("taskDev", taskGbList, periodList);
-		model.addAttribute("taskDevList",taskDevList);
-		//업무별 통계 끝----------------------------------
-		
-		//주별 합계(계획)
-		List<String> sumPlanWeek = new ArrayList<String>();
+		//주별 합계
+		List<EgovMap> sumWeek = new ArrayList<EgovMap>();
 				
 		for(int i=0; i<periodList.size();i++){
-			sumPlanWeek.add(i,devPlanService.selectPlanSum(periodList.get(i)));
+			sumWeek.addAll(i,devPlanService.selectSumWeek(periodList.get(i)));
 		}
-		model.addAttribute("sumPlanWeek",sumPlanWeek);
+		model.addAttribute("sumPlanWeek",sumWeek);
 		
-
-		//주별 합계(실적)
-		List<String> sumDevWeek = new ArrayList<String>();
-				
-		for(int i=0; i<periodList.size();i++){
-			sumDevWeek.add(i,devPlanService.selectDevSum(periodList.get(i)));
-		}
-		model.addAttribute("sumDevWeek",sumDevWeek);
 		
 		List<EgovMap> totalTable = devPlanService.selectStatsTable();
 		model.addAttribute("totalTable", totalTable);
@@ -535,187 +516,128 @@ public class DevPlanController {
 	@SuppressWarnings("unchecked")
 	private List<Map<String, Object>> stats(String statsGb, List<String> list, List<String> periodList) {
 		
-		if(statsGb.equals("userPlan")){
-			List<HashMap<String,String>> userPlanStats = new ArrayList<HashMap<String,String>>();
-			HashMap<String,String> userPlan = new HashMap<String,String>();
+		if(statsGb.equals("user")){
+			List<HashMap<String,String>> userStatsList = new ArrayList<HashMap<String,String>>();
+			HashMap<String,String> userMap = new HashMap<String,String>();
 			
 			for(int i=0; i<list.size(); i++){
 				for(int j=0; j<periodList.size(); j++){
-					userPlan.put("userList",String.valueOf(list.get(i)));
-					userPlan.put("dt",String.valueOf(periodList.get(j)));
-					userPlanStats.addAll(devPlanService.selectUserPlanWeekStats(userPlan));
+					userMap.put("userList",String.valueOf(list.get(i)));
+					userMap.put("dt",String.valueOf(periodList.get(j)));
+					userStatsList.addAll(devPlanService.selectUserWeekStats(userMap));
 				}
 			}
 			
-			JSONArray userPlanArray = new JSONArray();
-			JSONObject userPlanObj = new JSONObject();
+			JSONArray userArray = new JSONArray();
+			JSONObject userObj = new JSONObject();
 			
 			int sumUserPlan=0;
-			
-			for(int i=0; i<list.size(); i++){
-
-				userPlanObj = new JSONObject();
-				sumUserPlan = 0;
-				if(i==0){
-					userPlanObj.put("DevNm", userPlanStats.get(0).get("userDevNm"));
-					for(int j=0; j< periodList.size(); j++){
-						userPlanObj.put( "a"+periodList.get(j), userPlanStats.get(j).get(periodList.get(j)));
-						sumUserPlan += Integer.parseInt(String.valueOf(userPlanStats.get(j).get(periodList.get(j))));
-					}
-				}else{
-					userPlanObj.put("DevNm", userPlanStats.get(((periodList.size())*i)+1).get("userDevNm"));
-					for(int j=0; j< periodList.size(); j++){
-						userPlanObj.put( "a"+periodList.get(j), userPlanStats.get(j+(periodList.size()*i)).get(periodList.get(j)));
-						sumUserPlan += Integer.parseInt(String.valueOf(userPlanStats.get(j+(periodList.size()*i)).get(periodList.get(j))));
-					}
-				}
-				userPlanObj.put("sumUserPlan", sumUserPlan);
-				userPlanArray.add(userPlanObj);
-			}
-			
-			JsonUtil jsU = new JsonUtil();
-			List<Map<String,Object>> userplanList = jsU.getListMapFromJsonArray(userPlanArray);
-			
-			return userplanList;
-			
-		}else if(statsGb.equals("userDev")){
-			List<HashMap<String,String>> userDevStats = new ArrayList<HashMap<String,String>>();
-			HashMap<String,String> userDev = new HashMap<String,String>();
-			
-			for(int i=0; i<list.size(); i++){
-				for(int j=0; j<periodList.size(); j++){
-					userDev.put("userList",String.valueOf(list.get(i)));
-					userDev.put("dt",String.valueOf(periodList.get(j)));
-					userDevStats.addAll(devPlanService.selectUserDevWeekStats(userDev));
-				}
-			}
-			
-			JSONArray userDevArray = new JSONArray();
-			JSONObject userDevObj = new JSONObject();
-			
 			int sumUserDev=0;
+			int sumDiff=0;
 			
 			for(int i=0; i<list.size(); i++){
 
-				userDevObj = new JSONObject();
+				userObj = new JSONObject();
+				sumUserPlan = 0;
 				sumUserDev = 0;
+				sumDiff = 0;
 				if(i==0){
-					userDevObj.put("DevNm", userDevStats.get(0).get("userDevNm"));
+					userObj.put("DevNm", userStatsList.get(0).get("userDevNm"));
 					for(int j=0; j< periodList.size(); j++){
-						userDevObj.put( "a"+periodList.get(j), userDevStats.get(j).get(periodList.get(j)));
-						sumUserDev += Integer.parseInt(String.valueOf(userDevStats.get(j).get(periodList.get(j))));
+						userObj.put( "a"+periodList.get(j), userStatsList.get(j).get(periodList.get(j)));
+						userObj.put( "b"+periodList.get(j), userStatsList.get(j).get("b"+periodList.get(j)));
+						userObj.put( "sub"+periodList.get(j), userStatsList.get(j).get("sub"+periodList.get(j)));
+						sumUserPlan += Integer.parseInt(String.valueOf(userStatsList.get(j).get(periodList.get(j))));
+						sumUserDev += Integer.parseInt(String.valueOf(userStatsList.get(j).get("b"+periodList.get(j))));
+						sumDiff += Integer.parseInt(String.valueOf(userStatsList.get(j).get("sub"+periodList.get(j))));
 					}
 				}else{
-					userDevObj.put("DevNm", userDevStats.get(((periodList.size())*i)+1).get("userDevNm"));
+					userObj.put("DevNm", userStatsList.get(((periodList.size())*i)+1).get("userDevNm"));
 					for(int j=0; j< periodList.size(); j++){
-						userDevObj.put( "a"+periodList.get(j), userDevStats.get(j+(periodList.size()*i)).get(periodList.get(j)));
-						sumUserDev += Integer.parseInt(String.valueOf(userDevStats.get(j+(periodList.size()*i)).get(periodList.get(j))));
+						userObj.put( "a"+periodList.get(j), userStatsList.get(j+(periodList.size()*i)).get(periodList.get(j)));
+						userObj.put( "b"+periodList.get(j), userStatsList.get(j+(periodList.size()*i)).get("b"+periodList.get(j)));
+						userObj.put( "sub"+periodList.get(j), userStatsList.get(j+(periodList.size()*i)).get("sub"+periodList.get(j)));
+						sumUserPlan += Integer.parseInt(String.valueOf(userStatsList.get(j+(periodList.size()*i)).get(periodList.get(j))));
+						sumUserDev += Integer.parseInt(String.valueOf(userStatsList.get(j+(periodList.size()*i)).get("b"+periodList.get(j))));
+						sumDiff += Integer.parseInt(String.valueOf(userStatsList.get(j+(periodList.size()*i)).get("sub"+periodList.get(j))));
 					}
 				}
-				userDevObj.put("sumUserDev", sumUserDev);
-				userDevArray.add(userDevObj);
+				userObj.put("sumUserPlan", sumUserPlan);
+				userObj.put("sumUserDev", sumUserDev);
+				userObj.put("sumDiff", sumDiff);
+				userArray.add(userObj);
 			}
 			
 			JsonUtil jsU = new JsonUtil();
-			List<Map<String,Object>> userDevList = jsU.getListMapFromJsonArray(userDevArray);
+			List<Map<String,Object>> userStats = jsU.getListMapFromJsonArray(userArray);
 			
-			return userDevList;
+			return userStats;
 			
-		}else if(statsGb.equals("taskPlan")){
+		}else if(statsGb.equals("task")){
 			
 			
 			
-			List<HashMap<String,String>> taskPlanStats = new ArrayList<HashMap<String,String>>();
-			HashMap<String,String> taskPlan = new HashMap<String,String>();
+			List<HashMap<String,String>> taskStatsList = new ArrayList<HashMap<String,String>>();
+			HashMap<String,String> taskMap = new HashMap<String,String>();
 			
 			for(int i=0; i<list.size(); i++){
 				
 				for(int j=0; j<periodList.size(); j++){
-					taskPlan.put("taskGbList",String.valueOf(list.get(i)));
-					taskPlan.put("dt",String.valueOf(periodList.get(j)));
-					taskPlanStats.addAll(devPlanService.selectTaskPlanWeekStats(taskPlan));
+					taskMap.put("taskGbList",String.valueOf(list.get(i)));
+					taskMap.put("dt",String.valueOf(periodList.get(j)));
+					taskStatsList.addAll(devPlanService.selectTaskWeekStats(taskMap));
 
 				}
 			}
 			
-			JSONArray taskPlanArray = new JSONArray();
-			JSONObject taskPlanObj = new JSONObject();
+			JSONArray taskArray = new JSONArray();
+			JSONObject taskObj = new JSONObject();
 			
 			int sumTaskPlan=0;
-			int div = taskPlanStats.size() / periodList.size();
+			int sumTaskDev=0;
+			int sumDiff = 0;
+			int div = taskStatsList.size() / periodList.size();
 			
 			for(int i=0; i<div; i++){
 
-				taskPlanObj = new JSONObject();
+				taskObj = new JSONObject();
 				sumTaskPlan = 0;
-				if(i==0){
-					taskPlanObj.put("taskGbNm", taskPlanStats.get(0).get("taskGbNm"));
-					for(int j=0; j< periodList.size(); j++){
-						taskPlanObj.put( "a"+periodList.get(j), taskPlanStats.get(j).get(periodList.get(j)));
-						sumTaskPlan += Integer.parseInt(String.valueOf(taskPlanStats.get(j).get(periodList.get(j))));
-					}
-				}else{
-					taskPlanObj.put("taskGbNm", taskPlanStats.get(((periodList.size())*i)+1).get("taskGbNm"));
-					for(int j=0; j< periodList.size(); j++){
-						taskPlanObj.put( "a"+periodList.get(j), taskPlanStats.get(j+(periodList.size()*i)).get(periodList.get(j)));
-						sumTaskPlan += Integer.parseInt(String.valueOf(taskPlanStats.get(j+(periodList.size()*i)).get(periodList.get(j))));
-					}
-				}
-				taskPlanObj.put("sumTaskPlan", sumTaskPlan);
-				taskPlanArray.add(taskPlanObj);
-			}
-			
-			JsonUtil jsU = new JsonUtil();
-			List<Map<String,Object>> taskPlanList = jsU.getListMapFromJsonArray(taskPlanArray);
-			
-			return taskPlanList;
-			
-		}else if(statsGb.equals("taskDev")){
-			
-			List<HashMap<String,String>> taskDevStats = new ArrayList<HashMap<String,String>>();
-			HashMap<String,String> taskDev = new HashMap<String,String>();
-			
-			for(int i=0; i<list.size(); i++){
-				
-				for(int j=0; j<periodList.size(); j++){
-					taskDev.put("taskGbList",String.valueOf(list.get(i)));
-					taskDev.put("dt",String.valueOf(periodList.get(j)));
-					taskDevStats.addAll(devPlanService.selectTaskDevWeekStats(taskDev));
-
-				}
-			}
-			
-			JSONArray taskDevArray = new JSONArray();
-			JSONObject taskDevObj = new JSONObject();
-			
-			int sumTaskDev=0;
-			int div2 = taskDevStats.size() / periodList.size();
-			
-			for(int i=0; i<div2; i++){
-
-				taskDevObj = new JSONObject();
 				sumTaskDev = 0;
+				sumDiff = 0;
 				if(i==0){
-					taskDevObj.put("taskGbNm", taskDevStats.get(0).get("taskGbNm"));
+					taskObj.put("sysGbNm", taskStatsList.get(0).get("sysGbNm"));
+					taskObj.put("taskGbNm", taskStatsList.get(0).get("taskGbNm"));
 					for(int j=0; j< periodList.size(); j++){
-						taskDevObj.put( "a"+periodList.get(j), taskDevStats.get(j).get(periodList.get(j)));
-						sumTaskDev += Integer.parseInt(String.valueOf(taskDevStats.get(j).get(periodList.get(j))));
+						taskObj.put( "a"+periodList.get(j), taskStatsList.get(j).get(periodList.get(j)));
+						taskObj.put( "b"+periodList.get(j), taskStatsList.get(j).get("b"+periodList.get(j)));
+						taskObj.put( "sub"+periodList.get(j), taskStatsList.get(j).get("sub"+periodList.get(j)));
+						sumTaskPlan += Integer.parseInt(String.valueOf(taskStatsList.get(j).get(periodList.get(j))));
+						sumTaskDev += Integer.parseInt(String.valueOf(taskStatsList.get(j).get("b"+periodList.get(j))));
+						sumDiff += Integer.parseInt(String.valueOf(taskStatsList.get(j).get("sub"+periodList.get(j))));
 					}
 				}else{
-					taskDevObj.put("taskGbNm", taskDevStats.get(((periodList.size())*i)+1).get("taskGbNm"));
+					taskObj.put("sysGbNm", taskStatsList.get(((periodList.size())*i)+1).get("sysGbNm"));
+					taskObj.put("taskGbNm", taskStatsList.get(((periodList.size())*i)+1).get("taskGbNm"));
 					for(int j=0; j< periodList.size(); j++){
-						taskDevObj.put( "a"+periodList.get(j), taskDevStats.get(j+(periodList.size()*i)).get(periodList.get(j)));
-						sumTaskDev += Integer.parseInt(String.valueOf(taskDevStats.get(j+(periodList.size()*i)).get(periodList.get(j))));
+						taskObj.put( "a"+periodList.get(j), taskStatsList.get(j+(periodList.size()*i)).get(periodList.get(j)));
+						taskObj.put( "b"+periodList.get(j), taskStatsList.get(j+(periodList.size()*i)).get("b"+periodList.get(j)));
+						taskObj.put( "sub"+periodList.get(j), taskStatsList.get(j+(periodList.size()*i)).get("sub"+periodList.get(j)));
+						sumTaskPlan += Integer.parseInt(String.valueOf(taskStatsList.get(j+(periodList.size()*i)).get(periodList.get(j))));
+						sumTaskDev += Integer.parseInt(String.valueOf(taskStatsList.get(j+(periodList.size()*i)).get("b"+periodList.get(j))));
+						sumDiff += Integer.parseInt(String.valueOf(taskStatsList.get(j+(periodList.size()*i)).get("sub"+periodList.get(j))));
 					}
 				}
-				taskDevObj.put("sumTaskDev", sumTaskDev);
-				taskDevArray.add(taskDevObj);
+				taskObj.put("sumTaskPlan", sumTaskPlan);
+				taskObj.put("sumTaskDev", sumTaskDev);
+				taskObj.put("sumDiff", sumDiff);
+				taskArray.add(taskObj);
 			}
 			
 			JsonUtil jsU = new JsonUtil();
-			List<Map<String,Object>> taskDevList = jsU.getListMapFromJsonArray(taskDevArray);
+			List<Map<String,Object>> taskStats = jsU.getListMapFromJsonArray(taskArray);
 			
-			return taskDevList;
+			return taskStats;
+			
 		}else{
 			return null;
 		}
@@ -978,12 +900,6 @@ public class DevPlanController {
 		}else if(statsGb.equals("user")){
 			List<Map<String,Object>> userplanList = stats("userPlan", userList, periodList);
 			
-			List<String> sumPlanWeek = new ArrayList<String>();
-			
-			for(int i=0; i<periodList.size();i++){
-				sumPlanWeek.add(i,devPlanService.selectPlanSum(periodList.get(i)));
-			}
-			xlsxWiter(null, statsGb, response, userplanList, sumPlanWeek);
 			model.addAttribute("userStats",userplanList);
 			
 		}else if(statsGb.equals("task")){

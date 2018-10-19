@@ -204,16 +204,12 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return list("DevPlanDAO.selectSysByStats");
 	}
 
-	public List<HashMap<String, String>> selectUserDevWeekStats(HashMap<String, String> test) {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserDevWeekStats",test);
-	}
-
 	public List<String> selectPeriodWeek() {
 		return (List<String>) list("DevPlanDAO.selectPeriodWeek");
 	}
 
-	public List<HashMap<String, String>> selectUserPlanWeekStats(HashMap<String, String> test) {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserPlanWeekStats",test);
+	public List<HashMap<String, String>> selectUserWeekStats(HashMap<String, String> test) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserWeekStats",test);
 	}
 
 	public List<String> selectSysGbList() {
@@ -224,24 +220,16 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (List<String>) list("DevPlanDAO.selectTaskGbList");
 	}
 
-	public List<HashMap<String, String>> selectTaskPlanWeekStats(HashMap<String, String> taskPlan) {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTaskPlanWeekStats",taskPlan);
-	}
-
-	public List<HashMap<String, String>> selectTaskDevWeekStats(HashMap<String, String> taskDev) {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTaskDevWeekStats",taskDev);
+	public List<HashMap<String, String>> selectTaskWeekStats(HashMap<String, String> taskPlan) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTaskWeekStats",taskPlan);
 	}
 
 	public List<String> selectPeriodMonthWeek() {
 		return (List<String>) list("DevPlanDAO.selectPeriodMonthWeek");
 	}
 
-	public String selectPlanSum(String periodList) {
-		return (String) select("DevPlanDAO.selectPlanSum",periodList);
-	}
-
-	public String selectDevSum(String periodList) {
-		return (String) select("DevPlanDAO.selectDevSum",periodList);
+	public List<EgovMap> selectSumWeek(String periodList) {
+		return (List<EgovMap>) list("DevPlanDAO.selectSumWeek",periodList);
 	}
 
 	public List<HashMap<String, String>> selectThisWeekStats(HashMap<String, String> type) {

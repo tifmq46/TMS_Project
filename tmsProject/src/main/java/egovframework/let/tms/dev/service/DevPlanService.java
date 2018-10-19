@@ -144,25 +144,19 @@ public interface DevPlanService {
 	
 	public List<?> selectSysByStats();
 
-	public List<HashMap<String, String>> selectUserDevWeekStats(HashMap<String, String> test);
-
 	public List<String> selectPeriodWeek();
 
-	public List<HashMap<String, String>> selectUserPlanWeekStats(HashMap<String, String> test);
+	public List<HashMap<String, String>> selectUserWeekStats(HashMap<String, String> test);
 
 	public List<String> selectSysGbList();
 	
 	public List<String> selectTaskGbList();
 
-	public List<HashMap<String, String>> selectTaskPlanWeekStats(HashMap<String, String> taskPlan);
-
-	public List<HashMap<String, String>> selectTaskDevWeekStats(HashMap<String, String> taskDev);
+	public List<HashMap<String, String>> selectTaskWeekStats(HashMap<String, String> taskPlan);
 
 	public List<String> selectPeriodMonthWeek();
 
-	public String selectPlanSum(String periodList);
-
-	public String selectDevSum(String periodList);
+	public List<EgovMap> selectSumWeek(String periodList);
 
 	public List<HashMap<String, String>> selectThisWeekStats(HashMap<String, String> type);
 

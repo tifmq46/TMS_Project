@@ -11,6 +11,7 @@
     author   : 공통서비스 개발팀 이삼섭
     since    : 2009.03.18
 --%>
+<%@page import="javax.naming.Context"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ page import="egovframework.com.cmm.service.EgovProperties" %>  
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -256,6 +257,10 @@ function searchFileNm() {
 					  			</li>
 					  			
 					  			<li><label for="searchByUserDevId">개발자명</label></li>
+					  			<% LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
+					  					pageContext.setAttribute("loginNm", loginVO.getName()) ;
+					  				if(loginVO.getName().equals("관리자")){	
+					  			%>
 					  			 <li><input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="18" style="text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
 		                          	<datalist id="userAllList">
 		                          	<c:forEach var="userList" items="${userList}" varStatus="status">
@@ -263,6 +268,12 @@ function searchFileNm() {
 									</c:forEach>
 									</datalist>
 		                          </li>
+		                          <%}else{%>
+		                          <li>
+		                          <input type="text" name="searchByUserDevId" id="searchByUserDevId" size="18" style="text-align:center;" value="${loginNm}" readOnly/>
+		                          	
+		                          </li>
+		                          <%}%>
 					  		</ul>
 					  		<ul id="search_second_ul">
 					  			<li><label for="searchByPgId">화면ID</label></li>

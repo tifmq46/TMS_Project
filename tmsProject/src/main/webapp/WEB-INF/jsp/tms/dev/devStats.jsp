@@ -451,12 +451,12 @@ window.onload = function() {
 							<li>&#62;</li>
 							<li>개발진척관리</li>
 							<li>&gt;</li>
-							<li><strong>개발진척통계(그래프)</strong></li>
+							<li><strong>개발진척통계</strong></li>
                         </ul>
                     </div>
                 </div>
                <div id="search_field">
-	                <div id="search_field_loc"><h2><strong>개발진척통계(그래프)</strong></h2></div>  
+	                <div id="search_field_loc"><h2><strong>개발진척통계</strong></h2></div>  
 				</div>
 				<br/><br/>
              <div align="right">

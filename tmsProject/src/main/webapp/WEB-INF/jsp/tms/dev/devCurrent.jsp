@@ -167,9 +167,15 @@ $(function(){
 					  			
 					  			<li>
 									<div class="buttons" style="float:right;">
+										<a href="#LINK" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />출력 </a>
+									</div>	  				  			
+					  			</li>
+					  			<li>
+									<div class="buttons" style="float:right;">
 										<a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
 									</div>	  				  			
 					  			</li>
+					  			
 					  			
 					  		</ul>			
 						</div>			

@@ -247,18 +247,13 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	}
 
 	@Override
-	public List<HashMap<String, String>> selectUserDevWeekStats(HashMap<String, String> test) {
-		return devPlanDAO.selectUserDevWeekStats(test);
-	}
-
-	@Override
 	public List<String> selectPeriodWeek() {
 		return devPlanDAO.selectPeriodWeek();
 	}
 
 	@Override
-	public List<HashMap<String, String>> selectUserPlanWeekStats(HashMap<String, String> test) {
-		return devPlanDAO.selectUserPlanWeekStats(test);
+	public List<HashMap<String, String>> selectUserWeekStats(HashMap<String, String> test) {
+		return devPlanDAO.selectUserWeekStats(test);
 	}
 	
 	@Override
@@ -272,13 +267,8 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	}
 
 	@Override
-	public List<HashMap<String, String>> selectTaskPlanWeekStats(HashMap<String, String> taskPlan) {
-		return devPlanDAO.selectTaskPlanWeekStats(taskPlan);
-	}
-
-	@Override
-	public List<HashMap<String, String>> selectTaskDevWeekStats(HashMap<String, String> taskDev) {
-		return devPlanDAO.selectTaskDevWeekStats(taskDev);
+	public List<HashMap<String, String>> selectTaskWeekStats(HashMap<String, String> taskPlan) {
+		return devPlanDAO.selectTaskWeekStats(taskPlan);
 	}
 
 	@Override
@@ -287,13 +277,8 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	}
 
 	@Override
-	public String selectPlanSum(String periodList) {
-		return devPlanDAO.selectPlanSum(periodList);
-	}
-
-	@Override
-	public String selectDevSum(String periodList) {
-		return devPlanDAO.selectDevSum(periodList);
+	public List<EgovMap> selectSumWeek(String periodList) {
+		return devPlanDAO.selectSumWeek(periodList);
 	}
 
 	@Override
