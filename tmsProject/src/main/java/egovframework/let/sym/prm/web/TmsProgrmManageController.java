@@ -8,12 +8,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.let.sym.prm.service.TmsProgrmManageService;
 import egovframework.let.sym.prm.service.TmsProjectManageVO;
+import egovframework.let.tms.defect.service.DefectService;
+import egovframework.let.tms.pg.service.ProgramService;
+import egovframework.let.tms.pg.service.ProgramVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -39,6 +43,14 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 @Controller
 public class TmsProgrmManageController {
 
+	/** DevPlanService */
+	@Resource (name = "ProgramService")
+	private ProgramService ProgramService;
+
+	/** DefectService */
+	@Resource (name = "defectService")
+	private DefectService defectService;
+	
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
@@ -104,6 +116,31 @@ public class TmsProgrmManageController {
 		List<String> selectTaskGbSearch = TmsProgrmManageService.selectTaskGbSearch(searchData);
 		model.addAttribute("selectTaskGbSearch", selectTaskGbSearch);
 		System.out.println("================"+selectTaskGbSearch);
+		return selectTaskGbSearch;
+
+	}
+	
+	@RequestMapping(value = "/sym/prm/TaskGbSearch2.do")
+	@ResponseBody
+	public List<?> selectTaskGbSearch2(@RequestParam("returnValue") String returnValue, String searchData,ModelMap model) throws Exception {
+		System.out.println("여기옴");
+		// 0. Spring Security 사용자권한 처리
+		
+		List<String> selectTaskGbSearch = TmsProgrmManageService.selectTaskGbSearch(searchData);
+		model.addAttribute("selectTaskGbSearch", selectTaskGbSearch);
+		System.out.println("================"+selectTaskGbSearch);
+		
+		String[] strDelCodes = returnValue.split(";");
+		for (int i = 0; i < strDelCodes.length; i++) {
+			ProgramVO vo = new ProgramVO();
+			vo.setPgId(strDelCodes[i]);
+			ProgramService.deletePg(vo);
+			
+		}
+		
+		/** 프로그램 삭제시 결함 시퀀스 초기화 */
+		defectService.updateDefectIdSq();
+		
 		return selectTaskGbSearch;
 
 	}
