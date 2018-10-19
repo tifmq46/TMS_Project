@@ -50,7 +50,6 @@ $(function(){
 			         async: false,
 			         dataType : "json",
 			         success : function(str){
-			        	 alert("성공.");
 			        	 opener.location.reload();
 			        	 window.close();
 			            

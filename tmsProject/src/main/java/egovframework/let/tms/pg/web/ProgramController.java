@@ -34,6 +34,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -297,6 +298,17 @@ public class ProgramController {
 			
 		// 오류여부 확인
 		if(errors.hasErrors()) {
+			/*
+			List<?> list = errors.getAllErrors();
+			
+			for(int i=0; i<list.size(); i++)
+			{
+				ObjectError a = (ObjectError) list.get(i);
+				System.out.println("에러"+i+" : "+a.getDefaultMessage());
+			}
+			*/
+			
+			
 			System.out.println("오류검출!");
 			
 			model.addAttribute("PGID", programVO.getPgId());
@@ -329,7 +341,7 @@ public class ProgramController {
 	 * 프로그램 정보를 수정한다.	 
 	 */	
 	@RequestMapping(value = "/tms/pg/Pgupdate.do")
-	public String insertPgUpdate(@ModelAttribute("programVO") @Valid ProgramVO programVO, ModelMap model, BindingResult errors) throws Exception {
+	public String insertPgUpdate(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model, BindingResult errors) throws Exception {
 
 		// Validator 생성
 		ProgramValidator mValidator = new ProgramValidator();
@@ -355,8 +367,10 @@ public class ProgramController {
 			System.out.println("오류검출x!");
 			
 			ProgramService.updatePg(programVO);
-					
-			return "redirect:/tms/pg/PgManage.do";
+			
+			
+			//return "redirect:/tms/pg/PgManage.do";
+			return "redirect:/tms/pg/selectPgInf.do?pgId="+programVO.getPgId();
 		}
 		
 		
@@ -597,7 +611,7 @@ public class ProgramController {
 							/** 3. 컬럼 Width */ 
 							for (int i = 0; i <  list.size(); i++){ 
 								sheet.autoSizeColumn(i); 
-								sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
+								sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 100); 
 							}
 							
 							// 입력된 내용 파일로 쓰기
