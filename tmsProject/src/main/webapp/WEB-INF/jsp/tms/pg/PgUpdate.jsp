@@ -154,16 +154,15 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="sysGb" name="sysGb" class="select" title="시스템구분">
-									   <option value="" >선택하세요</option>
+                            <select id="sysGb" name="sysGb" class="select" title="시스템구분" onchange="selectChange();" readonly>
+									   <option disabled="disabled" selected value="" >선택하세요</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${SYSGB == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
+									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${programVO.sysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
                                 </c:forEach>  --%>   
-                            </select>&nbsp;<span id="sometext"></span>
-                            <form:errors path="sysGb" style="color: red"/>
+                            </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
                                <br/>
                             </td>
                           </tr> 
@@ -176,12 +175,11 @@
                             </th>
                             <td>
                             <select id="taskGb" name="taskGb" class="select" title="업무구분">
-									   <option value="" >선택하세요</option>
-                                			<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
-									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${TASKGB == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
-									    	</c:forEach>
-                            </select>&nbsp;<span id="sometext"></span>
-                            <form:errors path="taskGb" style="color: red"/>
+									   <option disabled="disabled" value="">선택하세요</option>
+					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
+									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${programVO.taskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
+									    	</c:forEach>	
+                            </select>&nbsp;&nbsp;&nbsp;<span id="sometext"></span>
                                <br/>
                             </td>
                           </tr> 
