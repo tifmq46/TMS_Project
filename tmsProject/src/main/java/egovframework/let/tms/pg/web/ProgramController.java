@@ -1000,21 +1000,11 @@ public class ProgramController {
 			
 			j=i;
 			
+			vo = xlsxList.get(i);
+			
 			try {
-				vo = xlsxList.get(i);
 				
-				if(!(vo.getUseYn().equals("Y") || vo.getUseYn().equals("N")))
-				{
-					HashMap<String, String> hash = new HashMap<String, String>();
-					
-					hash.put("problem", (j+1)+"행 등록 실패");
-					hash.put("reason", "사용여부, 불일치");
-					error_hash.add(hash);
-					
-					result_cnt = 0;
-					
-					continue;
-				}
+				
 				ProgramService.insertPg(vo);
 				ProgramService.deletePg(vo);
 				
@@ -1065,7 +1055,7 @@ public class ProgramController {
 				if(last.contains("for key 'PRIMARY'")) {
 					last = "화면ID, 중복";
 				}
-				last = last.replace("'PJT_ID'", "프로젝트ID,");
+				last = last.replace("`PJT_ID`", "프로젝트ID,");
 				
 				
 				hash.put("problem", (j+1)+"행 등록 실패");
@@ -1073,6 +1063,21 @@ public class ProgramController {
 				error_hash.add(hash);
 				continue;
 			}
+			
+			if(!(vo.getUseYn().equals("Y") || vo.getUseYn().equals("N")))
+			{
+				HashMap<String, String> hash = new HashMap<String, String>();
+				
+				hash.put("problem", (j+1)+"행 등록 실패");
+				hash.put("reason", "사용여부, 불일치");
+				error_hash.add(hash);
+				
+				result_cnt = 0;
+				
+			}
+			
+			
+			
 		}  
 		model.addAttribute("error_hashs", error_hash);
 		model.addAttribute("result", result_cnt);

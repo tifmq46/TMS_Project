@@ -32,6 +32,11 @@ public class ProgramValidator implements Validator {
 			errors.rejectValue("pgId", "공백오류", "화면ID를 입력하세요");
 			
 		}
+		String mId2 = member.getPgId();
+		if(mId2.contains(";")) {
+			errors.rejectValue("pgId", "공백오류", "특수문자 ; 는 입력할 수 없습니다");
+			
+		}
 //		시스템구분 유효성 체크)		
 		String sysGb = member.getSysGb();
 		if(sysGb == null || sysGb.trim().isEmpty()) {
