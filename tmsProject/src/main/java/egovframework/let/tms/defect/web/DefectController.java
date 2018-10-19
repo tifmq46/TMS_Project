@@ -41,6 +41,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
@@ -389,9 +390,50 @@ public class DefectController {
 		return "tms/defect/defectListOne";
 	}
 	
-	/** 결함처리통계(그래프) */
+	/** 결함처리통계(그래프) - 대시보드1 */
 	@RequestMapping("/tms/defect/selectDefectStats.do")
 	public String selectDefectStats(ModelMap model) throws Exception {
+		
+		HashMap<String, Object> map = defectService.selectDefectStats();
+		model.addAttribute("defectStats",map);
+		
+		// 일자별 결함 등록 건수, 조치건수
+		List<?> dayByDefectCnt = defectService.selectDayByDefectCnt();
+		model.addAttribute("dayByDefectCnt", JSONArray.fromObject(dayByDefectCnt));
+		
+		return "tms/defect/defectStats";
+	}
+	
+	/** 결함처리통계(그래프) - 대시보드2 */
+	@RequestMapping("/tms/defect/selectDefectStatsByDefectCnt.do")
+	public String selectDefectStatsByDefectCnt(ModelMap model) throws Exception {
+		
+		String sysNm = null;
+		
+		// 시스템별 결함 건수
+		List<?> sysByDefectCnt = defectService.selectSysByDefectCnt();
+		model.addAttribute("sysByDefectCnt", JSONArray.fromObject(sysByDefectCnt));
+		
+		// 업무별 결함건수 
+		List<?> taskByDefectCnt = defectService.selectTaskByDefectCnt(sysNm);
+		model.addAttribute("taskByDefectCnt", JSONArray.fromObject(taskByDefectCnt));
+		
+		return "tms/defect/defectStatsByDefectCnt";
+	}
+	
+	/** 결함처리통계(그래프) - 대시보드2(비동기처리) */
+	@RequestMapping("/tms/defect/selectDefectStatsByDefectCntAsyn.do")
+	@ResponseBody
+	public List<?> selectDefectStatsByDefectCntAsyn(String sysNm) throws Exception {
+		
+		List<?> taskByDefectCnt = defectService.selectTaskByDefectCnt(sysNm);
+		
+		return taskByDefectCnt;
+	}
+	
+	/** 결함처리통계(그래프) - 대시보드3 */
+	@RequestMapping("/tms/defect/selectDefectStatsByAction.do")
+	public String selectDefectStatsByAction(ModelMap model) throws Exception {
 		
 		HashMap<String, Object> map = defectService.selectDefectStats();
 		model.addAttribute("defectStats",map);
@@ -416,7 +458,7 @@ public class DefectController {
 		List<?> taskByDefectGbCnt = defectService.selectTaskByDefectGbCnt();
 		model.addAttribute("taskByDefectGbCnt", JSONArray.fromObject(taskByDefectGbCnt));
 		
-		return "tms/defect/defectStats";
+		return "tms/defect/defectStatsByAction";
 	}
 	
 	@RequestMapping("/tms/defect/selectDefectStatsTable.do")

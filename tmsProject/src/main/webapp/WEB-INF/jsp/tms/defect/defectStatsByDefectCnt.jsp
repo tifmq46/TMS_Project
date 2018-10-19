@@ -28,10 +28,56 @@
 <meta http-equiv="Content-Language" content="ko" >
 <title>결함처리통계(그래프)</title>
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
-<script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript">
+<script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
 
+<script type="text/javascript">
+var taskByDefectCntChart;
+
+function handleClick(event, array){
+	alert(this.data.labels[array[0]._index]);
+	$.ajax({
+		type:"POST",
+		url: "<c:url value='/tms/defect/selectDefectStatsByDefectCntAsyn.do'/>",
+		data : {sysNm : this.data.labels[array[0]._index]},
+		async: false,
+		dataType : 'json',
+		success : function(result){
+			var taskByDefectCnt = result;
+			var taskByDefectCntTaskNm = new Array();
+			var taskByDefectCntTaskGbCnt = new Array();
+			for (var i = 0; i < result.length; i++) {
+				taskByDefectCntTaskNm.push(result[i].taskNm);
+				if(result[i].taskGbCnt == 0) {
+					result[i].taskGbCnt = 0.1;
+				}
+				taskByDefectCntTaskGbCnt.push(result[i].taskGbCnt);
+			}
+			
+			var data = [];
+			for(var i=0; i<taskByDefectCnt.length; i++) {
+				data[i] = {
+						datasets : [ {
+							label : '결함건수',
+							data : taskByDefectCntTaskGbCnt[i],
+							backgroundColor : '#007BFF',
+						}]
+					}
+			}
+			console.log(taskByDefectCntChart.data);
+			console.log(data);
+			console.log(taskByDefectCntChart.data.datasets);
+			taskByDefectCntChart.data.datasets = data;
+			taskByDefectCntChart.update();
+			
+		},
+		error : function(request,status,error){
+			alert("에러");
+			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+		}
+	});
+}
 window.onload = function() {
 	
 		var colorArray = [ '#DAE9F4', '#9DC3C1', '#00B3E6', '#008C9E',
@@ -47,43 +93,33 @@ window.onload = function() {
 				'#9900B3', '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6',
 				'#6666FF' ];
 		
-		/** 일자별 결함 등록건수 조치건수*/
-		var dayByDefectCnt = JSON.parse('${dayByDefectCnt}');
-		var dayByDefectCntDays = new Array();
-		var dayByDefectCntEnrollDtCnt = new Array();
-		var dayByDefectCntActionDtCnt = new Array();
-		for (var i = 0; i < dayByDefectCnt.length; i++) {
-			dayByDefectCntDays.push(dayByDefectCnt[i].days);
-			if(dayByDefectCnt[i].enrollDtCnt == 0){
-				dayByDefectCnt[i].enrollDtCnt = 0.1;
+		/** 시스템별 결함건수*/
+		var sysByDefectCnt = JSON.parse('${sysByDefectCnt}');
+		var sysByDefectCntSysNm = new Array();
+		var sysByDefectCntSysCnt = new Array();
+		for (var i = 0; i < sysByDefectCnt.length; i++) {
+			sysByDefectCntSysNm.push(sysByDefectCnt[i].sysNm);
+			if(sysByDefectCnt[i].sysCnt == 0) {
+				sysByDefectCnt[i].sysCnt = 0.1;
 			}
-			if(dayByDefectCnt[i].actionDtCnt == 0){
-				dayByDefectCnt[i].actionDtCnt = 0.1;
-			}
-			dayByDefectCntEnrollDtCnt.push(dayByDefectCnt[i].enrollDtCnt);
-			dayByDefectCntActionDtCnt.push(dayByDefectCnt[i].actionDtCnt);
+			sysByDefectCntSysCnt.push(sysByDefectCnt[i].sysCnt);
 		}
-		var ctx1 = document.getElementById('dayByDefectCnt');
-		var dayByDefectCntChart = new Chart(ctx1, {
+		var ctx1 = document.getElementById('sysByDefectCnt');
+		var sysByDefectCntChart = new Chart(ctx1, {
 			type : 'bar',
 			data : {
-				labels : dayByDefectCntDays,
+				labels : sysByDefectCntSysNm,
 				barThickness : '0.9',
 				datasets : [ {
-					label : '등록건수',
-					data : dayByDefectCntEnrollDtCnt,
+					label : '결함건수',
+					data : sysByDefectCntSysCnt,
 					backgroundColor : '#007BFF',
-				}, {
-					label : '조치건수',
-					data : dayByDefectCntActionDtCnt,
-					backgroundColor : '#00B3E6',
 				}]
 			},
 			options : {
 				tooltips: {
 					callbacks: {
 					label: function(tooltipItem, data) {
-						console.log(tooltipItem.index);
 					            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
 					            var label = data.datasets[tooltipItem.datasetIndex].label;
 					            if (value === 0.1) {
@@ -94,8 +130,49 @@ window.onload = function() {
 					          }
 						}
 					}
+				,onClick:handleClick
 			}
 		});
+		
+		/** 업무별 결함건수*/
+		var taskByDefectCnt = JSON.parse('${taskByDefectCnt}');
+		var taskByDefectCntTaskNm = new Array();
+		var taskByDefectCntTaskGbCnt = new Array();
+		for (var i = 0; i < taskByDefectCnt.length; i++) {
+			taskByDefectCntTaskNm.push(taskByDefectCnt[i].taskNm);
+			if(taskByDefectCnt[i].taskGbCnt == 0) {
+				taskByDefectCnt[i].taskGbCnt = 0.1;
+			}
+			taskByDefectCntTaskGbCnt.push(taskByDefectCnt[i].taskGbCnt);
+		}
+		var ctx2 = document.getElementById('taskByDefectCnt');
+		taskByDefectCntChart = new Chart(ctx2, {
+			type : 'bar',
+			data : {
+				labels : taskByDefectCntTaskNm,
+				barThickness : '0.9',
+				datasets : [ {
+					label : '결함건수',
+					data : taskByDefectCntTaskGbCnt,
+					backgroundColor : '#007BFF',
+				}]
+			},
+			options : {
+				tooltips: {
+					callbacks: {
+					label: function(tooltipItem, data) {
+					            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+					            var label = data.datasets[tooltipItem.datasetIndex].label;
+					            if (value === 0.1) {
+					            	value = 0;
+					            }
+					            return label + ' : ' + value;
+					          }
+						}
+					}
+			}
+		});
+		
 		
 		
 		$('html').scrollTop(0);
@@ -135,67 +212,20 @@ window.onload = function() {
      		<div id="search_field">
 					<div id="search_field_loc"><h2><strong>결함처리통계(그래프)</strong></h2></div>
 			</div>
-
-							<font color="#727272" style="font-size:1.17em;font-weight:bold">조치율</font>
-							&nbsp;
-							<font style="font-size:1.15em;font-weight:bold">(전체 <c:out value="${defectStats.actionStAll}"/>건 중</font> 
-							<font style="font-size:1.15em;font-weight:bold" color="#007BFF" ><c:out value="${defectStats.actionStA3}"/></font>
-							<font style="font-size:1.15em;font-weight:bold">건 완료 )</font> 
-							<table width="100%">
-								<tr>
-									<td width="90%">
-									<fmt:parseNumber var="actionProgression" integerOnly="true"
-											value="${defectStats.actionStA3 / defectStats.actionStAll * 100}" />
-										<div class="progress" style="height: 2rem;">
-											<div class="progress-bar" style="width:${actionProgression}%">
-												<font style="font-size: 15px; font-weight: bolder">
-												<c:out value=" ${actionProgression}"></c:out>% </font>
-											</div>
-										</div>
-										</td>
-								</tr>
-								<tr>
-									<td align="right">
-									<img src="<c:url value='/images/tms/icon_pop_blue.gif' />"
-										width="10" height="10" alt="yCnt" />&nbsp;조치율
-									</td>
-								</tr>
-							</table>
-							
-							<font color="#727272" style="font-size:1.17em;font-weight:bold">상태별 결함건수</font>
-							<table width="100%" cellspacing="10" height="80px">
-								<tr>
-									<td width="16.6%" align="center" bgcolor="#CC3C39">
-									<font color="#FFFFFF" size="3" style="font-weight: bold"> 전체건수 <br />
-										<c:out value="${defectStats.actionStAll}" />
-									</font></td>
-									<td width="16.6%" align="center" bgcolor="#007BFF">
-									<font color="#FFFFFF" size="3" style="font-weight: bold"> 대기 <br />
-										<c:out value="${defectStats.actionStA1}" />
-									</font>
-									</td>
-									<td width="16.6%" align="center" bgcolor="#007BFF">
-									<font color="#FFFFFF" size="3" style="font-weight: bold"> 조치중 <br />
-										<c:out value="${defectStats.actionStA2}" />
-									</font>
-									</td>
-									<td width="16.6%" align="center" bgcolor="#007BFF">
-									<font color="#FFFFFF" size="3" style="font-weight: bold"> 조치완료 <br />
-										<c:out value="${defectStats.actionStA3}" />
-									</font>
-									</td>
-									<td width="16.6%" align="center" bgcolor="#007BFF">
-									<font color="#FFFFFF" size="3" style="font-weight: bold"> 재요청 <br />
-										<c:out value="${defectStats.actionStA4}" />
-									</font>
-									</td>
-								</tr>
-							</table>
-
-							<font color="#727272" style="font-size:1.17em;font-weight:bold">일자별 등록건수, 조치건수</font>
-							<canvas id="dayByDefectCnt" width="100%" height="20"></canvas>
-							
+			
+				<font color="#727272" style="font-size:1.17em;font-weight:bold">시스템별 결함건수</font>
+							<canvas id="sysByDefectCnt" width="100%" height="20"></canvas>
 				
+				<font color="#727272" style="font-size:1.17em;font-weight:bold">업무별 결함건수</font>
+					<div id="taskByDefectCntLoc">
+							<canvas id="taskByDefectCnt" width="100%" height="20"></canvas>
+					</div>
+				<c:forEach var="taskByDefectCnt" items="${taskByDefectCnt}" varStatus="status">
+					<c:out value="${taskByDefectCnt.taskGb}"/>
+					<c:out value="${taskByDefectCnt.taskNm}"/>
+					<c:out value="${taskByDefectCnt.taskGbCnt}"/>
+				</c:forEach>
+
 
 			</div>
             <!-- //content 끝 -->

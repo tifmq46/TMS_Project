@@ -571,30 +571,6 @@
         ]]>
     </select>
     
-    <select id="defectDAO.selectMonthByDefectCnt" resultClass="egovMap">
-        <![CDATA[
-         SELECT CAST(months AS CHAR) AS months, enrollMonthDtCnt, actionMonthDtCnt
-		 FROM(
-           SELECT A.MONTHS AS months, IFNULL(ENROLL_MONTH_DT_CNT,0) AS enrollMonthDtCnt, IFNULL(ACTION_A3_CNT,0) AS actionMonthDtCnt
-         FROM
-            (SELECT MONTH(DATE_SUB(CURDATE(), INTERVAL N.NO MONTH)) AS MONTHS
-            FROM NUMBERS AS N
-            WHERE N.NO<6
-         ) AS A LEFT JOIN
-            (SELECT MONTH(ENROLL_DT) AS ENROLL_MONTH_DT, COUNT(*) AS ENROLL_MONTH_DT_CNT
-            FROM DEFECT_TB, PG_TB
-            WHERE DEFECT_TB.PG_ID = PG_TB.PG_ID AND PG_TB.USE_YN = 'Y'
-            GROUP BY MONTH(ENROLL_DT)
-         ) AS B ON A.MONTHS = B.ENROLL_MONTH_DT
-         LEFT JOIN ( SELECT MONTH(ACTION_DT) AS ACTION_MONTH_DT, COUNT(*) AS ACTION_A3_CNT
-            FROM DEFECT_TB, PG_TB
-            WHERE DEFECT_TB.PG_ID = PG_TB.PG_ID AND PG_TB.USE_YN = 'Y' AND ACTION_ST ='A3'
-            GROUP BY MONTH(ACTION_DT) 
-         ) AS C ON A.MONTHS = C.ACTION_MONTH_DT
-         ORDER BY months ASC) AS D
-        	WHERE 1=1
-        ]]>
-    </select>
     
     <select id="defectDAO.selectTaskGbByDefect" resultClass="java.lang.String">
         <![CDATA[
@@ -742,6 +718,35 @@
 			WHERE A.CODE_ID='TASKGB'
 			ORDER BY taskAll DESC, actionStA3 DESC
         ]]>
+    </select>
+    
+    <select id="defectDAO.selectSysByDefectCnt" resultClass="egovMap">
+        <![CDATA[
+        	SELECT A.CODE AS sysGb, A.CODE_NM AS sysNm, IFNULL(B.sysCnt,0) AS sysCnt
+			FROM LETTCCMMNDETAILCODE AS A LEFT JOIN (
+				SELECT COUNT(*) AS sysCnt, P.SYS_GB AS sysGb
+				FROM DEFECT_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
+				GROUP BY SYS_GB
+			) AS B ON A.CODE = B.sysGb
+			WHERE A.CODE_ID = 'SYSGB'
+			ORDER BY sysCnt DESC
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectTaskByDefectCnt" resultClass="egovMap" parameterClass="java.lang.String">
+        	SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(B.taskGbCnt,0) AS taskGbCnt
+			FROM LETTCCMMNDETAILCODE AS A LEFT JOIN
+				(SELECT P.TASK_GB AS taskGb, P.SYS_GB AS sysGb, COUNT(P.TASK_GB) as taskGbCnt
+				FROM DEFECT_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
+				<isNotNull>
+				 	AND P.SYS_GB = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysNm# AND CODE_ID = 'SYSGB')
+				</isNotNull>
+				GROUP BY P.TASK_GB
+				) AS B ON A.CODE = B.taskGb
+			WHERE A.CODE_ID ='TASKGB'
+			ORDER BY B.taskGbCnt DESC, A.CODE ASC
     </select>
     
     <insert id="defectDAO.insertDefect" parameterClass="DefectVO">

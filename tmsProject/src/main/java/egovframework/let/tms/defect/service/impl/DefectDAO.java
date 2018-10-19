@@ -38,7 +38,7 @@ public class DefectDAO extends EgovAbstractDAO{
 	
 	public void insertDefect(DefectVO defectVO) {
 		// 테스트 시나리오에서 결함등록
-		if(Integer.parseInt(defectVO.getTestscenarioId()) != 0) {
+		if(!defectVO.getTestscenarioId().equals("0")) {
 			insert("defectDAO.insertDefectFromTest", defectVO);
 		} else {
 			insert("defectDAO.insertDefect", defectVO);
@@ -237,6 +237,14 @@ public class DefectDAO extends EgovAbstractDAO{
 	
 	public List<?> selectTaskByMainStats() {
 		return list("defectDAO.selectTaskByMainStats");
+	}
+	
+	public List<?> selectSysByDefectCnt() {
+		return list("defectDAO.selectSysByDefectCnt");
+	}
+	
+	public List<?> selectTaskByDefectCnt(String sysNm) {
+		return list("defectDAO.selectTaskByDefectCnt", sysNm);
 	}
 	
 }

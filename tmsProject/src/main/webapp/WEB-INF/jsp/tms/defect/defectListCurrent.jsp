@@ -84,20 +84,20 @@
                 <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
                 <!-- 검색 필드 박스 시작 -->
             <div id="search_field">
-               <div id="search_field_loc"><h2><strong>결함처리현황</strong></h2></div>
+               <div id="search_field_loc"><h2><strong>결함관리</strong></h2></div>
                
                     <fieldset><legend>조건정보 영역</legend>     
                     <div class="sf_start">
                        <ul id="search_first_ul">
                           <li><label for="searchByPgId">화면ID</label></li>
                           <li>
-                          <input id="TmsProgrmFileNm_pg_id" name="searchByPgId" type="text" size="10" style="text-align:center;" maxlength="40" title="화면ID" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+                          <input id="TmsProgrmFileNm_pg_id" name="searchByPgId" type="text" size="10" style="text-align:center;" title="화면ID" value="<c:out value='${searchVO.searchByPgId}'/>"/>
                          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
                       <img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
                           </li>
                           <li>
                             <label for="searchByTaskGb">업무구분&nbsp;</label>
-                           <select name="searchByTaskGb" id="searchByTaskGb" style="width:12%;text-align-last:center;">
+                           <select name="searchByTaskGb" id="searchByTaskGb" style="width:10%;text-align-last:center;">
                                <option value="" selected="selected" >전체</option>
                                <c:forEach var="taskGb" items="${taskGb}" varStatus="status">
                                   <option value="<c:out value="${taskGb.codeNm}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb.codeNm}">selected="selected"</c:if> ><c:out value="${taskGb.codeNm}" /></option>
@@ -105,7 +105,7 @@
                            </select>                  
                           </li>          
                           <li>
-                            <label for="searchByDefectGb">&nbsp;결함유형구분</label>
+                            <label for="searchByDefectGb">결함유형&nbsp;</label>
                            <select name="searchByDefectGb" id="searchByDefectGb" style="width:10%;text-align-last:center;">
                                <option value="" selected="selected">전체</option>
                                <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
@@ -115,7 +115,7 @@
                           </li>
                           
                           <li>
-                            <label for="searchByActionSt">조치상태구분</label>
+                            <label for="searchByActionSt">조치상태&nbsp;</label>
                            <select name="searchByActionSt" id="searchByActionSt" style="width:10%;text-align-last:center;">
                                <option value="" selected="selected">전체</option>
                                <c:forEach var="actionSt" items="${actionSt}" varStatus="status">
@@ -128,10 +128,10 @@
                        </ul>
                        
                        <ul id="search_second_ul">
-                        <li><label for="searchByUserTestId">테스터명</label>&nbsp;</li>
+                        <li><label for="searchByUserTestId">테스터&nbsp;&nbsp;</label></li>
                         <li><input type="text" list="userAllList" autocomplete="off" name="searchByUserTestId" id="searchByUserTestId" size="10" style="text-align:center;" value="<c:out value='${searchVO.searchByUserTestId}'/>"/></li>
-                          <li><label for="searchByUserDevId">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개발자명</label></li>
-                          <li><input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="18" style="text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+                          <li><label for="searchByUserDevId">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개발자&nbsp;&nbsp;</label></li>
+                          <li><input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="15" style="text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
                           <datalist id="userAllList">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
 									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
@@ -143,21 +143,18 @@
                         <input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
                           &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
                           </li>                          
-                       </ul>
-                       <br/>
-                       <ul id="search_third_ul">
                           <li>
                            <div class="buttons" style="float:right;">
                             <a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
                                <a href="<c:url value='/tms/defect/insertDefect.do'/>?testscenarioId=0">등록</a>
                            </div>                            
                           </li>
+                       </ul>
                           
-                       </ul>         
                   </div>         
                   </fieldset>
-            </div>
-            <!-- //검색 필드 박스 끝 -->
+          	  </div>
+          	  <!-- //검색 필드 박스 끝 -->
                 
                  <table width="85%" cellspacing="0" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
                  <caption style="visibility:hidden">총 건수, 완료건수, 미완료, 진행률 표시하는 테이블</caption>

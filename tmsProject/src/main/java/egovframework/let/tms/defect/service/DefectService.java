@@ -84,4 +84,7 @@ public interface DefectService {
 	
 	public List<?> selectTaskByMainStats();
 	
+	public List<?> selectSysByDefectCnt();
+
+	public List<?> selectTaskByDefectCnt(String sysNm);
 }

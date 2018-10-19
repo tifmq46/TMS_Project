@@ -61,6 +61,8 @@
 	function searchFileNm() {
 		window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>", '',
 				'width=800,height=600');
+		document.getElementById('TmsProgrmFileNm_pg_id').style.border='none';
+		document.getElementById('TmsProgrmFileNm_pg_nm').style.display='inline';
 	}
 	
 	function pgIdSearch(){
@@ -129,10 +131,10 @@
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" colspan="3" nowrap >
-					          <input id="TmsProgrmFileNm_pg_id" name="pgId" type="text" size="10" value=""  maxlength="40" title="화면ID"  
-					           style="text-align:center;" readonly="readonly" /> 
-					          <input id="TmsProgrmFileNm_pg_nm" type="text" size="10" value=""  maxlength="40" title="화면명" 
-					          style="text-align:center;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/>
+					          <input id="TmsProgrmFileNm_pg_id" name="pgId" type="text" size="" value=""  title="화면ID"  
+					           style="text-align:center;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/> 
+					          <input id="TmsProgrmFileNm_pg_nm" type="text"  value=""  title="화면명" 
+					          style="text-align:center; border:none; display:none;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/>
 					           <form:errors path="pgId" />
 					          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
@@ -195,7 +197,7 @@
 					        </th>
 					        <td width="16.6%" nowrap>
 									<select name="defectGb" id="defectGb" style="width:90%; text-align-last:center;">
-									    <option value="0" selected="selected">선택</option>
+									    <option value="" selected="selected">선택</option>
 									    <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
 									    	<option value="<c:out value="${defectGb.code}"/>"><c:out value="${defectGb.codeNm}" /></option>
 									    </c:forEach>
