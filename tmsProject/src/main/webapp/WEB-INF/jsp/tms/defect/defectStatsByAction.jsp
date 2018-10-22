@@ -170,6 +170,18 @@ window.onload = function() {
 						</c:forEach>
 					</tr>
 				</table>
+				
+				<font color="#727272" style="font-size:1.17em;font-weight:bold">업무별 조치율</font>
+				<table>
+					<tr>
+						<td>
+							
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+					</tr>
+				</table>
 
 			</div>
             <!-- //content 끝 -->
