@@ -265,7 +265,7 @@ margin: 0; background-color:#f2f2f2;
 	border:1px solid #dddddd;
     color:#0f438a;
     height: 26px;padding-left:10px;}
-
+    
 .modify_user a {
     color: #666666;
 }
@@ -470,7 +470,7 @@ b{font-weight: 1000;}
 .tmsTestButton {
 	padding-bottom:10px;
 	padding-top:10px;
-	width:800px;
+	width:1000px;
 	margin-bottom: 30px;
 }
 

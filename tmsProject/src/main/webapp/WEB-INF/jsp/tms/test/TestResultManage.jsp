@@ -35,12 +35,33 @@
 <script>
 
 
+window.onload = function(){
+	 	var checkField = document.testScenarioList.checkField;
+	    var menuNo = document.testScenarioList.checkMenuNo;
+	    var checkMenuNos = "";
+	    var checkedCount = 0;
+	    
+	    
+	    if(checkField) {
+	    	console.log(checkField);
+	    	console.log(checkField.length);
+	    	if(checkField.length >= 1 ) {
+	    		var firstTr = checkField[0].parentNode.parentNode;
+	    		$(firstTr).children("td").css( "background-color", "rgba(0, 0, 0, 0.08)" );
+				$(firstTr).children("td").css( "color", "#666666" );
+	    	}else {
+	    		
+	    	}
+	    }   
+	
+}
+
 /* ********************************************************
  * 멀티삭제 처리 함수
  ******************************************************** */
 function fDeleteMenuList() {
-    var checkField = document.menuManageForm.checkField;
-    var menuNo = document.menuManageForm.checkMenuNo;
+    var checkField = document.testScenarioList.checkField;
+    var menuNo = document.testScenarioList.checkMenuNo;
     var checkMenuNos = "";
     var checkedCount = 0;
     if(checkField) {
@@ -59,35 +80,36 @@ function fDeleteMenuList() {
         }
     }   
 
-    document.menuManageForm.checkedMenuNoForDel.value=checkMenuNos;
-    document.menuManageForm.action = "<c:url value='/sym/mnu/mpm/EgovMenuManageListDelete.do'/>";
-    document.menuManageForm.submit(); 
+    document.testScenarioList.checkedMenuNoForDel.value=checkMenuNos;
+    document.testScenarioList.action = "<c:url value='/sym/mnu/mpm/EgovMenuManageListDelete.do'/>";
+    document.testScenarioList.submit(); 
 }
 
-
-function UpdateScenarioResultAll() {
-	
-	 if (confirm('<spring:message code="common.update.msg" />')) {
-	
-	var updateScenarioCount = $('.checkScenarioId').length;
-	var updateArray = new Array();
-	 
-	$('.checkScenarioId').each(function(){
-		var updateScenarioId 	= $(this).val();
-		var updateScenarioValue = document.getElementById(updateScenarioId).value;
-		var updateScenarioData	= new Object();
-		
-		updateScenarioData.testscenarioId 	= updateScenarioId;
-		updateScenarioData.testResultYn 	= updateScenarioValue;
-		updateArray.push(updateScenarioData);
-	});
-	
-	document.updateMultiResult.updateScenarioDataJson.value = JSON.stringify(updateArray);
-	document.updateMultiResult.action = "<c:url value='/tms/test/updateTestScenarioMultiResultImpl.do'/>";
-	document.updateMultiResult.submit(); 
-
-	 }
+function fCheckAll() {
+    var checkField = document.testScenarioList.checkField;
+    if(document.testScenarioVO.checkAll.checked) {
+        if(checkField) {
+            if(checkField.length > 1) {
+                for(var i=0; i < checkField.length; i++) {
+                    checkField[i].checked = true;
+                }
+            } else {
+                checkField.checked = true;
+            }
+        }
+    } else {
+        if(checkField) {
+            if(checkField.length > 1) {
+                for(var j=0; j < checkField.length; j++) {
+                    checkField[j].checked = false;
+                }
+            } else {
+                checkField.checked = false;
+            }
+        }
+    }
 }
+
 
 function deleteTestCase() {
 	
@@ -99,7 +121,48 @@ function deleteTestCase() {
 
 	var testscenarioId = ""; //전역변수
 
-function testScenarioResultForm(scenarioId, resultContent, resultYn) {
+function testScenarioResultForm(target, scenarioId, resultContent, resultYn) {
+	
+	var tbody = target.parentNode;
+	var trs = tbody.getElementsByTagName('tr');
+	for ( var i = 0; i < trs.length; i++ ) {
+	if ( trs[i] != target ) {
+		$(trs[i]).children("td").css( "background-color", "#ffffff" );
+		$(trs[i]).children("td").css( "color", "#666666" );
+		} else {
+			$(trs[i]).children("td").css( "background-color", "rgba(0, 0, 0, 0.08)" );
+			$(trs[i]).children("td").css( "color", "#666666" );
+	}
+	}  
+	// endfor i
+		
+		
+	/* 	
+		
+	var targetDiv = target.parentNode;
+	console.log(targetDiv)
+	var targetTd = targetDiv.parentNode;
+	console.log(targetTd)
+	var targetTr = targetTd.parentNode;
+	console.log(targetTr)
+	var targetTbody = targetTr.parentNode;
+	console.log(targetTbody)
+	var trs = targetTbody.getElementsByTagName('tr');
+	console.log(trs)
+	
+	for ( var i = 0; i < trs.length; i++ ) {
+	if ( trs[i] != targetTr ) {
+		alert("타겟아님");
+	trs[i].style.backgroundColor = "#ffffff";
+	trs[i].style.color = "#666666";
+	} else {
+		alert("타겟임");
+	trs[i].style.backgroundColor = "rgb(15, 67, 138)";
+	trs[i].style.color = "#666666";
+	}
+	}
+	
+	 */
 	
 	testscenarioId = scenarioId;
 	
@@ -110,8 +173,6 @@ function testScenarioResultForm(scenarioId, resultContent, resultYn) {
 	if(resultYn != null && resultYn.length > 0){
 		$('input:radio[name=testResultYn]:radio[value='+ resultYn +']').prop("checked",true);
 	}
-	document.testScenarioResultInsert.style.visibility = "visible";
-	document.getElementById('tempButton').style.display = 'none';
 }
 
 
@@ -123,14 +184,9 @@ function updateTestScenarioResult () {
     }
 }
 
-function closeTestScenarioResult() {
-	document.testScenarioResultInsert.style.visibility = "hidden";
-	document.getElementById('tempButton').style.display = 'block';
-
-}
 
 function insertDefect() {
-	location.href = "./insertDefect.do?testscenarioId=" + testscenarioId;
+	location.href = "<c:url value='/tms/defect/insertDefect.do?testscenarioId=" + testscenarioId + "'/>";
 }
 
 </script>
@@ -267,20 +323,25 @@ function insertDefect() {
                    </form:form>
                     <br>
                 
+                	<form:form style="visibility:visible; margin-top:20px;" commandName="testScenarioList" name="testScenarioList" method="post" action="/tms/test/updateTestScenarioResultImpl.do">           
 					<div id="border" class="modify_user" style="height:200px; width:92%; overflow:auto;" >
 						
                         <table>
                         	<colgroup>
+                        		<col width="4%"/>
 		        				<col width="4%"/>
+		        				<col width="28%"/>
+		        				<col width="16%"/>
 		        				<col width="25%"/>
-		        				<col width="20%"/>
-		        				<col width="25%"/>
-		        				<col width="12%"/>
-		        				<col width="8%"/>
+		        				<col width="10%"/>
+		        				<col width="7%"/>
 		        				<col width="6%"/>
 	        				</colgroup>
                         
                             <tr>
+                            	<th height="23" rowspan="2" nowrap="nowrap" scope="col" class="f_field" nowrap="nowrap">
+                            		<input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/>
+                            	</th>
                                 <th height="23" rowspan="2"><label for="nttSj"><spring:message code="tms.test.ord" /></label>
                                 </th>
                                 <th height="23" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
@@ -299,14 +360,19 @@ function insertDefect() {
                             	<th><spring:message code="tms.test.result" /></th>
                             </tr>
                             
+                            <tbody>
                             <c:forEach var="result" items="${testScenarioList}" varStatus="status">
         			
-		            			<tr>
+		            			<tr onclick="testScenarioResultForm(this,'${result.testscenarioId}', '${result.testResultContent}', '${result.testResultYn}');">
+		            				<td align="center" class="listtd" style="padding-left:2px; ">
+							       		<input type="checkbox" name="checkField" class="check2" title="선택"/>
+							       		<input name="checkMenuNo" type="hidden" value="<c:out value='${result.testscenarioId}'/>"/>
+							    	</td>
 							    	<td align="center" class="listtd"><c:out value="${result.testscenarioOrd}"/>&nbsp;</td>
 		            				<td align="center" class="listtd">
 			            				
 			            				<div>
-			            					<a href="#" onclick="testScenarioResultForm('${result.testscenarioId}', '${result.testResultContent}', '${result.testResultYn}'); return false;" >
+			            					<a href="#" <%-- onclick="testScenarioResultForm(this,'${result.testscenarioId}', '${result.testResultContent}', '${result.testResultYn}'); return false;" --%> >
 			            					<strong><c:out value="${result.testscenarioContent}"/></strong>
 			            					</a>
 			            				</div>
@@ -333,21 +399,12 @@ function insertDefect() {
 		            				</td>
 		            			</tr>
         					</c:forEach>
+        					</tbody>
                         </table>
                     </div>
+                    </form:form>
 				
-				<div id="tempButton" class="tmsTestButton" style="display:block;">
-	                    <ul>        
-	           				<li>
-								<div class="buttons">
-	                                <a href="<c:url value='/tms/test/selectTestResultList.do?testcaseGb=${testVoMap.testcaseGbCode }'/>"><spring:message code="button.list" /></a>
-								</div>	  				  			
-		  					</li>             
-	                    </ul>        
-                </div>
-					
-				
-			<form:form style="visibility:hidden; margin-top:20px;" commandName="testScenarioVO" name="testScenarioResultInsert" method="post" action="/tms/test/updateTestScenarioResultImpl.do">           
+			<form:form style="visibility:visible; margin-top:20px;" commandName="testScenarioVO" name="testScenarioResultInsert" method="post" action="/tms/test/updateTestScenarioResultImpl.do">           
 					
 								<%
 									LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO");
@@ -364,7 +421,7 @@ function insertDefect() {
 					
 					
 					<div id="border" class="modify_user" >
-						<input type="hidden" name="testscenarioId" >
+						<input type="hidden" name="testscenarioId" value="${testScenarioList[0].testscenarioId}">
 						<input type="hidden" name="testcaseId" >
 						<input type="hidden" name="userTestId" value="${loginId}"/>
 						
@@ -383,13 +440,13 @@ function insertDefect() {
                             
 	            			<tr>
                                 <td>
-                            		<textarea type="textarea" rows="3" style="width:100%" id="testResultContent" name="testResultContent" maxlength ="800"></textarea>
+                            		<textarea type="textarea" rows="3" style="width:100%" id="testResultContent" name="testResultContent" maxlength ="800"><c:out value="${testScenarioList[0].testResultContent}" /></textarea>
                             		<br/><form:errors path="testResultContent" />
                             	</td>
                             	
 	            				<td align="center" class="listtd">
-	            					<input type="radio" name="testResultYn" value="P" >Pass&nbsp;
-	  								<input type="radio" name="testResultYn" value="F" >Fail&nbsp;
+	            					<input type="radio" name="testResultYn" value="P" <c:if test="${testScenarioList[0].testResultYn == 'P'}">checked="checked"</c:if>>Pass&nbsp;
+	  								<input type="radio" name="testResultYn" value="F" <c:if test="${testScenarioList[0].testResultYn == 'F'}">checked="checked"</c:if>>Fail&nbsp;
 	  							</td>
 	            			</tr>
                             
@@ -403,7 +460,8 @@ function insertDefect() {
 								<div class="buttons">
 	                                <a href="#" onclick="updateTestScenarioResult(); return false;"><spring:message code="button.save" /></a>
 	                                <a href="#" onclick="closeTestScenarioResult(); return false;"><spring:message code="button.reset" /></a>
-	                                <a href="#" onclick="insertDefect(); return false;">결함등록</a>
+	                                <a href="<c:url value='/tms/test/selectTestResultList.do?testcaseGb=${testVoMap.testcaseGbCode }'/>"><spring:message code="button.list" /></a>
+	                                <a href="#" onclick="insertDefect(); return false;" style="float:right;">결함등록</a>
 								</div>	  				  			
 		  					</li>             
 	                    </ul>        

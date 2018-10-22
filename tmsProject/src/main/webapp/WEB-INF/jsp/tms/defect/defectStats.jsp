@@ -237,6 +237,8 @@ window.onload = function() {
 						backgroundColor : [colorArray[i]]
 				}
 			}
+			console.log(dataSetValue);
+			console.log(taskByActionProgressionChart.data.datasets);
 			taskByActionProgressionChart.data.datasets = dataSetValue;
 			taskByActionProgressionChart.update();
 		}

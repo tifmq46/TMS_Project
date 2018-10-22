@@ -41,6 +41,12 @@ public class TestDefaultVO extends TestCaseVO implements Serializable{
 	
 	/** 검색사용여부 */
 	private String searchUseYn = "";
+	
+	/** 기준(화면ID/테스트케이스ID) */
+	private String asOf = "pgId";
+	
+	/** 엑셀로 다운로드시 */
+	private boolean isExcel = false;
 
 	/** 현재페이지 */
 	private int pageIndex = 1;
@@ -115,6 +121,22 @@ public class TestDefaultVO extends TestCaseVO implements Serializable{
 
 	public void setSearchByResultYn(String searchByResultYn) {
 		this.searchByResultYn = searchByResultYn;
+	}
+	
+	public String getAsOf() {
+		return asOf;
+	}
+
+	public void setAsOf(String asOf) {
+		this.asOf = asOf;
+	}
+
+	public boolean isExcel() {
+		return isExcel;
+	}
+
+	public void setExcel(boolean isExcel) {
+		this.isExcel = isExcel;
 	}
 
 	public Date getSearchByPlanStartDt() {

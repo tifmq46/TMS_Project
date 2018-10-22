@@ -605,8 +605,13 @@
 				    AND USER_NM = #searchByUserDevId#
 				</isNotEmpty> 
 				
-				ORDER BY ENROLL_DT ASC
-				LIMIT #recordCountPerPage# OFFSET #firstIndex#
+				ORDER BY ENROLL_DT DESC
+				
+				<!-- 엑셀 다운로드 -->
+				<isNotEqual property="isExcel" compareValue="true">
+				     LIMIT #recordCountPerPage# OFFSET #firstIndex#
+				</isNotEqual> 
+				
 	</select>
 	
 	
