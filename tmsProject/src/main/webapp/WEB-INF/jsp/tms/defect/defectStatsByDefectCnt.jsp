@@ -35,7 +35,6 @@
 var taskByDefectCntChart;
 
 function handleClick(event, array){
-	alert(this.data.labels[array[0]._index]);
 	$.ajax({
 		type:"POST",
 		url: "<c:url value='/tms/defect/selectDefectStatsByDefectCntAsyn.do'/>",
@@ -46,28 +45,16 @@ function handleClick(event, array){
 			var taskByDefectCnt = result;
 			var taskByDefectCntTaskNm = new Array();
 			var taskByDefectCntTaskGbCnt = new Array();
-			for (var i = 0; i < result.length; i++) {
-				taskByDefectCntTaskNm.push(result[i].taskNm);
-				if(result[i].taskGbCnt == 0) {
-					result[i].taskGbCnt = 0.1;
+			for (var i = 0; i < taskByDefectCnt.length; i++) {
+				taskByDefectCntTaskNm.push(taskByDefectCnt[i].taskNm);
+				if(taskByDefectCnt[i].taskGbCnt == 0) {
+					taskByDefectCnt[i].taskGbCnt = 0.1;
 				}
-				taskByDefectCntTaskGbCnt.push(result[i].taskGbCnt);
+				taskByDefectCntTaskGbCnt.push(taskByDefectCnt[i].taskGbCnt);
 			}
-			
-			var data = [];
-			for(var i=0; i<taskByDefectCnt.length; i++) {
-				data[i] = {
-						datasets : [ {
-							label : '결함건수',
-							data : taskByDefectCntTaskGbCnt[i],
-							backgroundColor : '#007BFF',
-						}]
-					}
-			}
-			console.log(taskByDefectCntChart.data);
-			console.log(data);
-			console.log(taskByDefectCntChart.data.datasets);
-			taskByDefectCntChart.data.datasets = data;
+			var data = taskByDefectCntChart.config.data;
+			data.datasets[0].data = taskByDefectCntTaskGbCnt;
+			data.labels = taskByDefectCntTaskNm;
 			taskByDefectCntChart.update();
 			
 		},
@@ -80,19 +67,6 @@ function handleClick(event, array){
 }
 window.onload = function() {
 	
-		var colorArray = [ '#DAE9F4', '#9DC3C1', '#00B3E6', '#008C9E',
-		                   '#007BFF', '#FFB399', '#FF33FF', '#FFFF99',
-				'#00B3E6', '#E6B333', '#3366E6', '#999966', '#99FF99',
-				'#B34D4D', '#80B300', '#809900', '#E6B3B3', '#6680B3',
-				'#66991A', '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A',
-				'#33FFCC', '#66994D', '#B366CC', '#4D8000', '#B33300',
-				'#CC80CC', '#66664D', '#991AFF', '#E666FF', '#4DB3FF',
-				'#1AB399', '#E666B3', '#33991A', '#CC9999', '#B3B31A',
-				'#00E680', '#4D8066', '#809980', '#E6FF80', '#1AFF33',
-				'#999933', '#FF3380', '#CCCC00', '#66E64D', '#4D80CC',
-				'#9900B3', '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6',
-				'#6666FF' ];
-		
 		/** 시스템별 결함건수*/
 		var sysByDefectCnt = JSON.parse('${sysByDefectCnt}');
 		var sysByDefectCntSysNm = new Array();
@@ -173,6 +147,55 @@ window.onload = function() {
 			}
 		});
 		
+		/** 사용자별 결함건수*/
+		var userByDefectCnt = JSON.parse('${userByDefectCnt}');
+		var userByDefectCntUserNm = new Array();
+		var userByDefectCntDefectAll = new Array();
+		var userByDefectCntActionA3All = new Array();
+		for (var i = 0; i < userByDefectCnt.length; i++) {
+			userByDefectCntUserNm.push(userByDefectCnt[i].userNm);
+			if(userByDefectCnt[i].defectCnt == 0) {
+				userByDefectCnt[i].defectCnt = 0.1;
+			}
+			if(userByDefectCnt[i].actionA3Cnt == 0) {
+				userByDefectCnt[i].actionA3Cnt = 0.1;
+			}
+			userByDefectCntDefectAll.push(userByDefectCnt[i].defectCnt);
+			userByDefectCntActionA3All.push(userByDefectCnt[i].actionA3Cnt);
+		}
+		var ctx3 = document.getElementById('userByDefectCnt');
+		var userByDefectCntChart = new Chart(ctx3, {
+			type : 'bar',
+			data : {
+				labels : userByDefectCntUserNm,
+				barThickness : '0.9',
+				datasets : [ {
+					label : '결함건수',
+					data : userByDefectCntDefectAll,
+					backgroundColor : '#007BFF',
+				},
+				{
+					label : '조치건수',
+					data : userByDefectCntActionA3All,
+					backgroundColor : '#00B3E6',
+				}]
+			},
+			options : {
+				tooltips: {
+					callbacks: {
+					label: function(tooltipItem, data) {
+					            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+					            var label = data.datasets[tooltipItem.datasetIndex].label;
+					            if (value === 0.1) {
+					            	value = 0;
+					            }
+					            return label + ' : ' + value;
+					          }
+						}
+					}
+			}
+		});
+		
 		
 		
 		$('html').scrollTop(0);
@@ -217,15 +240,10 @@ window.onload = function() {
 							<canvas id="sysByDefectCnt" width="100%" height="20"></canvas>
 				
 				<font color="#727272" style="font-size:1.17em;font-weight:bold">업무별 결함건수</font>
-					<div id="taskByDefectCntLoc">
 							<canvas id="taskByDefectCnt" width="100%" height="20"></canvas>
-					</div>
-				<c:forEach var="taskByDefectCnt" items="${taskByDefectCnt}" varStatus="status">
-					<c:out value="${taskByDefectCnt.taskGb}"/>
-					<c:out value="${taskByDefectCnt.taskNm}"/>
-					<c:out value="${taskByDefectCnt.taskGbCnt}"/>
-				</c:forEach>
-
+				
+				<font color="#727272" style="font-size:1.17em;font-weight:bold">사용자별 결함건수/조치건수</font>
+							<canvas id="userByDefectCnt" width="100%" height="20"></canvas>
 
 			</div>
             <!-- //content 끝 -->

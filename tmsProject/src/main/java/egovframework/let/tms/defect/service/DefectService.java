@@ -87,4 +87,10 @@ public interface DefectService {
 	public List<?> selectSysByDefectCnt();
 
 	public List<?> selectTaskByDefectCnt(String sysNm);
+	
+	public List<?> selectUserByDefectCnt();
+	
+	public HashMap<String, Object> selectSysAllByActionCnt();
+	
+	public List<?> selectSysByActionCnt();
 }

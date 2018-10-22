@@ -418,6 +418,10 @@ public class DefectController {
 		List<?> taskByDefectCnt = defectService.selectTaskByDefectCnt(sysNm);
 		model.addAttribute("taskByDefectCnt", JSONArray.fromObject(taskByDefectCnt));
 		
+		// 사용자별 결함건수
+		List<?> userByDefectCnt = defectService.selectUserByDefectCnt();
+		model.addAttribute("userByDefectCnt", JSONArray.fromObject(userByDefectCnt));
+		
 		return "tms/defect/defectStatsByDefectCnt";
 	}
 	
@@ -435,28 +439,13 @@ public class DefectController {
 	@RequestMapping("/tms/defect/selectDefectStatsByAction.do")
 	public String selectDefectStatsByAction(ModelMap model) throws Exception {
 		
-		HashMap<String, Object> map = defectService.selectDefectStats();
-		model.addAttribute("defectStats",map);
+		// 시스템별 전체 조치율
+		HashMap<String, Object> sysAllByActionCnt = defectService.selectSysAllByActionCnt();
+		model.addAttribute("sysAllByActionCnt", sysAllByActionCnt);
 		
-		// 일자별 결함 등록 건수, 조치건수
-		List<?> dayByDefectCnt = defectService.selectDayByDefectCnt();
-		model.addAttribute("dayByDefectCnt", JSONArray.fromObject(dayByDefectCnt));
-		
-		// 월별 결함 등록건수, 조치건수
-		List<?> monthByDefectCnt = defectService.selectMonthByDefectCnt();
-		model.addAttribute("monthByDefectCnt", JSONArray.fromObject(monthByDefectCnt));
-		
-		// 업무별 조치율
-		List<?> taskByActionProgression = defectService.selectTaskByActionProgression();
-		model.addAttribute("taskByActionProgression", JSONArray.fromObject(taskByActionProgression));
-		
-		// 업무별 상태별 결함건수
-		List<?> taskByActionStCnt = defectService.selectTaskByActionStCnt();
-		model.addAttribute("taskByActionStCnt", JSONArray.fromObject(taskByActionStCnt));
-		
-		// 업무별 유형별 결함 건수
-		List<?> taskByDefectGbCnt = defectService.selectTaskByDefectGbCnt();
-		model.addAttribute("taskByDefectGbCnt", JSONArray.fromObject(taskByDefectGbCnt));
+		// 시스템별 조치율
+		List<?> sysByActionCnt = defectService.selectSysByActionCnt();
+		model.addAttribute("sysByActionCnt", JSONArray.fromObject(sysByActionCnt));
 		
 		return "tms/defect/defectStatsByAction";
 	}

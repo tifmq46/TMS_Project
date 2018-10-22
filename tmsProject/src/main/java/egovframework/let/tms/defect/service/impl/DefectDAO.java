@@ -247,4 +247,16 @@ public class DefectDAO extends EgovAbstractDAO{
 		return list("defectDAO.selectTaskByDefectCnt", sysNm);
 	}
 	
+	public List<?> selectUserByDefectCnt(){
+		return list("defectDAO.selectUserByDefectCnt");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> selectSysAllByActionCnt(){
+		return (HashMap<String, Object>) select("defectDAO.selectSysAllByActionCnt");
+	}
+	
+	public List<?> selectSysByActionCnt(){
+		return list("defectDAO.selectSysByActionCnt");
+	}
 }

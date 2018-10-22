@@ -749,6 +749,41 @@
 			ORDER BY B.taskGbCnt DESC, A.CODE ASC
     </select>
     
+    <select id="defectDAO.selectUserByDefectCnt" resultClass="egovMap">
+        <![CDATA[
+        	SELECT B.USER_DEV_ID AS userDevId, A.USER_NM AS userNm, B.DEFECTCNT AS defectCnt, B.ACTIONA3CNT AS actionA3Cnt
+			FROM LETTNEMPLYRINFO AS A INNER JOIN
+				(SELECT P.USER_DEV_ID, D.ACTION_ST, COUNT(*) AS DEFECTCNT, COUNT(CASE WHEN D.ACTION_ST = 'A3' THEN 1 END) AS ACTIONA3CNT
+				FROM DEFECT_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
+				GROUP BY P.USER_DEV_ID)
+			AS B ON A.EMPLYR_ID = B.USER_DEV_ID
+			ORDER BY B.DEFECTCNT DESC, B.ACTIONA3CNT DESC
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectSysAllByActionCnt" resultClass="java.util.HashMap">
+        <![CDATA[
+        	SELECT CAST('sysGb' AS CHAR) AS sysGb, CAST('전체' AS CHAR) AS sysNm, COUNT(*) AS sysCntAll, COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END) AS actionStA3CntAll, ROUND(IFNULL((COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END)/COUNT(*)),0)*100,1) AS actionPerAll
+			FROM DEFECT_TB AS D, PG_TB AS P
+			WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectSysByActionCnt" resultClass="egovMap">
+        <![CDATA[
+        	SELECT A.CODE AS sysGb, A.CODE_NM AS sysNm, B.SYSCNT AS sysCnt, B.ACTIONA3CNT AS actionStA3Cnt, B.ACTIONPER AS actionPer
+			FROM LETTCCMMNDETAILCODE AS A INNER JOIN
+				(SELECT P.SYS_GB AS SYSGB, COUNT(*) AS SYSCNT, COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END) AS ACTIONA3CNT, ROUND(IFNULL((COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END)/COUNT(*)),0)*100,1) AS ACTIONPER
+				FROM DEFECT_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
+				GROUP BY P.SYS_GB)
+			AS B ON A.CODE = B.SYSGB
+			WHERE A.CODE_ID = 'SYSGB'
+			ORDER BY actionPer DESC
+        ]]>
+    </select>
+    
     <insert id="defectDAO.insertDefect" parameterClass="DefectVO">
         <![CDATA[
            INSERT INTO DEFECT_TB
