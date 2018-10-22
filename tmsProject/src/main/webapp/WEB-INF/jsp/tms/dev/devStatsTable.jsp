@@ -78,9 +78,19 @@ ul.tabs li.last {
 	background: #E0E0F8;
 }
 
+.borderLine{
+	border-left: solid 2px #00000054;
+}
+
 .line{
 	font-weight:bold;
 }
+
+.table1{
+	width:100%;
+	overflow-x:scroll; 
+}
+
 </style>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
@@ -178,28 +188,39 @@ function StatsToExcel(statsGb) {
                 
                 <div id="tab-1" class="tab-content current">
                                     
-	                <div class="default_tablestyle">
+	                <div class="default_tablestyle table1">
 	                    <table summary="개발자별 통계 테이블입니다" cellpadding="0" cellspacing="0">
 	                    <caption>통계(개발자별) 테이블</caption>
+	                    
+	                    <colgroup>
+	                    	<col width="100">
+	                    	<col width="50">
+		                   <col width="50">
+		                   <col width="50">
+	                    	<c:forEach var="mw" items="${monthWeek}" varStatus="status">
+		                    	<col width="50">
+		                    	<col width="50">
+		                    	<col width="50">
+		                    </c:forEach>
+	                    </colgroup>
 	           
 	          			<thead>
 	          			<tr>
-	          				<th align="center" rowspan="2">개발자</th>
+	          				<th scope="col" align="center" rowspan="2">개발자</th>
+	          				<th scope="col" align="center" colspan="3"><strong>합계</strong></th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<th align="center" colspan="3">${status.count}주(${mw})</th>
+		                    	<th scope="col" align="center" colspan="3">${status.count}주(${mw})</th>
 		                    </c:forEach>
-		                    <th align="center" colspan="3"><strong>합계</strong></th>
-		                   
 	          			</tr>
 	          			<tr>
+	          				 <th scope="col" align="center"><strong>계획</strong></th>
+		                     <th scope="col" align="center" ><strong>실적</strong></th>
+		                     <th scope="col" align="center" ><strong>차이</strong></th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<th align="center">계획</th>
-		                    	<th align="center">실적</th>
-		                    	<th align="center">차이</th>
+		                    	<th scope="col" align="center">계획</th>
+		                    	<th scope="col" align="center">실적</th>
+		                    	<th scope="col" align="center">차이</th>
 		                    </c:forEach>
-		                     <th align="center" ><strong>계획</strong></th>
-		                     <th align="center" ><strong>실적</strong></th>
-		                     <th align="center" ><strong>차이</strong></th>
 	          			</tr>
 	                    </thead>
            			
@@ -210,17 +231,10 @@ function StatsToExcel(statsGb) {
 	           			<c:forEach var="us" items="${userStats}" varStatus="status">
 	           			
 		                    <tr>
+		                   		
 		                    	<td><c:out value="${us.DevNm}" /></td>
-		                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
-				           			<c:set var ="t"  value="a${i}"></c:set>
-				           			<td>${us[t]}</td>
-				           			<c:set var ="t2"  value="b${i}"></c:set>
-				           			<td>${us[t2]}</td>
-				           			<c:set var ="t3"  value="sub${i}"></c:set>
-				           			<td>${us[t3]}</td>
-								</c:forEach>
-								
-								<td><strong>${us.sumUserPlan}</strong></td>
+		                    	
+		                    	<td><strong>${us.sumUserPlan}</strong></td>
 								<c:set var = "totSum1" value="${us.sumUserPlan}" />
 								<% totSum1 += (Integer)pageContext.getAttribute("totSum1");
 									pageContext.setAttribute("totSum1", totSum1);
@@ -237,19 +251,31 @@ function StatsToExcel(statsGb) {
 								<% totSum3 += (Integer)pageContext.getAttribute("totSum3");
 									pageContext.setAttribute("totSum3", totSum3);
 								%>
+		                    
+		                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+				           			<c:set var ="t"  value="a${i}"></c:set>
+				           			<td class='borderLine'>${us[t]}</td>
+				           			<c:set var ="t2"  value="b${i}"></c:set>
+				           			<td>${us[t2]}</td>
+				           			<c:set var ="t3"  value="sub${i}"></c:set>
+				           			<td>${us[t3]}</td>
+								</c:forEach>
+								
 		                    </tr>
 	                    </c:forEach>
 	                    <tr>
 	                    	<td id='lineStyle2'><strong><c:out value="합계" /></strong></td>
+	                  
+	                    	<td id='lineStyle2'><strong>${totSum1}</strong></td>
+		                  	<td id='lineStyle2'><strong>${totSum2}</strong></td>
+		                  	<td id='lineStyle2'><strong>${totSum3}</strong></td>
+		                  	
 	                    	<c:forEach var="sum" items="${sumPlanWeek}" varStatus="status">
-			           			<td id='lineStyle2'>${sum.sumPlan}</td>
+			           			<td id='lineStyle2' class='borderLine'>${sum.sumPlan}</td>
 			           			<td id='lineStyle2'>${sum.sumDev}</td>
 			           			<td id='lineStyle2'>${sum.diff}</td>
 							</c:forEach>
-							
-		                  	<td id='lineStyle2'><strong>${totSum1}</strong></td>
-		                  	<td id='lineStyle2'><strong>${totSum2}</strong></td>
-		                  	<td id='lineStyle2'><strong>${totSum3}</strong></td>
+		                  
 	                    </tr>
 	                    </table>
 	                </div>
@@ -258,19 +284,32 @@ function StatsToExcel(statsGb) {
 	               
                 </div>
                 <div id="tab-2" class="tab-content">
-                <div class="default_tablestyle">
+                <div class="default_tablestyle table1" >
                     <table summary="업무별 통계 테이블입니다" cellpadding="0" cellspacing="0">
                     <caption>통계(업무별)테이블</caption>
+           
+           			<colgroup>
+	                   <col width="50">
+	                   <col width="100">
+	                   <col width="50">
+		               <col width="50">
+		                <col width="50">
+	                   <c:forEach var="mw" items="${monthWeek}" varStatus="status">
+		                   <col width="50">
+		                   <col width="50">
+		                   <col width="50">
+		                </c:forEach>
+	               </colgroup>
            
           			<thead>
 	          			<tr>
 	          				<th align="center" rowspan="2">시스템</th>
 	          				<th align="center" rowspan="2">업무</th>
+	          				<th align="center" colspan="3"><strong>합계</strong></th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
 		                    	<th align="center" colspan="3">${status.count}주(${mw})</th>
 		                    </c:forEach>
-		                    <th align="center" colspan="3"><strong>합계</strong></th>
-		                   
+		                    
 	          			</tr>
 	          			<tr>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
@@ -291,16 +330,8 @@ function StatsToExcel(statsGb) {
 	                    <tr>
 	                    <td><c:out value="${ts.sysGbNm}" /></td>
 	                    	<td><c:out value="${ts.taskGbNm}" /></td>
-	                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
-			           			<c:set var ="t"  value="a${i}"></c:set>
-			           			<td>${ts[t]}</td>
-			           			<c:set var ="t2"  value="b${i}"></c:set>
-			           			<td>${ts[t2]}</td>
-			           			<c:set var ="t3"  value="sub${i}"></c:set>
-			           			<td>${ts[t3]}</td>
-							</c:forEach>
-							
-							<td><strong>${ts.sumTaskPlan}</strong></td>
+	                    	
+	                    	<td><strong>${ts.sumTaskPlan}</strong></td>
 							<c:set var = "totSum4" value="${ts.sumTaskPlan}" />
 							<% totSum4 += (Integer)pageContext.getAttribute("totSum4");
 								pageContext.setAttribute("totSum4", totSum4);
@@ -317,20 +348,31 @@ function StatsToExcel(statsGb) {
 							<% totSum6 += (Integer)pageContext.getAttribute("totSum6");
 								pageContext.setAttribute("totSum6", totSum6);
 							%>
+	                    	
+	                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+			           			<c:set var ="t"  value="a${i}"></c:set>
+			           			<td>${ts[t]}</td>
+			           			<c:set var ="t2"  value="b${i}"></c:set>
+			           			<td>${ts[t2]}</td>
+			           			<c:set var ="t3"  value="sub${i}"></c:set>
+			           			<td>${ts[t3]}</td>
+							</c:forEach>
 							
 	                    </tr>
                     </c:forEach>
                     <tr>
 	                    	<td id='lineStyle2' colspan="2"><strong><c:out value="합계" /></strong></td>
+	                    	<td id='lineStyle2'><strong>${totSum4}</strong></td>
+		                  	<td id='lineStyle2'><strong>${totSum5}</strong></td>
+		                  	<td id='lineStyle2'><strong>${totSum6}</strong></td>
+		                  	
 	                    	<c:forEach var="sum" items="${sumPlanWeek}" varStatus="status">
 			           			<td id='lineStyle2'>${sum.sumPlan}</td>
 			           			<td id='lineStyle2'>${sum.sumDev}</td>
 			           			<td id='lineStyle2'>${sum.diff}</td>
 							</c:forEach>
 	                    	
-		                  	<td id='lineStyle2'><strong>${totSum4}</strong></td>
-		                  	<td id='lineStyle2'><strong>${totSum5}</strong></td>
-		                  	<td id='lineStyle2'><strong>${totSum6}</strong></td>
+		                  	
 	                </tr>
                     </table>
                 </div>

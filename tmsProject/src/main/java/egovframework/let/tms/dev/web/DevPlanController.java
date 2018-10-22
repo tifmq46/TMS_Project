@@ -8,19 +8,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Locale;
+import java.util.TreeMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import javax.sound.midi.Synthesizer;
 
-import org.apache.commons.collections.set.SynchronizedSortedSet;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -570,6 +568,7 @@ public class DevPlanController {
 			
 			JsonUtil jsU = new JsonUtil();
 			List<Map<String,Object>> userStats = jsU.getListMapFromJsonArray(userArray);
+			
 			
 			return userStats;
 			
