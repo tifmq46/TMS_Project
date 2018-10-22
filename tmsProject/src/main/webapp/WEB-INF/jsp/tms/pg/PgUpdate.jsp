@@ -25,13 +25,7 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
     
-    
-    function fn_egov_select_tmplatInfo(){
-        document.pgVO.action = "<c:url value='/cop/com/selectTemplateInfs.do'/>";
-        document.pgVO.submit();  
-    }
-    
-    function fn_egov_regist_tmplatInfo(){
+    function pg_update(){
     	//alert("저장되었습니다.");
         document.programVO.action = "<c:url value='/tms/pg/Pgupdate.do'/>";
         document.programVO.submit();
@@ -226,7 +220,7 @@
                       <table border="0" cellspacing="0" cellpadding="0" align="center">
                         <tr> 
                           <td>
-                              <a onclick="fn_egov_regist_tmplatInfo(); return false;">저장</a> 
+                              <a onclick="pg_update(); return false;">저장</a> 
                           </td>
                           <td>
                               <a href="<c:url value='/tms/pg/PgManage.do'/>" >목록</a>

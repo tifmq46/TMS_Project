@@ -113,7 +113,7 @@ $(function(){
     	window.open("<c:url value='/tms/pg/ExcelFileListSearch.do'/>",'','width=500, height=400, left=350, top=200');
 	}
 	
-	function Pg_Relation_Search() {
+	function Pg_Delete_Search() {
 		
 		var checkField = document.frm.delYn;
         var checkId = document.frm.checkId;
@@ -431,7 +431,7 @@ $(function(){
                        			<li>
                             		<div class="buttons" style="float:right;">                              			
                                     	<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                                    	<a href="#Link" onclick="Pg_Relation_Search(); return false;">삭제</a>
+                                    	<a href="#Link" onclick="Pg_Delete_Search(); return false;">삭제</a>
                                     	<a href="<c:url value='/tms/pg/PgInsert.do'/>" >등록</a>
                                     	<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀등록</a>
                                     </div>
@@ -449,7 +449,7 @@ $(function(){
                 	<div id="page_info"><div id="page_info_align"></div></div>    
                 	<div class="default_tablestyle">
         			<table width="120%" border="0" cellpadding="0" cellspacing="0" >
-        				<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
+        				<caption style="visibility:hidden">NO, 화면ID, 화면명, 시스템구분, 업무구분, 개발자, 사용여부</caption>
         				<colgroup>
         					<col width="10"/>
         					<col width="5"/> 

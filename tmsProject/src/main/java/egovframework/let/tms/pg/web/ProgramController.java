@@ -79,10 +79,6 @@ public class ProgramController {
 	
 	/**
 	 * 글 목록을 조회한다. (pageing)
-	 * @param searchVO - 조회할 정보가 담긴 ProgramDefaultVO
-	 * @param model
-	 * @return "PgList"
-	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/pg/PgManage.do")
 	public String selectPgList(@RequestParam(value="cnt", defaultValue = "") String cnt, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
@@ -136,7 +132,7 @@ public class ProgramController {
 	}
 
 	/**
-	 * 글 상세정보을 조회한다. 
+	 * 글 상세정보을 조회 및 수정한다. 
 	 * @param searchVO - 조회할 정보가 담긴 ProgramDefaultVO
 	 * @param model
 	 * @return "programVO"
@@ -170,6 +166,9 @@ public class ProgramController {
 		return "tms/pg/PgUpdate";
 	}
 	
+	/**
+	 * 글 상세정보를 조회한다. (pageing)
+	 */
 	@RequestMapping("/tms/pg/selectPgCheck.do")
 	public String selectPgCheck(@ModelAttribute("programVO") ProgramVO searchVO, ModelMap model) throws Exception {
 
@@ -200,9 +199,6 @@ public class ProgramController {
 	
 	/**
 	 * 프로그램 현황을 조회한다.
-	 * @param ProgramDefaultVO - 조회할 정보가 담긴 VO
-	 * @return @ModelAttribute("sampleVO") - 조회한 정보
-	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/pg/PgCurrent.do")
 	public String selectDevResultList(@RequestParam(value="cnt", defaultValue = "") String cnt, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
@@ -378,76 +374,9 @@ public class ProgramController {
 	
 	
 	
-	
-	@RequestMapping(value = "/tms/pg/deletePg.do")
-	public String insertPgDelete(@RequestParam("returnValue") String returnValue, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
-			System.out.println("---여기다!"+returnValue);
-		
-			String[] strDelCodes = returnValue.split(";");
-			for (int i = 0; i < strDelCodes.length; i++) {
-				ProgramVO vo = new ProgramVO();
-				vo.setPgId(strDelCodes[i]);
-				ProgramService.deletePg(vo);
-				
-			}
-			
-			/** 프로그램 삭제시 결함 시퀀스 초기화 */
-			defectService.updateDefectIdSq();
-			
-			model.addAttribute("status", 1);
-			
-			
-			return "/tms/pg/PgRelationSearch";
-		
-	}
-	@RequestMapping(value = "/tms/pg/deletePg3.do")
-	@ResponseBody
-	public String insertPgDelete3(@RequestParam("returnValue") String returnValue, ModelMap model) throws Exception {
-			System.out.println("---여기다!"+returnValue);
-		
-			String[] strDelCodes = returnValue.split(";");
-			for (int i = 0; i < strDelCodes.length; i++) {
-				ProgramVO vo = new ProgramVO();
-				vo.setPgId(strDelCodes[i]);
-				ProgramService.deletePg(vo);
-				
-			}
-			
-			/** 프로그램 삭제시 결함 시퀀스 초기화 */
-			defectService.updateDefectIdSq();
-			
-			model.addAttribute("status", 1);
-			
-			
-			return "PgRelationSearch";
-		
-	}
-	
-	@RequestMapping(value = "/tms/pg/deleteListAction.do")
-	@ResponseBody
-	public List<?> selectTaskGbSearch2(@RequestParam("returnValue") String returnValue, String searchData,ModelMap model) throws Exception {
-		System.out.println("여기옴3"+returnValue);
-		// 0. Spring Security 사용자권한 처리
-		
-		List<String> selectTaskGbSearch = TmsProgrmManageService.selectTaskGbSearch(searchData);
-		model.addAttribute("selectTaskGbSearch", selectTaskGbSearch);
-		System.out.println("================"+selectTaskGbSearch);
-		
-		String[] strDelCodes = returnValue.split(";");
-		for (int i = 0; i < strDelCodes.length; i++) {
-			ProgramVO vo = new ProgramVO();
-			vo.setPgId(strDelCodes[i]);
-			ProgramService.deletePg(vo);
-			
-		}
-		
-		/** 프로그램 삭제시 결함 시퀀스 초기화 */
-		defectService.updateDefectIdSq();
-		
-		return selectTaskGbSearch;
-
-	}
-	
+	/**
+	 * 프로그램 삭제목록을 확인한다.
+	 */
 	@RequestMapping(value = "/tms/pg/deletePgList.do")
 	public String insertPgDelete2(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, @RequestParam String result, ModelMap model) throws Exception {
 			//System.out.println("---여기다!"+result);
@@ -482,9 +411,38 @@ public class ProgramController {
 
 			model.addAttribute("status", 0);
 			
-			return "/tms/pg/PgRelationSearch";
+			return "/tms/pg/PgDeleteSearch";
 		
 	}
+	
+	/**
+	 * 프로그램을 삭제한다.
+	 */
+	@RequestMapping(value = "/tms/pg/deleteListAction.do")
+	@ResponseBody
+	public List<?> selectTaskGbSearch2(@RequestParam("returnValue") String returnValue, String searchData,ModelMap model) throws Exception {
+		System.out.println("여기옴3"+returnValue);
+		// 0. Spring Security 사용자권한 처리
+		
+		List<String> selectTaskGbSearch = TmsProgrmManageService.selectTaskGbSearch(searchData);
+		model.addAttribute("selectTaskGbSearch", selectTaskGbSearch);
+		System.out.println("================"+selectTaskGbSearch);
+		
+		String[] strDelCodes = returnValue.split(";");
+		for (int i = 0; i < strDelCodes.length; i++) {
+			ProgramVO vo = new ProgramVO();
+			vo.setPgId(strDelCodes[i]);
+			ProgramService.deletePg(vo);
+			
+		}
+		
+		/** 프로그램 삭제시 결함 시퀀스 초기화 */
+		defectService.updateDefectIdSq();
+		
+		return selectTaskGbSearch;
+
+	}
+	
 	
 	/**
 	 * 프로그램 현황을 엑셀파일로 출력한다.	 

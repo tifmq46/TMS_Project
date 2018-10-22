@@ -268,7 +268,7 @@
                  <div class="default_tablestyle">
                 	
         			<table width="120%" border="0" cellpadding="0" cellspacing="0" >
-        				<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
+        				<caption style="visibility:hidden">NO, 화면ID, 화면명, 시스템구분, 업무구분, 개발자, 사용여부</caption>
         				<colgroup>
         					<col width="7"/> 
         					<col width="20"/>
