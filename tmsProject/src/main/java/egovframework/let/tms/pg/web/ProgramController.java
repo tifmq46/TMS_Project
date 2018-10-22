@@ -369,8 +369,8 @@ public class ProgramController {
 			ProgramService.updatePg(programVO);
 			
 			
-			//return "redirect:/tms/pg/PgManage.do";
-			return "redirect:/tms/pg/selectPgInf.do?pgId="+programVO.getPgId();
+			return "redirect:/tms/pg/PgManage.do";
+			//return "redirect:/tms/pg/selectPgInf.do?pgId="+programVO.getPgId();
 		}
 		
 		
