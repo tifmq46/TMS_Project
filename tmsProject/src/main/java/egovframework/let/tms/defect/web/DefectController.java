@@ -184,7 +184,7 @@ public class DefectController {
 				hmap.put("TESTSCENARIO_ID", defectVO.getTestscenarioId());
 				hmap.put("status", 0);
 				defectService.insertDefectImageMap(hmap);
-				
+				  
 			}	
 			return "redirect:/tms/defect/selectDefect.do";
 		}
