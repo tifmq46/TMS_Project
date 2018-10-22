@@ -448,6 +448,7 @@ public class DefectController {
 		model.addAttribute("sysByActionCnt", JSONArray.fromObject(sysByActionCnt));
 		
 		System.out.println();
+		System.out.println("hi");
 		return "tms/defect/defectStatsByAction";
 	}
 	
