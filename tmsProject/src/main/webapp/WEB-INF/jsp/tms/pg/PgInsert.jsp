@@ -23,6 +23,7 @@
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
     
     function fn_egov_regist_tmplatInfo(){
@@ -98,7 +99,18 @@
                 <div id="search_field">
                     <div id="search_field_loc"><h2><strong>프로그램 등록</strong></h2></div>
                 </div>
+                
+	        	      
                 <form:form commandName="programVO" id="programVO" name="programVO" method="post" >
+
+					<input type="hidden" id="modal" name="modal" value="${modal_content}"/>
+					
+					<c:if test="${modal == 'T'}" >
+            			<script>            			
+            				swal("Denied!", ""+document.programVO.modal.value, "error");
+  							//sweetAlert(""+document.programVO.modal.value);
+  						</script>  	        				
+	        		</c:if>      
 
                     <div class="modify_user" >
                         <table >
@@ -203,7 +215,6 @@
                           </tr>  
                         </table>
                     </div>
-
 
                     <!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">

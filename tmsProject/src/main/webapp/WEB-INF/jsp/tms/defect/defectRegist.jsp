@@ -24,15 +24,20 @@
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <title>결함 등록</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="defectVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript" src="<c:url value='/js/showModalDialog.js'/>" ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" language="javascript" defer="defer">
 	
-    
+    function aaa() {
+    	swal("여기다");
+    }
 	
 	function fn_egov_insert_addDefectImpl() {
 
@@ -233,7 +238,9 @@
 					<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
 					<input type="hidden" id="testscenarioId" name="testscenarioId" value="<c:out value="${testscenarioId}"/>"/>
 					
-                    <!-- 버튼 시작(상세지정 style로 div에 지정) -->
+					<input type="hidden" id="aaa" name="aaa" value="" />
+					
+              <!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
 						<a href="#LINK" onclick="javaScript:fn_egov_insert_addDefectImpl(); return false;">저장</a>
 						<a href="<c:url value='/tms/defect/selectDefect.do'/>" >목록</a>
@@ -248,6 +255,7 @@
     <!-- footer 시작 -->
     <div id="footer"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncFooter" /></div>
     <!-- //footer 끝 -->
+	  						
 </div>
 <!-- //전체 레이어 끝 -->
 </body>

@@ -274,6 +274,8 @@ public class ProgramController {
 					
 		// 공통코드 끝 시작 -------------------------------
 		
+		model.addAttribute("modal", "F");
+		
 		return "tms/pg/PgInsert";
 		
 	}
@@ -294,15 +296,16 @@ public class ProgramController {
 			
 		// 오류여부 확인
 		if(errors.hasErrors()) {
-			/*
-			List<?> list = errors.getAllErrors();
 			
+			List<?> list = errors.getAllErrors();
+			String error_detail = "";
 			for(int i=0; i<list.size(); i++)
 			{
 				ObjectError a = (ObjectError) list.get(i);
+				error_detail += a.getDefaultMessage()+"\n";
 				System.out.println("에러"+i+" : "+a.getDefaultMessage());
 			}
-			*/
+			
 			
 			
 			System.out.println("오류검출!");
@@ -322,6 +325,9 @@ public class ProgramController {
 			
 			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb5(programVO);
 			model.addAttribute("taskGb2", taskGbList2);
+			
+			model.addAttribute("modal", "T");
+			model.addAttribute("modal_content", error_detail);
 			
 			return "/tms/pg/PgInsert";
 		} else {

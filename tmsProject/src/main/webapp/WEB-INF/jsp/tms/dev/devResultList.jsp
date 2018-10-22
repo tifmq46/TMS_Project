@@ -28,7 +28,7 @@
 
 <title>개발결과관리</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javaScript" language="javascript">
 
 Date.prototype.format = function(f) {
@@ -68,22 +68,25 @@ function fn_result_change(asd) {
 	      {
 	         if(idVal0 > idVal1)
 	            {
-	               alert("개발시작일자보다 큰 값을 입력하시오.");
+	               //alert("개발시작일자보다 큰 값을 입력하시오.");
 	               document.getElementById(asd+1).value = null;
 	               flag = false;
+	               sweetAlert("개발시작일자보다 큰 값을 입력하시오.");
 	            }
 	      }
 	   if(idVal0 == null || idVal0 == "")
 	      {
-	         alert("개발시작일자부터 입력하십시오.")
+	         //alert("개발시작일자부터 입력하십시오.")
 	         document.getElementById(asd+1).value = null;
 	         flag = false;
+	         sweetAlert("개발시작일자부터 입력하십시오.");
 	      }
 	   if(idVal0 > currentDate || idVal1 > currentDate){
-		   alert("오늘 이후 날짜는 입력할 수 없습니다. 다시 입력하십시오.");
+		   //alert("오늘 이후 날짜는 입력할 수 없습니다. 다시 입력하십시오.");
 		   document.getElementById(asd).value = null;
 		   document.getElementById(asd+1).value = null;
 		   flag = false;
+		   sweetAlert("오늘 이후 날짜는 입력할 수 없습니다. 다시 입력하십시오.");
 	   }
 	   if(flag){
 		   var idVal3 = document.getElementById(asd+3).id;
