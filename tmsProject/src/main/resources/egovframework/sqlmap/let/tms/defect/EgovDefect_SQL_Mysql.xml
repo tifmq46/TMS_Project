@@ -784,6 +784,16 @@
         ]]>
     </select>
     
+    <select id="defectDAO.selectTaskByActionCnt" resultClass="egovMap">
+        <![CDATA[
+        	SELECT P.SYS_GB AS sysGb, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = P.SYS_GB AND CODE_ID='SYSGB') AS sysNm, P.TASK_GB AS taskGb, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = P.TASK_GB AND CODE_ID='TASKGB') AS taskNm, COUNT(*) AS taskCnt, COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END) AS actionStA3Cnt, ROUND(IFNULL((COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END)/COUNT(*)),0)*100,1) AS actionPer
+			FROM DEFECT_TB AS D, PG_TB AS P
+			WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
+			GROUP BY P.TASK_GB
+			ORDER BY taskCnt DESC, actionStA3Cnt DESC, actionPer DESC, sysGb, taskGb
+        ]]>
+    </select>
+    
     <insert id="defectDAO.insertDefect" parameterClass="DefectVO">
         <![CDATA[
            INSERT INTO DEFECT_TB

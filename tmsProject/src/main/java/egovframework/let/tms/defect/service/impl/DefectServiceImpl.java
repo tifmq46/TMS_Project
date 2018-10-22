@@ -328,4 +328,11 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 	}
 
 
+	@Override
+	public List<?> selectTaskByActionCnt() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectTaskByActionCnt();
+	}
+
+
 }

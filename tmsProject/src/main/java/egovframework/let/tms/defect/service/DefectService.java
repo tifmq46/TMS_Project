@@ -93,4 +93,7 @@ public interface DefectService {
 	public HashMap<String, Object> selectSysAllByActionCnt();
 	
 	public List<?> selectSysByActionCnt();
+
+	public List<?> selectTaskByActionCnt();
+
 }

@@ -32,6 +32,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 
+function handleClick(event, array){
+	alert(this.data.labels[array[0]._index]);
+	console.log(this.data.labels[array[0]._index]);
+}
+
 window.onload = function() {
 		
 	/** 시스템별 조치율 */
@@ -83,6 +88,42 @@ window.onload = function() {
     			datasets : [ {
     				data : [sysByActionCntActionStA3Cnt[j],
     				        sysByActionCntSysCnt[j]-sysByActionCntActionStA3Cnt[j]],
+    				backgroundColor : ['#007bff','#e9ecef']
+    			},]
+    		},
+    		options : {
+    			legend: {
+					display:false
+				},
+    			rotation: 1 * Math.PI,
+    	        circumference: 1 * Math.PI,
+    			percentageInnerCutout : 50,
+    			responsive:false
+    			,onClick:handleClick
+    			}
+    	});
+	}
+	
+	// 업무별 조치율
+	var taskByActionCnt = JSON.parse('${taskByActionCnt}');
+	console.log(taskByActionCnt);
+	var taskByActionCntTaskCnt = new Array();
+	var taskByActionCntActionStA3Cnt = new Array();
+	var taskByActionCntSysGbTaskGb = new Array();
+	for (var i = 0; i < taskByActionCnt.length; i++) {
+		taskByActionCntTaskCnt.push(taskByActionCnt[i].taskCnt);
+		taskByActionCntActionStA3Cnt.push(taskByActionCnt[i].actionStA3Cnt);
+		taskByActionCntSysGbTaskGb.push(taskByActionCnt[i].sysGb+taskByActionCnt[i].taskGb);
+	}
+	for ( var j = 0; j < taskByActionCntTaskCnt.length; j++) {
+	var ctx = document.getElementById(taskByActionCntSysGbTaskGb[j]);
+	var myDoughnutChart = new Chart(ctx, {
+    	type : 'doughnut',
+    	data : {
+    		  labels: ['완료건수','미완료건수'],
+    			datasets : [ {
+    				data : [taskByActionCntActionStA3Cnt[j],
+    				        taskByActionCntTaskCnt[j]-taskByActionCntActionStA3Cnt[j]],
     				backgroundColor : ['#007bff','#e9ecef']
     			},]
     		},
@@ -174,12 +215,26 @@ window.onload = function() {
 				<font color="#727272" style="font-size:1.17em;font-weight:bold">업무별 조치율</font>
 				<table>
 					<tr>
-						<td>
-							
-						</td>
+						<c:forEach var="taskByActionCnt" items="${taskByActionCnt}" varStatus="status">
+							<td>
+							<div id="taskByActionCntChartLoc">
+								<canvas	id="<c:out value="${taskByActionCnt.sysGb}"/><c:out value="${taskByActionCnt.taskGb}"/>"
+									width="180" height="180" style="display: inline !important;"></canvas>
+							</div>
+							</td>
+						</c:forEach>
 					</tr>
 					<tr>
-						<td></td>
+						<c:forEach var="taskByActionCnt" items="${taskByActionCnt}" varStatus="status">
+						<td align="center" valign="middle">
+							<div id="taskByActionCntDataLoc" style="font-size: 15px; font-weight: bolder;">
+								<font color="#007BFF"><c:out value="${taskByActionCnt.actionStA3Cnt}" /></font> /
+								<c:out value="${taskByActionCnt.taskCnt}" />
+								(<c:out value=" ${taskByActionCnt.actionPer}"/>%)
+								<br/><c:out value="${taskByActionCnt.sysNm}"/>(<c:out value="${taskByActionCnt.taskNm}"/>)
+							</div>
+						</td>
+						</c:forEach>
 					</tr>
 				</table>
 

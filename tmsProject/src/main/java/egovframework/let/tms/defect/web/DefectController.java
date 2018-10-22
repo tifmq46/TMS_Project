@@ -447,6 +447,11 @@ public class DefectController {
 		List<?> sysByActionCnt = defectService.selectSysByActionCnt();
 		model.addAttribute("sysByActionCnt", JSONArray.fromObject(sysByActionCnt));
 		
+		// 업무별 조치율 (
+		List<?> taskByActionCnt = defectService.selectTaskByActionCnt();
+		model.addAttribute("taskByActionCnt", JSONArray.fromObject(taskByActionCnt));
+		
+		
 		return "tms/defect/defectStatsByAction";
 	}
 	
