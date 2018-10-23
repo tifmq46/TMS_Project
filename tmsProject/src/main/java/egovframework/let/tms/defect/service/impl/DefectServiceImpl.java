@@ -16,6 +16,7 @@ import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.defect.service.DefectVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Service("defectService")
 public class DefectServiceImpl extends EgovAbstractServiceImpl implements DefectService{
@@ -294,7 +295,7 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 
 
 	@Override
-	public List<?> selectSysByDefectCnt() {
+	public List<EgovMap> selectSysByDefectCnt() {
 		// TODO Auto-generated method stub
 		return defectDAO.selectSysByDefectCnt();
 	}
@@ -343,7 +344,7 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 
 
 	@Override
-	public List<?> selectSysByDefectCntAll() {
+	public List<EgovMap> selectSysByDefectCntAll() {
 		// TODO Auto-generated method stub
 		return defectDAO.selectSysByDefectCntAll();
 	}

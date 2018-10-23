@@ -738,9 +738,9 @@
         	SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(B.taskGbCnt,0) AS taskGbCnt
 			FROM 
 				(SELECT CODE, CODE_NM, CODE_ID FROM LETTCCMMNDETAILCODE
-				<isNotNull>
+				<isNotEqual compareValue="전체">
 				 WHERE PARENT = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysNm# AND CODE_ID = 'SYSGB')
-				 </isNotNull>
+				</isNotEqual>				
 				 ) AS A 
 				LEFT JOIN
 				(SELECT P.TASK_GB AS taskGb, P.SYS_GB AS sysGb, COUNT(P.TASK_GB) AS taskGbCnt

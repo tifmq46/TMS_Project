@@ -209,6 +209,10 @@ function searchFileNm() {
                         <td align="center" class="listtd"><c:out value="${result.enrollDt}"/></td>
                     
                         <c:choose>
+                        <c:when test="${result.actionSt == '조치중' }">
+                        <td align="center" class="listtd">
+                        <font style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
+                        </c:when>
                         <c:when test="${result.actionSt == '재요청'}">
                         <td align="center" class="listtd" style="background-color:#CC3C39;">
                          <font color="#ffffff" style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
@@ -238,7 +242,7 @@ function searchFileNm() {
          <input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
          <input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
          <input id="TmsProgrmFileNm_user_dev_id" type="hidden" /> 
-         <input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
+         <input id="TmsProgrmFileNm_user_real_id" type="hidden" />
 
 
        </form:form>

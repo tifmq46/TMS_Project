@@ -85,7 +85,14 @@ window.onload = function() {
 				}]
 			},
 			options : {
-				onClick:handleClick
+				onClick:handleClick,
+				scales:{
+					yAxes:[{
+						ticks:{
+							beginAtZero:true
+						}	
+					}]
+				}
 			}
 		});
 		
@@ -108,37 +115,19 @@ window.onload = function() {
 					data : taskByDefectCntTaskGbCnt,
 					backgroundColor : '#007BFF',
 				}]
+			},
+			options : {
+				scales:{
+					yAxes:[{
+						ticks:{
+							beginAtZero:true
+						}	
+					}]
+				}
 			}
 		});
 		
-		/** 사용자별 결함건수*/
-		var userByDefectCnt = JSON.parse('${userByDefectCnt}');
-		var userByDefectCntUserNm = new Array();
-		var userByDefectCntDefectAll = new Array();
-		var userByDefectCntActionA3All = new Array();
-		for (var i = 0; i < userByDefectCnt.length; i++) {
-			userByDefectCntUserNm.push(userByDefectCnt[i].userNm);
-			userByDefectCntDefectAll.push(userByDefectCnt[i].defectCnt);
-			userByDefectCntActionA3All.push(userByDefectCnt[i].actionA3Cnt);
-		}
-		var ctx3 = document.getElementById('userByDefectCnt');
-		var userByDefectCntChart = new Chart(ctx3, {
-			type : 'bar',
-			data : {
-				labels : userByDefectCntUserNm,
-				barThickness : '0.9',
-				datasets : [ {
-					label : '결함건수',
-					data : userByDefectCntDefectAll,
-					backgroundColor : '#007BFF',
-				},
-				{
-					label : '조치건수',
-					data : userByDefectCntActionA3All,
-					backgroundColor : '#00B3E6',
-				}]
-			}
-		});
+		
 		
 		
 		
@@ -177,17 +166,22 @@ window.onload = function() {
                     </div>
                 </div>
      		<div id="search_field">
-					<div id="search_field_loc"><h2><strong>결함처리통계(그래프)</strong></h2></div>
+					<div id="search_field_loc"><h2><strong>결함처리통계 (그래프)</strong></h2></div>
 			</div>
-			
-				<font color="#727272" style="font-size:1.17em;font-weight:bold">시스템별 결함건수</font>
+			<br/><br/><br/><br/><br/><br/>
+			<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
+				<font color="#727272" style="font-size:1.4em;font-weight:bold">시스템별 결함건수</font>
 							<canvas id="sysByDefectCnt" width="100%" height="20"></canvas>
-				
-				<font color="#727272" style="font-size:1.17em;font-weight:bold">업무별 결함건수</font>
+			<br/><br/>
+			<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
+				<font color="#727272" style="font-size:1.4em;font-weight:bold">업무별 결함건수</font>
+							<br/><br/>
+							<div id="taskByActionCntLoc" style="border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);">
+							<br/>
 							<canvas id="taskByDefectCnt" width="100%" height="20"></canvas>
+							<br/><br/>
+							</div>
 				
-				<font color="#727272" style="font-size:1.17em;font-weight:bold">사용자별 결함건수/조치건수</font>
-							<canvas id="userByDefectCnt" width="100%" height="20"></canvas>
 
 			</div>
             <!-- //content 끝 -->

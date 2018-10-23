@@ -84,7 +84,7 @@
                 <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
                 <!-- 검색 필드 박스 시작 -->
             <div id="search_field">
-               <div id="search_field_loc"><h2><strong>결함관리</strong></h2></div>
+               <div id="search_field_loc"><h2><strong>결함처리현황</strong></h2></div>
                
                     <fieldset><legend>조건정보 영역</legend>     
                     <div class="sf_start">
@@ -234,6 +234,10 @@
             				<td align="center" class="listtd"><c:out value="${result.userTestId}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/></td>
             			<c:choose>
+            			<c:when test="${result.actionSt == '조치중' }">
+                        <td align="center" class="listtd">
+                        <font style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
+                        </c:when>
                         <c:when test="${result.actionSt == '재요청'}">
                         <td align="center" class="listtd" style="background-color:#CC3C39;">
                          <font color="#ffffff" style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>

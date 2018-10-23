@@ -43,16 +43,16 @@ function handleClick(event, array){
 		success : function(result){
 			$("#taskByActionCntLoc").empty();
 			var str = "";
-			str += "<table>";
+			str += "<br/><br/><table>";
 			str += "<tr>";
 			$.each(result, function(index,item){
-				str += "<td>";
+				str += "<td>&nbsp;&nbsp;";
 				if(temp == "sysGb") {
 					str += "<canvas id='" + item.sysGb + item.taskGb + "'"; 				
 				} else {
 					str += "<canvas id='" + item.taskGb + "'";
 				}
-				str += "width='180' height='180' style='display:inline !important;'>";
+				str += "width='180' height='120' style='display:inline !important;'>";
 				str += "</canvas>"
 				str += "</td>";
 			});
@@ -61,10 +61,10 @@ function handleClick(event, array){
 			$.each(result, function(index,item){
 				str += "<td align='center' valign='middle'>";
 				str += "<div style='font-size:15px; font-weight:bolder;'>";
-				str += "<font color='#007BFF'>" + item.actionStA3Cnt;
+				str += "<font color='#007BFF'>&nbsp;&nbsp;" + item.actionStA3Cnt;
 				str += "</font>";
 				str += " / " + item.taskCnt;
-				str += "(" + item.actionPer + "%)<br/>";
+				str += " ( " + item.actionPer + " %)<br/>&nbsp;&nbsp;";
 				if(temp == "sysGb") {
 					str += item.sysNm + "(" + item.taskNm + ")";
 				} else {
@@ -73,7 +73,7 @@ function handleClick(event, array){
 				str += "</td>";
 			});
 			str += "</tr>";
-			str += "</table>";
+			str += "</table><br/><br/>";
 			$("#taskByActionCntLoc").append(str);
 			
 			var taskByActionCnt = result;
@@ -298,52 +298,58 @@ window.onload = function() {
                     </div>
                 </div>
      		<div id="search_field">
-					<div id="search_field_loc"><h2><strong>결함처리통계(그래프)</strong></h2></div>
+					<div id="search_field_loc"><h2><strong>결함처리통계 (그래프)</strong></h2></div>
 			</div>
-
-			<font color="#727272" style="font-size:1.17em;font-weight:bold">시스템별 조치율</font>
+			<br/><br/><br/><br/><br/><br/>
+			<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
+			<font color="#727272" style="font-size:1.4em;font-weight:bold">시스템별 조치율</font>
+			<br/><br/><br/><br/>
 				<table>
 					<tr>
-						<td>
-							<canvas id="sysAllByActionCnt" width="200" height="200" style="display: inline !important;"></canvas>
+						<td>&nbsp;&nbsp;
+							<canvas id="sysAllByActionCnt" width="250" height="120" style="display: inline !important;"></canvas>
 						</td>
 						<c:forEach var="sysByActionCnt" items="${sysByActionCnt}" varStatus="status">
 							<td>
-								<canvas	id="<c:out value="${sysByActionCnt.sysGb}"/>"
-									width="180" height="180" style="display: inline !important;"></canvas>
+								&nbsp;&nbsp;<canvas	id="<c:out value="${sysByActionCnt.sysGb}"/>"
+									width="180" height="120" style="display: inline !important;"></canvas>
 							</td>
 						</c:forEach>
 					</tr>
 					<tr>
 						<td align="center" valign="middle">
 							<div style="font-size: 15px; font-weight: bolder;">
-								<font color="#007BFF"><c:out value="${sysAllByActionCnt.actionStA3CntAll}" /></font> /
+								<font color="#007BFF">&nbsp;&nbsp;<c:out value="${sysAllByActionCnt.actionStA3CntAll}" /></font> /
 								<c:out value="${sysAllByActionCnt.sysCntAll}" />
-								(<c:out value=" ${sysAllByActionCnt.actionPerAll}"/>%)
-								<br/> 전체 <br/>
+								( <c:out value=" ${sysAllByActionCnt.actionPerAll}"/>% )
+								<br/>&nbsp;&nbsp; 전체 <br/>
 							</div>
 						</td>
 						<c:forEach var="sysByActionCnt" items="${sysByActionCnt}" varStatus="status">
 						<td align="center" valign="middle">
 							<div style="font-size: 15px; font-weight: bolder;">
-								<font color="#007BFF"><c:out value="${sysByActionCnt.actionStA3Cnt}" /></font> /
+								<font color="#007BFF">&nbsp;&nbsp;<c:out value="${sysByActionCnt.actionStA3Cnt}" /></font> /
 								<c:out value="${sysByActionCnt.sysCnt}" />
 								(<c:out value=" ${sysByActionCnt.actionPer}"/>%)
-								<br/><c:out value="${sysByActionCnt.sysNm}"/><br/>
+								<br/>&nbsp;&nbsp;<c:out value="${sysByActionCnt.sysNm}"/><br/>
 							</div>
 						</td>
 						</c:forEach>
 					</tr>
 				</table>
 				
-				<font color="#727272" style="font-size:1.17em;font-weight:bold">업무별 조치율</font>
-				<div id="taskByActionCntLoc">
+				<br/><br/>
+				<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
+				<font color="#727272" style="font-size:1.4em;font-weight:bold">업무별 조치율</font>
+				<br/><br/>
+				<div id="taskByActionCntLoc" style="border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);">
+				<br/><br/>
 				<table>
 					<tr>
 						<c:forEach var="taskByActionCnt" items="${taskByActionCnt}" varStatus="status">
 							<td>
-								<canvas	id="<c:out value="${taskByActionCnt.sysGb}"/><c:out value="${taskByActionCnt.taskGb}"/>"
-									width="180" height="180" style="display: inline !important;"></canvas>
+								&nbsp;&nbsp;<canvas	id="<c:out value="${taskByActionCnt.sysGb}"/><c:out value="${taskByActionCnt.taskGb}"/>"
+									width="180" height="120" style="display: inline !important;"></canvas>
 							</td>
 						</c:forEach>
 					</tr>
@@ -351,14 +357,16 @@ window.onload = function() {
 						<c:forEach var="taskByActionCnt" items="${taskByActionCnt}" varStatus="status">
 						<td align="center" valign="middle">
 							<div style="font-size: 15px; font-weight: bolder;">
-								<font color="#007BFF"><c:out value="${taskByActionCnt.actionStA3Cnt}" /></font> /
+								<font color="#007BFF">&nbsp;&nbsp;<c:out value="${taskByActionCnt.actionStA3Cnt}" /></font> /
 								<c:out value="${taskByActionCnt.taskCnt}" />
 								(<c:out value=" ${taskByActionCnt.actionPer}"/>%)
-								<br/><c:out value="${taskByActionCnt.sysNm}"/>(<c:out value="${taskByActionCnt.taskNm}"/>)
+								<br/>&nbsp;&nbsp;<c:out value="${taskByActionCnt.sysNm}"/>(<c:out value="${taskByActionCnt.taskNm}"/>)
+							</div>
 						</td>
 						</c:forEach>
 					</tr>
 				</table>
+				<br/><br/>
 			</div>
 
 			</div>
