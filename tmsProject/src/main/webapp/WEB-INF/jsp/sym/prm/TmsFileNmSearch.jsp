@@ -87,7 +87,7 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb,user_real
 <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
     <!-- 검색 필드 박스 시작 -->
     <div id="search_field" style="width:100%">
-        <div id="search_field_loc" class="h_title">프로그램명 검색</div>
+        <div id="search_field_loc" class="h_title">화면 검색</div>
             <fieldset><legend>조건정보 영역</legend>    
             <div class="sf_start">
                 <ul id="search_first_ul">
@@ -129,8 +129,8 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm,sys_gb,task_gb,user_real
             <tr>
                 <th scope="col" class="f_field" nowrap="nowrap">시스템구분</th>
                 <th scope="col" nowrap="nowrap">업무구분</th>
-                <th scope="col" nowrap="nowrap">프로그램ID</th>
-                <th scope="col" nowrap="nowrap">프로그램명</th>
+                <th scope="col" nowrap="nowrap">화면ID</th>
+                <th scope="col" nowrap="nowrap">화면명</th>
                 <th scope="col" nowrap="nowrap">개발자</th>
             </tr>
             </thead>

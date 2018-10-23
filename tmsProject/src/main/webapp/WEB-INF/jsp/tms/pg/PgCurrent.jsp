@@ -139,7 +139,9 @@
         document.frm.action = "<c:url value='/tms/pg/ExelWrite.do'/>";
         document.frm.submit();      
     }
-    
+    function searchFileNm() {
+        window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+    }
     
 </script>
 </c:otherwise>
@@ -251,7 +253,7 @@
 								<li>
                             		<div class="buttons" style="float:right;">                              			
                                     	<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-										<a href="<c:url value='/tms/pg/ExelWrite.do'/>" onclick="setting();fn_egov_insert_addbbsUseInf(); return false;">엑셀</a>
+										<a href="<c:url value='/tms/pg/ExelWrite.do'/>" onclick="setting();fn_egov_insert_addbbsUseInf(); return false;">엑셀 다운로드</a>
                                     </div>
                                 </li>
                        
@@ -266,7 +268,7 @@
                  <div class="default_tablestyle">
                 	
         			<table width="120%" border="0" cellpadding="0" cellspacing="0" >
-        				<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
+        				<caption style="visibility:hidden">NO, 화면ID, 화면명, 시스템구분, 업무구분, 개발자, 사용여부</caption>
         				<colgroup>
         					<col width="7"/> 
         					<col width="20"/>

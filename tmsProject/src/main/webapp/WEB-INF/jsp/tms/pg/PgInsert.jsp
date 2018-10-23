@@ -17,24 +17,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="templateInf" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
     
-    
-    function fn_egov_select_tmplatInfo(){
-        document.pgVO.action = "<c:url value='/cop/com/selectTemplateInfs.do'/>";
-        document.pgVO.submit();  
-    }
-    
-    function fn_egov_regist_tmplatInfo(){
+    function Enroll_PgInfo(){
+    	
         document.programVO.action = "<c:url value='/tms/pg/Pginsert.do'/>";
         document.programVO.submit();
     
@@ -106,7 +99,18 @@
                 <div id="search_field">
                     <div id="search_field_loc"><h2><strong>프로그램 등록</strong></h2></div>
                 </div>
+                
+	        	      
                 <form:form commandName="programVO" id="programVO" name="programVO" method="post" >
+
+					<input type="hidden" id="modal" name="modal" value="${modal_content}"/>
+					
+					<c:if test="${modal == 'T'}" >
+            			<script>            			
+            				swal("Denied!", ""+document.programVO.modal.value, "error");
+  							//sweetAlert(""+document.programVO.modal.value);
+  						</script>  	        				
+	        		</c:if>      
 
                     <div class="modify_user" >
                         <table >
@@ -118,7 +122,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="30" style="width:50%" value="${PGID}" title="화면ID">&nbsp;<span id="sometext"></span>
+                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="20" style="width:50%" value="${PGID}" title="화면ID">&nbsp;<span id="sometext"></span>
                               <form:errors path="pgId" style="color: red"/>
                               <br/> 
                             </td>
@@ -131,7 +135,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="pgNm" name="pgNm" type="text" size="60" maxlength="60" style="width:50%" value="${PGNM}" title="화면ID">&nbsp;<span id="sometext"></span>
+                              <input id="pgNm" name="pgNm" type="text" size="60" maxlength="100" style="width:50%" value="${PGNM}" title="화면ID">&nbsp;<span id="sometext"></span>
                               <form:errors path="pgNm" style="color: red"/>
                               <br/>
                             </td>
@@ -212,14 +216,13 @@
                         </table>
                     </div>
 
-
                     <!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
                       <!-- 목록/저장버튼  -->
                       <table border="0" cellspacing="0" cellpadding="0" align="center">
                         <tr> 
                           <td>
-                              <a onclick="fn_egov_regist_tmplatInfo(); return false;">저장</a> 
+                              <a onclick="Enroll_PgInfo(); return false;">저장</a> 
                           </td>
                           <td>
                               <a href="<c:url value='/tms/pg/PgManage.do'/>" >목록</a>
