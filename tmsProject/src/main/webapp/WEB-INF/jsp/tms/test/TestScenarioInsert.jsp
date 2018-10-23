@@ -28,20 +28,43 @@
 
 <title>테스트케이스 목록 조회</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <validator:javascript formName="testScenarioVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript" defer="defer">
 
 
 function insertTestScenarioImpl(){
 	
-	if (!validateTestScenarioVO(document.testScenarioVO)){
-        return;
-    }
-    
-    if (confirm('<spring:message code="common.regist.msg" />')) {
-    	document.testScenarioVO.action = "<c:url value='/tms/test/insertTestScenarioImpl.do'/>";
-   	    document.testScenarioVO.submit();       
-    }
+	var inputTestscenarioId = $("#testscenarioIdDuplicationCheck").val();
+	 $.ajax({
+	   	 type :"POST"
+	   	,url  : "<c:url value='/tms/test/checkTestScenarioIdDuplication.do'/>"
+	   	,dataType : "json"
+	   	,data : {testscenarioId:inputTestscenarioId}
+	   	,success :  function(result){
+	   		
+	   		if(!result){
+	   			alert("중복된 테스트시나리오ID 입니다.")
+	   		} else {
+	   			
+	   			if (!validateTestScenarioVO(document.testScenarioVO)){
+	   		        return;
+	   		    }
+	   		    
+	   			if (confirm('<spring:message code="common.regist.msg" />')) {
+	   		    	document.testScenarioVO.action = "<c:url value='/tms/test/insertTestScenarioImpl.do'/>";
+	   		   	    document.testScenarioVO.submit();       
+	   		    }
+	   			
+	   		}
+	   	}
+	   	, error :  function(request,status,error){
+	   		 alert("에러");
+		         alert("code:"+request.status+"\n"+"error:"+error);
+	   	}
+	   		
+	   });
+	
 }
 
 
@@ -102,7 +125,7 @@ function insertTestScenarioImpl(){
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
                                 <td width="25%" nowrap >
-                                  <input id="testscenarioId" name="testscenarioId" type="text" size="25"  >
+                                  <input id="testscenarioIdDuplicationCheck" name="testscenarioId" type="text" size="25"  >
                                   <br/><form:errors path="testscenarioId" />
                                 </td>
                                 

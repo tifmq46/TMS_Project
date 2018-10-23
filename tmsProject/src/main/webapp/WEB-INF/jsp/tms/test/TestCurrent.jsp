@@ -39,6 +39,12 @@ function selectTestCurrent(pageNo){
     document.listForm.submit();  
 }
 
+function currentToExel(pageNo) {
+	
+	document.listForm.pageIndex.value = pageNo; 
+    document.listForm.action = "<c:url value='/tms/test/currentToExcel.do'/>";
+    document.listForm.submit(); 
+}
 
 </script>
 
@@ -137,12 +143,18 @@ function selectTestCurrent(pageNo){
 					  			<li><label for="searchByUserDevId"><spring:message code="tms.test.userWriterId" /></label></li>
 					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId"   value="<c:out value='${searchVO.searchByUserDevId}'/>"/></li>
 					  			
+					  			<li>
+					  				<input type="radio" name="asOf" value="pgId" <c:if test="${searchVO.asOf == 'pgId'}">checked="checked"</c:if>/>&nbsp;<label>화면Id</label> &nbsp;
+					  				<input type="radio" name="asOf" value="testcaseId" <c:if test="${searchVO.asOf == 'testcaseId'}">checked="checked"</c:if>/>&nbsp;<label>테스트케이스ID</label>
+					  			</li>
+					  			
 					  			
 					  			<li>
 									<div class="buttons" style="float:right;">
 									    
 	                                       <a href="<c:url value='/tms/test/selectTestCurrent.do'/>" onclick="selectTestCurrent('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
 											<spring:message code="button.inquire" /></a>
+											<a href="#" onclick="currentToExel('${searchVO.pageIndex}'); return false;">엑셀</a>
 									</div>	  				  			
 					  			</li> 
 					  			
@@ -194,14 +206,17 @@ function selectTestCurrent(pageNo){
                  
 	                
               	<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
-	              	<colgroup>
 	              	
+	              	<c:if test="${searchVO.asOf == 'pgId'}">
+	              	
+	              		
+	              	<colgroup>
 	              			<col width="40"/>
 	              		<c:if test="${testCurrent[0].pgId != '' && testCurrent[0].pgId ne null }"> 
  					        <col width="60"/> 
         				</c:if>
 	        				<col width="60"/>
-	        				<col width="80"/>
+	        				<col width="60"/>
 	        				<col width="100"/>
 	        				<col width="40"/>
 	        				<col width="60"/>
@@ -213,6 +228,7 @@ function selectTestCurrent(pageNo){
         			<tr>
         			
         				<th align="center" rowspan="2"><spring:message code="tms.test.no" /></th>
+        				
         				<c:if test="${testCurrent[0].pgId != '' && testCurrent[0].pgId ne null }"> 
         				<th align="center" rowspan="2"><spring:message code="tms.test.pgId" /></th>
         				</c:if>
@@ -251,6 +267,85 @@ function selectTestCurrent(pageNo){
             				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>
             			</tr>
         			</c:forEach>
+	              	
+	              	
+	              	</c:if>
+	              	
+	              	<c:if test="${searchVO.asOf == 'testcaseId'}">
+	              	
+	              		<colgroup>
+	              			<col width="40"/>
+	              			<col width="60"/>
+	              			<col width="100"/>
+	              		<c:if test="${testCurrent[0].pgId != '' && testCurrent[0].pgId ne null }"> 
+ 					        <col width="60"/> 
+        				</c:if>
+	        				<col width="60"/>
+	        				<col width="40"/>
+	        				<col width="60"/>
+	        				<col width="60"/>
+	        				<col width="30"/>
+	        				<col width="30"/>
+	        				<col width="45"/>
+	        		</colgroup>
+        			<tr>
+        			
+        				<th align="center" rowspan="2"><spring:message code="tms.test.no" /></th>
+        				<th align="center" rowspan="2"><spring:message code="tms.test.testcaseId" /></th>
+        				<th align="center" rowspan="2"><spring:message code="tms.test.testcaseContent" /></th>
+        				<c:if test="${testCurrent[0].pgId != '' && testCurrent[0].pgId ne null }"> 
+        				<th align="center" rowspan="2"><spring:message code="tms.test.pgId" /></th>
+        				</c:if>
+        				<th align="center" rowspan="2"><spring:message code="tms.test.taskGb" /></th>
+        				<th align="center" rowspan="2"><spring:message code="tms.test.userWriterId" /></th>
+			        	<th align="center" rowspan="2" ><spring:message code="tms.test.enrollDt" /></th>
+			        	<th align="center" rowspan="2"><spring:message code="tms.test.completeDt" /></th>
+			        	<th align="center" colspan="2"><spring:message code="tms.test.testLevel" /></th>
+        				<th align="center" rowspan="2"><spring:message code="tms.test.completeYn" /></th>
+        			</tr>
+        			
+        			<tr>
+        				<th align="center"><spring:message code="tms.test.firstTest" /></th>
+			        	<th align="center"><spring:message code="tms.test.secondTest" /></th>
+        			</tr>
+        			
+        			<c:forEach var="result" items="${testCurrent}" varStatus="status">
+        			
+            			<tr>
+            				<td align="center" class="listtd" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>  
+            				
+            				<td align="center" class="listtd"><c:out value="${result.testcaseId}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.testcaseContent}"/>&nbsp;</td>
+            				<c:if test="${result.pgId != '' && result.pgId ne null}"> 
+	        					<td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
+	        				</c:if>
+	        				
+            				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.completeDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.firstTestResultYn}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.secondTestResultYn}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>
+            			</tr>
+        			</c:forEach>
+	              	
+	              	</c:if>
+	              	
+	              	
+	              	
+	              	
+	              	
+	              	
+	              	
+	              	
+	              	
+	              	
+	              	
+	              	
+	              	
+	              	
+	              	
               </table>        
            </div>
            

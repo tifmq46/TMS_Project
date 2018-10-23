@@ -24,6 +24,8 @@
 		<result property="useYn"             column="USE_YN"             columnIndex="6"/>
 		<result property="pjtId"             column="PJT_ID"             columnIndex="7"/>
 		<result property="userRealId"             column="USER_REAL_ID"             columnIndex="8"/>
+		<result property="taskGbCode"             column="TASK_GB_CODE"             columnIndex="9"/>
+		
 	</resultMap>
 	
     <!-- 프로젝트 관리 -->
@@ -50,6 +52,7 @@
 				, PG_NM  AS "PG_NM" 
 				, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = SYS_GB) AS "SYS_GB" 
 				, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = TASK_GB) AS "TASK_GB"
+				, (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE = TASK_GB) AS "TASK_GB_CODE"
 				, USE_YN              AS "USE_YN"
 				, PJT_ID              AS "PJT_ID"
 			FROM LETTCCMMNDETAILCODE, PG_TB

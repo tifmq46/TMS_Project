@@ -29,21 +29,56 @@
 <title>테스트케이스 등록</title>
 
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <validator:javascript formName="testCaseVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript" defer="defer">
+
+window.onload = function(){
+	$("#testcaseIdDuplicationCheck").keyup(function () {
+
+	});
+	
+}
+
+
+
 
 
 function insertTestCaseImpl(){
 
-	if (!validateTestCaseVO(document.testCaseVO)){
-		alert("실패");
-        return;
-    }
-    
-    if (confirm('<spring:message code="common.regist.msg" />')) {
-    	document.testCaseVO.action = "<c:url value='/tms/test/insertTestCaseImpl.do'/>";
-        document.testCaseVO.submit();      
-    }
+	
+	var inputTestcaseId = $("#testcaseIdDuplicationCheck").val();
+	 $.ajax({
+	   	 type :"POST"
+	   	,url  : "<c:url value='/tms/test/checkTestCaseIdDuplication.do'/>"
+	   	,dataType : "json"
+	   	,data : {testcaseId:inputTestcaseId}
+	   	,success :  function(result){
+	   		
+	   		if(!result){
+	   			alert("중복된 테스트케이스ID 입니다.")
+	   		} else {
+	   			
+	   			if (!validateTestCaseVO(document.testCaseVO)){
+	   		        return;
+	   		    }
+	   		    
+	   		    if (confirm('<spring:message code="common.regist.msg" />')) {
+	   		    	document.testCaseVO.action = "<c:url value='/tms/test/insertTestCaseImpl.do'/>";
+	   		        document.testCaseVO.submit();      
+	   		    }
+	   			
+	   		}
+	   	}
+	   	, error :  function(request,status,error){
+	   		 alert("에러");
+		         alert("code:"+request.status+"\n"+"error:"+error);
+	   	}
+	   		
+	   });
+	
+	
+	
 }
 
 function searchFileNm() {
@@ -119,7 +154,7 @@ function searchFileNm() {
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
-                                    <form:input type="text" title="게시판명입력" path="testcaseId"  cssStyle="width:50%" />
+                                    <form:input id="testcaseIdDuplicationCheck" type="text" title="게시판명입력" path="testcaseId"  cssStyle="width:50%" />
                                     <br/><form:errors path="testcaseId" /> 
                                 </td>
                           </tr>
@@ -164,9 +199,9 @@ function searchFileNm() {
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
                                 
-	                                 <select name="taskGb" id="TmsProgrmFileNm_task_gb">
+	                                 <select name="taskGb" id="TmsProgrmFileNm_task_gb_code">
 										<c:forEach var="cmCode" items="${taskGbCode}">
-										<option value="${cmCode.codeNm}">${cmCode.codeNm}</option>
+										<option value="${cmCode.code}">${cmCode.codeNm}</option>
 										</c:forEach>
 									</select>
 									<br/><form:errors path="taskGb" />
@@ -196,6 +231,7 @@ function searchFileNm() {
                             </td>
                           </tr>
                          	<form:hidden path=""  id="TmsProgrmFileNm_sys_gb"/>
+                         	<form:hidden path=""  id="TmsProgrmFileNm_task_gb"/>
                        </table>
                     </div>
              	

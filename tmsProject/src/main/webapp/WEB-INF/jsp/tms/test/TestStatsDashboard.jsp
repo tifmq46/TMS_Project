@@ -36,7 +36,118 @@
 
 <script type="text/javaScript" language="javascript" defer="defer">
 
+var taskByDefectCntChart;
+
+function handleClick(event, array){
+   $.ajax({
+      type:"POST",
+      url: "<c:url value='/tms/test/selectTestCaseStatsListByTaskGb.do'/>",
+      data : {sysNm : this.data.labels[array[0]._index]},
+      async: false,
+      dataType : 'json',
+      success : function(result){
+         var taskByDefectCnt = result;
+         var taskByDefectCntTaskNm = new Array();
+         var taskByDefectCntTaskGbCnt = new Array();
+         for (var i = 0; i < taskByDefectCnt.length; i++) {
+            taskByDefectCntTaskNm.push(taskByDefectCnt[i].taskNm);
+            taskByDefectCntTaskGbCnt.push(taskByDefectCnt[i].taskGbCnt);
+         }
+         var data = taskByDefectCntChart.config.data;
+         data.datasets[0].data = taskByDefectCntTaskGbCnt;
+         data.labels = taskByDefectCntTaskNm;
+         taskByDefectCntChart.update();
+         
+      },
+      error : function(request,status,error){
+         alert("에러");
+         alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+      }
+   });
+}
+
+
+
 window.onload = function() {
+	
+	
+	   
+    /** 시스템별 테스트 케이스건수*/
+    var sysByDefectCnt = JSON.parse('${tcStatsBySysGb}');
+    var sysByDefectCntSysNm = new Array();
+    var sysByDefectCntSysCnt = new Array();
+    for (var i = 0; i < sysByDefectCnt.length; i++) {
+       sysByDefectCntSysNm.push(sysByDefectCnt[i].sysNm);
+       sysByDefectCntSysCnt.push(sysByDefectCnt[i].sysCnt);
+    }
+    var ctx1 = document.getElementById('sysByDefectCnt');
+    var sysByDefectCntChart = new Chart(ctx1, {
+       type : 'bar',
+       data : {
+          labels : sysByDefectCntSysNm,
+          barThickness : '0.9',
+          datasets : [ {
+             label : '테스트 케이스 건수',
+             data : sysByDefectCntSysCnt,
+             backgroundColor : '#007BFF',
+          }]
+       },
+       options : {
+          tooltips: {
+             callbacks: {
+             label: function(tooltipItem, data) {
+                         var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                         var label = data.datasets[tooltipItem.datasetIndex].label;
+                         if (value === 0.1) {
+                            value = 0;
+                         }
+
+                         return label + ' : ' + value;
+                       }
+                }
+             }
+          ,onClick:handleClick
+       }
+    });
+    
+    /** 업무별 테스트 케이스건수*/
+    var taskByDefectCnt = JSON.parse('${taskByDefectCnt}');
+    var taskByDefectCntTaskNm = new Array();
+    var taskByDefectCntTaskGbCnt = new Array();
+    for (var i = 0; i < taskByDefectCnt.length; i++) {
+       taskByDefectCntTaskNm.push(taskByDefectCnt[i].taskNm);
+       taskByDefectCntTaskGbCnt.push(taskByDefectCnt[i].taskGbCnt);
+    }
+    var ctx2 = document.getElementById('taskByDefectCnt');
+    taskByDefectCntChart = new Chart(ctx2, {
+       type : 'bar',
+       data : {
+          labels : taskByDefectCntTaskNm,
+          barThickness : '0.9',
+          datasets : [ {
+             label : '테스트 케이스 건수',
+             data : taskByDefectCntTaskGbCnt,
+             backgroundColor : '#007BFF',
+          }]
+       },
+       options : {
+          tooltips: {
+             callbacks: {
+             label: function(tooltipItem, data) {
+                         var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                         var label = data.datasets[tooltipItem.datasetIndex].label;
+                         if (value === 0.1) {
+                            value = 0;
+                         }
+                         return label + ' : ' + value;
+                       }
+                }
+             }
+       }
+    });
+    
+	
 	
 	var list = JSON.parse('${tcStatsByTaskGb}');
 	var taskGbNmList = new Array();
@@ -192,8 +303,6 @@ window.onload = function() {
 			} //window.onload
 			
 			
-		
-			
 
 $(document).ready(function(){
 	
@@ -209,6 +318,7 @@ $(document).ready(function(){
 });
 	
 });
+			
 			
 </script>
 
@@ -275,20 +385,19 @@ $(document).ready(function(){
                       	<div class="progress">
 						    <div class="progress-bar" style="width:${tc1_Pct}%"> <strong><c:out value=" ${tc1_Pct}"></c:out>%</strong></div>
 						</div>
-						  
-						<div style="float:right;">
-							  <img src="<c:url value='/images/tms/icon_pop_blue.gif' />" width="10" height="10" alt="yCnt"/>&nbsp;완료건수
-							  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;등록건수
-						</div>
 				</div>
 				
 				<div id="detail_bar_utc" style="display:none;" class="progess_bar_section" >
-                      <canvas id="ProgressStatusUtcChart" width="100%" height="14"></canvas>
+				
+				  <div class="progess_bar_section"><canvas id="ProgressStatusUtcChart" width="100%" height="14"></canvas></div>
+                  <div class="progess_bar_section"><canvas id="sysByDefectCnt" width="100%" height="18"></canvas></div>
+                  <div class="progess_bar_section"><canvas id="taskByDefectCnt" width="100%" height="30"></canvas></div>
+                      
 				</div>
                  
                 
                     	
-                 <div class="progess_bar_section" >
+                 <div class="progess_bar_section" style="display:none;">
                       	
 					    <span><strong>업무별 단위테스트 진행현황 (단위:수)</strong></span>
 					    <div class="ct-chart ct-perfect-fourth"></div>
@@ -329,16 +438,14 @@ $(document).ready(function(){
 						    <div class="progress-bar" style="width:${tc2_Pct}%"><strong><c:out value=" ${tc2_Pct}"></c:out>% </strong> </div>
 						</div>
 						
-						<div style="float:right;">
-							  <img src="<c:url value='/images/tms/icon_pop_blue.gif' />" width="10" height="10" alt="yCnt"/>&nbsp;완료건수
-							  &nbsp;<img src="<c:url value='/images/tms/icon_pop_gray.gif' />" width="10" height="10" alt="totCnt"/>&nbsp;등록건수
-						</div>
                  </div>
                    
                  <div id="detail_bar_ttc" style="display:none;" class="progess_bar_section" >
                       <canvas id="ProgressStatusTtcChart" width="100%" height="14"></canvas>
 				</div>
                    
+                   
+                      
                    
                    
             </div>

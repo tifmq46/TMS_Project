@@ -81,6 +81,52 @@
 	</resultMap>
 	
 	
+	
+	<select id="TestDAO.selectTestCaseStatsListBySysGb" resultClass="egovMap">
+	    
+			SELECT A.CODE AS sysGb, A.CODE_NM AS sysNm, IFNULL(B.sysCnt,0) AS sysCnt
+			FROM LETTCCMMNDETAILCODE AS A 
+			LEFT JOIN (
+			            SELECT COUNT(*) AS sysCnt, P.SYS_GB AS sysGb
+			            FROM TESTCASE_TB AS D, PG_TB AS P
+			            WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
+			            GROUP BY SYS_GB
+			) AS B 
+						
+			ON A.CODE = B.sysGb
+			WHERE A.CODE_ID = 'SYSGB'
+			ORDER BY sysCnt DESC
+			
+	</select>
+	
+	
+	<select id="TestDAO.selectTestCaseStatsListByTaskGb" parameterClass="java.lang.String" resultClass="egovMap">
+	
+		SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(B.taskGbCnt,0) AS taskGbCnt
+		FROM 
+		(SELECT * FROM LETTCCMMNDETAILCODE 
+		
+		<isNotNull>
+		WHERE PARENT = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysNm# AND CODE_ID = 'SYSGB')
+		</isNotNull>
+		
+		) AS A 
+		
+		LEFT JOIN
+		
+		(SELECT P.TASK_GB AS taskGb, P.SYS_GB AS sysGb, COUNT(P.TASK_GB) as taskGbCnt
+		FROM TESTCASE_TB AS D, PG_TB AS P
+		WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
+		GROUP BY taskGb
+		) AS B 
+						
+		ON A.CODE = B.taskGb
+		WHERE A.CODE_ID ='TASKGB'
+		ORDER BY B.taskGbCnt DESC, A.CODE ASC
+	</select>
+	
+	
+	
 	<insert id="TestDAO.insertTestCase" parameterClass="TestCaseVO">
 		    
 		    INSERT INTO TESTCASE_TB ( 
@@ -100,7 +146,7 @@
 		    		  #testcaseId#
 		    		, #testcaseContent#
 		    		, #testcaseGb#
-		    		,(SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #taskGb#)
+		    		, #taskGb#
 		    		, #userId#
 		    		, now()
 		    		,#precondition#
@@ -480,7 +526,7 @@
 		]]>
 	</select>
 	
-	<select id="TestDAO.selectTestCaseStatsListByTaskGb" resultClass="egovMap">
+	<select id="TestDAO.selectTestCaseStatsListByTaskGbTotal" resultClass="egovMap">
 	    
 	    <![CDATA[
 			 SELECT X.CODE AS TASK_GB_CODE, X.CODE_NM AS TASK_GB_NM, Y.TESTCASE_TOT_CNT, Y.TESTCASE_Y_CNT 
@@ -605,8 +651,13 @@
 				    AND USER_NM = #searchByUserDevId#
 				</isNotEmpty> 
 				
-				ORDER BY ENROLL_DT ASC
-				LIMIT #recordCountPerPage# OFFSET #firstIndex#
+				ORDER BY ENROLL_DT DESC
+				
+				<!-- 엑셀 다운로드 -->
+				<isNotEqual property="isExcel" compareValue="true">
+				     LIMIT #recordCountPerPage# OFFSET #firstIndex#
+				</isNotEqual> 
+				
 	</select>
 	
 	
