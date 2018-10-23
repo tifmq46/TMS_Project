@@ -95,5 +95,8 @@ public interface DefectService {
 	public List<?> selectSysByActionCnt();
 
 	public List<?> selectTaskByActionCnt();
-
+	
+	public List<?> selectTaskByActionCntForSysGb(String sysGb);
+	
+	public List<?> selectSysByDefectCntAll();
 }

@@ -41,12 +41,6 @@ window.onload = function() {
 		var dayByDefectCntActionDtCnt = new Array();
 		for (var i = 0; i < dayByDefectCnt.length; i++) {
 			dayByDefectCntDays.push(dayByDefectCnt[i].days);
-			if(dayByDefectCnt[i].enrollDtCnt == 0){
-				dayByDefectCnt[i].enrollDtCnt = 0.1;
-			}
-			if(dayByDefectCnt[i].actionDtCnt == 0){
-				dayByDefectCnt[i].actionDtCnt = 0.1;
-			}
 			dayByDefectCntEnrollDtCnt.push(dayByDefectCnt[i].enrollDtCnt);
 			dayByDefectCntActionDtCnt.push(dayByDefectCnt[i].actionDtCnt);
 		}
@@ -65,22 +59,6 @@ window.onload = function() {
 					data : dayByDefectCntActionDtCnt,
 					backgroundColor : '#00B3E6',
 				}]
-			},
-			options : {
-				tooltips: {
-					callbacks: {
-					label: function(tooltipItem, data) {
-						console.log(tooltipItem.index);
-					            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-					            var label = data.datasets[tooltipItem.datasetIndex].label;
-					            if (value === 0.1) {
-					            	value = 0;
-					            }
-
-					            return label + ' : ' + value;
-					          }
-						}
-					}
 			}
 		});
 		

@@ -63,12 +63,6 @@ window.onload = function() {
 		var taskByMainStatsActionStA3 = new Array();
 		for (var i = 0; i < taskByMainStats.length; i++) {
 			taskByMainStatsTaskNm.push(taskByMainStats[i].taskNm);
-			if(taskByMainStats[i].taskAll == 0){
-				taskByMainStats[i].taskAll = 0.1
-			}
-			if(taskByMainStats[i].actionStA3 == 0){
-				taskByMainStats[i].actionStA3 = 0.1
-			}
 			taskByMainStatsTaskAll.push(taskByMainStats[i].taskAll);
 			taskByMainStatsActionStA3.push(taskByMainStats[i].actionStA3);
 		}
@@ -87,22 +81,6 @@ window.onload = function() {
 					data : taskByMainStatsActionStA3,
 					backgroundColor : '#00B3E6',
 				}]
-			},
-			options : {
-				tooltips: {
-					callbacks: {
-					label: function(tooltipItem, data) {
-						console.log(tooltipItem.index);
-					            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-					            var label = data.datasets[tooltipItem.datasetIndex].label;
-					            if (value === 0.1) {
-					            	value = 0;
-					            }
-
-					            return label + ' : ' + value;
-					          }
-						}
-					}
 			}
 		});
 		/** 결함 진행상태 통계 끝*/
@@ -114,12 +92,6 @@ window.onload = function() {
 		var devPlanByMainStatsAchieveCnt = new Array();
 		for (var i = 0; i < devPlanByMainStats.length; i++) {
 			devPlanByMainStatsTaskNm.push(devPlanByMainStats[i].taskNm);
-			if(devPlanByMainStats[i].taskAll == 0) {
-				devPlanByMainStats[i].taskAll = 0.1;
-			}
-			if(devPlanByMainStats[i].achieveCnt == 0) {
-				devPlanByMainStats[i].achieveCnt = 0.1;
-			}
 			devPlanByMainStatsTaskAll.push(devPlanByMainStats[i].taskAll);
 			devPlanByMainStatsAchieveCnt.push(devPlanByMainStats[i].achieveCnt);
 		}
@@ -138,22 +110,6 @@ window.onload = function() {
 					data : devPlanByMainStatsAchieveCnt,
 					backgroundColor : '#00B3E6',
 				}]
-			},
-			options : {
-				tooltips: {
-					callbacks: {
-					label: function(tooltipItem, data) {
-						console.log(tooltipItem.index);
-					            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-					            var label = data.datasets[tooltipItem.datasetIndex].label;
-					            if (value === 0.1) {
-					            	value = 0;
-					            }
-
-					            return label + ' : ' + value;
-					          }
-						}
-					}
 			}
 		});
 		/** 개발 진척상태 통계 끝*/

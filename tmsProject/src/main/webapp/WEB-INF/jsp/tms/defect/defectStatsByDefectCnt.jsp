@@ -47,9 +47,6 @@ function handleClick(event, array){
 			var taskByDefectCntTaskGbCnt = new Array();
 			for (var i = 0; i < taskByDefectCnt.length; i++) {
 				taskByDefectCntTaskNm.push(taskByDefectCnt[i].taskNm);
-				if(taskByDefectCnt[i].taskGbCnt == 0) {
-					taskByDefectCnt[i].taskGbCnt = 0.1;
-				}
 				taskByDefectCntTaskGbCnt.push(taskByDefectCnt[i].taskGbCnt);
 			}
 			var data = taskByDefectCntChart.config.data;
@@ -73,9 +70,6 @@ window.onload = function() {
 		var sysByDefectCntSysCnt = new Array();
 		for (var i = 0; i < sysByDefectCnt.length; i++) {
 			sysByDefectCntSysNm.push(sysByDefectCnt[i].sysNm);
-			if(sysByDefectCnt[i].sysCnt == 0) {
-				sysByDefectCnt[i].sysCnt = 0.1;
-			}
 			sysByDefectCntSysCnt.push(sysByDefectCnt[i].sysCnt);
 		}
 		var ctx1 = document.getElementById('sysByDefectCnt');
@@ -91,20 +85,7 @@ window.onload = function() {
 				}]
 			},
 			options : {
-				tooltips: {
-					callbacks: {
-					label: function(tooltipItem, data) {
-					            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-					            var label = data.datasets[tooltipItem.datasetIndex].label;
-					            if (value === 0.1) {
-					            	value = 0;
-					            }
-
-					            return label + ' : ' + value;
-					          }
-						}
-					}
-				,onClick:handleClick
+				onClick:handleClick
 			}
 		});
 		
@@ -114,9 +95,6 @@ window.onload = function() {
 		var taskByDefectCntTaskGbCnt = new Array();
 		for (var i = 0; i < taskByDefectCnt.length; i++) {
 			taskByDefectCntTaskNm.push(taskByDefectCnt[i].taskNm);
-			if(taskByDefectCnt[i].taskGbCnt == 0) {
-				taskByDefectCnt[i].taskGbCnt = 0.1;
-			}
 			taskByDefectCntTaskGbCnt.push(taskByDefectCnt[i].taskGbCnt);
 		}
 		var ctx2 = document.getElementById('taskByDefectCnt');
@@ -130,20 +108,6 @@ window.onload = function() {
 					data : taskByDefectCntTaskGbCnt,
 					backgroundColor : '#007BFF',
 				}]
-			},
-			options : {
-				tooltips: {
-					callbacks: {
-					label: function(tooltipItem, data) {
-					            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-					            var label = data.datasets[tooltipItem.datasetIndex].label;
-					            if (value === 0.1) {
-					            	value = 0;
-					            }
-					            return label + ' : ' + value;
-					          }
-						}
-					}
 			}
 		});
 		
@@ -154,12 +118,6 @@ window.onload = function() {
 		var userByDefectCntActionA3All = new Array();
 		for (var i = 0; i < userByDefectCnt.length; i++) {
 			userByDefectCntUserNm.push(userByDefectCnt[i].userNm);
-			if(userByDefectCnt[i].defectCnt == 0) {
-				userByDefectCnt[i].defectCnt = 0.1;
-			}
-			if(userByDefectCnt[i].actionA3Cnt == 0) {
-				userByDefectCnt[i].actionA3Cnt = 0.1;
-			}
 			userByDefectCntDefectAll.push(userByDefectCnt[i].defectCnt);
 			userByDefectCntActionA3All.push(userByDefectCnt[i].actionA3Cnt);
 		}
@@ -179,20 +137,6 @@ window.onload = function() {
 					data : userByDefectCntActionA3All,
 					backgroundColor : '#00B3E6',
 				}]
-			},
-			options : {
-				tooltips: {
-					callbacks: {
-					label: function(tooltipItem, data) {
-					            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-					            var label = data.datasets[tooltipItem.datasetIndex].label;
-					            if (value === 0.1) {
-					            	value = 0;
-					            }
-					            return label + ' : ' + value;
-					          }
-						}
-					}
 			}
 		});
 		

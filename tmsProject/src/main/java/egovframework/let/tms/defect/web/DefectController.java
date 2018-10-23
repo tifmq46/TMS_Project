@@ -410,8 +410,11 @@ public class DefectController {
 		
 		String sysNm = null;
 		
+		List<?> sysByDefectCntAll = defectService.selectSysByDefectCntAll();
+		
 		// 시스템별 결함 건수
 		List<?> sysByDefectCnt = defectService.selectSysByDefectCnt();
+
 		model.addAttribute("sysByDefectCnt", JSONArray.fromObject(sysByDefectCnt));
 		
 		// 업무별 결함건수 
@@ -453,6 +456,20 @@ public class DefectController {
 		
 		
 		return "tms/defect/defectStatsByAction";
+	}
+	
+	/** 결함처리통계(그래프) - 대시보드3(비동기처리) */
+	@RequestMapping("/tms/defect/selectDefectStatsByActionAsyn.do")
+	@ResponseBody
+	public List<?> selectDefectStatsByActionAsyn(String sysGb) throws Exception {
+		List<?> taskByActionCnt;
+		if(sysGb.equals("sysGb")){
+			taskByActionCnt = defectService.selectTaskByActionCnt();
+		} else {
+			taskByActionCnt = defectService.selectTaskByActionCntForSysGb(sysGb);
+		}
+		
+		return taskByActionCnt;
 	}
 	
 	@RequestMapping("/tms/defect/selectDefectStatsTable.do")

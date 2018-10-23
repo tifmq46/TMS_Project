@@ -33,8 +33,115 @@
 <script type="text/javascript">
 
 function handleClick(event, array){
-	alert(this.data.labels[array[0]._index]);
-	console.log(this.data.labels[array[0]._index]);
+	var temp= this.data.datasets[0].label[0];
+	$.ajax({
+		type:"POST",
+		url: "<c:url value='/tms/defect/selectDefectStatsByActionAsyn.do'/>",
+		data : {sysGb : this.data.datasets[0].label[0]},
+		async: false,
+		dataType : 'json',
+		success : function(result){
+			$("#taskByActionCntLoc").empty();
+			var str = "";
+			str += "<table>";
+			str += "<tr>";
+			$.each(result, function(index,item){
+				str += "<td>";
+				if(temp == "sysGb") {
+					str += "<canvas id='" + item.sysGb + item.taskGb + "'"; 				
+				} else {
+					str += "<canvas id='" + item.taskGb + "'";
+				}
+				str += "width='180' height='180' style='display:inline !important;'>";
+				str += "</canvas>"
+				str += "</td>";
+			});
+			str += "</tr>";
+			str += "<tr>";
+			$.each(result, function(index,item){
+				str += "<td align='center' valign='middle'>";
+				str += "<div style='font-size:15px; font-weight:bolder;'>";
+				str += "<font color='#007BFF'>" + item.actionStA3Cnt;
+				str += "</font>";
+				str += " / " + item.taskCnt;
+				str += "(" + item.actionPer + "%)<br/>";
+				if(temp == "sysGb") {
+					str += item.sysNm + "(" + item.taskNm + ")";
+				} else {
+					str += item.taskNm;
+				}
+				str += "</td>";
+			});
+			str += "</tr>";
+			str += "</table>";
+			$("#taskByActionCntLoc").append(str);
+			
+			var taskByActionCnt = result;
+			var taskByActionCntTaskCnt = new Array();
+			var taskByActionCntActionStA3Cnt = new Array();
+			if(temp == "sysGb") {
+				var taskByActionCntSysGbTaskGb = new Array();
+			} else {
+				var taskByActionCntTaskGb = new Array();
+			}
+			for (var i = 0; i < taskByActionCnt.length; i++) {
+				if(taskByActionCnt[i].taskCnt == 0) {
+					taskByActionCnt[i].taskCnt = 0.1;
+				}
+				taskByActionCntTaskCnt.push(taskByActionCnt[i].taskCnt);
+				taskByActionCntActionStA3Cnt.push(taskByActionCnt[i].actionStA3Cnt);
+				if(temp == "sysGb") {
+					taskByActionCntSysGbTaskGb.push(taskByActionCnt[i].sysGb+taskByActionCnt[i].taskGb);
+				} else {
+					taskByActionCntTaskGb.push(taskByActionCnt[i].taskGb);
+				}
+			}
+			for ( var j = 0; j < taskByActionCntTaskCnt.length; j++) {
+			if(temp == "sysGb") {
+				var ctx = document.getElementById(taskByActionCntSysGbTaskGb[j]);
+			} else {
+				var ctx = document.getElementById(taskByActionCntTaskGb[j]);
+			}
+			var myDoughnutChart = new Chart(ctx, {
+		    	type : 'doughnut',
+		    	data : {
+		    		  labels: ['완료건수','미완료건수'],
+		    			datasets : [ {
+		    				data : [taskByActionCntActionStA3Cnt[j],
+		    				        taskByActionCntTaskCnt[j]-taskByActionCntActionStA3Cnt[j]],
+		    				backgroundColor : ['#007bff','#e9ecef']
+		    			},]
+		    		},
+		    		options : {
+		    			legend: {
+							display:false
+						},
+		    			rotation: 1 * Math.PI,
+		    	        circumference: 1 * Math.PI,
+		    			percentageInnerCutout : 50,
+		    			responsive:false,
+		    			tooltips: {
+							callbacks: {
+							label: function(tooltipItem, data) {
+										var value = data.datasets[0].data[tooltipItem.index];
+				            			var label = data.labels[tooltipItem.index];
+							            if (value === 0.1) {
+							            	value = 0;
+							            }
+							            return label + ' : ' + value;
+							          }
+								}
+							}
+		    			}
+		    	});
+			}
+		},
+		error : function(request,status,error){
+			alert("에러");
+			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+		}
+	});
 }
 
 window.onload = function() {
@@ -52,6 +159,9 @@ window.onload = function() {
 	for (var i = 0; i < sysByActionCnt.length; i++) {
 		sysByActionCntSysGb.push(sysByActionCnt[i].sysGb);
 		sysByActionCntSysNm.push(sysByActionCnt[i].sysNm);
+		if(sysByActionCnt[i].sysCnt == 0) {
+			sysByActionCnt[i].sysCnt = 0.1;
+		}
 		sysByActionCntSysCnt.push(sysByActionCnt[i].sysCnt);
 		sysByActionCntActionStA3Cnt.push(sysByActionCnt[i].actionStA3Cnt);
 		sysByActionCntActionPer.push(sysByActionCnt[i].actionPer);
@@ -63,6 +173,7 @@ window.onload = function() {
 		data : {
 			  labels: ['완료건수','미완료건수'],
 				datasets : [{
+					label : ['sysGb'],
 					data : [sysAllByActionCntActionStA3CntAll,
 					        sysAllByActionCntSysCntAll-sysAllByActionCntActionStA3CntAll],
 					backgroundColor : ['#007bff','#e9ecef']
@@ -76,6 +187,7 @@ window.onload = function() {
 		        circumference: 1 * Math.PI,
 				percentageInnerCutout : 50,
 				responsive:false
+				,onClick:handleClick
 				}
 		});
 	// 시스템별 조치율
@@ -86,6 +198,7 @@ window.onload = function() {
     	data : {
     		  labels: ['완료건수','미완료건수'],
     			datasets : [ {
+    				label : [sysByActionCntSysGb[j]],
     				data : [sysByActionCntActionStA3Cnt[j],
     				        sysByActionCntSysCnt[j]-sysByActionCntActionStA3Cnt[j]],
     				backgroundColor : ['#007bff','#e9ecef']
@@ -98,7 +211,19 @@ window.onload = function() {
     			rotation: 1 * Math.PI,
     	        circumference: 1 * Math.PI,
     			percentageInnerCutout : 50,
-    			responsive:false
+    			responsive:false,
+    			tooltips: {
+					callbacks: {
+					label: function(tooltipItem, data) {
+								var value = data.datasets[0].data[tooltipItem.index];
+		            			var label = data.labels[tooltipItem.index];
+					            if (value === 0.1) {
+					            	value = 0;
+					            }
+					            return label + ' : ' + value;
+					          }
+						}
+					}
     			,onClick:handleClick
     			}
     	});
@@ -106,7 +231,6 @@ window.onload = function() {
 	
 	// 업무별 조치율
 	var taskByActionCnt = JSON.parse('${taskByActionCnt}');
-	console.log(taskByActionCnt);
 	var taskByActionCntTaskCnt = new Array();
 	var taskByActionCntActionStA3Cnt = new Array();
 	var taskByActionCntSysGbTaskGb = new Array();
@@ -213,30 +337,29 @@ window.onload = function() {
 				</table>
 				
 				<font color="#727272" style="font-size:1.17em;font-weight:bold">업무별 조치율</font>
+				<div id="taskByActionCntLoc">
 				<table>
 					<tr>
 						<c:forEach var="taskByActionCnt" items="${taskByActionCnt}" varStatus="status">
 							<td>
-							<div id="taskByActionCntChartLoc">
 								<canvas	id="<c:out value="${taskByActionCnt.sysGb}"/><c:out value="${taskByActionCnt.taskGb}"/>"
 									width="180" height="180" style="display: inline !important;"></canvas>
-							</div>
 							</td>
 						</c:forEach>
 					</tr>
 					<tr>
 						<c:forEach var="taskByActionCnt" items="${taskByActionCnt}" varStatus="status">
 						<td align="center" valign="middle">
-							<div id="taskByActionCntDataLoc" style="font-size: 15px; font-weight: bolder;">
+							<div style="font-size: 15px; font-weight: bolder;">
 								<font color="#007BFF"><c:out value="${taskByActionCnt.actionStA3Cnt}" /></font> /
 								<c:out value="${taskByActionCnt.taskCnt}" />
 								(<c:out value=" ${taskByActionCnt.actionPer}"/>%)
 								<br/><c:out value="${taskByActionCnt.sysNm}"/>(<c:out value="${taskByActionCnt.taskNm}"/>)
-							</div>
 						</td>
 						</c:forEach>
 					</tr>
 				</table>
+			</div>
 
 			</div>
             <!-- //content 끝 -->
