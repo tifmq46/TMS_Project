@@ -383,6 +383,9 @@ public class DevPlanController {
 		int totCnt = devPlanService.selectDevResultListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
+
+		model.addAttribute("page", searchVO.getPageIndex());
+
 		
 		return "tms/dev/devResultList";
 	}
@@ -398,8 +401,7 @@ public class DevPlanController {
 	}
 	
 	@RequestMapping(value = "/tms/dev/updateDevResult.do")
-	public String updateDevResult(@ModelAttribute("searchVO") DevPlanDefaultVO dvo,@RequestParam String flag, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
-
+	public String updateDevResult(@RequestParam(value="page") String page, @ModelAttribute("searchVO") DevPlanDefaultVO dvo,@RequestParam String flag, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 		
 		//if (bindingResult.hasErrors()) {
 			//return "/tms/dev/updateDevPlan";
@@ -441,7 +443,61 @@ public class DevPlanController {
 			devPlanService.updateDevResult(dvo);
 			status.setComplete();
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
-			return "redirect:/tms/dev/devResultList.do";
+			
+			
+			System.out.println("1");
+			
+			//return "redirect:/tms/dev/devResultList.do";
+			
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+			
+			dvo.setSessionId(user.getName());
+			
+			System.out.println("2");
+			/** EgovPropertyService.sample */
+			dvo.setPageUnit(propertiesService.getInt("pageUnit"));
+			dvo.setPageSize(propertiesService.getInt("pageSize"));
+			System.out.println("3");
+			System.out.println("cccc : "+page);
+			dvo.setPageIndex(Integer.parseInt(page));
+			System.out.println("4");
+			/** pageing setting */
+			PaginationInfo paginationInfo = new PaginationInfo();
+			paginationInfo.setCurrentPageNo(dvo.getPageIndex());
+			paginationInfo.setRecordCountPerPage(dvo.getPageUnit());
+			paginationInfo.setPageSize(dvo.getPageSize());
+			
+			dvo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+			dvo.setLastIndex(paginationInfo.getLastRecordIndex());
+			dvo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+			
+			//공통코드(시스템, 업무구분)
+			List<String> sysGbList = TmsProgrmManageService.selectSysGb();
+			model.addAttribute("sysGb", sysGbList);
+			
+			String a = String.valueOf(dvo.getSearchBySysGb());
+			if(dvo.getSearchBySysGb() != null && dvo.getSearchBySysGb() != "") {
+				//System.out.println("ddddd");
+				List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb4(dvo);
+				model.addAttribute("taskGb2", taskGbList2);
+			}
+			
+			List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
+			model.addAttribute("taskGb", taskGbList);
+			
+			List<?> userList = defectService.selectUser();
+			model.addAttribute("userList", userList);
+			
+			List<HashMap<String,String>> devResultList = devPlanService.selectDevResultList(dvo);
+			model.addAttribute("resultList", devResultList);
+			
+			int totCnt = devPlanService.selectDevResultListTotCnt(dvo);
+			paginationInfo.setTotalRecordCount(totCnt);
+			model.addAttribute("paginationInfo", paginationInfo);
+			
+			return "tms/dev/devResultList";
+			
 	}
 	
 	@RequestMapping(value = "/tms/dev/deleteDevResult.do")

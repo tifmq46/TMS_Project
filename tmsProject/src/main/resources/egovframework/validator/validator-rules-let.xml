@@ -127,7 +127,7 @@
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   swal(fields.join('\n'));
                 }
                 return isValid;
             }
@@ -200,7 +200,7 @@
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   swal(fields.join('\n'));
                 }
                 return isValid;
             }]]>
@@ -245,7 +245,7 @@
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   swal(fields.join('\n'));
                 }
                 return isValid;
             }]]>
@@ -291,7 +291,7 @@
                 
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   swal(fields.join('\n'));
                 }
                 return isValid;
             }
@@ -367,7 +367,7 @@
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   swal(fields.join('\n'));
                 }
                 return bValid;
             }]]>
@@ -438,7 +438,7 @@
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   swal(fields.join('\n'));
                 }
                 return bValid;
             }]]>
@@ -509,7 +509,7 @@
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   swal(fields.join('\n'));
                 }
                 return bValid;
             }
@@ -615,7 +615,7 @@
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   swal(fields.join('\n'));
                 }
                 return bValid;
             }]]>
@@ -769,7 +769,7 @@
                }
                if (fields.length > 0) {
                   focusField.focus();
-                  alert(fields.join('\n'));
+                  swal(fields.join('\n'));
                }
                return bValid;
             }
@@ -857,7 +857,7 @@
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    swal(fields.join('\n'));
                 }
                 return isValid;
             }]]>
@@ -904,7 +904,7 @@
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    swal(fields.join('\n'));
                 }
                 return isValid;
             }]]>
@@ -945,7 +945,7 @@
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    swal(fields.join('\n'));
                 }
                 return bValid;
             }
@@ -1023,7 +1023,7 @@
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    swal(fields.join('\n'));
                 }
                 return bValid;
             }
@@ -1121,7 +1121,7 @@
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    swal(fields.join('\n'));
                 }
                 return bValid;
             }
@@ -1193,7 +1193,7 @@
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    swal(fields.join('\n'));
                 }
                 return bValid;
           }
@@ -1249,7 +1249,7 @@
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    swal(fields.join('\n'));
                 }
                 return bValid;
           }
@@ -1300,7 +1300,7 @@
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    swal(fields.join('\n'));
                 }
                 return bValid;
           }
@@ -1351,7 +1351,7 @@
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    swal(fields.join('\n'));
                 }
                 return bValid;
           }
@@ -1419,7 +1419,7 @@
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    swal(fields.join('\n'));
                 }
                 return bValid;
           }
@@ -1513,7 +1513,7 @@
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   swal(fields.join('\n'));
                 }
                 return bValid;
             }

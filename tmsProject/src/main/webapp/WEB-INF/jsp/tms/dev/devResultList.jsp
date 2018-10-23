@@ -226,7 +226,7 @@ function fn_result_regist(t){
 	if(rate == null || rate == ""){
 		alert("달성률을 입력해주십시오.");
 	}else{
-		location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1+"&achievementRate="+rate+"&flag="+flag;
+		location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1+"&achievementRate="+rate+"&flag="+flag+"&page="+document.listForm.page.value;
 	}	
 }
 
@@ -309,6 +309,7 @@ $(function(){
              <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="tms/dev/devPlanList.do">   
                 <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
                 <input type="hidden" name="flag" value="auto"/>
+                <input type="hidden" id="page" name="page" value="${page}"/>
                 <!-- 검색 필드 박스 시작 -->
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발결과관리</strong></h2></div>
