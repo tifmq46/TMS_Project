@@ -189,10 +189,20 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 	}
 	
 	@Override
-	public List<?> selectTestCaseStatsListByTaskGb()  throws Exception{
-		return testDAO.selectTestCaseStatsListByTaskGb();
+	public List<?> selectTestCaseStatsListByTaskGbTotal()  throws Exception{
+		return testDAO.selectTestCaseStatsListByTaskGbTotal();
 	}
 
+	@Override
+	public List<?> selectTestCaseStatsListByTaskGb(String sysNm)  throws Exception{
+		return testDAO.selectTestCaseStatsListByTaskGb(sysNm);
+	}
+	
+	@Override
+	public List<?> selectTestCaseStatsListBySysGb()  throws Exception{
+		return testDAO.selectTestCaseStatsListBySysGb();
+	}
+	
 	@Override
 	public List<?> selectTestCurrent(TestDefaultVO searchVO) throws Exception {
 		return testDAO.selectTestCurrent(searchVO);

@@ -733,8 +733,12 @@ public class TestController {
 		HashMap<String, Integer> testCaseStatsMapTC2 = testService.selectTestCaseStats("TC2");
 		model.addAttribute("testCaseStatsMapTC2", testCaseStatsMapTC2);
 
-		List<?> tcStatsByTaskGb = testService.selectTestCaseStatsListByTaskGb();
+		List<?> tcStatsByTaskGb = testService.selectTestCaseStatsListByTaskGbTotal();
 		model.addAttribute("tcStatsByTaskGb", JSONArray.fromObject(tcStatsByTaskGb));
+		
+		String sysNm = null;
+		List<?> taskByDefectCnt = testService.selectTestCaseStatsListByTaskGb(sysNm);
+		model.addAttribute("taskByDefectCnt", JSONArray.fromObject(taskByDefectCnt));
 
 		// 단위 테스트 진행 상태
 		HashMap<String, Object> ProgressStatusUtc = testService.selectTestCaseProgressStatus("TC1");
@@ -743,10 +747,25 @@ public class TestController {
 		// 통합 테스트 진행 상태
 		HashMap<String, Object> ProgressStatusTtc = testService.selectTestCaseProgressStatus("TC2");
 		model.addAttribute("ProgressStatusTtc", JSONObject.toJSONString(ProgressStatusTtc));
+		
+		List<?> tcStatsBySysGb = testService.selectTestCaseStatsListBySysGb();
+		model.addAttribute("tcStatsBySysGb", JSONArray.fromObject(tcStatsBySysGb));
+		
+		
 		}
 		return "tms/test/TestStatsDashboard";
 	}
 
+	
+	/** 결함처리통계(그래프) - 대시보드2(비동기처리) */
+	   @RequestMapping("/tms/test/selectTestCaseStatsListByTaskGb.do")
+	   @ResponseBody
+	   public List<?> selectTestCaseStatsListByTaskGb(String sysNm) throws Exception {
+	      
+	      List<?> taskByDefectCnt = testService.selectTestCaseStatsListByTaskGb(sysNm);
+	      return taskByDefectCnt;
+	   }
+	
 	/**
 	 * 테스트케이스 현황(단위,통합)을 가져온다
 	 * 

@@ -169,12 +169,31 @@ public interface TestService {
 	
 	
 	/**
+	 * 업무별 '전체' 단위 테스트 케이스 통계 정보를 가져온다
+	 * @param 
+	 * @return List<?>
+	 * @exception Exception
+	 */
+	public List<?> selectTestCaseStatsListByTaskGbTotal()  throws Exception;
+	
+	
+	/**
 	 * 업무별 단위 테스트 케이스 통계 정보를 가져온다
 	 * @param 
 	 * @return List<?>
 	 * @exception Exception
 	 */
-	public List<?> selectTestCaseStatsListByTaskGb()  throws Exception;
+	public List<?> selectTestCaseStatsListByTaskGb(String sysNm)  throws Exception;
+	
+	
+	/**
+	 * 업무별 단위 테스트 케이스 통계 정보를 가져온다
+	 * @param 
+	 * @return List<?>
+	 * @exception Exception
+	 */
+	public List<?> selectTestCaseStatsListBySysGb()  throws Exception;
+	
 	
 	/**
 	 * 테스트 현황 목록을 조회한다.

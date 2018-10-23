@@ -31,13 +31,22 @@ public class TmsProgrmManageVO{
 	/** 프로그램설명	 */	
 	private String taskGb="";
 	
+	private String taskGbCode="";
+	
 	private String useYn="";
 	
 	private String pjtId="";
 	
 	private String userRealId="";
 	
-	
+
+	public String getTaskGbCode() {
+		return taskGbCode;
+	}
+
+	public void setTaskGbCode(String taskGbCode) {
+		this.taskGbCode = taskGbCode;
+	}
 
 	public String getUserRealId() {
 		return userRealId;

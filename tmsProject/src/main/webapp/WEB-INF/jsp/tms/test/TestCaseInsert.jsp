@@ -199,9 +199,9 @@ function searchFileNm() {
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
                                 
-	                                 <select name="taskGb" id="TmsProgrmFileNm_task_gb">
+	                                 <select name="taskGb" id="TmsProgrmFileNm_task_gb_code">
 										<c:forEach var="cmCode" items="${taskGbCode}">
-										<option value="${cmCode.codeNm}">${cmCode.codeNm}</option>
+										<option value="${cmCode.code}">${cmCode.codeNm}</option>
 										</c:forEach>
 									</select>
 									<br/><form:errors path="taskGb" />
@@ -231,6 +231,7 @@ function searchFileNm() {
                             </td>
                           </tr>
                          	<form:hidden path=""  id="TmsProgrmFileNm_sys_gb"/>
+                         	<form:hidden path=""  id="TmsProgrmFileNm_task_gb"/>
                        </table>
                     </div>
              	

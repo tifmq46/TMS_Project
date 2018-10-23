@@ -192,13 +192,36 @@ public class TestDAO extends EgovAbstractDAO{
 	
 	
 	/**
+	 * 업무별 '전체' 단위 테스트 케이스 통계 정보를 가져온다
+	 * @param 
+	 * @return List<?>
+	 * @exception Exception
+	 */
+	public List<?> selectTestCaseStatsListByTaskGbTotal() throws Exception {
+		return  list("TestDAO.selectTestCaseStatsListByTaskGbTotal");
+	}
+	
+	
+	
+	/**
 	 * 업무별 단위 테스트 케이스 통계 정보를 가져온다
 	 * @param 
 	 * @return List<?>
 	 * @exception Exception
 	 */
-	public List<?> selectTestCaseStatsListByTaskGb() throws Exception {
-		return  list("TestDAO.selectTestCaseStatsListByTaskGb");
+	public List<?> selectTestCaseStatsListByTaskGb(String sysNm) throws Exception {
+		return  list("TestDAO.selectTestCaseStatsListByTaskGb", sysNm);
+	}
+	
+	
+	/**
+	 * 시스템별 단위 테스트 케이스 통계 정보를 가져온다
+	 * @param 
+	 * @return List<?>
+	 * @exception Exception
+	 */
+	public List<?> selectTestCaseStatsListBySysGb() throws Exception {
+		return  list("TestDAO.selectTestCaseStatsListBySysGb");
 	}
 	
 	
