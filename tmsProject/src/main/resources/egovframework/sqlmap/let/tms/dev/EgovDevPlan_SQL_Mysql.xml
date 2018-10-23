@@ -691,11 +691,13 @@
 	    ]]>
 	</select>
 	
-	<select id="DevPlanDAO.selectUserPlanWeekStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
+	<select id="DevPlanDAO.selectUserWeekStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
 			<![CDATA[
 				SELECT IFNULL(USER_DEV_ID, #userList#) as userDevId
 				,IFNULL( USER_DEV_NM, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = #userList#)) AS userDevNm
-				,IFNULL ((COUNT(CASE WHEN WP=#dt# THEN 1 END)),0) AS #dt#
+				,IFNULL ((COUNT(CASE WHEN WP=#dt# THEN 1 END)),0) AS '$dt$'
+				,IFNULL ((COUNT(CASE WHEN WD=#dt# THEN 1 END)),0) AS 'b$dt$'
+				,IFNULL ((COUNT(CASE WHEN WD=#dt# THEN 1 END)),0) - IFNULL ((COUNT(CASE WHEN WP=#dt# THEN 1 END)),0) as 'sub$dt$'
 
 				FROM
 				(SELECT PG_ID, USER_DEV_ID, USER_DEV_NM, TASK_GB, WP, WD, W FROM
@@ -738,51 +740,29 @@
 		]]>
    	</select>
    	
-	<select id="DevPlanDAO.selectUserDevWeekStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
+	<select id="DevPlanDAO.selectTaskWeekStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
 			<![CDATA[
-				SELECT IFNULL(USER_DEV_ID, #userList#) as userDevId
-				,IFNULL( USER_DEV_NM, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = #userList#)) AS userDevNm
-				,IFNULL ((COUNT(CASE WHEN WD=#dt# THEN 1 END)),0) AS #dt#
-
-				FROM
-				(SELECT PG_ID, USER_DEV_ID, USER_DEV_NM, TASK_GB, WP, WD, W FROM
-					(SELECT A.PG_ID, A.USER_DEV_ID,A.USER_DEV_NM, A.TASK_GB, B.WP,B.WD FROM 
-						(SELECT PG_ID,USER_DEV_ID,
-							(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = USER_DEV_ID)AS USER_DEV_NM
-						,TASK_GB,USE_YN FROM PG_TB WHERE USE_YN='Y') AS A
-							 LEFT JOIN 
-						(SELECT PG_ID ,WEEKOFYEAR(PLAN_END_DT) AS WP, WEEKOFYEAR(DEV_END_DT) AS WD FROM DEV_PLAN_TB) AS B
-							 ON A.PG_ID = B.PG_ID
-							 ORDER BY USER_DEV_ID
-							 )AS C
-						
-						LEFT JOIN
-						(SELECT DISTINCT WEEKOFYEAR(dates) AS W from PERIOD) AS D
-				ON C.WP = D.W
-				)AS F
-				WHERE USER_DEV_ID=#userList#
-				GROUP BY USER_DEV_ID
-				ORDER BY USER_DEV_ID
-         ]]>
-   	</select>
-   	
-	<select id="DevPlanDAO.selectTaskPlanWeekStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
-			<![CDATA[
-			SELECT IFNULL(TASK_GB, #taskGbList#) AS taskGb
+			SELECT SYS_GB AS sysGb
+				,IFNULL(SYS_GB_NM, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID="SYSGB" AND CODE = SYS_GB)) AS sysGbNm
+				,IFNULL(TASK_GB, #taskGbList#) AS taskGb
 				,IFNULL(TASK_GB_NM, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID="TASKGB" AND CODE = #taskGbList#)) AS taskGbNm
-				,IFNULL((COUNT(CASE WHEN WP=#dt# THEN 1 END)),0) AS #dt#
+				,IFNULL((COUNT(CASE WHEN WP=#dt# THEN 1 END)),0) AS '$dt$'
+				,IFNULL ((COUNT(CASE WHEN WD=#dt# THEN 1 END)),0) AS 'b$dt$'
+				,IFNULL ((COUNT(CASE WHEN WD=#dt# THEN 1 END)),0) - IFNULL ((COUNT(CASE WHEN WP=#dt# THEN 1 END)),0) as 'sub$dt$'
 				FROM
-				(SELECT PG_ID, USER_DEV_ID, USER_DEV_NM, TASK_GB, TASK_GB_NM, WP, WD, W FROM
-					(SELECT A.PG_ID, A.USER_DEV_ID,A.USER_DEV_NM, A.TASK_GB, B.WP,B.WD, A.TASK_GB_NM FROM 
+				(SELECT PG_ID, USER_DEV_ID, USER_DEV_NM, SYS_GB, SYS_GB_NM, TASK_GB, TASK_GB_NM, WP, WD, W FROM
+					(SELECT A.PG_ID, A.USER_DEV_ID,A.USER_DEV_NM, A.SYS_GB, A.SYS_GB_NM, A.TASK_GB, B.WP,B.WD, A.TASK_GB_NM FROM 
 						(SELECT PG_ID,USER_DEV_ID,
 							(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = USER_DEV_ID)AS USER_DEV_NM
+							,SYS_GB
+							,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = SYS_GB) AS SYS_GB_NM
 						,TASK_GB
 						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = TASK_GB) AS TASK_GB_NM
 						,USE_YN FROM PG_TB WHERE USE_YN='Y') AS A
 							 LEFT JOIN 
 						(SELECT PG_ID ,WEEKOFYEAR(PLAN_END_DT) AS WP, WEEKOFYEAR(DEV_END_DT) AS WD FROM DEV_PLAN_TB) AS B
 							 ON A.PG_ID = B.PG_ID
-							 ORDER BY TASK_GB
+							 ORDER BY SYS_GB, TASK_GB
 							 )AS C
 						
 						LEFT JOIN
@@ -791,7 +771,7 @@
 				)AS F
 			WHERE TASK_GB=#taskGbList#
 			GROUP BY TASK_GB
-			ORDER BY TASK_GB 
+			ORDER BY SYS_GB, TASK_GB
          ]]>
    	</select>
    	
@@ -809,54 +789,22 @@
 		]]>
    	</select>
    	
-   	<select id="DevPlanDAO.selectTaskDevWeekStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
+   	<select id="DevPlanDAO.selectSumWeek" parameterClass="java.lang.String" resultClass="egovMap" >
 			<![CDATA[
-			SELECT IFNULL(TASK_GB, #taskGbList#) AS taskGb
-				,IFNULL(TASK_GB_NM, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID="TASKGB" AND CODE = #taskGbList#)) AS taskGbNm
-				,IFNULL((COUNT(CASE WHEN WD=#dt# THEN 1 END)),0) AS #dt#
-				FROM
-				(SELECT PG_ID, USER_DEV_ID, USER_DEV_NM, TASK_GB, TASK_GB_NM, WP, WD, W FROM
-					(SELECT A.PG_ID, A.USER_DEV_ID,A.USER_DEV_NM, A.TASK_GB, B.WP,B.WD, A.TASK_GB_NM FROM 
-						(SELECT PG_ID,USER_DEV_ID,
-							(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = USER_DEV_ID)AS USER_DEV_NM
-						,TASK_GB
-						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = TASK_GB) AS TASK_GB_NM
-						,USE_YN FROM PG_TB WHERE USE_YN='Y') AS A
-							 LEFT JOIN 
-						(SELECT PG_ID ,WEEKOFYEAR(PLAN_END_DT) AS WP, WEEKOFYEAR(DEV_END_DT) AS WD FROM DEV_PLAN_TB) AS B
-							 ON A.PG_ID = B.PG_ID
-							 ORDER BY TASK_GB
-							 )AS C
-						
-						LEFT JOIN
-						(SELECT DISTINCT WEEKOFYEAR(dates) AS W from PERIOD) AS D
-				ON C.WP = D.W
-				)AS F
-			WHERE TASK_GB=#taskGbList#
-			GROUP BY TASK_GB
-			ORDER BY TASK_GB 
-         ]]>
-   	</select>
-   	
-   	<select id="DevPlanDAO.selectPlanSum" parameterClass="java.lang.String" resultClass="java.lang.String">
-			<![CDATA[
-				select count(*) from DEV_PLAN_TB AS D
+				SELECT *, (sumDev-sumPlan)as diff FROM
+				(select count(*)as sumPlan from DEV_PLAN_TB AS D
 					INNER JOIN PG_TB AS P
 				ON D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
 					WHERE WEEKOFYEAR(PLAN_END_DT) = #weekList#
-         ]]>
-   	</select>
-	
-   	
-	<select id="DevPlanDAO.selectDevSum" parameterClass="java.lang.String" resultClass="java.lang.String">
-			<![CDATA[
-				select count(*) from DEV_PLAN_TB AS D
+					)AS Z,
+					(select count(*)as sumDev from DEV_PLAN_TB AS D
 					INNER JOIN PG_TB AS P
 				ON D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
 					WHERE WEEKOFYEAR(DEV_END_DT) = #weekList#
+					)AS Y
          ]]>
    	</select>
-   	
+	
 	<select id="DevPlanDAO.selectThisWeekStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
 				
 	    		<isEqual property="codeType" compareValue="task">
@@ -1011,12 +959,12 @@
 					,IFNULL(SUM(TOT_CNT),NULL) AS TOT_CNT
 					,IFNULL(SUM(TP),NULL) AS TP
 					,IFNULL(SUM(TD),NULL) AS TD
-					,IFNULL(SUM(TR),NULL) AS TR
+					,IFNULL(ROUND((IFNULL((SUM(TD)/SUM(TP)),0)*100),1),NULL) AS TR
 					,IFNULL(SUM(AP),NULL) AS AP
 					,IFNULL(SUM(AD),NULL) AS AD
-					,IFNULL(SUM(AR),NULL) AS AR
+					,IFNULL(ROUND((IFNULL((SUM(AD)/SUM(AP)),0)*100),1),NULL) AS AR
 					,IFNULL(SUM(TOT_D),NULL) AS TOT_D
-					,IFNULL(SUM(TOT),NULL) AS TOT
+					,IFNULL(ROUND((IFNULL((SUM(TOT_D)/SUM(TOT_CNT)),0)*100),1),NULL) AS TOT
 				FROM
 					(SELECT * 
 							,ROUND((IFNULL((TOT_D/TOT_CNT),0)*100),1) AS TOT
@@ -1058,6 +1006,27 @@
 							)AS X
 						)AS W
 						GROUP BY W.SYS_NM, W.TASK_NM WITH ROLLUP
+         ]]>
+   	</select>
+   	
+	<select id="DevPlanDAO.searchBySys" parameterClass="java.lang.String" resultClass="java.util.HashMap" remapResults="true">
+			<![CDATA[
+				SELECT C.SYS_GB, C.SYS_NM, C.TASK_GB, C.TASK_NM, IFNULL(CNTA,0) AS CNTA, IFNULL(CNTB,0) AS CNTB, ROUND((IFNULL((CNTB/CNTA),0)*100),1) AS R FROM
+					(SELECT A.SYS_GB, A.SYS_NM, A.TASK_GB, A.TASK_NM, CNTA FROM
+					(SELECT CODE AS TASK_GB, CODE_NM AS TASK_NM, PARENT AS SYS_GB,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = #sysList#)AS SYS_NM
+						FROM LETTCCMMNDETAILCODE 
+						WHERE PARENT = #sysList#
+				)AS A
+					LEFT OUTER JOIN
+					(SELECT COUNT(*) CNTA, TASK_GB, SYS_GB FROM PG_TB WHERE USE_YN='Y' GROUP BY TASK_GB, SYS_GB) AS B
+					ON A.TASK_GB = B.TASK_GB AND A.SYS_GB = B.SYS_GB
+				)AS C
+				LEFT OUTER JOIN 
+				(SELECT COUNT(*) CNTB, TASK_GB, SYS_GB FROM DEV_PLAN_TB AS D, PG_TB AS P WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND WEEKOFYEAR(D.DEV_END_DT) <= WEEKOFYEAR(NOW())
+					GROUP BY TASK_GB, SYS_GB
+				) AS D
+				ON C.SYS_GB = D.SYS_GB AND C.TASK_GB = D.TASK_GB
+				ORDER BY C.TASK_GB
          ]]>
    	</select>
 	

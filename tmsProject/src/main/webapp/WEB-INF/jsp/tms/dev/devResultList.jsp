@@ -56,9 +56,11 @@ Date.prototype.format = function(f) {
  
 String.prototype.string = function(len){var s = '', i = 0; while (i++ < len) { s += this; } return s;};
 String.prototype.zf = function(len){return "0".string(len - this.length) + this;};
-Number.prototype.zf = function(len){return this.toString().zf(len);};
+Number.prototype.zf = function(len){return this.toString().zf(len);
+};
 
-function fn_result_change(asd) {
+
+/*  function fn_result_change(asd) {
 	   var idVal0 = document.getElementById(asd).value;
 	   var idVal1 = document.getElementById(asd+1).value;
 	   var currentDate = (new Date().format("yyyy-MM-dd"));
@@ -89,14 +91,87 @@ function fn_result_change(asd) {
 		   sweetAlert("오늘 이후 날짜는 입력할 수 없습니다. 다시 입력하십시오.");
 	   }
 	   if(flag){
+		   alert("Dd");
 		   var idVal3 = document.getElementById(asd+3).id;
 		   $("#"+idVal3).removeClass("disabled");
 		   $("#"+idVal3).addClass("abled");
 		 }
-	}
+	} */
 
+ function fn_result_change(pgId, obj){
+	 var date = obj.value;
+	 var cDate = (new Date().format("yyyy-MM-dd"));
+	 
+	 var idVal0 = document.getElementById(pgId).value;
+	 var idVal1 = document.getElementById(pgId+1).value;
+	 
+	 
+	 var bnt = document.getElementById(pgId+3).id;
+	 $("#"+bnt).removeClass("disabled");
+	 $("#"+bnt).addClass("abled");
+	
+	 var rateId = document.getElementById(pgId+4).id;
+	 var rateVal = document.getElementById(pgId+4).value;
+	 $("#"+rateId).removeClass("disabled");
+	 $("#"+rateId).addClass("abled");
+	 
+	 var flag = true;
+	 
+	 if(date > cDate){
+		 alert("오늘 이후 날짜는 입력할 수 없습니다. 다시 입력하십시오.");
+		 obj.value = null;
+		 if(obj.id != pgId && idVal0 != ""){
+			 document.getElementById(pgId+4).value = "50.0";
+		 }else{
+			 document.getElementById(pgId+4).value = "0.0";
+		 }
+		 
+	 }
+	 if(obj.value == ""){
+		if(obj.id == pgId){
+			document.getElementById(pgId).value = null;
+			document.getElementById(pgId+1).value = null;
+			document.getElementById(pgId+4).value = "0.0";
+		}else{
+			document.getElementById(pgId+4).value = "50.0";
+		}
+	 }
+	 
+	 if(idVal1 == "" && idVal0 != "" && idVal0 <= cDate){
+		 document.getElementById(pgId+4).value = "50.0";
+	 }
+	 
+	 
+	 if(idVal0 <= idVal1 && idVal1 <= cDate && idVal0 != "" && idVal1 != ""){
+	  		document.getElementById(pgId+4).value = "100.0";
+	  }
+	 
+	 if(idVal1 != null && idVal1 != "")
+     {
+        if(idVal0 > idVal1)
+           {
+        	if(obj.id==pgId && date <= cDate){
+        		alert("개발종료일자보다 큰 값을 입력하시오.");
+                document.getElementById(pgId+1).value = null;
+                document.getElementById(pgId+4).value = "50.0";
+        	}else if(obj.id != pgId && date <= cDate){
+        		alert("개발시작일자보다 큰 값을 입력하시오.");
+        		document.getElementById(pgId+1).value = null;
+        		document.getElementById(pgId+4).value = "50.0";
+        	}
+              
+          }
+        if(idVal0 == ""){
+	        document.getElementById(pgId+1).value = null;
+	        document.getElementById(pgId+4).value = "0.0";
+        }
+     }
+	 
+ }
+ 
 function fn_rate_change(pgId, event) {
 	var idVal0 = document.getElementById(pgId).value;
+	var idVal1 = document.getElementById(pgId+1).value;
 	
 	if(idVal0 == null || idVal0 == ""){
 		alert("개발시작일자 먼저 입력하십시오."); 
@@ -104,18 +179,20 @@ function fn_rate_change(pgId, event) {
 		return;
 	}
 	else{
-		var idVal3 = document.getElementById(pgId+3).id;
-		$("#"+idVal3).removeClass("disabled");
-		$("#"+idVal3).addClass("abled");
 		
-		document.listForm.flag.value = "change";
+			var idVal3 = document.getElementById(pgId+3).id;
+			$("#"+idVal3).removeClass("disabled");
+			$("#"+idVal3).addClass("abled");
+			
+			document.listForm.flag.value = "change";
+			
+			event = event || window.event;
+		    var keyID = (event.which) ? event.which : event.keyCode;
+		    if ( (keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
+		        return;
+		    else
+		        return false;
 		
-		event = event || window.event;
-	    var keyID = (event.which) ? event.which : event.keyCode;
-	    if ( (keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
-	        return;
-	    else
-	        return false;
 	}
 
 }
@@ -135,12 +212,6 @@ function linkPage1(pageNo){
 	   document.listForm.action = "<c:url value='/tms/dev/devResultList.do'/>";
 	   document.listForm.submit();
 	}
-
-/* function fn_result_change(asd) {
-	var idVal3 = document.getElementById(asd+3).id;
-	$("#"+idVal3).removeClass("disabled");
-	$("#"+idVal3).addClass("abled");
-} */
 
 
 function fn_result_regist(t){
@@ -267,6 +338,10 @@ $(function(){
 					  			</li>
 					  			
 					  			<li><label for="searchByUserDevId">개발자명</label></li>
+					  			<% LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
+					  					pageContext.setAttribute("loginNm", loginVO.getName()) ;
+					  				if(loginVO.getName().equals("관리자")){	
+					  			%>
 					  			 <li><input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="18" style="text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
 		                          	<datalist id="userAllList">
 		                          	<c:forEach var="userList" items="${userList}" varStatus="status">
@@ -274,7 +349,12 @@ $(function(){
 									</c:forEach>
 									</datalist>
 		                          </li>
-					  			
+		                          <%}else{%>
+		                          <li>
+		                          <input type="text" name="searchByUserDevId" id="searchByUserDevId" size="18" style="text-align:center;" value="${loginNm}" readOnly/>
+		                          	
+		                          </li>
+		                          <%}%>
 					  		</ul>
 					  		<ul id="search_second_ul">
 					  			<li><label for="searchByPgId">화면ID</label></li>
@@ -359,14 +439,14 @@ $(function(){
             				<td align="center" class="listtd"><c:out value="${result.PLAN_START_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_END_DT}"/>&nbsp;</td>
             				
-            				<td><input type="date"  id="${result.PG_ID}" onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.DEV_START_DT}" pattern="yyyy-MM-dd" />" style="width:120px;"/>
+            				<td><input type="date"  id="${result.PG_ID}" onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.DEV_START_DT}" pattern="yyyy-MM-dd" />" style="width:120px;"/>
                             <img src="images/calendar.gif"  width="19" height="19" alt="" /></td>
-                            <td><input type="date"  id="${result.PG_ID}1" onchange="fn_result_change('${result.PG_ID}')" value="<fmt:formatDate value="${result.DEV_END_DT}" pattern="yyyy-MM-dd" />" style="width:120px;"/>
+                            <td><input type="date"  id="${result.PG_ID}1" onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.DEV_END_DT}" pattern="yyyy-MM-dd" />" style="width:120px;"/>
                             <img src="images/calendar.gif" width="19" height="19" alt="" /></td>
             				
             				<c:choose>
-	            				<c:when test="${result.ACHIEVEMENT_RATE eq null }">
-	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="0" onkeyup="fn_rate_change('${result.PG_ID}', event);"/></td>
+	            				<c:when test="${result.ACHIEVEMENT_RATE eq 100 || result.ACHIEVEMENT_RATE eq 0}" >
+	            						<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event);" class="disabled" /></td>
 	            				</c:when>
 	            				<c:otherwise>
 	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event);" /></td>
@@ -378,7 +458,7 @@ $(function(){
             				<div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:20px;">
             				<c:choose>
 	            				<c:when test="${result.DEV_START_DT eq null && result.DEV_END_DT eq null}">
-	            				<a id="${result.PG_ID}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
+	            				<a id="${result.PG_ID}3" class="abled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
 	            				</c:when>
 	            				<c:when test="${result.DEV_START_DT ne null || result.DEV_END_DT ne null}">
 	            				<a id="${result.PG_ID}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a>
