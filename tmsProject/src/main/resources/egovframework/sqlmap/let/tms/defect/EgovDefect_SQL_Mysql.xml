@@ -571,30 +571,6 @@
         ]]>
     </select>
     
-    <select id="defectDAO.selectMonthByDefectCnt" resultClass="egovMap">
-        <![CDATA[
-         SELECT CAST(months AS CHAR) AS months, enrollMonthDtCnt, actionMonthDtCnt
-		 FROM(
-           SELECT A.MONTHS AS months, IFNULL(ENROLL_MONTH_DT_CNT,0) AS enrollMonthDtCnt, IFNULL(ACTION_A3_CNT,0) AS actionMonthDtCnt
-         FROM
-            (SELECT MONTH(DATE_SUB(CURDATE(), INTERVAL N.NO MONTH)) AS MONTHS
-            FROM NUMBERS AS N
-            WHERE N.NO<6
-         ) AS A LEFT JOIN
-            (SELECT MONTH(ENROLL_DT) AS ENROLL_MONTH_DT, COUNT(*) AS ENROLL_MONTH_DT_CNT
-            FROM DEFECT_TB, PG_TB
-            WHERE DEFECT_TB.PG_ID = PG_TB.PG_ID AND PG_TB.USE_YN = 'Y'
-            GROUP BY MONTH(ENROLL_DT)
-         ) AS B ON A.MONTHS = B.ENROLL_MONTH_DT
-         LEFT JOIN ( SELECT MONTH(ACTION_DT) AS ACTION_MONTH_DT, COUNT(*) AS ACTION_A3_CNT
-            FROM DEFECT_TB, PG_TB
-            WHERE DEFECT_TB.PG_ID = PG_TB.PG_ID AND PG_TB.USE_YN = 'Y' AND ACTION_ST ='A3'
-            GROUP BY MONTH(ACTION_DT) 
-         ) AS C ON A.MONTHS = C.ACTION_MONTH_DT
-         ORDER BY months ASC) AS D
-        	WHERE 1=1
-        ]]>
-    </select>
     
     <select id="defectDAO.selectTaskGbByDefect" resultClass="java.lang.String">
         <![CDATA[
@@ -741,6 +717,108 @@
 			) AS B ON A.CODE = B.TASK_GB
 			WHERE A.CODE_ID='TASKGB'
 			ORDER BY taskAll DESC, actionStA3 DESC
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectSysByDefectCnt" resultClass="egovMap">
+        <![CDATA[
+        	SELECT A.CODE AS sysGb, A.CODE_NM AS sysNm, IFNULL(B.sysCnt,0) AS sysCnt
+			FROM LETTCCMMNDETAILCODE AS A LEFT JOIN (
+				SELECT COUNT(*) AS sysCnt, P.SYS_GB AS sysGb
+				FROM DEFECT_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
+				GROUP BY SYS_GB
+			) AS B ON A.CODE = B.sysGb
+			WHERE A.CODE_ID = 'SYSGB'
+			ORDER BY sysCnt DESC
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectTaskByDefectCnt" resultClass="egovMap" parameterClass="java.lang.String">
+        	SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(B.taskGbCnt,0) AS taskGbCnt
+			FROM 
+				(SELECT CODE, CODE_NM, CODE_ID FROM LETTCCMMNDETAILCODE
+				<isNotNull>
+				 WHERE PARENT = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysNm# AND CODE_ID = 'SYSGB')
+				 </isNotNull>
+				 ) AS A 
+				LEFT JOIN
+				(SELECT P.TASK_GB AS taskGb, P.SYS_GB AS sysGb, COUNT(P.TASK_GB) AS taskGbCnt
+				FROM DEFECT_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
+				GROUP BY taskGb
+				) AS B    
+			ON A.CODE = B.taskGb
+			WHERE A.CODE_ID ='TASKGB'
+			ORDER BY B.taskGbCnt DESC, A.CODE ASC
+    </select>
+    
+    <select id="defectDAO.selectUserByDefectCnt" resultClass="egovMap">
+        <![CDATA[
+        	SELECT IFNULL(B.USER_DEV_ID,(SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM = A.USER_NM)) AS userDevId, A.USER_NM AS userNm, IFNULL(B.DEFECTCNT,0) AS defectCnt, IFNULL(B.ACTIONA3CNT,0) AS actionA3Cnt
+			FROM LETTNEMPLYRINFO AS A LEFT JOIN
+				(SELECT P.USER_DEV_ID, D.ACTION_ST, COUNT(*) AS DEFECTCNT, COUNT(CASE WHEN D.ACTION_ST = 'A3' THEN 1 END) AS ACTIONA3CNT
+				FROM DEFECT_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
+				GROUP BY P.USER_DEV_ID)
+			AS B ON A.EMPLYR_ID = B.USER_DEV_ID
+			ORDER BY B.DEFECTCNT DESC, B.ACTIONA3CNT DESC
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectSysAllByActionCnt" resultClass="java.util.HashMap">
+        <![CDATA[
+        	SELECT CAST('sysGb' AS CHAR) AS sysGb, CAST('전체' AS CHAR) AS sysNm, COUNT(*) AS sysCntAll, COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END) AS actionStA3CntAll, ROUND(IFNULL((COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END)/COUNT(*)),0)*100,1) AS actionPerAll
+			FROM DEFECT_TB AS D, PG_TB AS P
+			WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectSysByActionCnt" resultClass="egovMap">
+        <![CDATA[
+        	SELECT A.CODE AS sysGb, A.CODE_NM AS sysNm, IFNULL(B.SYSCNT,0) AS sysCnt, IFNULL(B.ACTIONA3CNT,0) AS actionStA3Cnt, IFNULL(B.ACTIONPER,0) AS actionPer
+			FROM LETTCCMMNDETAILCODE AS A LEFT JOIN
+				(SELECT P.SYS_GB AS SYSGB, COUNT(*) AS SYSCNT, COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END) AS ACTIONA3CNT, ROUND(IFNULL((COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END)/COUNT(*)),0)*100,1) AS ACTIONPER
+				FROM DEFECT_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
+				GROUP BY P.SYS_GB)
+			AS B ON A.CODE = B.SYSGB
+			WHERE A.CODE_ID = 'SYSGB'
+			ORDER BY sysCnt DESC, actionA3Cnt DESC, actionPer DESC
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectTaskByActionCnt" resultClass="egovMap">
+        <![CDATA[
+        	SELECT P.SYS_GB AS sysGb, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = P.SYS_GB AND CODE_ID='SYSGB') AS sysNm, P.TASK_GB AS taskGb, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = P.TASK_GB AND CODE_ID='TASKGB') AS taskNm, COUNT(*) AS taskCnt, COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END) AS actionStA3Cnt, ROUND(IFNULL((COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END)/COUNT(*)),0)*100,1) AS actionPer
+			FROM DEFECT_TB AS D, PG_TB AS P
+			WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
+			GROUP BY P.TASK_GB
+			ORDER BY taskCnt DESC, actionStA3Cnt DESC, actionPer DESC, sysGb, taskGb
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectTaskByActionCntForSysGb" resultClass="egovMap" parameterClass="java.lang.String">
+        <![CDATA[
+        	SELECT PARENT AS sysGb, IFNULL(sysNm, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE=#sysGb#)) AS sysNm, CODE AS taskGb, CODE_NM AS taskNm, IFNULL(taskCnt,0) AS taskCnt, IFNULL(actionStA3Cnt,0) AS actionStA3Cnt, IFNULL(actionPer,0) AS actionPer
+			FROM ( SELECT *
+				FROM LETTCCMMNDETAILCODE 
+				WHERE PARENT = #sysGb#
+				) AS A LEFT JOIN (
+				SELECT P.SYS_GB AS sysGb, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = #sysGb#) AS sysNm, P.TASK_GB AS taskGb, COUNT(*) AS taskCnt, COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END) AS actionStA3Cnt, ROUND(IFNULL((COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END)/COUNT(*)),0)*100,1) AS actionPer
+				FROM DEFECT_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y' AND SYS_GB = #sysGb#
+				GROUP BY P.TASK_GB
+			) AS B ON A.CODE = B.taskGb
+			ORDER BY taskCnt DESC, actionStA3Cnt DESC, actionPer DESC, taskGb
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectSysByDefectCntAll" resultClass="egovMap">
+        <![CDATA[
+        	SELECT CAST('sysGb' AS CHAR) AS sysGb, CAST('전체' AS CHAR) AS sysNm, COUNT(*) AS sysCnt
+			FROM DEFECT_TB AS D, PG_TB AS P
+			WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
         ]]>
     </select>
     

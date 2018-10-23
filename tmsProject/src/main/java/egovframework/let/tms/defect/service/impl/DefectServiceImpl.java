@@ -293,4 +293,60 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 	}
 
 
+	@Override
+	public List<?> selectSysByDefectCnt() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectSysByDefectCnt();
+	}
+
+
+	@Override
+	public List<?> selectTaskByDefectCnt(String sysNm) {
+		// TODO Auto-generated method stub
+		return defectDAO.selectTaskByDefectCnt(sysNm);
+	}
+
+
+	@Override
+	public List<?> selectUserByDefectCnt() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectUserByDefectCnt();
+	}
+
+
+	@Override
+	public HashMap<String, Object> selectSysAllByActionCnt() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectSysAllByActionCnt();
+	}
+
+
+	@Override
+	public List<?> selectSysByActionCnt() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectSysByActionCnt();
+	}
+
+
+	@Override
+	public List<?> selectTaskByActionCnt() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectTaskByActionCnt();
+	}
+
+
+	@Override
+	public List<?> selectTaskByActionCntForSysGb(String sysGb) {
+		// TODO Auto-generated method stub
+		return defectDAO.selectTaskByActionCntForSysGb(sysGb);
+	}
+
+
+	@Override
+	public List<?> selectSysByDefectCntAll() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectSysByDefectCntAll();
+	}
+
+
 }

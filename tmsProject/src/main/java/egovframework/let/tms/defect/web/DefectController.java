@@ -41,6 +41,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
@@ -183,7 +184,7 @@ public class DefectController {
 				hmap.put("TESTSCENARIO_ID", defectVO.getTestscenarioId());
 				hmap.put("status", 0);
 				defectService.insertDefectImageMap(hmap);
-				
+				  
 			}	
 			return "redirect:/tms/defect/selectDefect.do";
 		}
@@ -389,7 +390,7 @@ public class DefectController {
 		return "tms/defect/defectListOne";
 	}
 	
-	/** 결함처리통계(그래프) */
+	/** 결함처리통계(그래프) - 대시보드1 */
 	@RequestMapping("/tms/defect/selectDefectStats.do")
 	public String selectDefectStats(ModelMap model) throws Exception {
 		
@@ -400,23 +401,75 @@ public class DefectController {
 		List<?> dayByDefectCnt = defectService.selectDayByDefectCnt();
 		model.addAttribute("dayByDefectCnt", JSONArray.fromObject(dayByDefectCnt));
 		
-		// 월별 결함 등록건수, 조치건수
-		List<?> monthByDefectCnt = defectService.selectMonthByDefectCnt();
-		model.addAttribute("monthByDefectCnt", JSONArray.fromObject(monthByDefectCnt));
-		
-		// 업무별 조치율
-		List<?> taskByActionProgression = defectService.selectTaskByActionProgression();
-		model.addAttribute("taskByActionProgression", JSONArray.fromObject(taskByActionProgression));
-		
-		// 업무별 상태별 결함건수
-		List<?> taskByActionStCnt = defectService.selectTaskByActionStCnt();
-		model.addAttribute("taskByActionStCnt", JSONArray.fromObject(taskByActionStCnt));
-		
-		// 업무별 유형별 결함 건수
-		List<?> taskByDefectGbCnt = defectService.selectTaskByDefectGbCnt();
-		model.addAttribute("taskByDefectGbCnt", JSONArray.fromObject(taskByDefectGbCnt));
-		
 		return "tms/defect/defectStats";
+	}
+	
+	/** 결함처리통계(그래프) - 대시보드2 */
+	@RequestMapping("/tms/defect/selectDefectStatsByDefectCnt.do")
+	public String selectDefectStatsByDefectCnt(ModelMap model) throws Exception {
+		
+		String sysNm = null;
+		
+		List<?> sysByDefectCntAll = defectService.selectSysByDefectCntAll();
+		
+		// 시스템별 결함 건수
+		List<?> sysByDefectCnt = defectService.selectSysByDefectCnt();
+
+		model.addAttribute("sysByDefectCnt", JSONArray.fromObject(sysByDefectCnt));
+		
+		// 업무별 결함건수 
+		List<?> taskByDefectCnt = defectService.selectTaskByDefectCnt(sysNm);
+		model.addAttribute("taskByDefectCnt", JSONArray.fromObject(taskByDefectCnt));
+		
+		// 사용자별 결함건수
+		List<?> userByDefectCnt = defectService.selectUserByDefectCnt();
+		model.addAttribute("userByDefectCnt", JSONArray.fromObject(userByDefectCnt));
+		
+		return "tms/defect/defectStatsByDefectCnt";
+	}
+	
+	/** 결함처리통계(그래프) - 대시보드2(비동기처리) */
+	@RequestMapping("/tms/defect/selectDefectStatsByDefectCntAsyn.do")
+	@ResponseBody
+	public List<?> selectDefectStatsByDefectCntAsyn(String sysNm) throws Exception {
+		
+		List<?> taskByDefectCnt = defectService.selectTaskByDefectCnt(sysNm);
+		
+		return taskByDefectCnt;
+	}
+	
+	/** 결함처리통계(그래프) - 대시보드3 */
+	@RequestMapping("/tms/defect/selectDefectStatsByAction.do")
+	public String selectDefectStatsByAction(ModelMap model) throws Exception {
+		
+		// 시스템별 전체 조치율
+		HashMap<String, Object> sysAllByActionCnt = defectService.selectSysAllByActionCnt();
+		model.addAttribute("sysAllByActionCnt", sysAllByActionCnt);
+		
+		// 시스템별 조치율
+		List<?> sysByActionCnt = defectService.selectSysByActionCnt();
+		model.addAttribute("sysByActionCnt", JSONArray.fromObject(sysByActionCnt));
+		
+		// 업무별 조치율 (
+		List<?> taskByActionCnt = defectService.selectTaskByActionCnt();
+		model.addAttribute("taskByActionCnt", JSONArray.fromObject(taskByActionCnt));
+		
+		
+		return "tms/defect/defectStatsByAction";
+	}
+	
+	/** 결함처리통계(그래프) - 대시보드3(비동기처리) */
+	@RequestMapping("/tms/defect/selectDefectStatsByActionAsyn.do")
+	@ResponseBody
+	public List<?> selectDefectStatsByActionAsyn(String sysGb) throws Exception {
+		List<?> taskByActionCnt;
+		if(sysGb.equals("sysGb")){
+			taskByActionCnt = defectService.selectTaskByActionCnt();
+		} else {
+			taskByActionCnt = defectService.selectTaskByActionCntForSysGb(sysGb);
+		}
+		
+		return taskByActionCnt;
 	}
 	
 	@RequestMapping("/tms/defect/selectDefectStatsTable.do")

@@ -130,7 +130,7 @@ function closeTestScenarioResult() {
 }
 
 function insertDefect() {
-	location.href = "./insertDefect.do?testscenarioId=" + testscenarioId;
+	location.href = "<c:url value='/tms/defect/insertDefect.do?testscenarioId=" + testscenarioId + "'/>";
 }
 
 </script>
