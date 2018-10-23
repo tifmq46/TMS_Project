@@ -97,15 +97,16 @@ public class ProgramController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		if(cnt.equals("")) { searchVO.setSearchUseYn("Y"); }
 		
+		if(cnt.equals("")) { 
+			searchVO.setSearchUseYn("Y"); 
+		}
+		
+		//화면 리스트
 		List<?> PgList = ProgramService.selectPgList(searchVO);
-		//List<?> PgList = ProgramService.selectPgList(searchVO);
 		model.addAttribute("resultList", PgList);
-
 		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
 		
-		System.out.println("current--"+totCnt);
 		
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
@@ -114,8 +115,6 @@ public class ProgramController {
 		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
 		
-		System.out.println(searchVO.getSearchBySysGb());
-		System.out.println(searchVO.getSearchByTaskGb());
 		if(!searchVO.getSearchBySysGb().isEmpty()) {
 			List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
 			model.addAttribute("taskGb2", taskGbList2);
@@ -139,19 +138,14 @@ public class ProgramController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/tms/pg/selectPgInf.do")
-	public String selectTemplateInf(@ModelAttribute("programVO") ProgramVO searchVO, ModelMap model) throws Exception {
+	public String selectPgInf(@ModelAttribute("programVO") ProgramVO searchVO, ModelMap model) throws Exception {
 
-		//VO.setCodeId("COM005");
-
-		ProgramVO VO = ProgramService.selectProgramInf(searchVO);
-		
+		ProgramVO VO = ProgramService.selectProgramInf(searchVO);		
 		model.addAttribute("programVO", VO);
 
 		// 공통코드 부분 시작 -------------------------------	
 		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
-		
-		System.out.println("here---"+searchVO.getPgId());
 		
 		List<String> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
 		model.addAttribute("taskGb2", taskGbList3);
@@ -172,10 +166,7 @@ public class ProgramController {
 	@RequestMapping("/tms/pg/selectPgCheck.do")
 	public String selectPgCheck(@ModelAttribute("programVO") ProgramVO searchVO, ModelMap model) throws Exception {
 
-		//VO.setCodeId("COM005");
-
-		ProgramVO VO = ProgramService.selectProgramInf(searchVO);
-		
+		ProgramVO VO = ProgramService.selectProgramInf(searchVO);		
 		model.addAttribute("programVO", VO);
 
 		// 공통코드 부분 시작 -------------------------------	
@@ -201,7 +192,7 @@ public class ProgramController {
 	 * 프로그램 현황을 조회한다.
 	 */
 	@RequestMapping(value = "/tms/pg/PgCurrent.do")
-	public String selectDevResultList(@RequestParam(value="cnt", defaultValue = "") String cnt, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+	public String selectPgCurrenList(@RequestParam(value="cnt", defaultValue = "") String cnt, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -217,15 +208,13 @@ public class ProgramController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-		if(cnt.equals("")) { searchVO.setSearchUseYn("Y"); }
-		
+		//프로그램 현황
 		List<?> PgList = ProgramService.selectPgList(searchVO);
-		//List<?> PgList = ProgramService.selectPgList(searchVO);
 		model.addAttribute("resultList", PgList);
-
 		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
+		model.addAttribute("TotCnt", totCnt);
 		
-		System.out.println("current--"+totCnt);
+		if(cnt.equals("")) { searchVO.setSearchUseYn("Y"); }
 		
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
@@ -234,8 +223,6 @@ public class ProgramController {
 		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
 		
-		System.out.println("111-"+searchVO.getSearchBySysGb());
-		System.out.println("222-"+searchVO.getSearchByTaskGb());
 		if(!searchVO.getSearchBySysGb().isEmpty()) {
 			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
 			model.addAttribute("taskGb2", taskGbList2);
@@ -245,9 +232,6 @@ public class ProgramController {
 		List<String> useYnList = TmsProgrmManageService.selectUseYn();
 		model.addAttribute("useYnList", useYnList);
 	
-		
-		// 총 프로그램 수
-		model.addAttribute("TotCnt", totCnt);
 		int use_y = ProgramService.selectTotCntUseYn(searchVO);
 		model.addAttribute("USE_Y", use_y);
 		model.addAttribute("USE_N", totCnt-use_y);
@@ -261,17 +245,13 @@ public class ProgramController {
 	 * 프로그램 정보를 등록한다.	 
 	 */	
 	@RequestMapping(value = "/tms/pg/PgInsert.do")
-	public String registerPgList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
-		
-		
+	public String registPgList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
 		// 공통코드 부분 시작 -------------------------------	
 		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
 		List<?> user_dev_List = TmsProgrmManageService.selectUserList();
 		model.addAttribute("dev_List", user_dev_List);
-		
-					
 		// 공통코드 끝 시작 -------------------------------
 		
 		model.addAttribute("modal", "F");
@@ -281,15 +261,7 @@ public class ProgramController {
 	}
 	@RequestMapping(value = "/tms/pg/Pginsert.do")
 	public String insertPgList(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model, BindingResult errors) throws Exception {
-/*
-		beanValidator.validate(programVO, errors);
-		if(errors.hasErrors()) {
-			System.out.println("오류검출!");
-			return "redirect:/tms/pg/PgInsert.do";
-		} else {*/
-		
-		//}
-			
+
 		// Validator 생성
 		ProgramValidator mValidator = new ProgramValidator();
 		mValidator.validate(programVO, errors);
@@ -306,10 +278,6 @@ public class ProgramController {
 				System.out.println("에러"+i+" : "+a.getDefaultMessage());
 			}
 			
-			
-			
-			System.out.println("오류검출!");
-			
 			model.addAttribute("PGID", programVO.getPgId());
 			model.addAttribute("PGNM", programVO.getPgNm());
 			model.addAttribute("SYSGB", programVO.getSysGb());
@@ -322,16 +290,16 @@ public class ProgramController {
 			List<?> user_dev_List = TmsProgrmManageService.selectUserList();
 			model.addAttribute("dev_List", user_dev_List);
 			
-			
 			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb5(programVO);
 			model.addAttribute("taskGb2", taskGbList2);
+			// 공통코드 부분 끝 -------------------------------	
 			
 			model.addAttribute("modal", "T");
 			model.addAttribute("modal_content", error_detail);
 			
 			return "/tms/pg/PgInsert";
+			
 		} else {
-			System.out.println("오류검출x!");
 			programVO.setPjtId("1");
 			ProgramService.insertPg(programVO);
 			
@@ -343,7 +311,7 @@ public class ProgramController {
 	 * 프로그램 정보를 수정한다.	 
 	 */	
 	@RequestMapping(value = "/tms/pg/Pgupdate.do")
-	public String insertPgUpdate(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model, BindingResult errors) throws Exception {
+	public String updatePgList(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model, BindingResult errors) throws Exception {
 
 		// Validator 생성
 		ProgramValidator mValidator = new ProgramValidator();
@@ -351,31 +319,23 @@ public class ProgramController {
 					
 		// 오류여부 확인
 		if(errors.hasErrors()) {
-			System.out.println("오류검출!");
-					
-					
 			// 공통코드 부분 시작 -------------------------------	
 			List<?> sysGbList = TmsProgrmManageService.selectSysGb();
 			model.addAttribute("sysGb", sysGbList);
 			List<?> user_dev_List = TmsProgrmManageService.selectUserList();
 			model.addAttribute("dev_List", user_dev_List);
 					
-					
 			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb5(programVO);
 			model.addAttribute("taskGb2", taskGbList2);
-					
+			// 공통코드 부분 끝 -------------------------------			
 			return "/tms/pg/PgUpdate";
+			
 		} else {
-			System.out.println("오류검출x!");
-			
 			ProgramService.updatePg(programVO);
-			
 			
 			return "redirect:/tms/pg/PgManage.do";
 			//return "redirect:/tms/pg/selectPgInf.do?pgId="+programVO.getPgId();
 		}
-		
-		
 	}
 	
 	
@@ -384,9 +344,7 @@ public class ProgramController {
 	 * 프로그램 삭제목록을 확인한다.
 	 */
 	@RequestMapping(value = "/tms/pg/deletePgList.do")
-	public String insertPgDelete2(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, @RequestParam String result, ModelMap model) throws Exception {
-			//System.out.println("---여기다!"+result);
-		
+	public String deletePgList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, @RequestParam String result, ModelMap model) throws Exception {
 			
 			ArrayList <HashMap<String, String>> result_hash = new ArrayList <HashMap<String, String>>();
 			
@@ -426,13 +384,10 @@ public class ProgramController {
 	 */
 	@RequestMapping(value = "/tms/pg/deleteListAction.do")
 	@ResponseBody
-	public List<?> selectTaskGbSearch2(@RequestParam("returnValue") String returnValue, String searchData,ModelMap model) throws Exception {
-		System.out.println("여기옴3"+returnValue);
-		// 0. Spring Security 사용자권한 처리
+	public List<?> deleteListAction(@RequestParam("returnValue") String returnValue, String searchData,ModelMap model) throws Exception {
 		
 		List<String> selectTaskGbSearch = TmsProgrmManageService.selectTaskGbSearch(searchData);
 		model.addAttribute("selectTaskGbSearch", selectTaskGbSearch);
-		System.out.println("================"+selectTaskGbSearch);
 		
 		String[] strDelCodes = returnValue.split(";");
 		for (int i = 0; i < strDelCodes.length; i++) {
@@ -963,8 +918,8 @@ public class ProgramController {
         
         
         //엑셀파일 등록
-		//CustomerExcelReader excelReader = new CustomerExcelReader();
 		List<ProgramVO> xlsxList = xlsxToCustomerVoList(safeFile);
+		//CustomerExcelReader excelReader = new CustomerExcelReader();
 		
 		ProgramVO vo;
 		
@@ -992,27 +947,16 @@ public class ProgramController {
 				
 				HashMap<String, String> hash = new HashMap<String, String>();
 				
-				//System.out.println("error1: "+e.toString());
-				
 				result_cnt = 0;
 				String[] array = e.toString().split(":");
 				
 				String last = array[array.length-1];
-				
-				//last = last.replace("for key 'PRIMARY'", "프로그램ID 중복");
 				last = last.replace("'USER_DEV_ID'", "개발자 이름,");
 				last = last.replace("'SYS_GB'", "시스템구분,");
 				last = last.replace("'TASK_GB'", "업무구분,");
-					
 				last = last.replace("Column", "");
 				last = last.replace("Duplicate entry", "");
 				last = last.replace("cannot be null", "불일치");
-				
-				
-				//last = last.replace("for key 'PRIMARY'", "프로그램ID 중복");
-				
-				//last = last.replace("Data too long for column", "");	
-				//last = last.replace("l", "");
 				
 				if(last.contains("a foreign key")) {				
 					String[] array2 = last.split("\\(");
@@ -1051,10 +995,7 @@ public class ProgramController {
 				error_hash.add(hash);
 				
 				result_cnt = 0;
-				
 			}
-			
-			
 			
 		}  
 		model.addAttribute("error_hashs", error_hash);
@@ -1067,7 +1008,6 @@ public class ProgramController {
 				ProgramService.insertPg(vo);
 			}
 		}
-		
 		
 		return "/tms/pg/ExcelFileNmSearch";
     }

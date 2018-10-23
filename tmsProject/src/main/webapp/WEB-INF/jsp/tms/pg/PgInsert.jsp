@@ -26,7 +26,7 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
     
-    function fn_egov_regist_tmplatInfo(){
+    function Enroll_PgInfo(){
     	
         document.programVO.action = "<c:url value='/tms/pg/Pginsert.do'/>";
         document.programVO.submit();
@@ -222,7 +222,7 @@
                       <table border="0" cellspacing="0" cellpadding="0" align="center">
                         <tr> 
                           <td>
-                              <a onclick="fn_egov_regist_tmplatInfo(); return false;">저장</a> 
+                              <a onclick="Enroll_PgInfo(); return false;">저장</a> 
                           </td>
                           <td>
                               <a href="<c:url value='/tms/pg/PgManage.do'/>" >목록</a>
