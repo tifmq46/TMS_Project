@@ -248,5 +248,9 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (List<EgovMap>) list("DevPlanDAO.selectStatsTable");
 	}
 
+	public List<HashMap<String, String>> searchBySys(String s) {
+		return (List<HashMap<String, String>>) list("DevPlanDAO.searchBySys",s);
+	}
+
 	
 }

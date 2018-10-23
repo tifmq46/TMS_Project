@@ -302,6 +302,11 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 		return devPlanDAO.selectStatsTable();
 	}
 
+	@Override
+	public List<HashMap<String, String>> searchBySys(String s) {
+		return devPlanDAO.searchBySys(s);
+	}
+
 	
 	
 }

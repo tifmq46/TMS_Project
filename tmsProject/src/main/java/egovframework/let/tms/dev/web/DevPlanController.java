@@ -831,13 +831,19 @@ public class DevPlanController {
 		List<HashMap<String,String>> taskTotal = new ArrayList<HashMap<String,String>>();
 		
 		type = new HashMap<>();
-		for(int i=0; i<taskList.size(); i++){
+		/*for(int i=0; i<taskList.size(); i++){
 			type.put("codeType", "task");
 			type.put("taskList", taskList.get(i));
 			taskTotal.addAll(devPlanService.selectTotalStats(type));
 		}
-		model.addAttribute("taskTotalByStats", net.sf.json.JSONArray.fromObject(taskTotal));
+		model.addAttribute("taskTotalByStats", net.sf.json.JSONArray.fromObject(taskTotal));*/
 		// 업무별 진척률 시작 ---------------------------------------	
+		
+		
+		for(int i=0; i<sysList.size(); i++){
+			taskTotal.addAll(devPlanService.searchBySys("S1"));
+		}
+		
 		System.out.println("업무별 전체 진척률"+taskTotal);
 		
 		List<HashMap<String,String>> sysTotal = new ArrayList<HashMap<String,String>>();
@@ -893,13 +899,15 @@ public class DevPlanController {
 		List<String> periodList = devPlanService.selectPeriodWeek();
 		
 		if(statsGb.equals("taskTotal")){
+			
 			List<EgovMap> totalTable = devPlanService.selectStatsTable();
 			xlsxWiter(totalTable, statsGb, response, null, null);
-			model.addAttribute("taskTotalStats",totalTable);
-		}else if(statsGb.equals("user")){
-			List<Map<String,Object>> userplanList = stats("userPlan", userList, periodList);
 			
-			model.addAttribute("userStats",userplanList);
+		}else if(statsGb.equals("user")){
+			List<Map<String,Object>> userplanList = stats("user", userList, periodList);
+			
+			System.out.println("ㅇㅇㅇ"+userplanList);
+			xlsxWiter(null, statsGb, response, userplanList, null);
 			
 		}else if(statsGb.equals("task")){
 			System.out.println("업무엑셀");
@@ -1050,7 +1058,7 @@ public class DevPlanController {
 			}
 			
 		}else if(statsGb.equals("user")){
-			System.out.println("?ssssss");
+			System.out.println("userList"+otherList);
 			// 헤더 정보 구성
 			cell = row.createCell(0);
 			cell.setCellValue("개발자");
@@ -1068,16 +1076,8 @@ public class DevPlanController {
 			cell.setCellValue("3주차");
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
-			cell = row.createCell(4);
-			cell.setCellValue("4주차");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
-			
-			cell = row.createCell(5);
-			cell.setCellValue("5주차");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
-			
 			// 리스트의 size 만큼 row를 생성
-			for(int i=0; i < otherList.size(); i++) {
+			/*for(int i=0; i < otherList.size(); i++) {
 				// 행 생성
 		
 				row = sheet.createRow(i+1);
@@ -1087,36 +1087,25 @@ public class DevPlanController {
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
 				cell = row.createCell(1);
-				cell.setCellValue(String.valueOf(otherList.get(i).get("a39")));
-				cell.setCellStyle(BodyStyle); // 본문스타일 
-				
-				cell = row.createCell(2);
 				cell.setCellValue(String.valueOf(otherList.get(i).get("a40")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
-				cell = row.createCell(3);
+				cell = row.createCell(2);
 				cell.setCellValue(String.valueOf(otherList.get(i).get("a41")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
-				cell = row.createCell(4);
+				cell = row.createCell(3);
 				cell.setCellValue(String.valueOf(otherList.get(i).get("a42")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
-				
-				cell = row.createCell(5);
-				cell.setCellValue(String.valueOf(otherList.get(i).get("a43")));
-				cell.setCellStyle(BodyStyle); // 본문스타일
-			}
+			}*/
 			
 			/** 3. 컬럼 Width */ 
-			for (int i = 0; i <  otherList.size(); i++){ 
+			/*for (int i = 0; i <  otherList.size(); i++){ 
 				sheet.autoSizeColumn(i); 
 				sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
-			}
+			}*/
 		}
 
-		
-		
-		
 		// 입력된 내용 파일로 쓰기
 		File folder = new File("C:\\TMS\\TMS_통계자료");
 		

@@ -37,11 +37,12 @@ function fn_result_change(asd, t) {
 	   var prjStartDate = document.getElementById("ps").value;
 	   var prjEndDate = document.getElementById("pe").value;
 
-	  var cngDate = t.value
+	  var cngDate = t.value;
 	  	
-	   if(prjStartDate >  t.value || prjEndDate <  t.value ){
-		   alert("유효하지 않은 날짜입니다.");
+	   if((prjStartDate >  t.value || prjEndDate <  t.value) && t.value != ""){
+		   alert("유효하지 않은 날짜입니다. 다시 입력하십시오.");
 		   document.getElementById(t.id).value = null;
+		   return;
 	   } 
 	   
 	   if(idVal1 != null && idVal1 != "")
@@ -52,7 +53,7 @@ function fn_result_change(asd, t) {
 	               document.getElementById(asd+1).value = null;
 	            }
 	      }
-	   if(idVal0 == null || idVal0 == "")
+	   if((idVal0 == null || idVal0 == "") && t.id == asd+1)
 	      {
 	         alert("계획시작일자부터 입력하십시오.")
 	         document.getElementById(asd+1).value = null;
@@ -68,12 +69,23 @@ function fn_result_regist(t){
 	
 	var idVal = document.getElementById(t).value;
 	var idVal1 = document.getElementById(t+1).value;
-	if(idVal1 == null || idVal1 == ""){
+	
+	if(idVal == ""){
+		alert("계획시작일자를 입력하십시오.");
+		return;
+	}else if(idVal1 == null || idVal1 == ""){
 		alert("계획종료일자를 입력하십시오."); 
 		return;
 	}else{
 		location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
-	}	
+	}
+	/* 
+	if(){
+		alert("계획종료일자를 입력하십시오."); 
+		return;
+	}else{
+		location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
+	} */	
 			
 }
 

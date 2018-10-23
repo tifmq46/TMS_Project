@@ -69,17 +69,13 @@ ul.tabs li.last {
 #lineStyle{
 	border-bottom: solid 1px #00000054;
 	border-top: solid 1px #00000054;
-	background: #EFEFFB;
+	background: #E0F2F7;
 }
 
 #lineStyle2{
 	border-bottom: solid 1px #00000054;
 	border-top: solid 1px #00000054;
-	background: #E0E0F8;
-}
-
-.borderLine{
-	border-left: solid 2px #00000054;
+	background: #CEE3F6;
 }
 
 .line{
@@ -89,6 +85,15 @@ ul.tabs li.last {
 .table1{
 	width:100%;
 	overflow-x:scroll; 
+}
+
+th,td{
+border-left: 1px solid #81B1D5;
+border-top: 1px solid #81B1D5;
+}
+
+.borderLine{
+	border-right: 1px solid #81B1D5;
 }
 
 </style>
@@ -189,7 +194,7 @@ function StatsToExcel(statsGb) {
                 <div id="tab-1" class="tab-content current">
                                     
 	                <div class="default_tablestyle table1">
-	                    <table summary="개발자별 통계 테이블입니다" cellpadding="0" cellspacing="0">
+	                    <table summary="개발자별 통계 테이블입니다" cellpadding="0" cellspacing="0" >
 	                    <caption>통계(개발자별) 테이블</caption>
 	                    
 	                    <colgroup>
@@ -207,19 +212,19 @@ function StatsToExcel(statsGb) {
 	          			<thead>
 	          			<tr>
 	          				<th scope="col" align="center" rowspan="2">개발자</th>
-	          				<th scope="col" align="center" colspan="3"><strong>합계</strong></th>
+	          				<th class='borderLine' scope="col" align="center" colspan="3"><strong>합계</strong></th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<th scope="col" align="center" colspan="3">${status.count}주(${mw})</th>
+		                    	<th class='borderLine' scope="col" align="center" colspan="3">${status.count}주(${mw})</th>
 		                    </c:forEach>
 	          			</tr>
 	          			<tr>
 	          				 <th scope="col" align="center"><strong>계획</strong></th>
 		                     <th scope="col" align="center" ><strong>실적</strong></th>
-		                     <th scope="col" align="center" ><strong>차이</strong></th>
+		                     <th class='borderLine' scope="col" align="center" ><strong>차이</strong></th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
 		                    	<th scope="col" align="center">계획</th>
 		                    	<th scope="col" align="center">실적</th>
-		                    	<th scope="col" align="center">차이</th>
+		                    	<th class='borderLine' scope="col" align="center">차이</th>
 		                    </c:forEach>
 	          			</tr>
 	                    </thead>
@@ -246,7 +251,7 @@ function StatsToExcel(statsGb) {
 									pageContext.setAttribute("totSum2", totSum2);
 								%>
 								
-								<td><strong>${us.sumDiff}</strong></td>
+								<td class='borderLine'><strong>${us.sumDiff}</strong></td>
 								<c:set var = "totSum3" value="${us.sumDiff}" />
 								<% totSum3 += (Integer)pageContext.getAttribute("totSum3");
 									pageContext.setAttribute("totSum3", totSum3);
@@ -254,11 +259,11 @@ function StatsToExcel(statsGb) {
 		                    
 		                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
 				           			<c:set var ="t"  value="a${i}"></c:set>
-				           			<td class='borderLine'>${us[t]}</td>
+				           			<td>${us[t]}</td>
 				           			<c:set var ="t2"  value="b${i}"></c:set>
 				           			<td>${us[t2]}</td>
 				           			<c:set var ="t3"  value="sub${i}"></c:set>
-				           			<td>${us[t3]}</td>
+				           			<td class='borderLine'>${us[t3]}</td>
 								</c:forEach>
 								
 		                    </tr>
@@ -268,12 +273,12 @@ function StatsToExcel(statsGb) {
 	                  
 	                    	<td id='lineStyle2'><strong>${totSum1}</strong></td>
 		                  	<td id='lineStyle2'><strong>${totSum2}</strong></td>
-		                  	<td id='lineStyle2'><strong>${totSum3}</strong></td>
+		                  	<td class='borderLine' id='lineStyle2'><strong>${totSum3}</strong></td>
 		                  	
 	                    	<c:forEach var="sum" items="${sumPlanWeek}" varStatus="status">
-			           			<td id='lineStyle2' class='borderLine'>${sum.sumPlan}</td>
-			           			<td id='lineStyle2'>${sum.sumDev}</td>
-			           			<td id='lineStyle2'>${sum.diff}</td>
+			           			<td id='lineStyle2'><strong>${sum.sumPlan}</strong></td>
+			           			<td id='lineStyle2'><strong>${sum.sumDev}</strong></td>
+			           			<td class='borderLine' id='lineStyle2'><strong>${sum.diff}</strong></td>
 							</c:forEach>
 		                  
 	                    </tr>
@@ -312,14 +317,15 @@ function StatsToExcel(statsGb) {
 		                    
 	          			</tr>
 	          			<tr>
+	          				 <th align="center" ><strong>계획</strong></th>
+		                     <th align="center" ><strong>실적</strong></th>
+		                     <th align="center" ><strong>차이</strong></th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
 		                    	<th align="center">계획</th>
 		                    	<th align="center">실적</th>
 		                    	<th align="center">차이</th>
 		                    </c:forEach>
-		                     <th align="center" ><strong>계획</strong></th>
-		                     <th align="center" ><strong>실적</strong></th>
-		                     <th align="center" ><strong>차이</strong></th>
+
 	          			</tr>
 	                  </thead>
            			

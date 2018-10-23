@@ -71,8 +71,19 @@ $(function(){
     window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
 }
 
-$(function(){
-})
+var initBody;
+function beforePrint(){
+	initBody = document.body.innerHTML;
+	document.body.innerHTML = printBox.innerHTML;
+}
+function afterPrint(){
+	document.body.innerHTML = initBody;
+}
+function pagePrint(){
+	window.onbeforeprint = beforePrint;
+	window.onafterprint = afterPrint;
+	window.print();
+}
 </script>
 
 
@@ -167,7 +178,7 @@ $(function(){
 					  			
 					  			<li>
 									<div class="buttons" style="float:right;">
-										<a href="#LINK" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />출력 </a>
+										<a href="#LINK" onclick="pagePrint()" style="selector-dummy:expression(this.hideFocus=false);">인쇄</a>
 									</div>	  				  			
 					  			</li>
 					  			<li>
@@ -202,7 +213,7 @@ $(function(){
 				
 				 pageContext.setAttribute("today", today) ;
 				%>
-                
+               <div id="printBox">
               <table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
                  <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
               
@@ -320,7 +331,7 @@ $(function(){
                       </tr>      
                      </c:if>
               </table>        
-              
+              </div>
            </div>
            
            		 <input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 

@@ -67,7 +67,7 @@ window.onload = function() {
 	var myDoughnutChart = new Chart(ctx1, {
 		type : 'doughnut',
 		data : {
-			  labels: ['완료건수','미완료건수'],
+				labels: ['완료건수','미완료건수'],
 				datasets : [ {
 					data : [hashTotalByStats[0].CNTB,
 					        hashTotalByStats[0].CNTA-hashTotalByStats[0].CNTB],
@@ -75,6 +75,9 @@ window.onload = function() {
 				},]
 			},
 			options : {
+				legend:{
+					display:false
+				},
 				rotation: 1 * Math.PI,
 		        circumference: 1 * Math.PI,
 				percentageInnerCutout : 50,
@@ -108,6 +111,9 @@ window.onload = function() {
     				},]
     			},
     			options : {
+    				legend:{
+    					display:false
+    				},
     				rotation: 1 * Math.PI,
     		        circumference: 1 * Math.PI,
     				percentageInnerCutout : 50,
@@ -474,11 +480,11 @@ window.onload = function() {
             <table>
             <tr>
             <td>
-             &nbsp;&nbsp;<canvas id="hashTotalByStats" width="200" height="200" style="display: inline !important;"></canvas>&nbsp;&nbsp;
+             &nbsp;&nbsp;<canvas id="hashTotalByStats" width="200" height="200" style="display: inline"></canvas>&nbsp;&nbsp;
              </td>
             <c:forEach var="sysTotalByStats" items="${sysTotalByStats}" varStatus="status">
             <td>
-            <canvas id="<c:out value="sysTotal${sysTotalByStats.SYS_GB}"/>"  width="180" height="180" style="display: inline !important;"></canvas>&nbsp;&nbsp;
+            <canvas id="<c:out value="sysTotal${sysTotalByStats.SYS_GB}"/>"  width="180" height="180" style="display: inline"></canvas>&nbsp;&nbsp;
 			</td>            
             </c:forEach>
             <br/>

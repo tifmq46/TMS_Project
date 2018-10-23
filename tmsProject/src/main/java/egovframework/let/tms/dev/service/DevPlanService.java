@@ -166,4 +166,6 @@ public interface DevPlanService {
 
 	public List<EgovMap> selectStatsTable();
 
+	public List<HashMap<String, String>> searchBySys(String s);
+
 }
