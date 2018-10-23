@@ -56,7 +56,7 @@ $(function(){
 			         },
 			         error : function(request,status,error){
 			            alert("삭제할 수 없습니다.");
-			            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			            //alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 
 			         }
 			      });
