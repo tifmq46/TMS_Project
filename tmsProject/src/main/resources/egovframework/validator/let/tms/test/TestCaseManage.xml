@@ -22,16 +22,6 @@
 				<var-value>800</var-value>
 				</var>
 			</field>
-<!-- 			
-			<field property="userId" depends="required, maxlength">
-        		<arg0 key="tms.test.userWriterId" />
-        		<arg1 key="20" resource="false"/>
-				<var>
-				<var-name>maxlength</var-name>
-				<var-value>20</var-value>
-				</var>
-			</field> 
-			 -->
 			<field property="precondition" depends="maxlength">
         		<arg0 key="tms.test.precondition" />
         		<arg1 key="800" resource="false"/>

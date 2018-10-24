@@ -84,25 +84,32 @@
 	
 	<select id="TestDAO.selectTestCaseStatsListBySysGb" resultClass="egovMap">
 	    
-			SELECT A.CODE AS sysGb, A.CODE_NM AS sysNm, IFNULL(B.sysCnt,0) AS sysCnt
+	
+			SELECT A.CODE AS sysGb, A.CODE_NM AS sysNm, IFNULL(B.sysCnt,0) AS sysCnt, IFNULL(B.completeYCnt,0) AS completeYCnt
 			FROM LETTCCMMNDETAILCODE AS A 
 			LEFT JOIN (
-			            SELECT COUNT(*) AS sysCnt, P.SYS_GB AS sysGb
+			            SELECT COUNT(*) AS sysCnt, P.SYS_GB AS sysGb , COUNT(IF(D.COMPLETE_YN= 'Y',1,NULL)) AS completeYCnt
 			            FROM TESTCASE_TB AS D, PG_TB AS P
 			            WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
 			            GROUP BY SYS_GB
-			) AS B 
-						
+			) AS B 			
 			ON A.CODE = B.sysGb
 			WHERE A.CODE_ID = 'SYSGB'
-			ORDER BY sysCnt DESC
+		
+			UNION ALL 
+			
+			SELECT 'S0' AS sysGb ,'전체' AS sysNm, COUNT(*) AS sysCnt, COUNT(IF(TC.COMPLETE_YN= 'Y',1,NULL)) AS completeYCnt
+			FROM TESTCASE_TB AS TC , PG_TB AS PG 
+			WHERE TC.PG_ID = PG.PG_ID AND PG.USE_YN ='Y' AND TC.TESTCASE_GB = 'TC1'
+			
+			ORDER BY sysCnt DESC;
 			
 	</select>
 	
 	
 	<select id="TestDAO.selectTestCaseStatsListByTaskGb" parameterClass="java.lang.String" resultClass="egovMap">
 	
-		SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(B.taskGbCnt,0) AS taskGbCnt
+		SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(B.taskGbCnt,0) AS taskGbCnt , IFNULL(B.completeYCnt,0) AS completeYCnt
 		FROM 
 		(SELECT * FROM LETTCCMMNDETAILCODE 
 		
@@ -114,7 +121,7 @@
 		
 		LEFT JOIN
 		
-		(SELECT P.TASK_GB AS taskGb, P.SYS_GB AS sysGb, COUNT(P.TASK_GB) as taskGbCnt
+		(SELECT P.TASK_GB AS taskGb, P.SYS_GB AS sysGb, COUNT(P.TASK_GB) as taskGbCnt , COUNT(IF(COMPLETE_YN = 'Y',1,NULL)) as completeYCnt
 		FROM TESTCASE_TB AS D, PG_TB AS P
 		WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
 		GROUP BY taskGb
@@ -440,6 +447,18 @@
 			    AND COMPLETE_YN = #searchByResultYn#
 			</isNotEmpty> 
 			
+			<!-- 작성자로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_NM = #searchByUserDevId#
+			</isNotEmpty> 
+			
+			<!-- 등록 일자로 검색 -->
+			<isNotEmpty property="searchByStartDt" >
+            <isNotEmpty property="searchByEndDt">
+                AND ENROLL_DT BETWEEN DATE(#searchByStartDt#) AND DATE(#searchByEndDt#)
+            </isNotEmpty>
+            </isNotEmpty>
+			
 			ORDER BY ENROLL_DT ASC
 			LIMIT #recordCountPerPage# OFFSET #firstIndex#
 	</select>
@@ -525,25 +544,6 @@
 		   , ( SELECT COUNT(*) FROM ( SELECT * FROM TESTCASE_TB WHERE TESTCASE_GB = #testcaseGb# AND COMPLETE_YN = 'Y' ) AS c ) AS Y_CNT
 		]]>
 	</select>
-	
-	<select id="TestDAO.selectTestCaseStatsListByTaskGbTotal" resultClass="egovMap">
-	    
-	    <![CDATA[
-			 SELECT X.CODE AS TASK_GB_CODE, X.CODE_NM AS TASK_GB_NM, Y.TESTCASE_TOT_CNT, Y.TESTCASE_Y_CNT 
-			 FROM 
-			 	( SELECT CODE, CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'TASKGB' ) AS X
-			 LEFT OUTER JOIN
-			 	( SELECT TASK_GB, COUNT(*) AS TESTCASE_TOT_CNT,  COUNT(IF(COMPLETE_YN='Y',1,NULL)) AS TESTCASE_Y_CNT
-				  FROM (
-						SELECT *
-						FROM TESTCASE_TB
-						WHERE TESTCASE_GB = 'TC1'
-						) AS b
-   				  GROUP BY TASK_GB ) AS Y
-			 ON X.CODE = Y.TASK_GB
-		]]>
-	</select>
-	
 	
 	
 	<select id="TestDAO.selectTestCaseProgressStatus" parameterClass="java.lang.String"  resultMap="testCaseProgressStatusMap">

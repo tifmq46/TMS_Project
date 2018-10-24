@@ -93,16 +93,11 @@ function searchFileNm() {
 					  	 
 					  	<div class="sf_start">
 					  		<ul id="search_first_ul">
-					  		
 					  			<li><label for="searchByTestcaseId"><spring:message code="tms.test.testcaseId" /></label></li>
 					  			<li><input type="text" name="searchByTestcaseId" id="searchByTestcaseId" value="<c:out value='${searchVO.searchByTestcaseId}'/>" /></li>
 					  			
-					  			<li><label for="searchByPgId"><spring:message code="tms.test.pgId" /></label></li>
-					  			<li><input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id"  value="<c:out value='${searchVO.searchByPgId}'/>"/>
-					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
-	                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
-					  			</li>
-					  			
+					  			<li><label for="searchByUserDevId"><spring:message code="tms.test.userWriterId" /></label></li>
+					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" value="<c:out value='${searchVO.searchByUserDevId}'/>" /></li>
 					  		</ul>	
 					  		
 					  		<ul id="search_second_ul">
@@ -127,7 +122,13 @@ function searchFileNm() {
 										</c:forEach>
 									</select>							
 					  			</li>
-					  			
+					  					
+					  			<li>
+		                          <label>&nbsp;&nbsp;&nbsp;등록일자</label>&nbsp;&nbsp;&nbsp;
+		                        	<input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+		                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+	                            </li> 
+						  			
 					  			
 					  			<li>
 									<div class="buttons" style="float:right;">

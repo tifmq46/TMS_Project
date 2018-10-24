@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @SuppressWarnings("serial")
 public class TestDefaultVO extends TestCaseVO implements Serializable{
@@ -45,6 +46,14 @@ public class TestDefaultVO extends TestCaseVO implements Serializable{
 	/** 기준(화면ID/테스트케이스ID) */
 	private String asOf = "pgId";
 	
+	/** 등록일자로 검색*/
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date searchByStartDt;
+	
+	/** 끝 일자로 검색*/
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date searchByEndDt;
+	
 	/** 엑셀로 다운로드시 */
 	private boolean isExcel = false;
 
@@ -67,6 +76,22 @@ public class TestDefaultVO extends TestCaseVO implements Serializable{
 	private int recordCountPerPage = 10;
 	
 	
+	public Date getSearchByStartDt() {
+		return searchByStartDt;
+	}
+
+	public void setSearchByStartDt(Date searchByStartDt) {
+		this.searchByStartDt = searchByStartDt;
+	}
+
+	public Date getSearchByEndDt() {
+		return searchByEndDt;
+	}
+
+	public void setSearchByEndDt(Date searchByEndDt) {
+		this.searchByEndDt = searchByEndDt;
+	}
+
 	public String getSearchBySysGb() {
 		return searchBySysGb;
 	}

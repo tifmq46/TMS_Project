@@ -207,14 +207,28 @@ function searchFileNm() {
 									<br/><form:errors path="taskGb" />
                                 </td>
                           </tr>
+                          
+                          				<%
+									LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO");
+										if (loginVO == null) {
+								%>
+
+								<%
+									} else {
+								%>
+								<c:set var="loginId" value="<%=loginVO.getId()%>" />
+									<%
+								}
+								%>
+					
                            <tr>
                               <th width="20%" height="23" class="required_text" nowrap >
                                     <label for="userId"> 
-                                    	<spring:message code="tms.test.userWriterId" />
+                                    	<spring:message code="tms.test.userWriterRealId" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
-                                    <form:input type="text" path="userId" title="게시판명입력" id="TmsProgrmFileNm_user_real_id" size="30" cssStyle="width:50%"/>
+                                    <form:input type="text" readonly="true" path="userId" value="${loginId}" title="게시판명입력" id="TmsProgrmFileNm_user_real_id" size="30" cssStyle="width:50%"/>
                                     <form:hidden title="게시판명입력" path="" id="TmsProgrmFileNm_user_dev_id" />
                                     <br/><form:errors path="userId" />
                                 </td> 
@@ -242,6 +256,7 @@ function searchFileNm() {
 	           				<li>
 								<div class="buttons">
 				   					<a href="#" onclick="insertTestCaseImpl(); return false;"><spring:message code="button.save" /></a>
+				   					<a href= "<c:url value="/tms/test/insertTestCase.do" />"><spring:message code="button.reset" /></a>
 				   					<a href="javascript:history.go(-1);"><spring:message code="button.list" /></a>
 								</div>	  				  			
 		  					</li>             

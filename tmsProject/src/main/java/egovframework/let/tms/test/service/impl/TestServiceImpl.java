@@ -187,11 +187,6 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 	public HashMap<String, Integer> selectTestCaseStats(String testcaseGb)throws Exception{
 		return testDAO.selectTestCaseStats(testcaseGb);
 	}
-	
-	@Override
-	public List<?> selectTestCaseStatsListByTaskGbTotal()  throws Exception{
-		return testDAO.selectTestCaseStatsListByTaskGbTotal();
-	}
 
 	@Override
 	public List<?> selectTestCaseStatsListByTaskGb(String sysNm)  throws Exception{

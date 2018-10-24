@@ -223,6 +223,13 @@ function fDeleteMenuList() {
 						  			<li><label for="searchByTestcaseId"><spring:message code="tms.test.testcaseId" /></label></li>
 						  			<li><input type="text" name="searchByTestcaseId" id="searchByTestcaseId" value="<c:out value='${searchVO.searchByTestcaseId}'/>"/></li>
 						  			
+						  			<li><label for="searchByUserDevId"><spring:message code="tms.test.userWriterId" /></label></li>
+						  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" value="<c:out value='${searchVO.searchByUserDevId}'/>" /></li>
+					  			
+						  		</ul>	
+						  		
+						  		<ul id="search_second_ul">
+						  		
 						  			<li><label for="searchByTaskGb"><spring:message code="tms.test.taskGb" /></label></li>
 									<li>
 										<select name="searchByTaskGb" id="searchByTaskGb">
@@ -244,6 +251,13 @@ function fDeleteMenuList() {
 										</select>							
 						  			</li>
 						  			
+						  				
+						  			<li>
+			                          <label>&nbsp;&nbsp;&nbsp;등록일자</label>&nbsp;&nbsp;&nbsp;
+			                        	<input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+			                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+		                            </li> 
+						  			
 						  			
 						  			<li>
 										<div class="buttons" style="float:right;">
@@ -255,9 +269,8 @@ function fDeleteMenuList() {
 										    <a href="#" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
 										</div>		  				  			
 						  			</li> 
-						  			
-						  		</ul>	
 						  		
+						  		</ul>
 							</div>			
 						</fieldset>
 						
