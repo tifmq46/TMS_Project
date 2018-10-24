@@ -18,11 +18,13 @@ import java.util.TreeMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -37,6 +39,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
@@ -60,6 +63,7 @@ import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+
 
 @Controller
 public class DevPlanController {
@@ -207,6 +211,18 @@ public class DevPlanController {
 		
 		return "tms/dev/devPlanList";
 	}
+	
+	/**비동기처리 테스트 */
+	@RequestMapping("/tms/dev/selectTest.do")
+	@ResponseBody
+	public String selectTest(String dateVal) throws Exception {
+		String gg = dateVal;
+		System.out.println("값 확인"+gg);
+		
+		return gg;
+	}
+	
+	
 	/**
 	 * 계획을 상세 조회한다.
 	 * 
@@ -329,7 +345,7 @@ public class DevPlanController {
 		devPlanService.deleteDevPlan(dvo);
 		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
-		return "forward:/tms/dev/devPlans.do";
+		return "redirect:/tms/dev/devPlans.do";
 	}
 	
 	/**
@@ -725,162 +741,37 @@ public class DevPlanController {
 	
 	@RequestMapping("/tms/dev/devStats.do")
 	public String selectDevPlanStats(ModelMap model){
+		//1. 전체
+		//1-1.전체 진척률
+		HashMap<String, Object> progressRateTotal = devPlanService.selectTotalByProgressRate();
+		model.addAttribute("progressRateTotal", progressRateTotal);
 		
-		List<String> sysList = devPlanService.selectSysGbList();
-		List<String> taskList = devPlanService.selectTaskGbList();
+		//1-2. 시스템별 진척률
+		List<?> sysByProgressRate = devPlanService.selectSysByProgressRate();
+		model.addAttribute("sysByProgressRate", net.sf.json.JSONArray.fromObject(sysByProgressRate));
 		
-		// 금주 진척률 시작 ---------------------------------------
-		
-		HashMap<String, String> type = new HashMap<>();
-		
-		//업무별 금주 계획대비 실적, 금주 진척률
-		List<HashMap<String,String>> taskThisWeek = new ArrayList<HashMap<String,String>>();
-		
-		for(int i=0; i<taskList.size(); i++){
-			type.put("codeType", "task");
-			type.put("taskList", taskList.get(i));
-			taskThisWeek.addAll(devPlanService.selectThisWeekStats(type));
-		}
-		
-		// 시스템별 금주 계획대비 실적, 금주 진척률
-		List<HashMap<String,String>> sysThisWeek = new ArrayList<HashMap<String,String>>();
-
-		type = new HashMap<>();
-		for(int i=0; i<sysList.size(); i++){
-			type.put("codeType", "sys");
-			type.put("sysList", sysList.get(i));
-			sysThisWeek.addAll(devPlanService.selectThisWeekStats(type));
-		}
-		
-		//금주 계획대비 실적, 합계
-		int totPlanThisWeek = 0;
-		int totDevThisWeek = 0;
-		HashMap<String, String> hashThisWeek = new HashMap<>();
-		
-		for(int j=0; j<sysThisWeek.size(); j++){
-			totPlanThisWeek += Integer.parseInt(String.valueOf(sysThisWeek.get(j).get("CNTA")));
-			totDevThisWeek += Integer.parseInt(String.valueOf(sysThisWeek.get(j).get("CNTB")));
-		}
-		
-		double totThisWeek = ((double)totDevThisWeek / (double)totPlanThisWeek) * 100;
-		totThisWeek = Math.round(totThisWeek * 10)/10.0;
-		
-		hashThisWeek.put("CNTA",String.valueOf(totPlanThisWeek));
-		hashThisWeek.put("CNTB",String.valueOf(totDevThisWeek));
-		hashThisWeek.put("R",String.valueOf(totThisWeek));
-		
-		System.out.println("금주 총 진척률 " + hashThisWeek);
-		
-		model.addAttribute("hashThisWeekByStats", net.sf.json.JSONArray.fromObject(hashThisWeek));
-		model.addAttribute("sysThisWeekByStats", net.sf.json.JSONArray.fromObject(sysThisWeek));
-		model.addAttribute("taskThisWeekByStats", net.sf.json.JSONArray.fromObject(taskThisWeek));
-		// 금주 진척률 끝 ---------------------------------------
-		
-		// 누적 진척률 시작 ---------------------------------------
-		
-		// 업무별 금주 누적 계획대비 실적, 누적 진척률
-		List<HashMap<String,String>> taskAccumulate = new ArrayList<HashMap<String,String>>();
-		
-		type = new HashMap<>();
-		
-		for(int i=0; i<taskList.size(); i++){
-			type.put("codeType", "task");
-			type.put("taskList", taskList.get(i));
-			taskAccumulate.addAll(devPlanService.selectAccumulateStats(type));
-		}
-		model.addAttribute("taskAccumulateByStats", net.sf.json.JSONArray.fromObject(taskAccumulate));
-		System.out.println("업무별 누적진척률"+taskAccumulate);
-		
-		List<HashMap<String,String>> sysAccumulate = new ArrayList<HashMap<String,String>>();
-
-		type = new HashMap<>();
-		for(int i=0; i<sysList.size(); i++){
-			type.put("codeType", "sys");
-			type.put("sysList", sysList.get(i));
-			sysAccumulate.addAll(devPlanService.selectAccumulateStats(type));
-		}
-		System.out.println("시스템별 누적진척률"+sysAccumulate);
-		
-		//누적 계획대비 실적, 합계
-		int totPlanAccumulate = 0;
-		int totDevAccumulate = 0;
-		HashMap<String, String> hashAccumulate = new HashMap<>();
-		
-		for(int j=0; j<sysAccumulate.size(); j++){
-			totPlanAccumulate += Integer.parseInt(String.valueOf(sysAccumulate.get(j).get("CNTA")));
-			totDevAccumulate += Integer.parseInt(String.valueOf(sysAccumulate.get(j).get("CNTB")));
-		}
-				
-		double totAccumulate = ((double)totDevAccumulate / (double)totPlanAccumulate) * 100;
-		totAccumulate = Math.round(totAccumulate * 10)/10.0;
-		
-		hashAccumulate.put("CNTA",String.valueOf(totPlanAccumulate));
-		hashAccumulate.put("CNTB",String.valueOf(totDevAccumulate));
-		hashAccumulate.put("R",String.valueOf(totAccumulate));
-		
-		System.out.println("누적 총 진척률 " + hashAccumulate);
-		
-		model.addAttribute("hashAccumulateByStats", net.sf.json.JSONArray.fromObject(hashAccumulate));
-		model.addAttribute("sysAccumulateByStats", net.sf.json.JSONArray.fromObject(sysAccumulate));
-		model.addAttribute("taskAccumulateByStats", net.sf.json.JSONArray.fromObject(taskAccumulate));
-		// 누적 진척률 끝 ---------------------------------------
-		
-		// 전체 진척률 시작 ---------------------------------------
-		
-		// 업무별 총 본수대비 실적, 총 진척률
-		List<HashMap<String,String>> taskTotal = new ArrayList<HashMap<String,String>>();
-		
-		type = new HashMap<>();
-		/*for(int i=0; i<taskList.size(); i++){
-			type.put("codeType", "task");
-			type.put("taskList", taskList.get(i));
-			taskTotal.addAll(devPlanService.selectTotalStats(type));
-		}
-		model.addAttribute("taskTotalByStats", net.sf.json.JSONArray.fromObject(taskTotal));*/
-		// 업무별 진척률 시작 ---------------------------------------	
-		
-		
-		for(int i=0; i<sysList.size(); i++){
-			taskTotal.addAll(devPlanService.searchBySys("S1"));
-		}
-		
-		System.out.println("업무별 전체 진척률"+taskTotal);
-		
-		List<HashMap<String,String>> sysTotal = new ArrayList<HashMap<String,String>>();
-
-		type = new HashMap<>();
-		for(int i=0; i<sysList.size(); i++){
-			type.put("codeType", "sys");
-			type.put("sysList", sysList.get(i));
-			sysTotal.addAll(devPlanService.selectTotalStats(type));
-		}
-		System.out.println("시스템별 전체 진척률"+sysTotal);
-		
-		//누적 계획대비 실적, 합계
-		int totPlan = 0;
-		int totDev = 0;
-		HashMap<String, String> hashTot = new HashMap<>();
-		
-		for(int j=0; j<sysTotal.size(); j++){
-			totPlan += Integer.parseInt(String.valueOf(sysTotal.get(j).get("CNTA")));
-			totDev += Integer.parseInt(String.valueOf(sysTotal.get(j).get("CNTB")));
-		}
-						
-		double tot = ((double)totDev / (double)totPlan) * 100;
-		tot = Math.round(tot * 10)/10.0;
-		
-		hashTot.put("CNTA",String.valueOf(totPlan));
-		hashTot.put("CNTB",String.valueOf(totDev));
-		hashTot.put("R",String.valueOf(tot));
-		
-		System.out.println("전체 진척률 " + hashTot);
-
-		model.addAttribute("hashTotalByStats", net.sf.json.JSONArray.fromObject(hashTot));
-		model.addAttribute("sysTotalByStats", net.sf.json.JSONArray.fromObject(sysTotal));
-		model.addAttribute("taskTotalByStats", net.sf.json.JSONArray.fromObject(taskTotal));
-		// 전체 진척률 끝 ---------------------------------------
+		//1-3. 업무별 진척률
+		List<?> taskByProgressRate = devPlanService.selectTaskTotalProgressRate();
+		model.addAttribute("taskByProgressRate", net.sf.json.JSONArray.fromObject(taskByProgressRate));
 		
 		return "tms/dev/devStats";
+	}
+	
+	/** 대시보드(비동기처리) */
+	@RequestMapping("/tms/dev/selectDevStatsAsyn.do")
+	@ResponseBody
+	public List<?> selectDevStatsAsyn(String sysGb) throws Exception {
+		List<?> taskByProgressRate;
+		if(sysGb.equals("sysGb")){
+			System.out.println("전체로 나옴");
+			taskByProgressRate = devPlanService.selectTaskTotalProgressRate();
+		} else {
+			System.out.println("업무별로 나옴");
+			taskByProgressRate = devPlanService.selectTaskByProgressRate(sysGb);
+		}
+		System.out.println("값 확인"+taskByProgressRate);
+		
+		return taskByProgressRate;
 	}
 	
 	/** 통계 엑셀 다운로드 기능 
@@ -943,6 +834,17 @@ public class DevPlanController {
 		HeadStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
 		HeadStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
 		HeadStyle.setFont(defaultFont);
+		 
+		CellStyle TitleStyle = workbook.createCellStyle(); 
+		TitleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		TitleStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
+		TitleStyle.setFillForegroundColor(HSSFColor.AQUA.index); 
+		TitleStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+		TitleStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+		TitleStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+		TitleStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+		TitleStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
+		TitleStyle.setFont(defaultFont);
 
 		//본문 스타일 
 		CellStyle BodyStyle = workbook.createCellStyle(); 
@@ -1058,46 +960,89 @@ public class DevPlanController {
 			}
 			
 		}else if(statsGb.equals("user")){
-			System.out.println("userList"+otherList);
 			// 헤더 정보 구성
 			cell = row.createCell(0);
 			cell.setCellValue("개발자");
+			sheet.addMergedRegion(new CellRangeAddress(0,1, 0,0));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
-			cell = row.createCell(1);
-			cell.setCellValue("1주차");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
+			List<String> periodList = devPlanService.selectPeriodWeek();
 			
-			cell = row.createCell(2);
-			cell.setCellValue("2주차");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
+			int temp = 1;
+			for(int i =0; i<periodList.size(); i++){
+				if(i == 0){
+					cell = row.createCell(i+1);
+					cell.setCellValue("1주");
+					sheet.addMergedRegion(new CellRangeAddress(0,0, 1,3));
+					cell.setCellStyle(HeadStyle);
+					
+				}else{
+					cell = row.createCell(temp+3);
+					cell.setCellValue((i+1)+"주");
+					sheet.addMergedRegion(new CellRangeAddress(0,0, temp+3,temp+5));
+					cell.setCellStyle(HeadStyle);
+					temp +=3;
+				}
+			}
+			cell = row.createCell(periodList.size()*3+1);
+			cell.setCellValue("합계");
+			sheet.addMergedRegion(new CellRangeAddress(0,0, periodList.size()*3+1,periodList.size()*3+3));
+			cell.setCellStyle(HeadStyle);
 			
-			cell = row.createCell(3);
-			cell.setCellValue("3주차");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
-			// 리스트의 size 만큼 row를 생성
-			/*for(int i=0; i < otherList.size(); i++) {
+			row = sheet.createRow(1);
+			for(int i =0; i<periodList.size()+1; i++){
+				cell = row.createCell(1+(3*i));
+				cell.setCellValue("계획");
+				cell.setCellStyle(TitleStyle);
+				cell = row.createCell(2+(3*i));
+				cell.setCellValue("실적");
+				cell.setCellStyle(TitleStyle);
+				cell = row.createCell(3+(3*i));
+				cell.setCellValue("차이");
+				cell.setCellStyle(TitleStyle);
+			}
+			
+			 //리스트의 size 만큼 row를 생성
+			for(int i=0; i < otherList.size(); i++) {
 				// 행 생성
-		
-				row = sheet.createRow(i+1);
+				row = sheet.createRow(i+2);
 				
 				cell = row.createCell(0);
 				cell.setCellValue(String.valueOf(otherList.get(i).get("DevNm")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
-				cell = row.createCell(1);
-				cell.setCellValue(String.valueOf(otherList.get(i).get("a40")));
-				cell.setCellStyle(BodyStyle); // 본문스타일 
+				int temp2 = 1;
+				for(int j=0; j<periodList.size(); j++){
+					cell = row.createCell(temp2);
+					cell.setCellValue(String.valueOf(otherList.get(i).get("a"+String.valueOf(periodList.get(j)))));
+					cell.setCellStyle(BodyStyle);
+					
+					cell = row.createCell(temp2+1);
+					cell.setCellValue(String.valueOf(otherList.get(i).get("b"+String.valueOf(periodList.get(j)))));
+					cell.setCellStyle(BodyStyle);
+					
+					cell = row.createCell(temp2+2);
+					cell.setCellValue(String.valueOf(otherList.get(i).get("sub"+String.valueOf(periodList.get(j)))));
+					cell.setCellStyle(BodyStyle);
+					
+					cell = row.createCell(periodList.size()*3+1);
+					cell.setCellValue(String.valueOf(otherList.get(i).get(String.valueOf("sumUserPlan"))));
+					cell.setCellStyle(BodyStyle);
+					
+					cell = row.createCell(periodList.size()*3+2);
+					cell.setCellValue(String.valueOf(otherList.get(i).get(String.valueOf("sumUserDev"))));
+					cell.setCellStyle(BodyStyle);
+					
+					cell = row.createCell(periodList.size()*3+3);
+					cell.setCellValue(String.valueOf(otherList.get(i).get(String.valueOf("sumDiff"))));
+					cell.setCellStyle(BodyStyle);
+					
+					
+					temp2 +=3;
+				}
 				
-				cell = row.createCell(2);
-				cell.setCellValue(String.valueOf(otherList.get(i).get("a41")));
-				cell.setCellStyle(BodyStyle); // 본문스타일 
-				
-				cell = row.createCell(3);
-				cell.setCellValue(String.valueOf(otherList.get(i).get("a42")));
-				cell.setCellStyle(BodyStyle); // 본문스타일 
-			}*/
+			}
 			
 			/** 3. 컬럼 Width */ 
 			/*for (int i = 0; i <  otherList.size(); i++){ 

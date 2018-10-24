@@ -313,8 +313,8 @@ function pagePrint(){
             						<c:out value="${status}"/></td>
             					</c:when>
             					<c:when test="${status eq '진행'}">
-            						<td align="center" class="listtd" style="background-color:#ACFA58;">
-            						<font color="#ffffff" style="font-weight:bold">
+            						<td align="center" class="listtd" style="background-color:#BEF781;">
+            						<font style="font-weight:bold">
             						<c:out value="${status}"/></td>
             					</c:when>
             					<c:when test="${status eq '대기'}">

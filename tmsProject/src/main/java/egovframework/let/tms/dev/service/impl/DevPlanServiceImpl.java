@@ -307,6 +307,24 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 		return devPlanDAO.searchBySys(s);
 	}
 
-	
-	
+	@Override
+	public HashMap<String, Object> selectTotalByProgressRate() {
+		return devPlanDAO.selectTotalByProgressRate();
+	}
+
+	@Override
+	public List<?> selectSysByProgressRate() {
+		return devPlanDAO.selectSysByProgressRate();
+	}
+
+	@Override
+	public List<?> selectTaskByProgressRate(String sysGb) {
+		return devPlanDAO.selectTaskByProgressRate(sysGb);
+	}
+
+	@Override
+	public List<?> selectTaskTotalProgressRate() {
+		return devPlanDAO.selectTaskTotalProgressRate();
+	}
+
 }

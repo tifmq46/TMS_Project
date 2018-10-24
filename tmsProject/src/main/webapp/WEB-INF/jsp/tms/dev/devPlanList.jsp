@@ -38,26 +38,47 @@ function fn_result_change(asd, t) {
 	   var prjEndDate = document.getElementById("pe").value;
 
 	  var cngDate = t.value;
+	  var flag = true;
 	  	
 	   if((prjStartDate >  t.value || prjEndDate <  t.value) && t.value != ""){
 		   alert("유효하지 않은 날짜입니다. 다시 입력하십시오.");
 		   document.getElementById(t.id).value = null;
+		   flag = false;
 		   return;
-	   } 
-	   
+	   }
 	   if(idVal1 != null && idVal1 != "")
 	      {
-	         if(idVal0 > idVal1)
+	         if(idVal0 > idVal1 && t.id==asd+1)
 	            {
 	               alert("계획시작일자보다 큰 값을 입력하시오.");
 	               document.getElementById(asd+1).value = null;
+	               flag = false;
 	            }
+	         else if(idVal0 > idVal1 && t.id==asd){
+	        	 alert("계획종료일자보다 작은 값을 입력하시오.");
+	             document.getElementById(asd).value = null;
+	             flag = false;
+	         }
 	      }
-	   if((idVal0 == null || idVal0 == "") && t.id == asd+1)
+	   if(idVal0 == "" && t.id == asd+1)
 	      {
+		   
 	         alert("계획시작일자부터 입력하십시오.")
 	         document.getElementById(asd+1).value = null;
+	         flag = false;
 	      }
+	   
+	   if(flag == true && idVal0 !="" && idVal1 !=""){
+		   $.ajax({
+			   type : "POST",
+			   url: "<c:url value='/tms/dev/selectTest.do'/>",
+			   data : {dateVal : t.value},
+			   datatype : "JSON",
+			   success:function(obj){
+			   }
+		   });
+	   }
+	   
 	   var idVal3 = document.getElementById(asd+3).id;
 	   $("#"+idVal3).removeClass("disabled");
 	   $("#"+idVal3).addClass("abled");

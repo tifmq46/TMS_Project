@@ -168,4 +168,12 @@ public interface DevPlanService {
 
 	public List<HashMap<String, String>> searchBySys(String s);
 
+	public HashMap<String, Object> selectTotalByProgressRate();
+
+	public List<?> selectSysByProgressRate();
+
+	public List<?> selectTaskByProgressRate(String sysGb);
+
+	public List<?> selectTaskTotalProgressRate();
+
 }

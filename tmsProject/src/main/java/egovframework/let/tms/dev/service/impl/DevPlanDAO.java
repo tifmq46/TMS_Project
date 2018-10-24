@@ -248,8 +248,25 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (List<EgovMap>) list("DevPlanDAO.selectStatsTable");
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<HashMap<String, String>> searchBySys(String s) {
 		return (List<HashMap<String, String>>) list("DevPlanDAO.searchBySys",s);
+	}
+
+	public HashMap<String, Object> selectTotalByProgressRate() {
+		return (HashMap<String, Object>) select("DevPlanDAO.selectTotalByProgressRate");
+	}
+
+	public List<?> selectSysByProgressRate() {
+		return list("DevPlanDAO.selectSysByProgressRate");
+	}
+
+	public List<?> selectTaskByProgressRate(String sysGb) {
+		return list("DevPlanDAO.selectTaskByProgressRate", sysGb);
+	}
+
+	public List<?> selectTaskTotalProgressRate() {
+		return list("DevPlanDAO.selectTaskTotalProgressRate");
 	}
 
 	
