@@ -81,6 +81,15 @@ window.onload = function() {
 					data : taskByMainStatsActionStA3,
 					backgroundColor : '#00B3E6',
 				}]
+			},
+			options : {
+				scales:{
+					yAxes:[{
+						ticks:{
+							beginAtZero:true
+						}	
+					}]
+				}	
 			}
 		});
 		/** 결함 진행상태 통계 끝*/
@@ -110,6 +119,15 @@ window.onload = function() {
 					data : devPlanByMainStatsAchieveCnt,
 					backgroundColor : '#00B3E6',
 				}]
+			},
+			options : {
+				scales:{
+					yAxes:[{
+						ticks:{
+							beginAtZero:true
+						}	
+					}]
+				}	
 			}
 		});
 		/** 개발 진척상태 통계 끝*/

@@ -243,60 +243,81 @@ function searchFileNm() {
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발계획관리</strong></h2></div>
 					  	<fieldset><legend>조건정보 영역</legend>	  
+					  	
 					  	<div class="sf_start">
-					  		
-					  			
-					  		<ul id="search_first_ul">
-					  			<li>
-								    <label >시스템구분</label>
-									<select name="Sys" id="Sys" style="width:12%;text-align-last:center;">
+					  		<table style="width:100%;padding-bottom:10px;padding-left:10px;padding-top:10px;">
+                    		<colgroup>
+                  			  <col width="7%"/> 
+                  			  <col width="14.4%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="14.4%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="14.4%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="14.4%"/> 
+                  			  <col width="14.4%"/>
+      			        	</colgroup>
+      			        	<tr>
+      			        		<td style="font-weight:bold;color:#666666;font-size:110%;">화면ID
+      			        		</td>
+      			        		<td>
+      			        		<input type="text" name="searchByPgId" style="width:80%;text-align:center;" id="TmsProgrmFileNm_pg_id" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+                      			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
+      			        		</td>
+      			        		<td style="font-weight:bold;color:#666666;font-size:110%;">시스템구분
+      			        		</td>
+      			        		<td>
+      			        		<select name="Sys" id="Sys" style="width:90%;text-align-last:center;">
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
 									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
 									</select>
 									<input type="hidden" name="searchBySysGb" value="">
-					  			</li>
-					  			<li>
-								    <label for="searchByTaskGb">업무구분</label>
-									<select name="task" id="task" style="width:15%;text-align-last:center;">
+      			        		</td>
+      			        		<td style="font-weight:bold;color:#666666;font-size:110%;">업무구분
+      			        		</td>
+      			        		<td>
+      			        		<select name="task" id="task" style="width:90%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 									   <c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
 									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									    </c:forEach>	
 									</select>				
 									<input type="hidden" name="searchByTaskGb" value="">
-					  			</li>
-					  			
-					  			<li><label for="searchByUserDevId">개발자명</label></li>
-					  			<% LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
+      			        		</td>
+      			        		<td>
+      			        		</td>
+      			        		<td>
+      			        		</td>
+      			        		<td>
+      			        		</td>
+      			        		<td>
+      			        		</td>
+      			        	</tr>
+      			        	<tr>
+      			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
+      			        		</td>
+      			        		<td style="padding-top:15px;">
+      			        		<% LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
 					  					pageContext.setAttribute("loginNm", loginVO.getName()) ;
 					  				if(loginVO.getName().equals("관리자")){	
 					  			%>
-					  			 <li><input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="18" style="text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+					  			 <input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
 		                          	<datalist id="userAllList">
 		                          	<c:forEach var="userList" items="${userList}" varStatus="status">
 										<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
 									</c:forEach>
 									</datalist>
-		                          </li>
 		                          <%}else{%>
-		                          <li>
-		                          <input type="text" name="searchByUserDevId" id="searchByUserDevId" size="18" style="text-align:center;" value="${loginNm}" readOnly/>
+		                          <input type="text" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="${loginNm}" readOnly/>
 		                          	
-		                          </li>
 		                          <%}%>
-					  		</ul>
-					  		<ul id="search_second_ul">
-					  			<li><label for="searchByPgId">화면ID</label></li>
-					  			<li><input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id" value="<c:out value='${searchVO.searchByPgId}'/>"/>
-					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
-                      			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
-                      			</li>
-					  			
-					  			
-					  			<li>
-					  			<label>계획일자</label>
+      			        		</td>
+      			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">계획일자
+      			        		</td>
+      			        		<td colspan="3" style="padding-top:15px;">
 								<input type="date" id="searchByPlanStartDt" name="searchByPlanStartDt" 
 									value="<fmt:formatDate value="${searchVO.searchByPlanStartDt}" pattern="yyyy-MM-dd"/>"/>
 								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
@@ -304,16 +325,18 @@ function searchFileNm() {
 					  			<input type="date" id="searchByPlanEndDt" name="searchByPlanEndDt" 
 					  				value="<fmt:formatDate value="${searchVO.searchByPlanEndDt}" pattern="yyyy-MM-dd"/>"/>
 					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-					  			</li>
-					  			
-					  			<li>
+      			        		</td>
+      			        		<td>
+      			        		</td>
+      			        		<td>
+      			        		</td>
+      			        		<td style="padding-top:15px;">
 									<div class="buttons" style="float:right;">
 										<a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
 									</div>	  				  			
-					  			</li>
-					  			
-					  		</ul>	
-					  		
+      			        		</td>
+      			        	</tr>
+      			        	</table>
 					  				
 						</div>			
 						</fieldset>

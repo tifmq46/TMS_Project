@@ -162,7 +162,7 @@ ul.tabs li.last {
 				<div id="search_field">
 					<div id="search_field_loc">
 						<h2>
-							<strong>결함처리통계(표)</strong>
+							<strong>결함처리통계 (표)</strong>
 						</h2>
 					</div>
 				</div>

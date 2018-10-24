@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,7 @@ import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.defect.service.DefectVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import net.sf.json.JSONArray;
 
@@ -401,6 +403,10 @@ public class DefectController {
 		List<?> dayByDefectCnt = defectService.selectDayByDefectCnt();
 		model.addAttribute("dayByDefectCnt", JSONArray.fromObject(dayByDefectCnt));
 		
+		// 사용자별 결함건수
+		List<?> userByDefectCnt = defectService.selectUserByDefectCnt();
+		model.addAttribute("userByDefectCnt", JSONArray.fromObject(userByDefectCnt));
+				
 		return "tms/defect/defectStats";
 	}
 	
@@ -408,22 +414,19 @@ public class DefectController {
 	@RequestMapping("/tms/defect/selectDefectStatsByDefectCnt.do")
 	public String selectDefectStatsByDefectCnt(ModelMap model) throws Exception {
 		
-		String sysNm = null;
-		
-		List<?> sysByDefectCntAll = defectService.selectSysByDefectCntAll();
+		String sysNm = "전체";
+		List<EgovMap> egovList = new ArrayList<EgovMap>();
+		List<EgovMap> sysByDefectCntAll = defectService.selectSysByDefectCntAll();
+		egovList.addAll(sysByDefectCntAll);
 		
 		// 시스템별 결함 건수
-		List<?> sysByDefectCnt = defectService.selectSysByDefectCnt();
-
-		model.addAttribute("sysByDefectCnt", JSONArray.fromObject(sysByDefectCnt));
+		List<EgovMap> sysByDefectCntPart = defectService.selectSysByDefectCnt();
+		egovList.addAll(sysByDefectCntPart);
+		model.addAttribute("sysByDefectCnt", JSONArray.fromObject(egovList));
 		
 		// 업무별 결함건수 
 		List<?> taskByDefectCnt = defectService.selectTaskByDefectCnt(sysNm);
 		model.addAttribute("taskByDefectCnt", JSONArray.fromObject(taskByDefectCnt));
-		
-		// 사용자별 결함건수
-		List<?> userByDefectCnt = defectService.selectUserByDefectCnt();
-		model.addAttribute("userByDefectCnt", JSONArray.fromObject(userByDefectCnt));
 		
 		return "tms/defect/defectStatsByDefectCnt";
 	}

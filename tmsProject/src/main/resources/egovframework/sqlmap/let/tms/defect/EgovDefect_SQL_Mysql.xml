@@ -116,24 +116,22 @@
         ]]> 
         
         <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000000">
-			<isNull property="searchByUserTestId">
-         		 <isNull property="searchByUserDevId">
          		     <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000001">
-           		   	AND USER_DEV_ID = #sessionId# OR USER_TEST_ID = #sessionId#
+           		   	AND (USER_DEV_ID = #sessionId# OR USER_TEST_ID = #sessionId#)
            		   	 </isNotEqual>
-         		 </isNull>
-			</isNull>
 		</isNotEqual>
       
       <isNotEmpty property="searchByPgId" >
                 AND PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
         </isNotEmpty>        
-      <isNotEmpty property="searchByUserTestId" >
-                AND USER_TEST_ID LIKE CONCAT('%' , #searchByUserTestId#, '%')
-        </isNotEmpty>    
-        <isNotEmpty property="searchByUserDevId" >
-                AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
-        </isNotEmpty>
+        <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000002">
+      		<isNotEmpty property="searchByUserTestId" >
+         	       AND USER_TEST_ID LIKE CONCAT('%' , #searchByUserTestId#, '%')
+      	  </isNotEmpty>    
+       	 <isNotEmpty property="searchByUserDevId" >
+        	        AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+        	</isNotEmpty>
+        </isNotEqual>
         <isNotEmpty property="searchByTaskGb" >
                 AND TASK_GB LIKE CONCAT('%' , #searchByTaskGb#, '%')
         </isNotEmpty>
@@ -738,9 +736,9 @@
         	SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(B.taskGbCnt,0) AS taskGbCnt
 			FROM 
 				(SELECT CODE, CODE_NM, CODE_ID FROM LETTCCMMNDETAILCODE
-				<isNotNull>
+				<isNotEqual compareValue="전체">
 				 WHERE PARENT = (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysNm# AND CODE_ID = 'SYSGB')
-				 </isNotNull>
+				</isNotEqual>				
 				 ) AS A 
 				LEFT JOIN
 				(SELECT P.TASK_GB AS taskGb, P.SYS_GB AS sysGb, COUNT(P.TASK_GB) AS taskGbCnt

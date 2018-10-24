@@ -2,12 +2,15 @@
   Class Name : EgovBoardUseInfRegist.jsp
   Description : 게시판  사용정보  등록화면
   Modification Information
- 
+
       수정일         수정자                   수정내용
+
     -------    --------    ---------------------------
+
      2009.04.02   이삼섭              최초 생성
+
      2011.08.31   JJY       경량환경 버전 생성
- 
+
     author   : 공통서비스 개발팀 이삼섭
     since    : 2009.04.02
 --%>
@@ -24,23 +27,15 @@
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <title>결함 등록</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="defectVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript" src="<c:url value='/js/showModalDialog.js'/>" ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" language="javascript" defer="defer">
-	
-    function aaa() {
-    	swal("여기다");
-    }
-	
-	function fn_egov_insert_addDefectImpl() {
 
+	function fn_egov_insert_addDefectImpl() {
 		if (!validateDefectVO(document.defectVO)) {
 			return;
 		} else {
@@ -52,8 +47,8 @@
 			} else {
 				var fileName = document.getElementById('fileImg').value;
 				var strArray = fileName.split('.');
-				if (strArray[1] != "jpg" && strArray[1] != "jpeg"
-						&& strArray[1] != "png") {
+				if (strArray[1] != "jpg" && strArray[1] != "jpeg" && strArray[1] != "png"
+						&& strArray[1] != "JPG" && strArray[1] != "JPEG" && strArray[1] != "PNG") {
 					alert(strArray[1] + " 형식의 파일은 허용하지 않습니다.");
 				} else {
 					alert("저장되었습니다.");
@@ -67,14 +62,12 @@
 	function searchFileNm() {
 		window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>", '',
 				'width=800,height=600');
-		document.getElementById('TmsProgrmFileNm_pg_id').style.border='none';
-		document.getElementById('TmsProgrmFileNm_pg_nm').style.display='inline';
 	}
-	
+
 	function pgIdSearch(){
 		alert("화면ID를 검색하십시오.");
 	}
-	
+
 	<!--
 	function fn_egov_select_viewDefect() {
 		document.defectVO.action = "<c:url value='/tms/defect/selectDefect.do'/>";
@@ -87,8 +80,8 @@
     h1 {font-size:12px;}
     caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
 </style>
-
 </head>
+
 <body >
 <noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>    
 <!-- 전체 레이어 시작 -->
@@ -118,6 +111,7 @@
                 <div id="search_field">
                     <div id="search_field_loc"><h2><strong>결함등록</strong></h2></div>
                 </div>
+
 				<form:form commandName="defectVO" name="defectVO" enctype="multipart/form-data" method="post" >
 					<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 					<input type="hidden" name="param_trgetType" value="" />
@@ -136,17 +130,24 @@
 					         <th width="16.6%" height="23" class="required_text" nowrap >화면ID
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
-					        <td width="16.6%" colspan="3" nowrap >
-					          <input id="TmsProgrmFileNm_pg_id" name="pgId" type="text" size="" value=""  title="화면ID"  
-					           style="text-align:center;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/> 
-					          <input id="TmsProgrmFileNm_pg_nm" type="text"  value=""  title="화면명" 
-					          style="text-align:center; border:none; display:none;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/>
+					        <td width="16.6%" nowrap >
+					          <input type="text" id="TmsProgrmFileNm_pg_id" name="pgId" size="" value=""  title="화면ID"  
+					           style="text-align:center;" readonly="readonly" onclick="javascript:searchFileNm(); return false;"/> 
+					           <input type="hidden" id="TmsProgrmFileNm_pg_full"
+					           style="text-align:center; width:90%;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/>
 					           <form:errors path="pgId" />
 					          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
 					        </td>
+					        <th width="16.6%" height="23" class="required_text" nowrap >화면명
+					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+					        </th>
+					        <td width="16.6%" nowrap >
+					          <input type="text" id="TmsProgrmFileNm_pg_nm" name="pgNm" size="" value=""  title="화면명"  
+					           style="text-align:center;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/> 
+					        </td>
 					       </tr>
-					       
+
 					      <tr>   
 					        <th width="16.6%" height="23" class="required_text" nowrap >업무구분
 					        <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
@@ -175,10 +176,12 @@
 								<%
 									} else {
 								%>
+
 								<c:set var="loginName" value="<%=loginVO.getName()%>" />
 									<%
 								}
 								%>
+
 								<td width="16.6%" nowrap >
 					        	<input list="userTestId" name="userNm" value='${loginName}'  autocomplete="off" style="text-align:center; width:85%;" />
 					        	<datalist id="userTestId">
@@ -189,7 +192,7 @@
 					        	<form:errors path="userNm" />
 					        </td>
 					       </tr>
-					       
+
 					       <tr >
 					       <th width="16.6%" height="23" class="required_text" nowrap >결함제목
 					        </th>
@@ -210,14 +213,13 @@
 									</select>
 									<form:errors path="defectGb" />
 					        </td>
-					        
 					       </tr>
-					       
+
 					       <tr>
 					        <th width="100%" height="23" class="required_text" colspan="6" nowrap >결함내용
 					        </th>
 					       </tr>
-					       
+
 					       <tr>
 					       <td width="100%" nowrap colspan="6">
 					          <textarea id="defectContent" name="defectContent" style="height:200px; width:98%;"></textarea>
@@ -225,7 +227,7 @@
 					          &nbsp;
 					        </td>
 					       </tr>
-					       
+
 					       <tr>
 					       <th width="16.6%" height="23" class="required_text" nowrap >첨부파일
 					        </th>
@@ -233,15 +235,14 @@
 								<input type="file" name="fileImg" id="fileImg" title="첨부파일" accept=".jpg, .jpeg, .png"/>
 					        </td>
 					       </tr>
-					      
                         </table>
                     </div>
 					<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
 					<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
+					<input id="TmsProgrmFileNm_task_gb_code" type="hidden" />
 					<input type="hidden" id="testscenarioId" name="testscenarioId" value="<c:out value="${testscenarioId}"/>"/>
-					
 					<input type="hidden" id="aaa" name="aaa" value="" />
-					
+
               <!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
 						<a href="#LINK" onclick="javaScript:fn_egov_insert_addDefectImpl(); return false;">저장</a>
@@ -249,7 +250,6 @@
                     </div>
                     <!-- 버튼 끝 -->     
                 </form:form>
-
             </div>  
             <!-- //content 끝 -->    
     </div>  
@@ -257,9 +257,7 @@
     <!-- footer 시작 -->
     <div id="footer"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncFooter" /></div>
     <!-- //footer 끝 -->
-	  						
 </div>
 <!-- //전체 레이어 끝 -->
 </body>
 </html>
-

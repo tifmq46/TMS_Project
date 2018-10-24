@@ -25,6 +25,7 @@
 		<result property="pjtId"             column="PJT_ID"             columnIndex="7"/>
 		<result property="userRealId"             column="USER_REAL_ID"             columnIndex="8"/>
 		<result property="taskGbCode"             column="TASK_GB_CODE"             columnIndex="9"/>
+		<result property="pgFull"             column="PG_FULL"             columnIndex="10"/>
 		
 	</resultMap>
 	
@@ -50,6 +51,7 @@
 				, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = USER_DEV_ID) AS "USER_DEV_ID"
 				, USER_DEV_ID AS "USER_REAL_ID"
 				, PG_NM  AS "PG_NM" 
+				, PG_NM AS "PG_FULL"
 				, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = SYS_GB) AS "SYS_GB" 
 				, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = TASK_GB) AS "TASK_GB"
 				, (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE = TASK_GB) AS "TASK_GB_CODE"

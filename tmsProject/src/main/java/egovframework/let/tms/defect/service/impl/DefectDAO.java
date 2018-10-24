@@ -12,6 +12,7 @@ import egovframework.let.tms.defect.service.DefectDefaultVO;
 import egovframework.let.tms.defect.service.DefectFileVO;
 import egovframework.let.tms.defect.service.DefectVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Repository("defectDAO")
 public class DefectDAO extends EgovAbstractDAO{
@@ -239,8 +240,9 @@ public class DefectDAO extends EgovAbstractDAO{
 		return list("defectDAO.selectTaskByMainStats");
 	}
 	
-	public List<?> selectSysByDefectCnt() {
-		return list("defectDAO.selectSysByDefectCnt");
+	@SuppressWarnings("unchecked")
+	public List<EgovMap> selectSysByDefectCnt() {
+		return (List<EgovMap>) list("defectDAO.selectSysByDefectCnt");
 	}
 	
 	public List<?> selectTaskByDefectCnt(String sysNm) {
@@ -268,7 +270,8 @@ public class DefectDAO extends EgovAbstractDAO{
 		return list("defectDAO.selectTaskByActionCntForSysGb", sysGb);
 	}
 	
-	public List<?> selectSysByDefectCntAll() {
-		return list("defectDAO.selectSysByDefectCntAll");
+	@SuppressWarnings("unchecked")
+	public List<EgovMap> selectSysByDefectCntAll() {
+		return (List<EgovMap>) list("defectDAO.selectSysByDefectCntAll");
 	}
 }

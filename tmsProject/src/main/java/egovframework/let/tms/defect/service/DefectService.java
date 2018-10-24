@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import egovframework.rte.psl.dataaccess.util.EgovMap;
+
 public interface DefectService {
 	
 	public List<?> selectDefect(DefectDefaultVO searchVO, int status) throws Exception;;
@@ -84,7 +86,7 @@ public interface DefectService {
 	
 	public List<?> selectTaskByMainStats();
 	
-	public List<?> selectSysByDefectCnt();
+	public List<EgovMap> selectSysByDefectCnt();
 
 	public List<?> selectTaskByDefectCnt(String sysNm);
 	
@@ -98,5 +100,5 @@ public interface DefectService {
 	
 	public List<?> selectTaskByActionCntForSysGb(String sysGb);
 	
-	public List<?> selectSysByDefectCntAll();
+	public List<EgovMap> selectSysByDefectCntAll();
 }

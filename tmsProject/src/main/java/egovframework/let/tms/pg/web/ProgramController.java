@@ -126,6 +126,8 @@ public class ProgramController {
 		model.addAttribute("useYnList", useYnList);
 		// 공통코드 끝 시작 -------------------------------	
 		
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
 
 		return "tms/pg/PgManage";
 	}

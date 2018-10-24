@@ -365,57 +365,80 @@ $(function(){
 				
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
-                    <div id="search_field_loc"><h2><strong>프로그램 관리</strong></h2></div>
+                    <div id="search_field_loc">
+                    <h2><strong>프로그램 관리</strong></h2></div>
 					
 						<input type="hidden" id="del" name="del" value="fncManageChecked()" />
 						<input type="hidden" id="fon" name="fon" />
                         <input type="submit" value="실행" onclick="fn_egov_select_noticeList('1'); return false;" id="invisible" class="invisible" />
                         
-                        <fieldset><legend>조건정보 영역</legend>    
-                        
-                        
-                        	<div class="default_tablestyle" style=" width:100%">
-
-					  		<ul id="search_first_ul">					  		
-					  			<li><label for="searchByPgId">화면ID</label></li>
-					  			<li><input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+                         <fieldset><legend>조건정보 영역</legend>     
+                  			  <div class="sf_start">
+							<table style="width:100%;padding-bottom:10px;padding-left:10px;padding-top:10px;">
+                    		<colgroup>
+                  			  <col width="7%"/> 
+                  			  <col width="14.4%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="14.4%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="14.4%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="14.4%"/> 
+                  			  <col width="14.4%"/> 
+      			        	</colgroup>
+      			        	<tr>
+      			        		<td style="font-weight:bold;color:#666666;font-size:110%;">화면ID
+      			        		</td>
+      			        		<td>
+					  			<input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByPgId}'/>"/>
 					  				<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
-	                				<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a></li>
-					  					
-					  			<li><label for="searchByUserDevId">개발자명</label></li>
-					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" value="<c:out value='${searchVO.searchByUserDevId}'/>"/></li>
-					  		
-                        	
-                        	</ul>
-                        	
-                        	<ul id="search_first_ul">	
-					  			<li>
-								    <label >시스템구분</label>
-									<select name="bbb" id="bbb" style="width:12%;text-align-last:center;">
+	                				<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
+      			        		</td>
+      			        		<td style="font-weight:bold;color:#666666;font-size:110%;">시스템구분
+      			        		</td>
+      			        		<td>
+      			        		<select name="bbb" id="bbb" style="width:90%;text-align-last:center;">
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
 									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									    </c:forEach>
 									</select>
 									
-									<input type="hidden" name="searchBySysGb" id="searchBySysGb" value=""/>					
-					  			</li>
-					  			
-					  			
-					  			<li>
-								    <label for="searchByTaskGb">업무구분</label>
-									<select name="task" id="task" style="width:15%;text-align-last:center;">
+									<input type="hidden" name="searchBySysGb" id="searchBySysGb" value=""/>
+      			        		</td>
+      			        		<td style="font-weight:bold;color:#666666;font-size:110%;">업무구분
+      			        		</td>
+      			        		<td>
+      			        		<select name="task" id="task" style="width:90%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
 									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									    	</c:forEach>								   
 									</select>				
 									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value=""/>
-					  			</li>                     	
-
-								<li>
-								    <label for="searchUseYn">사용여부</label>
-									<select name="searchUseYn" id="searchUseYn" style="width:10%;text-align-last:center;">
+      			        		</td>
+      			        		<td>
+      			        		</td>
+      			        		<td>
+      			        		</td>
+      			        		<td>
+      			        		</td>
+      			        	</tr>
+      			        	<tr>
+      			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
+      			        		</td>
+      			        		<td style="padding-top:15px;">
+      			        		<input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="15" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+      			        		<datalist id="userAllList">
+									    <c:forEach var="userList" items="${userList}" varStatus="status">
+									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+									    </c:forEach>
+					        	</datalist>
+      			        		</td>
+      			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">사용여부
+      			        		</td>
+      			        		<td style="padding-top:15px;">
+      			        		<select name="searchUseYn" id="searchUseYn" style="width:90%;text-align-last:center;">
 									   <option value="">전체</option>
 					      					<c:forEach var="useYn" items="${useYnList}" varStatus="status">
 					      						<c:if test="${useYn == 'Y'}">
@@ -425,20 +448,19 @@ $(function(){
 									    			<option value="<c:out value="${useYn}"/>" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >미사용</option>
 									    		</c:if> 
 									    	</c:forEach>								   
-									</select>				
-									
-					  			</li>  
-                       			<li>
-                            		<div class="buttons" style="float:right;">                              			
+									</select>			
+      			        		</td>
+      			        		<td colspan="5" style="padding-top:15px;">
+      			        		<div class="buttons" style="float:right;">                              			
                                     	<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
                                     	<a href="#Link" onclick="Pg_Delete_Search(); return false;">삭제</a>
                                     	<a href="<c:url value='/tms/pg/PgInsert.do'/>" >등록</a>
                                     	<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀등록</a>
                                     </div>
-                                </li>
-                       
-                       
-							</ul> 	
+      			        		</td>
+      			        	</tr>
+      			        	</table>
+                            		
 							</div>
 							
                         </fieldset>
