@@ -243,10 +243,11 @@ margin: 0; background-color:#f2f2f2;
 #search_first_ul li{display:inline;padding-right:25px;}
 #search_first_ul label{font-weight:bold;color:#666666;font-size:110%;}
 #search_first_ul input{margin-right:2px;}
-#search_second_ul {padding-left:10px;padding-left:7px;}
-#search_second_ul li{display:inline; padding-right:10px;}
+#search_second_ul {padding-bottom:15px;padding-left:10px;}
+#search_second_ul li{display:inline;padding-right:25px;}
 #search_second_ul label{font-weight:bold;color:#666666;font-size:110%;}
-#search_second_ul input{margin-right:3px;}
+#search_second_ul input{margin-right:2px;}
+
 
 #page_info{clear:both;width:800px;padding-top:20px;padding-bottom:3px;} 
 #page_info_align{float:right;}

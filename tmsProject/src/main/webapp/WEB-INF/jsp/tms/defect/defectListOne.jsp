@@ -19,6 +19,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ page import ="egovframework.com.cmm.LoginVO" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -39,13 +40,15 @@ function fn_egov_update_updateDefect(){
     } else {
 	document.getElementById("defectGb").disabled = "";
 	document.getElementById("actionSt").disabled = "";
+	document.getElementById("defectContent").disabled = "";
+	document.getElementById("actionContent").disabled = "";
 	if(document.getElementById("fileSize").value == 0) {
 		document.getElementById("fileImg").disabled = ""
 		if (document.getElementById('fileImg').files.length != 0) {
 			var fileName = document.getElementById('fileImg').value;
 			var strArray = fileName.split('.');
-			if (strArray[1] != "jpg" && strArray[1] != "jpeg"
-					&& strArray[1] != "png") {
+			if (strArray[1] != "jpg" && strArray[1] != "jpeg" && strArray[1] != "png"
+				&& strArray[1] != "JPG" && strArray[1] != "JPEG" && strArray[1] != "PNG") {
 				alert(strArray[1] + " 형식의 파일은 허용하지 않습니다.");
 			} else {
 				alert("저장되었습니다.");
@@ -92,11 +95,13 @@ window.onload = function() {
 		document.getElementById("defectTitle").style.border = "1";
 		document.getElementById("defectContent").readOnly = false;
 		document.getElementById("defectContent").style.border = "1";
+		document.getElementById("defectContent").disabled = "";
 		document.getElementById("userTestNm").readOnly = false;
 		document.getElementById("userTestNm").style.border = "1";
 		document.getElementById("defectGb").disabled = "";
 		document.getElementById("actionContent").readOnly = false;
 		document.getElementById("actionContent").style.border = "1";
+		document.getElementById("actionContent").disabled = "";
 		document.getElementById("actionSt").disabled = "";
 		$(deleteBtn).addClass("abled");
 		$(saveBtn).addClass("abled");
@@ -113,6 +118,7 @@ window.onload = function() {
 			document.getElementById("defectTitle").style.border = "1";
 			document.getElementById("defectContent").readOnly = false;
 			document.getElementById("defectContent").style.border = "1";
+			document.getElementById("defectContent").disabled = "";
 			document.getElementById("userTestNm").readOnly = false;
 			document.getElementById("userTestNm").style.border = "1";
 			document.getElementById("defectGb").disabled = "";
@@ -128,6 +134,7 @@ window.onload = function() {
 			document.getElementById("defectTitle").style.border = "0";
 			document.getElementById("defectContent").readOnly = true;
 			document.getElementById("defectContent").style.border = "0";
+			document.getElementById("defectContent").disabled = "disable";
 			document.getElementById("userTestNm").readOnly = true;
 			document.getElementById("userTestNm").style.border = "0";
 			document.getElementById("defectGb").disabled = "disable";
@@ -143,11 +150,13 @@ window.onload = function() {
 		if (document.getElementById("loginNm").value == document.getElementById("userDevNm").value) {
 			document.getElementById("actionContent").readOnly = false;
 			document.getElementById("actionContent").style.border = "1";
+			document.getElementById("actionContent").disabled = "";
 			document.getElementById("actionSt").disabled = "";
 			$(saveBtn).addClass("abled");
 		} else {
 			document.getElementById("actionContent").readOnly = true;
 			document.getElementById("actionContent").style.border = "0";
+			document.getElementById("actionContent").disabled = "disable";
 			document.getElementById("actionSt").disabled = "disable";
 			$(saveBtn).addClass("disabled");
 		}
@@ -216,9 +225,9 @@ window.onload = function() {
 					        <th width="12.5%" height="23" nowrap >결함번호
 					        </th>
 					        <td width="12.5%" nowrap >
-					          <input name="boardNo" size="5" readonly="readonly" value="<c:out value="${boardNo}"/>"  maxlength="40" title="결함번호"
+					          <input type="hidden" name="boardNo" size="5" readonly="readonly" value="<c:out value="${boardNo}"/>"  maxlength="40" title="결함번호"
 					          style="text-align:center; border:none; width:90%;" /> 
-					          <input type="hidden" name="defectIdSq" size="5" readonly="readonly" value="<c:out value="${defectOne.defectIdSq}"/>"  maxlength="40" title="결함번호"
+					          <input type="text" name="defectIdSq" size="5" readonly="readonly" value="<c:out value="${defectOne.defectIdSq}"/>"  maxlength="40" title="결함번호"
 					          style="text-align:center; border:none; width:90%;" /> 
 					          <form:errors path="defectIdSq" />
 					        </td>
@@ -244,18 +253,6 @@ window.onload = function() {
 					       </tr>
 					       
 					      <tr>   
-					        <th width="12.5%" height="23" class="" nowrap >결함유형
-					        </th>
-					        <td width="12.5%" nowrap >
-					          <select name="defectGb" id="defectGb" style="width:95%; text-align-last:center;">
-									    <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
-									    	<option value="<c:out value="${defectGb.code}"/>"
-									    	<c:if test="${defectOne.defectGb eq defectGb.codeNm}">selected="selected"</c:if>
-									    	><c:out value="${defectGb.codeNm}" /></option>
-									    </c:forEach>
-							</select>
-							  <form:errors path="defectGb" />
-					        </td>
 					         <th width="12.5%" height="23" class="" nowrap >테스터
 					        </th>
 					        <td width="12.5%" nowrap >
@@ -267,6 +264,18 @@ window.onload = function() {
 									    </c:forEach>
 					        	</datalist>
 					        	<form:errors path="userNm" />
+					        </td>
+					        <th width="12.5%" height="23" class="" nowrap >결함유형
+					        </th>
+					        <td width="12.5%" nowrap >
+					          <select name="defectGb" id="defectGb" style="width:95%; text-align-last:center;">
+									    <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
+									    	<option value="<c:out value="${defectGb.code}"/>"
+									    	<c:if test="${defectOne.defectGb eq defectGb.codeNm}">selected="selected"</c:if>
+									    	><c:out value="${defectGb.codeNm}" /></option>
+									    </c:forEach>
+							</select>
+							  <form:errors path="defectGb" />
 					        </td>
 					         <th width="12.5%" height="23" nowrap >개발자
 					        </th>
@@ -327,11 +336,11 @@ window.onload = function() {
 					       
 					       <tr>   
 					        <td width="50%" nowrap colspan="4">
-					         <textarea name="defectContent" id="defectContent" style="height:200px; width:98%;"><c:out value="${defectOne.defectContent}"/></textarea>
+					         <textarea name="defectContent" id="defectContent" style="height:200px; width:98%; background-color:#FFF !important;"><c:out value="${defectOne.defectContent}"/></textarea>
 						        <form:errors path="defectContent" />
 					        </td>
 					        <td width="50%" nowrap colspan="4">
-					        <textarea name="actionContent" id="actionContent" style="height:200px; width:98%;"><c:out value="${defectOne.actionContent}"/></textarea>
+					        <textarea name="actionContent" id="actionContent" style="height:200px; width:98%; background-color:#FFF !important;"><c:out value="${defectOne.actionContent}"/></textarea>
 					        </td>
 					       </tr>
 					       
@@ -347,7 +356,8 @@ window.onload = function() {
 									<c:out value="${defectImgOne.fileNm}" />
 									</a>
 									<input type="hidden" id="fileNm" name="fileNm" value="<c:out value="${defectImgOne.fileNm}" />"  readonly="readonly" style="border:none; width:; text-align:right"/>
-									(<c:out value="${defectImgOne.fileSize}"/>Byte)
+									<fmt:formatNumber var="fileSizeKb" pattern=".0" value="${defectImgOne.fileSize/1024}" />
+									(<c:out value="${fileSizeKb}"/>KB)
 									<input type="hidden" id="fileSize" name="fileSize" value="<c:out value="${defectImgOne.fileSize}"/>"  readonly="readonly" style="border:none; width:; text-align:center"/>
 					        	</font>
 					        	&nbsp;<a href="<c:url value='/tms/defect/downloadDefectImg.do'/>?defectIdSq=<c:out value="${defectOne.defectIdSq}"/>">

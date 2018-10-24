@@ -27,7 +27,15 @@
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 
 <title>결함관리</title>
+<style type="text/css">
 
+td.listtd {
+		white-space:nowrap;
+		overflow:hidden;
+		text-overflow:ellipsis;
+}
+
+</style>
 <script type="text/javascript">
 
 
@@ -86,69 +94,120 @@ function searchFileNm() {
                
                     <fieldset><legend>조건정보 영역</legend>     
                     <div class="sf_start">
-                       <ul id="search_first_ul">
-                          <li><label for="searchByPgId">화면ID</label></li>
-                          <li>
-                          <input id="TmsProgrmFileNm_pg_id" name="searchByPgId" type="text" size="10" style="text-align:center;" title="화면ID" value="<c:out value='${searchVO.searchByPgId}'/>"/>
-                         <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
-                      <img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
-                          </li>
-                          <li>
-                            <label for="searchByTaskGb">업무구분&nbsp;</label>
-                           <select name="searchByTaskGb" id="searchByTaskGb" style="width:10%;text-align-last:center;">
+                    	<table style="width:100%;padding-bottom:10px;padding-left:10px;padding-top:10px;">
+                    		<colgroup>
+                  			  <col width="7%"/> 
+                  			  <col width="14.4%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="14.4%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="14.4%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="14.4%"/> 
+                  			  <col width="14.4%"/> 
+      			        	</colgroup>
+      			        <tr>
+      			        	<td style="font-weight:bold;color:#666666;font-size:110%;">화면ID
+      			        	</td>
+      			        	<td>
+                      	    <input id="TmsProgrmFileNm_pg_id" name="searchByPgId" type="text" size="10" style="width:80%;text-align:center;" title="화면ID" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+                     	    <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+                   		   <img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
+      			        	</td>
+      			        	<td style="font-weight:bold;color:#666666;font-size:110%;">업무구분
+      			        	</td>
+      			        	<td>
+                           <select name="searchByTaskGb" id="searchByTaskGb" style="width:82%;text-align-last:center;">
                                <option value="" selected="selected" >전체</option>
                                <c:forEach var="taskGb" items="${taskGb}" varStatus="status">
                                   <option value="<c:out value="${taskGb.codeNm}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb.codeNm}">selected="selected"</c:if> ><c:out value="${taskGb.codeNm}" /></option>
                                </c:forEach>
-                           </select>                  
-                          </li>          
-                          <li>
-                            <label for="searchByDefectGb">결함유형&nbsp;</label>
-                           <select name="searchByDefectGb" id="searchByDefectGb" style="width:10%;text-align-last:center;">
+                           </select>   
+      			        	</td>
+      			        	<td style="font-weight:bold;color:#666666;font-size:110%;">결함유형
+      			        	</td>
+      			        	<td>
+      			        	<select name="searchByDefectGb" id="searchByDefectGb" style="width:90%;text-align-last:center;">
                                <option value="" selected="selected">전체</option>
                                <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
                                	  <option value="<c:out value="${defectGb.codeNm}"/>" <c:if test="${searchVO.searchByDefectGb == defectGb.codeNm}">selected="selected"</c:if> ><c:out value="${defectGb.codeNm}" /></option>                                  
                                </c:forEach>
-                           </select>                  
-                          </li>
-                          
-                          <li>
-                            <label for="searchByActionSt">조치상태&nbsp;</label>
-                           <select name="searchByActionSt" id="searchByActionSt" style="width:10%;text-align-last:center;">
+                           </select>  
+      			        	</td>
+      			        	<td style="font-weight:bold;color:#666666;font-size:110%;">조치상태
+      			        	</td>
+      			        	<td>
+      			        	<select name="searchByActionSt" id="searchByActionSt" style="width:90%;text-align-last:center;">
                                <option value="" selected="selected">전체</option>
                                <c:forEach var="actionSt" items="${actionSt}" varStatus="status">
                                	  <option value="<c:out value="${actionSt.codeNm}"/>" <c:if test="${searchVO.searchByActionSt == actionSt.codeNm}">selected="selected"</c:if> ><c:out value="${actionSt.codeNm}" /></option>
                                   
                                </c:forEach>
-                           </select>                  
-                          </li>
-                          
-                       </ul>
-                       
-                       <ul id="search_second_ul">
-                        <li><label for="searchByUserTestId">테스터&nbsp;&nbsp;</label></li>
-                        <li><input type="text" list="userAllList" autocomplete="off" name="searchByUserTestId" id="searchByUserTestId" size="10" style="text-align:center;" value="<c:out value='${searchVO.searchByUserTestId}'/>"/></li>
-                          <li><label for="searchByUserDevId">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개발자&nbsp;&nbsp;</label></li>
-                          <li><input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="15" style="text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
-                          <datalist id="userAllList">
+                           </select>
+      			        	</td>
+      			        	<td>
+      			        	</td>
+      			        </tr>
+      			        <%
+									LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO");
+										if (loginVO == null) {
+								%>
+
+								<%
+									} else {
+								%>
+
+										<c:set var="loginName" value="<%=loginVO.getName()%>" />
+										<c:set var="loginUniqId" value="<%=loginVO.getUniqId()%>" />
+      			        <tr>
+      			        <c:choose>
+                       <c:when test="${loginUniqId == 'USRCNFRM_00000000000' || loginUniqId == 'USRCNFRM_00000000001'}">
+                        	<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">테스터
+      			        	</td>
+      			        	<td style="padding-top:15px;">
+                        	<input type="text" list="userAllList" autocomplete="off" name="searchByUserTestId" id="searchByUserTestId" size="10" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserTestId}'/>"/>
+      			        	</td>
+      			        	<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
+      			        	</td>
+      			        	<td style="padding-top:15px;">
+                          	<input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="15" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+      			        	</td>
+                       </c:when>
+                       <c:otherwise>
+                        	<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">테스터
+      			        	</td>
+      			        	<td style="padding-top:15px;">
+                        	<input type="text" autocomplete="off" name="searchByUserTestId" id="searchByUserTestId" readonly="readonly" size="10" style="width:80%;text-align:center;" value="<c:out value='${loginName}'/>"/>
+      			        	</td>
+      			        	<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
+      			        	</td>
+      			        	<td style="padding-top:15px;">
+                          	<input type="text" name="searchByUserDevId" id="searchByUserDevId" size="15" readonly="readonly" style="width:80%;text-align:center;" value="<c:out value='${loginName}'/>"/>
+      			        	</td>
+                       </c:otherwise>
+                        </c:choose>
+                        <%
+								}
+								%>
+      			        	  <datalist id="userAllList">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
 									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
 									    </c:forEach>
 					        	</datalist>
-                          </li>
-                          <li>
-                          <label>&nbsp;&nbsp;&nbsp;등록일자</label>&nbsp;&nbsp;&nbsp;
-                        <input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-                          </li>                          
-                          <li>
+      			        	<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">등록일자
+      			        	</td>
+      			        	<td colspan="3" style="padding-top:15px;">
+                        <input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+      			        	</td>
+      			        	<td style="padding-top:15px;">
                            <div class="buttons" style="float:right;">
                             <a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
                                <a href="<c:url value='/tms/defect/insertDefect.do'/>?testscenarioId=0">등록</a>
                            </div>                            
-                          </li>
-                       </ul>
-                          
+      			        	</td>
+      			        </tr>
+                    	</table>
                   </div>         
                   </fieldset>
           	  </div>
@@ -243,6 +302,8 @@ function searchFileNm() {
          <input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
          <input id="TmsProgrmFileNm_user_dev_id" type="hidden" /> 
          <input id="TmsProgrmFileNm_user_real_id" type="hidden" />
+         <input id="TmsProgrmFileNm_task_gb_code" type="hidden" />
+         <input id="TmsProgrmFileNm_pg_full" type="hidden" />
 
 
        </form:form>

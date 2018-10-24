@@ -39,6 +39,7 @@ public class TmsProgrmManageVO{
 	
 	private String userRealId="";
 	
+	private String pgFull = "";
 
 	public String getTaskGbCode() {
 		return taskGbCode;
@@ -110,6 +111,14 @@ public class TmsProgrmManageVO{
 
 	public void setPjtId(String pJT_ID) {
 		pjtId = pJT_ID;
+	}
+
+	public String getPgFull() {
+		return pgFull;
+	}
+
+	public void setPgFull(String pgFull) {
+		this.pgFull = pgFull;
 	}
 
 	@Override
