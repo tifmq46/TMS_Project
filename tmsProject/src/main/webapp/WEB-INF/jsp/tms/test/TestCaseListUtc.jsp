@@ -28,6 +28,8 @@
 
 <title>단위 테스트 케이스 목록 조회</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script type="text/javaScript" language="javascript" defer="defer">
 
 
@@ -176,7 +178,7 @@ function fDeleteMenuList() {
 <!-- 전체 레이어 시작 -->
 
 <c:if test="${!empty message and fn:length(message) > 0}">
-	<script type="text/javascript"> alert("${message}");</script>
+	<script type="text/javascript">swal("${message}");</script>
 </c:if>
 
 
@@ -228,6 +230,12 @@ function fDeleteMenuList() {
 	                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
 					  			</li>
 					  			
+					  			
+					  			<li><label for="searchByUserDevId"><spring:message code="tms.test.userWriterId" /></label></li>
+					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" value="<c:out value='${searchVO.searchByUserDevId}'/>" /></li>
+					  			
+					  			
+					  			
 					  		</ul>	
 					  		
 					  		<ul id="search_second_ul">
@@ -253,6 +261,11 @@ function fDeleteMenuList() {
 									</select>							
 					  			</li>
 					  			
+					  			<li>
+		                          <label>&nbsp;&nbsp;&nbsp;등록일자</label>&nbsp;&nbsp;&nbsp;
+		                        	<input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+		                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+	                            </li> 
 					  			
 					  			<li>
 									<div class="buttons" style="float:right;">

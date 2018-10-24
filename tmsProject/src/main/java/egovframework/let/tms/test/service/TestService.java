@@ -169,15 +169,6 @@ public interface TestService {
 	
 	
 	/**
-	 * 업무별 '전체' 단위 테스트 케이스 통계 정보를 가져온다
-	 * @param 
-	 * @return List<?>
-	 * @exception Exception
-	 */
-	public List<?> selectTestCaseStatsListByTaskGbTotal()  throws Exception;
-	
-	
-	/**
 	 * 업무별 단위 테스트 케이스 통계 정보를 가져온다
 	 * @param 
 	 * @return List<?>
@@ -187,7 +178,7 @@ public interface TestService {
 	
 	
 	/**
-	 * 업무별 단위 테스트 케이스 통계 정보를 가져온다
+	 * 시스템별 단위 테스트 케이스 통계 정보를 가져온다
 	 * @param 
 	 * @return List<?>
 	 * @exception Exception

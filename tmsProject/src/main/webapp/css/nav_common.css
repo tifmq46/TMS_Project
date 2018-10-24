@@ -503,4 +503,6 @@ b{font-weight: 1000;}
 .progess_bar_section{
 	margin-top:45px;
 	margin-bottom:45px;
+	margin-left:20px;
+	margin-right:20px;
 }

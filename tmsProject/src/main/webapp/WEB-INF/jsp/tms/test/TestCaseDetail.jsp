@@ -30,7 +30,9 @@
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="testCaseUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
+
 
 
 function updateTestCase(){
@@ -38,19 +40,37 @@ function updateTestCase(){
 	if (!validateTestCaseUpdate(document.testCaseVO)){
         return;
     }
-	
-    if (confirm('<spring:message code="common.update.msg" />')) {
-    	document.testCaseVO.action = "<c:url value='/tms/test/updateTestCaseImpl.do'/>";
-   	 	document.testCaseVO.submit();       
-    }
+		swal({
+			text: '<spring:message code="common.update.msg" />'
+			,buttons : true
+		})
+		.then((result) => {
+			if(result) {
+				
+				document.testCaseVO.action = "<c:url value='/tms/test/updateTestCaseImpl.do'/>";
+		   	 	document.testCaseVO.submit();
+			}else {
+				
+			}
+		});
 }
 
 function deleteTestCase() {
 	
-	if (confirm('<spring:message code="common.delete.msg" />')) {
-    	document.testCaseVO.action = "<c:url value='/tms/test/deleteTestCaseImpl.do'/>";
-   	 	document.testCaseVO.submit();       
-    }
+	swal({
+		text: '<spring:message code="common.delete.msg" />'
+		,buttons : true
+	})
+	.then((result) => {
+		if(result) {
+			 
+			document.testCaseVO.action = "<c:url value='/tms/test/deleteTestCaseImpl.do'/>";
+	   	 	document.testCaseVO.submit(); 
+		}else {
+			
+		}
+	});
+	
 }
 
 </script>

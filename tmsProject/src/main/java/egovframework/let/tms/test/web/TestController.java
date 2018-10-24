@@ -195,17 +195,16 @@ public class TestController {
 			BindingResult errors, ModelMap model) throws Exception {
 
 		String testcaseId = testScenarioVO.getTestcaseId();
-
 		beanValidator.validate(testScenarioVO, errors);
 		if (errors.hasErrors()) {
-			return "redirect:/tms/test/insertTestScenario.do?testcaseId=" + (String)testScenarioVO.getTestcaseId();
+			return "redirect:/tms/test/insertTestScenario.do?testcaseId=" + testcaseId;
 		} else {
 			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 			if (isAuthenticated) {
 			testService.insertTestScenario(testScenarioVO);
 			redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 			}
-			return "redirect:/tms/test/selectTestCaseWithScenario.do?testcaseId=" + (String)testScenarioVO.getTestcaseId();
+			return "redirect:/tms/test/selectTestCaseWithScenario.do?testcaseId=" + testcaseId;
 		}
 
 	}
@@ -426,12 +425,9 @@ public class TestController {
 	public boolean checkTestCaseIdDuplication(@RequestParam("testcaseId") String testcaseId, ModelMap model) throws Exception {
 
 		HashMap<String, Object> testVoMap = testService.selectTestCase(testcaseId);
-		
-		if(testVoMap != null){ //테스크케이스Id 중복시
-			return false;
-		}else {
-			return true;
-		}
+		//테스크케이스Id 중복시 false
+		if(testVoMap != null) {return false;}
+		else {return true;}
 	}
 	
 	/**
@@ -446,11 +442,9 @@ public class TestController {
 	public boolean checkTestScenarioIdDuplication(@RequestParam("testscenarioId") String testscenarioId, ModelMap model) throws Exception {
 
 		TestScenarioVO vo = testService.selectTestScenario(testscenarioId);
-		if(vo != null){ //테스크케이스Id 중복시
-			return false;
-		}else {
-			return true;
-		}
+		//테스크케이스Id 중복시 false
+		if(vo != null){return false;}
+		else {return true;}
 	}
 
 	/**
@@ -495,7 +489,6 @@ public class TestController {
 		if (isAuthenticated) {
 		HashMap<String, Object> testVoMap = testService.selectTestCase(testcaseId);
 		List<?> testScenarioList = testService.selectTestScenarioList(testcaseId);
-
 		resultData.put("testVoMap", testVoMap);
 		resultData.put("testcaseGb", testcaseGb);
 		resultData.put("testScenarioList", testScenarioList);
@@ -570,10 +563,7 @@ public class TestController {
 		searchVO.setSearchByTestcaseGb(testcaseGb);
 
 		String link = "tms/test/TestCaseListUtc";
-
-		if (testcaseGb.equals("TC2")) { // 통합테스트일경우
-			link = "tms/test/TestCaseListTtc";
-		}
+		link = (testcaseGb.equals("TC2")) ? "tms/test/TestCaseListTtc" : link;
 
 		// 테스트 케이스 목록 가져오기
 		List<?> testCaseList = testService.selectTestCaseList(searchVO);
@@ -632,11 +622,8 @@ public class TestController {
 		searchVO.setSearchByTestcaseGb(testcaseGb);
 
 		String link = "tms/test/TestScenarioListUtc";
-
-		if (testcaseGb.equals("TC2")) { // 통합테스트일경우
-			link = "tms/test/TestScenarioListTtc";
-		}
-
+		link = (testcaseGb.equals("TC2")) ? "tms/test/TestScenarioListTtc" : link;
+		
 		// 테스트 케이스 목록 가져오기
 		List<?> testCaseList = testService.selectTestCaseList(searchVO);
 		model.addAttribute("testCaseList", testCaseList);
@@ -694,11 +681,8 @@ public class TestController {
 		searchVO.setSearchByTestcaseGb(testcaseGb);
 
 		String link = "tms/test/TestResultListUtc";
-
-		if (testcaseGb.equals("TC2")) { // 통합테스트일경우
-			link = "tms/test/TestResultListTtc";
-		}
-
+		link = (testcaseGb.equals("TC2")) ? "tms/test/TestResultListTtc" : link;
+		
 		// 테스트 케이스 목록 가져오기
 		List<?> testCaseList = testService.selectTestCaseList(searchVO);
 		model.addAttribute("testCaseList", testCaseList);
@@ -733,37 +717,37 @@ public class TestController {
 		HashMap<String, Integer> testCaseStatsMapTC2 = testService.selectTestCaseStats("TC2");
 		model.addAttribute("testCaseStatsMapTC2", testCaseStatsMapTC2);
 
-		List<?> tcStatsByTaskGb = testService.selectTestCaseStatsListByTaskGbTotal();
-		model.addAttribute("tcStatsByTaskGb", JSONArray.fromObject(tcStatsByTaskGb));
-		
-		String sysNm = null;
-		List<?> taskByDefectCnt = testService.selectTestCaseStatsListByTaskGb(sysNm);
-		model.addAttribute("taskByDefectCnt", JSONArray.fromObject(taskByDefectCnt));
-
-		// 단위 테스트 진행 상태
-		HashMap<String, Object> ProgressStatusUtc = testService.selectTestCaseProgressStatus("TC1");
-		model.addAttribute("ProgressStatusUtc", JSONObject.toJSONString(ProgressStatusUtc));
-
 		// 통합 테스트 진행 상태
 		HashMap<String, Object> ProgressStatusTtc = testService.selectTestCaseProgressStatus("TC2");
 		model.addAttribute("ProgressStatusTtc", JSONObject.toJSONString(ProgressStatusTtc));
 		
+		//특정 시스템에 대한 '업무별' 단위테스트 케이스 
+		String sysNm = null;
+		List<?> taskByTestcaseCnt = testService.selectTestCaseStatsListByTaskGb(sysNm);
+		model.addAttribute("taskByTestcaseCnt", JSONArray.fromObject(taskByTestcaseCnt));
+		
+		//시스템별 단위테스트케이스
 		List<?> tcStatsBySysGb = testService.selectTestCaseStatsListBySysGb();
 		model.addAttribute("tcStatsBySysGb", JSONArray.fromObject(tcStatsBySysGb));
-		
 		
 		}
 		return "tms/test/TestStatsDashboard";
 	}
 
 	
-	/** 결함처리통계(그래프) - 대시보드2(비동기처리) */
+	/**
+	 * 특정 시스템구분에 관한 업무별 테스트케이스 통계를 가져온다
+	 * 
+	 * @param String- 정보가 담긴 sysNm
+	 * @return 등록 결과
+	 * @exception Exception
+	 */
 	   @RequestMapping("/tms/test/selectTestCaseStatsListByTaskGb.do")
 	   @ResponseBody
 	   public List<?> selectTestCaseStatsListByTaskGb(String sysNm) throws Exception {
-	      
-	      List<?> taskByDefectCnt = testService.selectTestCaseStatsListByTaskGb(sysNm);
-	      return taskByDefectCnt;
+		   
+	      List<?> taskByTestcaseCnt = testService.selectTestCaseStatsListByTaskGb(sysNm.equals("전체") ? null : sysNm);
+	      return taskByTestcaseCnt;
 	   }
 	
 	/**
