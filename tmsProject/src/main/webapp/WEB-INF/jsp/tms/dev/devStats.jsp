@@ -49,28 +49,38 @@ function devPlanStatsBySelectBoxChange() {
 window.onload = function() {
 	
 	/** 시스템별  전체 진척률 시작 --------------------------*/
-	var hashTotalByStats = JSON.parse('${hashTotalByStats}');
-	var sysTotalByStats = JSON.parse('${sysTotalByStats}');
-	var sysTotalByStatsSysGb = new Array();
-	var sysTotalByStatsCnta = new Array();
-	var sysTotalByStatsCntb = new Array();
-	for (var i = 0; i < sysTotalByStats.length; i++) {
-		if(sysTotalByStats[i].CNTA == 0){
-			sysTotalByStats[i].CNTA = 0.1;
+	var totalProgramCnt = JSON.parse('${progressRateTotal.cntA}');
+	var totalPerfCnt = JSON.parse('${progressRateTotal.cntB}');
+	var totalPercent = JSON.parse('${progressRateTotal.rate}');
+	
+	var sysByProgressRate = JSON.parse('${sysByProgressRate}');
+	var sysByProgressSysGb = new Array();
+	var sysByProgressSysNm = new Array();
+	var sysByProgressRateCnta = new Array();
+	var sysByProgressRateCntb = new Array();
+	var sysByProgressRateRate = new Array();
+	for (var i = 0; i < sysByProgressRate.length; i++) {
+		sysByProgressSysGb.push(sysByProgressRate[i].sysGb);
+		sysByProgressSysNm.push(sysByProgressRate[i].sysNm);
+		if(sysByProgressRate[i].cntA == 0){
+			sysByProgressRate[i].cntA = 0.1;
 		}
-		sysTotalByStatsSysGb.push(sysTotalByStats[i].SYS_GB);
-		sysTotalByStatsCnta.push(sysTotalByStats[i].CNTA);
-		sysTotalByStatsCntb.push(sysTotalByStats[i].CNTB);
+		sysByProgressRateCnta.push(sysByProgressRate[i].cntA);
+		sysByProgressRateCntb.push(sysByProgressRate[i].cntB);
+		sysByProgressRateRate.push(sysByProgressRate[i].rate);
 	}
+	
 	// 전체 그래프
-	var ctx1 = document.getElementById('hashTotalByStats');
+	var ctx1 = document.getElementById('progressRateTotal');
 	var myDoughnutChart = new Chart(ctx1, {
 		type : 'doughnut',
 		data : {
+
 				labels: ['완료건수','미완료건수'],
 				datasets : [ {
-					data : [hashTotalByStats[0].CNTB,
-					        hashTotalByStats[0].CNTA-hashTotalByStats[0].CNTB],
+					label : ['sysGb'],
+					data : [totalPerfCnt,
+					        totalProgramCnt-totalPerfCnt],
 					backgroundColor : ['#007bff','#e9ecef']
 				},]
 			},
@@ -81,8 +91,33 @@ window.onload = function() {
 				rotation: 1 * Math.PI,
 		        circumference: 1 * Math.PI,
 				percentageInnerCutout : 50,
-				responsive:false,
-				tooltips: {
+				responsive:false
+				,onClick:handleClick
+				}
+		});
+	// 시스템별 그래프
+	 for ( var j = 0; j < sysByProgressSysNm.length; j++) {
+	var ctx = document.getElementById(sysByProgressSysGb[j]);
+	var myDoughnutChart = new Chart(ctx, {
+    	type : 'doughnut',
+    	data : {
+    		  labels: ['완료건수','미완료건수'],
+    			datasets : [ {
+    				label : [sysByProgressSysGb[j]],
+    				data : [sysByProgressRateCntb[j],
+    				        sysByProgressRateCnta[j]-sysByProgressRateCntb[j]],
+    				backgroundColor : ['#007bff','#e9ecef']
+    			},]
+    		},
+    		options : {
+    			legend: {
+					display:false
+				},
+    			rotation: 1 * Math.PI,
+    	        circumference: 1 * Math.PI,
+    			percentageInnerCutout : 50,
+    			responsive:false,
+    			tooltips: {
 					callbacks: {
 					label: function(tooltipItem, data) {
 								var value = data.datasets[0].data[tooltipItem.index];
@@ -94,339 +129,159 @@ window.onload = function() {
 					          }
 						}
 					}
-				}
-		});
-	// 시스템별 그래프
-	for ( var j = 0; j < sysTotalByStatsSysGb.length; j++) {
-		var chartId = "sysTotal" + sysTotalByStatsSysGb[j];
-		var ctx2 = document.getElementById(chartId);
-		var myDoughnutChart = new Chart(ctx2, {
-    		type : 'doughnut',
-    		data : {
-    			  labels: ['완료건수','미완료건수'],
-    				datasets : [ {
-    					data : [sysTotalByStatsCntb[j],
-    					        sysTotalByStatsCnta[j]-sysTotalByStatsCntb[j]],
-    					backgroundColor : ['#007bff','#e9ecef']
-    				},]
-    			},
-    			options : {
-    				legend:{
-    					display:false
-    				},
-    				rotation: 1 * Math.PI,
-    		        circumference: 1 * Math.PI,
-    				percentageInnerCutout : 50,
-    				responsive:false,
-    				tooltips: {
-    					callbacks: {
-    					label: function(tooltipItem, data) {
-    								var value = data.datasets[0].data[tooltipItem.index];
-    		            			var label = data.labels[tooltipItem.index];
-    					            if (value === 0.1) {
-    					            	value = 0;
-    					            }
-    					            return label + ' : ' + value;
-    					          }
-    						}
-    					}
-    				}
-    		});
+    			 ,onClick:handleClick 
+    			}
+    	});
 	}
-	/** 시스템별  전체 진척률 끝 --------------------------*/
 	
-	/** 업무별  전체 진척률 시작 --------------------------*/
-	var taskTotalByStats = JSON.parse('${taskTotalByStats}');
-	var taskTotalByStatsTaskNm = new Array();
-	var taskTotalByStatsR = new Array();
-	for (var i = 0; i < taskTotalByStats.length; i++) {
-		taskTotalByStatsTaskNm.push(taskTotalByStats[i].TASK_NM);
-		if(taskTotalByStats[i].R == 0) {
-			taskTotalByStats[i].R = 0.1;
+	// 업무별 그래프
+		var taskByProgressRate = JSON.parse('${taskByProgressRate}');
+		var taskByProgressRateCnta = new Array();
+		var taskByProgressRateCntb = new Array();
+		var sysGbTaskGb = new Array();
+		for (var i = 0; i < taskByProgressRate.length; i++) {
+			taskByProgressRateCnta.push(taskByProgressRate[i].cntA);
+			taskByProgressRateCntb.push(taskByProgressRate[i].cntB);
+			sysGbTaskGb.push(taskByProgressRate[i].sysGb+taskByProgressRate[i].taskGb);
 		}
-		taskTotalByStatsR.push(taskTotalByStats[i].R);
-	}
-	var ctx3 = document.getElementById('taskTotalByStats');
-	var taskTotalByStatsChart = new Chart(ctx3, {
-		type : 'bar',
-		data : {
-			labels : taskTotalByStatsTaskNm,
-			barThickness : '0.9',
-			datasets : [ {
-				label : '진척률',
-				data : taskTotalByStatsR,
-				backgroundColor : '#007BFF',
-			}]
-		},
-		options : {
-			legend: {
-				position : 'bottom'
-			},
-			tooltips: {
-				callbacks: {
-				label: function(tooltipItem, data) {
-						var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-		            	var label = data.datasets[tooltipItem.datasetIndex].label;
-				            if (value === 0.1) {
-				            	value = 0;
-				            }
-				            return label + ' : ' + value+'%';
-				          }
-					}
-				}
+		for ( var j = 0; j < taskByProgressRate.length; j++) {
+		var ctx = document.getElementById(sysGbTaskGb[j]);
+		var myDoughnutChart = new Chart(ctx, {
+	    	type : 'doughnut',
+	    	data : {
+	    		  labels: ['완료건수','미완료건수'],
+	    			datasets : [ {
+	    				data : [taskByProgressRateCntb[j],
+	    				        taskByProgressRateCnta[j]-taskByProgressRateCntb[j]],
+	    				backgroundColor : ['#007bff','#e9ecef']
+	    			},]
+	    		},
+	    		options : {
+	    			legend: {
+						display:false
+					},
+	    			rotation: 1 * Math.PI,
+	    	        circumference: 1 * Math.PI,
+	    			percentageInnerCutout : 50,
+	    			responsive:false
+	    			}
+	    	});
 		}
-	});
-	/** 업무별  전체 진척률 끝 --------------------------*/
-	
-	/** 시스템별  금주 진척률 시작 --------------------------*/
-	var hashThisWeekByStats = JSON.parse('${hashThisWeekByStats}');
-	var sysThisWeekByStats = JSON.parse('${sysThisWeekByStats}');
-	var sysThisWeekByStatsSysGb = new Array();
-	var sysThisWeekByStatsCnta = new Array();
-	var sysThisWeekByStatsCntb = new Array();
-	for (var i = 0; i < sysThisWeekByStats.length; i++) {
-		if(sysThisWeekByStats[i].CNTA == 0){
-			sysThisWeekByStats[i].CNTA = 0.1;
-		}
-		sysThisWeekByStatsSysGb.push(sysThisWeekByStats[i].SYS_GB);
-		sysThisWeekByStatsCnta.push(sysThisWeekByStats[i].CNTA);
-		sysThisWeekByStatsCntb.push(sysThisWeekByStats[i].CNTB);
-	}
-	// 전체 그래프
-	var ctx4 = document.getElementById('hashThisWeekByStats');
-	var myDoughnutChart = new Chart(ctx4, {
-		type : 'doughnut',
-		data : {
-			  labels: ['완료건수','미완료건수'],
-				datasets : [ {
-					data : [hashThisWeekByStats[0].CNTB,
-					        hashThisWeekByStats[0].CNTA-hashThisWeekByStats[0].CNTB],
-					backgroundColor : ['#007bff','#e9ecef']
-				},]
-			},
-			options : {
-				rotation: 1 * Math.PI,
-		        circumference: 1 * Math.PI,
-				percentageInnerCutout : 50,
-				responsive:false,
-				tooltips: {
-					callbacks: {
-					label: function(tooltipItem, data) {
-								var value = data.datasets[0].data[tooltipItem.index];
-		            			var label = data.labels[tooltipItem.index];
-					            if (value === 0.1) {
-					            	value = 0;
-					            }
-					            return label + ' : ' + value;
-					          }
-						}
-					}
-				}
-		});
-	// 시스템별 그래프
-	for ( var j = 0; j < sysThisWeekByStatsSysGb.length; j++) {
-		var chartId = "sysThisWeek" + sysThisWeekByStatsSysGb[j];
-		var ctx5 = document.getElementById(chartId);
-		var myDoughnutChart = new Chart(ctx5, {
-    		type : 'doughnut',
-    		data : {
-    			  labels: ['완료건수','미완료건수'],
-    				datasets : [ {
-    					data : [sysThisWeekByStatsCntb[j],
-    					        sysThisWeekByStatsCnta[j]-sysThisWeekByStatsCntb[j]],
-    					backgroundColor : ['#007bff','#e9ecef']
-    				},]
-    			},
-    			options : {
-    				rotation: 1 * Math.PI,
-    		        circumference: 1 * Math.PI,
-    				percentageInnerCutout : 50,
-    				responsive:false,
-    				tooltips: {
-    					callbacks: {
-    					label: function(tooltipItem, data) {
-    								var value = data.datasets[0].data[tooltipItem.index];
-    		            			var label = data.labels[tooltipItem.index];
-    					            if (value === 0.1) {
-    					            	value = 0;
-    					            }
-    					            return label + ' : ' + value;
-    					          }
-    						}
-    					}
-    				}
-    		});
-	}
-	/** 시스템별  금주 진척률 끝 --------------------------*/
-	
-	/** 업무별  금주 진척률 시작 --------------------------*/
-	var taskThisWeekByStats = JSON.parse('${taskThisWeekByStats}');
-	var taskThisWeekByStatsTaskNm = new Array();
-	var taskThisWeekByStatsR = new Array();
-	for (var i = 0; i < taskThisWeekByStats.length; i++) {
-		taskThisWeekByStatsTaskNm.push(taskThisWeekByStats[i].TASK_NM);
-		if(taskThisWeekByStats[i].R == 0) {
-			taskThisWeekByStats[i].R = 0.1;
-		}
-		taskThisWeekByStatsR.push(taskThisWeekByStats[i].R);
-	}
-	var ctx6 = document.getElementById('taskThisWeekByStats');
-	var taskThisWeekByStatsChart = new Chart(ctx6, {
-		type : 'bar',
-		data : {
-			labels : taskThisWeekByStatsTaskNm,
-			barThickness : '0.9',
-			datasets : [ {
-				label : '진척률',
-				data : taskThisWeekByStatsR,
-				backgroundColor : '#007BFF',
-			}]
-		},
-		options : {
-			legend: {
-				position : 'bottom'
-			},
-			tooltips: {
-				callbacks: {
-				label: function(tooltipItem, data) {
-						var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-		            	var label = data.datasets[tooltipItem.datasetIndex].label;
-				            if (value === 0.1) {
-				            	value = 0;
-				            }
-				            return label + ' : ' + value+'%';
-				          }
-					}
-				}
-		}
-	});
-	/** 업무별  금주 진척률 끝 --------------------------*/
-	
-	/** 시스템별  누적 진척률 시작 --------------------------*/
-	var hashAccumulateByStats = JSON.parse('${hashAccumulateByStats}');
-	var sysAccumulateByStats = JSON.parse('${sysAccumulateByStats}');
-	var sysAccumulateByStatsSysGb = new Array();
-	var sysAccumulateByStatsCnta = new Array();
-	var sysAccumulateByStatsCntb = new Array();
-	for (var i = 0; i < sysAccumulateByStats.length; i++) {
-		if(sysAccumulateByStats[i].CNTA == 0){
-			sysAccumulateByStats[i].CNTA = 0.1;
-		}
-		sysAccumulateByStatsSysGb.push(sysAccumulateByStats[i].SYS_GB);
-		sysAccumulateByStatsCnta.push(sysAccumulateByStats[i].CNTA);
-		sysAccumulateByStatsCntb.push(sysAccumulateByStats[i].CNTB);
-	}
-	// 전체 그래프
-	var ctx7 = document.getElementById('hashAccumulateByStats');
-	var myDoughnutChart = new Chart(ctx7, {
-		type : 'doughnut',
-		data : {
-			  labels: ['완료건수','미완료건수'],
-				datasets : [ {
-					data : [hashAccumulateByStats[0].CNTB,
-					        hashAccumulateByStats[0].CNTA-hashAccumulateByStats[0].CNTB],
-					backgroundColor : ['#007bff','#e9ecef']
-				},]
-			},
-			options : {
-				rotation: 1 * Math.PI,
-		        circumference: 1 * Math.PI,
-				percentageInnerCutout : 50,
-				responsive:false,
-				tooltips: {
-					callbacks: {
-					label: function(tooltipItem, data) {
-								var value = data.datasets[0].data[tooltipItem.index];
-		            			var label = data.labels[tooltipItem.index];
-					            if (value === 0.1) {
-					            	value = 0;
-					            }
-					            return label + ' : ' + value;
-					          }
-						}
-					}
-				}
-		});
-	// 시스템별 그래프
-	for ( var j = 0; j < sysAccumulateByStatsSysGb.length; j++) {
-		var chartId = "sysAccumulate" + sysAccumulateByStatsSysGb[j];
-		var ctx8 = document.getElementById(chartId);
-		var myDoughnutChart = new Chart(ctx8, {
-    		type : 'doughnut',
-    		data : {
-    			  labels: ['완료건수','미완료건수'],
-    				datasets : [ {
-    					data : [sysAccumulateByStatsCntb[j],
-    					        sysAccumulateByStatsCnta[j]-sysAccumulateByStatsCntb[j]],
-    					backgroundColor : ['#007bff','#e9ecef']
-    				},]
-    			},
-    			options : {
-    				rotation: 1 * Math.PI,
-    		        circumference: 1 * Math.PI,
-    				percentageInnerCutout : 50,
-    				responsive:false,
-    				tooltips: {
-    					callbacks: {
-    					label: function(tooltipItem, data) {
-    								var value = data.datasets[0].data[tooltipItem.index];
-    		            			var label = data.labels[tooltipItem.index];
-    					            if (value === 0.1) {
-    					            	value = 0;
-    					            }
-    					            return label + ' : ' + value;
-    					          }
-    						}
-    					}
-    				}
-    		});
-	}
-	/** 시스템별  누적 진척률 끝 --------------------------*/
-	
-	/** 업무별  누적 진척률 시작 --------------------------*/
-	var taskAccumulateByStats = JSON.parse('${taskAccumulateByStats}');
-	var taskAccumulateByStatsTaskNm = new Array();
-	var taskAccumulateByStatsR = new Array();
-	for (var i = 0; i < taskAccumulateByStats.length; i++) {
-		taskAccumulateByStatsTaskNm.push(taskAccumulateByStats[i].TASK_NM);
-		if(taskAccumulateByStats[i].R == 0) {
-			taskAccumulateByStats[i].R = 0.1;
-		}
-		taskAccumulateByStatsR.push(taskAccumulateByStats[i].R);
-	}
-	var ctx9 = document.getElementById('taskAccumulateByStats');
-	var taskAccumulateByStatsChart = new Chart(ctx9, {
-		type : 'bar',
-		data : {
-			labels : taskAccumulateByStatsTaskNm,
-			barThickness : '0.9',
-			datasets : [ {
-				label : '진척률',
-				data : taskAccumulateByStatsR,
-				backgroundColor : '#007BFF',
-			}]
-		},
-		options : {
-			legend: {
-				position : 'bottom'
-			},
-			tooltips: {
-				callbacks: {
-				label: function(tooltipItem, data) {
-						var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-		            	var label = data.datasets[tooltipItem.datasetIndex].label;
-				            if (value === 0.1) {
-				            	value = 0;
-				            }
-				            return label + ' : ' + value+'%';
-				          }
-					}
-				}
-		}
-	});
-	/** 업무별  누적 진척률 끝 --------------------------*/
 	
 	$('html').scrollTop(0);
+}
+
+function handleClick(event, array){
+	var temp= this.data.datasets[0].label[0];
+	$.ajax({
+		type:"POST",
+		url: "<c:url value='/tms/dev/selectDevStatsAsyn.do'/>",
+		data : {sysGb : this.data.datasets[0].label[0]},
+		async: false,
+		dataType : 'json',
+		success : function(result){
+			$("#taskByProgressRateLoc").empty();
+			var str = "";
+			str += "<table>";
+			str += "<tr>";
+			$.each(result, function(index,item){
+				
+				str += "<td>";
+				if(temp == "sysGb") {
+					str += "<canvas id='" + item.sysGb + item.taskGb + "'";
+				} else {
+					str += "<canvas id='" + item.taskGb + "'";
+				}
+				str += "width='180' height='180' style='display:inline !important;'>";
+				str += "</canvas>"
+				str += "</td>";
+			});
+			str += "</tr>";
+			str += "<tr>";
+			$.each(result, function(index,item){
+				str += "<td align='center' valign='middle'>";
+				str += "<div style='font-size:15px; font-weight:bolder;'>";
+				str += "<font color='#007BFF'>" + item.cntB;
+				str += "</font>";
+				str += " / " + item.cntA;
+				str += "(" + item.rate + "%)<br/>";
+				if(temp == "sysGb") {
+					str += item.sysNm + "(" + item.taskNm + ")";
+				} else {
+					str += item.taskNm;
+				}
+				str += "</td>";
+			});
+			str += "</tr>";
+			str += "</table>";
+			$("#taskByProgressRateLoc").append(str);
+			
+			var taskByProgressRate = result;
+			var taskByProgressRateCnta = new Array();
+			var taskByProgressRateCntb = new Array();
+			if(temp == "sysGb") {
+				var sysGbTaskGb = new Array();
+			} else {
+				var taskGb = new Array();
+			}
+			for (var i = 0; i < taskByProgressRate.length; i++) {
+				if(taskByProgressRate[i].cntA == 0) {
+					taskByProgressRate[i].cntA = 0.1;
+				}
+				taskByProgressRateCnta.push(taskByProgressRate[i].cntA);
+				taskByProgressRateCntb.push(taskByProgressRate[i].cntB);
+				if(temp == "sysGb") {
+					sysGbTaskGb.push(taskByProgressRate[i].sysGb+taskByProgressRate[i].taskGb);
+				} else {
+					taskGb.push(taskByProgressRate[i].taskGb);
+				}
+			}
+			for ( var j = 0; j < taskByProgressRate.length; j++) {
+			if(temp == "sysGb") {
+				var ctx = document.getElementById(sysGbTaskGb[j]);
+			} else {
+				var ctx = document.getElementById(taskGb[j]);
+			}
+			var myDoughnutChart = new Chart(ctx, {
+		    	type : 'doughnut',
+		    	data : {
+		    		  labels: ['완료건수','미완료건수'],
+		    			datasets : [ {
+		    				data : [taskByProgressRateCntb[j],
+		    				        taskByProgressRateCnta[j]-taskByProgressRateCntb[j]],
+		    				backgroundColor : ['#007bff','#e9ecef']
+		    			},]
+		    		},
+		    		options : {
+		    			legend: {
+							display:false
+						},
+		    			rotation: 1 * Math.PI,
+		    	        circumference: 1 * Math.PI,
+		    			percentageInnerCutout : 50,
+		    			responsive:false,
+		    			tooltips: {
+							callbacks: {
+							label: function(tooltipItem, data) {
+										var value = data.datasets[0].data[tooltipItem.index];
+				            			var label = data.labels[tooltipItem.index];
+							            if (value === 0.1) {
+							            	value = 0;
+							            }
+							            return label + ' : ' + value;
+							          }
+								}
+							}
+		    			}
+		    	});
+			}
+		},
+		error : function(request,status,error){
+			alert("에러");
+			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+		}
+	});
 }
 
 </script>
@@ -464,27 +319,27 @@ window.onload = function() {
                <div id="search_field">
 	                <div id="search_field_loc"><h2><strong>개발진척통계</strong></h2></div>  
 				</div>
-				<br/><br/>
-             <div align="right">
+             <!-- <div align="right">
 						<select id=devPlanStatsBySelectBox style="width: 12%; text-align-last: center;"
 							onChange="javascript:devPlanStatsBySelectBoxChange();">
 							<option value="1" selected="selected">전체</option>
 							<option value="2">금주</option>
 							<option value="3">누적</option>
 						</select>
-			</div>
+			</div> -->
 			
 			<div id="devPlanStatsByAll" style="display:inline">
-             <h3><strong>시스템별 전체 진척률</strong></h3>
+             <font color="#727272" style="font-size:1.17em;font-weight:bold">시스템별 진척률</font>
       		 <div style="overflow:auto; white-space:nowrap; overflow-y:hidden;">
             <table>
             <tr>
             <td>
-             &nbsp;&nbsp;<canvas id="hashTotalByStats" width="200" height="200" style="display: inline"></canvas>&nbsp;&nbsp;
+             &nbsp;&nbsp;<canvas id="progressRateTotal" width="250" height="200" style="display: inline"></canvas>&nbsp;&nbsp;
              </td>
-            <c:forEach var="sysTotalByStats" items="${sysTotalByStats}" varStatus="status">
+            <c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
             <td>
-            <canvas id="<c:out value="sysTotal${sysTotalByStats.SYS_GB}"/>"  width="180" height="180" style="display: inline"></canvas>&nbsp;&nbsp;
+            <canvas id="<c:out value="${sysByProgressRate.sysGb}"/>"  
+            	width="180" height="180" style="display: inline"></canvas>&nbsp;&nbsp;
 			</td>            
             </c:forEach>
             <br/>
@@ -492,34 +347,55 @@ window.onload = function() {
             
             <tr>
             <td align="center" valign="middle">
-            <div style="font-size:15px; font-weight:bolder;">
-            	<font color="#007BFF"><c:out value="${hashTotalByStats[0].CNTB}"/></font>	/ <c:out value="${hashTotalByStats[0].CNTA}"/> 
-                 (<c:out value=" ${hashTotalByStats[0].R}"></c:out>%)
+             <div style="font-size:15px; font-weight:bolder;">
+            	<font color="#007BFF"><c:out value="${progressRateTotal.cntB}"/></font>	/ <c:out value="${progressRateTotal.cntA}"/> 
+                 (<c:out value=" ${progressRateTotal.rate}"></c:out>%)
                  	<br/>
-                 	전체
+                 	<strong>전체</strong>
                  	<br/>
              </div>
             </td>
-            <c:forEach var="sysTotalByStats" items="${sysTotalByStats}" varStatus="status">
+            <c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
             <td align="center" valign="middle">
             	<div style="font-size:13px; font-weight:bolder;">
-            	<font color="#007BFF"><c:out value="${sysTotalByStats.CNTB}"/></font> / <c:out value="${sysTotalByStats.CNTA}"/>
-                 	(<c:out value=" ${sysTotalByStats.R}"></c:out>%)
+            	<font color="#007BFF"><c:out value="${sysByProgressRate.cntB}"/></font> / 
+            	<c:out value="${sysByProgressRate.cntA}"/>
+                 	(<c:out value=" ${sysByProgressRate.rate}"></c:out>%)
                  <br/>
-					<c:out value="${sysTotalByStats.SYS_NM}"/>
+					<c:out value="${sysByProgressRate.sysNm}"/>
                  <br/>
                  </div>
             </td>
             </c:forEach>
             </tr>
             </table>
+            <br><br>
+            <font color="#727272" style="font-size:1.17em;font-weight:bold">업무별 진척률</font>
+				<div id="taskByProgressRateLoc">
+				<table>
+					<tr>
+						<c:forEach var="taskByProgressRate" items="${taskByProgressRate}" varStatus="status">
+							<td>
+								<canvas	id="<c:out value="${taskByProgressRate.sysGb}"/><c:out value="${taskByProgressRate.taskGb}"/>"
+									width="180" height="180" style="display: inline !important;"></canvas>
+							</td>
+						</c:forEach>
+					</tr>
+					<tr>
+						<c:forEach var="taskByProgressRate" items="${taskByProgressRate}" varStatus="status">
+						<td align="center" valign="middle">
+							<div style="font-size: 15px; font-weight: bolder;">
+								<font color="#007BFF"><c:out value="${taskByProgressRate.cntB}" /></font> /
+								<c:out value="${taskByProgressRate.cntA}" />
+								(<c:out value=" ${taskByProgressRate.rate}"/>%)
+								<br/><c:out value="${taskByProgressRate.sysNm}"/>(<c:out value="${taskByProgressRate.taskNm}"/>)
+						</td>
+						</c:forEach>
+					</tr>
+				</table>
             </div>
-             <h3><strong>업무별 전체 진척률</strong></h3>
-			</div>
             
-			<canvas id="taskTotalByStats" width="100%" height="20" style="display:inline"></canvas>
-			
-			<div id="devPlanStatsByThisWeek" style="display:none">
+			<%-- <div id="devPlanStatsByThisWeek" style="display:none">
 			<h3><strong>시스템별 금주 진척률</strong></h3>
       		 <div style="overflow:auto; white-space:nowrap; overflow-y:hidden;">
             <table>
@@ -607,8 +483,9 @@ window.onload = function() {
              <h3><strong>업무별 누적 진척률</strong></h3>
             </div>
             
-			<canvas id="taskAccumulateByStats" width="100%" height="20" style="display:none"></canvas>   
-            
+			<canvas id="taskAccumulateByStats" width="100%" height="20" style="display:none"></canvas>    --%>
+            </div>
+            </div>
             </div>
             <!-- //content 끝 -->
         </div>

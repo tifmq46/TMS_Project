@@ -59,45 +59,6 @@ String.prototype.zf = function(len){return "0".string(len - this.length) + this;
 Number.prototype.zf = function(len){return this.toString().zf(len);
 };
 
-
-/*  function fn_result_change(asd) {
-	   var idVal0 = document.getElementById(asd).value;
-	   var idVal1 = document.getElementById(asd+1).value;
-	   var currentDate = (new Date().format("yyyy-MM-dd"));
-	   var flag = true;
-	   
-	   if(idVal1 != null && idVal1 != "")
-	      {
-	         if(idVal0 > idVal1)
-	            {
-	               //alert("개발시작일자보다 큰 값을 입력하시오.");
-	               document.getElementById(asd+1).value = null;
-	               flag = false;
-	               sweetAlert("개발시작일자보다 큰 값을 입력하시오.");
-	            }
-	      }
-	   if(idVal0 == null || idVal0 == "")
-	      {
-	         //alert("개발시작일자부터 입력하십시오.")
-	         document.getElementById(asd+1).value = null;
-	         flag = false;
-	         sweetAlert("개발시작일자부터 입력하십시오.");
-	      }
-	   if(idVal0 > currentDate || idVal1 > currentDate){
-		   //alert("오늘 이후 날짜는 입력할 수 없습니다. 다시 입력하십시오.");
-		   document.getElementById(asd).value = null;
-		   document.getElementById(asd+1).value = null;
-		   flag = false;
-		   sweetAlert("오늘 이후 날짜는 입력할 수 없습니다. 다시 입력하십시오.");
-	   }
-	   if(flag){
-		   alert("Dd");
-		   var idVal3 = document.getElementById(asd+3).id;
-		   $("#"+idVal3).removeClass("disabled");
-		   $("#"+idVal3).addClass("abled");
-		 }
-	} */
-
  function fn_result_change(pgId, obj){
 	 var date = obj.value;
 	 var cDate = (new Date().format("yyyy-MM-dd"));
