@@ -57,28 +57,28 @@
 window.onload = function() {
 		
 		/** 결함 진행상태 통계 시작*/
-		var taskByMainStats = JSON.parse('${taskByMainStats}');
-		var taskByMainStatsTaskNm = new Array();
-		var taskByMainStatsTaskAll = new Array();
-		var taskByMainStatsActionStA3 = new Array();
-		for (var i = 0; i < taskByMainStats.length; i++) {
-			taskByMainStatsTaskNm.push(taskByMainStats[i].taskNm);
-			taskByMainStatsTaskAll.push(taskByMainStats[i].taskAll);
-			taskByMainStatsActionStA3.push(taskByMainStats[i].actionStA3);
+		var sysByMainStats = JSON.parse('${sysByMainStats}');
+		var sysByMainStatsSysNm = new Array();
+		var sysByMainStatsSysCnt = new Array();
+		var sysByMainStatsActionStA3Cnt = new Array();
+		for (var i = 0; i < sysByMainStats.length; i++) {
+			sysByMainStatsSysNm.push(sysByMainStats[i].sysNm);
+			sysByMainStatsSysCnt.push(sysByMainStats[i].sysCnt);
+			sysByMainStatsActionStA3Cnt.push(sysByMainStats[i].actionStA3Cnt);
 		}
-		var ctx6 = document.getElementById('taskByMainStats');
-		var taskByMainStatsChart = new Chart(ctx6, {
+		var ctx6 = document.getElementById('sysByMainStats');
+		var sysByMainStatsChart = new Chart(ctx6, {
 			type : 'bar',
 			data : {
-				labels : taskByMainStatsTaskNm,
+				labels : sysByMainStatsSysNm,
 				barThickness : '0.9',
 				datasets : [ {
-					label : '등록건수',
-					data : taskByMainStatsTaskAll,
+					label : '결함건수',
+					data : sysByMainStatsSysCnt,
 					backgroundColor : '#007bff',
 				}, {
 					label : '조치건수',
-					data : taskByMainStatsActionStA3,
+					data : sysByMainStatsActionStA3Cnt,
 					backgroundColor : '#00B3E6',
 				}]
 			},
@@ -321,8 +321,8 @@ window.onload = function() {
     			</div>
     			<br/><br/>
     			<c:choose>
-    			<c:when test="${taskByMainStats != null }">
-    			<canvas id="taskByMainStats" width="100%" height="30"></canvas>
+    			<c:when test="${sysByMainStats != null }">
+    			<canvas id="sysByMainStats" width="100%" height="30"></canvas>
     			</c:when>
     			<c:otherwise>
     			 등록된 결함이 없습니다.

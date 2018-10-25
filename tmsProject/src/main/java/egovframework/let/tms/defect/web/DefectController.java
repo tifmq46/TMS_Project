@@ -450,7 +450,7 @@ public class DefectController {
 		model.addAttribute("sysAllByActionCnt", sysAllByActionCnt);
 		
 		// 시스템별 조치율
-		List<?> sysByActionCnt = defectService.selectSysByActionCnt();
+		List<EgovMap> sysByActionCnt = defectService.selectSysByActionCnt();
 		model.addAttribute("sysByActionCnt", JSONArray.fromObject(sysByActionCnt));
 		
 		// 업무별 조치율 (

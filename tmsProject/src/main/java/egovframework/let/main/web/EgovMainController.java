@@ -2,6 +2,7 @@ package egovframework.let.main.web;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import egovframework.let.sym.prm.service.TmsProjectManageVO;
 import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.dev.service.DevPlanService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 import net.sf.json.JSONArray;
 
 /**
@@ -91,6 +93,7 @@ public class EgovMainController {
 	 * @param model
 	 * @exception Exception Exception
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/cmm/main/mainPage.do")
 	public String getMgtMainPage(HttpServletRequest request, ModelMap model, @ModelAttribute("TmsProjectManageVO") TmsProjectManageVO TmsProjectManageVO)
 	  throws Exception{
@@ -113,8 +116,9 @@ public class EgovMainController {
 		// 프로젝트 멤버 부분 끝 ----------------------------
 		
 		// 결함 진행상태 부분 시작 --------------------------
-		List<?> taskByMainStats = defectService.selectTaskByMainStats();
-		model.addAttribute("taskByMainStats", JSONArray.fromObject(taskByMainStats));
+		
+		List<?> sysByMainStats = defectService.selectSysByMainStats();
+		model.addAttribute("sysByMainStats", JSONArray.fromObject(sysByMainStats));
 		// 결함 진행상태 부분 끝 --------------------------
 		
 		// 개발 진척상태 부분 시작 --------------------------

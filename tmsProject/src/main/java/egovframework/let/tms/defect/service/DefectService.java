@@ -84,8 +84,6 @@ public interface DefectService {
 	
 	public void updateDefectIdSq();
 	
-	public List<?> selectTaskByMainStats();
-	
 	public List<EgovMap> selectSysByDefectCnt();
 
 	public List<?> selectTaskByDefectCnt(String sysNm);
@@ -94,11 +92,13 @@ public interface DefectService {
 	
 	public HashMap<String, Object> selectSysAllByActionCnt();
 	
-	public List<?> selectSysByActionCnt();
+	public List<EgovMap> selectSysByActionCnt();
 
 	public List<?> selectTaskByActionCnt();
 	
 	public List<?> selectTaskByActionCntForSysGb(String sysGb);
 	
 	public List<EgovMap> selectSysByDefectCntAll();
+	
+	public List<?> selectSysByMainStats();
 }
