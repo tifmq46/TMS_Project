@@ -95,6 +95,21 @@ function fn_result_regist(t){
 	
 	var idVal = document.getElementById(t).value;
 	var idVal1 = document.getElementById(t+1).value;
+	var page = document.listForm.page.value;
+	var sys = document.listForm.Sys.value;
+	var task = document.listForm.task.value;
+	var dev = document.listForm.searchByUserDevId.value;
+	var start = document.listForm.searchByPlanStartDt.value;
+	var end = document.listForm.searchByPlanEndDt.value;
+	var id = document.listForm.TmsProgrmFileNm_pg_id.value;
+	
+	alert(page);
+	alert(t);
+	alert(sys);
+	alert(task);
+	alert(dev);
+	alert(start);
+	alert(end);
 	
 	if(idVal == ""){
 		alert("계획시작일자를 입력하십시오.");
@@ -103,8 +118,17 @@ function fn_result_regist(t){
 		alert("계획종료일자를 입력하십시오."); 
 		return;
 	}else{
+		location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t
+				+"&planStartDt="+idVal+"&planEndDt="+idVal1+"&pageIndex="+page+"&searchByPgId="+id+"&searchBySysGb="+sys+"&searchByTaskGb="+task
+				+"&searchByUserDevId="+dev+"&searchByPlanStartDt="+start+"&searchByPlanEndDt="+end;
+	}
+	/* 
+	if(){
+		alert("계획종료일자를 입력하십시오."); 
+		return;
+	}else{
 		location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
-	}	
+	} */	
 			
 }
 
@@ -258,6 +282,7 @@ function searchFileNm() {
                 <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
                 <input type="hidden" id="s1" name="s1" />
                 <input type="hidden" id="s2" name="s2" />
+				<input type="hidden" name="page" id="page" value="${page}"/>
 				
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발계획관리</strong></h2></div>
@@ -293,47 +318,47 @@ function searchFileNm() {
 									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
 									</select>
-									<input type="hidden" name="searchBySysGb" value="">
+									<input type="hidden" name="searchBySysGb"  id="searchBySysGb" value="">
       			        		</td>
       			        		<td style="font-weight:bold;color:#666666;font-size:110%;">업무구분
-      			        		</td>
-      			        		<td>
-      			        		<select name="task" id="task" style="width:90%;text-align-last:center;">
-									   <option value="">선택하세요</option>
-									   <c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
-									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
-									    </c:forEach>	
-									</select>				
-									<input type="hidden" name="searchByTaskGb" value="">
-      			        		</td>
-      			        		<td>
-      			        		</td>
-      			        		<td>
-      			        		</td>
-      			        		<td>
-      			        		</td>
-      			        		<td>
-      			        		</td>
-      			        	</tr>
-      			        	<tr>
-      			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
-      			        		</td>
-      			        		<td style="padding-top:15px;">
-      			        		<% LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
-					  					pageContext.setAttribute("loginNm", loginVO.getName()) ;
-					  				if(loginVO.getName().equals("관리자")){	
-					  			%>
-					  			 <input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
-		                          	<datalist id="userAllList">
-		                          	<c:forEach var="userList" items="${userList}" varStatus="status">
-										<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
-									</c:forEach>
-									</datalist>
-		                          <%}else{%>
-		                          <input type="text" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="${loginNm}" readOnly/>
-		                          	
-		                          <%}%>
-      			        		</td>
+								</td>
+								<td>
+								<select name="task" id="task" style="width:90%;text-align-last:center;">
+									 <option value="">선택하세요</option>
+									 <c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
+											  <option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
+									  </c:forEach>	
+								  </select>				
+								  <input type="hidden" name="searchByTaskGb" value="">
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+							</tr>
+							<tr>
+								<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
+								</td>
+								<td style="padding-top:15px;">
+								<% LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
+										pageContext.setAttribute("loginNm", loginVO.getName()) ;
+									if(loginVO.getName().equals("관리자")){	
+								%>
+								 <input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+									<datalist id="userAllList">
+									<c:forEach var="userList" items="${userList}" varStatus="status">
+									  <option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+								  </c:forEach>
+								  </datalist>
+								<%}else{%>
+								<input type="text" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="${loginNm}" readOnly/>
+									
+								<%}%>
+								</td>
       			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">계획일자
       			        		</td>
       			        		<td colspan="3" style="padding-top:15px;">
