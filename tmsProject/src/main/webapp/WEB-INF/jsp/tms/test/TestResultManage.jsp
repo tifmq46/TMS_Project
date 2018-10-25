@@ -80,11 +80,15 @@ function testScenarioResultForm(target) {
 }
 
 function updateTestScenarioResult () {
-    
-    if (confirm('<spring:message code="common.save.msg" />')) {
-    	document.testScenarioResultInsert.action = "<c:url value='/tms/test/updateTestScenarioResultImpl.do'/>";
-        document.testScenarioResultInsert.submit();      
-    }
+	
+	if(document.testScenarioResultInsert.testscenarioId.value == ""){
+		alert("결과를 등록할 시나리오가 존재하지 않습니다.");
+	} else {
+	    if (confirm('<spring:message code="common.save.msg" />')) {
+	    	document.testScenarioResultInsert.action = "<c:url value='/tms/test/updateTestScenarioResultImpl.do'/>";
+	        document.testScenarioResultInsert.submit();      
+	    }
+	}
 }
 
 function insertDefect() {

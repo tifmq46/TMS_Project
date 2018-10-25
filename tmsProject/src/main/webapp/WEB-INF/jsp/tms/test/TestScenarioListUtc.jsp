@@ -179,6 +179,15 @@ function selectTestScenario() {
               
 		         <form:form commandName="searchVO" name="listForm" method="post" action="/tms/test/selectTestCaseList.do">   
                 <!-- 검색 필드 박스 시작 -->
+                
+               		<form:hidden path=""  id="TmsProgrmFileNm_user_dev_id"/>
+                    <form:hidden path=""  id="TmsProgrmFileNm_pg_nm"/>
+                    <form:hidden path=""  id="TmsProgrmFileNm_pg_full"/>
+                    <form:hidden path=""  id="TmsProgrmFileNm_sys_gb"/>
+                    <form:hidden path=""  id="TmsProgrmFileNm_task_gb"/>
+                    <form:hidden path=""  id="TmsProgrmFileNm_task_gb_code"/>
+                    <form:hidden path=""  id="TmsProgrmFileNm_user_real_id"/>
+                    
 					<div id="search_field">
               <div id="search_field_loc"><h2><strong>단위 테스트 시나리오 관리</strong></h2></div>
 					

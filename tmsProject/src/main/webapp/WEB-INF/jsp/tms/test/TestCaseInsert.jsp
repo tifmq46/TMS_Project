@@ -37,15 +37,14 @@ window.onload = function(){
 	$("#testcaseIdDuplicationCheck").keyup(function () {
 
 	});
-	
 }
 
-
-
-
-
 function insertTestCaseImpl(){
-
+	
+	
+	if($("#testcaseGb").val() == 'TC1' && $("#TmsProgrmFileNm_pg_id").val() == ""){
+		alert("단위 테스트케이스 등록시 화면ID를 선택해야합니다.")
+	} else {
 	
 	var inputTestcaseId = $("#testcaseIdDuplicationCheck").val();
 	 $.ajax({
@@ -76,7 +75,7 @@ function insertTestCaseImpl(){
 	   	}
 	   		
 	   });
-	
+	}
 	
 	
 }
@@ -246,6 +245,7 @@ function searchFileNm() {
                           </tr>
                          	<form:hidden path=""  id="TmsProgrmFileNm_sys_gb"/>
                          	<form:hidden path=""  id="TmsProgrmFileNm_task_gb"/>
+                         	<form:hidden path=""  id="TmsProgrmFileNm_pg_full"/>
                        </table>
                     </div>
              	
