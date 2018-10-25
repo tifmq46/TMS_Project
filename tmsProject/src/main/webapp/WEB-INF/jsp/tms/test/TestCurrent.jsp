@@ -83,6 +83,15 @@ function currentToExel(pageNo) {
               
 		        <form:form commandName="searchVO" name="listForm" method="post" action="/tms/test/selectTestCurrent.do">   
                 <!-- 검색 필드 박스 시작 -->
+                
+                	<form:hidden path=""  id="TmsProgrmFileNm_user_dev_id"/>
+                    <form:hidden path=""  id="TmsProgrmFileNm_pg_nm"/>
+                    <form:hidden path=""  id="TmsProgrmFileNm_pg_full"/>
+                    <form:hidden path=""  id="TmsProgrmFileNm_sys_gb"/>
+                    <form:hidden path=""  id="TmsProgrmFileNm_task_gb"/>
+                    <form:hidden path=""  id="TmsProgrmFileNm_task_gb_code"/>
+                    <form:hidden path=""  id="TmsProgrmFileNm_user_real_id"/>
+                
 					<div id="search_field">
               <div id="search_field_loc">
               <h2><strong>
@@ -128,7 +137,11 @@ function currentToExel(pageNo) {
       			        </td>
 				  				<c:if test="${testCurrent[0].pgId != '' && testCurrent[0].pgId ne null }">
 									<td style="font-weight:bold;color:#666666;font-size:110%;"><spring:message code="tms.test.pgId" /></td>
-						  			<td><input type="text" name="searchByPgId" id="searchByPgId" size="15" style="width:80%;text-align:center;"  value="<c:out value='${searchVO.searchByPgId}'/>"/></td>
+						  			<td>
+							  			<input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id"  style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+							  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+			                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
+      			        			</td>
 					  			</c:if>
       			        		<c:if test="${testCurrent[0].pgId == '' && testCurrent[0].pgId eq null }">
 									<td></td>
@@ -185,20 +198,6 @@ function currentToExel(pageNo) {
       			        </td>
       			        </tr>
       			        </table>
-					  		
-															
-					  		
-					  			
-					  		
-					  			
-					  			
-					  			
-					  			
-					  			
-					  			
-					  			
-					  			
-									  				  			
 					  				
 						</div>			
 						</fieldset>
