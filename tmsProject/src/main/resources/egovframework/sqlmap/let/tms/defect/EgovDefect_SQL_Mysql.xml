@@ -703,21 +703,6 @@
         ]]>
     </select>
     
-    <select id="defectDAO.selectTaskByMainStats" resultClass="egovMap">
-        <![CDATA[
-        	SELECT A.CODE AS taskGb, A.CODE_NM AS taskNm, IFNULL(B.TASKALL,0) AS taskAll, IFNULL(B.ACTSIONSTA3,0) AS actionStA3
-			FROM LETTCCMMNDETAILCODE AS A INNER JOIN
-				(SELECT P.TASK_GB, COUNT(P.TASK_GB) AS TASKALL,
-				COUNT(CASE WHEN ACTION_ST='A3' THEN 1 END) AS ACTSIONSTA3
-				FROM DEFECT_TB AS D, PG_TB AS P
-				WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
-				GROUP BY P.TASK_GB
-			) AS B ON A.CODE = B.TASK_GB
-			WHERE A.CODE_ID='TASKGB'
-			ORDER BY taskAll DESC, actionStA3 DESC
-        ]]>
-    </select>
-    
     <select id="defectDAO.selectSysByDefectCnt" resultClass="egovMap">
         <![CDATA[
         	SELECT A.CODE AS sysGb, A.CODE_NM AS sysNm, IFNULL(B.sysCnt,0) AS sysCnt
@@ -817,6 +802,29 @@
         	SELECT CAST('sysGb' AS CHAR) AS sysGb, CAST('전체' AS CHAR) AS sysNm, COUNT(*) AS sysCnt
 			FROM DEFECT_TB AS D, PG_TB AS P
 			WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectSysByMainStats" resultClass="egovMap">
+        <![CDATA[
+        	
+			SELECT CAST('sysGb' AS CHAR) AS sysGb, CAST('전체' AS CHAR) AS sysNm, COUNT(*) AS sysCnt, COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END) AS actionStA3Cnt, ROUND(IFNULL((COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END)/COUNT(*)),0)*100,1) AS actionPer
+			FROM DEFECT_TB AS D, PG_TB AS P
+			WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
+
+			UNION ALL
+
+			SELECT A.CODE AS sysGb, A.CODE_NM AS sysNm, IFNULL(B.SYSCNT,0) AS sysCnt, IFNULL(B.ACTIONA3CNT,0) AS actionStA3Cnt, IFNULL(B.ACTIONPER,0) AS actionPer
+			FROM LETTCCMMNDETAILCODE AS A LEFT JOIN
+				(SELECT P.SYS_GB AS SYSGB, COUNT(*) AS SYSCNT, COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END) AS ACTIONA3CNT, ROUND(IFNULL((COUNT(CASE WHEN D.ACTION_ST ='A3' THEN 1 END)/COUNT(*)),0)*100,1) AS ACTIONPER
+				FROM DEFECT_TB AS D, PG_TB AS P
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN ='Y'
+				GROUP BY P.SYS_GB)
+			AS B ON A.CODE = B.SYSGB
+			WHERE A.CODE_ID = 'SYSGB'
+			
+			ORDER BY sysCnt DESC, actionStA3Cnt DESC, actionPer DESC;
+        	
         ]]>
     </select>
     

@@ -288,13 +288,6 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 
 
 	@Override
-	public List<?> selectTaskByMainStats() {
-		// TODO Auto-generated method stub
-		return defectDAO.selectTaskByMainStats();
-	}
-
-
-	@Override
 	public List<EgovMap> selectSysByDefectCnt() {
 		// TODO Auto-generated method stub
 		return defectDAO.selectSysByDefectCnt();
@@ -323,7 +316,7 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 
 
 	@Override
-	public List<?> selectSysByActionCnt() {
+	public List<EgovMap> selectSysByActionCnt() {
 		// TODO Auto-generated method stub
 		return defectDAO.selectSysByActionCnt();
 	}
@@ -347,6 +340,13 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 	public List<EgovMap> selectSysByDefectCntAll() {
 		// TODO Auto-generated method stub
 		return defectDAO.selectSysByDefectCntAll();
+	}
+
+
+	@Override
+	public List<?> selectSysByMainStats() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectSysByMainStats();
 	}
 
 

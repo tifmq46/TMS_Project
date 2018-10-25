@@ -236,10 +236,6 @@ public class DefectDAO extends EgovAbstractDAO{
 		
 	}
 	
-	public List<?> selectTaskByMainStats() {
-		return list("defectDAO.selectTaskByMainStats");
-	}
-	
 	@SuppressWarnings("unchecked")
 	public List<EgovMap> selectSysByDefectCnt() {
 		return (List<EgovMap>) list("defectDAO.selectSysByDefectCnt");
@@ -258,8 +254,9 @@ public class DefectDAO extends EgovAbstractDAO{
 		return (HashMap<String, Object>) select("defectDAO.selectSysAllByActionCnt");
 	}
 	
-	public List<?> selectSysByActionCnt(){
-		return list("defectDAO.selectSysByActionCnt");
+	@SuppressWarnings("unchecked")
+	public List<EgovMap> selectSysByActionCnt(){
+		return (List<EgovMap>) list("defectDAO.selectSysByActionCnt");
 	}
 	
 	public List<?> selectTaskByActionCnt() {
@@ -273,5 +270,9 @@ public class DefectDAO extends EgovAbstractDAO{
 	@SuppressWarnings("unchecked")
 	public List<EgovMap> selectSysByDefectCntAll() {
 		return (List<EgovMap>) list("defectDAO.selectSysByDefectCntAll");
+	}
+	
+	public List<?> selectSysByMainStats() {
+		return list("defectDAO.selectSysByMainStats");
 	}
 }
