@@ -215,11 +215,20 @@ public class DevPlanController {
 	/**비동기처리 테스트 */
 	@RequestMapping("/tms/dev/selectTest.do")
 	@ResponseBody
-	public String selectTest(String dateVal) throws Exception {
-		String gg = dateVal;
-		System.out.println("값 확인"+gg);
-		
-		return gg;
+	public String selectTest(String start, String end) throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		System.out.println("start:"+start+"//end:"+end);
+		/*
+		*/
+		if(start.equals("") || end.equals("")){
+			return null;
+		}else{
+			Date startDate = sdf.parse(start);
+			Date endDate = sdf.parse(end);
+			ArrayList<String> a= betweenDate(startDate, endDate);
+			return String.valueOf(a.size());
+		}
 	}
 	
 	

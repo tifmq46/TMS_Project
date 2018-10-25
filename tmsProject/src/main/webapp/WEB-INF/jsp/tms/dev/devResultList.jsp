@@ -193,6 +193,7 @@ function fn_result_regist(t){
 
 function fn_searchList(pageNo){
     document.listForm.pageIndex.value = pageNo;
+    document.listForm.searchBySysGb.value = document.listForm.Sys.value;
     document.listForm.searchByTaskGb.value = document.listForm.task.value;
     document.listForm.action = "<c:url value='/tms/dev/devResultList.do'/>";
     document.listForm.submit();
@@ -347,15 +348,15 @@ $(function(){
 		                          	
 		                          <%}%>
       			        		</td>
-      			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">계획일자
+      			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발일자
       			        		</td>
       			        		<td colspan="3" style="padding-top:15px;">
-								<input type="date" id="searchByPlanStartDt" name="searchByPlanStartDt" 
-									value="<fmt:formatDate value="${searchVO.searchByPlanStartDt}" pattern="yyyy-MM-dd"/>"/>
+								<input type="date" id="searchByDevStartDt" name="searchByDevStartDt" 
+									value="<fmt:formatDate value="${searchVO.searchByDevStartDt}" pattern="yyyy-MM-dd"/>"/>
 								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
 					  			&nbsp;~&nbsp;
-					  			<input type="date" id="searchByPlanEndDt" name="searchByPlanEndDt" 
-					  				value="<fmt:formatDate value="${searchVO.searchByPlanEndDt}" pattern="yyyy-MM-dd"/>"/>
+					  			<input type="date" id="searchByDevEndDt" name="searchByDevEndDt" 
+					  				value="<fmt:formatDate value="${searchVO.searchByDevEndDt}" pattern="yyyy-MM-dd"/>"/>
 					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
       			        		</td>
       			        		<td>
@@ -481,7 +482,7 @@ $(function(){
                 <%-- <c:if test="${!empty loginPolicyVO.pageIndex }"> --%>
                     <div id="paging_div">
                         <ul class="paging_align">
-                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage1" />
+                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_searchList" />
                         </ul>
                     </div>
                 <!-- //페이지 네비게이션 끝 -->
