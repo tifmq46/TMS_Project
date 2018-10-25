@@ -47,6 +47,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -1175,6 +1176,56 @@ public class TestController {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// 워크시트 생성
 		XSSFSheet sheet = workbook.createSheet();
+		
+		sheet.addMergedRegion(new CellRangeAddress(
+				0,
+				1,
+				0,
+				0
+				));
+		sheet.addMergedRegion(new CellRangeAddress(
+				0,
+				1,
+				1,
+				1
+				));
+		sheet.addMergedRegion(new CellRangeAddress(
+				0,
+				1,
+				2,
+				2
+				));
+		sheet.addMergedRegion(new CellRangeAddress(
+				0,
+				1,
+				3,
+				3
+				));
+		sheet.addMergedRegion(new CellRangeAddress(
+				0,
+				0,
+				4,
+				6
+				));
+		sheet.addMergedRegion(new CellRangeAddress(
+				0,
+				1,
+				7,
+				7
+				));
+		sheet.addMergedRegion(new CellRangeAddress(
+				0,
+				0,
+				8,
+				10
+				));
+		sheet.addMergedRegion(new CellRangeAddress(
+				0,
+				1,
+				11,
+				11
+				));
+		
 		// 행 생성
 		XSSFRow row = sheet.createRow(0);
 		// 쎌 생성
@@ -1210,19 +1261,24 @@ public class TestController {
 		cell = row.createCell(0);
 		cell.setCellValue("시스템구분");
 		cell.setCellStyle(HeadStyle); // 제목스타일
-
+		
 		cell = row.createCell(1);
 		cell.setCellValue("업무구분");
 		cell.setCellStyle(HeadStyle); // 제목스타일
-
+		
 		cell = row.createCell(2);
 		cell.setCellValue("프로그램 본수");
 		cell.setCellStyle(HeadStyle); // 제목스타일
-
+		
 		cell = row.createCell(3);
 		cell.setCellValue("테스트케이스 개수");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 
+		cell = row.createCell(4);
+		cell.setCellValue("테스트 진행");
+		cell.setCellStyle(HeadStyle); // 제목스타일
+		
+/*		
 		cell = row.createCell(4);
 		cell.setCellValue("미진행");
 		cell.setCellStyle(HeadStyle); // 제목스타일
@@ -1234,11 +1290,15 @@ public class TestController {
 		cell = row.createCell(6);
 		cell.setCellValue("2차");
 		cell.setCellStyle(HeadStyle); // 제목스타일
-
+*/
 		cell = row.createCell(7);
 		cell.setCellValue("진행률(%)");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 
+		cell = row.createCell(8);
+		cell.setCellValue("테스트 결과");
+		cell.setCellStyle(HeadStyle); // 제목스타일		
+/*		
 		cell = row.createCell(8);
 		cell.setCellValue("완료");
 		cell.setCellStyle(HeadStyle); // 제목스타일
@@ -1250,17 +1310,61 @@ public class TestController {
 		cell = row.createCell(10);
 		cell.setCellValue("합계");
 		cell.setCellStyle(HeadStyle); // 제목스타일
-
+*/
 		cell = row.createCell(11);
 		cell.setCellValue("완료율(%)");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 
+		row = sheet.createRow(1);
+		
+		cell = row.createCell(0);
+		cell.setCellValue("시스템구분");
+		cell.setCellStyle(HeadStyle); // 제목스타일
+		cell = row.createCell(1);
+		cell.setCellValue("업무구분");
+		cell.setCellStyle(HeadStyle); // 제목스타일
+		cell = row.createCell(2);
+		cell.setCellValue("프로그램 본수");
+		cell.setCellStyle(HeadStyle); // 제목스타일
+		cell = row.createCell(3);
+		cell.setCellValue("테스트케이스 개수");
+		cell.setCellStyle(HeadStyle); // 제목스타일
+		
+		cell = row.createCell(4);
+		cell.setCellValue("미진행");
+		cell.setCellStyle(HeadStyle); // 제목스타일
+
+		cell = row.createCell(5);
+		cell.setCellValue("1차");
+		cell.setCellStyle(HeadStyle); // 제목스타일
+
+		cell = row.createCell(6);
+		cell.setCellValue("2차");
+		cell.setCellStyle(HeadStyle); // 제목스타일
+		
+		cell = row.createCell(8);
+		cell.setCellValue("완료");
+		cell.setCellStyle(HeadStyle); // 제목스타일
+
+		cell = row.createCell(9);
+		cell.setCellValue("미완료");
+		cell.setCellStyle(HeadStyle); // 제목스타일
+
+		cell = row.createCell(10);
+		cell.setCellValue("합계");
+		cell.setCellStyle(HeadStyle); // 제목스타일	
+	
+		cell = row.createCell(11);
+		cell.setCellValue("완료율(%)");
+		cell.setCellStyle(HeadStyle); // 제목스타일
+		
+		
 		System.out.println(list.size());
 		// 리스트의 size 만큼 row를 생성
 		for (int i = 0; i < list.size(); i++) {
 			// 행 생성
 			EgovMap recode = (EgovMap) list.get(i);
-			row = sheet.createRow(i + 1);
+			row = sheet.createRow(i + 2);
 
 			cell = row.createCell(0);
 			cell.setCellValue((String) recode.get("sysGb"));
@@ -1311,13 +1415,18 @@ public class TestController {
 			cell.setCellStyle(BodyStyle); // 본문스타일
 
 		}
-
+		
 		/** 3. 컬럼 Width */
 		for (int i = 0; i < list.size(); i++) {
 			sheet.autoSizeColumn(i);
 			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000);
 		}
-
+		sheet.setColumnWidth(0, "시스템구분".length()*500 + 1000);
+		sheet.setColumnWidth(2, "프로그램 본수".length()*500 + 1000);
+		sheet.setColumnWidth(3, "테스트케이스 개수".length()*500 + 1000);
+		sheet.setColumnWidth(7, "진행률(%)".length()*500 + 1000);
+		sheet.setColumnWidth(11, "완료율(%)".length()*500 + 1000);
+		
 		// 입력된 내용 파일로 쓰기
 		File folder = new File("C:\\TMS\\TMS_통계자료");
 		File file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
