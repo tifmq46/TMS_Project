@@ -104,7 +104,7 @@
       			        	<td style="font-weight:bold;color:#666666;font-size:110%;">화면ID
       			        	</td>
       			        	<td>
-                      	    <input id="TmsProgrmFileNm_pg_id" name="searchByPgId" type="text" size="10" style="width:80%;text-align:center;" title="화면ID" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+                      	    <input id="TmsProgrmFileNm_pg_id" name="searchByPgId" type="text" size="10" autocomplete="off" style="width:80%;text-align:center;" title="화면ID" value="<c:out value='${searchVO.searchByPgId}'/>"/>
                      	    <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
                    		   <img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
       			        	</td>
@@ -151,7 +151,7 @@
       			        	<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
       			        	</td>
       			        	<td style="padding-top:15px;">
-                          	<input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="15" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+                          	<input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="15" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
       			        	</td>
       			        	  <datalist id="userAllList">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
@@ -217,7 +217,8 @@
                     <col width="5%"/>
                     <col width="15%"/>
                     <col width="15%"/>
-                    <col width="32%"/>
+                    <col width="8%"/>
+                    <col width="24%"/>
                     <col width="5%"/>
                     <col width="5%"/>
                     <col width="10%"/>
@@ -226,9 +227,10 @@
         			<tr>
         			
         				<th align="center">번호</th>
-        				<th align="center">업무구분</th>
+        				<th align="center">결함번호</th>
         				<th align="center">화면ID</th>
         				<th align="center">화면명</th>
+        				<th align="center">업무구분</th>
         				<th align="center">결함명</th>
         				<th align="center">결함유형</th>
         				<th align="center">테스터</th>
@@ -242,9 +244,10 @@
         			
             			<tr>
             				<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            				<td align="center" class="listtd"><c:out value="${result.taskGb}"/></td>
+            				<td align="center" class="listtd"><c:out value="${result.defectIdSq}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
             				<td align="center" class="listtd" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
+            				<td align="center" class="listtd"><c:out value="${result.taskGb}"/></td>
             				<td align="center" class="listtd" style="text-align:left;">
             				<a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>&amp;boardNo=<c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/>"
                        			 title="<c:out value="${result.defectTitle}"/>">

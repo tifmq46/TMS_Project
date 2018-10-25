@@ -182,7 +182,7 @@ function pagePrint(){
       			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
       			        		</td>
       			        		<td style="padding-top:15px;">
-					  			 <input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+					  			 <input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
 		                          	<datalist id="userAllList">
 		                          	<c:forEach var="userList" items="${userList}" varStatus="status">
 										<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>

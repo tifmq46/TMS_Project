@@ -336,7 +336,7 @@ $(function(){
 					  					pageContext.setAttribute("loginNm", loginVO.getName()) ;
 					  				if(loginVO.getName().equals("관리자")){	
 					  			%>
-					  			 <input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+					  			 <input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
 		                          	<datalist id="userAllList">
 		                          	<c:forEach var="userList" items="${userList}" varStatus="status">
 										<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>

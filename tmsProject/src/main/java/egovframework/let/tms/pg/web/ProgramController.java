@@ -233,7 +233,10 @@ public class ProgramController {
 		model.addAttribute("taskGb", taskGbList);
 		List<String> useYnList = TmsProgrmManageService.selectUseYn();
 		model.addAttribute("useYnList", useYnList);
-	
+		
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
 		int use_y = ProgramService.selectTotCntUseYn(searchVO);
 		model.addAttribute("USE_Y", use_y);
 		model.addAttribute("USE_N", totCnt-use_y);

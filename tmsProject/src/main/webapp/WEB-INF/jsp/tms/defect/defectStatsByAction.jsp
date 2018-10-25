@@ -368,7 +368,9 @@ window.onload = function() {
 				</table>
 				<br/><br/>
 			</div>
-
+			
+			<br/><br/><br/><br/>
+			
 			</div>
             <!-- //content 끝 -->
         </div>

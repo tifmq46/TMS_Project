@@ -89,18 +89,31 @@ function statsToExel(testcaseGb) {
 				  	 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 					  	 
 					  	<div class="sf_start">
-					  		<ul id="search_first_ul">
-					  		
-					  			<li><label for="searchByTestcaseGb"><spring:message code="tms.test.testcaseGb" /></label></li>
-								<li>
-									<select name="searchByTestcaseGb" id="searchByTestcaseGb"  value="<c:out value='${searchVO.searchByTestcaseGb}'/>" >
+							
+							<table style="width:100%;padding-bottom:10px;padding-left:10px;padding-top:10px;">
+                    		<colgroup>
+                  			  <col width="12%"/> 
+                  			  <col width="13.4%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="13.4%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="13.4%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="13.4%"/> 
+                  			  <col width="13.4%"/> 
+      			        	</colgroup>
+      			        <tr>
+      			        <td style="font-weight:bold;color:#666666;font-size:110%;">
+      			        <spring:message code="tms.test.testcaseGb" />
+      			        </td>
+      			        <td >
+									<select name="searchByTestcaseGb" id="searchByTestcaseGb" style="width:90%;text-align-last:center;" value="<c:out value='${searchVO.searchByTestcaseGb}'/>" >
 										<c:forEach var="cmCode" items="${tcGbCode}">
 										<option value="${cmCode.code}"  <c:if test="${searchVO.searchByTestcaseGb == cmCode.code}">selected="selected"</c:if> >${cmCode.codeNm}</option>
 										</c:forEach>
 									</select>						
-					  			</li>
-					  		
-						  		<li>
+      			        </td>
+      			        <td colspan="7">
 									<div class="buttons" style="float:right;">
 									    
 	                                       <a href="#" onclick="selectTestStatsTable('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
@@ -108,8 +121,11 @@ function statsToExel(testcaseGb) {
 											
 											<a href="#" onclick="statsToExel('${searchVO.searchByTestcaseGb}'); return false;">엑셀</a>
 									</div>	  				  			
-					  			</li> 
-					  		</ul>	
+      			        </td>
+      			        </tr>
+      			        </table>
+					  		
+					  		
 					  		
 						</div>			
 						</fieldset>

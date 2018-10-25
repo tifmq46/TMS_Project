@@ -80,85 +80,125 @@ function currentToExel(pageNo) {
                 </div>
     
     		 <br>
+              
+		        <form:form commandName="searchVO" name="listForm" method="post" action="/tms/test/selectTestCurrent.do">   
+                <!-- 검색 필드 박스 시작 -->
+					<div id="search_field">
               <div id="search_field_loc">
               <h2><strong>
               <c:if test="${searchVO.searchByTestcaseGb eq 'TC1'}">단위</c:if>
               <c:if test="${searchVO.searchByTestcaseGb eq 'TC2'}">통합</c:if>
               	테스트 현황</strong></h2>
               </div>
-              
-		        <form:form commandName="searchVO" name="listForm" method="post" action="/tms/test/selectTestCurrent.do">   
-                <!-- 검색 필드 박스 시작 -->
-					<div id="search_field">
 						
 					  	<fieldset><legend>조건정보 영역</legend>	
 					  	
 				  	 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 					  	 
 					  	<div class="sf_start">
-					  		<ul id="search_first_ul">
-					  		
-					  			<li><label for="searchByTestcaseGb"><spring:message code="tms.test.testcaseGb" /></label></li>
-								<li>
-									<select name="searchByTestcaseGb" id="searchByTestcaseGb"  value="<c:out value='${searchVO.searchByTestcaseGb}'/>" >
+				
+						<table style="width:100%;padding-bottom:10px;padding-left:10px;padding-top:10px;">
+                    		<colgroup>
+                  			  <col width="12%"/> 
+                  			  <col width="12.8%"/> 
+                  			  <col width="10%"/> 
+                  			  <col width="12.8%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="12.8%"/> 
+                  			  <col width="12.8%"/> 
+                  			  <col width="7%"/> 
+                   			  <col width="12.8%"/>
+      			        	</colgroup>
+      			        <tr>
+      			        <td style="font-weight:bold;color:#666666;font-size:110%;">
+      			        <spring:message code="tms.test.testcaseGb" />
+      			        </td>
+      			        <td>
+      			        <select name="searchByTestcaseGb" id="searchByTestcaseGb"  style="width:82%;text-align-last:center;" value="<c:out value='${searchVO.searchByTestcaseGb}'/>" >
 										<c:forEach var="cmCode" items="${tcGbCode}">
 										<option value="${cmCode.code}"  <c:if test="${searchVO.searchByTestcaseGb == cmCode.code}">selected="selected"</c:if> >${cmCode.codeNm}</option>
 										</c:forEach>
-									</select>						
-					  			</li>
-					  		
-					  			<li><label for="searchByTestcaseId"><spring:message code="tms.test.testcaseId" /></label></li>
-					  			<li><input type="text" name="searchByTestcaseId" id="searchByTestcaseId" size="15"  value="<c:out value='${searchVO.searchByTestcaseId}'/>" /></li>
-					  			
+									</select>
+      			        </td>
+      			        <td style="font-weight:bold;color:#666666;font-size:110%;">
+      			        <spring:message code="tms.test.testcaseId" />
+      			        </td>
+      			        <td>
+					  			<input type="text" name="searchByTestcaseId" id="searchByTestcaseId" size="15"  style="width:80%;text-align:center;"  value="<c:out value='${searchVO.searchByTestcaseId}'/>" />
+      			        </td>
 				  				<c:if test="${testCurrent[0].pgId != '' && testCurrent[0].pgId ne null }">
-									<li><label for="searchByPgId"><spring:message code="tms.test.pgId" /></label></li>
-						  			<li><input type="text" name="searchByPgId" id="searchByPgId" size="15"  value="<c:out value='${searchVO.searchByPgId}'/>"/></li>
+									<td style="font-weight:bold;color:#666666;font-size:110%;"><spring:message code="tms.test.pgId" /></td>
+						  			<td><input type="text" name="searchByPgId" id="searchByPgId" size="15" style="width:80%;text-align:center;"  value="<c:out value='${searchVO.searchByPgId}'/>"/></td>
 					  			</c:if>
-					  		</ul>	
-					  		
-					  		<ul id="search_second_ul">
-					  			
-					  			<li><label for="searchByTaskGb"><spring:message code="tms.test.taskGb" /></label></li>
-								<li>
-									<select name="searchByTaskGb" id="searchByTaskGb" value="<c:out value='${searchVO.searchByTaskGb}'/>">
+      			        		<c:if test="${testCurrent[0].pgId == '' && testCurrent[0].pgId eq null }">
+									<td></td>
+						  			<td></td>
+					  			</c:if>
+      			        <td colspan="3">
+      			        </td>
+      			        </tr>
+      			        <tr>
+      			        <td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
+      			        <spring:message code="tms.test.taskGb" />
+      			        </td>
+      			        <td style="padding-top:15px;">
+      			        <select name="searchByTaskGb" id="searchByTaskGb" style="width:82%;text-align-last:center;" value="<c:out value='${searchVO.searchByTaskGb}'/>">
 										<option value="">전체</option>
 										<c:forEach var="cmCode" items="${taskGbCode}">
 										<option value="${cmCode.code}" <c:if test="${searchVO.searchByTaskGb == cmCode.code}">selected="selected"</c:if>>${cmCode.codeNm}</option>
 										</c:forEach>
-									</select>						
-					  			</li>
-					  			
-					  			
-					  			<li><label for="searchByResultYn"><spring:message code="tms.test.completeYn" /></label></li>
-					  			<li>
-									<select name="searchByResultYn" id="searchByResultYn" value="<c:out value='${searchVO.searchByResultYn}'/>">
+									</select>	
+      			        </td>
+      			        <td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
+      			        <spring:message code="tms.test.userWriterId" />
+      			        </td>
+      			        <td style="padding-top:15px;">
+      			        <input type="text" name="searchByUserDevId" list="userAllList" autocomplete="off" id="searchByUserDevId"  style="width:80%;text-align:center;"  value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+      			        <datalist id="userAllList">
+									    <c:forEach var="userList" items="${userList}" varStatus="status">
+									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+									    </c:forEach>
+					        	</datalist>
+      			        </td>
+      			        <td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
+      			        <spring:message code="tms.test.completeYn" />
+      			        </td>
+      			        <td style="padding-top:15px;">
+      			        <select name="searchByResultYn" id="searchByResultYn" style="width:82%;text-align-last:center;" value="<c:out value='${searchVO.searchByResultYn}'/>">
 										<option value="">전체</option>
 										<c:forEach var="cmCode" items="${resultYnCode}">
 										<option value="${cmCode.code}" <c:if test="${searchVO.searchByResultYn == cmCode.code}">selected="selected"</c:if> >${cmCode.codeNm}</option>
 										</c:forEach>
-									</select>							
-					  			</li>
-					  			
-					  			
-					  			<li><label for="searchByUserDevId"><spring:message code="tms.test.userWriterId" /></label></li>
-					  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId"   value="<c:out value='${searchVO.searchByUserDevId}'/>"/></li>
-					  			
-					  			<li>
+									</select>	
+      			        </td>
+      			        <td colspan="2" style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
 					  				<input type="radio" name="asOf" value="pgId" <c:if test="${searchVO.asOf == 'pgId'}">checked="checked"</c:if>/>&nbsp;<label>화면Id</label> &nbsp;
 					  				<input type="radio" name="asOf" value="testcaseId" <c:if test="${searchVO.asOf == 'testcaseId'}">checked="checked"</c:if>/>&nbsp;<label>테스트케이스ID</label>
-					  			</li>
-					  			
-					  			
-					  			<li>
-									<div class="buttons" style="float:right;">
+      			        </td>
+      			        <td style="padding-top:15px;">
+      			        	<div class="buttons" style="float:right;">
 									    
 	                                       <a href="<c:url value='/tms/test/selectTestCurrent.do'/>" onclick="selectTestCurrent('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
 											<spring:message code="button.inquire" /></a>
 											<a href="#" onclick="currentToExel('${searchVO.pageIndex}'); return false;">엑셀</a>
-									</div>	  				  			
-					  			</li> 
+									</div>
+      			        </td>
+      			        </tr>
+      			        </table>
+					  		
+															
+					  		
 					  			
-					  		</ul>		
+					  		
+					  			
+					  			
+					  			
+					  			
+					  			
+					  			
+					  			
+					  			
+									  				  			
 					  				
 						</div>			
 						</fieldset>
