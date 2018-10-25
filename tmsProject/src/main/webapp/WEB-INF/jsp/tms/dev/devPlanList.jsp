@@ -69,6 +69,21 @@ function fn_result_regist(t){
 	
 	var idVal = document.getElementById(t).value;
 	var idVal1 = document.getElementById(t+1).value;
+	var page = document.listForm.page.value;
+	var sys = document.listForm.Sys.value;
+	var task = document.listForm.task.value;
+	var dev = document.listForm.searchByUserDevId.value;
+	var start = document.listForm.searchByPlanStartDt.value;
+	var end = document.listForm.searchByPlanEndDt.value;
+	var id = document.listForm.TmsProgrmFileNm_pg_id.value;
+	
+	alert(page);
+	alert(t);
+	alert(sys);
+	alert(task);
+	alert(dev);
+	alert(start);
+	alert(end);
 	
 	if(idVal == ""){
 		alert("계획시작일자를 입력하십시오.");
@@ -77,7 +92,9 @@ function fn_result_regist(t){
 		alert("계획종료일자를 입력하십시오."); 
 		return;
 	}else{
-		location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
+		location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t
+				+"&planStartDt="+idVal+"&planEndDt="+idVal1+"&pageIndex="+page+"&searchByPgId="+id+"&searchBySysGb="+sys+"&searchByTaskGb="+task
+				+"&searchByUserDevId="+dev+"&searchByPlanStartDt="+start+"&searchByPlanEndDt="+end;
 	}
 	/* 
 	if(){
@@ -239,6 +256,7 @@ function searchFileNm() {
                 <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
                 <input type="hidden" id="s1" name="s1" />
                 <input type="hidden" id="s2" name="s2" />
+				<input type="hidden" name="page" id="page" value="${page}"/>
 				
 				<div id="search_field">
 					<div id="search_field_loc"><h2><strong>개발계획관리</strong></h2></div>
@@ -255,7 +273,7 @@ function searchFileNm() {
 									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
 									</select>
-									<input type="hidden" name="searchBySysGb" value="">
+									<input type="hidden" name="searchBySysGb" id="searchBySysGb" value="">
 					  			</li>
 					  			<li>
 								    <label for="searchByTaskGb">업무구분</label>
@@ -265,7 +283,7 @@ function searchFileNm() {
 									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									    </c:forEach>	
 									</select>				
-									<input type="hidden" name="searchByTaskGb" value="">
+									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value="">
 					  			</li>
 					  			
 					  			<li><label for="searchByUserDevId">개발자명</label></li>

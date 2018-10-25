@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -99,6 +100,15 @@ public class DevPlanController {
 	
 	@RequestMapping(value = "/tms/dev/devPlans.do")
 	public String selectDevPlans(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
+		System.out.println("?1");
+		System.out.println("update2 : "+searchVO.getPageIndex());
+		System.out.println("update2 : "+searchVO.getSearchBySysGb());
+		System.out.println("update2 : "+searchVO.getSearchByTaskGb());	
+		System.out.println("?2");
+		System.out.println("update2 : "+searchVO.getSearchByPlanStartDt());
+		System.out.println("update2 : "+searchVO.getSearchByPlanEndDt());
+		System.out.println("?3");
+		System.out.println("update2 : "+searchVO.getSearchByUserDevId());
 		
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -205,6 +215,8 @@ public class DevPlanController {
 		
 		model.addAttribute("tms", tmsPrj);
 		
+		model.addAttribute("page", searchVO.getPageIndex());
+		
 		return "tms/dev/devPlanList";
 	}
 	/**
@@ -300,7 +312,7 @@ public class DevPlanController {
 	}
 	
 	@RequestMapping(value = "/tms/dev/updateDevPlan.do")
-	public String updateDevPlan(@ModelAttribute("searchVO") DevPlanVO dvo, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
+	public String updateDevPlan(final RedirectAttributes redirectAttributes, @ModelAttribute("search") DevPlanVO dvo, @ModelAttribute("searchVO") DevPlanDefaultVO vo, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 
 		//beanValidator.validate(dvo, bindingResult); //validation 수행
 
@@ -318,9 +330,29 @@ public class DevPlanController {
 		}else{
 			devPlanService.insertDevPlan(dvo);
 		}
+			//vo.setSearchByPgId(dvo.getPgId());
+			System.out.println("update : "+vo.getPageIndex());
+			System.out.println("update : "+vo.getSearchByPgId());
+			System.out.println("update : "+vo.getSearchBySysGb());
+			System.out.println("update : "+vo.getSearchByTaskGb());
+			System.out.println("update : "+vo.getSearchByPlanStartDt());
+			System.out.println("update : "+vo.getSearchByPlanEndDt());
+			System.out.println("update : "+vo.getSearchByUserDevId());
+			
+			model.addAttribute("pageIndex", vo.getPageIndex());
+			/*model.addAttribute("searchByPgId", vo.getSearchByPgId());
+			model.addAttribute("searchBySysGb", vo.getSearchBySysGb());
+			model.addAttribute("searchByTaskGb", vo.getSearchByTaskGb());
+			model.add
+			model.addAttribute("searchByPlanStartDt",vo.getSearchByPlanStartDt());
+			model.addAttribute("searchByPlanEndDt", vo.getSearchByPlanEndDt());
+			model.addAttribute("searchByUserDevId", vo.getSearchByUserDevId());*/
+			redirectAttributes.addFlashAttribute("searchVO", vo);
 			
 			return "redirect:/tms/dev/devPlans.do";
-		//}
+			
+			//return "redirect:/tms/dev/devPlans.do?searchVO="+vo;
+		
 	}
 
 	@RequestMapping(value = "/tms/dev/deleteDevPlan.do")
@@ -384,6 +416,8 @@ public class DevPlanController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
+		model.addAttribute("page", searchVO.getPageIndex());
+		
 		return "tms/dev/devResultList";
 	}
 	
@@ -440,8 +474,8 @@ public class DevPlanController {
 			dvo.setAchievementRate(achRate);
 			devPlanService.updateDevResult(dvo);
 			status.setComplete();
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
-			return "redirect:/tms/dev/devResultList.do";
+			model.addAttribute("message", egovMessageSource.getMessage("success.common.uate"));
+			return "redirect:/tms/dev/devResultList.do?pageIndex="+dvo.getPageIndex()+"&searchBySysGb="+dvo.getSearchBySysGb()+"&searchByTaskGb="+dvo.getSearchByTaskGb();
 	}
 	
 	@RequestMapping(value = "/tms/dev/deleteDevResult.do")
