@@ -75,10 +75,11 @@ function fn_result_change(asd, t) {
 			   data : {start : idVal0, end : idVal1},
 			   datatype : "JSON",
 			   success:function(obj){
-				   $("#dayDiffLoc").empty();
+				   
+				   $("#dayDiffLoc"+asd).empty();
 				   if(obj != ""){
 					  var str = obj;
-					  $("#dayDiffLoc").append(str);
+					  $("#dayDiffLoc"+asd).append(str);
 				   }
 			   }
 		   });
@@ -103,13 +104,8 @@ function fn_result_regist(t){
 	var end = document.listForm.searchByPlanEndDt.value;
 	var id = document.listForm.TmsProgrmFileNm_pg_id.value;
 	
-	alert(page);
-	alert(t);
-	alert(sys);
-	alert(task);
-	alert(dev);
-	alert(start);
-	alert(end);
+	var testForm = $("#listForm").serializeArray();
+	var test = JSON.stringify(testForm);
 	
 	if(idVal == ""){
 		alert("계획시작일자를 입력하십시오.");
@@ -122,13 +118,6 @@ function fn_result_regist(t){
 				+"&planStartDt="+idVal+"&planEndDt="+idVal1+"&pageIndex="+page+"&searchByPgId="+id+"&searchBySysGb="+sys+"&searchByTaskGb="+task
 				+"&searchByUserDevId="+dev+"&searchByPlanStartDt="+start+"&searchByPlanEndDt="+end;
 	}
-	/* 
-	if(){
-		alert("계획종료일자를 입력하십시오."); 
-		return;
-	}else{
-		location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
-	} */	
 			
 }
 
@@ -138,11 +127,21 @@ function fn_result_reset(pgId){
 	var endDate = document.getElementById(pgId+1).value;
 	var bnt = document.getElementById(pgId+3).id;
 	
+	var page = document.listForm.page.value;
+	var sys = document.listForm.Sys.value;
+	var task = document.listForm.task.value;
+	var dev = document.listForm.searchByUserDevId.value;
+	var start = document.listForm.searchByPlanStartDt.value;
+	var end = document.listForm.searchByPlanEndDt.value;
+	var id = document.listForm.TmsProgrmFileNm_pg_id.value;
+	
 	if(startDate != "" && endDate != ""){
 		document.getElementById(pgId).value = "";
 		document.getElementById(pgId+1).value = "";
 		
-		location.href ="<c:url value='/tms/dev/deleteDevPlan.do'/>?pgId="+pgId;
+		location.href ="<c:url value='/tms/dev/deleteDevPlan.do'/>?pgId="+pgId
+		+"&pageIndex="+page+"&searchByPgId="+id+"&searchBySysGb="+sys+"&searchByTaskGb="+task
+		+"&searchByUserDevId="+dev+"&searchByPlanStartDt="+start+"&searchByPlanEndDt="+end;
 	}
 }
 
@@ -305,7 +304,7 @@ function searchFileNm() {
       			        		<td style="font-weight:bold;color:#666666;font-size:110%;">화면ID
       			        		</td>
       			        		<td>
-      			        		<input type="text" name="searchByPgId" style="width:80%;text-align:center;" id="TmsProgrmFileNm_pg_id" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+      			        		<input type="text" name="searchByPgId" style="width:80%;text-align:center;" id="TmsProgrmFileNm_pg_id" autocomplete="off" value="<c:out value='${searchVO.searchByPgId}'/>"/>
 					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
                       			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
       			        		</td>
@@ -452,7 +451,7 @@ function searchFileNm() {
                       <c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
                       </td>
                      
-            		  <td align="center" class="listtd"> <div id="dayDiffLoc"><c:out value="${result.DAY_DIFF}"/> </div></td>
+            		  <td align="center" class="listtd"> <div id="dayDiffLoc${result.PG_ID}"><c:out value="${result.DAY_DIFF}"/> </div></td>
             		 
             			  
             			<c:choose>
@@ -505,6 +504,8 @@ function searchFileNm() {
 		         <input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
 		         <input id="TmsProgrmFileNm_user_dev_id" type="hidden" /> 
 		         <input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
+		         <input id="TmsProgrmFileNm_task_gb_code" type="hidden" />
+         		 <input id="TmsProgrmFileNm_pg_full" type="hidden" />
                 
                 <!-- 페이지 네비게이션 시작 -->
                 <div id="paging_div">

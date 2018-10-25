@@ -144,7 +144,7 @@ function pagePrint(){
       			        		<td style="font-weight:bold;color:#666666;font-size:110%;">화면ID
       			        		</td>
       			        		<td>
-      			        		<input type="text" name="searchByPgId" style="width:80%;text-align:center;" id="TmsProgrmFileNm_pg_id" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+      			        		<input type="text" name="searchByPgId" style="width:80%;text-align:center;" id="TmsProgrmFileNm_pg_id" autocomplete="off" value="<c:out value='${searchVO.searchByPgId}'/>"/>
 					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
                       			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
       			        		</td>
@@ -193,12 +193,12 @@ function pagePrint(){
       			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">계획일자
       			        		</td>
       			        		<td colspan="3" style="padding-top:15px;">
-								<input type="date" id="searchByPlanStartDt" name="searchByPlanStartDt" 
-									value="<fmt:formatDate value="${searchVO.searchByPlanStartDt}" pattern="yyyy-MM-dd"/>"/>
+								<input type="date" id="searchByDevStartDt" name="searchByDevStartDt" 
+									value="<fmt:formatDate value="${searchVO.searchByDevStartDt}" pattern="yyyy-MM-dd"/>"/>
 								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
 					  			&nbsp;~&nbsp;
-					  			<input type="date" id="searchByPlanEndDt" name="searchByPlanEndDt" 
-					  				value="<fmt:formatDate value="${searchVO.searchByPlanEndDt}" pattern="yyyy-MM-dd"/>"/>
+					  			<input type="date" id="searchByDevEndDt" name="searchByDevEndDt" 
+					  				value="<fmt:formatDate value="${searchVO.searchByDevEndDt}" pattern="yyyy-MM-dd"/>"/>
 					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
       			        		</td>
       			        		<td>
@@ -219,26 +219,35 @@ function pagePrint(){
 					<%-- </form> --%>
 				</div>
 				<!-- //검색 필드 박스 끝 -->
- 			
 
-                <div id="page_info"><div id="page_info_align"></div></div>                    
+                <table width="85%" cellspacing="0" summary="총 건수, 달성률 표시하는 테이블">
+                 <caption style="visibility:hidden">총 건수, 달성률 표시하는 테이블</caption>
+                 
+                 <tr>
+                 	<td align="center" width="100" style="font-size:13px; font-weight:bolder">총 : <c:out value="${r.cnt}"/></td>
+                  	<td align="right" width="50" style="font-size:13px; font-weight:bolder">달성률 : </td>
+                 	<td style="font-size:15px; font-weight:bolder">
+                 	<c:choose>
+                 		<c:when test="${r.rateAvg ne '0' }">
+                 			<div class="progress" style="height: 1.5rem; width:300px;"><div class="progress-bar" style="width:${r.rateAvg}%" > <strong><c:out value=" ${r.rateAvg}"></c:out>%</strong></div></div>
+                 		</c:when>
+                 		<c:otherwise>
+                 			<div class="progress" style="height: 1.5rem; width:300px;"><div class="progress-bar" style="width:0%"> <strong><c:out value="0"></c:out>%</strong></div></div>
+                 		</c:otherwise>
+                 	</c:choose>
+                 	</td>
+                 </tr>        
+             	</table>
+                
+               <div id="printBox"> 
                 <div class="default_tablestyle">
-                
-                <div style="margin:10px;">
-	               	<strong>
-	                	총 : ${r.cnt}&nbsp;
-	                	달성률 : ${r.rateAvg}
-	                </strong>
-                </div>
-                
                 <%
-
 				 java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
 				 String today = formatter.format(new java.util.Date());
 				
 				 pageContext.setAttribute("today", today) ;
 				%>
-               <div id="printBox">
+               
               <table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
                  <caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
               
@@ -363,7 +372,9 @@ function pagePrint(){
 		         <input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
 		         <input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
 		         <input id="TmsProgrmFileNm_user_dev_id" type="hidden" /> 
-		         <input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
+		         <input id="TmsProgrmFileNm_user_real_id" type="hidden" />
+		         <input id="TmsProgrmFileNm_task_gb_code" type="hidden" />
+         		 <input id="TmsProgrmFileNm_pg_full" type="hidden" /> 
 
                 <!-- 페이지 네비게이션 시작 -->
                 <%-- <c:if test="${!empty loginPolicyVO.pageIndex }"> --%>

@@ -144,6 +144,11 @@ function fn_rate_change(pgId, event) {
 			var idVal3 = document.getElementById(pgId+3).id;
 			$("#"+idVal3).removeClass("disabled");
 			$("#"+idVal3).addClass("abled");
+			var rate = document.getElementById(pgId+4).value;
+
+			if(rate.length > 3){
+				alert("3자리까지 입력 가능합니다.")
+		    }
 			
 			document.listForm.flag.value = "change";
 			
@@ -151,9 +156,10 @@ function fn_rate_change(pgId, event) {
 		    var keyID = (event.which) ? event.which : event.keyCode;
 		    if ( (keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
 		        return;
-		    else
-		        return false;
-		
+		    else{
+		    	event.target.value = event.target.value.replace(/[^0-9]/g, "");
+		    	return false;
+		    }
 	}
 
 }
@@ -184,14 +190,21 @@ function fn_result_regist(t){
 	var rate = document.getElementById(t+4).value;
 	
 	var page = document.listForm.page.value;
-	var sys = document.listForm.searchBySysGb.value;
+	var sys = document.listForm.Sys.value;
 	var task = document.listForm.task.value;
 	var flag = document.listForm.flag.value;
+	
+	var dev = document.listForm.searchByUserDevId.value;
+	var start = document.listForm.searchByDevStartDt.value;
+	var end = document.listForm.searchByDevEndDt.value;
+	var id = document.listForm.TmsProgrmFileNm_pg_id.value;
+
 	if(rate == null || rate == ""){
 		alert("달성률을 입력해주십시오.");
 	}else{
 		location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1+"&achievementRate="+rate+"&flag="+flag
-				+"&pageIndex="+page+"&searchBySysGb="+sys+"&searchByTaskGb="+task;
+				+"&pageIndex="+page+"&searchByPgId="+id+"&searchBySysGb="+sys+"&searchByTaskGb="+task
+				+"&searchByUserDevId="+dev+"&searchByDevStartDt="+start+"&searchByDevEndDt="+end;
 	}	
 }
 
@@ -299,7 +312,7 @@ $(function(){
       			        		<td style="font-weight:bold;color:#666666;font-size:110%;">화면ID
       			        		</td>
       			        		<td>
-      			        		<input type="text" name="searchByPgId" style="width:80%;text-align:center;" id="TmsProgrmFileNm_pg_id" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+      			        		<input type="text" name="searchByPgId" style="width:80%;text-align:center;" id="TmsProgrmFileNm_pg_id" autocomplete="off" value="<c:out value='${searchVO.searchByPgId}'/>"/>
 					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
                       			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
       			        		</td>
@@ -442,7 +455,7 @@ $(function(){
             				
             				<c:choose>
 	            				<c:when test="${result.ACHIEVEMENT_RATE eq 100 || result.ACHIEVEMENT_RATE eq 0}" >
-	            						<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event);" class="disabled" /></td>
+	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event);"  class="disabled" /></td>
 	            				</c:when>
 	            				<c:otherwise>
 	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event);" /></td>
@@ -482,6 +495,8 @@ $(function(){
 		         <input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
 		         <input id="TmsProgrmFileNm_user_dev_id" type="hidden" /> 
 		         <input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
+		         <input id="TmsProgrmFileNm_task_gb_code" type="hidden" />
+         		 <input id="TmsProgrmFileNm_pg_full" type="hidden" />
 		         
                 <!-- 페이지 네비게이션 시작 -->
                 <%-- <c:if test="${!empty loginPolicyVO.pageIndex }"> --%>
