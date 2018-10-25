@@ -68,13 +68,18 @@ function fn_result_change(asd, t) {
 	         flag = false;
 	      }
 	   
-	   if(flag == true && idVal0 !="" && idVal1 !=""){
+	   if(flag == true &&(idVal0 !="" || idVal1 !="")){
 		   $.ajax({
 			   type : "POST",
 			   url: "<c:url value='/tms/dev/selectTest.do'/>",
-			   data : {dateVal : t.value},
+			   data : {start : idVal0, end : idVal1},
 			   datatype : "JSON",
 			   success:function(obj){
+				   $("#dayDiffLoc").empty();
+				   if(obj != ""){
+					  var str = obj;
+					  $("#dayDiffLoc").append(str);
+				   }
 			   }
 		   });
 	   }
@@ -99,14 +104,7 @@ function fn_result_regist(t){
 		return;
 	}else{
 		location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
-	}
-	/* 
-	if(){
-		alert("계획종료일자를 입력하십시오."); 
-		return;
-	}else{
-		location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t+"&planStartDt="+idVal+"&planEndDt="+idVal1;
-	} */	
+	}	
 			
 }
 
@@ -428,8 +426,9 @@ function searchFileNm() {
                       <td><input type="date"  id="${result.PG_ID}1" 
                       <c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
                       </td>
-            		  <td align="center" class="listtd"><c:out value="${result.DAY_DIFF}"/>&nbsp;</td>
-            		  
+                     
+            		  <td align="center" class="listtd"> <div id="dayDiffLoc"><c:out value="${result.DAY_DIFF}"/> </div></td>
+            		 
             			  
             			<c:choose>
             			  <c:when test="${d_test}">

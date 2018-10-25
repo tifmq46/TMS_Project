@@ -35,6 +35,7 @@ function fn_result_change(asd) {
 
 function fn_searchList(pageNo){
     document.listForm.pageIndex.value = pageNo;
+    document.listForm.searchBySysGb.value = document.listForm.Sys.value;
     document.listForm.searchByTaskGb.value = document.listForm.task.value;
     document.listForm.action = "<c:url value='/tms/dev/devCurrent.do'/>";
     document.listForm.submit();
@@ -207,6 +208,7 @@ function pagePrint(){
       			        		<td style="padding-top:15px;">
 									<div class="buttons" style="float:right;">
 										<a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+										<a href="#LINK" onclick="pagePrint()" style="selector-dummy:expression(this.hideFocus=false);">인쇄</a>
 									</div>	  				  			
       			        		</td>
       			        	</tr>
@@ -367,7 +369,7 @@ function pagePrint(){
                 <%-- <c:if test="${!empty loginPolicyVO.pageIndex }"> --%>
                     <div id="paging_div">
                         <ul class="paging_align">
-                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage1" />
+                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_searchList" />
                         </ul>
                     </div>
                 <!-- //페이지 네비게이션 끝 -->
