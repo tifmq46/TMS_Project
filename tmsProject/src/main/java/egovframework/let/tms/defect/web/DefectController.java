@@ -475,6 +475,7 @@ public class DefectController {
 		return taskByActionCnt;
 	}
 	
+	/** 통계표 */
 	@RequestMapping("/tms/defect/selectDefectStatsTable.do")
 	public String selectDefectStatsTable(ModelMap model){
 		List<String> taskGbList = defectService.selectTaskGbByDefect();
@@ -505,6 +506,7 @@ public class DefectController {
 		model.addAttribute("pgIdByStats",pgIdByStats);
 		model.addAttribute("userTestByStats",userTestByStats);
 		model.addAttribute("userDevByStats",userDevByStats);
+		
 		return "tms/defect/defectStatsList";
 	}
 	
