@@ -30,6 +30,7 @@
 
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <validator:javascript formName="testCaseVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript" defer="defer">
 
@@ -46,7 +47,6 @@ window.onload = function(){
 
 function insertTestCaseImpl(){
 
-	
 	var inputTestcaseId = $("#testcaseIdDuplicationCheck").val();
 	 $.ajax({
 	   	 type :"POST"
@@ -63,10 +63,19 @@ function insertTestCaseImpl(){
 	   		        return;
 	   		    }
 	   		    
-	   		    if (confirm('<spring:message code="common.regist.msg" />')) {
-	   		    	document.testCaseVO.action = "<c:url value='/tms/test/insertTestCaseImpl.do'/>";
-	   		        document.testCaseVO.submit();      
-	   		    }
+	   			swal({
+	   				text: '등록하시겠습니까?'
+	   				,buttons : true
+	   			})
+	   			.then((result) => {
+	   				if(result) {
+	   					
+	   					document.testCaseVO.action = "<c:url value='/tms/test/insertTestCaseImpl.do'/>";
+		   		        document.testCaseVO.submit();  
+	   				}else {
+	   					
+	   				}
+	   			});
 	   			
 	   		}
 	   	}
