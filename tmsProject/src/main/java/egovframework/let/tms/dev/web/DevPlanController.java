@@ -333,7 +333,6 @@ public class DevPlanController {
 		model.addAttribute("resultList", result);
 
 		return "tms/dev/devPlanRegist";
-		/*return "cop/com/EgovTemplateRegist";*/
 	}
 	
 	@RequestMapping(value = "/tms/dev/updateDevPlan.do")
@@ -355,23 +354,8 @@ public class DevPlanController {
 		}else{
 			devPlanService.insertDevPlan(dvo);
 		}
-			//vo.setSearchByPgId(dvo.getPgId());
-			System.out.println("update : "+vo.getPageIndex());
-			System.out.println("update : "+vo.getSearchByPgId());
-			System.out.println("update : "+vo.getSearchBySysGb());
-			System.out.println("update : "+vo.getSearchByTaskGb());
-			System.out.println("update : "+vo.getSearchByPlanStartDt());
-			System.out.println("update : "+vo.getSearchByPlanEndDt());
-			System.out.println("update : "+vo.getSearchByUserDevId());
 			
 			model.addAttribute("pageIndex", vo.getPageIndex());
-			/*model.addAttribute("searchByPgId", vo.getSearchByPgId());
-			model.addAttribute("searchBySysGb", vo.getSearchBySysGb());
-			model.addAttribute("searchByTaskGb", vo.getSearchByTaskGb());
-			model.add
-			model.addAttribute("searchByPlanStartDt",vo.getSearchByPlanStartDt());
-			model.addAttribute("searchByPlanEndDt", vo.getSearchByPlanEndDt());
-			model.addAttribute("searchByUserDevId", vo.getSearchByUserDevId());*/
 			redirectAttributes.addFlashAttribute("searchVO", vo);
 			
 			return "redirect:/tms/dev/devPlans.do";
@@ -381,11 +365,14 @@ public class DevPlanController {
 	}
 
 	@RequestMapping(value = "/tms/dev/deleteDevPlan.do")
-	public String deleteDevPlan(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
+	public String deleteDevPlan(final RedirectAttributes redirectAttributes, @ModelAttribute("searchVO") DevPlanDefaultVO dvo, SessionStatus status, Model model) throws Exception {
 
 		devPlanService.deleteDevPlan(dvo);
 		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
+		
+		redirectAttributes.addFlashAttribute("searchVO", dvo);
+		
 		return "redirect:/tms/dev/devPlans.do";
 	}
 	
@@ -457,7 +444,7 @@ public class DevPlanController {
 	}
 	
 	@RequestMapping(value = "/tms/dev/updateDevResult.do")
-	public String updateDevResult(@ModelAttribute("searchVO") DevPlanDefaultVO dvo,@RequestParam String flag, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
+	public String updateDevResult(final RedirectAttributes redirectAttributes, @ModelAttribute("searchVO") DevPlanDefaultVO dvo,@RequestParam String flag, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 
 		
 		//if (bindingResult.hasErrors()) {
@@ -499,8 +486,11 @@ public class DevPlanController {
 			dvo.setAchievementRate(achRate);
 			devPlanService.updateDevResult(dvo);
 			status.setComplete();
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.uate"));
-			return "redirect:/tms/dev/devResultList.do?pageIndex="+dvo.getPageIndex()+"&searchBySysGb="+dvo.getSearchBySysGb()+"&searchByTaskGb="+dvo.getSearchByTaskGb();
+			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
+			
+			redirectAttributes.addFlashAttribute("searchVO", dvo);
+			
+			return "redirect:/tms/dev/devResultList.do";
 	}
 	
 	@RequestMapping(value = "/tms/dev/deleteDevResult.do")
