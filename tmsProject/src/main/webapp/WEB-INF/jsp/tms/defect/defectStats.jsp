@@ -216,7 +216,7 @@ window.onload = function() {
 							<font color="#727272" style="font-size:1.4em;font-weight:bold">일자별 등록건수 / 조치건수</font>
 							<canvas id="dayByDefectCnt" width="100%" height="20"></canvas>
 							
-				
+							<br/><br/><br/><br/>
 
 			</div>
             <!-- //content 끝 -->

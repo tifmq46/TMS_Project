@@ -353,15 +353,7 @@ $(function(){
                 
                 
                 <form name="frm" id="frm" action ="<c:url value='/tms/pg/PgManage.do'/>" method="post">
-				<input type="submit" id="invisible" class="invisible"/>
-				<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 				
-				<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
-				<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
-				<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
-				<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
-				<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
-				<input id="cnt" type="hidden" />
 				
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
@@ -428,7 +420,7 @@ $(function(){
       			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
       			        		</td>
       			        		<td style="padding-top:15px;">
-      			        		<input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="15" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+      			        		<input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="15" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
       			        		<datalist id="userAllList">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
 									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
@@ -465,6 +457,15 @@ $(function(){
 							
                         </fieldset>
                  	</div>
+                 	<input type="submit" id="invisible" class="invisible"/>
+				<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+				
+				<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
+				<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
+				<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
+				<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
+				<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
+				<input id="cnt" type="hidden" />
                 	<!-- //검색 필드 박스 끝 -->
 
 

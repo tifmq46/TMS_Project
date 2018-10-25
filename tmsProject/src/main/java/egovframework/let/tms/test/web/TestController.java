@@ -35,6 +35,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.tms.test.service.TestCaseVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
@@ -58,7 +59,11 @@ public class TestController {
 	/** TestService */
 	@Resource(name = "testService")
 	private TestService testService;
-
+	
+	/** DefectService */
+	@Resource (name = "defectService")
+	private DefectService defectService;
+	
 	/** EgovCmmUseService */
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService egovCmmUseService;
@@ -573,7 +578,10 @@ public class TestController {
 		int totCnt = testService.selectTestCaseListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-
+		
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
 		return link;
 	}
 
@@ -632,7 +640,10 @@ public class TestController {
 		int totCnt = testService.selectTestCaseListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-
+		
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
 		return link;
 	}
 
@@ -691,7 +702,10 @@ public class TestController {
 		int totCnt = testService.selectTestCaseListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-
+		
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
 		return link;
 	}
 
@@ -806,7 +820,10 @@ public class TestController {
 		HashMap<String, Object> selectTestCurrentCnt = testService.selectTestCurrentCnt(searchVO);
 		model.addAttribute("selectTestCurrentCnt", selectTestCurrentCnt);
 		}
-
+		
+		List<?> userList = defectService.selectUser();
+		model.addAttribute("userList", userList);
+		
 		return "tms/test/TestCurrent";
 	}
 

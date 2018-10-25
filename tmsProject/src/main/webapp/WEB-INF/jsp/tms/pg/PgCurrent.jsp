@@ -182,8 +182,6 @@
                 </div>
                 
                 <form name="frm" id="frm" action ="<c:url value='/tms/pg/PgManage.do'/>" method="post">
-				<input type="submit" id="invisible" class="invisible"/>
-				
 				
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
@@ -249,7 +247,7 @@
       			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
       			        		</td>
       			        		<td style="padding-top:15px;">
-      			        		<input type="text" list="userAllList" name="searchByUserDevId" id="searchByUserDevId" size="15" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+      			        		<input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="15" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
       			        		<datalist id="userAllList">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
 									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
@@ -272,11 +270,9 @@
 									</select>			
       			        		</td>
       			        		<td colspan="5" style="padding-top:15px;">
-      			        		<div class="buttons" style="float:right;">                              			
-                                    	<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                                    	<a href="#Link" onclick="Pg_Delete_Search(); return false;">삭제</a>
-                                    	<a href="<c:url value='/tms/pg/PgInsert.do'/>" >등록</a>
-                                    	<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀등록</a>
+      			        		 <div class="buttons" style="float:right;">                                       
+                                       <a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+                              <a href="<c:url value='/tms/pg/ExelWrite.do'/>" onclick="setting();fn_egov_insert_addbbsUseInf(); return false;">엑셀 다운로드</a>
                                     </div>
       			        		</td>
       			        	</tr>
@@ -286,6 +282,7 @@
 							
                         </fieldset>
                  	</div>
+                 	<input type="submit" id="invisible" class="invisible"/>
                 	<!-- //검색 필드 박스 끝 -->
 
 				 <div id="page_info"><div id="page_info_align"></div></div>    

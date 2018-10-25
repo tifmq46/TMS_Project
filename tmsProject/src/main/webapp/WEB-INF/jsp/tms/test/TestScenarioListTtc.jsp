@@ -180,67 +180,90 @@ function selectTestScenario() {
                 </div>
     
     		 <br>
-              <div id="search_field_loc"><h2><strong>통합 테스트 시나리오 관리</strong></h2></div>
               
 		         <form:form commandName="searchVO" name="listForm" method="post" action="/tms/test/selectTestCaseList.do">   
                 <!-- 검색 필드 박스 시작 -->
 					<div id="search_field">
+              <div id="search_field_loc"><h2><strong>통합 테스트 시나리오 관리</strong></h2></div>
 					
-					  	<fieldset><legend>조건정보 영역</legend>	  
-						  	 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-						  	 
-				  			<div class="sf_start">
-						  		<ul id="search_first_ul">
-						  		
-						  			<li><label for="searchByTestcaseId"><spring:message code="tms.test.testcaseId" /></label></li>
-						  			<li><input type="text" name="searchByTestcaseId" id="searchByTestcaseId" value="<c:out value='${searchVO.searchByTestcaseId}'/>"/></li>
-						  			
-						  			<li><label for="searchByUserDevId"><spring:message code="tms.test.userWriterId" /></label></li>
-						  			<li><input type="text" name="searchByUserDevId" id="searchByUserDevId" value="<c:out value='${searchVO.searchByUserDevId}'/>" /></li>
-					  			
-						  		</ul>	
-						  		
-						  		
-						  		<ul id="search_second_ul">
-						  		
-						  			<li><label for="searchByTaskGb"><spring:message code="tms.test.taskGb" /></label></li>
-									<li>
-										<select name="searchByTaskGb" id="searchByTaskGb">
-											<option value="">전체</option>
-											<c:forEach var="cmCode" items="${taskGbCode}">
-											<option value="${cmCode.code}" <c:if test="${searchVO.searchByTaskGb == cmCode.code}">selected="selected"</c:if> >${cmCode.codeNm}</option>
-											</c:forEach>
-										</select>						
-						  			</li>
-						  			
-						  			
-						  			<li><label for="searchByResultYn"><spring:message code="tms.test.completeYn" /></label></li>
-						  			<li>
-										<select name="searchByResultYn" id="searchByResultYn">
-											<option value="">전체</option>
-											<c:forEach var="cmCode" items="${resultYnCode}">
-											<option value="${cmCode.code}" <c:if test="${searchVO.searchByResultYn == cmCode.code}">selected="selected"</c:if>>${cmCode.codeNm}</option>
-											</c:forEach>
-										</select>							
-						  			</li>
-						  			
-					  				<li>
-			                          <label>&nbsp;&nbsp;&nbsp;등록일자</label>&nbsp;&nbsp;&nbsp;
-			                        	<input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-			                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/><img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-		                            </li> 
-						  			
-						  			
-						  			<li>
+					  	<fieldset><legend>조건정보 영역</legend>	
+					  	
+				  	 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+					  	 
+					  	<div class="sf_start">
+					  	<table style="width:100%;padding-bottom:10px;padding-left:10px;padding-top:10px;">
+                    		<colgroup>
+                  			  <col width="10%"/> 
+                  			  <col width="13.8%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="13.8%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="13.8%"/> 
+                  			  <col width="7%"/> 
+                  			  <col width="13.8%"/> 
+                  			  <col width="13.8%"/> 
+      			        	</colgroup>
+      			        <tr>
+      			        	<td style="font-weight:bold;color:#666666;font-size:110%;">
+      			        	<spring:message code="tms.test.testcaseId" />
+      			        	</td>
+      			        	<td>
+					  			<input type="text" name="searchByTestcaseId" id="searchByTestcaseId" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByTestcaseId}'/>" />
+      			        	</td>
+      			        	<td style="font-weight:bold;color:#666666;font-size:110%;">
+      			        	<spring:message code="tms.test.taskGb" />					  			
+      			        	</td>
+      			        	<td>
+									<select name="searchByTaskGb" id="searchByTaskGb" style="width:90%;text-align-last:center;">
+										<option value="">전체</option>
+										<c:forEach var="cmCode" items="${taskGbCode}">
+										<option value="${cmCode.code}"  <c:if test="${searchVO.searchByTaskGb == cmCode.code}">selected="selected"</c:if>>${cmCode.codeNm}</option>
+										</c:forEach>
+									</select>						
+      			        	</td>
+	      			        <td style="font-weight:bold;color:#666666;font-size:110%;">
+						  			<spring:message code="tms.test.userWriterId" />
+	      			        </td>
+	      			        <td>
+						  			<input type="text" name="searchByUserDevId" id="searchByUserDevId" list="userAllList" autocomplete="off" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>" />
+	      			        		<datalist id="userAllList">
+									    <c:forEach var="userList" items="${userList}" varStatus="status">
+									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+									    </c:forEach>
+					        	</datalist>
+	      			        </td>
+       			        	<td colspan="3">
+      			        	</td>
+      			        </tr>
+      			        <tr>
+      			        <td style="padding-top:15px; font-weight:bold;color:#666666;font-size:110%;">
+      			   		  <spring:message code="tms.test.completeYn" />
+      			        </td>
+      			        <td style="padding-top:15px;">
+									<select name="searchByResultYn" id="searchByResultYn" style="width:82%;text-align-last:center;">
+										<option value="">전체</option>
+										<c:forEach var="cmCode" items="${resultYnCode}">
+										<option value="${cmCode.code}"  <c:if test="${searchVO.searchByResultYn == cmCode.code}">selected="selected"</c:if> >${cmCode.codeNm}</option>
+										</c:forEach>
+									</select>							
+      			        </td>
+      			        <td style="padding-top:15px; font-weight:bold;color:#666666;font-size:110%;">등록일자
+      			        </td>
+      			        <td colspan="3" style="padding-top:15px;">
+		                        	<input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+		                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+      			        </td>
+      			        <td colspan="3" style="padding-top:15px;">
 										<div class="buttons" style="float:right;">
 										    
 	                                        <a href="<c:url value='/tms/test/selectTestCaseList.do'/>" onclick="fn_egov_select_testCaseList('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" /><spring:message code="button.inquire" /></a>
 										     <a href= "<c:url value="/tms/test/insertTestCase.do" />" ><spring:message code="button.create" /></a>
 										</div>	  				  			
-						  			</li> 
-						  			
-						  		</ul>
-							</div>			
+      			        </td>
+      			        </tr>
+      			        </table>
+					  				
+						</div>			
 						</fieldset>
 						
 					</div>
