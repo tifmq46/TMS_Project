@@ -275,4 +275,16 @@ public class DefectDAO extends EgovAbstractDAO{
 	public List<?> selectSysByMainStats() {
 		return list("defectDAO.selectSysByMainStats");
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<EgovMap> selectUserDevPgIdByStats() {
+		return (List<EgovMap>) list("defectDAO.selectUserDevPgIdByStats");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<EgovMap> selectSysGbByStats() {
+		return (List<EgovMap>) list("defectDAO.selectSysGbByStats");
+	}
+	
+	
 }

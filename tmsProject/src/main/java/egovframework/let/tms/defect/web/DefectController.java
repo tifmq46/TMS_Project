@@ -27,6 +27,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -478,34 +479,13 @@ public class DefectController {
 	/** 통계표 */
 	@RequestMapping("/tms/defect/selectDefectStatsTable.do")
 	public String selectDefectStatsTable(ModelMap model){
-		List<String> taskGbList = defectService.selectTaskGbByDefect();
-		List<HashMap<String,String>> taskGbByStats = new ArrayList<HashMap<String,String>>();
-		for(int i=0; i<taskGbList.size(); i++) {
-			taskGbByStats.addAll(defectService.selectTaskByStats(taskGbList.get(i).toString()));
-		}
 		
-		List<String> pgIdList = defectService.selectPgIdByDefect();
-		List<HashMap<String,String>> pgIdByStats = new ArrayList<HashMap<String,String>>();
-		for (int i=0; i<pgIdList.size(); i++) {
-			pgIdByStats.addAll(defectService.selectPgByStats(pgIdList.get(i).toString()));
-		}
-
-		List<String> userTestList = defectService.selectUserTestIdByDefect();
-		List<HashMap<String,String>> userTestByStats = new ArrayList<HashMap<String,String>>();
-		for (int i=0; i<userTestList.size(); i++) {
-			userTestByStats.addAll(defectService.selectUserTestByStats(userTestList.get(i).toString()));
-		}
-
-		List<String> userDevList = defectService.selectUserDevIdByDefect();
-		List<HashMap<String,String>> userDevByStats = new ArrayList<HashMap<String,String>>();
-		for (int i=0; i<userDevList.size(); i++) {
-			userDevByStats.addAll(defectService.selectUserDevByStats(userDevList.get(i).toString()));
-		}
+		List<EgovMap> userDevPgIdByStats = defectService.selectUserDevPgIdByStats();
+		model.addAttribute("userDevPgIdByStats",userDevPgIdByStats);
 		
-		model.addAttribute("taskGbByStats",taskGbByStats);
-		model.addAttribute("pgIdByStats",pgIdByStats);
-		model.addAttribute("userTestByStats",userTestByStats);
-		model.addAttribute("userDevByStats",userDevByStats);
+		List<EgovMap> sysGbByStats = defectService.selectSysGbByStats();
+		model.addAttribute("sysGbByStats",sysGbByStats);
+		
 		
 		return "tms/defect/defectStatsList";
 	}
@@ -514,49 +494,23 @@ public class DefectController {
 	 * @throws Exception */
 	@RequestMapping(value = "/tms/defect/StatsToExcel.do")
 	public String StatsToExcel(@RequestParam("statsGb") String statsGb, ModelMap model, HttpServletResponse response) throws Exception {
-		
-		List<String> taskGbList = defectService.selectTaskGbByDefect();
-		List<HashMap<String,String>> taskGbByStats = new ArrayList<HashMap<String,String>>();
-		for(int i=0; i<taskGbList.size(); i++) {
-			taskGbByStats.addAll(defectService.selectTaskByStats(taskGbList.get(i).toString()));
-		}
 
-		List<String> pgIdList = defectService.selectPgIdByDefect();
-		List<HashMap<String,String>> pgIdByStats = new ArrayList<HashMap<String,String>>();
-		for (int i=0; i<pgIdList.size(); i++) {
-			pgIdByStats.addAll(defectService.selectPgByStats(pgIdList.get(i).toString()));
-		}
+		List<EgovMap> sysGbByStats = defectService.selectSysGbByStats();
+		List<EgovMap> userDevPgIdByStats = defectService.selectUserDevPgIdByStats();
 		
-		List<String> userTestList = defectService.selectUserTestIdByDefect();
-		List<HashMap<String,String>> userTestByStats = new ArrayList<HashMap<String,String>>();
-		for (int i=0; i<userTestList.size(); i++) {
-			userTestByStats.addAll(defectService.selectUserTestByStats(userTestList.get(i).toString()));
-		}
-		
-		List<String> userDevList = defectService.selectUserDevIdByDefect();
-		List<HashMap<String,String>> userDevByStats = new ArrayList<HashMap<String,String>>();
-		for (int i=0; i<userDevList.size(); i++) {
-			userDevByStats.addAll(defectService.selectUserDevByStats(userDevList.get(i).toString()));
-		}
-		
-		if(statsGb.equals("task")) {
-			xlsxWiter(taskGbByStats, statsGb, response);
-		} else if(statsGb.equals("pg")) {
-			xlsxWiter(pgIdByStats, statsGb, response);
-		} else if(statsGb.equals("userTest")) {
-			xlsxWiter(userTestByStats, statsGb, response);
+		if(statsGb.equals("sys")) {
+			xlsxWiter(sysGbByStats, statsGb, response);
 		} else {
-			xlsxWiter(userDevByStats, statsGb, response);
+			xlsxWiter(userDevPgIdByStats, statsGb, response);
 		}
 		
-		model.addAttribute("taskGbByStats",taskGbByStats);
-		model.addAttribute("pgIdByStats",pgIdByStats);
-		model.addAttribute("userTestByStats",userTestByStats);
-		model.addAttribute("userDevByStats",userDevByStats);
+		model.addAttribute("sysGbByStats",sysGbByStats);
+		model.addAttribute("userDevPgIdByStats",userDevPgIdByStats);
+
 		return "tms/defect/defectStatsList";
 	}
 	
-	public void xlsxWiter(List<HashMap<String,String>> list, String statsGb, HttpServletResponse response) throws Exception {
+	public void xlsxWiter(List<EgovMap> list,String statsGb, HttpServletResponse response) throws Exception {
 		// 워크북 생성
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// 워크시트 생성
@@ -593,83 +547,208 @@ public class DefectController {
 		BodyStyle.setFont(defaultFont);   
 		
 		// 헤더 정보 구성
-		cell = row.createCell(0);
-		cell.setCellValue("구분");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		
-		cell = row.createCell(1);
-		cell.setCellValue("상태/유형별");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		
-		cell = row.createCell(2);
-		cell.setCellValue("오류");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		
-		cell = row.createCell(3);
-		cell.setCellValue("개선");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		
-		cell = row.createCell(4);
-		cell.setCellValue("문의");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		
-		cell = row.createCell(5);
-		cell.setCellValue("기타");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		
-		cell = row.createCell(6);
-		cell.setCellValue("합계");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		
-		// 리스트의 size 만큼 row를 생성
-		for(int i=0; i < list.size(); i++) {
-			// 행 생성
-	
-			row = sheet.createRow(i+1);
-			
+		if(statsGb.equals("sys")) {
 			cell = row.createCell(0);
-			if(statsGb.equals("task")) {
-				cell.setCellValue(list.get(i).get("taskNm"));
-			} else if(statsGb.equals("pg")) {
-				cell.setCellValue(list.get(i).get("pgNm"));
-			} else if(statsGb.equals("userTest")) {
-				cell.setCellValue(list.get(i).get("userTestNm"));
-			} else {
-				cell.setCellValue(list.get(i).get("userDevNm"));
-			}
-			cell.setCellStyle(BodyStyle); // 본문스타일 
+			cell.setCellValue("시스템구분");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			cell = row.createCell(1);
-			cell.setCellValue(list.get(i).get("actionNm"));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
+			cell.setCellValue("업무구분");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+
+			cell = row.createCell(2);
+			cell.setCellValue("결함건수");
+			sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 5));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+
+			cell = row.createCell(6);
+			cell.setCellValue("조치건수");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(7);
+			cell.setCellValue("미조치건수");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 7, 7));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(8);
+			cell.setCellValue("조치율");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 8, 8));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			row = sheet.createRow(1);
 			
 			cell = row.createCell(2);
-			cell.setCellValue(String.format("%s", list.get(i).get("defectGbD1")));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
+			cell.setCellValue("오류");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			cell = row.createCell(3);
-			cell.setCellValue(String.format("%s", list.get(i).get("defectGbD2")));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
+			cell.setCellValue("개선");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			cell = row.createCell(4);
-			cell.setCellValue(String.format("%s", list.get(i).get("defectGbD3")));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
+			cell.setCellValue("문의");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			cell = row.createCell(5);
-			cell.setCellValue(String.format("%s", list.get(i).get("defectGbD4")));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
+			cell.setCellValue("기타");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			for(int i=0; i < list.size(); i++) {
+				row = sheet.createRow(i+2);
+				
+				cell = row.createCell(0);
+				cell.setCellValue(String.valueOf(list.get(i).get("sysNm")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(1);
+				cell.setCellValue(String.valueOf(list.get(i).get("taskNm")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(2);
+				cell.setCellValue(String.valueOf(list.get(i).get("defectGbD1")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(3);
+				cell.setCellValue(String.valueOf(list.get(i).get("defectGbD2")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(4);
+				cell.setCellValue(String.valueOf(list.get(i).get("defectGbD3")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(5);
+				cell.setCellValue(String.valueOf(list.get(i).get("defectGbD4")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(6);
+				cell.setCellValue(String.valueOf(list.get(i).get("actionStA3")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(7);
+				cell.setCellValue(String.valueOf(list.get(i).get("actionStA3Not")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(8);
+				cell.setCellValue(String.valueOf(list.get(i).get("actionPer")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+			}
+			
+		} else {
+			cell = row.createCell(0);
+			cell.setCellValue("개발자");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(1);
+			cell.setCellValue("화면ID");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+
+			cell = row.createCell(2);
+			cell.setCellValue("화면명");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(3);
+			cell.setCellValue("결함건수");
+			sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 6));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+
+			cell = row.createCell(7);
+			cell.setCellValue("조치건수");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 7, 7));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(8);
+			cell.setCellValue("미조치건수");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 8, 8));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(9);
+			cell.setCellValue("조치율");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 9, 9));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			row = sheet.createRow(1);
+			
+			cell = row.createCell(3);
+			cell.setCellValue("오류");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(4);
+			cell.setCellValue("개선");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(5);
+			cell.setCellValue("문의");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			cell = row.createCell(6);
-			cell.setCellValue(String.format("%s", list.get(i).get("rowSum")));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
+			cell.setCellValue("기타");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
+			for(int i=0; i<list.size(); i++) {
+				row = sheet.createRow(i+2);
+				
+				cell = row.createCell(0);
+				cell.setCellValue(String.valueOf(list.get(i).get("userNm")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				if((list.get(i).get("pgId")).toString().equals("소계")) {
+					cell = row.createCell(1);
+					sheet.addMergedRegion(new CellRangeAddress(i+2,i+2,1, 2));
+					cell.setCellValue(String.valueOf(list.get(i).get("pgId")));
+					cell.setCellStyle(BodyStyle); // 본문스타일 
+				} else {
+					cell = row.createCell(1);
+					cell.setCellValue(String.valueOf(list.get(i).get("pgId")));
+					cell.setCellStyle(BodyStyle); // 본문스타일 
+					
+					cell = row.createCell(2);
+					cell.setCellValue(String.valueOf(list.get(i).get("pgNm")));
+					cell.setCellStyle(BodyStyle); // 본문스타일 
+				}
+				
+				cell = row.createCell(3);
+				cell.setCellValue(String.valueOf(list.get(i).get("defectGbD1")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(4);
+				cell.setCellValue(String.valueOf(list.get(i).get("defectGbD2")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(5);
+				cell.setCellValue(String.valueOf(list.get(i).get("defectGbD3")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(6);
+				cell.setCellValue(String.valueOf(list.get(i).get("defectGbD4")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(7);
+				cell.setCellValue(String.valueOf(list.get(i).get("actionStA3")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(8);
+				cell.setCellValue(String.valueOf(list.get(i).get("actionStA3Not")));
+				cell.setCellStyle(BodyStyle); // 본문스타일
+				
+				cell = row.createCell(9);
+				cell.setCellValue(String.valueOf(list.get(i).get("actionPer")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+			}
 		}
 		
-		/** 3. 컬럼 Width */ 
-		for (int i = 0; i <  list.size(); i++){ 
-			sheet.autoSizeColumn(i); 
-			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 2000); 
-		}
+//		
+//		/** 3. 컬럼 Width */ 
+//		for (int i = 0; i <  list.size(); i++){ 
+//			sheet.autoSizeColumn(i); 
+//			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 2000); 
+//		}
 		
 		// 입력된 내용 파일로 쓰기
 		File folder = new File("C:\\TMS\\TMS_통계자료");
