@@ -1231,10 +1231,21 @@ public class TestController {
 		// 쎌 생성
 		XSSFCell cell;
 
-		Font defaultFont = workbook.createFont();
-		defaultFont.setFontHeightInPoints((short) 11);
+		Font defaultFont = workbook.createFont();        
+		defaultFont.setColor(HSSFColor.WHITE.index);
+		defaultFont.setBoldweight(Font.BOLDWEIGHT_BOLD); 
+		defaultFont.setFontHeightInPoints((short) 11); 
 		defaultFont.setFontName("맑은 고딕");
-
+		
+		Font contentFont = workbook.createFont();      
+		contentFont.setFontHeightInPoints((short) 11); 
+		contentFont.setFontName("맑은 고딕");
+		
+		Font hFont = workbook.createFont();    
+		hFont.setBoldweight(Font.BOLDWEIGHT_BOLD); 
+		hFont.setFontHeightInPoints((short) 11); 
+		hFont.setFontName("맑은 고딕");
+		
 		// 제목 스타일
 		CellStyle HeadStyle = workbook.createCellStyle();
 		HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
@@ -1255,8 +1266,18 @@ public class TestController {
 		BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
 		BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
 		BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-		BodyStyle.setFont(defaultFont);
+		BodyStyle.setFont(contentFont);
 
+		// 강조 스타일
+		CellStyle HStyle = workbook.createCellStyle();
+		HStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		HStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		HStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		HStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		HStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		HStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		HStyle.setFont(hFont);
+		
 		// 헤더 정보 구성
 		cell = row.createCell(0);
 		cell.setCellValue("시스템구분");
@@ -1368,51 +1389,99 @@ public class TestController {
 
 			cell = row.createCell(0);
 			cell.setCellValue((String) recode.get("sysGb"));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+			if(((String) recode.get("sysGb")).equals("합계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
 
 			cell = row.createCell(1);
 			cell.setCellValue((String) recode.get("taskGb"));
-			cell.setCellStyle(BodyStyle); // 본문스타일
-
+			if(((String) recode.get("taskGb")).equals("소계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
+			
 			cell = row.createCell(2);
 			cell.setCellValue(String.valueOf(recode.get("pgCnt")));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+			if(((String) recode.get("taskGb")).equals("소계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
 
 			cell = row.createCell(3);
 			cell.setCellValue(String.valueOf(recode.get("tcWriteYCnt")));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+			if(((String) recode.get("taskGb")).equals("소계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
 
 			cell = row.createCell(4);
 			cell.setCellValue(String.valueOf(recode.get("notTestCnt")));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+			if(((String) recode.get("taskGb")).equals("소계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
 
 			cell = row.createCell(5);
 			cell.setCellValue(String.valueOf(recode.get("firstTestCnt")));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+			if(((String) recode.get("taskGb")).equals("소계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
 
 			cell = row.createCell(6);
 			cell.setCellValue(String.valueOf(recode.get("secondTestCnt")));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+			if(((String) recode.get("taskGb")).equals("소계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
 
 			cell = row.createCell(7);
 			cell.setCellValue(String.valueOf(recode.get("tcProgressPct")));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+			if(((String) recode.get("taskGb")).equals("소계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
 
 			cell = row.createCell(8);
 			cell.setCellValue(String.valueOf(recode.get("tcResultYCnt")));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+			if(((String) recode.get("taskGb")).equals("소계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
 
 			cell = row.createCell(9);
 			cell.setCellValue(String.valueOf(recode.get("tcResultNCnt")));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+			if(((String) recode.get("taskGb")).equals("소계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
 
 			cell = row.createCell(10);
 			cell.setCellValue(String.valueOf(recode.get("tcWriteYCnt")));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+			if(((String) recode.get("taskGb")).equals("소계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
 
 			cell = row.createCell(11);
 			cell.setCellValue(String.valueOf(recode.get("tcResultPct")));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+			if(((String) recode.get("taskGb")).equals("소계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
 
 		}
 		

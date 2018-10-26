@@ -119,7 +119,7 @@ function statsToExel(testcaseGb) {
 	                                       <a href="#" onclick="selectTestStatsTable('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
 											<spring:message code="button.inquire" /></a>
 											
-											<a href="#" onclick="statsToExel('${searchVO.searchByTestcaseGb}'); return false;">엑셀</a>
+											<a href="#" onclick="statsToExel('${searchVO.searchByTestcaseGb}'); return false;">엑셀 다운로드</a>
 									</div>	  				  			
       			        </td>
       			        </tr>

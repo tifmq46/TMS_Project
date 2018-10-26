@@ -1,16 +1,3 @@
-<%--
-  Class Name : EgovTemplateList.jsp
-  Description : 템플릿 목록화면
-  Modification Information
- 
-      수정일         수정자                   수정내용
-    -------    --------    ---------------------------
-     2009.03.18   이삼섭              최초 생성
-     2011.08.31   JJY       경량환경 버전 생성
- 
-    author   : 공통서비스 개발팀 이삼섭
-    since    : 2009.03.18
---%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ page import="egovframework.com.cmm.service.EgovProperties" %>  
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -35,7 +22,6 @@
         	fn_egov_select_bbsUseInfs('1');
     	}
     }
-
     function fn_egov_addNotice() {
     }
     
@@ -54,7 +40,6 @@
             fn_egov_select_bbsUseInfs('1');
         }
     }
-
     function fn_egov_select_bbsUseInfs(pageNo){
         document.frm.pageIndex.value = pageNo; 
         document.frm.action = "<c:url value='/cop/com/selectBBSUseInfs.do'/>";
@@ -75,7 +60,6 @@
 <c:otherwise>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
-
 $(function(){
 	   $('#bbb').change(function() {
 	      $.ajax({
@@ -97,12 +81,10 @@ $(function(){
 	         error : function(request,status,error){
 	            alert("에러");
 	            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-
 	         }
 	      });
 	   })
 	})
-
 	function setting() {
 		document.frm.searchBySysGb.value = document.frm.bbb.value;
 		document.frm.searchByTaskGb.value = document.frm.task.value;
@@ -118,10 +100,8 @@ $(function(){
 		var checkField = document.frm.delYn;
         var checkId = document.frm.checkId;
         var returnValue = "";
-
         var returnBoolean = false;
         var checkCount = 0;
-
         if(checkField) {
             if(checkField.length > 1) {
                 for(var i=0; i<checkField.length; i++) {
@@ -162,7 +142,6 @@ $(function(){
         
     	window.open("<c:url value='/tms/pg/deletePgList.do?result="+returnValue+"'/>",'','width=500, height=300, left=350, top=200');
 	}
-
 	function Pg_select(pageNo){
 		document.frm.cnt.value = "a";
 		document.frm.searchBySysGb.value = document.frm.bbb.value;
@@ -184,10 +163,8 @@ $(function(){
 		var checkField = document.frm.delYn;
         var checkId = document.frm.checkId;
         var returnValue = "";
-
         var returnBoolean = false;
         var checkCount = 0;
-
         if(checkField) {
             if(checkField.length > 1) {
                 for(var i=0; i<checkField.length; i++) {
@@ -251,7 +228,6 @@ $(function(){
     	}
 	}
 	
-
 	function fncSelect_Info() {
     	/* document.frm.PgID.value = aaa; */
     	document.frm.action = "<c:url value='/tms/pg/selectPgInf.do'/>";
@@ -269,10 +245,8 @@ $(function(){
         var checkField = document.frm.delYn;
         var checkId = document.frm.checkId;
         var returnValue = "";
-
         var returnBoolean = false;
         var checkCount = 0;
-
         if(checkField) {
             if(checkField.length > 1) {
                 for(var i=0; i<checkField.length; i++) {
@@ -306,13 +280,11 @@ $(function(){
         }
 		
         document.frm.del.value = returnValue;
-
         return returnBoolean;
     }
     function searchFileNm() {
         window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
     }
-
 </script>
 </c:otherwise>
 </c:choose>
@@ -476,12 +448,12 @@ $(function(){
         				<colgroup>
         					<col width="10"/>
         					<col width="5"/> 
-        					<col width="25"/>
-        					<col width="40"/>
-        					<col width="30"/>
+        					<col width="20"/>
+        					<col width="50"/>
         					<col width="20"/>
         					<col width="20"/>
         					<col width="20"/>
+        					<col width="10"/>
         				</colgroup>
         				<tr>
         					<th scope="col" class="f_field" nowrap="nowrap"><input type="checkbox" name="checkAll" class="check2" onclick="fncCheckAll()" title="전체선택"></th>
@@ -499,16 +471,16 @@ $(function(){
             					<td align="center" class="listtd" nowrap="nowrap">
             						<input type="checkbox" name="delYn" class="check2" title="선택">
             						<input type="hidden" name="checkId" value="<c:out value="${result.pgId}"/>" /></td>
-            					<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+            					<td align="center" class="listtd"><font style="font-weight:bold"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></font></td>
             					<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
             					<td align="left" class="listtd">
             						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?pgId=<c:out value='${result.pgId}'/>">
-            							<strong><c:out value="${result.pgNm}"/></strong>
+            							<font color="#0F438A" style="font-weight:bold"><c:out value="${result.pgNm}"/></font>
             						</a></td>
             					<td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
-            					<td align="center" class="listtd"><c:out value="${result.useYn}"/></td>
+            					<td align="center" class="listtd"><font style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
             				</tr>
         				</c:forEach>
         			</table>  		
