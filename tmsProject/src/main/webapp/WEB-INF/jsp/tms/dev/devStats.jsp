@@ -18,33 +18,6 @@
 <script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
 <script type="text/javaScript">
 
-function devPlanStatsBySelectBoxChange() {
-	var selectBoxId = document.getElementById("devPlanStatsBySelectBox");
-	var selectBoxValue = selectBoxId.options[selectBoxId.selectedIndex].value;
-	
-	if(selectBoxValue == 1) {
-		document.getElementById("devPlanStatsByAll").style.display="inline";
-		document.getElementById("devPlanStatsByThisWeek").style.display="none";
-		document.getElementById("devPlanStatsByAccumulate").style.display="none";
-		document.getElementById("taskTotalByStats").style.display="inline";
-		document.getElementById("taskThisWeekByStats").style.display="none";
-		document.getElementById("taskAccumulateByStats").style.display="none";
-	} else if (selectBoxValue == 2) {
-		document.getElementById("devPlanStatsByAll").style.display="none";
-		document.getElementById("devPlanStatsByThisWeek").style.display="inline";
-		document.getElementById("devPlanStatsByAccumulate").style.display="none";
-		document.getElementById("taskTotalByStats").style.display="none";
-		document.getElementById("taskThisWeekByStats").style.display="inline";
-		document.getElementById("taskAccumulateByStats").style.display="none";
-	} else {
-		document.getElementById("devPlanStatsByAll").style.display="none";
-		document.getElementById("devPlanStatsByThisWeek").style.display="none";
-		document.getElementById("devPlanStatsByAccumulate").style.display="inline";
-		document.getElementById("taskTotalByStats").style.display="none";
-		document.getElementById("taskThisWeekByStats").style.display="none";
-		document.getElementById("taskAccumulateByStats").style.display="inline";
-	}
-}
 
 window.onload = function() {
 	
@@ -182,17 +155,18 @@ function handleClick(event, array){
 		success : function(result){
 			$("#taskByProgressRateLoc").empty();
 			var str = "";
-			str += "<table>";
-			str += "<tr>";
+			str += "<br/><br/><div style='overflow:auto; overflow-y:hidden;'>";
+			str += "<table style='border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);'>";
+			str += "<tr></tr><tr>";
 			$.each(result, function(index,item){
 				
-				str += "<td>";
+				str += "<td>&nbsp;&nbsp;";
 				if(temp == "sysGb") {
 					str += "<canvas id='" + item.sysGb + item.taskGb + "'";
 				} else {
 					str += "<canvas id='" + item.taskGb + "'";
 				}
-				str += "width='180' height='180' style='display:inline !important;'>";
+				str += "width='180' height='120' style='display:inline !important;'>";
 				str += "</canvas>"
 				str += "</td>";
 			});
@@ -201,10 +175,10 @@ function handleClick(event, array){
 			$.each(result, function(index,item){
 				str += "<td align='center' valign='middle'>";
 				str += "<div style='font-size:15px; font-weight:bolder;'>";
-				str += "<font color='#007BFF'>" + item.cntB;
+				str += "<font color='#007BFF'>&nbsp;&nbsp;" + item.cntB;
 				str += "</font>";
 				str += " / " + item.cntA;
-				str += "(" + item.rate + "%)<br/>";
+				str += "(" + item.rate + "%)<br/>&nbsp;&nbsp;";
 				if(temp == "sysGb") {
 					str += item.sysNm + "(" + item.taskNm + ")";
 				} else {
@@ -213,7 +187,7 @@ function handleClick(event, array){
 				str += "</td>";
 			});
 			str += "</tr>";
-			str += "</table>";
+			str += "</table></div><br/><br/>";
 			$("#taskByProgressRateLoc").append(str);
 			
 			var taskByProgressRate = result;
@@ -319,65 +293,58 @@ function handleClick(event, array){
                <div id="search_field">
 	                <div id="search_field_loc"><h2><strong>개발진척통계</strong></h2></div>  
 				</div>
-             <!-- <div align="right">
-						<select id=devPlanStatsBySelectBox style="width: 12%; text-align-last: center;"
-							onChange="javascript:devPlanStatsBySelectBoxChange();">
-							<option value="1" selected="selected">전체</option>
-							<option value="2">금주</option>
-							<option value="3">누적</option>
-						</select>
-			</div> -->
-			
-			<div id="devPlanStatsByAll" style="display:inline">
+				
+			<br/><br/><br/><br/><br/><br/>
+			<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
              <font color="#727272" style="font-size:1.17em;font-weight:bold">시스템별 진척률</font>
-      		 <div style="overflow:auto; white-space:nowrap; overflow-y:hidden;">
-            <table>
-            <tr>
-            <td>
-             &nbsp;&nbsp;<canvas id="progressRateTotal" width="250" height="200" style="display: inline"></canvas>&nbsp;&nbsp;
-             </td>
-            <c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
-            <td>
-            <canvas id="<c:out value="${sysByProgressRate.sysGb}"/>"  
-            	width="180" height="180" style="display: inline"></canvas>&nbsp;&nbsp;
-			</td>            
-            </c:forEach>
-            <br/>
-            </tr>
+             <br/><br/><br/><br/>
             
-            <tr>
-            <td align="center" valign="middle">
-             <div style="font-size:15px; font-weight:bolder;">
-            	<font color="#007BFF"><c:out value="${progressRateTotal.cntB}"/></font>	/ <c:out value="${progressRateTotal.cntA}"/> 
-                 (<c:out value=" ${progressRateTotal.rate}"></c:out>%)
-                 	<br/>
-                 	<strong>전체</strong>
-                 	<br/>
-             </div>
-            </td>
-            <c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
-            <td align="center" valign="middle">
-            	<div style="font-size:13px; font-weight:bolder;">
-            	<font color="#007BFF"><c:out value="${sysByProgressRate.cntB}"/></font> / 
-            	<c:out value="${sysByProgressRate.cntA}"/>
-                 	(<c:out value=" ${sysByProgressRate.rate}"></c:out>%)
-                 <br/>
-					<c:out value="${sysByProgressRate.sysNm}"/>
-                 <br/>
-                 </div>
-            </td>
-            </c:forEach>
-            </tr>
+            <table>
+            	<tr>
+            		<td>&nbsp;&nbsp;
+            			<canvas id="progressRateTotal" width="250" height="120" style="display: inline"></canvas>&nbsp;&nbsp;
+             		</td>
+            		<c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
+            			<td>&nbsp;&nbsp;
+            				<canvas id="<c:out value="${sysByProgressRate.sysGb}"/>"  
+            					width="180" height="120" style="display: inline"></canvas>
+						</td>            
+            		</c:forEach>
+            	</tr>
+				<tr>
+            		<td align="center" valign="middle">
+             			<div style="font-size:15px; font-weight:bolder;">
+            				<font color="#007BFF">&nbsp;&nbsp;<c:out value="${progressRateTotal.cntB}"/></font>	/ <c:out value="${progressRateTotal.cntA}"/> 
+                 			(<c:out value=" ${progressRateTotal.rate}"></c:out>%)
+                 			<br/>&nbsp;&nbsp; 전체<br/>
+             			</div>
+            		</td>
+            		<c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
+            		<td align="center" valign="middle">
+            			<div style="font-size:13px; font-weight:bolder;">
+            			<font color="#007BFF"><c:out value="${sysByProgressRate.cntB}"/></font> / 
+            			<c:out value="${sysByProgressRate.cntA}"/>
+                 		(<c:out value=" ${sysByProgressRate.rate}"></c:out>%)
+                 		<br/>&nbsp;&nbsp;
+							<c:out value="${sysByProgressRate.sysNm}"/>
+                 		<br/>
+                 		</div>
+            		</td>
+            		</c:forEach>
+            	</tr>
             </table>
-            <br><br>
-            <font color="#727272" style="font-size:1.17em;font-weight:bold">업무별 진척률</font>
-				<div id="taskByProgressRateLoc">
-				<table>
+            
+            <br/><br/>
+            <img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
+            <font color="#727272" style="font-size:1.17em;font-weight:bold">업무별 진척률</font><br/>
+				<div id="taskByProgressRateLoc" ><br/><br/>
+				 <div style="overflow:auto;  overflow-y:hidden;">
+				<table style="border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);">
 					<tr>
 						<c:forEach var="taskByProgressRate" items="${taskByProgressRate}" varStatus="status">
-							<td>
+							<td>&nbsp;&nbsp;
 								<canvas	id="<c:out value="${taskByProgressRate.sysGb}"/><c:out value="${taskByProgressRate.taskGb}"/>"
-									width="180" height="180" style="display: inline !important;"></canvas>
+									width="180" height="120" style="display: inline !important;"></canvas>
 							</td>
 						</c:forEach>
 					</tr>
@@ -385,108 +352,21 @@ function handleClick(event, array){
 						<c:forEach var="taskByProgressRate" items="${taskByProgressRate}" varStatus="status">
 						<td align="center" valign="middle">
 							<div style="font-size: 15px; font-weight: bolder;">
-								<font color="#007BFF"><c:out value="${taskByProgressRate.cntB}" /></font> /
+								<font color="#007BFF">&nbsp;&nbsp;<c:out value="${taskByProgressRate.cntB}" /></font> /
 								<c:out value="${taskByProgressRate.cntA}" />
 								(<c:out value=" ${taskByProgressRate.rate}"/>%)
-								<br/><c:out value="${taskByProgressRate.sysNm}"/>(<c:out value="${taskByProgressRate.taskNm}"/>)
+								<br/>&nbsp;&nbsp;<c:out value="${taskByProgressRate.sysNm}"/>(<c:out value="${taskByProgressRate.taskNm}"/>)
+							</div>
 						</td>
 						</c:forEach>
 					</tr>
-				</table>
+				</table></div>
+				<br/><br/>
             </div>
             
-			<%-- <div id="devPlanStatsByThisWeek" style="display:none">
-			<h3><strong>시스템별 금주 진척률</strong></h3>
-      		 <div style="overflow:auto; white-space:nowrap; overflow-y:hidden;">
-            <table>
-            <tr>
-            <td>
-             &nbsp;&nbsp;<canvas id="hashThisWeekByStats" width="200" height="200" style="display: inline !important;"></canvas>&nbsp;&nbsp;
-             </td>
-            <c:forEach var="sysThisWeekByStats" items="${sysThisWeekByStats}" varStatus="status">
-            <td>
-            <canvas id="<c:out value="sysThisWeek${sysThisWeekByStats.SYS_GB}"/>"  width="180" height="180" style="display: inline !important;"></canvas>&nbsp;&nbsp;
-			</td>            
-            </c:forEach>
-            <br/>
-            </tr>
-            
-            <tr>
-            <td align="center" valign="middle">
-            <div style="font-size:15px; font-weight:bolder;">
-            	<font color="#007BFF"><c:out value="${hashThisWeekByStats[0].CNTB}"/></font>	/ <c:out value="${hashThisWeekByStats[0].CNTA}"/> 
-                 (<c:out value=" ${hashThisWeekByStats[0].R}"></c:out>%)
-                 	<br/>
-                 	전체
-                 	<br/>
-             </div>
-            </td>
-            <c:forEach var="sysThisWeekByStats" items="${sysThisWeekByStats}" varStatus="status">
-            <td align="center" valign="middle">
-            	<div style="font-size:13px; font-weight:bolder;">
-            	<font color="#007BFF"><c:out value="${sysThisWeekByStats.CNTB}"/></font> / <c:out value="${sysThisWeekByStats.CNTA}"/>
-                 	(<c:out value=" ${sysThisWeekByStats.R}"></c:out>%)
-                 <br/>
-					<c:out value="${sysThisWeekByStats.SYS_NM}"/>
-                 <br/>
-                 </div>
-            </td>
-            </c:forEach>
-            </tr>
-            </table>
-            </div>
-             <h3><strong>업무별 금주 진척률</strong></h3>
-            </div>
-            
-			<canvas id="taskThisWeekByStats" width="100%" height="20" style="display:none"></canvas>   
-            
-            <div id="devPlanStatsByAccumulate" style="display:none">
-            <h3><strong>시스템별 누적 진척률</strong></h3>
-      		 <div style="overflow:auto; white-space:nowrap; overflow-y:hidden;">
-            <table>
-            <tr>
-            <td>
-             &nbsp;&nbsp;<canvas id="hashAccumulateByStats" width="200" height="200" style="display: inline !important;"></canvas>&nbsp;&nbsp;
-             </td>
-            <c:forEach var="sysAccumulateByStats" items="${sysAccumulateByStats}" varStatus="status">
-            <td>
-            <canvas id="<c:out value="sysAccumulate${sysAccumulateByStats.SYS_GB}"/>"  width="180" height="180" style="display: inline !important;"></canvas>&nbsp;&nbsp;
-			</td>            
-            </c:forEach>
-            <br/>
-            </tr>
-            
-            <tr>
-            <td align="center" valign="middle">
-            <div style="font-size:15px; font-weight:bolder;">
-            	<font color="#007BFF"><c:out value="${hashAccumulateByStats[0].CNTB}"/></font>	/ <c:out value="${hashAccumulateByStats[0].CNTA}"/> 
-                 (<c:out value=" ${hashAccumulateByStats[0].R}"></c:out>%)
-                 	<br/>
-                 	전체
-                 	<br/>
-             </div>
-            </td>
-            <c:forEach var="sysAccumulateByStats" items="${sysAccumulateByStats}" varStatus="status">
-            <td align="center" valign="middle">
-            	<div style="font-size:13px; font-weight:bolder;">
-            	<font color="#007BFF"><c:out value="${sysAccumulateByStats.CNTB}"/></font> / <c:out value="${sysAccumulateByStats.CNTA}"/>
-                 	(<c:out value=" ${sysAccumulateByStats.R}"></c:out>%)
-                 <br/>
-					<c:out value="${sysAccumulateByStats.SYS_NM}"/>
-                 <br/>
-                 </div>
-            </td>
-            </c:forEach>
-            </tr>
-            </table>
-            </div>
-             <h3><strong>업무별 누적 진척률</strong></h3>
-            </div>
-            
-			<canvas id="taskAccumulateByStats" width="100%" height="20" style="display:none"></canvas>    --%>
-            </div>
-            </div>
-            </div>
+            <br/><br/><br/><br/>
+
+			</div>
             <!-- //content 끝 -->
         </div>
         <!-- //container 끝 -->

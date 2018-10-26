@@ -312,18 +312,18 @@ function StatsToExcel(statsGb) {
 	          				<th align="center" rowspan="2">업무</th>
 	          				<th align="center" colspan="3"><strong>합계</strong></th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<th align="center" colspan="3">${status.count}주(${mw})</th>
+		                    	<th class='borderLine' scope="col" align="center" colspan="3">${status.count}주(${mw})</th>
 		                    </c:forEach>
 		                    
 	          			</tr>
 	          			<tr>
 	          				 <th align="center" ><strong>계획</strong></th>
 		                     <th align="center" ><strong>실적</strong></th>
-		                     <th align="center" ><strong>차이</strong></th>
+		                     <th class='borderLine' scope="col" align="center"><strong>차이</strong></th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
 		                    	<th align="center">계획</th>
 		                    	<th align="center">실적</th>
-		                    	<th align="center">차이</th>
+		                    	<th class='borderLine' scope="col" align="center">차이</th>
 		                    </c:forEach>
 
 	          			</tr>
@@ -361,7 +361,7 @@ function StatsToExcel(statsGb) {
 			           			<c:set var ="t2"  value="b${i}"></c:set>
 			           			<td>${ts[t2]}</td>
 			           			<c:set var ="t3"  value="sub${i}"></c:set>
-			           			<td>${ts[t3]}</td>
+			           			<td class='borderLine'>${ts[t3]}</td>
 							</c:forEach>
 							
 	                    </tr>
@@ -399,7 +399,7 @@ function StatsToExcel(statsGb) {
 			                    <th align="center" rowspan="2">총 본수</th>
 			                    <th align="center" colspan="3" class='line'>금주 계획대비 실적</th>
 			                    <th align="center" colspan="3" class='line'>금주 누적계획대비 실적</th>
-			                    <th align="center" colspan="2" class='line'>전체 진척률</th>
+			                    <th align="center" colspan="2" class='line borderLine'>전체 진척률</th>
 		          			</tr>
 		          			<tr>
 			                    <th align="center" >계획</th>
@@ -409,7 +409,7 @@ function StatsToExcel(statsGb) {
 			                    <th align="center" >실적</th>
 			                    <th align="center" class='line'>진척률</th>
 			                    <th align="center" >실적</th>
-			                    <th align="center" class='line'>진척률</th>
+			                    <th align="center" class='line borderLine'>진척률</th>
 		          			</tr>
 		                </thead>
 	           			
@@ -429,7 +429,7 @@ function StatsToExcel(statsGb) {
 			                    		<td id='lineStyle'><strong><c:out value="${t.ad}" /></strong></td>
 			                    		<td id='lineStyle'><strong><c:out value="${t.ar}" /></strong></td>
 			                    		<td id='lineStyle'><strong><c:out value="${t.totD}" /></strong></td>
-			                    		<td id='lineStyle'><strong><c:out value="${t.tot}" /></strong></td>
+			                    		<td id='lineStyle' class='borderLine'><strong><c:out value="${t.tot}" /></strong></td>
 			                    	</c:when>
 			                    	<c:when test="${t.sysNm eq '합계'}">
 			                    		<td id='lineStyle2'><strong><c:out value="${t.sysNm}" /></strong></td>
@@ -442,7 +442,7 @@ function StatsToExcel(statsGb) {
 			                    		<td id='lineStyle2'><strong><c:out value="${t.ad}" /></strong></td>
 			                    		<td id='lineStyle2'><strong><c:out value="${t.ar}" /></strong></td>
 			                    		<td id='lineStyle2'><strong><c:out value="${t.totD}" /></strong></td>
-			                    		<td id='lineStyle2'><strong><c:out value="${t.tot}" /></strong></td>
+			                    		<td id='lineStyle2' class='borderLine'><strong><c:out value="${t.tot}" /></strong></td>
 			                    	</c:when>
 			                    	<c:otherwise>
 			                    		<td><c:out value="${t.sysNm}" /></td>
@@ -455,7 +455,7 @@ function StatsToExcel(statsGb) {
 				                    	<td><c:out value="${t.ad}" /></td>
 				                    	<td><c:out value="${t.ar}" /></td>
 				                    	<td><c:out value="${t.totD}" /></td>
-				                    	<td><c:out value="${t.tot}" /></td>
+				                    	<td class='borderLine'><c:out value="${t.tot}" /></td>
 			                    	</c:otherwise>
 		                    	</c:choose>
 		                    	

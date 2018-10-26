@@ -96,28 +96,22 @@ window.onload = function() {
 		
 		/** 개발 진척상태 통계 시작*/
 		var devPlanByMainStats = JSON.parse('${devPlanByMainStats}');
-		var devPlanByMainStatsTaskNm = new Array();
-		var devPlanByMainStatsTaskAll = new Array();
-		var devPlanByMainStatsAchieveCnt = new Array();
+		var devPlanByMainStatsSysNm = new Array();
+		var devPlanByMainStatsRate = new Array();
 		for (var i = 0; i < devPlanByMainStats.length; i++) {
-			devPlanByMainStatsTaskNm.push(devPlanByMainStats[i].taskNm);
-			devPlanByMainStatsTaskAll.push(devPlanByMainStats[i].taskAll);
-			devPlanByMainStatsAchieveCnt.push(devPlanByMainStats[i].achieveCnt);
+			devPlanByMainStatsSysNm.push(devPlanByMainStats[i].sysNm);
+			devPlanByMainStatsRate.push(devPlanByMainStats[i].rate);
 		}
 		var ctx7 = document.getElementById('devPlanByMainStats');
 		var devPlanByMainStatsChart = new Chart(ctx7, {
 			type : 'bar',
 			data : {
-				labels : devPlanByMainStatsTaskNm,
+				labels : devPlanByMainStatsSysNm,
 				barThickness : '0.9',
 				datasets : [ {
-					label : '등록건수',
-					data : devPlanByMainStatsTaskAll,
+					label : '진척률',
+					data : devPlanByMainStatsRate,
 					backgroundColor : '#007bff',
-				}, {
-					label : '완료건수',
-					data : devPlanByMainStatsAchieveCnt,
-					backgroundColor : '#00B3E6',
 				}]
 			},
 			options : {
@@ -126,7 +120,10 @@ window.onload = function() {
 						ticks:{
 							beginAtZero:true
 						}	
-					}]
+					}],
+					xAxes: [{
+			            barPercentage: 0.5
+			        }]
 				}	
 			}
 		});

@@ -43,8 +43,9 @@ function handleClick(event, array){
 		success : function(result){
 			$("#taskByActionCntLoc").empty();
 			var str = "";
-			str += "<br/><br/><table>";
-			str += "<tr>";
+			str += "<br/><br/><div style='overflow:auto; overflow-y:hidden;'>";
+			str += "<table style='border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);'>";
+			str += "<tr></tr><tr>";
 			$.each(result, function(index,item){
 				str += "<td>&nbsp;&nbsp;";
 				if(temp == "sysGb") {
@@ -73,7 +74,7 @@ function handleClick(event, array){
 				str += "</td>";
 			});
 			str += "</tr>";
-			str += "</table><br/><br/>";
+			str += "</table></div><br/><br/>";
 			$("#taskByActionCntLoc").append(str);
 			
 			var taskByActionCnt = result;
@@ -342,9 +343,9 @@ window.onload = function() {
 				<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
 				<font color="#727272" style="font-size:1.4em;font-weight:bold">업무별 조치율</font>
 				<br/><br/>
-				<div id="taskByActionCntLoc" style="border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);">
-				<br/><br/>
-				<table>
+				<div id="taskByActionCntLoc" ><br/><br/>
+				 <div style="overflow:auto;  overflow-y:hidden;">
+				<table style="border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);">
 					<tr>
 						<c:forEach var="taskByActionCnt" items="${taskByActionCnt}" varStatus="status">
 							<td>
@@ -365,7 +366,7 @@ window.onload = function() {
 						</td>
 						</c:forEach>
 					</tr>
-				</table>
+				</table></div>
 				<br/><br/>
 			</div>
 			

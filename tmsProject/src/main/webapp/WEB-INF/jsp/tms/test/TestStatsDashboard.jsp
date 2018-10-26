@@ -213,7 +213,10 @@ window.onload = function() {
 						                 }
 							 	}
 							 	]
-							 ,yAxes : [ {stacked : true} ]}
+							 ,yAxes : [ {stacked : true,
+								 		barPercentage: 0.5
+								 		} 
+							 ]}
 							}
 			});		
 			
