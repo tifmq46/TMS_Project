@@ -80,12 +80,12 @@ public class TestController {
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
+	
 	/**
 	 * 테스트시나리오를 가져온다
-	 * 
-	 * @param String
-	 *            - testcaseGb, testscenarioId
-	 * @return String - "tms/test/TestScenarioDetail"
+	 * @param vo testScenarioVO
+	 * @param model
+	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/selectTestScenario.do")
@@ -102,10 +102,9 @@ public class TestController {
 
 	/**
 	 * 테스트시나리오의 결과를 가져온다
-	 * 
-	 * @param vo
-	 *            - 등록할 정보가 담긴 testCaseVO
-	 * @return 등록 결과
+	 * @param String testscenarioId
+	 * @param model
+	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/selectTestScenarioResult.do")
@@ -123,9 +122,9 @@ public class TestController {
 
 	/**
 	 * 테스트케이스 등록 페이지로 이동한다.
-	 * 
-	 * @param
-	 * @return
+	 * @param vo testCaseVO
+	 * @param model
+	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/insertTestCase.do")
@@ -145,9 +144,10 @@ public class TestController {
 
 	/**
 	 * 테스트케이스를 등록한다.
-	 * 
-	 * @param vo
-	 *            - 등록할 정보가 담긴 testCaseVO
+	 * @param vo testCaseVO
+	 * @param redirectAttributes
+	 * @param errors
+	 * @param model
 	 * @return String
 	 * @exception Exception
 	 */
@@ -174,9 +174,9 @@ public class TestController {
 
 	/**
 	 * 테스트시나리오 등록 페이지로 이동한다.
-	 * 
-	 * @param
-	 * @return
+	 * @param String testcaseId
+	 * @param model
+	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/insertTestScenario.do")
@@ -188,9 +188,10 @@ public class TestController {
 
 	/**
 	 * 테스트시나리오를 등록한다.
-	 * 
-	 * @param vo
-	 *            - 등록할 정보가 담긴 testScenarioVO
+	 * @param vo testScenarioVO
+	 * @param redirectAttributes
+	 * @param errors
+	 * @param model 
 	 * @return String
 	 * @exception Exception
 	 */
@@ -217,9 +218,9 @@ public class TestController {
 
 	/**
 	 * 테스트케이스를 수정한다.
-	 * 
-	 * @param vo
-	 *            - 등록할 정보가 담긴 TestCaseVO
+	 * @param vo testCaseVO
+	 * @param redirectAttributes
+	 * @param errors
 	 * @return String
 	 * @exception Exception
 	 */
@@ -239,9 +240,9 @@ public class TestController {
 
 	/**
 	 * 테스트시나리오를 수정한다.
-	 * 
-	 * @param vo
-	 *            - 등록할 정보가 담긴 TestScenarioVO
+	 * @param String testcaseGb
+	 * @param vo testScenarioVO
+	 * @param errors
 	 * @return String
 	 * @exception Exception
 	 */
@@ -268,9 +269,8 @@ public class TestController {
 
 	/**
 	 * 테스트시나리오 결과만 수정한다.
-	 * 
-	 * @param vo
-	 *            - 등록할 정보가 담긴 TestScenarioVO
+	 * @param vo testScenarioVO
+	 * @param redirectAttributes
 	 * @return String
 	 * @exception Exception
 	 */
@@ -285,12 +285,12 @@ public class TestController {
 		return "redirect:/tms/test/selectTestResult.do?testcaseId=" + testcaseId;
 	}
 
+	
 	/**
 	 * 테스트케이스를 삭제한다
-	 * 
-	 * @param vo
-	 *            - 등록할 정보가 담긴 testCaseVO
-	 * @return 등록 결과
+	 * @param vo testCaseVO
+	 * @param redirectAttributes
+	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/deleteTestCaseImpl.do")
@@ -309,15 +309,15 @@ public class TestController {
 		return "redirect:/tms/test/selectTestCaseList.do?testcaseGb=" + testcaseGb;
 	}
 
+	
 	/**
-	 * 메뉴목록 멀티 삭제한다.
-	 * 
-	 * @param checkedMenuNoForDel
-	 *            String
-	 * @return
+	 * 테스트 케이스 목록을 멀티 삭제한다.
+	 * @param String checkedMenuNoForDel
+	 * @param vo testCaseVO
+	 * @param redirectAttributes
+	 * @return String
 	 * @exception Exception
 	 */
-
 	@RequestMapping("/tms/test/deleteMultiTestCase.do")
 	public String deleteMultiTestCase(RedirectAttributes redirectAttributes,
 			@RequestParam("checkedMenuNoForDel") String checkedMenuNoForDel,
@@ -334,52 +334,45 @@ public class TestController {
 	}
 
 	/**
-	 * 삭제하려는 케이스를 참조하고 있는 시나리오가 있는지 개수를 확인한다.
-	 * 
-	 * @param checkedMenuNoForDel
-	 *            String
-	 * @return totalCount 시나리오가 있는 케이스의 개수
+	 * 삭제하려는 케이스를 참조하고 있는 시나리오의 여부를 확인한 뒤 해당 케이스 개수를 반환한다
+	 * @param String checkedMenuNoForDel
+	 * @return int 시나리오가 있는 케이스의 개수
 	 * @exception Exception
 	 */
-
 	@RequestMapping("/tms/test/selectScenarioCntReferringToCase.do")
 	@ResponseBody
 	public int selectScenarioCntReferringToCase(@RequestParam("checkedMenuNoForDel") String checkedMenuNoForDel)
 			throws Exception {
-
-		int totalCount = testService.selectScenarioCntReferringToCase(checkedMenuNoForDel);
-		return totalCount;
+		return (int)testService.selectScenarioCntReferringToCase(checkedMenuNoForDel);
 	}
 
 	/**
 	 * 테스트시나리오를 삭제한다
-	 * 
-	 * @param vo
-	 *            - 등록할 정보가 담긴 testCaseVO
-	 * @return 등록 결과
+	 * @param vo testScenarioVO
+	 * @param redirectAttributes
+	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/deleteTestScenarioImpl.do")
 	public String deleteTestScenario(RedirectAttributes redirectAttributes,
 			@ModelAttribute("testScenarioVO") TestScenarioVO testScenarioVO) throws Exception {
 
-		String testscenarioId = testScenarioVO.getTestscenarioId();
-		String testcaseId = testScenarioVO.getTestcaseId();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
 		if (isAuthenticated) {
-		testService.deleteTestScenario(testscenarioId);
+		testService.deleteTestScenario((String)testScenarioVO.getTestscenarioId());
 		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		}
-		return "redirect:/tms/test/selectTestCaseWithScenario.do?testcaseId=" + testcaseId;
+		return "redirect:/tms/test/selectTestCaseWithScenario.do?testcaseId=" + (String)testScenarioVO.getTestcaseId();
 	}
 
 	/**
-	 * 메뉴목록 멀티 삭제한다.
-	 * 
-	 * @param checkedMenuNoForDel
-	 *            String
-	 * @return
+	 * 테스트 시나리오 목록을 멀티 삭제한다.
+	 * @param String checkedMenuNoForDel
+	 * @param vo testScenarioVO
+	 * @param redirectAttributes
+	 * @param model
+	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping("/tms/test/deleteMultiTestScenario.do")
@@ -398,10 +391,9 @@ public class TestController {
 
 	/**
 	 * 테스트케이스를 가져온다
-	 * 
-	 * @param vo
-	 *            - 등록할 정보가 담긴 testCaseVO
-	 * @return 등록 결과
+	 * @param String testcaseId
+	 * @param String returnPg
+	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/selectTestCase.do")
@@ -420,10 +412,10 @@ public class TestController {
 	}
 	
 	/**
-	 * 테스트케이스Id 중복체크
-	 * 
-	 * @param testcaseId
-	 * @return 등록 결과
+	 * 테스트케이스 ID 중복체크 검사를 한다.
+	 * @param String testcaseId
+	 * @param model
+	 * @return boolean
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/checkTestCaseIdDuplication.do")
@@ -437,10 +429,10 @@ public class TestController {
 	}
 	
 	/**
-	 * 테스트시나리오Id 중복체크
-	 * 
-	 * @param testscenarioId
-	 * @return 등록 결과
+	 * 테스트시나리오 ID 중복체크 검사를 한다.
+	 * @param String testscenarioId
+	 * @param model
+	 * @return boolean
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/checkTestScenarioIdDuplication.do")
@@ -455,10 +447,9 @@ public class TestController {
 
 	/**
 	 * 테스트케이스와 케이스에 해당하는 시나리오 목록을 가져온다
-	 * 
-	 * @param vo
-	 *            - 등록할 정보가 담긴 testCaseVO
-	 * @return 등록 결과
+	 * @param String testcaseId
+	 * @param model
+	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/selectTestCaseWithScenario.do")
@@ -476,38 +467,12 @@ public class TestController {
 		return "tms/test/TestScenarioManage";
 	}
 
+	
 	/**
-	 * 테스트케이스와 케이스에 해당하는 시나리오 목록을 가져온다 ( 시나리오리스트 페이지에서 비동기처리 )
-	 * 
-	 * @param
-	 * @return 등록 결과
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "/tms/test/selectTestScenarioOnScenarioListPg.do")
-	@ResponseBody
-	public HashMap<String, Object> selectTestScenarioOnScenarioListPg(@RequestParam("testcaseId") String testcaseId,
-			@RequestParam("testcaseGb") String testcaseGb, ModelMap model, HttpServletRequest request)
-			throws Exception {
-
-		HashMap<String, Object> resultData = new HashMap<String, Object>();
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-		
-		if (isAuthenticated) {
-		HashMap<String, Object> testVoMap = testService.selectTestCase(testcaseId);
-		List<?> testScenarioList = testService.selectTestScenarioList(testcaseId);
-		resultData.put("testVoMap", testVoMap);
-		resultData.put("testcaseGb", testcaseGb);
-		resultData.put("testScenarioList", testScenarioList);
-		}
-		return resultData;
-	}
-
-	/**
-	 * 테스트케이스와 시나리오의 결과를 관리한다.
-	 * 
-	 * @param vo
-	 *            - 등록할 정보가 담긴 testCaseVO
-	 * @return 등록 결과
+	 * 테스트 시나리오의 결과를 가져온다.
+	 * @param String testcaseId
+	 * @param model
+	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/selectTestResult.do")
@@ -526,10 +491,10 @@ public class TestController {
 
 	/**
 	 * 테스트케이스 목록을 가져온다
-	 * 
-	 * @param vo
-	 *            - 정보가 담긴 searchVO
-	 * @return 등록 결과
+	 * @param request
+	 * @param vo searchVO
+	 * @param model
+	 * @return String 
 	 * @exception Exception
 	 */
 
@@ -588,13 +553,12 @@ public class TestController {
 
 	/**
 	 * 테스트케이스 목록을 가져온다
-	 * 
-	 * @param vo
-	 *            - 정보가 담긴 searchVO
-	 * @returnPg TestScenarioListUtc / TestScenarioListTtc
+	 * @param request
+	 * @param vo searchVO
+	 * @param model
+	 * @return String 
 	 * @exception Exception
 	 */
-
 	@RequestMapping(value = "/tms/test/selectTestScenarioList.do")
 	public String selectTestScenarioList(HttpServletRequest request, @ModelAttribute("searchVO") TestDefaultVO searchVO,
 			ModelMap model) throws Exception {
@@ -650,10 +614,10 @@ public class TestController {
 
 	/**
 	 * 테스트케이스 목록을 가져온다
-	 * 
-	 * @param vo
-	 *            - 정보가 담긴 searchVO
-	 * @returnPg TestResultListUtc / TestResultListTtc
+	 * @param request
+	 * @param vo searchVO
+	 * @param model
+	 * @return String 
 	 * @exception Exception
 	 */
 
@@ -711,10 +675,8 @@ public class TestController {
 	}
 
 	/**
-	 * 테스트 통계를 보여준다.(대시보드)
-	 * 
-	 * @param vo
-	 *            - 등록할 정보가 담긴 testCaseVO
+	 * 테스트 통계를 보여준다.(대시보드용)
+	 * @param model
 	 * @return String
 	 * @exception Exception
 	 */
@@ -752,9 +714,8 @@ public class TestController {
 	
 	/**
 	 * 특정 시스템구분에 관한 업무별 테스트케이스 통계를 가져온다
-	 * 
-	 * @param String- 정보가 담긴 sysNm
-	 * @return 등록 결과
+	 * @param String sysNm
+	 * @return List<?> (ajax)
 	 * @exception Exception
 	 */
 	   @RequestMapping("/tms/test/selectTestCaseStatsListByTaskGb.do")
@@ -767,13 +728,12 @@ public class TestController {
 	
 	/**
 	 * 테스트케이스 현황(단위,통합)을 가져온다
-	 * 
-	 * @param vo
-	 *            - 정보가 담긴 searchVO
-	 * @return 등록 결과
+	 * @param vo searchVO
+	 * @param request
+	 * @param model
+	 * @return String
 	 * @exception Exception
 	 */
-
 	@RequestMapping(value = "/tms/test/selectTestCurrent.do")
 	public String selectTestCurrent(HttpServletRequest request, @ModelAttribute("searchVO") TestDefaultVO searchVO,
 			ModelMap model) throws Exception {
@@ -829,14 +789,13 @@ public class TestController {
 	}
 
 	/**
-	 * 테스트케이스 현황(단위,통합)을 가져온다
-	 * 
-	 * @param vo
-	 *            - 정보가 담긴 searchVO
-	 * @return 등록 결과
+	 * 테스트 통계를 보여준다.(통계표용)
+	 * @param vo searchVO
+	 * @param request
+	 * @param model
+	 * @return String
 	 * @exception Exception
 	 */
-
 	@RequestMapping(value = "/tms/test/selectTestStatsTable.do")
 	public String selectTestStatsTable(HttpServletRequest request, @ModelAttribute("searchVO") TestDefaultVO searchVO,
 			ModelMap model) throws Exception {
@@ -872,12 +831,16 @@ public class TestController {
 	}
 
 	/**
-	 * 통계 엑셀 다운로드 기능
-	 * 
+	 * 테스트 통계를 가져와서 엑셀 다운로드 함수 실행
+	 * @param String testcaseGb
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return String
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/tms/test/statsToExcel.do")
-	public String statsToExcel(RedirectAttributes redirectAttributes, @RequestParam("testcaseGb") String testcaseGb,
+	public String statsToExcel(@RequestParam("testcaseGb") String testcaseGb,
 			ModelMap model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -889,18 +852,19 @@ public class TestController {
 		testStatsXlsxWriter(testStatsTable, testcaseGb, response);
 		}
 		return "redirect:/tms/test/selectTestStatsTable.do";
-
 	}
 
-	
+
 	/**
-	 * 현황 엑셀 다운로드 기능
-	 * 
+	 * 테스트 현황을 가져와서 엑셀 다운로드 함수 실행
+	 * @param vo searchVO
+	 * @param model
+	 * @param response
+	 * @return String
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/tms/test/currentToExcel.do")
-	public String currentToExcel(RedirectAttributes redirectAttributes,
-			ModelMap model, @ModelAttribute("searchVO") TestDefaultVO searchVO, HttpServletResponse response) throws Exception {
+	public String currentToExcel(ModelMap model, @ModelAttribute("searchVO") TestDefaultVO searchVO, HttpServletResponse response) throws Exception {
 		
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -910,9 +874,17 @@ public class TestController {
 			testCurrentXlsxWriter(testCurrent, searchVO.getAsOf() ,response);
 		}
 		return "redirect:/tms/test/selectTestCurrent.do";
-
 	}
 	
+	
+	/**
+	 * 테스트 현황 페이지를 엑셀로 다운로드 한다
+	 * @param List<?> list
+	 * @param String asOf
+	 * @param response
+	 * @return void
+	 * @throws Exception
+	 */
 	public void testCurrentXlsxWriter(List<?> list, String asOf, HttpServletResponse response) throws Exception {
 
 		// 워크북 생성
@@ -1170,6 +1142,14 @@ public class TestController {
 
 	}
 
+	/**
+	 * 테스트 통계 페이지를 엑셀로 다운로드 한다
+	 * @param List<?> list
+	 * @param String testcaseGb
+	 * @param response
+	 * @return void
+	 * @throws Exception
+	 */
 	public void testStatsXlsxWriter(List<?> list, String testcaseGb, HttpServletResponse response) throws Exception {
 
 		// 워크북 생성

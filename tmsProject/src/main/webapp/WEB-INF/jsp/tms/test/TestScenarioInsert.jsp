@@ -36,6 +36,17 @@
 function insertTestScenarioImpl(){
 	
 	var inputTestscenarioId = $("#testscenarioIdDuplicationCheck").val();
+	
+	/* 특수문자 포함여부 체크 */
+	var stringRegx = /[~!@\#$%<>^&*\()\-=+_\’]/gi; 
+	var isValid = true; 
+    if(stringRegx.test(inputTestscenarioId)) { 
+       isValid = false;
+       alert("테스트시나리오ID에 특수문자는 사용할 수 없습니다.");
+     } 
+	     
+	   if(isValid){
+	
 	 $.ajax({
 	   	 type :"POST"
 	   	,url  : "<c:url value='/tms/test/checkTestScenarioIdDuplication.do'/>"
@@ -64,6 +75,8 @@ function insertTestScenarioImpl(){
 	   	}
 	   		
 	   });
+	 
+	 }
 	
 }
 
@@ -176,6 +189,7 @@ function insertTestScenarioImpl(){
 	           				<li>
 								<div class="buttons">
 				   					<a href="#" onclick="insertTestScenarioImpl(); return false;"><spring:message code="button.save" /></a>
+				   					<a href= "<c:url value="/tms/test/insertTestScenario.do" />"><spring:message code="button.reset" /></a>
 				   					<a href="<c:url value='/tms/test/selectTestCaseWithScenario.do?testcaseId=${testcaseId}'/>" ><spring:message code="button.list" /></a>
 								</div>  				  		
 		  					</li>             
