@@ -454,7 +454,7 @@ public class DevPlanController {
 			//System.out.println(dvo.getAchievementRate());
 		
 		String devStartDt, devEndDt,devAchRate;
-		float achRate=0.0f;
+		int achRate=0;
 
 		devStartDt = String.valueOf(dvo.getDevStartDt());
 		devEndDt = String.valueOf(dvo.getDevEndDt());
@@ -466,7 +466,7 @@ public class DevPlanController {
 					if(!devEndDt.equals("null")){
 						achRate=100;
 					}else{
-						if(devAchRate.equals("0.0")){
+						if(devAchRate.equals("0")){
 							achRate = 50;
 						}else{
 							achRate = dvo.getAchievementRate();
@@ -828,13 +828,14 @@ public class DevPlanController {
 			xlsxWiter(totalTable, statsGb, response, null, null);
 			
 		}else if(statsGb.equals("user")){
-			List<Map<String,Object>> userplanList = stats("user", userList, periodList);
+			List<Map<String,Object>> userStats = stats("user", userList, periodList);
 			
-			System.out.println("ㅇㅇㅇ"+userplanList);
-			xlsxWiter(null, statsGb, response, userplanList, null);
+			xlsxWiter(null, statsGb, response, userStats, null);
 			
 		}else if(statsGb.equals("task")){
-			System.out.println("업무엑셀");
+			List<Map<String,Object>> taskStats = stats("task", taskList, periodList);
+			System.out.println("업무별ㄹㄹㄹㄹㄹㄹ"+ taskStats);
+			xlsxWiter(null, statsGb, response, taskStats, null);
 		}
 		
 		
@@ -1076,12 +1077,102 @@ public class DevPlanController {
 				}
 				
 			}
+		}
+		else if(statsGb.equals("task")){
+			// 헤더 정보 구성
+			cell = row.createCell(0);
+			cell.setCellValue("시스템");
+			sheet.addMergedRegion(new CellRangeAddress(0,1, 0,0));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
-			/** 3. 컬럼 Width */ 
-			/*for (int i = 0; i <  otherList.size(); i++){ 
-				sheet.autoSizeColumn(i); 
-				sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
-			}*/
+			cell = row.createCell(1);
+			cell.setCellValue("업무");
+			sheet.addMergedRegion(new CellRangeAddress(0,1, 1,1));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+
+			List<String> periodList = devPlanService.selectPeriodWeek();
+			
+			int temp = 2;
+			for(int i =1; i<=periodList.size(); i++){
+				if(i == 1){
+					cell = row.createCell(i+1);
+					cell.setCellValue(i+"주");
+					sheet.addMergedRegion(new CellRangeAddress(0,0, 2,4));
+					cell.setCellStyle(HeadStyle);
+					
+				}else{
+					cell = row.createCell(temp+3);
+					cell.setCellValue(i+"주");
+					sheet.addMergedRegion(new CellRangeAddress(0,0, temp+3,temp+5));
+					cell.setCellStyle(HeadStyle);
+					temp +=3;
+				}
+			}
+			cell = row.createCell(periodList.size()*3+2);
+			cell.setCellValue("합계");
+			sheet.addMergedRegion(new CellRangeAddress(0,0, periodList.size()*3+2,periodList.size()*3+4));
+			cell.setCellStyle(HeadStyle);
+			
+			row = sheet.createRow(1);
+			for(int i =0; i<periodList.size()+1; i++){
+				cell = row.createCell(2+(3*i));
+				cell.setCellValue("계획");
+				cell.setCellStyle(TitleStyle);
+				cell = row.createCell(3+(3*i));
+				cell.setCellValue("실적");
+				cell.setCellStyle(TitleStyle);
+				cell = row.createCell(4+(3*i));
+				cell.setCellValue("차이");
+				cell.setCellStyle(TitleStyle);
+			}
+			
+			
+			
+			 //리스트의 size 만큼 row를 생성
+			for(int i=0; i < otherList.size(); i++) {
+				// 행 생성
+				row = sheet.createRow(i+2);
+				
+				cell = row.createCell(0);
+				cell.setCellValue(String.valueOf(otherList.get(i).get("sysGbNm")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(1);
+				cell.setCellValue(String.valueOf(otherList.get(i).get("taskGbNm")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				
+				
+				int temp2 = 2;
+				for(int j=0; j<periodList.size(); j++){
+					cell = row.createCell(temp2);
+					cell.setCellValue(String.valueOf(otherList.get(i).get("a"+String.valueOf(periodList.get(j)))));
+					cell.setCellStyle(BodyStyle);
+					
+					cell = row.createCell(temp2+1);
+					cell.setCellValue(String.valueOf(otherList.get(i).get("b"+String.valueOf(periodList.get(j)))));
+					cell.setCellStyle(BodyStyle);
+					
+					cell = row.createCell(temp2+2);
+					cell.setCellValue(String.valueOf(otherList.get(i).get("sub"+String.valueOf(periodList.get(j)))));
+					cell.setCellStyle(BodyStyle);
+					
+					cell = row.createCell(periodList.size()*3+2);
+					cell.setCellValue(String.valueOf(otherList.get(i).get(String.valueOf("sumTaskPlan"))));
+					cell.setCellStyle(BodyStyle);
+					
+					cell = row.createCell(periodList.size()*3+3);
+					cell.setCellValue(String.valueOf(otherList.get(i).get(String.valueOf("sumTaskDev"))));
+					cell.setCellStyle(BodyStyle);
+					
+					cell = row.createCell(periodList.size()*3+4);
+					cell.setCellValue(String.valueOf(otherList.get(i).get(String.valueOf("sumDiff"))));
+					cell.setCellStyle(BodyStyle);
+					
+					temp2 +=3;
+				}
+				}
+			
 		}
 
 		// 입력된 내용 파일로 쓰기

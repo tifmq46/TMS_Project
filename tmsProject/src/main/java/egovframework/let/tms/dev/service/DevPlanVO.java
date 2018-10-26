@@ -45,16 +45,16 @@ public class DevPlanVO implements Serializable{
 	private String thirdTestResultYn;
 	
 	/**  달성률 */
-	private Float achievementRate;
+	private Integer achievementRate;
 	
 	/**  소요일수 */
 	private Integer dayDiff;
 	
-	public float getAchievementRate() {
+	public int  getAchievementRate() {
 		return achievementRate;
 	}
 
-	public void setAchievementRate(float achievementRate) {
+	public void setAchievementRate(int achievementRate) {
 		this.achievementRate = achievementRate;
 	}
 
@@ -144,9 +144,5 @@ public class DevPlanVO implements Serializable{
 
 	public void setDayDiff(Integer dayDiff) {
 		this.dayDiff = dayDiff;
-	}
-
-	public void setAchievementRate(Float achievementRate) {
-		this.achievementRate = achievementRate;
 	}
 }

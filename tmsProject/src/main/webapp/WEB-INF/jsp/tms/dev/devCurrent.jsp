@@ -229,10 +229,10 @@ function pagePrint(){
                  	<td style="font-size:15px; font-weight:bolder">
                  	<c:choose>
                  		<c:when test="${r.rateAvg ne '0' }">
-                 			<div class="progress" style="height: 1.5rem; width:300px;"><div class="progress-bar" style="width:${r.rateAvg}%" > <strong><c:out value=" ${r.rateAvg}"></c:out>%</strong></div></div>
+                 			<div class="progress" style="height: 1.5rem; width:400px;"><div class="progress-bar" style="width:${r.rateAvg}%" > <strong><c:out value=" ${r.rateAvg}"></c:out>%</strong></div></div>
                  		</c:when>
                  		<c:otherwise>
-                 			<div class="progress" style="height: 1.5rem; width:300px;"><div class="progress-bar" style="width:0%"> <strong><c:out value="0"></c:out>%</strong></div></div>
+                 			<div class="progress" style="height: 1.5rem; width:400px;"><div class="progress-bar" style="width:0%"> <strong><c:out value="0"></c:out>%</strong></div></div>
                  		</c:otherwise>
                  	</c:choose>
                  	</td>

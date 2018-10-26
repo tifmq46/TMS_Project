@@ -91,7 +91,10 @@ window.onload = function() {
 						ticks:{
 							beginAtZero:true
 						}	
-					}]
+					}],
+					xAxes: [{
+			            barPercentage: 0.5
+			        }]
 				}
 			}
 		});
@@ -122,7 +125,10 @@ window.onload = function() {
 						ticks:{
 							beginAtZero:true
 						}	
-					}]
+					}],
+					xAxes: [{
+			            barPercentage: 0.5
+			        }]
 				}
 			}
 		});

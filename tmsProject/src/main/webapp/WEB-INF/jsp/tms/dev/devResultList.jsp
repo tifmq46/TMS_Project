@@ -82,9 +82,11 @@ Number.prototype.zf = function(len){return this.toString().zf(len);
 		 alert("오늘 이후 날짜는 입력할 수 없습니다. 다시 입력하십시오.");
 		 obj.value = null;
 		 if(obj.id != pgId && idVal0 != ""){
-			 document.getElementById(pgId+4).value = "50.0";
+			 document.getElementById(pgId+4).value = "50";
 		 }else{
-			 document.getElementById(pgId+4).value = "0.0";
+			 document.getElementById(pgId+4).value = "0";
+			 $("#"+rateId).removeClass("abled");
+			 $("#"+rateId).addClass("disabled");
 		 }
 		 
 	 }
@@ -92,19 +94,23 @@ Number.prototype.zf = function(len){return this.toString().zf(len);
 		if(obj.id == pgId){
 			document.getElementById(pgId).value = null;
 			document.getElementById(pgId+1).value = null;
-			document.getElementById(pgId+4).value = "0.0";
+			document.getElementById(pgId+4).value = "0";
+			$("#"+rateId).removeClass("abled");
+			 $("#"+rateId).addClass("disabled");
 		}else{
-			document.getElementById(pgId+4).value = "50.0";
+			document.getElementById(pgId+4).value = "50";
 		}
 	 }
 	 
 	 if(idVal1 == "" && idVal0 != "" && idVal0 <= cDate){
-		 document.getElementById(pgId+4).value = "50.0";
+		 document.getElementById(pgId+4).value = "50";
 	 }
 	 
 	 
 	 if(idVal0 <= idVal1 && idVal1 <= cDate && idVal0 != "" && idVal1 != ""){
-	  		document.getElementById(pgId+4).value = "100.0";
+	  		document.getElementById(pgId+4).value = "100";
+			 $("#"+rateId).removeClass("abled");
+			 $("#"+rateId).addClass("disabled");
 	  }
 	 
 	 if(idVal1 != null && idVal1 != "")
@@ -114,29 +120,30 @@ Number.prototype.zf = function(len){return this.toString().zf(len);
         	if(obj.id==pgId && date <= cDate){
         		alert("개발종료일자보다 큰 값을 입력하시오.");
                 document.getElementById(pgId+1).value = null;
-                document.getElementById(pgId+4).value = "50.0";
+                document.getElementById(pgId+4).value = "50";
         	}else if(obj.id != pgId && date <= cDate){
         		alert("개발시작일자보다 큰 값을 입력하시오.");
         		document.getElementById(pgId+1).value = null;
-        		document.getElementById(pgId+4).value = "50.0";
         	}
               
           }
         if(idVal0 == ""){
 	        document.getElementById(pgId+1).value = null;
-	        document.getElementById(pgId+4).value = "0.0";
+	        document.getElementById(pgId+4).value = "0";
+	        $("#"+rateId).removeClass("abled");
+			 $("#"+rateId).addClass("disabled");
         }
      }
 	 
  }
  
-function fn_rate_change(pgId, event) {
+function fn_rate_change(pgId, event, obj, maxByte) {
 	var idVal0 = document.getElementById(pgId).value;
 	var idVal1 = document.getElementById(pgId+1).value;
 	
 	if(idVal0 == null || idVal0 == ""){
 		alert("개발시작일자 먼저 입력하십시오."); 
-		document.getElementById(pgId+4).value = "0.0";
+		document.getElementById(pgId+4).value = "0";
 		return;
 	}
 	else{
@@ -145,13 +152,46 @@ function fn_rate_change(pgId, event) {
 			$("#"+idVal3).removeClass("disabled");
 			$("#"+idVal3).addClass("abled");
 			var rate = document.getElementById(pgId+4).value;
-
-			if(rate.length > 3){
-				alert("3자리까지 입력 가능합니다.")
-		    }
+			
+			 if(rate.length > 3){
+					if(rate > 100){
+					alert("100이상은 입력할 수 없습니다.");
+					document.getElementById(pgId+4).value = null;
+					}
+			    }
+			
+			var strValue = obj.value;
+	        var strLen = strValue.length;
+	        var totalByte = 0;
+	        var len = 0;
+	        var oneChar = "";
+	        var str2 = "";
+	 
+	        for (var i = 0; i < strLen; i++) {
+	            oneChar = strValue.charAt(i);
+	            if (escape(oneChar).length > 4) {
+	                totalByte += 2;
+	            } else {
+	                totalByte++;
+	            }
+	 
+	            // 입력한 문자 길이보다 넘치면 잘라내기 위해 저장
+	            if (totalByte <= maxByte) {
+	                len = i + 1;
+	            }
+	        }
+	        
+	        if (totalByte > maxByte) {
+	            alert(maxByte + "자를 초과 입력 할 수 없습니다.");
+	            str2 = strValue.substr(0, len);
+	            obj.value = str2;
+	            fn_rate_change(obj, 4000);
+	            return false;
+	        }
+			
+	       
 			
 			document.listForm.flag.value = "change";
-			
 			event = event || window.event;
 		    var keyID = (event.which) ? event.which : event.keyCode;
 		    if ( (keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
@@ -455,10 +495,10 @@ $(function(){
             				
             				<c:choose>
 	            				<c:when test="${result.ACHIEVEMENT_RATE eq 100 || result.ACHIEVEMENT_RATE eq 0}" >
-	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event);"  class="disabled" /></td>
+	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event, this ,3);"  class="disabled" /></td>
 	            				</c:when>
 	            				<c:otherwise>
-	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event);" /></td>
+	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event, this ,3);" /></td>
 	            				</c:otherwise>
             				</c:choose>
           
