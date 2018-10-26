@@ -1081,12 +1081,12 @@ public class DevPlanController {
 		else if(statsGb.equals("task")){
 			// 헤더 정보 구성
 			cell = row.createCell(0);
-			cell.setCellValue("시스템");
+			cell.setCellValue("시스템구분");
 			sheet.addMergedRegion(new CellRangeAddress(0,1, 0,0));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			cell = row.createCell(1);
-			cell.setCellValue("업무");
+			cell.setCellValue("업무구분");
 			sheet.addMergedRegion(new CellRangeAddress(0,1, 1,1));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 

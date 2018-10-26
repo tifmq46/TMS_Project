@@ -103,7 +103,11 @@ Number.prototype.zf = function(len){return this.toString().zf(len);
 	 }
 	 
 	 if(idVal1 == "" && idVal0 != "" && idVal0 <= cDate){
-		 document.getElementById(pgId+4).value = "50";
+		 if(rateVal != '50' && rateVal != '0'){
+			 return;
+		 }else{
+		 	document.getElementById(pgId+4).value = "50";
+		 }
 	 }
 	 
 	 
@@ -123,7 +127,12 @@ Number.prototype.zf = function(len){return this.toString().zf(len);
                 document.getElementById(pgId+4).value = "50";
         	}else if(obj.id != pgId && date <= cDate){
         		alert("개발시작일자보다 큰 값을 입력하시오.");
+        		if(rateVal != '50'){
+        			document.getElementById(pgId+1).value = null;
+        			return;
+        		}
         		document.getElementById(pgId+1).value = null;
+        		document.getElementById(pgId+4).value = "50";
         	}
               
           }
@@ -144,6 +153,8 @@ function fn_rate_change(pgId, event, obj, maxByte) {
 	if(idVal0 == null || idVal0 == ""){
 		alert("개발시작일자 먼저 입력하십시오."); 
 		document.getElementById(pgId+4).value = "0";
+		$("#"+rateId).removeClass("abled");
+		 $("#"+rateId).addClass("disabled");
 		return;
 	}
 	else{

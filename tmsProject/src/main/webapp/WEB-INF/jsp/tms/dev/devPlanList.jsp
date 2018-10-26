@@ -41,7 +41,7 @@ function fn_result_change(asd, t) {
 	  var flag = true;
 	  	
 	   if((prjStartDate >  t.value || prjEndDate <  t.value) && t.value != ""){
-		   alert("유효하지 않은 날짜입니다. 다시 입력하십시오.");
+		   alert("계획기준일자의 기간이 아닙니다. 다시 입력하십시오.\n[계획기준일자:2018-10-02~2018-10-28]");
 		   document.getElementById(t.id).value = null;
 		   flag = false;
 		   return;
@@ -384,17 +384,28 @@ function searchFileNm() {
 						</div>			
 						</fieldset>
 			
-				</div>
+				</div> <br/>
 				<!-- //검색 필드 박스 끝 -->
-                
-                <div id="page_info"><div id="page_info_align"></div></div>                    
+              
+                <table width="85%" cellspacing="0" summary="기준일자 표시하는 테이블" style="padding-top:10px;">
+                 <caption style="visibility:hidden">기준일자 표시하는 테이블</caption>
+                 
+                 <tr>
+                 	<td align="center" width="510"></td>
+                 	<td align="center" width="130" style="font-size:13px; color:red; font-weight:bolder">[계획기준일자 :</td>
+                  	<td align="left" width="100" style="font-size:13px; color: red; font-weight:bolder">${ps}</td>
+                  	<td align="left" width="30" style="font-size:13px; color: red; font-weight:bolder">~</td>
+                  	<td align="left" style="font-size:13px; color: red; font-weight:bolder">${pe}]</td>
+                 </tr>        
+             	</table><br/>
+                	<input type="hidden" id="ps" name="ps" value="${ps}"/>
+                	<input type="hidden" id="pe" name="pe" value="${pe}"/>                
+                     
                 <!-- table add start -->
                 <div class="default_tablestyle">
-                    <label style="padding-left:53%; padding-bottom:5%; font-weight:bold; color: red; font-size:13px;">
+                    <%-- <label style="padding-left:53%; padding-bottom:5%; font-weight:bold; color: red; font-size:13px;">
                 	기준일자 :&nbsp; ${ps} &nbsp;~&nbsp;${pe}
-                	<input type="hidden" id="ps" name="ps" value="${ps}"/>
-                	<input type="hidden" id="pe" name="pe" value="${pe}"/>
-                	</label>
+                	</label> --%>
                     <table summary="번호,게시판명,사용 커뮤니티 명,사용 동호회 명,등록일시,사용여부   목록입니다" cellpadding="0" cellspacing="0">
                     <caption>게시판 템플릿 목록</caption>
                    
