@@ -78,6 +78,29 @@ ul.tabs li.last {
 	display: inherit;
 	border: 1px solid #fff;
 }
+
+#lineStyle{
+	border-bottom: solid 1px #00000054;
+	border-top: solid 1px #00000054;
+	background: #E0F2F7;
+	font-weight:bold;
+}
+
+#lineStyle2{
+	border-bottom: solid 1px #00000054;
+	border-top: solid 1px #00000054;
+	background: #CEE3F6;
+	font-weight:bolder;
+}
+
+.borderLine{
+	border-right: 1px solid #81B1D5;
+}
+
+th,td{
+	border-left : 1px solid #81B1D5;
+	border-top : 1px solid #81B1D5;
+}
 </style>
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -86,7 +109,7 @@ ul.tabs li.last {
 		
 		$('ul.tabs li').click(function() {
 			var tab_id = $(this).attr('data-tab');
-			if(!(tab_id == "tab-5")){
+			if(!(tab_id == "tab-3")){
 				$('ul.tabs li').removeClass('current');
 				$('.tab-content').removeClass('current');
 				
@@ -94,24 +117,10 @@ ul.tabs li.last {
 				$("#" + tab_id).addClass('current');
 				
 				if(tab_id=="tab-1") {
-						document.getElementById("StatsByTaskToExcel").style.display="inline"
-						document.getElementById("StatsByPgToExcel").style.display="none"
-						document.getElementById("StatsByUserTestToExcel").style.display="none"
-						document.getElementById("StatsByUserDevToExcel").style.display="none"
-				} else if(tab_id=="tab-2") {
-						document.getElementById("StatsByTaskToExcel").style.display="none"
-						document.getElementById("StatsByPgToExcel").style.display="inline"
-						document.getElementById("StatsByUserTestToExcel").style.display="none"
-						document.getElementById("StatsByUserDevToExcel").style.display="none"
-				} else if(tab_id=="tab-3") {
-						document.getElementById("StatsByTaskToExcel").style.display="none"
-						document.getElementById("StatsByPgToExcel").style.display="none"
-						document.getElementById("StatsByUserTestToExcel").style.display="inline"
+						document.getElementById("StatsBySysToExcel").style.display="inline"
 						document.getElementById("StatsByUserDevToExcel").style.display="none"
 				} else {
-						document.getElementById("StatsByTaskToExcel").style.display="none"
-						document.getElementById("StatsByPgToExcel").style.display="none"
-						document.getElementById("StatsByUserTestToExcel").style.display="none"
+						document.getElementById("StatsBySysToExcel").style.display="none"
 						document.getElementById("StatsByUserDevToExcel").style.display="inline"
 				}
 			}
@@ -169,22 +178,12 @@ ul.tabs li.last {
 				<br/><br/><br/><br/>
 				
 				<ul class="tabs">
-					<li class="tab-link current" data-tab="tab-1">업무별</li>
-					<li class="tab-link" data-tab="tab-2">화면별</li>
-					<li class="tab-link" data-tab="tab-3">테스터별</li>
-					<li class="tab-link" data-tab="tab-4">조치자별</li>
-					<li class="tab-link last" data-tab="tab-5" style="float:right">
-						<div class="buttons" id="StatsByTaskToExcel" style="display:inline">
+					<li class="tab-link current" data-tab="tab-1">시스템별</li>
+					<li class="tab-link" data-tab="tab-2">개발자별</li>
+					<li class="tab-link last" data-tab="tab-3" style="float:right">
+						<div class="buttons" id="StatsBySysToExcel" style="display:inline">
 								<a href="<c:url value='/tms/defect/StatsToExcel.do'/>"
-									onclick="javascript:StatsToExcel('task'); return false;">엑셀 다운로드</a>
-						</div>
-						<div class="buttons" id="StatsByPgToExcel" style="display:none">
-							<a href="<c:url value='/tms/defect/StatsToExcel.do'/>"
-								onclick="javascript:StatsToExcel('pg'); return false;">엑셀 다운로드</a>
-						</div>
-						<div class="buttons" id="StatsByUserTestToExcel" style="display:none">
-							<a href="<c:url value='/tms/defect/StatsToExcel.do'/>"
-								onclick="javascript:StatsToExcel('userTest'); return false;">엑셀 다운로드</a>
+									onclick="javascript:StatsToExcel('sys'); return false;">엑셀 다운로드</a>
 						</div>
 						<div class="buttons" id="StatsByUserDevToExcel" style="display:none">
 							<a href="<c:url value='/tms/defect/StatsToExcel.do'/>"
@@ -192,8 +191,9 @@ ul.tabs li.last {
 						</div>
 					</li>
 				</ul>
+				
 				<div id="tab-1" class="tab-content current">
-					<div id="StatsByTask">
+					<div id="StatsBySysGb">
 						<div class="default_tablestyle">
 							<table border="0" width="120%" border="0" cellpadding="0"
 								cellspacing="0" summary="업무별 통계(표) 테이블">
@@ -201,237 +201,74 @@ ul.tabs li.last {
 
 
 								<colgroup>
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
+									<col width="12%" />
+									<col width="13%" />
+									<col width="10.7%" />
+									<col width="10.7%" />
+									<col width="10.7%" />
+									<col width="10.7%" />
+									<col width="10.7%" />
+									<col width="10.7%" />
+									<col width="10.7%" />
 								</colgroup>
 								<tr>
-									<th align="center">구분</th>
-									<th align="center">상태/유형별</th>
+									<th align="center" rowspan="2">시스템구분</th>
+									<th align="center" rowspan="2">업무구분</th>
+									<th align="center" colspan="4" style="font-weight:bold">결함건수</th>
+									<th align="center" rowspan="2" style="font-weight:bold">조치건수</th>
+									<th align="center" rowspan="2" style="font-weight:bold">미조치건수</th>
+									<th align="center" rowspan="2" class="borderLine" style="font-weight:bold">조치율(%)</th>
+								</tr>
+								<tr>
 									<th align="center">오류</th>
 									<th align="center">개선</th>
 									<th align="center">문의</th>
 									<th align="center">기타</th>
-									<th align="center">소계</th>
 								</tr>
 
-								<c:forEach var="taskGbByStats" items="${taskGbByStats}"
+								<c:forEach var="sysGbByStats" items="${sysGbByStats}"
 									varStatus="status">
 									<tr>
-										<c:if test="${taskGbByStats.actionSt eq 'A1'}">
-											<td rowspan="5" style="border-bottom: solid 1px #00000054;"><c:out
-													value="${taskGbByStats.taskNm}" /></td>
-										</c:if>
-										<td><c:out value="${taskGbByStats.actionNm}" /></td>
-										<td>${taskGbByStats.defectGbD1}</td>
-										<td>${taskGbByStats.defectGbD2}</td>
-										<td>${taskGbByStats.defectGbD3}</td>
-										<td>${taskGbByStats.defectGbD4}</td>
-										<td>${taskGbByStats.rowSum}</td>
+										<c:choose>
+										<c:when test="${sysGbByStats.sysNm == '합계' }">
+											<td id="lineStyle2">${sysGbByStats.sysNm }</td>
+											<td id="lineStyle2">${sysGbByStats.taskNm }</td>
+											<td id="lineStyle2">${sysGbByStats.defectGbD1 }</td>
+											<td id="lineStyle2">${sysGbByStats.defectGbD2 }</td>
+											<td id="lineStyle2">${sysGbByStats.defectGbD3 }</td>
+											<td id="lineStyle2">${sysGbByStats.defectGbD4 }</td>
+											<td id="lineStyle2">${sysGbByStats.actionStA3 }</td>
+											<td id="lineStyle2">${sysGbByStats.actionStA3Not }</td>
+											<td id="lineStyle2" class="borderLine">${sysGbByStats.actionPer }%</td>
+										</c:when>
+										<c:otherwise>
+											<c:choose>
+											<c:when test="${sysGbByStats.taskNm == '소계'}">
+												<td id="lineStyle">${sysGbByStats.sysNm }</td>
+												<td id="lineStyle">${sysGbByStats.taskNm }</td>
+												<td id="lineStyle">${sysGbByStats.defectGbD1 }</td>
+												<td id="lineStyle">${sysGbByStats.defectGbD2 }</td>
+												<td id="lineStyle">${sysGbByStats.defectGbD3 }</td>
+												<td id="lineStyle">${sysGbByStats.defectGbD4 }</td>
+												<td id="lineStyle">${sysGbByStats.actionStA3 }</td>
+												<td id="lineStyle">${sysGbByStats.actionStA3Not }</td>
+												<td id="lineStyle" class="borderLine">${sysGbByStats.actionPer }%</td>
+											</c:when>
+											<c:otherwise>
+												<td>${sysGbByStats.sysNm }</td>
+												<td>${sysGbByStats.taskNm }</td>
+												<td>${sysGbByStats.defectGbD1 }</td>
+												<td>${sysGbByStats.defectGbD2 }</td>
+												<td>${sysGbByStats.defectGbD3 }</td>
+												<td>${sysGbByStats.defectGbD4 }</td>
+												<td>${sysGbByStats.actionStA3 }</td>
+												<td>${sysGbByStats.actionStA3Not }</td>
+												<td class="borderLine">${sysGbByStats.actionPer }%</td>
+											</c:otherwise>
+											</c:choose>
+										</c:otherwise>
+										</c:choose>
 									</tr>
-									<c:if test="${taskGbByStats.actionSt eq 'A4'}">
-										<tr>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong>소계</strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${taskGbByStats.d1Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${taskGbByStats.d2Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${taskGbByStats.d3Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${taskGbByStats.d4Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${taskGbByStats.totalRowSum}" /></strong></td>
-										</tr>
-									</c:if>
-								</c:forEach>
-							</table>
-							<br/><br/>
-						</div>
-					</div>
-				</div>
-				<div id="tab-2" class="tab-content">
-					<div id="StatsByPg">
-						<div class="default_tablestyle">
-							<table border="0" width="120%" border="0" cellpadding="0"
-								cellspacing="0" summary="화면별 통계(표) 테이블">
-								<caption style="visibility: hidden">화면별 통계(표) 테이블</caption>
-								<colgroup>
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-								</colgroup>
-								<tr>
-									<th align="center">구분</th>
-									<th align="center">상태/유형별</th>
-									<th align="center">오류</th>
-									<th align="center">개선</th>
-									<th align="center">문의</th>
-									<th align="center">기타</th>
-									<th align="center">소계</th>
-								</tr>
-
-								<c:forEach var="pgIdByStats" items="${pgIdByStats}"
-									varStatus="status">
-									<tr>
-										<c:if test="${pgIdByStats.actionSt eq 'A1'}">
-											<td rowspan="5" style="border-bottom: solid 1px #00000054;"><c:out
-													value="${pgIdByStats.pgNm}" /></td>
-										</c:if>
-										<td><c:out value="${pgIdByStats.actionNm}" /></td>
-										<td>${pgIdByStats.defectGbD1}</td>
-										<td>${pgIdByStats.defectGbD2}</td>
-										<td>${pgIdByStats.defectGbD3}</td>
-										<td>${pgIdByStats.defectGbD4}</td>
-										<td>${pgIdByStats.rowSum}</td>
-									</tr>
-									<c:if test="${pgIdByStats.actionSt eq 'A4'}">
-										<tr>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong>소계</strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${pgIdByStats.d1Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${pgIdByStats.d2Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${pgIdByStats.d3Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${pgIdByStats.d4Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${pgIdByStats.totalRowSum}" /></strong></td>
-										</tr>
-									</c:if>
-								</c:forEach>
-							</table>
-							<br/><br/>
-						</div>
-					</div>
-				</div>
-				<div id="tab-3" class="tab-content">
-					<div id="StatsByUserTest">
-						<div class="default_tablestyle">
-							<table border="0" width="120%" border="0" cellpadding="0"
-								cellspacing="0" summary="테스터별 통계(표) 테이블">
-								<caption style="visibility: hidden">테스터별 통계(표) 테이블</caption>
-
-
-								<colgroup>
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-								</colgroup>
-								<tr>
-									<th align="center">구분</th>
-									<th align="center">상태/유형별</th>
-									<th align="center">오류</th>
-									<th align="center">개선</th>
-									<th align="center">문의</th>
-									<th align="center">기타</th>
-									<th align="center">소계</th>
-								</tr>
-
-								<c:forEach var="userTestByStats" items="${userTestByStats}"
-									varStatus="status">
-									<tr>
-										<c:if test="${userTestByStats.actionSt eq 'A1'}">
-											<td rowspan="5" style="border-bottom: solid 1px #00000054;"><c:out
-													value="${userTestByStats.userTestNm}" /></td>
-										</c:if>
-										<td><c:out value="${userTestByStats.actionNm}" /></td>
-										<td>${userTestByStats.defectGbD1}</td>
-										<td>${userTestByStats.defectGbD2}</td>
-										<td>${userTestByStats.defectGbD3}</td>
-										<td>${userTestByStats.defectGbD4}</td>
-										<td>${userTestByStats.rowSum}</td>
-									</tr>
-									<c:if test="${userTestByStats.actionSt eq 'A4'}">
-										<tr>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong>소계</strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${userTestByStats.d1Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${userTestByStats.d2Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${userTestByStats.d3Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${userTestByStats.d4Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${userTestByStats.totalRowSum}" /></strong></td>
-										</tr>
-									</c:if>
-								</c:forEach>
-							</table>
-							<br/><br/>
-						</div>
-					</div>
-				</div>
-				<div id="tab-4" class="tab-content">
-					<div id="StatsByUserDev">
-						<div class="default_tablestyle">
-							<table border="0" width="120%" border="0" cellpadding="0"
-								cellspacing="0" summary="조치자별 통계(표) 테이블">
-								<caption style="visibility: hidden">조치자별 통계(표) 테이블</caption>
-
-
-								<colgroup>
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-									<col width="14%" />
-								</colgroup>
-								<tr>
-									<th align="center">구분</th>
-									<th align="center">상태/유형별</th>
-									<th align="center">오류</th>
-									<th align="center">개선</th>
-									<th align="center">문의</th>
-									<th align="center">기타</th>
-									<th align="center">소계</th>
-								</tr>
-
-								<c:forEach var="userDevByStats" items="${userDevByStats}"
-									varStatus="status">
-									<tr>
-										<c:if test="${userDevByStats.actionSt eq 'A1'}">
-											<td rowspan="5" style="border-bottom: solid 1px #00000054;"><c:out
-													value="${userDevByStats.userDevNm}" /></td>
-										</c:if>
-										<td><c:out value="${userDevByStats.actionNm}" /></td>
-										<td>${userDevByStats.defectGbD1}</td>
-										<td>${userDevByStats.defectGbD2}</td>
-										<td>${userDevByStats.defectGbD3}</td>
-										<td>${userDevByStats.defectGbD4}</td>
-										<td>${userDevByStats.rowSum}</td>
-									</tr>
-									<c:if test="${userDevByStats.actionSt eq 'A4'}">
-										<tr>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong>소계</strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${userDevByStats.d1Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${userDevByStats.d2Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${userDevByStats.d3Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${userDevByStats.d4Sum}" /></strong></td>
-											<td style="border-bottom: solid 1px #00000054; color:#0F438A;"><strong><c:out
-														value="${userDevByStats.totalRowSum}" /></strong></td>
-										</tr>
-									</c:if>
 								</c:forEach>
 							</table>
 							<br/><br/>
@@ -439,6 +276,92 @@ ul.tabs li.last {
 					</div>
 				</div>
 				
+				<div id="tab-2" class="tab-content">
+					<div id="StatsByUserDev">
+						<div class="default_tablestyle">
+							<table border="0" width="120%" border="0" cellpadding="0"
+								cellspacing="0" summary="개발자별 통계(표) 테이블">
+								<caption style="visibility: hidden">개발자별 통계(표) 테이블</caption>
+
+
+								<colgroup>
+									<col width="10%" />
+									<col width="15%" />
+									<col width="15%" />
+									<col width="10.8%" />
+									<col width="10.8%" />
+									<col width="10.8%" />
+									<col width="10.8%" />
+									<col width="10.8%" />
+									<col width="10.8%" />
+									<col width="10.8%" />
+								</colgroup>
+								<tr>
+									<th align="center" rowspan="2">개발자</th>
+									<th align="center" rowspan="2">화면ID</th>
+									<th align="center" rowspan="2">화면명</th>
+									<th align="center" colspan="4" style="font-weight:bold">결함건수</th>
+									<th align="center" rowspan="2" style="font-weight:bold">조치건수</th>
+									<th align="center" rowspan="2" style="font-weight:bold">미조치건수</th>
+									<th align="center" rowspan="2" style="font-weight:bold" class="borderLine">조치율(%)</th>
+								</tr>
+								<tr>
+									<th align="center">오류</th>
+									<th align="center">개선</th>
+									<th align="center">문의</th>
+									<th align="center">기타</th>
+								</tr>
+
+								<c:forEach var="userDevPgIdByStats" items="${userDevPgIdByStats}"
+									varStatus="status">
+									<tr>
+									<c:choose>
+									<c:when test="${ userDevPgIdByStats.userNm == '합계'}">
+											<td id="lineStyle2">${userDevPgIdByStats.userNm }</td>
+											<td id="lineStyle2" colspan="2">${userDevPgIdByStats.pgId }</td>
+											<td id="lineStyle2">${userDevPgIdByStats.defectGbD1 }</td>
+											<td id="lineStyle2">${userDevPgIdByStats.defectGbD2 }</td>
+											<td id="lineStyle2">${userDevPgIdByStats.defectGbD3 }</td>
+											<td id="lineStyle2">${userDevPgIdByStats.defectGbD4 }</td>
+											<td id="lineStyle2">${userDevPgIdByStats.actionStA3 }</td>
+											<td id="lineStyle2">${userDevPgIdByStats.actionStA3Not }</td>
+											<td id="lineStyle2" class="borderLine">${userDevPgIdByStats.actionPer }%</td>
+									</c:when>
+									<c:otherwise>
+										<c:choose>
+										<c:when test="${userDevPgIdByStats.pgId == '소계'}">
+											<td id="lineStyle">${userDevPgIdByStats.userNm }</td>
+											<td id="lineStyle" colspan="2">${userDevPgIdByStats.pgId }</td>
+											<td id="lineStyle">${userDevPgIdByStats.defectGbD1 }</td>
+											<td id="lineStyle">${userDevPgIdByStats.defectGbD2 }</td>
+											<td id="lineStyle">${userDevPgIdByStats.defectGbD3 }</td>
+											<td id="lineStyle">${userDevPgIdByStats.defectGbD4 }</td>
+											<td id="lineStyle">${userDevPgIdByStats.actionStA3 }</td>
+											<td id="lineStyle">${userDevPgIdByStats.actionStA3Not }</td>
+											<td id="lineStyle" class="borderLine">${userDevPgIdByStats.actionPer }%</td>
+										</c:when>
+										<c:otherwise>
+											<td>${userDevPgIdByStats.userNm }</td>
+											<td>${userDevPgIdByStats.pgId }</td>
+											<td>${userDevPgIdByStats.pgNm }</td>
+											<td>${userDevPgIdByStats.defectGbD1 }</td>
+											<td>${userDevPgIdByStats.defectGbD2 }</td>
+											<td>${userDevPgIdByStats.defectGbD3 }</td>
+											<td>${userDevPgIdByStats.defectGbD4 }</td>
+											<td>${userDevPgIdByStats.actionStA3 }</td>
+											<td>${userDevPgIdByStats.actionStA3Not }</td>
+											<td class="borderLine">${userDevPgIdByStats.actionPer }%</td>
+										</c:otherwise>
+										</c:choose>
+									</c:otherwise>
+									</c:choose>
+									</tr>
+								</c:forEach>
+							</table>
+							<br/><br/>
+						</div>
+					</div>
+				</div>
 				
 			</div>
 			<!-- //content 끝 -->

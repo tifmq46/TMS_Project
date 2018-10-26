@@ -101,4 +101,8 @@ public interface DefectService {
 	public List<EgovMap> selectSysByDefectCntAll();
 	
 	public List<?> selectSysByMainStats();
+	
+	public List<EgovMap> selectUserDevPgIdByStats();
+	
+	public List<EgovMap> selectSysGbByStats();
 }

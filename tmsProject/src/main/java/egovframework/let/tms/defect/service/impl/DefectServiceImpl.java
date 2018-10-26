@@ -350,4 +350,18 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 	}
 
 
+	@Override
+	public List<EgovMap> selectUserDevPgIdByStats() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectUserDevPgIdByStats();
+	}
+
+
+	@Override
+	public List<EgovMap> selectSysGbByStats() {
+		// TODO Auto-generated method stub
+		return defectDAO.selectSysGbByStats();
+	}
+
+
 }
