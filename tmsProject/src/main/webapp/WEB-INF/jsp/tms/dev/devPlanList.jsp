@@ -381,8 +381,11 @@ function searchFileNm() {
       			        	</tr>
       			        	</table>
 					  				
-						</div>			
+						</div>
+						
 						</fieldset>
+						
+			
 			
 				</div>
 				<!-- //검색 필드 박스 끝 -->
@@ -390,8 +393,8 @@ function searchFileNm() {
                 <div id="page_info"><div id="page_info_align"></div></div>                    
                 <!-- table add start -->
                 <div class="default_tablestyle">
-                    <label style="padding-left:53%; padding-bottom:5%; font-weight:bold; color: red; font-size:13px;">
-                	기준일자 :&nbsp; ${ps} &nbsp;~&nbsp;${pe}
+                    <label style="float:right; font-weight:bold; font-size:16px;">
+                	<font color="#0066FF" style="font-weight:bold">*계획가능일자 : ${ps} &nbsp;~&nbsp;${pe}</font>
                 	<input type="hidden" id="ps" name="ps" value="${ps}"/>
                 	<input type="hidden" id="pe" name="pe" value="${pe}"/>
                 	</label>
@@ -419,8 +422,8 @@ function searchFileNm() {
         				<th align="center">시스템구분</th>
         				<th align="center">업무구분</th>
         				<th align="center">개발자</th>
-        				<th align="center">계획시작일자</th>
-        				<th align="center">계획종료일자</th>
+        				<th align="center">*계획시작일자</th>
+        				<th align="center">*계획종료일자</th>
         				<th align="center">소요일수</th>
         				<th align="center"></th>
         				<th align="center"></th>
@@ -492,7 +495,7 @@ function searchFileNm() {
                    
                    <c:if test="${fn:length(resultList) == 0}">
                      <tr>
-                       <td nowrap colspan="5" ><spring:message code="common.nodata.msg" /></td>  
+                       <td nowrap colspan="11" ><spring:message code="common.nodata.msg" /></td>  
                      </tr>      
                    </c:if>
                    </tbody>
