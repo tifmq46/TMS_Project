@@ -33,8 +33,8 @@ public class ProgramValidator implements Validator {
 			
 		}
 		String mId2 = member.getPgId();
-		if(mId2.contains(";")) {
-			errors.rejectValue("pgId", "공백오류", "특수문자 ; 는 입력할 수 없습니다");
+		if(mId2.contains(";") || mId2.contains("#") || mId2.contains("$") || mId2.contains("^") || mId2.contains("*") || mId2.contains("{") || mId2.contains("}") ) {
+			errors.rejectValue("pgId", "공백오류", "특수문자( ;, # )는 입력할 수 없습니다");
 			
 		}
 //		시스템구분 유효성 체크)		

@@ -11,13 +11,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -210,6 +207,10 @@ public class ProgramController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
+		if(cnt.equals("")) { 
+			searchVO.setSearchUseYn("Y"); 
+		}		
+		
 		//프로그램 현황
 		List<?> PgList = ProgramService.selectPgList(searchVO);
 		model.addAttribute("resultList", PgList);
@@ -259,88 +260,32 @@ public class ProgramController {
 		model.addAttribute("dev_List", user_dev_List);
 		// 공통코드 끝 시작 -------------------------------
 		
-		model.addAttribute("modal", "F");
 		
 		return "tms/pg/PgInsert";
 		
 	}
 	@RequestMapping(value = "/tms/pg/Pginsert.do")
-	public String insertPgList(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model, BindingResult errors) throws Exception {
+	public String insertPgList(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
-		// Validator 생성
-		ProgramValidator mValidator = new ProgramValidator();
-		mValidator.validate(programVO, errors);
+		programVO.setPjtId("1");
+		ProgramService.insertPg(programVO);
 			
-		// 오류여부 확인
-		if(errors.hasErrors()) {
-			
-			List<?> list = errors.getAllErrors();
-			String error_detail = "";
-			for(int i=0; i<list.size(); i++)
-			{
-				ObjectError a = (ObjectError) list.get(i);
-				error_detail += a.getDefaultMessage()+"\n";
-				System.out.println("에러"+i+" : "+a.getDefaultMessage());
-			}
-			
-			model.addAttribute("PGID", programVO.getPgId());
-			model.addAttribute("PGNM", programVO.getPgNm());
-			model.addAttribute("SYSGB", programVO.getSysGb());
-			model.addAttribute("TASKGB", programVO.getTaskGb());
-			model.addAttribute("USERDEVID", programVO.getUserDevId());
-			
-			// 공통코드 부분 시작 -------------------------------	
-			List<?> sysGbList = TmsProgrmManageService.selectSysGb();
-			model.addAttribute("sysGb", sysGbList);
-			List<?> user_dev_List = TmsProgrmManageService.selectUserList();
-			model.addAttribute("dev_List", user_dev_List);
-			
-			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb5(programVO);
-			model.addAttribute("taskGb2", taskGbList2);
-			// 공통코드 부분 끝 -------------------------------	
-			
-			model.addAttribute("modal", "T");
-			model.addAttribute("modal_content", error_detail);
-			
-			return "/tms/pg/PgInsert";
-			
-		} else {
-			programVO.setPjtId("1");
-			ProgramService.insertPg(programVO);
-			
-			return "redirect:/tms/pg/PgManage.do";
-		}
+		return "redirect:/tms/pg/PgManage.do";
+		
 	}
 	
 	/**
 	 * 프로그램 정보를 수정한다.	 
 	 */	
 	@RequestMapping(value = "/tms/pg/Pgupdate.do")
-	public String updatePgList(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model, BindingResult errors) throws Exception {
+	public String updatePgList(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
-		// Validator 생성
-		ProgramValidator mValidator = new ProgramValidator();
-		mValidator.validate(programVO, errors);
-					
-		// 오류여부 확인
-		if(errors.hasErrors()) {
-			// 공통코드 부분 시작 -------------------------------	
-			List<?> sysGbList = TmsProgrmManageService.selectSysGb();
-			model.addAttribute("sysGb", sysGbList);
-			List<?> user_dev_List = TmsProgrmManageService.selectUserList();
-			model.addAttribute("dev_List", user_dev_List);
-					
-			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb5(programVO);
-			model.addAttribute("taskGb2", taskGbList2);
-			// 공통코드 부분 끝 -------------------------------			
-			return "/tms/pg/PgUpdate";
+		
+		ProgramService.updatePg(programVO);
 			
-		} else {
-			ProgramService.updatePg(programVO);
-			
-			return "redirect:/tms/pg/PgManage.do";
-			//return "redirect:/tms/pg/selectPgInf.do?pgId="+programVO.getPgId();
-		}
+		return "redirect:/tms/pg/PgManage.do";
+		//return "redirect:/tms/pg/selectPgInf.do?pgId="+programVO.getPgId();
+		
 	}
 	
 	
@@ -438,14 +383,20 @@ public class ProgramController {
 		XSSFCell cell;
 							
 		Font defaultFont = workbook.createFont();        
+		defaultFont.setColor(HSSFColor.WHITE.index);
+		defaultFont.setBoldweight(Font.BOLDWEIGHT_BOLD); 
 		defaultFont.setFontHeightInPoints((short) 11); 
 		defaultFont.setFontName("맑은 고딕");
 
+		Font contentFont = workbook.createFont();      
+		contentFont.setFontHeightInPoints((short) 11); 
+		contentFont.setFontName("맑은 고딕");
+		
 		//제목 스타일 
 		CellStyle HeadStyle = workbook.createCellStyle(); 
 		HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
 		HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
-		HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index); 
+		HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index);
 		HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
 		HeadStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
 		HeadStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
@@ -461,7 +412,7 @@ public class ProgramController {
 		BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
 		BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
 		BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
-		BodyStyle.setFont(defaultFont);   
+		BodyStyle.setFont(contentFont);   
 
 		// 헤더 정보 구성
 		cell = row.createCell(0);
@@ -703,180 +654,7 @@ public class ProgramController {
 		}
 	}
 	
-	public void xlsxWiter(List<ProgramVO> list, HttpServletResponse response) throws IOException {
-		// 워크북 생성
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		// 워크시트 생성
-		XSSFSheet sheet = workbook.createSheet();
-		// 행 생성
-		XSSFRow row = sheet.createRow(0);
-		// 쎌 생성
-		XSSFCell cell;
-		
-		
-		Font defaultFont = workbook.createFont();        
-		defaultFont.setFontHeightInPoints((short) 11); 
-		defaultFont.setFontName("맑은 고딕");
-
-		//제목 스타일 
-		CellStyle HeadStyle = workbook.createCellStyle(); 
-		HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
-		HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
-		HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index); 
-		HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
-		HeadStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
-		HeadStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
-		HeadStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
-		HeadStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
-		HeadStyle.setFont(defaultFont);
-
-		//본문 스타일 
-		CellStyle BodyStyle = workbook.createCellStyle(); 
-		BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
-		BodyStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-		BodyStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
-		BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
-		BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
-		BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
-		BodyStyle.setFont(defaultFont);   
-
-
-		
-		
-		// 헤더 정보 구성
-		cell = row.createCell(0);
-		cell.setCellValue("화면ID");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-
-		cell = row.createCell(1);
-		cell.setCellValue("화면명");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		cell = row.createCell(2);
-		cell.setCellValue("시스템구분");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		cell = row.createCell(3);
-		cell.setCellValue("업무구분");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		cell = row.createCell(4);
-		cell.setCellValue("개발자");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		cell = row.createCell(5);
-		cell.setCellValue("사용여부");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-		
-		// 리스트의 size 만큼 row를 생성
-		ProgramVO vo;
-		for(int rowIdx=0; rowIdx < list.size(); rowIdx++) {
-			vo = list.get(rowIdx);
-			
-			// 행 생성
-			row = sheet.createRow(rowIdx+1);
-			
-			cell = row.createCell(0);
-			cell.setCellValue(vo.getPgId());
-			cell.setCellStyle(BodyStyle); // 본문스타일 
-
-			cell = row.createCell(1);
-			cell.setCellValue(vo.getPgNm());
-			cell.setCellStyle(BodyStyle); // 본문스타일 
-			cell = row.createCell(2);
-			cell.setCellValue(vo.getSysGb());
-			cell.setCellStyle(BodyStyle); // 본문스타일 
-			cell = row.createCell(3);
-			cell.setCellValue(vo.getTaskGb());
-			cell.setCellStyle(BodyStyle); // 본문스타일 
-			cell = row.createCell(4);
-			cell.setCellValue(vo.getUserDevId());
-			cell.setCellStyle(BodyStyle); // 본문스타일 
-			cell = row.createCell(5);
-			cell.setCellValue(vo.getUseYn());
-			cell.setCellStyle(BodyStyle); // 본문스타일 
-		}
-		/** 3. 컬럼 Width */ 
-		for (int i = 0; i <  list.size(); i++){ 
-			sheet.autoSizeColumn(i); 
-			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
-		}
-
-		// 입력된 내용 파일로 쓰기
-		File folder = new File("C:\\TMS\\TMS_통계자료");
-		
-		File file = new File("C:\\TMS\\TMS_통계자료\\프로그램 현황.xlsx");
-		
-		if(!folder.exists()){
-            //디렉토리 생성 메서드
-			folder.mkdirs();
-		}
-		
-		FileOutputStream fos = null;
-		
-		try {
-			fos = new FileOutputStream(file);
-			workbook.write(fos);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if(workbook!=null) //workbook.close();
-				if(fos!=null) fos.close();
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		/** 경로 다운로드 */
-		String path = "C:/TMS/TMS_통계자료/";  // Link의 자바파일에서 excel 파일이 생성된 경로
-        String realFileNm = "프로그램현황.xlsx";
-        
-        File uFile = new File(path,realFileNm);
-        int fSize = (int) uFile.length();
-        if (fSize > 0) {  //파일 사이즈가 0보다 클 경우 다운로드
-        	String mimetype = "application/x-msdownload";  //minetype은 파일확장자에 맞게 설정
-        	response.setHeader("Content-Disposition", "attachment; filename=\"TMS.xlsx\"");
-        	response.setContentType(mimetype);
-        	response.setContentLength(fSize);
-        	BufferedInputStream in = null;
-        	BufferedOutputStream out = null;
-         
-        	try {
-         
-        		in = new BufferedInputStream(new FileInputStream(uFile));
-        		out = new BufferedOutputStream(response.getOutputStream());
-        		FileCopyUtils.copy(in, out);
-        		out.flush();
-        	} catch (Exception ex) {
-        	} finally {
-        		String path1 = "C:/TMS/TMS_통계자료/프로그램현황.xlsx";
-        		File deleteFolder = new File(path1);
-        		deleteFolder.delete();
-        		String path2 = "C:/TMS/TMS_통계자료";
-        		File deleteFolder2 = new File(path2);
-        		deleteFolder2.delete();
-        		String path3 = "C:/TMS";
-        		File deleteFolder3 = new File(path3);
-        		deleteFolder3.delete();
-        		if (in != null) in.close();
-        		if (out != null) out.close();
-        	}
-        	
-        } else {
-        	response.setContentType("application/x-msdownload");
-       
-        	PrintWriter printwriter = response.getWriter();
-        	printwriter.println("<html>");
-        	printwriter.println("<br><br><br><h2>Could not get file name:<br>" + realFileNm + "</h2>");
-        	printwriter.println("<br><br><br><center><h3><a href='javascript: history.go(-1)'>Back</a></h3></center>");
-        	printwriter.println("<br><br><br>&copy; webAccess");
-        	printwriter.println("</html>");
-        	printwriter.flush();
-        	printwriter.close();
-        }
-		
-	}
+	
 	
 	/**
 	 * 업로드된 엑셀파일을 등록한다.

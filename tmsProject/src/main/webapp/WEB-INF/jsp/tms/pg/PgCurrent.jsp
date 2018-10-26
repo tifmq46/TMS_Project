@@ -293,11 +293,11 @@
         				<colgroup>
         					<col width="7"/> 
         					<col width="20"/>
-        					<col width="40"/>
-        					<col width="20"/>
-        					<col width="20"/>
-        					<col width="20"/>
-        					<col width="20"/>
+        					<col width="50"/>
+        					<col width="15"/>
+        					<col width="15"/>
+        					<col width="15"/>
+        					<col width="10"/>
         				</colgroup>
         				<tr>
         					<th align="center">NO</th>
@@ -311,16 +311,16 @@
         			
         				<c:forEach var="result" items="${resultList}" varStatus="status">
             				<tr>
-            					<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+            					<td align="center" class="listtd"><font style="font-weight:bold"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></font></td>
             					<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
             					<td align="left" class="listtd">
             						<a href="<c:url value='/tms/pg/selectPgCheck.do'/>?pgId=<c:out value='${result.pgId}'/>">
-            							<strong><c:out value="${result.pgNm}"/></strong>
+            							<font color="#0F438A" style="font-weight:bold"><c:out value="${result.pgNm}"/></font>
             						</a></td>
             					<td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
-            					<td align="center" class="listtd"><c:out value="${result.useYn}"/>&nbsp;</td>
+            					<td align="center" class="listtd"><font style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
             				</tr>
         				</c:forEach>
         			</table>  		
@@ -332,7 +332,9 @@
 				<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
 				<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
 				<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
-				<input id="TmsProgrmFileNm_user_real_id" type="hidden" /> 
+				<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
+				<input id="TmsProgrmFileNm_pg_full" type="hidden" />
+				<input id="TmsProgrmFileNm_task_gb_code" type="hidden" />
 				<input id="cnt" type="hidden" />
 	</form>
     <!-- 페이지 네비게이션 시작 -->

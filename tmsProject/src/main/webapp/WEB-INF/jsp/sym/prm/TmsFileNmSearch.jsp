@@ -101,14 +101,12 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm, pg_full, sys_gb,task_gb
                         <label for="searchKeyword">화면명 : </label>
                         <input id="searchKeyword" name="searchKeyword" type="text" size="30" value="${searchVO.searchKeyword}" onkeydown="return Enter_Remove();" maxlength="60" title="검색조건">
                     </li>       
-                </ul>
-                <ul id="search_second_ul">
                     <li>
                         <div class="buttons" style="float:right;">
                             <a href="#LINK" onclick="javascript:selectProgramListSearch(); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
                         </div>                              
-                    </li>
-                </ul>           
+                    </li>                    
+                </ul>        
             </div>          
             </fieldset>
     </div>

@@ -17,19 +17,42 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
+<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<validator:javascript formName="programVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
     
     function Enroll_PgInfo(){
     	
-        document.programVO.action = "<c:url value='/tms/pg/Pginsert.do'/>";
-        document.programVO.submit();
+    	if (!validateProgramVO(document.programVO)) {
+			return;
+		}
+    	
+    	var pattern3 = /[~!@#$%^&*()_+|<>?:{}]/;	// 특수문자
+    	if(pattern3.test(document.programVO.pgId.value)) { 
+    		swal("화면ID에 특수문자를 입력할 수 없습니다."); 
+    		return false; 
+    	}
+
+		swal({
+   			text: '등록하시겠습니까?'
+   			,buttons : true
+   		})
+   		.then((result) => {
+   			if(result) {
+   				document.programVO.action = "<c:url value='/tms/pg/Pginsert.do'/>";
+   		        document.programVO.submit(); 
+   			}else {
+   					
+   			}
+   		});
     
 	}
     
@@ -102,15 +125,6 @@
                 
 	        	      
                 <form:form commandName="programVO" id="programVO" name="programVO" method="post" >
-
-					<input type="hidden" id="modal" name="modal" value="${modal_content}"/>
-					
-					<c:if test="${modal == 'T'}" >
-            			<script>            			
-            				swal("Denied!", ""+document.programVO.modal.value, "error");
-  							//sweetAlert(""+document.programVO.modal.value);
-  						</script>  	        				
-	        		</c:if>      
 
                     <div class="modify_user" >
                         <table >
