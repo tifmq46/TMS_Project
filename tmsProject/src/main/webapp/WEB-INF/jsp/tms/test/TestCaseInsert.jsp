@@ -34,11 +34,6 @@
 <validator:javascript formName="testCaseVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript" defer="defer">
 
-window.onload = function(){
-	$("#testcaseIdDuplicationCheck").keyup(function () {
-
-	});
-}
 
 function insertTestCaseImpl(){
 	
@@ -46,47 +41,60 @@ function insertTestCaseImpl(){
 	if($("#testcaseGb").val() == 'TC1' && $("#TmsProgrmFileNm_pg_id").val() == ""){
 		alert("단위 테스트케이스 등록시 화면ID를 선택해야합니다.")
 	} else {
-	
+		
 	var inputTestcaseId = $("#testcaseIdDuplicationCheck").val();
-	 $.ajax({
-	   	 type :"POST"
-	   	,url  : "<c:url value='/tms/test/checkTestCaseIdDuplication.do'/>"
-	   	,dataType : "json"
-	   	,data : {testcaseId:inputTestcaseId}
-	   	,success :  function(result){
-	   		
-	   		if(!result){
-	   			alert("중복된 테스트케이스ID 입니다.")
-	   		} else {
-	   			
-	   			if (!validateTestCaseVO(document.testCaseVO)){
-	   		        return;
-	   		    }
-	   		    
-	   			swal({
-	   				text: '등록하시겠습니까?'
-	   				,buttons : true
-	   			})
-	   			.then((result) => {
-	   				if(result) {
-	   					
-	   					document.testCaseVO.action = "<c:url value='/tms/test/insertTestCaseImpl.do'/>";
-		   		        document.testCaseVO.submit();  
-	   				}else {
-	   					
-	   				}
-	   			});
-	   			
-	   		}
-	   	}
-	   	, error :  function(request,status,error){
-	   		 alert("에러");
-		         alert("code:"+request.status+"\n"+"error:"+error);
-	   	}
-	   		
-	   });
-	}
 	
+	/* 특수문자 포함여부 체크 */
+	var stringRegx = /[~!@\#$%<>^&*\()\-=+_\’]/gi; 
+	var isValid = true; 
+    if(stringRegx.test(inputTestcaseId)) { 
+       isValid = false;
+       alert("테스트케이스ID에 특수문자는 사용할 수 없습니다.");
+     } 
+	     
+	   if(isValid){
+		   $.ajax({
+			   	 type :"POST"
+			   	,url  : "<c:url value='/tms/test/checkTestCaseIdDuplication.do'/>"
+			   	,dataType : "json"
+			   	,data : {testcaseId:inputTestcaseId}
+			   	,success :  function(result){
+			   		
+			   		if(!result){
+			   			alert("중복된 테스트케이스ID 입니다.")
+			   		} else {
+			   			
+			   			if (!validateTestCaseVO(document.testCaseVO)){
+			   		        return;
+			   		    }
+			   		    
+			   			swal({
+			   				text: '등록하시겠습니까?'
+			   				,buttons : true
+			   			})
+			   			.then((result) => {
+			   				if(result) {
+			   					
+			   					document.testCaseVO.action = "<c:url value='/tms/test/insertTestCaseImpl.do'/>";
+				   		        document.testCaseVO.submit();  
+			   				}else {
+			   					
+			   				}
+			   			});
+			   			
+			   		}
+			   	}
+			   	, error :  function(request,status,error){
+			   		 alert("에러");
+				         alert("code:"+request.status+"\n"+"error:"+error);
+			   	}
+			   		
+			   });
+	   } else {
+		   
+	   }
+	     
+	}
 	
 }
 

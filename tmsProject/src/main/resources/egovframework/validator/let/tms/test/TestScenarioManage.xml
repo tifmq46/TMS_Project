@@ -14,7 +14,7 @@
 				<var-value>20</var-value>
 				</var>
 			</field> 
-			<field property="testscenarioOrd" depends="required, integer">
+			<field property="testscenarioOrd" depends="required, integer,">
         		<arg0 key="tms.test.testscenarioOrd" />
 			</field>
 			<field property="testCondition" depends="maxlength">
