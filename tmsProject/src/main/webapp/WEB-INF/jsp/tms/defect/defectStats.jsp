@@ -137,7 +137,7 @@ window.onload = function() {
         <div id="leftmenu"><c:import url="/sym/mms/EgovMainMenuLeft.do" /></div>
         <!-- //좌측메뉴 끝 -->
             <!-- 현재위치 네비게이션 시작 -->
-            <div id="content">
+            <div id="content" style="font-family:'Malgun Gothic';">
                 <div id="cur_loc">
                     <div id="cur_loc_align">
                         <ul>
@@ -149,80 +149,112 @@ window.onload = function() {
                         </ul>
                     </div>
                 </div>
-     		<div id="search_field">
+     		<div id="search_field" style="font-family:'Malgun Gothic';">
 					<div id="search_field_loc"><h2><strong>결함처리통계 (대시보드1)</strong></h2></div>
 			</div>
 			<br/><br/><br/><br/><br/><br/>
-			<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
-							<font color="#727272" style="font-size:1.4em;font-weight:bold">조치율</font>
-							&nbsp;
-							<font style="font-size:1.25em;font-weight:bold">( 전체 <c:out value="${defectStats.actionStAll}"/>건 중 </font> 
-							<font style="font-size:1.25em;font-weight:bold" color="#007BFF" ><c:out value="${defectStats.actionStA3}"/></font>
-							<font style="font-size:1.25em;font-weight:bold">건 완료 )</font> 
-							<table width="100%">
-								<tr>
-									<td width="90%">
+			
+			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+    			<div class="widget">
+    				<div class="widget-header">
+    					<div class="header-name" style="margin:10px;">
+	    					조치율
+	    					&nbsp;
+						<font style="font-weight:bold">( 전체 <c:out value="${defectStats.actionStAll}"/>건 중 </font> 
+						<font style="font-weight:bold" color="#007BFF" ><c:out value="${defectStats.actionStA3}"/></font>
+						<font style="font-weight:bold">건 완료 )</font> 
+    					</div>
+    				</div>
+    				
+						<table width="100%">
+							<tr>
+								<td width="90%">
 									<fmt:parseNumber var="actionProgression" integerOnly="true"
 											value="${defectStats.actionStA3 / defectStats.actionStAll * 100}" />
-										<div class="progress" style="height: 2rem;">
-											<div class="progress-bar" style="width:${actionProgression}%">
-												<font style="font-size: 15px; font-weight: bolder">
-												<c:out value=" ${actionProgression}"></c:out>% </font>
-											</div>
+									<div class="progress" style="height: 2rem;">
+										<div class="progress-bar" style="width:${actionProgression}%">
+											<font style="font-size: 15px; font-weight: bolder">
+											<c:out value=" ${actionProgression}"></c:out>% </font>
 										</div>
-										</td>
-								</tr>
-								<tr>
-									<td align="right">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td align="right">
 									<img src="<c:url value='/images/tms/icon_pop_blue.gif' />"
 										width="10" height="10" alt="yCnt" />&nbsp;조치율
-									</td>
-								</tr>
-							</table>
-							
-							<br/><br/>
-							<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
-							<font color="#727272" style="font-size:1.4em;font-weight:bold">상태별 결함건수</font>
-							<table width="100%" cellspacing="10" height="80px">
-								<tr>
-									<td width="16.6%" align="center" bgcolor="#CC3C39">
-									<font color="#FFFFFF" size="3" style="font-weight: bold"> 전체건수 <br />
-										<c:out value="${defectStats.actionStAll}" />
-									</font></td>
-									<td width="16.6%" align="center" bgcolor="#007BFF">
-									<font color="#FFFFFF" size="3" style="font-weight: bold"> 대기 <br />
-										<c:out value="${defectStats.actionStA1}" />
-									</font>
-									</td>
-									<td width="16.6%" align="center" bgcolor="#007BFF">
-									<font color="#FFFFFF" size="3" style="font-weight: bold"> 조치중 <br />
-										<c:out value="${defectStats.actionStA2}" />
-									</font>
-									</td>
-									<td width="16.6%" align="center" bgcolor="#007BFF">
-									<font color="#FFFFFF" size="3" style="font-weight: bold"> 조치완료 <br />
-										<c:out value="${defectStats.actionStA3}" />
-									</font>
-									</td>
-									<td width="16.6%" align="center" bgcolor="#007BFF">
-									<font color="#FFFFFF" size="3" style="font-weight: bold"> 재요청 <br />
-										<c:out value="${defectStats.actionStA4}" />
-									</font>
-									</td>
-								</tr>
-							</table>
-							
-							<br/><br/><br/><br/>
-							<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
-							<font color="#727272" style="font-size:1.4em;font-weight:bold">사용자별 결함건수 / 조치건수</font>
-							<canvas id="userByDefectCnt" width="100%" height="20"></canvas>
-							
-							<br/><br/><br/><br/>
-							<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
-							<font color="#727272" style="font-size:1.4em;font-weight:bold">일자별 등록건수 / 조치건수</font>
-							<canvas id="dayByDefectCnt" width="100%" height="20"></canvas>
-							
-							<br/><br/><br/><br/>
+								</td>
+							</tr>
+						</table>
+    			</div>    	  
+    			
+    		</div>
+			
+			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+    			<div class="widget">
+    				<div class="widget-header">
+    					<div class="header-name" style="margin:10px;">
+	    					상태별 결함건수
+    				</div>
+    			</div>
+    				
+					<table width="100%" cellspacing="10" height="80px">
+						<tr>
+							<td width="16.6%" align="center" bgcolor="#CC3C39">
+								<font color="#FFFFFF" size="3" style="font-weight: bold"> 전체건수 <br />
+									<c:out value="${defectStats.actionStAll}" />
+								</font></td>
+							<td width="16.6%" align="center" bgcolor="#007BFF">
+								<font color="#FFFFFF" size="3" style="font-weight: bold"> 대기 <br />
+									<c:out value="${defectStats.actionStA1}" />
+								</font>
+							</td>
+							<td width="16.6%" align="center" bgcolor="#007BFF">
+								<font color="#FFFFFF" size="3" style="font-weight: bold"> 조치중 <br />
+									<c:out value="${defectStats.actionStA2}" />
+								</font>
+							</td>
+							<td width="16.6%" align="center" bgcolor="#007BFF">
+								<font color="#FFFFFF" size="3" style="font-weight: bold"> 조치완료 <br />
+									<c:out value="${defectStats.actionStA3}" />
+								</font>
+							</td>
+							<td width="16.6%" align="center" bgcolor="#007BFF">
+								<font color="#FFFFFF" size="3" style="font-weight: bold"> 재요청 <br />
+									<c:out value="${defectStats.actionStA4}" />
+								</font>
+							</td>
+						</tr>
+					</table>
+    			</div>    
+    		</div>
+			
+			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+    			<div class="widget">
+    				<div class="widget-header">
+    					<div class="header-name" style="margin:10px;">
+	    					사용자별 결함건수 / 조치건수
+    					</div>
+    				</div>
+    				
+					<canvas id="userByDefectCnt" width="100%" height="20"></canvas>
+    			</div>    	  
+    			
+    		</div>
+			
+			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+    			<div class="widget">
+    				<div class="widget-header">
+    					<div class="header-name" style="margin:10px;">
+	    					일자별 등록건수 / 조치건수
+    					</div>
+    				</div>
+    				
+					<canvas id="dayByDefectCnt" width="100%" height="20"></canvas>
+    			</div>    	  
+    			
+    		</div>
+			
 
 			</div>
             <!-- //content 끝 -->

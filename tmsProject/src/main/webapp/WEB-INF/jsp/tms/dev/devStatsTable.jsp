@@ -152,7 +152,7 @@ function StatsToExcel(statsGb) {
         <div id="leftmenu"><c:import url="/sym/mms/EgovMainMenuLeft.do" /></div>
         <!-- //좌측메뉴 끝 -->
             <!-- 현재위치 네비게이션 시작 -->
-            <div id="content">
+            <div id="content" style="font-family:'Malgun Gothic';">
                 <div id="cur_loc">
                     <div id="cur_loc_align">
                         <ul>
@@ -165,7 +165,7 @@ function StatsToExcel(statsGb) {
                     </div>
                 </div>
                 <!-- 프로젝트 개발 기간 박스 시작-->
-				<div id="search_field">
+				<div id="search_field" style="font-family:'Malgun Gothic';">
 					<div id="search_field_loc"><h2><strong>개발진척통계</strong></h2></div>
 				</div>
 				 <!-- 프로젝트 개발 기간 박스 끝-->

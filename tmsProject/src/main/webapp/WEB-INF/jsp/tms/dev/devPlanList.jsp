@@ -252,7 +252,7 @@ function searchFileNm() {
             <!-- 현재위치 네비게이션 시작 -->
             <div id="content">
                 <div id="cur_loc">
-                    <div id="cur_loc_align">
+                    <div id="cur_loc_align" style="font-family:'Malgun Gothic';">
                         <ul>
                             <li>HOME</li>
                             <li>&gt;</li>
@@ -271,7 +271,7 @@ function searchFileNm() {
                 <input type="hidden" id="s2" name="s2" />
 				<input type="hidden" name="page" id="page" value="${page}"/>
 				
-				<div id="search_field">
+				<div id="search_field" style="font-family:'Malgun Gothic';">
 					<div id="search_field_loc"><h2><strong>개발계획관리</strong></h2></div>
 					  	<fieldset><legend>조건정보 영역</legend>	  
 					  	

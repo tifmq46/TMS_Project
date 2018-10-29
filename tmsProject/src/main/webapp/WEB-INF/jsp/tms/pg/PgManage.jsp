@@ -302,7 +302,7 @@ $(function(){
 <!-- 전체 레이어 시작 -->
 
 
-<div id="wrap">
+<div id="wrap" style="font-family:'Malgun Gothic';">
     <!-- header 시작 -->
     <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>
     <!-- //header 끝 -->
@@ -314,7 +314,7 @@ $(function(){
             <!-- 현재위치 네비게이션 시작 -->
             <div id="content">
                 <div id="cur_loc">
-                    <div id="cur_loc_align">
+                    <div id="cur_loc_align" style="font-family:'Malgun Gothic';">
                         <ul>
 							<li>HOME</li>
 							<li>&gt;</li>
@@ -331,7 +331,7 @@ $(function(){
 				
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
-                    <div id="search_field_loc">
+                    <div id="search_field_loc" >
                     <h2><strong>프로그램 관리</strong></h2></div>
 					
 						<input type="hidden" id="del" name="del" value="fncManageChecked()" />
@@ -352,7 +352,7 @@ $(function(){
                   			  <col width="14.4%"/> 
                   			  <col width="14.4%"/> 
       			        	</colgroup>
-      			        	<tr>
+      			        	<tr> 
       			        		<td style="font-weight:bold;color:#666666;font-size:110%;">화면ID
       			        		</td>
       			        		<td>
@@ -484,7 +484,12 @@ $(function(){
             					<td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
-            					<td align="center" class="listtd"><font style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
+            					<c:if test="${result.useYn == 'Y'}">
+            						<td align="center" class="listtd" style="background-color:#819FF7;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
+            					</c:if>
+            					<c:if test="${result.useYn == 'N'}">
+            						<td align="center" class="listtd" style="background-color:#F78181;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
+            					</c:if>
             				</tr>
         				</c:forEach>
         				

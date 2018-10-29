@@ -64,7 +64,7 @@ function statsToExel(testcaseGb) {
         <div id="leftmenu"><c:import url="/sym/mms/EgovMainMenuLeft.do" /></div>
         <!-- //좌측메뉴 끝 -->
             <!-- 현재위치 네비게이션 시작 -->
-            <div id="content">
+            <div id="content" style="font-family:'Malgun Gothic';">
                 <div id="cur_loc">
                     <div id="cur_loc_align">
                         <ul>

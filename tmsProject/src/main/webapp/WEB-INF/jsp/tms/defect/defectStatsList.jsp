@@ -155,7 +155,7 @@ th,td{
 			</div>
 			<!-- //좌측메뉴 끝 -->
 			<!-- 현재위치 네비게이션 시작 -->
-			<div id="content">
+			<div id="content" style="font-family:'Malgun Gothic';">
 				<div id="cur_loc">
 					<div id="cur_loc_align">
 						<ul>
@@ -168,7 +168,7 @@ th,td{
 					</div>
 				</div>
 				<br /> <br />
-				<div id="search_field">
+				<div id="search_field" style="font-family:'Malgun Gothic';">
 					<div id="search_field_loc">
 						<h2>
 							<strong>결함처리통계 (표)</strong>

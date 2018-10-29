@@ -35,7 +35,7 @@
 			return;
 		}
     	
-    	var pattern3 = /[~!@#$%^&*()_+|<>?:{}]/;	// 특수문자
+    	var pattern3 = /[~!@#$%^&*()+|<>?:{}]/;	// 특수문자
     	if(pattern3.test(document.programVO.pgId.value)) { 
     		swal("화면ID에 특수문자를 입력할 수 없습니다."); 
     		return false; 

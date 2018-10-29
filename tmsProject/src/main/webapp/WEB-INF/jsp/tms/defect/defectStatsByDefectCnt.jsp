@@ -159,7 +159,7 @@ window.onload = function() {
         <div id="leftmenu"><c:import url="/sym/mms/EgovMainMenuLeft.do" /></div>
         <!-- //좌측메뉴 끝 -->
             <!-- 현재위치 네비게이션 시작 -->
-            <div id="content">
+            <div id="content" style="font-family:'Malgun Gothic';">
                 <div id="cur_loc">
                     <div id="cur_loc_align">
                         <ul>
@@ -171,24 +171,39 @@ window.onload = function() {
                         </ul>
                     </div>
                 </div>
-     		<div id="search_field">
+     		<div id="search_field" style="font-family:'Malgun Gothic';">
 					<div id="search_field_loc"><h2><strong>결함처리통계 (대시보드2)</strong></h2></div>
 			</div>
 			<br/><br/><br/><br/><br/><br/>
-			<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
-				<font color="#727272" style="font-size:1.4em;font-weight:bold">시스템별 결함건수</font>
-							<canvas id="sysByDefectCnt" width="100%" height="20"></canvas>
-			<br/><br/>
-			<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
-				<font color="#727272" style="font-size:1.4em;font-weight:bold">업무별 결함건수</font>
-							<br/><br/>
-							<div id="taskByActionCntLoc" style="border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);">
-							<br/>
-							<canvas id="taskByDefectCnt" width="100%" height="20"></canvas>
-							<br/><br/>
-							</div>
-				
-			<br/><br/><br/><br/>
+			
+			
+			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+    			<div class="widget">
+    				<div class="widget-header">
+    					<div class="header-name" style="margin:10px;">
+	    					시스템별 결함건수
+    					</div>
+    				</div>
+    				
+					<canvas id="sysByDefectCnt" width="100%" height="20"></canvas>
+    			</div>    	  
+    			
+    		</div>
+			
+			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+    			<div class="widget">
+    				<div class="widget-header">
+    					<div class="header-name" style="margin:10px;">
+	    					업무별 결함건수
+    					</div>
+    				</div>
+    				<div id="taskByActionCntLoc" >
+						<canvas id="taskByDefectCnt" width="100%" height="20"></canvas>
+					</div>
+    			</div>    	  
+    			
+    		</div>
+			
 			
 			</div>
             <!-- //content 끝 -->

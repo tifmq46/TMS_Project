@@ -28,7 +28,7 @@
 <meta http-equiv="content-language" content="ko">
 <link href="<c:url value='/'/>css/popup.css" rel="stylesheet" type="text/css" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
-<title>엑셀파일명 검색</title>
+<title>엑셀파일 등록</title>
 <style type="text/css">
 	h1 {font-size:12px;}
 	caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}

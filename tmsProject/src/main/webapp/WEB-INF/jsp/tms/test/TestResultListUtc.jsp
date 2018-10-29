@@ -64,7 +64,7 @@ function searchFileNm() {
         <div id="leftmenu"><c:import url="/sym/mms/EgovMainMenuLeft.do" /></div>
         <!-- //좌측메뉴 끝 -->
             <!-- 현재위치 네비게이션 시작 -->
-            <div id="content">
+            <div id="content" style="font-family:'Malgun Gothic';">
                 <div id="cur_loc">
                     <div id="cur_loc_align">
                         <ul>
@@ -92,7 +92,7 @@ function searchFileNm() {
                     <form:hidden path=""  id="TmsProgrmFileNm_user_real_id"/>
                     
                 <!-- 검색 필드 박스 시작 -->
-					<div id="search_field">
+					<div id="search_field" style="font-family:'Malgun Gothic';">
               <div id="search_field_loc"><h2><strong>단위 테스트 결과 관리</strong></h2></div>
 					
 					  	<fieldset><legend>조건정보 영역</legend>	

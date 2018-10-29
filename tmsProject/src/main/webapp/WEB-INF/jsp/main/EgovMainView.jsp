@@ -161,7 +161,7 @@ window.onload = function() {
             </ul>           
          </div>  --%>
         <!-- 프로그램리스트 검색 끝 --> 
-        <div class="container" style="padding:0 15px; 0 15px;">
+        <div class="container" style="padding:0 15px; 0 15px; font-family:'Malgun Gothic';">
 	    	<div class="page-title">
 	    			<b style="font-size:14px;"><i class="icon-bar-chart"></i>&nbsp;프로젝트 상세</b>
 	    	</div>
@@ -177,7 +177,7 @@ window.onload = function() {
 	    	</div>
     	</div>
    	
-    <div class="row mt30">
+    <div class="row mt30" style="font-family:'Malgun Gothic';">
     <!-- 프로젝트 생성 시작 -->
 	<c:if test="${tmsProjectManageVO.pjtId == null }">
 		<a href="<c:url value='/sym/prm/insertProjectView.do'/>">프로젝트 생성</a>
@@ -185,7 +185,7 @@ window.onload = function() {
 	
 	<!-- 프로젝트 생성 끝 -->
      <c:if test="${tmsProjectManageVO.pjtId != null }">
-    	<div class="myBsnsList" class="col-md-6" style="height: 260px; margin-bottom:30px;">
+    	<div class="myBsnsList" class="col-md-6" style="height: 260px; margin-bottom:30px; font-family:'Malgun Gothic';">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
@@ -193,7 +193,7 @@ window.onload = function() {
     				</div>
     			</div>
     			<div class="widget-content box">
-    				<table class="table table-search-head table-size-th4" style="height:215px;">
+    				<table class="table table-search-head table-size-th4" style="height:215px; font-family:'Malgun Gothic';">
     					<tbody>
     						 <tr class="last">
     							<th>프로젝트 명</th>
@@ -234,7 +234,7 @@ window.onload = function() {
     		</div>
     	</div>
     	</c:if>
-    	<div class="recentBsnsList" class="col-md-6" style="height:260px; margin-bottom:30px !important	; ">
+    	<div class="recentBsnsList" class="col-md-6" style="height:260px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
@@ -293,7 +293,7 @@ window.onload = function() {
     		</div>    	    	
     	</div>
     	
-    	<div class="myBsnsList" class="col-md-6" style="height:290px; margin-bottom:20px !important	;">
+    	<div class="myBsnsList" class="col-md-6" style="height:290px; margin-bottom:20px !important	; font-family:'Malgun Gothic';">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
@@ -312,7 +312,7 @@ window.onload = function() {
     		</div>    	    	
     	</div>
     	
-    	<div class="recentBsnsList" class="col-md-6" style="overflow:auto; white-space:nowrap; overflow-y:hidden; height:290px; width:220px; margin-bottom:20px !important	;">
+    	<div class="recentBsnsList" class="col-md-6" style="overflow:auto; white-space:nowrap; overflow-y:hidden; height:290px; width:220px; margin-bottom:20px !important	; font-family:'Malgun Gothic';">
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">

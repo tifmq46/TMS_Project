@@ -108,7 +108,7 @@ function pagePrint(){
             <!-- 현재위치 네비게이션 시작 -->
             <div id="content">
                 <div id="cur_loc">
-                    <div id="cur_loc_align">
+                    <div id="cur_loc_align" style="font-family:'Malgun Gothic';">
                         <ul>
 							<li>HOME</li>
 							<li>&gt;</li>
@@ -122,7 +122,7 @@ function pagePrint(){
              <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="tms/dev/devPlanList.do">   
                 <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
                 <!-- 검색 필드 박스 시작 -->
-				<div id="search_field">
+				<div id="search_field" style="font-family:'Malgun Gothic';">
 					<div id="search_field_loc"><h2><strong>개발진척현황</strong></h2></div>
 					<%-- <form action="form_action.jsp" method="post"> --%>
 					  	<fieldset><legend>조건정보 영역</legend>	  

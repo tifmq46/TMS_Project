@@ -44,7 +44,7 @@ function handleClick(event, array){
 			$("#taskByActionCntLoc").empty();
 			var str = "";
 			str += "<br/><br/><div style='overflow:auto; overflow-y:hidden;'>";
-			str += "<table style='border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);'>";
+			str += "<table>";
 			str += "<tr></tr><tr>";
 			$.each(result, function(index,item){
 				str += "<td><br/><br/>&nbsp;&nbsp;";
@@ -286,7 +286,7 @@ window.onload = function() {
         <div id="leftmenu"><c:import url="/sym/mms/EgovMainMenuLeft.do" /></div>
         <!-- //좌측메뉴 끝 -->
             <!-- 현재위치 네비게이션 시작 -->
-            <div id="content">
+            <div id="content" style="font-family:'Malgun Gothic';">
                 <div id="cur_loc">
                     <div id="cur_loc_align">
                         <ul>
@@ -298,14 +298,21 @@ window.onload = function() {
                         </ul>
                     </div>
                 </div>
-     		<div id="search_field">
+     		<div id="search_field" style="font-family:'Malgun Gothic';">
 					<div id="search_field_loc"><h2><strong>결함처리통계 (대시보드3)</strong></h2></div>
 			</div>
 			<br/><br/><br/><br/><br/><br/>
-			<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
-			<font color="#727272" style="font-size:1.4em;font-weight:bold">시스템별 조치율</font>
-			<br/><br/><br/><br/>
-				<table>
+			
+			
+			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+    		<div class="widget">
+    			<div class="widget-header">
+    				<div class="header-name" style="margin:10px;">
+	    					시스템별 조치율
+    				</div>
+    			</div>
+    			<div class="widget-content default_tablestyle" style="height:212px; overflow:auto; ">
+    				<table>
 					<tr>
 						<td>&nbsp;&nbsp;
 							<canvas id="sysAllByActionCnt" width="250" height="120" style="display: inline !important;"></canvas>
@@ -338,14 +345,22 @@ window.onload = function() {
 						</c:forEach>
 					</tr>
 				</table>
-				
-				<br/><br/>
-				<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
-				<font color="#727272" style="font-size:1.4em;font-weight:bold">업무별 조치율</font>
-				<br/><br/>
-				<div id="taskByActionCntLoc" ><br/><br/>
+    			</div>		
+    		</div>    	  
+    			
+    	</div>
+			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+    		  
+    		<div class="widget">
+    			<div class="widget-header">
+    				<div class="header-name" style="margin:10px;">
+	    					업무별 조치율
+    				</div>
+    			</div>
+    			<div class="widget-content default_tablestyle" style="overflow:auto; ">
+    			<div id="taskByActionCntLoc" ><br/><br/>
 				 <div style="overflow:auto;  overflow-y:hidden;">
-				<table style="border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);">
+				<table>
 					<tr>
 						<c:forEach var="taskByActionCnt" items="${taskByActionCnt}" varStatus="status">
 							<td><br/><br/>
@@ -368,10 +383,10 @@ window.onload = function() {
 						</c:forEach>
 					</tr>
 				</table></div>
-				<br/><br/>
-			</div>
-			
-			<br/><br/><br/><br/>
+    			</div>
+    		</div>      	
+    	</div>	
+				
 			
 			</div>
             <!-- //content 끝 -->

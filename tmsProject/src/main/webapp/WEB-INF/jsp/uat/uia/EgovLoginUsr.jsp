@@ -24,15 +24,16 @@
 <title>로그인</title>
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <link href="<c:url value='/'/>css/login.css" rel="stylesheet" type="text/css" >
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 <!--
 function actionLogin() {
 
     if (document.loginForm.id.value =="") {
-        alert("아이디를 입력하세요");
+        swal("아이디를 입력하세요");
         return false;
     } else if (document.loginForm.password.value =="") {
-        alert("비밀번호를 입력하세요");
+        swal("비밀번호를 입력하세요");
         return false;
     } else {
         document.loginForm.action="<c:url value='/uat/uia/actionSecurityLogin.do'/>";
@@ -80,7 +81,7 @@ function getid(form) {
 function fnInit() {
     var message = document.loginForm.message.value;
     if (message != "") {
-        alert(message);
+        swal(message);
     }
     getid(document.loginForm);
 }
@@ -92,7 +93,7 @@ function fnInit() {
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
-    <div id="topnavi"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>       
+    <div id="topnavi" style="margin : 0;"><c:import url="/sym/mms/EgovMainMenuHead.do" /></div>       
     <!-- //header 끝 --> 
     <!-- container 시작 -->
     <div id="container">
@@ -102,7 +103,7 @@ function fnInit() {
             <!-- content 시작 --> 
             <div id="content">
                 <div id="cur_loc">
-                    <div id="cur_loc_align">
+                    <div id="cur_loc_align" style="font-family:'Malgun Gothic';">
                         <ul>
                             <li>HOME</li>
                             <li>&gt;</li>
@@ -112,13 +113,12 @@ function fnInit() {
                         </ul>
                     </div>                  
                 </div>
-
                     <div id="login_title_div"><img alt="LOGIN 표준프레임워크 경량환경 내부업무 시스템에 오신것을 환영합니다." src="<c:url value='/' />images/login/img_logintitle.gif" /></div>        
                         <div class="user_login">
                         <form:form id="loginForm" name="loginForm" method="post">
                             <fieldset><legend>조건정보 영역</legend>
                                 <div class="user_login_ultop">
-                                    <ul>
+                                    <ul style="font-family:'Malgun Gothic';">
                                         <li>
                                             <label for="id">아이디</label>
                                             <input type="text" class="input_style" title="아이디를 입력하세요." id="id" name="id" maxlength="10"/>

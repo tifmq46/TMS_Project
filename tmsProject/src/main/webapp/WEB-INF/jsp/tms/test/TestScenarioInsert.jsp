@@ -101,7 +101,7 @@ function insertTestScenarioImpl(){
         <div id="leftmenu"><c:import url="/sym/mms/EgovMainMenuLeft.do" /></div>
         <!-- //좌측메뉴 끝 -->
             <!-- 현재위치 네비게이션 시작 -->
-            <div id="content">
+            <div id="content" style="font-family:'Malgun Gothic';">
                 <div id="cur_loc">
                     <div id="cur_loc_align">
                         <ul>
@@ -116,7 +116,7 @@ function insertTestScenarioImpl(){
               
                 <div id="page_info"><div id="page_info_align"></div></div>      
                 <br> 
-               <div id="search_field_loc"><h2><strong>테스트시나리오 등록</strong></h2></div>
+               <div id="search_field_loc" style="font-family:'Malgun Gothic';"><h2><strong>테스트시나리오 등록</strong></h2></div>
                         
                               
              <form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="<c:url value='/tms/test/insertTestScenarioImpl.do'/>">          
