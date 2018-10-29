@@ -148,8 +148,6 @@ public interface DevPlanService {
 
 	public List<String> selectPeriodMonthWeek();
 
-	public List<EgovMap> selectSumWeek(String periodList);
-
 	public List<HashMap<String, String>> selectThisWeekStats(HashMap<String, String> type);
 
 	public List<HashMap<String, String>> selectTotalStats(HashMap<String, String> type);

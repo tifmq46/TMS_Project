@@ -267,12 +267,7 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<String> selectPeriodMonthWeek() {
 		return devPlanDAO.selectPeriodMonthWeek();
 	}
-
-	@Override
-	public List<EgovMap> selectSumWeek(String periodList) {
-		return devPlanDAO.selectSumWeek(periodList);
-	}
-
+	
 	@Override
 	public List<HashMap<String, String>> selectThisWeekStats(HashMap<String, String> type) {
 		return devPlanDAO.selectThisWeekStats(type);

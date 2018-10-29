@@ -394,11 +394,6 @@ function searchFileNm() {
                      
                 <!-- table add start -->
                 <div class="default_tablestyle">
-                    <label style="float:right; font-weight:bold; font-size:16px;">
-                	<font color="#0066FF" style="font-weight:bold">*계획가능일자 : ${ps} &nbsp;~&nbsp;${pe}</font>
-                	<input type="hidden" id="ps" name="ps" value="${ps}"/>
-                	<input type="hidden" id="pe" name="pe" value="${pe}"/>
-                	</label>
                     <table summary="번호,게시판명,사용 커뮤니티 명,사용 동호회 명,등록일시,사용여부   목록입니다" cellpadding="0" cellspacing="0">
                     <caption>게시판 템플릿 목록</caption>
                    
@@ -423,8 +418,8 @@ function searchFileNm() {
         				<th align="center">시스템구분</th>
         				<th align="center">업무구분</th>
         				<th align="center">개발자</th>
-        				<th align="center">*계획시작일자</th>
-        				<th align="center">*계획종료일자</th>
+        				<th align="center">계획시작일자</th>
+        				<th align="center">계획종료일자</th>
         				<th align="center">소요일수</th>
         				<th align="center"></th>
         				<th align="center"></th>

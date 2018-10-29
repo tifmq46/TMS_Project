@@ -218,10 +218,6 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (List<String>) list("DevPlanDAO.selectPeriodMonthWeek");
 	}
 
-	public List<EgovMap> selectSumWeek(String periodList) {
-		return (List<EgovMap>) list("DevPlanDAO.selectSumWeek",periodList);
-	}
-
 	public List<HashMap<String, String>> selectThisWeekStats(HashMap<String, String> type) {
 		return (List<HashMap<String, String>>) list("DevPlanDAO.selectThisWeekStats",type);
 	}
