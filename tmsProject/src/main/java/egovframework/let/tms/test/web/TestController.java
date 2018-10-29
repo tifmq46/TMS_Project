@@ -1157,54 +1157,14 @@ public class TestController {
 		// 워크시트 생성
 		XSSFSheet sheet = workbook.createSheet();
 		
-		sheet.addMergedRegion(new CellRangeAddress(
-				0,
-				1,
-				0,
-				0
-				));
-		sheet.addMergedRegion(new CellRangeAddress(
-				0,
-				1,
-				1,
-				1
-				));
-		sheet.addMergedRegion(new CellRangeAddress(
-				0,
-				1,
-				2,
-				2
-				));
-		sheet.addMergedRegion(new CellRangeAddress(
-				0,
-				1,
-				3,
-				3
-				));
-		sheet.addMergedRegion(new CellRangeAddress(
-				0,
-				0,
-				4,
-				6
-				));
-		sheet.addMergedRegion(new CellRangeAddress(
-				0,
-				1,
-				7,
-				7
-				));
-		sheet.addMergedRegion(new CellRangeAddress(
-				0,
-				0,
-				8,
-				10
-				));
-		sheet.addMergedRegion(new CellRangeAddress(
-				0,
-				1,
-				11,
-				11
-				));
+		sheet.addMergedRegion(new CellRangeAddress(0,1,0,0));
+		sheet.addMergedRegion(new CellRangeAddress(0,1,1,1));
+		sheet.addMergedRegion(new CellRangeAddress(0,1,2,2));
+		sheet.addMergedRegion(new CellRangeAddress(0,1,3,3));
+		sheet.addMergedRegion(new CellRangeAddress(0,0,4,6));
+		sheet.addMergedRegion(new CellRangeAddress(0,1,7,7));
+		sheet.addMergedRegion(new CellRangeAddress(0,0,8,10));
+		sheet.addMergedRegion(new CellRangeAddress(0,1,11,11));
 		
 		// 행 생성
 		XSSFRow row = sheet.createRow(0);
