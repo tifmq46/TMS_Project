@@ -88,7 +88,10 @@ window.onload = function() {
 						ticks:{
 							beginAtZero:true
 						}	
-					}]
+					}],
+					xAxes: [{
+			            barPercentage: 0.9
+			        }]
 				}	
 			}
 		});
