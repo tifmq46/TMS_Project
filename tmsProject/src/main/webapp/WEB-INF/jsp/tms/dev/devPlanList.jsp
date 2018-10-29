@@ -1,16 +1,3 @@
-<%--
-  Class Name : EgovTemplateList.jsp
-  Description : 템플릿 목록화면
-  Modification Information
- 
-      수정일         수정자                   수정내용
-    -------    --------    ---------------------------
-     2009.03.18   이삼섭              최초 생성
-     2011.08.31   JJY       경량환경 버전 생성
- 
-    author   : 공통서비스 개발팀 이삼섭
-    since    : 2009.03.18
---%>
 <%@page import="javax.naming.Context"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ page import="egovframework.com.cmm.service.EgovProperties" %>  
@@ -30,6 +17,25 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 
+function fn_valid(pgId,flag, start, end){
+	if(flag == true &&(start !="" || end !="")){
+		   $.ajax({
+			   type : "POST",
+			   url: "<c:url value='/tms/dev/selectBetweenDate.do'/>",
+			   data : {start : start, end : end},
+			   datatype : "JSON",
+			   success:function(obj){
+				   
+				   $("#dayDiffLoc"+pgId).empty();
+				   if(obj != ""){
+					  var str = obj;
+					  $("#dayDiffLoc"+pgId).append(str);
+				   }
+			   }
+		   });
+	   }
+}
+
 function fn_result_change(asd, t) {
 		
 	   var idVal0 = document.getElementById(asd).value;
@@ -41,7 +47,7 @@ function fn_result_change(asd, t) {
 	  var flag = true;
 	  	
 	   if((prjStartDate >  t.value || prjEndDate <  t.value) && t.value != ""){
-		   alert("유효하지 않은 날짜입니다. 다시 입력하십시오.");
+		   alert("계획기준일자의 기간이 아닙니다. 다시 입력하십시오.\n[계획기준일자:2018-10-02~2018-10-28]");
 		   document.getElementById(t.id).value = null;
 		   flag = false;
 		   return;
@@ -50,11 +56,13 @@ function fn_result_change(asd, t) {
 	      {
 	         if(idVal0 > idVal1 && t.id==asd+1)
 	            {
+	               $("#dayDiffLoc"+asd).empty();
 	               alert("계획시작일자보다 큰 값을 입력하시오.");
 	               document.getElementById(asd+1).value = null;
 	               flag = false;
 	            }
 	         else if(idVal0 > idVal1 && t.id==asd){
+	             $("#dayDiffLoc"+asd).empty();
 	        	 alert("계획종료일자보다 작은 값을 입력하시오.");
 	             document.getElementById(asd).value = null;
 	             flag = false;
@@ -68,22 +76,7 @@ function fn_result_change(asd, t) {
 	         flag = false;
 	      }
 	   
-	   if(flag == true &&(idVal0 !="" || idVal1 !="")){
-		   $.ajax({
-			   type : "POST",
-			   url: "<c:url value='/tms/dev/selectTest.do'/>",
-			   data : {start : idVal0, end : idVal1},
-			   datatype : "JSON",
-			   success:function(obj){
-				   
-				   $("#dayDiffLoc"+asd).empty();
-				   if(obj != ""){
-					  var str = obj;
-					  $("#dayDiffLoc"+asd).append(str);
-				   }
-			   }
-		   });
-	   }
+	   fn_valid(asd,flag, idVal0, idVal1);
 	   
 	   var idVal3 = document.getElementById(asd+3).id;
 	   $("#"+idVal3).removeClass("disabled");
@@ -143,11 +136,6 @@ function fn_result_reset(pgId){
 		+"&pageIndex="+page+"&searchByPgId="+id+"&searchBySysGb="+sys+"&searchByTaskGb="+task
 		+"&searchByUserDevId="+dev+"&searchByPlanStartDt="+start+"&searchByPlanEndDt="+end;
 	}
-}
-
-function fn_egov_insert_addDevPlan(){    
-    document.frm.action = "<c:url value='/tms/dev/addDevPlan.do'/>";
-    document.frm.submit();
 }
 
 function linkPage1(pageNo){
@@ -387,10 +375,23 @@ function searchFileNm() {
 						
 			
 			
-				</div>
+				</div> <br/>
 				<!-- //검색 필드 박스 끝 -->
-                
-                <div id="page_info"><div id="page_info_align"></div></div>                    
+              
+                <table width="85%" cellspacing="0" summary="기준일자 표시하는 테이블" style="padding-top:10px;">
+                 <caption style="visibility:hidden">기준일자 표시하는 테이블</caption>
+                 
+                 <tr>
+                 	<td align="center" width="510"></td>
+                 	<td align="center" width="130" style="font-size:13px; color:red; font-weight:bolder">[계획기준일자 :</td>
+                  	<td align="left" width="100" style="font-size:13px; color: red; font-weight:bolder">${ps}</td>
+                  	<td align="left" width="30" style="font-size:13px; color: red; font-weight:bolder">~</td>
+                  	<td align="left" style="font-size:13px; color: red; font-weight:bolder">${pe}]</td>
+                 </tr>        
+             	</table><br/>
+                	<input type="hidden" id="ps" name="ps" value="${ps}"/>
+                	<input type="hidden" id="pe" name="pe" value="${pe}"/>                
+                     
                 <!-- table add start -->
                 <div class="default_tablestyle">
                     <label style="float:right; font-weight:bold; font-size:16px;">

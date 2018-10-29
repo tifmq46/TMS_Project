@@ -8,34 +8,7 @@
 	<typeAlias alias="DevPlanVO" type="egovframework.let.tms.dev.service.DevPlanVO"/>
 	<typeAlias alias="CmmnDetailCode"   type="egovframework.com.cmm.service.CmmnDetailCode"/>
 	<typeAlias alias="CmmnDetailCodeVO" type="egovframework.let.sym.ccm.cde.service.CmmnDetailCodeVO"/>
-	
-	<resultMap id="devPlanList" class="egovframework.let.tms.dev.service.DevPlanVO">
-	    <result property="pgId" column="PG_ID" columnIndex="1"/>
-	    <result property="planStartDt" column="PLAN_START_DT" columnIndex="2"/>
-	    <result property="planEndDt" column="PLAN_END_DT" columnIndex="3"/>
-	    <result property="devStartDt" column="DEV_START_DT" columnIndex="4"/>
-	    <result property="devEndDt" column="DEV_END_DT" columnIndex="5"/>
-	    <result property="enrollDt" column="ENROLL_DT" columnIndex="6"/>
-	    <result property="devEndYn" column="DEV_END_YN" columnIndex="7"/>
-	    <result property="firstTestResultYn" column="FIRST_TEST_RESULT_YN" columnIndex="8"/>
-	    <result property="secondTestResultYn" column="SECOND_TEST_RESULT_YN" columnIndex="9"/>
-	    <result property="thirdTestResultYn" column="THIRD_TEST_RESULT_YN" columnIndex="10"/>
-	</resultMap>
-	
-	<resultMap id="devPlanOne" class="egovframework.let.tms.dev.service.DevPlanDefaultVO">
-	    <result property="pgId" column="PG_ID" columnIndex="1"/>
-	    <result property="planStartDt" column="PLAN_START_DT" columnIndex="2"/>
-	    <result property="planEndDt" column="PLAN_END_DT" columnIndex="3"/>
-	</resultMap>
-	
-	<resultMap id="devResultOne" class="egovframework.let.tms.dev.service.DevPlanDefaultVO">
-	    <result property="pgId" column="PG_ID" columnIndex="1"/>
-	    <result property="planStartDt" column="PLAN_START_DT" columnIndex="2"/>
-	    <result property="planEndDt" column="PLAN_END_DT" columnIndex="3"/>
-	    <result property="devStartDt" column="DEV_START_DT" columnIndex="4"/>
-	    <result property="devEndDt" column="DEV_END_DT" columnIndex="5"/>
-	</resultMap>
-	
+
 	<resultMap id="devPlanCurrent" class="java.util.HashMap">
 	    <result property="cnt" column="CNT" columnIndex="1"/>
 	    <result property="rateAvg" column="RATE_AVG" columnIndex="2"/>
@@ -149,29 +122,7 @@
 			</isNotEmpty>
 
 	</select>	
-	
-	<select id="DevPlanDAO.selectDevPlan" parameterClass="searchVO" resultClass="egovMap" >
-		<![CDATA[
-			SELECT * FROM (
-					SELECT
-						b.PG_ID
-						,(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = b.USER_DEV_ID ) USER_DEV_ID
-						,b.PG_NM
-						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.SYS_GB) AS SYS_GB
-						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.TASK_GB) TASK_GB
-						,a.PLAN_START_DT
-						,a.PLAN_END_DT
-						,(select DATEDIFF(a.PLAN_END_DT, a.PLAN_START_DT )+1 )as dayDiff
-						
-					FROM DEV_PLAN_TB a
-					INNER JOIN PG_TB b
-					ON a.PG_ID = b.PG_ID
-					where a.PG_ID = #pgId#
-					)AS one
-			
-				]]>				
-	</select> 
-	
+
 	<select id="DevPlanDAO.ifNullDevPlan" parameterClass="java.lang.String" resultClass="java.lang.String">
 	    <![CDATA[
 		    select ifnull('1','0') from DEV_PLAN_TB

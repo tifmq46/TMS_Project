@@ -64,14 +64,6 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	}
 
 	/**
-	 * 상세 정보 조회
-	 */
-	@Override
-	public List<?> selectDevPlan(DevPlanDefaultVO defaultVO) throws Exception {
-		return devPlanDAO.selectDevPlan(defaultVO);
-	}
-	
-	/**
 	 * 목록 조회
 	 */
 
@@ -326,5 +318,6 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<?> selectTaskTotalProgressRate() {
 		return devPlanDAO.selectTaskTotalProgressRate();
 	}
+
 
 }

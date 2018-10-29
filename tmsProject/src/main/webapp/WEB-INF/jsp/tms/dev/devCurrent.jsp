@@ -361,7 +361,7 @@ function pagePrint(){
         			</c:forEach>
              	<c:if test="${fn:length(resultList) == 0}">
                       <tr>
-                        <td nowrap colspan="5" ><spring:message code="common.nodata.msg" /></td>  
+                        <td nowrap colspan="11" ><spring:message code="common.nodata.msg" /></td>  
                       </tr>      
                      </c:if>
               </table>        

@@ -294,7 +294,7 @@ function StatsToExcel(statsGb) {
                     <caption>통계(업무별)테이블</caption>
            
            			<colgroup>
-	                   <col width="50">
+	                   <col width="60">
 	                   <col width="100">
 	                   <col width="50">
 		               <col width="50">
@@ -308,8 +308,8 @@ function StatsToExcel(statsGb) {
            
           			<thead>
 	          			<tr>
-	          				<th align="center" rowspan="2">시스템</th>
-	          				<th align="center" rowspan="2">업무</th>
+	          				<th align="center" rowspan="2">시스템구분</th>
+	          				<th align="center" rowspan="2">업무구분</th>
 	          				<th align="center" colspan="3"><strong>합계</strong></th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
 		                    	<th class='borderLine' scope="col" align="center" colspan="3">${status.count}주(${mw})</th>
