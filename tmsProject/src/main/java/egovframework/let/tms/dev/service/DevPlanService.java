@@ -40,14 +40,6 @@ public interface DevPlanService {
 	public void deleteDevPlan(DevPlanVO vo) throws Exception;
 
 	/**
-	 * 개발계획에 대한 상세정보를 조회한다.
-	 * @param vo - 조회할 정보가 담긴 DevPlanVO
-	 * @return 조회한 글
-	 * @exception Exception
-	 */
-	public List<?> selectDevPlan(DevPlanDefaultVO defaultVO) throws Exception; 
-
-	/**
 	 * 개발계획 목록을 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return 글 목록

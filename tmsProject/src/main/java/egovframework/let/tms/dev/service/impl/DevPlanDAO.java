@@ -45,16 +45,6 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	}
 
 	/**
-	 * 개발계획의 상세정보를 조회한다.
-	 * @param vo - 조회할 정보가 담긴 DevPlanVO
-	 * @return 조회한 글
-	 * @exception Exception
-	 */
-	public List<?> selectDevPlan(DevPlanDefaultVO defaultVO) throws Exception {
-		return list("DevPlanDAO.selectDevPlan", defaultVO);
-	}
-
-	/**
 	 * 개발계획 전체조회
 	 * @param searchMap - 조회할 정보가 담긴 Map
 	 * @return 글 목록

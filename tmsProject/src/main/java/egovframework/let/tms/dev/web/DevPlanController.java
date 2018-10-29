@@ -104,21 +104,11 @@ public class DevPlanController {
 	
 	@RequestMapping(value = "/tms/dev/devPlans.do")
 	public String selectDevPlans(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
-		System.out.println("?1");
-		System.out.println("update2 : "+searchVO.getPageIndex());
-		System.out.println("update2 : "+searchVO.getSearchBySysGb());
-		System.out.println("update2 : "+searchVO.getSearchByTaskGb());	
-		System.out.println("?2");
-		System.out.println("update2 : "+searchVO.getSearchByPlanStartDt());
-		System.out.println("update2 : "+searchVO.getSearchByPlanEndDt());
-		System.out.println("?3");
-		System.out.println("update2 : "+searchVO.getSearchByUserDevId());
 		
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
 		searchVO.setSessionId(user.getName());
-		System.out.println("--유저"+ searchVO.getSessionId());
 		
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -224,10 +214,10 @@ public class DevPlanController {
 		return "tms/dev/devPlanList";
 	}
 	
-	/**비동기처리 테스트 */
-	@RequestMapping("/tms/dev/selectTest.do")
+	/**소요일수 비동기 처리 */
+	@RequestMapping("/tms/dev/selectBetweenDate.do")
 	@ResponseBody
-	public String selectTest(String start, String end) throws Exception {
+	public String selectBetweenDate(String start, String end) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 		System.out.println("start:"+start+"//end:"+end);
@@ -243,26 +233,6 @@ public class DevPlanController {
 		}
 	}
 	
-	
-	/**
-	 * 계획을 상세 조회한다.
-	 * 
-	 */
-	@RequestMapping(value = "/tms/dev/selectDevPlan.do")
-	public String selectDevPlan(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
-		
-		//searchVO.setPgId(pgId);
-		
-		//O vo = new DevPlanDefaultVO();
-				
-		List<?> vo = devPlanService.selectDevPlan(searchVO);
-
-		model.addAttribute("result", vo);
-
-		return "/tms/dev/devPlanUpdt";
-	}
-
-	
 	/*
 	 *계발계획 정보를 등록한다. 
 	 * */
@@ -274,18 +244,6 @@ public class DevPlanController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		beanValidator.validate(dvo, bindingResult);
-
-		/*if (bindingResult.hasErrors()) {
-			//ComDefaultCodeVO vo = new ComDefaultCodeVO();
-			DevPlanDefaultVO vo = new DevPlanDefaultVO();
-			
-			devPlanService.insertDevPlan(dvo); 
-
-			return "tms/dev/devPlanRegist";
-		}*/
-
-		/*dvo.setFrstRegisterId(user.getUniqId());*/
-
 		if (isAuthenticated) {
 			devPlanService.insertDevPlan(dvo);
 		}
@@ -310,43 +268,11 @@ public class DevPlanController {
 		return "redirect:/tms/dev/devPlans.do";
 	}
 	
-	@RequestMapping("/tms/dev/addDevPlan.do")
-	public String addDevPlan(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-
-		//vo.setCodeId("COM005");
-
-		List<?> result = cmmUseService.selectCmmCodeDetail(vo);
-		
-		ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
-		codeVO.setCodeId("SYSGB");
-		List<?> resultS = cmmUseService.selectCmmCodeDetail(codeVO);
-		
-		codeVO.setCodeId("TASKGB");
-		List<?> resultT = cmmUseService.selectCmmCodeDetail(codeVO);
-		
-		//List<?> devList = devPlanService.selectDevPlans(searchVO);
-		//model.addAttribute("resultList", devList);
-		model.addAttribute("resultS", resultS);
-		model.addAttribute("resultT", resultT);
-
-		model.addAttribute("resultList", result);
-
-		return "tms/dev/devPlanRegist";
-	}
-	
 	@RequestMapping(value = "/tms/dev/updateDevPlan.do")
 	public String updateDevPlan(final RedirectAttributes redirectAttributes, @ModelAttribute("search") DevPlanVO dvo, @ModelAttribute("searchVO") DevPlanDefaultVO vo, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 
-		//beanValidator.validate(dvo, bindingResult); //validation 수행
-
-		//if (bindingResult.hasErrors()) {
-			//return "/tms/dev/updateDevPlan";
-		//} else {
-		System.out.println("00000"+dvo.getPgId());
 		String result = devPlanService.ifNullDevPlan(dvo.getPgId());
 		String r = String.valueOf(result);
-		//System.out.println("result값 = "+result);
 		if(r.equals("1")){
 			devPlanService.updateDevPlan(dvo);
 			status.setComplete(); 
@@ -359,8 +285,6 @@ public class DevPlanController {
 			redirectAttributes.addFlashAttribute("searchVO", vo);
 			
 			return "redirect:/tms/dev/devPlans.do";
-			
-			//return "redirect:/tms/dev/devPlans.do?searchVO="+vo;
 		
 	}
 
@@ -379,8 +303,6 @@ public class DevPlanController {
 	/**
 	 * 개발결과
 	 */
-	
-
 	@RequestMapping(value = "/tms/dev/devResultList.do")
 	public String selectDevResultList(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
 		
@@ -389,7 +311,6 @@ public class DevPlanController {
 		
 		searchVO.setSessionId(user.getName());
 		
-		System.out.println("");
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -446,13 +367,6 @@ public class DevPlanController {
 	@RequestMapping(value = "/tms/dev/updateDevResult.do")
 	public String updateDevResult(final RedirectAttributes redirectAttributes, @ModelAttribute("searchVO") DevPlanDefaultVO dvo,@RequestParam String flag, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 
-		
-		//if (bindingResult.hasErrors()) {
-			//return "/tms/dev/updateDevPlan";
-		//} else {
-			//Float.valueOf(dvo.getAchievementRate());
-			//System.out.println(dvo.getAchievementRate());
-		
 		String devStartDt, devEndDt,devAchRate;
 		int achRate=0;
 
@@ -713,7 +627,6 @@ public class DevPlanController {
 		
 		String a = String.valueOf(searchVO.getSearchBySysGb());
 		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
-			//System.out.println("ddddd");
 			List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
 			model.addAttribute("taskGb2", taskGbList2);
 		}
@@ -1201,7 +1114,6 @@ public class DevPlanController {
 				if(fos!=null) fos.close();
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
