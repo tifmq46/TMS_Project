@@ -323,6 +323,11 @@
             					<td align="center" class="listtd"><font style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
             				</tr>
         				</c:forEach>
+        				<c:if test="${fn:length(resultList) == 0}">
+                     		<tr>
+                       			<td nowrap colspan="7" ><spring:message code="common.nodata.msg" /></td>  
+                     		</tr>      
+              			</c:if>        				
         			</table>  		
         			  
         		</div>

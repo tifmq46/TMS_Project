@@ -12,7 +12,7 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <c:if test="${anonymous == 'true'}"><c:set var="prefix" value="/anonymous"/></c:if>
 <script type="text/javascript" src="<c:url value='/js/EgovBBSMng.js' />" ></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <c:choose>
 <c:when test="${preview == 'true'}">
 <script type="text/javascript">
@@ -79,8 +79,8 @@ $(function(){
 	            
 	         },
 	         error : function(request,status,error){
-	            alert("에러");
-	            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	            swal("에러");
+	            //swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 	         }
 	      });
 	   })
@@ -117,13 +117,13 @@ $(function(){
                 if(checkCount > 0) 
                     returnBoolean = true;
                 else {
-                    alert("삭제할 화면ID를 선택해주십시오.");
+                    swal("삭제할 화면ID를 선택해주십시오.");
                     returnBoolean = false;
                     return;
                 }
             } else {
                 if(document.frm.delYn.checked == false) {
-                    alert("선택된 권한이 없습니다.");
+                    swal("선택된 권한이 없습니다.");
                     returnBoolean = false;
                 }
                 else {
@@ -132,7 +132,9 @@ $(function(){
                 }
             }
         } else {
-            alert("조회된 결과가 없습니다.");
+        	swal("삭제할 화면ID를 선택해주십시오.");
+            returnBoolean = false;
+            return;
         }
 		
         document.frm.del.value = returnValue;
@@ -180,12 +182,12 @@ $(function(){
                 if(checkCount > 0) 
                     returnBoolean = true;
                 else {
-                    alert("선택된 권한이 없습니다.");
+                    swal("선택된 권한이 없습니다.");
                     returnBoolean = false;
                 }
             } else {
                 if(document.frm.delYn.checked == false) {
-                    alert("선택된 권한이 없습니다.");
+                    swal("선택된 권한이 없습니다.");
                     returnBoolean = false;
                 }
                 else {
@@ -194,7 +196,7 @@ $(function(){
                 }
             }
         } else {
-            alert("조회된 결과가 없습니다.");
+            swal("조회된 결과가 없습니다.");
         }
 		
         document.frm.del.value = returnValue;
@@ -262,12 +264,12 @@ $(function(){
                 if(checkCount > 0) 
                     returnBoolean = true;
                 else {
-                    alert("선택된 권한이 없습니다.");
+                    swal("선택된 권한이 없습니다.");
                     returnBoolean = false;
                 }
             } else {
                 if(document.frm.delYn.checked == false) {
-                    alert("선택된 권한이 없습니다.");
+                    swal("선택된 권한이 없습니다.");
                     returnBoolean = false;
                 }
                 else {
@@ -276,7 +278,7 @@ $(function(){
                 }
             }
         } else {
-            alert("조회된 결과가 없습니다.");
+            swal("조회된 결과가 없습니다.");
         }
 		
         document.frm.del.value = returnValue;
@@ -437,6 +439,8 @@ $(function(){
 				<input id="TmsProgrmFileNm_pg_nm" type="hidden" /> 
 				<input id="TmsProgrmFileNm_user_dev_id" type="hidden" />
 				<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
+				<input id="TmsProgrmFileNm_pg_full" type="hidden" />
+				<input id="TmsProgrmFileNm_task_gb_code" type="hidden" />
 				<input id="cnt" type="hidden" />
                 	<!-- //검색 필드 박스 끝 -->
 
@@ -483,6 +487,13 @@ $(function(){
             					<td align="center" class="listtd"><font style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
             				</tr>
         				</c:forEach>
+        				
+        				<c:if test="${fn:length(resultList) == 0}">
+                     		<tr>
+                       			<td nowrap colspan="8" ><spring:message code="common.nodata.msg" /></td>  
+                     		</tr>      
+              			</c:if>
+              
         			</table>  		
         			  
         			</div>

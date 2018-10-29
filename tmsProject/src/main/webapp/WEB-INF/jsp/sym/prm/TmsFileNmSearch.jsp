@@ -143,7 +143,7 @@ function choisProgramListSearch(pg_id,user_dev_id,pg_nm, pg_full, sys_gb,task_gb
 			    <td nowrap="nowrap"><c:out value="${result.taskGb}"/></td>
 			    <td nowrap="nowrap">
 			        <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.pgId}"/>','<c:out value="${result.userDevId}"/>','<c:out value="${result.pgNm}"/>','<c:out value="${result.pgFull}"/>','<c:out value="${result.sysGb}"/>','<c:out value="${result.taskGb}"/>','<c:out value="${result.taskGbCode}"/>','<c:out value="${result.userRealId}"/>'); return false;">
-			      <c:out value="${result.pgId}"/></a></span></td>
+			      <font color="#0F438A" style="font-weight:bold"><c:out value="${result.pgId}"/></font></a></span></td>
 			    <td nowrap="nowrap"><c:out value="${result.pgNm}"/></td>
 			    <td nowrap="nowrap"><c:out value="${result.userDevId}"/></td>
               </tr>
