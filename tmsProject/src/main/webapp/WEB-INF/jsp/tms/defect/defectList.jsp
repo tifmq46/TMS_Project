@@ -250,7 +250,7 @@ function searchFileNm() {
                  
                  
                      <tr>
-                        <td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+                        <td align="center" class="listtd" style="font-weight:bold"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.defectIdSq}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
                         <td align="center" class="listtd" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
@@ -290,7 +290,7 @@ function searchFileNm() {
                  </c:forEach>
               <c:if test="${fn:length(defectList) == 0}">
                      <tr>
-                       <td nowrap colspan="9" ><spring:message code="common.nodata.msg" /></td>  
+                       <td nowrap colspan="10" ><spring:message code="common.nodata.msg" /></td>  
                      </tr>      
               </c:if>
               </table>        

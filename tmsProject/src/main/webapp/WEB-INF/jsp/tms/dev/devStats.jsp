@@ -160,7 +160,7 @@ function handleClick(event, array){
 			str += "<tr></tr><tr>";
 			$.each(result, function(index,item){
 				
-				str += "<td>&nbsp;&nbsp;";
+				str += "<td><br/><br/>&nbsp;&nbsp;";
 				if(temp == "sysGb") {
 					str += "<canvas id='" + item.sysGb + item.taskGb + "'";
 				} else {
@@ -184,7 +184,7 @@ function handleClick(event, array){
 				} else {
 					str += item.taskNm;
 				}
-				str += "</td>";
+				str += "<br/><br/><br/><br/></td>";
 			});
 			str += "</tr>";
 			str += "</table></div><br/><br/>";
@@ -342,7 +342,7 @@ function handleClick(event, array){
 				<table style="border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);">
 					<tr>
 						<c:forEach var="taskByProgressRate" items="${taskByProgressRate}" varStatus="status">
-							<td>&nbsp;&nbsp;
+							<td><br/><br/>&nbsp;&nbsp;
 								<canvas	id="<c:out value="${taskByProgressRate.sysGb}"/><c:out value="${taskByProgressRate.taskGb}"/>"
 									width="180" height="120" style="display: inline !important;"></canvas>
 							</td>
@@ -357,7 +357,7 @@ function handleClick(event, array){
 								(<c:out value=" ${taskByProgressRate.rate}"/>%)
 								<br/>&nbsp;&nbsp;<c:out value="${taskByProgressRate.sysNm}"/>(<c:out value="${taskByProgressRate.taskNm}"/>)
 							</div>
-						</td>
+						<br/><br/><br/><br/></td>
 						</c:forEach>
 					</tr>
 				</table></div>

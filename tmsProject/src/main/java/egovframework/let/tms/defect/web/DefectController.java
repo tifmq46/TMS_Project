@@ -521,9 +521,15 @@ public class DefectController {
 		XSSFCell cell;
 		
 		Font defaultFont = workbook.createFont();        
+		defaultFont.setColor(HSSFColor.WHITE.index);
+		defaultFont.setBoldweight(Font.BOLDWEIGHT_BOLD); 
 		defaultFont.setFontHeightInPoints((short) 11); 
 		defaultFont.setFontName("맑은 고딕");
 
+		Font contentFont = workbook.createFont();      
+		contentFont.setFontHeightInPoints((short) 11); 
+		contentFont.setFontName("맑은 고딕");
+		
 		//제목 스타일 
 		CellStyle HeadStyle = workbook.createCellStyle(); 
 		HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
@@ -535,7 +541,18 @@ public class DefectController {
 		HeadStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
 		HeadStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
 		HeadStyle.setFont(defaultFont);
-
+		
+		CellStyle TitleStyle = workbook.createCellStyle(); 
+		TitleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		TitleStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
+		TitleStyle.setFillForegroundColor(HSSFColor.AQUA.index); 
+		TitleStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+		TitleStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+		TitleStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+		TitleStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+		TitleStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
+		TitleStyle.setFont(defaultFont);
+		
 		//본문 스타일 
 		CellStyle BodyStyle = workbook.createCellStyle(); 
 		BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
@@ -544,7 +561,7 @@ public class DefectController {
 		BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
 		BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
 		BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
-		BodyStyle.setFont(defaultFont);   
+		BodyStyle.setFont(contentFont);   
 		
 		// 헤더 정보 구성
 		if(statsGb.equals("sys")) {
@@ -574,7 +591,7 @@ public class DefectController {
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			cell = row.createCell(8);
-			cell.setCellValue("조치율");
+			cell.setCellValue("조치율(%)");
 			sheet.addMergedRegion(new CellRangeAddress(0, 1, 8, 8));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
@@ -582,19 +599,19 @@ public class DefectController {
 			
 			cell = row.createCell(2);
 			cell.setCellValue("오류");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
+			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
 			cell = row.createCell(3);
 			cell.setCellValue("개선");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
+			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
 			cell = row.createCell(4);
 			cell.setCellValue("문의");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
+			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
 			cell = row.createCell(5);
 			cell.setCellValue("기타");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
+			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
 			for(int i=0; i < list.size(); i++) {
 				row = sheet.createRow(i+2);
@@ -634,7 +651,20 @@ public class DefectController {
 				cell = row.createCell(8);
 				cell.setCellValue(String.valueOf(list.get(i).get("actionPer")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				
 			}
+			
+			/** 3. 컬럼 Width */ 
+			for (int i = 0; i <  list.size(); i++){ 
+				sheet.autoSizeColumn(i); 
+				sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
+			}
+			sheet.setColumnWidth(0, "시스템구분".length()*500 + 1000);
+			sheet.setColumnWidth(1, "업무구분".length()*500 + 1000);
+			sheet.setColumnWidth(6, "조치건수".length()*500 + 1000);
+			sheet.setColumnWidth(7, "미조치건수".length()*500 + 1000);
+			sheet.setColumnWidth(8, "조치율(%)".length()*500 + 1000);
 			
 		} else {
 			cell = row.createCell(0);
@@ -668,7 +698,7 @@ public class DefectController {
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			cell = row.createCell(9);
-			cell.setCellValue("조치율");
+			cell.setCellValue("조치율(%)");
 			sheet.addMergedRegion(new CellRangeAddress(0, 1, 9, 9));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
@@ -676,19 +706,19 @@ public class DefectController {
 			
 			cell = row.createCell(3);
 			cell.setCellValue("오류");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
+			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
 			cell = row.createCell(4);
 			cell.setCellValue("개선");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
+			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
 			cell = row.createCell(5);
 			cell.setCellValue("문의");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
+			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
 			cell = row.createCell(6);
 			cell.setCellValue("기타");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
+			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
 			for(int i=0; i<list.size(); i++) {
 				row = sheet.createRow(i+2);
@@ -739,16 +769,18 @@ public class DefectController {
 				cell = row.createCell(9);
 				cell.setCellValue(String.valueOf(list.get(i).get("actionPer")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
-				
 			}
+			
+			/** 3. 컬럼 Width */ 
+			for (int i = 0; i <  list.size(); i++){ 
+				sheet.autoSizeColumn(i); 
+				sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
+			}
+			sheet.setColumnWidth(0, "개발자".length()*500 + 1000);
+			sheet.setColumnWidth(7, "조치건수".length()*500 + 1000);
+			sheet.setColumnWidth(8, "미조치건수".length()*500 + 1000);
+			sheet.setColumnWidth(9, "조치율(%)".length()*500 + 1000);
 		}
-		
-//		
-//		/** 3. 컬럼 Width */ 
-//		for (int i = 0; i <  list.size(); i++){ 
-//			sheet.autoSizeColumn(i); 
-//			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 2000); 
-//		}
 		
 		// 입력된 내용 파일로 쓰기
 		File folder = new File("C:\\TMS\\TMS_통계자료");

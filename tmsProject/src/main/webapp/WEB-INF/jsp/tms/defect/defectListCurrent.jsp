@@ -167,7 +167,6 @@
       			        	<td style="padding-top:15px;">
                            <div class="buttons" style="float:right;">
                             <a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                               <a href="<c:url value='/tms/defect/insertDefect.do'/>?testscenarioId=0">등록</a>
                            </div>                            
       			        	</td>
       			        </tr>
@@ -181,10 +180,10 @@
                  <caption style="visibility:hidden">총 건수, 완료건수, 미완료, 진행률 표시하는 테이블</caption>
                  
                  <tr>
-                 	<td align="center" width="100" style="font-size:13px; font-weight:bolder">총 : <c:out value="${actionTotCnt}"/></td>
-                  <td align="center" width="100" style="font-size:13px; font-weight:bolder">완료 : <c:out value="${actionComplete}"/></td>
-                 	<td align="center" width="100" style="font-size:13px; font-weight:bolder">미완료 : <c:out value="${actionTotCnt - actionComplete}"/></td>
-                 	<td align="right" width="100" style="font-size:13px; font-weight:bolder">진행률 : </td>
+                 	<td align="center" width="100" style="font-size:1.2em; font-weight:bolder">총 : <c:out value="${actionTotCnt}"/></td>
+                  <td align="center" width="100" style="font-size:1.2em; font-weight:bolder">완료 : <font color="#007BFF"><c:out value="${actionComplete}"/></font></td>
+                 	<td align="center" width="100" style="font-size:1.2em; font-weight:bolder">미완료 : <c:out value="${actionTotCnt - actionComplete}"/></td>
+                 	<td align="right" width="100" style="font-size:1.2em; font-weight:bolder">조치율 : </td>
                  	<c:choose>
                  		<c:when test="${actionTotCnt ne '0' }">
                  		<fmt:parseNumber var="actionProgression" integerOnly="true" value="${actionComplete / actionTotCnt * 100}"/>
@@ -243,7 +242,7 @@
         			<c:forEach var="result" items="${defectList}" varStatus="status">
         			
             			<tr>
-            				<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+            				<td align="center" class="listtd" style="font-weight:bold"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.defectIdSq}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
             				<td align="center" class="listtd" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
@@ -279,7 +278,7 @@
         			</c:forEach>
                <c:if test="${fn:length(defectList) == 0}">
                      <tr>
-                       <td nowrap colspan="9" ><spring:message code="common.nodata.msg" /></td>  
+                       <td nowrap colspan="10" ><spring:message code="common.nodata.msg" /></td>  
                      </tr>      
               </c:if>
               </table>        

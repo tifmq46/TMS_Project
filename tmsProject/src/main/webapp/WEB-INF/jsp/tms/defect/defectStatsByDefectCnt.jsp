@@ -93,7 +93,7 @@ window.onload = function() {
 						}	
 					}],
 					xAxes: [{
-			            barPercentage: 0.5
+			            barPercentage: 0.8
 			        }]
 				}
 			}
@@ -127,7 +127,7 @@ window.onload = function() {
 						}	
 					}],
 					xAxes: [{
-			            barPercentage: 0.5
+			            barPercentage: 0.8
 			        }]
 				}
 			}
@@ -172,7 +172,7 @@ window.onload = function() {
                     </div>
                 </div>
      		<div id="search_field">
-					<div id="search_field_loc"><h2><strong>결함처리통계 (그래프)</strong></h2></div>
+					<div id="search_field_loc"><h2><strong>결함처리통계 (대시보드2)</strong></h2></div>
 			</div>
 			<br/><br/><br/><br/><br/><br/>
 			<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;

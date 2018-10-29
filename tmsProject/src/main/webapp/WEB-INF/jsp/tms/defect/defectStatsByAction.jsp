@@ -47,7 +47,7 @@ function handleClick(event, array){
 			str += "<table style='border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);'>";
 			str += "<tr></tr><tr>";
 			$.each(result, function(index,item){
-				str += "<td>&nbsp;&nbsp;";
+				str += "<td><br/><br/>&nbsp;&nbsp;";
 				if(temp == "sysGb") {
 					str += "<canvas id='" + item.sysGb + item.taskGb + "'"; 				
 				} else {
@@ -71,7 +71,7 @@ function handleClick(event, array){
 				} else {
 					str += item.taskNm;
 				}
-				str += "</td>";
+				str += "<br/><br/><br/><br/></td>";
 			});
 			str += "</tr>";
 			str += "</table></div><br/><br/>";
@@ -299,7 +299,7 @@ window.onload = function() {
                     </div>
                 </div>
      		<div id="search_field">
-					<div id="search_field_loc"><h2><strong>결함처리통계 (그래프)</strong></h2></div>
+					<div id="search_field_loc"><h2><strong>결함처리통계 (대시보드3)</strong></h2></div>
 			</div>
 			<br/><br/><br/><br/><br/><br/>
 			<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
@@ -348,7 +348,7 @@ window.onload = function() {
 				<table style="border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);">
 					<tr>
 						<c:forEach var="taskByActionCnt" items="${taskByActionCnt}" varStatus="status">
-							<td>
+							<td><br/><br/>
 								&nbsp;&nbsp;<canvas	id="<c:out value="${taskByActionCnt.sysGb}"/><c:out value="${taskByActionCnt.taskGb}"/>"
 									width="180" height="120" style="display: inline !important;"></canvas>
 							</td>
@@ -363,6 +363,7 @@ window.onload = function() {
 								(<c:out value=" ${taskByActionCnt.actionPer}"/>%)
 								<br/>&nbsp;&nbsp;<c:out value="${taskByActionCnt.sysNm}"/>(<c:out value="${taskByActionCnt.taskNm}"/>)
 							</div>
+							<br/><br/><br/><br/>
 						</td>
 						</c:forEach>
 					</tr>
