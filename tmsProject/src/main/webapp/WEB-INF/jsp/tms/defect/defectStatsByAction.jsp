@@ -43,20 +43,26 @@ function handleClick(event, array){
 		success : function(result){
 			$("#taskByActionCntLoc").empty();
 			var str = "";
-			str += "<br/><br/><div style='overflow:auto; overflow-y:hidden;'>";
+			str += "<div style='overflow:auto; overflow-y:hidden;'>";
 			str += "<table>";
 			str += "<tr></tr><tr>";
-			$.each(result, function(index,item){
-				str += "<td><br/><br/>&nbsp;&nbsp;";
-				if(temp == "sysGb") {
-					str += "<canvas id='" + item.sysGb + item.taskGb + "'"; 				
-				} else {
-					str += "<canvas id='" + item.taskGb + "'";
-				}
-				str += "width='180' height='120' style='display:inline !important;'>";
-				str += "</canvas>"
+			if(result.length == 0) {
+				str += "<td align='center' valign='middle'>";
+				str += "자료가 없습니다.";
 				str += "</td>";
-			});
+			} else {
+				$.each(result, function(index,item){
+					str += "<td><br/><br/>&nbsp;&nbsp;";
+					if(temp == "sysGb") {
+						str += "<canvas id='" + item.sysGb + item.taskGb + "'"; 				
+					} else {
+						str += "<canvas id='" + item.taskGb + "'";
+					}
+					str += "width='180' height='120' style='display:inline !important;'>";
+					str += "</canvas>"
+					str += "</td>";
+				});
+			}
 			str += "</tr>";
 			str += "<tr>";
 			$.each(result, function(index,item){
@@ -65,13 +71,13 @@ function handleClick(event, array){
 				str += "<font color='#007BFF'>&nbsp;&nbsp;" + item.actionStA3Cnt;
 				str += "</font>";
 				str += " / " + item.taskCnt;
-				str += " ( " + item.actionPer + " %)<br/>&nbsp;&nbsp;";
+				str += " ( " + item.actionPer + " %)<br/>";
 				if(temp == "sysGb") {
 					str += item.sysNm + "(" + item.taskNm + ")";
 				} else {
 					str += item.taskNm;
 				}
-				str += "<br/><br/><br/><br/></td>";
+				str += "</td>";
 			});
 			str += "</tr>";
 			str += "</table></div><br/><br/>";
@@ -151,6 +157,9 @@ window.onload = function() {
 	var sysAllByActionCntSysCntAll = JSON.parse('${sysAllByActionCnt.sysCntAll}');
 	var sysAllByActionCntActionStA3CntAll = JSON.parse('${sysAllByActionCnt.actionStA3CntAll}');
 	var sysAllByActionCntActionPerAll = JSON.parse('${sysAllByActionCnt.actionPerAll}');
+	if(sysAllByActionCntSysCntAll == 0) {
+		sysAllByActionCntSysCntAll = 0.1;
+	}
 	var sysByActionCnt = JSON.parse('${sysByActionCnt}');
 	var sysByActionCntSysGb = new Array();
 	var sysByActionCntSysNm = new Array();
@@ -271,7 +280,19 @@ window.onload = function() {
     			rotation: 1 * Math.PI,
     	        circumference: 1 * Math.PI,
     			percentageInnerCutout : 50,
-    			responsive:false
+    			responsive:false,
+    			tooltips: {
+					callbacks: {
+					label: function(tooltipItem, data) {
+								var value = data.datasets[0].data[tooltipItem.index];
+		            			var label = data.labels[tooltipItem.index];
+					            if (value === 0.1) {
+					            	value = 0;
+					            }
+					            return label + ' : ' + value;
+					          }
+						}
+					}
     			}
     	});
 	}
@@ -306,15 +327,16 @@ window.onload = function() {
 							<li>&gt;</li>
 							<li>결함관리</li>
 							<li>&gt;</li>
-							<li><strong>결함처리통계</strong></li>
+							<li>결함처리통계</li>
+							<li>&gt;</li>
+							<li><strong>대시보드3</strong></li>
                         </ul>
                     </div>
                 </div>
      		<div id="search_field" style="font-family:'Malgun Gothic';">
 					<div id="search_field_loc"><h2><strong>결함처리통계 (대시보드3)</strong></h2></div>
 			</div>
-			<br/><br/><br/><br/><br/><br/>
-			
+			<br/><br/><br/><br/><br/>			
 			
 			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
     		<div class="widget">
@@ -323,7 +345,8 @@ window.onload = function() {
 	    					시스템별 조치율
     				</div>
     			</div>
-    			<div class="widget-content default_tablestyle" style="height:212px; overflow:auto; ">
+    			<div class="widget-content" style="height:212px; overflow:auto;  overflow-y:hidden;">
+						<br/><br/>
     				<table>
 					<tr>
 						<td>&nbsp;&nbsp;
@@ -338,11 +361,11 @@ window.onload = function() {
 					</tr>
 					<tr>
 						<td align="center" valign="middle">
-							<div style="font-size: 15px; font-weight: bolder;">
+							<div style="font-size: 15px; font-weight: bolder; ">
 								<font color="#007BFF">&nbsp;&nbsp;<c:out value="${sysAllByActionCnt.actionStA3CntAll}" /></font> /
 								<c:out value="${sysAllByActionCnt.sysCntAll}" />
 								( <c:out value=" ${sysAllByActionCnt.actionPerAll}"/>% )
-								<br/>&nbsp;&nbsp; 전체 <br/>
+								<br/>전체 <br/>
 							</div>
 						</td>
 						<c:forEach var="sysByActionCnt" items="${sysByActionCnt}" varStatus="status">
@@ -351,7 +374,7 @@ window.onload = function() {
 								<font color="#007BFF">&nbsp;&nbsp;<c:out value="${sysByActionCnt.actionStA3Cnt}" /></font> /
 								<c:out value="${sysByActionCnt.sysCnt}" />
 								(<c:out value=" ${sysByActionCnt.actionPer}"/>%)
-								<br/>&nbsp;&nbsp;<c:out value="${sysByActionCnt.sysNm}"/><br/>
+								<br/><c:out value="${sysByActionCnt.sysNm}"/><br/>
 							</div>
 						</td>
 						</c:forEach>
@@ -362,24 +385,27 @@ window.onload = function() {
     			
     	</div>
 			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
-    		  
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
 	    					업무별 조치율
     				</div>
     			</div>
-    			<div class="widget-content default_tablestyle" style="overflow:auto; ">
-    			<div id="taskByActionCntLoc" ><br/><br/>
-				 <div style="overflow:auto;  overflow-y:hidden;">
+    			<div class="widget-content" style="overflow:auto; overflow-y:hidden;">
+    			<div id="taskByActionCntLoc"><br/><br/>
 				<table>
 					<tr>
 						<c:forEach var="taskByActionCnt" items="${taskByActionCnt}" varStatus="status">
-							<td><br/><br/>
+							<td>
 								&nbsp;&nbsp;<canvas	id="<c:out value="${taskByActionCnt.sysGb}"/><c:out value="${taskByActionCnt.taskGb}"/>"
 									width="180" height="120" style="display: inline !important;"></canvas>
 							</td>
 						</c:forEach>
+						<c:if test="${fn:length(taskByActionCnt) == 0 }">
+								<td>
+								자료가 없습니다.
+								</td>
+						</c:if>
 					</tr>
 					<tr>
 						<c:forEach var="taskByActionCnt" items="${taskByActionCnt}" varStatus="status">
@@ -388,13 +414,12 @@ window.onload = function() {
 								<font color="#007BFF">&nbsp;&nbsp;<c:out value="${taskByActionCnt.actionStA3Cnt}" /></font> /
 								<c:out value="${taskByActionCnt.taskCnt}" />
 								(<c:out value=" ${taskByActionCnt.actionPer}"/>%)
-								<br/>&nbsp;&nbsp;<c:out value="${taskByActionCnt.sysNm}"/>(<c:out value="${taskByActionCnt.taskNm}"/>)
+								<br/><c:out value="${taskByActionCnt.sysNm}"/>(<c:out value="${taskByActionCnt.taskNm}"/>)
 							</div>
-							<br/><br/><br/><br/>
 						</td>
 						</c:forEach>
 					</tr>
-				</table></div>
+				</table><br/><br/>
     			</div>
     		</div>      	
     	</div>	

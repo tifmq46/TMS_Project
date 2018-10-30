@@ -167,14 +167,16 @@ window.onload = function() {
 							<li>&gt;</li>
 							<li>결함관리</li>
 							<li>&gt;</li>
-							<li><strong>결함처리통계</strong></li>
+							<li>결함처리통계</li>
+							<li>&gt;</li>
+							<li><strong>대시보드2</strong></li>
                         </ul>
                     </div>
                 </div>
      		<div id="search_field" style="font-family:'Malgun Gothic';">
 					<div id="search_field_loc"><h2><strong>결함처리통계 (대시보드2)</strong></h2></div>
 			</div>
-			<br/><br/><br/><br/><br/><br/>
+			<br/><br/><br/><br/><br/>
 			
 			
 			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
@@ -184,8 +186,9 @@ window.onload = function() {
 	    					시스템별 결함건수
     					</div>
     				</div>
-    				
+    				<div class="widget-content" style="overflow:auto; overflow-y:hidden;">
 					<canvas id="sysByDefectCnt" width="100%" height="20"></canvas>
+					</div>
     			</div>    	  
     			
     		</div>
@@ -197,8 +200,10 @@ window.onload = function() {
 	    					업무별 결함건수
     					</div>
     				</div>
+    				<div class="widget-content" style="overflow:auto; overflow-y:hidden;">
     				<div id="taskByActionCntLoc" >
 						<canvas id="taskByDefectCnt" width="100%" height="20"></canvas>
+					</div>
 					</div>
     			</div>    	  
     			
