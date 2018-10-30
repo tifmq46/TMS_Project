@@ -145,7 +145,7 @@
 					        </th>
 					        <td width="16.6%" nowrap >
 					          <input type="text" id="TmsProgrmFileNm_pg_nm" name="pgNm" size="" value=""  title="화면명"  
-					           style="text-align:center;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/> 
+					           style="text-align:center;" readonly="readonly" onclick="javascript:searchFileNm(); return false;"/> 
 					        </td>
 					       </tr>
 
@@ -184,7 +184,7 @@
 								%>
 
 								<td width="16.6%" nowrap >
-					        	<input list="userTestId" name="userNm" value='${loginName}'  autocomplete="off" style="text-align:center; width:85%;" />
+					        	<input list="userTestId" name="userNm" value='${loginName}'  autocomplete="off" style="text-align:center; width:85%; " />
 					        	<datalist id="userTestId">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
 									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>

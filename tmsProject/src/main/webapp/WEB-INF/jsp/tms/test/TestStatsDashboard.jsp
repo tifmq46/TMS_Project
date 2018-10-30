@@ -39,7 +39,6 @@
 var taskByTestcaseCntChart;
 
 function handleClick(event, array){
-	
 	$("#sysNmLabel").empty();
 	$("#sysNmLabel").html(this.data.labels[array[0]._index]);
 	

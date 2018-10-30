@@ -187,9 +187,21 @@ window.onload = function() {
 				rotation: 1 * Math.PI,
 		        circumference: 1 * Math.PI,
 				percentageInnerCutout : 50,
-				responsive:false
-				,onClick:handleClick
-				}
+				responsive:false,
+    			tooltips: {
+					callbacks: {
+					label: function(tooltipItem, data) {
+								var value = data.datasets[0].data[tooltipItem.index];
+		            			var label = data.labels[tooltipItem.index];
+					            if (value === 0.1) {
+					            	value = 0;
+					            }
+					            return label + ' : ' + value;
+					          }
+						}
+					}
+    			,onClick:handleClick
+    			}
 		});
 	// 시스템별 조치율
 	for ( var j = 0; j < sysByActionCntSysNm.length; j++) {
@@ -342,7 +354,6 @@ window.onload = function() {
 				<br/><br/>
 				<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
 				<font color="#727272" style="font-size:1.4em;font-weight:bold">업무별 조치율</font>
-				<br/><br/>
 				<div id="taskByActionCntLoc" ><br/><br/>
 				 <div style="overflow:auto;  overflow-y:hidden;">
 				<table style="border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);">
