@@ -275,12 +275,16 @@ function StatsToExcel(statsGb) {
 		                  	<td id='lineStyle2'><strong>${totSum2}</strong></td>
 		                  	<td class='borderLine' id='lineStyle2'><strong>${totSum3}</strong></td>
 		                  	
-	                    	<c:forEach var="sum" items="${sumPlanWeek}" varStatus="status">
-			           			<td id='lineStyle2'><strong>${sum.sumPlan}</strong></td>
-			           			<td id='lineStyle2'><strong>${sum.sumDev}</strong></td>
-			           			<td class='borderLine' id='lineStyle2'><strong>${sum.diff}</strong></td>
-							</c:forEach>
-		                  
+			               	<c:forEach var="userSum" items="${userSum}" varStatus="status">
+					           	<c:set var = "b" value="${begin+status.index}"></c:set>
+					           			<c:set var ="t"  value="sumUserPlan${b}"></c:set>
+					           			<td>${userSum[t]}</td>
+					           			<c:set var ="t2"  value="sumUserDev${b}"></c:set>
+					           			<td>${userSum[t2]}</td>
+					           			<c:set var ="t3"  value="sumUserDiff${b}"></c:set>
+					           			<td class='borderLine'>${userSum[t3]}</td>
+								</c:forEach>
+		               	
 	                    </tr>
 	                    </table>
 	                </div>
@@ -331,7 +335,8 @@ function StatsToExcel(statsGb) {
            			
            			<%int totSum4=0;
            			  int totSum5=0;
-           			  int totSum6=0;%>
+           			  int totSum6=0;
+           			  %>
            			<c:forEach var="ts" items="${taskStats}" varStatus="status">
 	                    <tr>
 	                    <td><c:out value="${ts.sysGbNm}" /></td>
@@ -372,12 +377,16 @@ function StatsToExcel(statsGb) {
 		                  	<td id='lineStyle2'><strong>${totSum5}</strong></td>
 		                  	<td id='lineStyle2'><strong>${totSum6}</strong></td>
 		                  	
-	                    	<c:forEach var="sum" items="${sumPlanWeek}" varStatus="status">
-			           			<td id='lineStyle2'>${sum.sumPlan}</td>
-			           			<td id='lineStyle2'>${sum.sumDev}</td>
-			           			<td id='lineStyle2'>${sum.diff}</td>
+		                  	
+		                  	<c:forEach var="taskSum" items="${taskSum}" varStatus="status">
+				           	<c:set var = "b" value="${begin+status.index}"></c:set>
+				           			<c:set var ="t"  value="sumTaskPlan${b}"></c:set>
+				           			<td>${taskSum[t]}</td>
+				           			<c:set var ="t2"  value="sumTaskDev${b}"></c:set>
+				           			<td>${taskSum[t2]}</td>
+				           			<c:set var ="t3"  value="sumTaskDiff${b}"></c:set>
+				           			<td class='borderLine'>${taskSum[t3]}</td>
 							</c:forEach>
-	                    	
 		                  	
 	                </tr>
                     </table>
