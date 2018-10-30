@@ -140,7 +140,7 @@ public interface DevPlanService {
 
 	public List<HashMap<String, String>> selectUserWeekStats(HashMap<String, String> test);
 
-	public List<String> selectSysGbList();
+	public int selectSysGbCnt();
 	
 	public List<String> selectTaskGbList();
 

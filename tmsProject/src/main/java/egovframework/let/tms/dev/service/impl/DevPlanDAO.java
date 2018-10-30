@@ -202,8 +202,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (List<HashMap<String, String>>) list("DevPlanDAO.selectUserWeekStats",test);
 	}
 
-	public List<String> selectSysGbList() {
-		return (List<String>) list("DevPlanDAO.selectSysGbList");
+	public int selectSysGbCnt() {
+		return (Integer) select("DevPlanDAO.selectSysGbCnt");
 	}
 	
 	public List<String> selectTaskGbList() {

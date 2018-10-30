@@ -247,10 +247,10 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<HashMap<String, String>> selectUserWeekStats(HashMap<String, String> test) {
 		return devPlanDAO.selectUserWeekStats(test);
 	}
-	
+
 	@Override
-	public List<String> selectSysGbList() {
-		return devPlanDAO.selectSysGbList();
+	public int selectSysGbCnt() {
+		return devPlanDAO.selectSysGbCnt();
 	}
 
 	@Override
@@ -313,6 +313,5 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<?> selectTaskTotalProgressRate() {
 		return devPlanDAO.selectTaskTotalProgressRate();
 	}
-
 
 }

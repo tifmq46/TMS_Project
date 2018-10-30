@@ -518,3 +518,28 @@ b{font-weight: 1000;}
 	margin-left:20px;
 	margin-right:20px;
 }
+
+.lineStyle{
+	border-bottom: solid 1px #00000054;
+	border-top: solid 1px #00000054;
+	background: #E0F2F7;
+}
+
+.lineStyle2{
+	border-bottom: solid 1px #00000054;
+	border-top: solid 1px #00000054;
+	background: #CEE3F6;
+}
+
+.line{
+	font-weight:bold;
+}
+
+.table1{
+	width:100%;
+	overflow-x:scroll; 
+}
+
+.borderLine{
+	border-right: 1px solid #81B1D5;
+}
