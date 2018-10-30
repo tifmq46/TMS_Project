@@ -183,7 +183,7 @@ function searchFileNm() {
              		 <colgroup>
              		 	<col width="5%"/>
         				<col width="9%"/> 
-        				<col width="467%"/>
+        				<col width="46%"/>
         				<col width="5%"/>
         				<col width="9%"/>
         				<col width="7%"/>
