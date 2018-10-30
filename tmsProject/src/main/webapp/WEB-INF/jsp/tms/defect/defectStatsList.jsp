@@ -79,24 +79,6 @@ ul.tabs li.last {
 	border: 1px solid #fff;
 }
 
-#lineStyle{
-	border-bottom: solid 1px #00000054;
-	border-top: solid 1px #00000054;
-	background: #E0F2F7;
-	font-weight:bold;
-}
-
-#lineStyle2{
-	border-bottom: solid 1px #00000054;
-	border-top: solid 1px #00000054;
-	background: #CEE3F6;
-	font-weight:bolder;
-}
-
-.borderLine{
-	border-right: 1px solid #81B1D5;
-}
-
 th,td{
 	border-left : 1px solid #81B1D5;
 	border-top : 1px solid #81B1D5;
@@ -163,7 +145,9 @@ th,td{
 							<li>&gt;</li>
 							<li>결함관리</li>
 							<li>&gt;</li>
-							<li><strong>결함처리통계(표)</strong></li>
+							<li>결함처리통계</li>
+							<li>&gt;</li>
+							<li><strong>통계표</strong></li>
 						</ul>
 					</div>
 				</div>
@@ -196,8 +180,8 @@ th,td{
 					<div id="StatsBySysGb">
 						<div class="default_tablestyle">
 							<table border="0" width="120%" border="0" cellpadding="0"
-								cellspacing="0" summary="업무별 통계(표) 테이블">
-								<caption style="visibility: hidden">업무별 통계(표) 테이블</caption>
+								cellspacing="0" summary="시스템별 통계(표) 테이블">
+								<caption style="visibility: hidden">시스템별 통계(표) 테이블</caption>
 
 
 								<colgroup>
@@ -231,28 +215,28 @@ th,td{
 									<tr>
 										<c:choose>
 										<c:when test="${sysGbByStats.sysNm == '합계' }">
-											<td id="lineStyle2">${sysGbByStats.sysNm }</td>
-											<td id="lineStyle2">${sysGbByStats.taskNm }</td>
-											<td id="lineStyle2">${sysGbByStats.defectGbD1 }</td>
-											<td id="lineStyle2">${sysGbByStats.defectGbD2 }</td>
-											<td id="lineStyle2">${sysGbByStats.defectGbD3 }</td>
-											<td id="lineStyle2">${sysGbByStats.defectGbD4 }</td>
-											<td id="lineStyle2">${sysGbByStats.actionStA3 }</td>
-											<td id="lineStyle2">${sysGbByStats.actionStA3Not }</td>
-											<td id="lineStyle2" class="borderLine">${sysGbByStats.actionPer }%</td>
+											<td class="lineStyle2">${sysGbByStats.sysNm }</td>
+											<td class="lineStyle2">${sysGbByStats.taskNm }</td>
+											<td class="lineStyle2">${sysGbByStats.defectGbD1 }</td>
+											<td class="lineStyle2">${sysGbByStats.defectGbD2 }</td>
+											<td class="lineStyle2">${sysGbByStats.defectGbD3 }</td>
+											<td class="lineStyle2">${sysGbByStats.defectGbD4 }</td>
+											<td class="lineStyle2">${sysGbByStats.actionStA3 }</td>
+											<td class="lineStyle2">${sysGbByStats.actionStA3Not }</td>
+											<td class="lineStyle2 borderLine">${sysGbByStats.actionPer }%</td>
 										</c:when>
 										<c:otherwise>
 											<c:choose>
 											<c:when test="${sysGbByStats.taskNm == '소계'}">
-												<td id="lineStyle">${sysGbByStats.sysNm }</td>
-												<td id="lineStyle">${sysGbByStats.taskNm }</td>
-												<td id="lineStyle">${sysGbByStats.defectGbD1 }</td>
-												<td id="lineStyle">${sysGbByStats.defectGbD2 }</td>
-												<td id="lineStyle">${sysGbByStats.defectGbD3 }</td>
-												<td id="lineStyle">${sysGbByStats.defectGbD4 }</td>
-												<td id="lineStyle">${sysGbByStats.actionStA3 }</td>
-												<td id="lineStyle">${sysGbByStats.actionStA3Not }</td>
-												<td id="lineStyle" class="borderLine">${sysGbByStats.actionPer }%</td>
+												<td class="lineStyle">${sysGbByStats.sysNm }</td>
+												<td class="lineStyle">${sysGbByStats.taskNm }</td>
+												<td class="lineStyle">${sysGbByStats.defectGbD1 }</td>
+												<td class="lineStyle">${sysGbByStats.defectGbD2 }</td>
+												<td class="lineStyle">${sysGbByStats.defectGbD3 }</td>
+												<td class="lineStyle">${sysGbByStats.defectGbD4 }</td>
+												<td class="lineStyle">${sysGbByStats.actionStA3 }</td>
+												<td class="lineStyle">${sysGbByStats.actionStA3Not }</td>
+												<td class="lineStyle borderLine">${sysGbByStats.actionPer }%</td>
 											</c:when>
 											<c:otherwise>
 												<td>${sysGbByStats.sysNm }</td>
@@ -270,6 +254,13 @@ th,td{
 										</c:choose>
 									</tr>
 								</c:forEach>
+								<c:if test="${fn:length(sysGbByStats) == 0 }">
+								<tr>
+								<td colspan="9">
+								자료가 없습니다.
+								</td>
+								</tr>
+								</c:if>
 							</table>
 							<br/><br/>
 						</div>
@@ -317,28 +308,28 @@ th,td{
 									<tr>
 									<c:choose>
 									<c:when test="${ userDevPgIdByStats.userNm == '합계'}">
-											<td id="lineStyle2">${userDevPgIdByStats.userNm }</td>
-											<td id="lineStyle2" colspan="2">${userDevPgIdByStats.pgId }</td>
-											<td id="lineStyle2">${userDevPgIdByStats.defectGbD1 }</td>
-											<td id="lineStyle2">${userDevPgIdByStats.defectGbD2 }</td>
-											<td id="lineStyle2">${userDevPgIdByStats.defectGbD3 }</td>
-											<td id="lineStyle2">${userDevPgIdByStats.defectGbD4 }</td>
-											<td id="lineStyle2">${userDevPgIdByStats.actionStA3 }</td>
-											<td id="lineStyle2">${userDevPgIdByStats.actionStA3Not }</td>
-											<td id="lineStyle2" class="borderLine">${userDevPgIdByStats.actionPer }%</td>
+											<td class="lineStyle2">${userDevPgIdByStats.userNm }</td>
+											<td class="lineStyle2" colspan="2">${userDevPgIdByStats.pgId }</td>
+											<td class="lineStyle2">${userDevPgIdByStats.defectGbD1 }</td>
+											<td class="lineStyle2">${userDevPgIdByStats.defectGbD2 }</td>
+											<td class="lineStyle2">${userDevPgIdByStats.defectGbD3 }</td>
+											<td class="lineStyle2">${userDevPgIdByStats.defectGbD4 }</td>
+											<td class="lineStyle2">${userDevPgIdByStats.actionStA3 }</td>
+											<td class="lineStyle2">${userDevPgIdByStats.actionStA3Not }</td>
+											<td class="lineStyle2 borderLine">${userDevPgIdByStats.actionPer }%</td>
 									</c:when>
 									<c:otherwise>
 										<c:choose>
 										<c:when test="${userDevPgIdByStats.pgId == '소계'}">
-											<td id="lineStyle">${userDevPgIdByStats.userNm }</td>
-											<td id="lineStyle" colspan="2">${userDevPgIdByStats.pgId }</td>
-											<td id="lineStyle">${userDevPgIdByStats.defectGbD1 }</td>
-											<td id="lineStyle">${userDevPgIdByStats.defectGbD2 }</td>
-											<td id="lineStyle">${userDevPgIdByStats.defectGbD3 }</td>
-											<td id="lineStyle">${userDevPgIdByStats.defectGbD4 }</td>
-											<td id="lineStyle">${userDevPgIdByStats.actionStA3 }</td>
-											<td id="lineStyle">${userDevPgIdByStats.actionStA3Not }</td>
-											<td id="lineStyle" class="borderLine">${userDevPgIdByStats.actionPer }%</td>
+											<td class="lineStyle">${userDevPgIdByStats.userNm }</td>
+											<td class="lineStyle" colspan="2">${userDevPgIdByStats.pgId }</td>
+											<td class="lineStyle">${userDevPgIdByStats.defectGbD1 }</td>
+											<td class="lineStyle">${userDevPgIdByStats.defectGbD2 }</td>
+											<td class="lineStyle">${userDevPgIdByStats.defectGbD3 }</td>
+											<td class="lineStyle">${userDevPgIdByStats.defectGbD4 }</td>
+											<td class="lineStyle">${userDevPgIdByStats.actionStA3 }</td>
+											<td class="lineStyle">${userDevPgIdByStats.actionStA3Not }</td>
+											<td class="lineStyle borderLine">${userDevPgIdByStats.actionPer }%</td>
 										</c:when>
 										<c:otherwise>
 											<td>${userDevPgIdByStats.userNm }</td>
@@ -357,6 +348,13 @@ th,td{
 									</c:choose>
 									</tr>
 								</c:forEach>
+								<c:if test="${fn:length(userDevPgIdByStats) == 0 }">
+								<tr>
+								<td colspan="10">
+								자료가 없습니다.
+								</td>
+								</tr>
+								</c:if>
 							</table>
 							<br/><br/>
 						</div>

@@ -177,30 +177,40 @@ window.onload = function() {
 							<li>&gt;</li>
 							<li>결함관리</li>
 							<li>&gt;</li>
-							<li><strong>결함처리통계</strong></li>
+							<li>결함처리통계</li>
+							<li>&gt;</li>
+							<li><strong>대시보드1</strong></li>
                         </ul>
                     </div>
                 </div>
      		<div id="search_field" style="font-family:'Malgun Gothic';">
 					<div id="search_field_loc"><h2><strong>결함처리통계 (대시보드1)</strong></h2></div>
 			</div>
-			<br/><br/><br/><br/><br/><br/>
+			<br/><br/><br/><br/><br/>
 			
 			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
     			<div class="widget">
     				<div class="widget-header">
     					<div class="header-name" style="margin:10px;">
-	    					조치율
-	    					&nbsp;
+	    					조치율&nbsp;
 						<font style="font-weight:bold">( 전체 <c:out value="${defectStats.actionStAll}"/>건 중 </font> 
-						<font style="font-weight:bold" color="#007BFF" ><c:out value="${defectStats.actionStA3}"/></font>
-						<font style="font-weight:bold">건 완료 )</font> 
+						<font style="font-weight:bold" color="#007BFF" ><c:out value="${defectStats.actionStA3}"/></font><font style="font-weight:bold">건 완료 )</font> 
     					</div>
     				</div>
     				
 						<table width="100%">
 							<tr>
 								<td width="90%">
+									<c:choose>
+									<c:when test="${actionStAll eq 0 }">
+									<div class="progress" style="height: 2rem;">
+										<div class="progress-bar" style="width:0%">
+											<font style="font-size: 15px; font-weight: bolder">
+											0% </font>
+										</div>
+									</div>
+									</c:when>
+									<c:otherwise>
 									<fmt:parseNumber var="actionProgression" integerOnly="true"
 											value="${defectStats.actionStA3 / defectStats.actionStAll * 100}" />
 									<div class="progress" style="height: 2rem;">
@@ -209,6 +219,8 @@ window.onload = function() {
 											<c:out value=" ${actionProgression}"></c:out>% </font>
 										</div>
 									</div>
+									</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 							<tr>
@@ -230,7 +242,7 @@ window.onload = function() {
     				</div>
     			</div>
     				
-					<table width="100%" cellspacing="10" height="80px">
+					<table width="100%" cellspacing="10" height="90px">
 						<tr>
 							<td width="16.6%" align="center" bgcolor="#CC3C39">
 								<font color="#FFFFFF" size="3" style="font-weight: bold"> 전체건수 <br />

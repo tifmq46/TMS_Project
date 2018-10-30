@@ -107,6 +107,7 @@
                  (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_ID,
                  D.ENROLL_DT,
                 (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST,
+                D.ACTION_ST AS ACTION_CODE,
                 (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID
               FROM DEFECT_TB AS D, PG_TB AS P
               WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y'
@@ -117,7 +118,7 @@
         
         <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000000">
          		     <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000001">
-           		   	AND (USER_DEV_ID = #sessionId# OR USER_TEST_ID = #sessionId#)
+           		   	AND (USER_DEV_ID = #sessionId# OR USER_TEST_ID = #sessionId#) ORDER BY ACTION_CODE 
            		   	 </isNotEqual>
 		</isNotEqual>
       
