@@ -351,7 +351,7 @@ function fDeleteMenuList() {
 	            				<td align="left" class="listtd"><c:out value="${result.testcaseId}"/></td>
 	            				<td align="left" class="listtd" >
 	            					<a href= "<c:url value='/tms/test/selectTestCase.do?testcaseId=${result.testcaseId}&returnPg=TestCaseDetail'/>">
-		            					<strong><c:out value="${result.testcaseContent}"/></strong>
+		            					<font color="#0F438A" style="font-weight:bold"><c:out value="${result.testcaseContent}"/></font>
 		            				</a>
 	            				</td>
 	            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
