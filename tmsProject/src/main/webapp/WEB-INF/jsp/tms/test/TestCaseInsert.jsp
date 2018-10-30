@@ -49,7 +49,7 @@ function insertTestCaseImpl(){
 	var isValid = true; 
     if(stringRegx.test(inputTestcaseId)) { 
        isValid = false;
-       alert("테스트케이스ID에 특수문자는 사용할 수 없습니다.");
+       swal("테스트케이스ID에 특수문자는 사용할 수 없습니다.");
      } 
 	     
 	   if(isValid){
@@ -61,7 +61,7 @@ function insertTestCaseImpl(){
 			   	,success :  function(result){
 			   		
 			   		if(!result){
-			   			alert("중복된 테스트케이스ID 입니다.")
+			   			swal("중복된 테스트케이스ID 입니다.")
 			   		} else {
 			   			
 			   			if (!validateTestCaseVO(document.testCaseVO)){
@@ -85,8 +85,8 @@ function insertTestCaseImpl(){
 			   		}
 			   	}
 			   	, error :  function(request,status,error){
-			   		 alert("에러");
-				         alert("code:"+request.status+"\n"+"error:"+error);
+			   		swal("에러");
+				    //alert("code:"+request.status+"\n"+"error:"+error);
 			   	}
 			   		
 			   });

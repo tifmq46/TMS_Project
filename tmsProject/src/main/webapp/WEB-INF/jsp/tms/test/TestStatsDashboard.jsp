@@ -273,95 +273,113 @@ $(document).ready(function(){
               
                 <div id="page_info"><div id="page_info_align"></div></div>      
                              
-                        
-
-                 <div id="progress_bar_utc" class="progess_bar_section" >
-                 
-                      	<span style="font-size:15px; font-weight: bold;">단위테스트 현황</span>&nbsp;
-                      	<span class="imageArrowUtc">
-	                      	<a href="#"><img src="<c:url value='/images/tms/blue_arrow_down.gif' />" width="15" height="15" alt="down"/></a>
-	                      	<a href="#"><img src="<c:url value='/images/tms/blue_arrow_up.gif' />"   style="display:none;" width="15" height="15" alt="up"/></a>
-                      	</span>
-                      	
-                      	<div style="float:right;">
-	                      	<fmt:parseNumber var="tc1_yCnt" value="${testCaseStatsMapTC1.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
-	                      	<fmt:parseNumber var="tc1_totCnt" value="${testCaseStatsMapTC1.totCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+    			<div class="widget">
+    				<div class="widget-header">
+    					<div class="header-name" style="margin:10px;">
+                      		<span style="font-size:20px; font-weight: bold;">단위테스트 현황</span>&nbsp;
+                      		<span class="imageArrowUtc">
+	                      		<a href="#"><img src="<c:url value='/images/tms/blue_arrow_down.gif' />" width="15" height="15" alt="down"/></a>
+	                      		<a href="#"><img src="<c:url value='/images/tms/blue_arrow_up.gif' />"   style="display:none;" width="15" height="15" alt="up"/></a>
+                      		</span>
+    					</div>
+    					
+    					<div id="progress_bar_utc" class="progess_bar_section" >                      	
+                      		<div style="float:right;">
+	                      		<fmt:parseNumber var="tc1_yCnt" value="${testCaseStatsMapTC1.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
+	                      		<fmt:parseNumber var="tc1_totCnt" value="${testCaseStatsMapTC1.totCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
 	                      
-		                      <c:choose>
-	                   			<c:when test="${tc1_totCnt eq '0'}">
-	                   				<c:set var="tc1_Pct"  value="0"></c:set>
-	                   			</c:when>
+		                    	<c:choose>
+	                   				<c:when test="${tc1_totCnt eq '0'}">
+	                   					<c:set var="tc1_Pct"  value="0"></c:set>
+	                   				</c:when>
 	                   		
-	                   			<c:otherwise>
-	                   				<fmt:parseNumber var="tc1_Pct" value="${(tc1_yCnt/tc1_totCnt)*100}" type="number"  integerOnly="true" ></fmt:parseNumber>
-	                   			</c:otherwise>
-	                   		</c:choose>
+	                   				<c:otherwise>
+	                   					<fmt:parseNumber var="tc1_Pct" value="${(tc1_yCnt/tc1_totCnt)*100}" type="number"  integerOnly="true" ></fmt:parseNumber>
+	                   				</c:otherwise>
+	                   			</c:choose>
 	                      
-	                      	<span style="font-size: 15px;"><strong><c:out value="${tc1_yCnt}"></c:out>&nbsp;/&nbsp;<c:out value="${tc1_totCnt}"></c:out></strong></span>
-						</div>
+	                      		<span style="font-size: 15px;"><strong><c:out value="${tc1_yCnt}"></c:out>&nbsp;/&nbsp;<c:out value="${tc1_totCnt}"></c:out></strong></span>
+							</div>
 						
-                      	<div class="progress">
-						    <div class="progress-bar" style="width:${tc1_Pct}%"> <span style="font-size:25px;"><c:out value=" ${tc1_Pct}"></c:out>%</span></div>
+                      		<div class="progress">
+						    	<div class="progress-bar" style="width:${tc1_Pct}%"> <span style="font-size:25px;"><c:out value=" ${tc1_Pct}"></c:out>%</span></div>
+							</div>
 						</div>
-				</div>
+    				</div>
+
 				
-				<div id="detail_bar_utc" style="display:none;" class="progess_bar_section" >
+					<div id="detail_bar_utc" style="display:none;" class="progess_bar_section" >
 				
-				 <%--  <div class="progess_bar_section"><canvas id="ProgressStatusUtcChart" width="100%" height="14"></canvas></div> --%>
-                  <div class="progess_bar_section">
-	                  <strong>시스템별 단위테스트 현황 (단위:수)</strong>
-	                  <canvas id="sysByTestcaseCnt" width="100%" height="18"></canvas>
-                  </div>
+				 	<%--  <div class="progess_bar_section"><canvas id="ProgressStatusUtcChart" width="100%" height="14"></canvas></div> --%>
+                  		<div class="progess_bar_section" style="font-size:15px; font-weight: bold;">
+	                  		시스템별 단위테스트 현황 (단위:수)
+	                  		<canvas id="sysByTestcaseCnt" width="100%" height="18"></canvas>
+                  		</div>
                  
-                  <div class="progess_bar_section">
-	                   <strong>업무별 단위테스트 현황 (단위:수) - <span id="sysNmLabel" >전체</span></strong>
-	                  <canvas id="taskByTestcaseCnt" width="100%" height="30"></canvas>
-                  </div>
+                  		<div class="progess_bar_section" style="font-size:15px; font-weight: bold;">
+	                   		업무별 단위테스트 현황 (단위:수) - <span id="sysNmLabel" >전체</span>
+	                  		<canvas id="taskByTestcaseCnt" width="100%" height="30"></canvas>
+                  		</div>
                       
-				</div>
-                 
-                
+					</div>
+    			</div>    	  
+    			
+    		</div>            
+    		
 
                  
-                  <div id="progress_bar_ttc" class="progess_bar_section" >
+			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+    			<div class="widget">
+    				<div class="widget-header">
+    					<div class="header-name" style="margin:10px;">
+                			<span style="font-size:20px; font-weight: bold;">통합테스트 현황</span>&nbsp;
+               				<span class="imageArrowTtc">
+	                      		<a href="#"><img src="<c:url value='/images/tms/blue_arrow_down.gif' />" width="15" height="15" alt="down"/></a>
+	                      		<a href="#"><img src="<c:url value='/images/tms/blue_arrow_up.gif' />"   style="display:none;" width="15" height="15" alt="up"/></a>
+                      		</span>
+    					</div>
+    					
+                  		<div id="progress_bar_ttc" class="progess_bar_section" >
                  
-                		<span style="font-size:15px; font-weight: bold;">통합테스트 현황</span>&nbsp;
-               			<span class="imageArrowTtc">
-	                      	<a href="#"><img src="<c:url value='/images/tms/blue_arrow_down.gif' />" width="15" height="15" alt="down"/></a>
-	                      	<a href="#"><img src="<c:url value='/images/tms/blue_arrow_up.gif' />"   style="display:none;" width="15" height="15" alt="up"/></a>
-                      	</span>
-                 
-                 		<div style="float:right;">
-                      		<fmt:parseNumber var="tc2_yCnt" value="${testCaseStatsMapTC2.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
-	                      	<fmt:parseNumber var="tc2_totCnt" value="${testCaseStatsMapTC2.totCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
+                 			<div style="float:right;">
+                      			<fmt:parseNumber var="tc2_yCnt" value="${testCaseStatsMapTC2.yCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
+	                      		<fmt:parseNumber var="tc2_totCnt" value="${testCaseStatsMapTC2.totCnt}" type="number"  integerOnly="true" ></fmt:parseNumber>
 	                      	
-	                      	<c:choose>
-	                   			<c:when test="${tc2_totCnt eq '0'}">
-	                   				<c:set var="tc2_Pct"  value="0"></c:set>
-	                   			</c:when>
+	                      		<c:choose>
+	                   				<c:when test="${tc2_totCnt eq '0'}">
+	                   					<c:set var="tc2_Pct"  value="0"></c:set>
+	                   				</c:when>
 	                   		
-	                   			<c:otherwise>
-	                   				<fmt:parseNumber var="tc2_Pct" value="${(tc2_yCnt/tc2_totCnt)*100}" type="number"  integerOnly="true" ></fmt:parseNumber>
-	                   			</c:otherwise>
-	                   		</c:choose>
+	                   				<c:otherwise>
+	                   					<fmt:parseNumber var="tc2_Pct" value="${(tc2_yCnt/tc2_totCnt)*100}" type="number"  integerOnly="true" ></fmt:parseNumber>
+	                   				</c:otherwise>
+	                   			</c:choose>
 	                      	
-	                      	<span style="font-size: 15px;"><strong><c:out value="${tc2_yCnt}"></c:out>&nbsp;/&nbsp;<c:out value="${tc2_totCnt}"></c:out></strong></span>
-						</div>
+	                      		<span style="font-size: 15px;"><strong><c:out value="${tc2_yCnt}"></c:out>&nbsp;/&nbsp;<c:out value="${tc2_totCnt}"></c:out></strong></span>
+							</div>
                  
                       	
-                      	<div class="progress">
-						    <div class="progress-bar" style="width:${tc2_Pct}%"><span style="font-size:25px;"><c:out value=" ${tc2_Pct}"></c:out>%</span> </div>
-						</div>
+                      		<div class="progress">
+						    	<div class="progress-bar" style="width:${tc2_Pct}%"><span style="font-size:25px;"><c:out value=" ${tc2_Pct}"></c:out>%</span> </div>
+							</div>
 						
-                 </div>
+                 		</div>    					
+    				</div>
                    
-                 <div id="detail_bar_ttc" style="display:none;" class="progess_bar_section" >
-                    <canvas id="ProgressStatusTtcChart" width="100%" height="14"></canvas>
-				</div>
-                   
-                   
-                      
-                   
+                 	<div id="detail_bar_ttc" style="display:none;" class="progess_bar_section" >
+                    	<canvas id="ProgressStatusTtcChart" width="100%" height="14"></canvas>
+					</div>
+    			</div>    	  
+    			
+    		</div>       
                    
             </div>
             <!-- //content 끝 -->

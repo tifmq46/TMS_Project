@@ -290,81 +290,94 @@ function handleClick(event, array){
                         </ul>
                     </div>
                 </div>
-               <div id="search_field" style="font-family:'Malgun Gothic';">
+                <div id="search_field" style="font-family:'Malgun Gothic';">
 	                <div id="search_field_loc"><h2><strong>개발진척통계</strong></h2></div>  
 				</div>
+				<br/><br/><br/><br/><br/><br/>
 				
-			<br/><br/><br/><br/><br/><br/>
-			<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
-             <font color="#727272" style="font-size:1.17em;font-weight:bold">시스템별 진척률</font>
-             <br/><br/><br/><br/>
-            
-            <table>
-            	<tr>
-            		<td>&nbsp;&nbsp;
-            			<canvas id="progressRateTotal" width="250" height="120" style="display: inline"></canvas>&nbsp;&nbsp;
-             		</td>
-            		<c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
-            			<td>&nbsp;&nbsp;
-            				<canvas id="<c:out value="${sysByProgressRate.sysGb}"/>"  
-            					width="180" height="120" style="display: inline"></canvas>
-						</td>            
-            		</c:forEach>
-            	</tr>
-				<tr>
-            		<td align="center" valign="middle">
-             			<div style="font-size:15px; font-weight:bolder;">
-            				<font color="#007BFF">&nbsp;&nbsp;<c:out value="${progressRateTotal.cntB}"/></font>	/ <c:out value="${progressRateTotal.cntA}"/> 
-                 			(<c:out value=" ${progressRateTotal.rate}"></c:out>%)
-                 			<br/>&nbsp;&nbsp; 전체<br/>
-             			</div>
-            		</td>
-            		<c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
-            		<td align="center" valign="middle">
-            			<div style="font-size:13px; font-weight:bolder;">
-            			<font color="#007BFF"><c:out value="${sysByProgressRate.cntB}"/></font> / 
-            			<c:out value="${sysByProgressRate.cntA}"/>
-                 		(<c:out value=" ${sysByProgressRate.rate}"></c:out>%)
-                 		<br/>&nbsp;&nbsp;
-							<c:out value="${sysByProgressRate.sysNm}"/>
-                 		<br/>
-                 		</div>
-            		</td>
-            		</c:forEach>
-            	</tr>
-            </table>
-            
-            <br/><br/>
-            <img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;
-            <font color="#727272" style="font-size:1.17em;font-weight:bold">업무별 진척률</font><br/>
-				<div id="taskByProgressRateLoc" ><br/><br/>
-				 <div style="overflow:auto;  overflow-y:hidden;">
-				<table style="border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);">
-					<tr>
-						<c:forEach var="taskByProgressRate" items="${taskByProgressRate}" varStatus="status">
-							<td><br/><br/>&nbsp;&nbsp;
-								<canvas	id="<c:out value="${taskByProgressRate.sysGb}"/><c:out value="${taskByProgressRate.taskGb}"/>"
-									width="180" height="120" style="display: inline !important;"></canvas>
-							</td>
-						</c:forEach>
-					</tr>
-					<tr>
-						<c:forEach var="taskByProgressRate" items="${taskByProgressRate}" varStatus="status">
-						<td align="center" valign="middle">
-							<div style="font-size: 15px; font-weight: bolder;">
-								<font color="#007BFF">&nbsp;&nbsp;<c:out value="${taskByProgressRate.cntB}" /></font> /
-								<c:out value="${taskByProgressRate.cntA}" />
-								(<c:out value=" ${taskByProgressRate.rate}"/>%)
-								<br/>&nbsp;&nbsp;<c:out value="${taskByProgressRate.sysNm}"/>(<c:out value="${taskByProgressRate.taskNm}"/>)
-							</div>
-						<br/><br/><br/><br/></td>
-						</c:forEach>
-					</tr>
-				</table></div>
-				<br/><br/>
-            </div>
-            
-            <br/><br/><br/><br/>
+				<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+    				<div class="widget">
+    					<div class="widget-header">
+    						<div class="header-name" style="margin:10px;">
+	    						시스템별 진척률
+    						</div>
+    					</div>
+    					
+            			<table>
+            				<tr>
+            					<td>&nbsp;&nbsp;
+            						<canvas id="progressRateTotal" width="250" height="120" style="display: inline"></canvas>&nbsp;&nbsp;
+             					</td>
+            					<c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
+            					<td>&nbsp;&nbsp;
+            						<canvas id="<c:out value="${sysByProgressRate.sysGb}"/>"  
+            							width="180" height="120" style="display: inline"></canvas>
+								</td>            
+            					</c:forEach>
+            				</tr>
+							<tr>
+            					<td align="center" valign="middle">
+             						<div style="font-size:15px; font-weight:bolder;">
+            						<font color="#007BFF">&nbsp;&nbsp;<c:out value="${progressRateTotal.cntB}"/></font>	/ <c:out value="${progressRateTotal.cntA}"/> 
+                 					(<c:out value=" ${progressRateTotal.rate}"></c:out>%)
+                 					<br/>&nbsp;&nbsp; 전체<br/>
+             						</div>
+            					</td>
+            					<c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
+            					<td align="center" valign="middle">
+            						<div style="font-size:13px; font-weight:bolder;">
+            							<font color="#007BFF"><c:out value="${sysByProgressRate.cntB}"/></font> / 
+            							<c:out value="${sysByProgressRate.cntA}"/>
+                 						(<c:out value=" ${sysByProgressRate.rate}"></c:out>%)
+                 						<br/>&nbsp;&nbsp;
+										<c:out value="${sysByProgressRate.sysNm}"/>
+                 						<br/>
+                 					</div>
+            					</td>
+            					</c:forEach>
+            				</tr>
+            			</table>
+    				</div>    	  
+    			
+    			</div>
+    			
+    			
+			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+    			<div class="widget">
+    				<div class="widget-header">
+    					<div class="header-name" style="margin:10px;">
+	    					업무별 진척률
+    					</div>
+    				</div>
+					<div id="taskByProgressRateLoc" ><br/><br/>
+					<div style="overflow:auto;  overflow-y:hidden;">
+						<table>
+							<tr>
+								<c:forEach var="taskByProgressRate" items="${taskByProgressRate}" varStatus="status">
+								<td><br/><br/>&nbsp;&nbsp;
+									<canvas	id="<c:out value="${taskByProgressRate.sysGb}"/><c:out value="${taskByProgressRate.taskGb}"/>"
+										width="180" height="120" style="display: inline !important;"></canvas>
+								</td>
+								</c:forEach>
+							</tr>
+							<tr>
+								<c:forEach var="taskByProgressRate" items="${taskByProgressRate}" varStatus="status">
+								<td align="center" valign="middle">
+									<div style="font-size: 15px; font-weight: bolder;">
+										<font color="#007BFF">&nbsp;&nbsp;<c:out value="${taskByProgressRate.cntB}" /></font> /
+										<c:out value="${taskByProgressRate.cntA}" />
+										(<c:out value=" ${taskByProgressRate.rate}"/>%)
+										<br/>&nbsp;&nbsp;<c:out value="${taskByProgressRate.sysNm}"/>(<c:out value="${taskByProgressRate.taskNm}"/>)
+									</div>
+								</c:forEach>
+							</tr>
+						</table></div>
+				
+            		</div>
+    			</div>    	  
+    			
+    		</div>    			
+				
 
 			</div>
             <!-- //content 끝 -->
