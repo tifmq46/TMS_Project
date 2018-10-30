@@ -66,34 +66,9 @@ ul.tabs li.last {
 	border: 1px solid #fff;
 }
 
-#lineStyle{
-	border-bottom: solid 1px #00000054;
-	border-top: solid 1px #00000054;
-	background: #E0F2F7;
-}
-
-#lineStyle2{
-	border-bottom: solid 1px #00000054;
-	border-top: solid 1px #00000054;
-	background: #CEE3F6;
-}
-
-.line{
-	font-weight:bold;
-}
-
-.table1{
-	width:100%;
-	overflow-x:scroll; 
-}
-
 th,td{
 border-left: 1px solid #81B1D5;
 border-top: 1px solid #81B1D5;
-}
-
-.borderLine{
-	border-right: 1px solid #81B1D5;
 }
 
 </style>
@@ -269,20 +244,20 @@ function StatsToExcel(statsGb) {
 		                    </tr>
 	                    </c:forEach>
 	                    <tr>
-	                    	<td id='lineStyle2'><strong><c:out value="합계" /></strong></td>
+	                    	<td class='lineStyle2'><strong><c:out value="합계" /></strong></td>
 	                  
-	                    	<td id='lineStyle2'><strong>${totSum1}</strong></td>
-		                  	<td id='lineStyle2'><strong>${totSum2}</strong></td>
-		                  	<td class='borderLine' id='lineStyle2'><strong>${totSum3}</strong></td>
+	                    	<td class='lineStyle2'><strong>${totSum1}</strong></td>
+		                  	<td class='lineStyle2'><strong>${totSum2}</strong></td>
+		                  	<td class='borderLine lineStyle2'><strong>${totSum3}</strong></td>
 		                  	
 			               	<c:forEach var="userSum" items="${userSum}" varStatus="status">
 					           	<c:set var = "b" value="${begin+status.index}"></c:set>
 					           			<c:set var ="t"  value="sumUserPlan${b}"></c:set>
-					           			<td>${userSum[t]}</td>
+					           			<td class='lineStyle2'>${userSum[t]}</td>
 					           			<c:set var ="t2"  value="sumUserDev${b}"></c:set>
-					           			<td>${userSum[t2]}</td>
+					           			<td class='lineStyle2'>${userSum[t2]}</td>
 					           			<c:set var ="t3"  value="sumUserDiff${b}"></c:set>
-					           			<td class='borderLine'>${userSum[t3]}</td>
+					           			<td class='borderLine lineStyle2'>${userSum[t3]}</td>
 								</c:forEach>
 		               	
 	                    </tr>
@@ -339,56 +314,66 @@ function StatsToExcel(statsGb) {
            			  %>
            			<c:forEach var="ts" items="${taskStats}" varStatus="status">
 	                    <tr>
-	                    <td><c:out value="${ts.sysGbNm}" /></td>
-	                    	<td><c:out value="${ts.taskGbNm}" /></td>
+	                    	<c:choose>
+	                    		<c:when test="${ts.taskGbNm eq '소계' && ts.sysGbNm ne '합계'}">
+	                    			<td class='lineStyle'><strong><c:out value="${ts.sysGbNm}" /></strong></td>
+		                    		<td class='lineStyle'><strong><c:out value="${ts.taskGbNm}" /></strong></td>
+		                    		<td class='lineStyle'><strong>${ts.sumTaskPlan}</strong></td>
+									<td class='lineStyle'><strong>${ts.sumTaskDev}</strong></td>
+									<td class='lineStyle'><strong>${ts.sumDiff}</strong></td>
+									
+									<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+					           			<c:set var ="t"  value="a${i}"></c:set>
+					           			<td class='lineStyle'><strong>${ts[t]}</strong></td>
+					           			<c:set var ="t2"  value="b${i}"></c:set>
+					           			<td class='lineStyle'><strong>${ts[t2]}</strong></td>
+					           			<c:set var ="t3"  value="sub${i}"></c:set>
+					           			<td class='borderLine lineStyle'><strong>${ts[t3]}</strong></td>
+									</c:forEach>
+	                    		</c:when>
+	                    		<c:when test="${ts.sysGbNm eq '합계'}">
+	                    			<td class='lineStyle2'><strong><c:out value="${ts.sysGbNm}" /></strong></td>
+		                    		<td class='lineStyle2'><strong><c:out value="${ts.taskGbNm}" /></strong></td>
+		                    		<td class='lineStyle2'><strong>${ts.sumTaskPlan}</strong></td>
+									<td class='lineStyle2'><strong>${ts.sumTaskDev}</strong></td>
+									<td class='lineStyle2'><strong>${ts.sumDiff}</strong></td>
+									
+									<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+					           			<c:set var ="t"  value="a${i}"></c:set>
+					           			<td class='lineStyle2'><strong>${ts[t]}</strong></td>
+					           			<c:set var ="t2"  value="b${i}"></c:set>
+					           			<td class='lineStyle2'><strong>${ts[t2]}</strong></td>
+					           			<c:set var ="t3"  value="sub${i}"></c:set>
+					           			<td class='borderLine lineStyle2'><strong>${ts[t3]}</strong></td>
+									</c:forEach>
+	                    		</c:when>
+	                    		<c:otherwise>
+	                    			<td><c:out value="${ts.sysGbNm}" /></td>
+		                    		<td><c:out value="${ts.taskGbNm}" /></td>
+		                    		<td><strong>${ts.sumTaskPlan}</strong></td>
+									<td><strong>${ts.sumTaskDev}</strong></td>
+									<td><strong>${ts.sumDiff}</strong></td>
+									
+									<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+					           			<c:set var ="t"  value="a${i}"></c:set>
+					           			<td>${ts[t]}</td>
+					           			<c:set var ="t2"  value="b${i}"></c:set>
+					           			<td>${ts[t2]}</td>
+					           			<c:set var ="t3"  value="sub${i}"></c:set>
+					           			<td class='borderLine'>${ts[t3]}</td>
+									</c:forEach>
+	                    		</c:otherwise>
+	                    	</c:choose>
 	                    	
-	                    	<td><strong>${ts.sumTaskPlan}</strong></td>
-							<c:set var = "totSum4" value="${ts.sumTaskPlan}" />
-							<% totSum4 += (Integer)pageContext.getAttribute("totSum4");
-								pageContext.setAttribute("totSum4", totSum4);
-							%>
-							
-							<td><strong>${ts.sumTaskDev}</strong></td>
-							<c:set var = "totSum5" value="${ts.sumTaskDev}" />
-							<% totSum5 += (Integer)pageContext.getAttribute("totSum5");
-								pageContext.setAttribute("totSum5", totSum5);
-							%>
-							
-							<td><strong>${ts.sumDiff}</strong></td>
-							<c:set var = "totSum6" value="${ts.sumDiff}" />
-							<% totSum6 += (Integer)pageContext.getAttribute("totSum6");
-								pageContext.setAttribute("totSum6", totSum6);
-							%>
-	                    	
-	                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
-			           			<c:set var ="t"  value="a${i}"></c:set>
-			           			<td>${ts[t]}</td>
-			           			<c:set var ="t2"  value="b${i}"></c:set>
-			           			<td>${ts[t2]}</td>
-			           			<c:set var ="t3"  value="sub${i}"></c:set>
-			           			<td class='borderLine'>${ts[t3]}</td>
-							</c:forEach>
+		                   
+		                    		
+									
+			                    	
+			                    	
 							
 	                    </tr>
                     </c:forEach>
-                    <tr>
-	                    	<td id='lineStyle2' colspan="2"><strong><c:out value="합계" /></strong></td>
-	                    	<td id='lineStyle2'><strong>${totSum4}</strong></td>
-		                  	<td id='lineStyle2'><strong>${totSum5}</strong></td>
-		                  	<td id='lineStyle2'><strong>${totSum6}</strong></td>
-		                  	
-		                  	
-		                  	<c:forEach var="taskSum" items="${taskSum}" varStatus="status">
-				           	<c:set var = "b" value="${begin+status.index}"></c:set>
-				           			<c:set var ="t"  value="sumTaskPlan${b}"></c:set>
-				           			<td>${taskSum[t]}</td>
-				           			<c:set var ="t2"  value="sumTaskDev${b}"></c:set>
-				           			<td>${taskSum[t2]}</td>
-				           			<c:set var ="t3"  value="sumTaskDiff${b}"></c:set>
-				           			<td class='borderLine'>${taskSum[t3]}</td>
-							</c:forEach>
-		                  	
-	                </tr>
+                    
                     </table>
                 </div>
                 
@@ -428,30 +413,30 @@ function StatsToExcel(statsGb) {
 		                    	
 		                    	<c:choose>
 			                    	<c:when test="${t.taskNm eq '소계' && t.sysNm ne '합계'}">
-			                    		<td id='lineStyle'><strong><c:out value="${t.sysNm}" /></strong></td>
-			                    		<td id='lineStyle'><strong><c:out value="${t.taskNm}" /></strong></td>
-			                    		<td id='lineStyle'><strong><c:out value="${t.totCnt}" /></strong></td>
-			                    		<td id='lineStyle'><strong><c:out value="${t.tp}" /></strong></td>
-			                    		<td id='lineStyle'><strong><c:out value="${t.td}" /></strong></td>
-			                    		<td id='lineStyle'><strong><c:out value="${t.tr}" /></strong></td>
-			                    		<td id='lineStyle'><strong><c:out value="${t.ap}" /></strong></td>
-			                    		<td id='lineStyle'><strong><c:out value="${t.ad}" /></strong></td>
-			                    		<td id='lineStyle'><strong><c:out value="${t.ar}" /></strong></td>
-			                    		<td id='lineStyle'><strong><c:out value="${t.totD}" /></strong></td>
-			                    		<td id='lineStyle' class='borderLine'><strong><c:out value="${t.tot}" /></strong></td>
+			                    		<td class='lineStyle'><strong><c:out value="${t.sysNm}" /></strong></td>
+			                    		<td class='lineStyle'><strong><c:out value="${t.taskNm}" /></strong></td>
+			                    		<td class='lineStyle'><strong><c:out value="${t.totCnt}" /></strong></td>
+			                    		<td class='lineStyle'><strong><c:out value="${t.tp}" /></strong></td>
+			                    		<td class='lineStyle'><strong><c:out value="${t.td}" /></strong></td>
+			                    		<td class='lineStyle'><strong><c:out value="${t.tr}" /></strong></td>
+			                    		<td class='lineStyle'><strong><c:out value="${t.ap}" /></strong></td>
+			                    		<td class='lineStyle'><strong><c:out value="${t.ad}" /></strong></td>
+			                    		<td class='lineStyle'><strong><c:out value="${t.ar}" /></strong></td>
+			                    		<td class='lineStyle'><strong><c:out value="${t.totD}" /></strong></td>
+			                    		<td class='lineStyle borderLine'><strong><c:out value="${t.tot}" /></strong></td>
 			                    	</c:when>
 			                    	<c:when test="${t.sysNm eq '합계'}">
-			                    		<td id='lineStyle2'><strong><c:out value="${t.sysNm}" /></strong></td>
-			                    		<td id='lineStyle2'><strong><c:out value="${t.taskNm}" /></strong></td>
-			                    		<td id='lineStyle2'><strong><c:out value="${t.totCnt}" /></strong></td>
-			                    		<td id='lineStyle2'><strong><c:out value="${t.tp}" /></strong></td>
-			                    		<td id='lineStyle2'><strong><c:out value="${t.td}" /></strong></td>
-			                    		<td id='lineStyle2'><strong><c:out value="${t.tr}" /></strong></td>
-			                    		<td id='lineStyle2'><strong><c:out value="${t.ap}" /></strong></td>
-			                    		<td id='lineStyle2'><strong><c:out value="${t.ad}" /></strong></td>
-			                    		<td id='lineStyle2'><strong><c:out value="${t.ar}" /></strong></td>
-			                    		<td id='lineStyle2'><strong><c:out value="${t.totD}" /></strong></td>
-			                    		<td id='lineStyle2' class='borderLine'><strong><c:out value="${t.tot}" /></strong></td>
+			                    		<td class='lineStyle2'><strong><c:out value="${t.sysNm}" /></strong></td>
+			                    		<td class='lineStyle2'><strong><c:out value="${t.taskNm}" /></strong></td>
+			                    		<td class='lineStyle2'><strong><c:out value="${t.totCnt}" /></strong></td>
+			                    		<td class='lineStyle2'><strong><c:out value="${t.tp}" /></strong></td>
+			                    		<td class='lineStyle2'><strong><c:out value="${t.td}" /></strong></td>
+			                    		<td class='lineStyle2'><strong><c:out value="${t.tr}" /></strong></td>
+			                    		<td class='lineStyle2'><strong><c:out value="${t.ap}" /></strong></td>
+			                    		<td class='lineStyle2'><strong><c:out value="${t.ad}" /></strong></td>
+			                    		<td class='lineStyle2'><strong><c:out value="${t.ar}" /></strong></td>
+			                    		<td class='lineStyle2'><strong><c:out value="${t.totD}" /></strong></td>
+			                    		<td class='lineStyle2 borderLine'><strong><c:out value="${t.tot}" /></strong></td>
 			                    	</c:when>
 			                    	<c:otherwise>
 			                    		<td><c:out value="${t.sysNm}" /></td>

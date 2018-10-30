@@ -483,33 +483,7 @@ public class DevPlanController {
 		
 		//업무별 통계 
 		List<Map<String,Object>> taskStats = stats("task", taskGbList, periodList);
-		
-		int sumTaskPlan =0;
-		int sumTaskDev =0;
-		int sumTaskDiff = 0;
-		JSONArray taskSumArray = new JSONArray();
-		JSONObject taskSumObj = new JSONObject();
-		
-		for(int j=s; j<=e; j++){
-			taskSumObj = new JSONObject();
-			sumTaskPlan =0;
-			sumTaskDev =0;
-			sumTaskDiff = 0;
-			
-			for(int i =0; i<taskStats.size(); i++){
-				sumTaskPlan += Integer.parseInt(String.valueOf(taskStats.get(i).get("a"+j)));
-				sumTaskDev += Integer.parseInt(String.valueOf(taskStats.get(i).get("b"+j)));
-				sumTaskDiff += Integer.parseInt(String.valueOf(taskStats.get(i).get("sub"+j)));
-				}
-			taskSumObj.put("sumTaskPlan"+j, sumTaskPlan);
-			taskSumObj.put("sumTaskDev"+j, sumTaskDev);
-			taskSumObj.put("sumTaskDiff"+j, sumTaskDiff);
-			taskSumArray.add(taskSumObj);
-		}
-		
-		List<Map<String,Object>> taskSum = jsU.getListMapFromJsonArray(taskSumArray);
-		
-		model.addAttribute("taskSum",taskSum);
+System.out.println("테스크통계::::"+taskStats);
 		model.addAttribute("taskStats",taskStats);
 		
 		List<EgovMap> totalTable = devPlanService.selectStatsTable();
@@ -586,8 +560,12 @@ public class DevPlanController {
 			int sumTaskPlan=0;
 			int sumTaskDev=0;
 			int sumDiff = 0;
+			
+			System.out.println("사이즈test"+taskStatsList.size());
+			int sysCnt = devPlanService.selectSysGbCnt();
+			
 
-			for(int i=0; i<list.size();i++){
+			for(int i=0; i<list.size()+sysCnt+1; i++){
 				taskObj = new JSONObject();
 				int temp=i;
 				sumTaskPlan=0;
@@ -603,7 +581,7 @@ public class DevPlanController {
 					sumTaskPlan += Integer.parseInt(String.valueOf(taskStatsList.get(temp).get(periodList.get(j))));
 					sumTaskDev += Integer.parseInt(String.valueOf(taskStatsList.get(temp).get("b"+periodList.get(j))));
 					sumDiff += Integer.parseInt(String.valueOf(taskStatsList.get(temp).get("sub"+periodList.get(j))));
-					temp+=10;
+					temp+=list.size()+sysCnt+1;
 				}
 				taskObj.put("sumTaskPlan", sumTaskPlan);
 				taskObj.put("sumTaskDev", sumTaskDev);
@@ -611,6 +589,7 @@ public class DevPlanController {
 				taskArray.add(taskObj);
 			}
 			
+			System.out.println("Array______"+taskArray);
 			JsonUtil jsU = new JsonUtil();
 			List<Map<String,Object>> taskStats = jsU.getListMapFromJsonArray(taskArray);
 			
