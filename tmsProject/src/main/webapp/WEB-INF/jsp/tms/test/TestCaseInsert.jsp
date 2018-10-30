@@ -122,7 +122,7 @@ function searchFileNm() {
         <div id="leftmenu"><c:import url="/sym/mms/EgovMainMenuLeft.do" /></div>
         <!-- //좌측메뉴 끝 -->
             <!-- 현재위치 네비게이션 시작 -->
-            <div id="content">
+            <div id="content" style="font-family:'Malgun Gothic';">
                 <div id="cur_loc">
                     <div id="cur_loc_align">
                         <ul>
@@ -137,7 +137,7 @@ function searchFileNm() {
               
               
               
-                <div id="page_info"><div id="page_info_align"></div></div>      
+                <div id="page_info"><div id="page_info_align" style="font-family:'Malgun Gothic';"></div></div>      
                 <br>
                <div id="search_field_loc"><h2><strong>테스트케이스 등록</strong></h2></div>
                         

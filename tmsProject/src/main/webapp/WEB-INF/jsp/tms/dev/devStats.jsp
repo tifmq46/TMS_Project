@@ -280,7 +280,7 @@ function handleClick(event, array){
             <!-- 현재위치 네비게이션 시작 -->
             <div id="content">
                 <div id="cur_loc">
-                    <div id="cur_loc_align">
+                    <div id="cur_loc_align" style="font-family:'Malgun Gothic';">
                         <ul>
 							<li>HOME</li>
 							<li>&#62;</li>
@@ -290,7 +290,7 @@ function handleClick(event, array){
                         </ul>
                     </div>
                 </div>
-               <div id="search_field">
+               <div id="search_field" style="font-family:'Malgun Gothic';">
 	                <div id="search_field_loc"><h2><strong>개발진척통계</strong></h2></div>  
 				</div>
 				

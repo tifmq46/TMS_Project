@@ -13,7 +13,8 @@ img{border:0; vertical-align: middle;}
 html, body{margin:0; padding:0; height: 100%;width: 100%;}
 body, input, button, select, input, textarea, td, th {
     color: #666666;
-    font: 12px Dotum,Gulim,Tahoma,Sans-serif;
+    font-family:'Malgun Gothic';
+    font-size:12px;
 }
 h1{font-family:"굴림", Gulim, AppleGothic, Sans-serif; font-size:13pt;}
 h2{  color: #727272;
@@ -358,6 +359,16 @@ b{font-weight: 1000;}
 }
 .recentBsnsList{
 		width: 45% !important;
+		position: relative;
+		min-height: 1px;
+		padding:0 15px 20px 15px;
+		border:1.2px solid #ddd;
+		border-radius: 5px;
+		margin:0 !important;
+		float:left;
+}
+.recentBoardList{
+		width: 100% !important;
 		position: relative;
 		min-height: 1px;
 		padding:0 15px 20px 15px;

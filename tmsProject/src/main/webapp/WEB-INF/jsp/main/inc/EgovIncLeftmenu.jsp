@@ -14,6 +14,7 @@
 <%@ page import ="egovframework.com.cmm.LoginVO" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript" src="<c:url value="/js/EgovMainMenu.js"/>"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 <!--
 /* ********************************************************
@@ -29,13 +30,13 @@ function fn_MovePage(nodeNum) {
 //-->
 </script>
 <!-- 메뉴 시작 -->
-<div id="LoginStatus">
+<div id="LoginStatus" style="font-family:'Malgun Gothic';">
 	  <fieldset><legend>조건정보 영역</legend>
 	  	<%
         LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
         if(loginVO == null){
         %>
-        <ul>
+        <ul style="font-family:'Malgun Gothic';">
 	  		<li>로그인정보 없음</li>
 	  		<li><a href="<c:url value='/uat/uia/egovLoginUsr.do'/>"><img src="<c:url value='/images/leftmenu/login.jpg' />" alt="로그인" /></a></li>
 	  		<li>로그인후 사용하십시오</li>
@@ -43,13 +44,13 @@ function fn_MovePage(nodeNum) {
 	  	<%
         }else{
 	  	%>
-            <c:set var="loginName" value="<%= loginVO.getName()%>"/>
-            <ul>
-	  	    <li><a href="#LINK" onclick="alert('개인정보 확인 등의 링크 제공'); return false;">
+        <c:set var="loginName" value="<%= loginVO.getName()%>"/>
+        <ul style="font-family:'Malgun Gothic';">
+	  	    <li><a href="#LINK" onclick="swal('개인정보 확인 등의 링크 제공'); return false;">
             <c:out value="${loginName}"/> 님</a></li>
             <li><a href="<c:url value='/uat/uia/actionLogout.do'/>">
             <img src="<c:url value='/images/leftmenu/logout.jpg' />" alt="로그아웃" /></a></li>
-            </ul>
+        </ul>
 	  	<%
 	  	}
         %>
