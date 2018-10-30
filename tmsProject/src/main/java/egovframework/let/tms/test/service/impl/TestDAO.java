@@ -15,8 +15,8 @@ public class TestDAO extends EgovAbstractDAO{
 
 	/**
 	 * 테스트 케이스를 등록한다.
-	 * @param vo - 등록할 정보가 담긴 TestCaseVO
-	 * @return 등록 결과
+	 * @param vo - 등록할 정보가 담긴 testCaseVO
+	 * @return void
 	 * @exception Exception
 	 */
 	public void insertTestCase(TestCaseVO testCaseVO) throws Exception {
@@ -25,8 +25,8 @@ public class TestDAO extends EgovAbstractDAO{
 	
 	/**
 	 * 테스트 시나리오를 등록한다.
-	 * @param vo - 등록할 정보가 담긴 TestScenarioVO
-	 * @return 등록 결과
+	 * @param vo - 등록할 정보가 담긴 testScenarioVO
+	 * @return void
 	 * @exception Exception
 	 */
 	public void insertTestScenario(TestScenarioVO testScenarioVO) throws Exception {
@@ -35,8 +35,8 @@ public class TestDAO extends EgovAbstractDAO{
 	
 	/**
 	 * 테스트 케이스를 수정한다.
-	 * @param vo - 수정할 정보가 담긴 TestCaseVO
-	 * @return void형
+	 * @param vo - 수정할 정보가 담긴 testCaseVO
+	 * @return void
 	 * @exception Exception
 	 */
 	public void updateTestCase(TestCaseVO testCaseVO) throws Exception {
@@ -44,11 +44,10 @@ public class TestDAO extends EgovAbstractDAO{
 	}
 
 	
-	
 	/**
 	 * 테스트 시나리오를 수정한다.
-	 * @param vo - 수정할 정보가 담긴 TestScenarioVO
-	 * @return void형
+	 * @param vo - 수정할 정보가 담긴 testScenarioVO
+	 * @return void
 	 * @exception Exception
 	 */
 	public void updateTestScenario(TestScenarioVO testScenarioVO) throws Exception {
@@ -58,8 +57,8 @@ public class TestDAO extends EgovAbstractDAO{
 	
 	/**
 	 * 테스트 시나리오를 복수로 수정한다.
-	 * @param vo - 수정할 정보가 담긴 TestScenarioVO
-	 * @return void형
+	 * @param vo - 수정할 정보가 담긴 testScenarioVO
+	 * @return void
 	 * @exception Exception
 	 */
 	public void updateTestScenarioResult(TestScenarioVO testScenarioVO) throws Exception {
@@ -70,31 +69,22 @@ public class TestDAO extends EgovAbstractDAO{
 	/**
 	 * 테스트 케이스를 삭제한다.
 	 * @param String - 삭제할 정보가 담긴 testcaseId
-	 * @return void형
+	 * @return void
 	 * @exception Exception
 	 */
 	public void deleteTestCase(String testcaseId) throws Exception {
 		delete("TestDAO.deleteTestCase", testcaseId);
 	}
 	
-	
 	/**
 	 * 테스트 시나리오를 삭제한다.
 	 * @param String - 삭제할 정보가 담긴 testscenarioId
-	 * @return void형
+	 * @return void
 	 * @exception Exception
 	 */
 	public void deleteTestScenario(String testscenarioId) throws Exception {
 		delete("TestDAO.deleteTestScenario", testscenarioId);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	/**
 	 * 테스트 케이스의 상세정보를 조회한다.
@@ -108,7 +98,6 @@ public class TestDAO extends EgovAbstractDAO{
 	}
 	
 	
-	
 	/**
 	 * 테스트 케이스의 진행상태를 가져온다.
 	 * @param String - 조회할 정보가 담긴 testcaseGb
@@ -120,10 +109,9 @@ public class TestDAO extends EgovAbstractDAO{
 		return  (HashMap<String, Object>) select("TestDAO.selectTestCaseProgressStatus", testcaseGb);
 	}
 	
-	
 	/**
 	 * 테스트 시나리오의 상세정보를 조회한다.
-	 * @param String - 조회할 정보가 담긴 testcaseId
+	 * @param String - 조회할 정보가 담긴 testscenarioId
 	 * @return TestScenarioVO
 	 * @exception Exception
 	 */
@@ -134,8 +122,8 @@ public class TestDAO extends EgovAbstractDAO{
 	
 	/**
 	 * 테스트 케이스 목록을 조회한다.
-	 * @param TestDefaultVO - 조회할 정보가 담긴 searchVO
-	 * @return 글 목록
+	 * @param vo - 조회할 정보가 담긴 searchVO
+	 * @return List<?>
 	 * @exception Exception
 	 */
 	public List<?> selectTestCaseList(TestDefaultVO searchVO) throws Exception {
@@ -145,8 +133,8 @@ public class TestDAO extends EgovAbstractDAO{
 
 	/**
 	 * 테스트케이스 목록 전체 건수 조회
-	 * @param TestDefaultVO - 조회할 정보가 담긴 searchVO
-	 * @return 글 총 갯수
+	 * @param vo - 조회할 정보가 담긴 searchVO
+	 * @return int
 	 * @exception
 	 */
 	
@@ -157,8 +145,8 @@ public class TestDAO extends EgovAbstractDAO{
 
 	/**
 	 * 테스트시나리오 목록을 조회한다.
-	 * @param searchMap - 조회할 정보가 담긴 Map
-	 * @return 글 목록
+	 * @param String - 조회할 정보가 담긴 testcaseId
+	 * @return List<?> 
 	 * @exception Exception
 	 */
 	public List<?> selectTestScenarioList(String testcaseId) throws Exception {
@@ -168,8 +156,8 @@ public class TestDAO extends EgovAbstractDAO{
 
 	/**
 	 * 테스트시나리오 목록 전체 건수 조회
-	 * @param searchMap - 조회할 정보가 담긴 Map
-	 * @return 글 총 갯수
+	 * @param String - 조회할 정보가 담긴 testcaseId
+	 * @return int
 	 * @exception
 	 */
 	
@@ -181,14 +169,13 @@ public class TestDAO extends EgovAbstractDAO{
 	/**
 	 * 단위,통합 테스트 케이스 통계 정보를 가져온다
 	 * @param String - 조회할 정보가 담긴 testcaseGb
-	 * @return HashMap<String,Object>
+	 * @return HashMap<String,Integer> 
 	 * @exception Exception
 	 */
 	@SuppressWarnings("unchecked")
 	public HashMap<String,Integer> selectTestCaseStats(String testcaseGb) throws Exception {
 		return  (HashMap<String, Integer>) select("TestDAO.selectTestCaseStats", testcaseGb);
 	}
-	
 	
 	
 	/**
@@ -200,7 +187,6 @@ public class TestDAO extends EgovAbstractDAO{
 	public List<?> selectTestCaseStatsListByTaskGbTotal() throws Exception {
 		return  list("TestDAO.selectTestCaseStatsListByTaskGbTotal");
 	}
-	
 	
 	
 	/**
@@ -228,8 +214,8 @@ public class TestDAO extends EgovAbstractDAO{
 
 	/**
 	 * 테스트 현황 목록을 조회한다.
-	 * @param TestDefaultVO - 조회할 정보가 담긴 searchVO
-	 * @return 글 목록
+	 * @param vo - 조회할 정보가 담긴 searchVO
+	 * @return List<?>
 	 * @exception Exception
 	 */
 	public List<?> selectTestCurrent(TestDefaultVO searchVO) throws Exception {
@@ -239,8 +225,8 @@ public class TestDAO extends EgovAbstractDAO{
 
 	/**
 	 * 테스트 현황 목록 전체 건수 조회
-	 * @param TestDefaultVO - 조회할 정보가 담긴 searchVO
-	 * @return 글 총 갯수
+	 * @param vo - 조회할 정보가 담긴 searchVO
+	 * @return int
 	 * @exception
 	 */
 	public int selectTestCurrentTotCnt(TestDefaultVO searchVO) throws Exception {
@@ -273,8 +259,8 @@ public class TestDAO extends EgovAbstractDAO{
 	
 	/**
 	 * 테스트 통계(통계표)를 조회한다.
-	 * @param TestDefaultVO - 조회할 정보가 담긴 searchVO
-	 * @return 글 목록
+	 * @param vo - 조회할 정보가 담긴 searchVO
+	 * @return List<?>
 	 * @exception Exception
 	 */
 	public List<?> selectTestStatsTable(TestDefaultVO searchVO) throws Exception {

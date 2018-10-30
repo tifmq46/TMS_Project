@@ -282,8 +282,8 @@ function selectTestScenario() {
               
              		 <colgroup>
              		 	<col width="6%"/>
-        				<col width="12%"/> 
-        				<col width="43%"/>
+        				<col width="9%"/> 
+        				<col width="46%"/>
         				<col width="6%"/>
         				<col width="6%"/>
         				<col width="10%"/>
