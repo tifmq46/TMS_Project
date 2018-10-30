@@ -39,10 +39,12 @@ window.onload = function() {
 		var dayByDefectCntDays = new Array();
 		var dayByDefectCntEnrollDtCnt = new Array();
 		var dayByDefectCntActionDtCnt = new Array();
+		var dayByDefectCntAccumulCnt = new Array();
 		for (var i = 0; i < dayByDefectCnt.length; i++) {
 			dayByDefectCntDays.push(dayByDefectCnt[i].days);
 			dayByDefectCntEnrollDtCnt.push(dayByDefectCnt[i].enrollDtCnt);
 			dayByDefectCntActionDtCnt.push(dayByDefectCnt[i].actionDtCnt);
+			dayByDefectCntAccumulCnt.push(dayByDefectCnt[i].accumulCnt);
 		}
 		var ctx1 = document.getElementById('dayByDefectCnt');
 		var dayByDefectCntChart = new Chart(ctx1, {
@@ -58,6 +60,12 @@ window.onload = function() {
 					label : '조치건수',
 					data : dayByDefectCntActionDtCnt,
 					backgroundColor : '#00B3E6',
+				}, {
+					label : '누적건수',
+					data : dayByDefectCntAccumulCnt,
+					type : 'line',
+					fill : false,
+					borderColor : '#97BBCD'
 				}]
 			},
 			options : {
@@ -70,10 +78,34 @@ window.onload = function() {
 					xAxes: [{
 			            barPercentage: 0.9
 			        }]
-				}	
+				},
+			animation: {
+			      duration: 0,
+			      onComplete: function() {
+			        var chartInstance = this.chart,
+			        ctx = chartInstance.ctx;
+			        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
+			        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+			        ctx.textAlign = 'center';
+			        ctx.textBaseline = 'bottom';
+
+			        this.data.datasets.forEach(function(dataset, i) {
+			          var type = dataset.type;
+			          if(type != 'line') {
+				          var meta = chartInstance.controller.getDatasetMeta(i);
+				          meta.data.forEach(function(bar, index) {
+				            var data = dataset.data[index];
+				            if(data != 0){
+					            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+				            }
+				          });
+			          }
+			        });
+			      }
+			    },
 			}
 		});
-		
+
 		/** 사용자별 결함건수*/
 		var userByDefectCnt = JSON.parse('${userByDefectCnt}');
 		var userByDefectCntUserNm = new Array();
