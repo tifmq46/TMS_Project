@@ -19,15 +19,11 @@ import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 
 @Service("testService")
 public class TestServiceImpl extends EgovAbstractServiceImpl implements TestService{
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(TestServiceImpl.class);
-	
 	
 	/** TestDAO */
 	// TODO ibatis 사용
 	@Resource(name = "testDAO")
 	private TestDAO testDAO;
-	
 	
 	/** ID Generation */
 	@Resource(name = "egovIdGnrService")
@@ -36,31 +32,18 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 	
 	@Override
 	public void insertTestCase(TestCaseVO testCaseVO) throws Exception {
-		LOGGER.debug(testCaseVO.toString());
-
-		/** ID Generation Service */
-		//String id = egovIdGnrService.getNextStringId();
-		LOGGER.debug(testCaseVO.toString());
 		testDAO.insertTestCase(testCaseVO);
 	}
 	
-	
 	@Override
 	public void insertTestScenario(TestScenarioVO testScenarioVO) throws Exception {
-		LOGGER.debug(testScenarioVO.toString());
-
-		/** ID Generation Service */
-		//String id = egovIdGnrService.getNextStringId();
-		LOGGER.debug(testScenarioVO.toString());
 		testDAO.insertTestScenario(testScenarioVO);
 	}
-	
 	
 	@Override
 	public void updateTestCase(TestCaseVO testCaseVO) throws Exception {
 		testDAO.updateTestCase(testCaseVO);
 	}
-	
 	
 	@Override
 	public void updateTestScenario(TestScenarioVO testScenarioVO) throws Exception {
@@ -91,7 +74,6 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 		}
 	}
 	
-	
 	@Override
 	public int selectScenarioCntReferringToCase(String checkedMenuNoForDel) throws Exception {
 
@@ -112,8 +94,6 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 		return totalCount;
 	}
 	
-	
-	
 	@Override
 	public void deleteTestScenario(String testscenarioId) throws Exception {
 		testDAO.deleteTestScenario(testscenarioId);
@@ -131,34 +111,21 @@ public class TestServiceImpl extends EgovAbstractServiceImpl implements TestServ
 			testDAO.deleteTestScenario(delMenuNo[i]);
 		}
 	}
-	
-	/**
-	 * 테스트 케이스 상세 정보 조회
-	 */
+
 	@Override
 	public HashMap<String,Object> selectTestCase(String testcaseId) throws Exception {
 		return testDAO.selectTestCase(testcaseId);
 	}
 	
-	/**
-	 * 테스트 케이스 진행 상태 상세 정보 조회(통계 대시보드)
-	 */
 	@Override
 	public HashMap<String,Object> selectTestCaseProgressStatus(String testcaseGb) throws Exception {
 		return testDAO.selectTestCaseProgressStatus(testcaseGb);
 	}
 	
-	/**
-	 * 테스트 시나리오 상세 정보 조회
-	 */
 	@Override
 	public TestScenarioVO selectTestScenario(String testscenarioId) throws Exception {
 		return testDAO.selectTestScenario(testscenarioId);
 	}
-	
-	/**
-	 * 목록 조회
-	 */
 	
 	@Override
 	public int selectTestCaseListTotCnt(TestDefaultVO searchVO) throws Exception {

@@ -182,14 +182,14 @@ function searchFileNm() {
               
              		 <colgroup>
              		 	<col width="5%"/>
-        				<col width="13%"/> 
-        				<col width="35%"/>
+        				<col width="9%"/> 
+        				<col width="467%"/>
+        				<col width="5%"/>
+        				<col width="9%"/>
+        				<col width="7%"/>
         				<col width="6%"/>
-        				<col width="10%"/>
-        				<col width="8%"/>
         				<col width="6%"/>
-        				<col width="6%"/>
-        				<col width="8%"/>
+        				<col width="7%"/>
         			</colgroup>
         			<tr>
         			    <th align="center"><spring:message code="tms.test.no" /></th>
