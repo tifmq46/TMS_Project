@@ -271,7 +271,15 @@ $(document).ready(function(){
                     </div>
                 </div>
               
-                <div id="page_info"><div id="page_info_align"></div></div>      
+                <br/> <br/>
+				<div id="search_field" style="font-family:'Malgun Gothic';">
+					<div id="search_field_loc">
+						<h2>
+							<strong>테스트 통계 (대시보드)</strong>
+						</h2>
+					</div>
+				</div>
+				<br/><br/><br/><br/> 
                              
                         
 

@@ -800,32 +800,20 @@ public class TestController {
 	public String selectTestStatsTable(HttpServletRequest request, @ModelAttribute("searchVO") TestDefaultVO searchVO,
 			ModelMap model) throws Exception {
 
-		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
-
-		/** pageing setting */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
-
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
 		if (isAuthenticated) {
-		// '테스트케이스 구분' 공통코드 가져오기
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("TCGB");
-		List<CmmnDetailCode> codeResult = egovCmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("tcGbCode", codeResult);
 
-		// 테스트 현황 목록 가져오기
-		List<?> testStatsTable = testService.selectTestStatsTable(searchVO);
-		model.addAttribute("testStatsTable", testStatsTable);
+		TestDefaultVO vo = new TestDefaultVO();
+		
+		vo.setSearchByTestcaseGb("TC1");
+		List<?> testStatsByUtc = testService.selectTestStatsTable(vo);
+		model.addAttribute("testStatsByUtc", testStatsByUtc);
+		
+		vo.setSearchByTestcaseGb("TC2");
+		List<?> testStatsByTtc = testService.selectTestStatsTable(vo);
+		model.addAttribute("testStatsByTtc", testStatsByTtc);
+		
 		}
 		return "tms/test/TestStatsTable";
 	}

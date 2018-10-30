@@ -185,8 +185,8 @@ function currentToExel(pageNo) {
 									</select>	
       			        </td>
       			        <td colspan="2" style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
-					  				<input type="radio" name="asOf" value="pgId" <c:if test="${searchVO.asOf == 'pgId'}">checked="checked"</c:if>/>&nbsp;<label>화면Id</label> &nbsp;
-					  				<input type="radio" name="asOf" value="testcaseId" <c:if test="${searchVO.asOf == 'testcaseId'}">checked="checked"</c:if>/>&nbsp;<label>테스트케이스ID</label>
+					  				<input type="radio" name="asOf" value="pgId" <c:if test="${searchVO.asOf == 'pgId'}">checked="checked"</c:if>/>&nbsp;<label><spring:message code="tms.test.pgId" /></label> &nbsp;
+					  				<input type="radio" name="asOf" value="testcaseId" <c:if test="${searchVO.asOf == 'testcaseId'}">checked="checked"</c:if>/>&nbsp;<label><spring:message code="tms.test.testcaseId" /></label>
       			        </td>
       			        <td style="padding-top:15px;">
       			        	<div class="buttons" style="float:right;">
