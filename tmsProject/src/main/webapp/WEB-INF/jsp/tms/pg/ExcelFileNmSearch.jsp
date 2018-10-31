@@ -32,27 +32,95 @@
 <style type="text/css">
 	h1 {font-size:12px;}
 	caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
+	
+	.wrap-loading{ /*화면 전체를 어둡게 합니다.*/
+    	position: fixed;
+    	left:0;
+    	right:0;
+    	top:0;
+    	bottom:0;
+    	background: rgba(0,0,0,0.2); /*not in ie */
+    	filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#20000000', endColorstr='#20000000');    /* ie */
+	}
+    .wrap-loading div{ /*로딩 이미지*/
+        position: fixed;
+        top:50%;
+        left:50%;
+        margin-left: -80px;
+        margin-top: -80px;
+    }
+    .display-none{ /*감추기*/
+        display:none;
+    }
+	
 </style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script language="javascript1.2"  type="text/javaScript"> 
-function file_upload() {   
-	   
-	   var file = progrmManageForm.file.value;
-	   var fileExt = file.substring(file.lastIndexOf('.')+1); //파일의 확장자를 구합니다.
-	   var bSubmitCheck = true;
-	     
-	   if( !file ){ 
-	       alert( "파일을 선택하여 주세요!");
-	       return;
-	   }
-	   
-	   if(!(fileExt.toUpperCase() == "XLSX")) {
-	      alert("xlsx 파일만 업로드 가능합니다!");
-	       return;
-	   }
-	     
-	   document.progrmManageForm.action = "<c:url value='/tms/pg/requestupload.do'/>";
-	   document.progrmManageForm.submit();   
-}
+
+$(function(){ 	
+	
+	$('#listButton').click(function(){ 
+		
+		var file = progrmManageForm.file.value;
+		var fileExt = file.substring(file.lastIndexOf('.')+1); //파일의 확장자를 구합니다.
+		
+		if( !file ){ 
+			swal( "파일을 선택하여 주세요!");
+		    return;
+		}
+		   
+		if(!(fileExt.toUpperCase() == "XLSX")) {
+		    swal("xlsx 파일만 업로드 가능합니다!");
+		    return;
+		}
+		
+		var form = $('form')[0];
+		var formData = new FormData(form);
+		
+			      $.ajax({
+			         
+			         type:"POST",
+			         url: "<c:url value='/tms/pg/requestupload.do'/>",
+			         processData: false,
+			         contentType: false,
+			         data : formData,
+			         success : function(str){
+			        	 //alert(str.length);			        	 
+			        	 $("#tb1").empty();
+			        	 
+			        	 if(str.length == 0) {
+			        		 $("#tb1").append("<tr><td align='center' class='listtd'><font style='color:#0f438a; align:center;' size='3px'><strong>&#60;등록성공&#62;</strong></font></td></tr>")
+			        	 } else {
+			        		 $("#tb1").append("<tr><td align='center' class='listtd'><font style='color:#CC3C39; align:center;' size='3px'><strong>&#60;등록실패&#62;</strong></font></td></tr>")
+			        		 
+			        		 $.each(str, function(i){
+			        			 	
+			        			 if(str[0].problem === "병합") {
+					        		 alert("1");
+					        	 }
+			        			 
+					        		$("#tb1").append("<tr><td align='center' class='listtd'><strong>"+str[i].problem+"</strong></td></tr>")
+							        $("#tb1").append("<tr><td align='center' class='listtd'><font style='color:#CC3C39;'><strong>- 원인 : "+str[i].reason+"</strong></font></td></tr>")
+					         });
+			        	 }
+			        	 
+			         }, 
+			         beforeSend:function(){
+			             $('.wrap-loading').removeClass('display-none');
+
+			         }, 
+			         complete:function(){
+			             $('.wrap-loading').addClass('display-none');
+
+			         },
+			         error : function(request,status,error){
+			            swal("등록할 수 없습니다.");
+			         }
+			      });
+			   })
+			})
+
 
 function window_close() {
 	   
@@ -73,6 +141,12 @@ function window_close() {
 
 </head>
 <body>
+	<div class="wrap-loading display-none">
+
+    	<div><img src="<c:url value='/images/loading1.gif' />" /></div>
+
+	</div>  
+	
 <form id="progrmManageForm" name="progrmManageForm" action ="<c:url value='/sym/prm/EgovProgramListSearch.do'/>" method="post" enctype="multipart/form-data">
 <input type="submit" id="invisible" class="invisible"/>
 <input type="submit" id="test" class="invisible"/>
@@ -83,51 +157,21 @@ function window_close() {
             <div class="sf_start">
                 <ul id="search_first_ul">
                     <li>
-                        <input type="file" name="file" />
+                        <input type="file" id="file" name="file" />
                         
                         <div class="buttons" style="float:right;">
-                        	<a href="#LINK" onclick="file_upload(); return false;">등록 </a>
+                        	<a id="listButton" name="listButton" href="#LINK" >등록 </a>
                         	<input type="hidden" id="change" name="change" value="<c:out value='${result}'/>" onclick="test(); return false;">
                         </div>
                     </li>       
                 </ul>
                 
-                
-                <c:if test="${result == 0}">
-                
-                	<div class="default_tablestyle">  
-                		<table width="100%" border="0" cellpadding="0" cellspacing="0" >
-                			<tr>
-            					<td align="center" class="listtd"><font style="color:#CC3C39; align:center;" size="3px"><strong>&#60;등록 실패&#62;</strong></font></td>
-            				</tr>
-                		</table>     
-                	</div>  
-                
-            		<div class="default_tablestyle">
-            			<table width="100%" border="0" cellpadding="0" cellspacing="0" >
-        					<c:forEach var="error_hash" items="${error_hashs}" varStatus="status">
-            					<tr>
-            						<td align="center" class="listtd"><strong><c:out value="${error_hash.problem}"/>&nbsp;</strong></td>
-            					</tr>
-            					<tr>
-            						<td align="center" class="listtd"><font style="color:#CC3C39;"><c:out value="=>원인 : ${error_hash.reason}"/></font></td>
-            					</tr>
-        					</c:forEach>           
+                <div class="default_tablestyle">
+            			<table id="tb1" width="100%" border="0" cellpadding="0" cellspacing="0" >
+        					          
             			</table>  
-               		</div>     
-               	</c:if>
-               	
-               	<c:if test="${result == 1}">
-               		<div>  
-                		<table width="100%" border="0" cellpadding="0" cellspacing="0" >
-                			<tr>
-            					<td align="center" class="listtd"><font style="color:#0f438a; align:center;" size="3px"><strong>&#60;등록 성공&#62;</strong></font></td>
-            				</tr>
-                		</table>  
-                                      
-                	</div> 
-               	   
-               	</c:if> 
+               		</div>   
+                
                	               
             </div>          
             </fieldset>
@@ -145,6 +189,7 @@ function window_close() {
     <!-- //검색 필드 박스 끝 -->
 
 </form>
+ 
 
 </body>
 </html>

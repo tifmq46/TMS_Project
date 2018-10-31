@@ -15,6 +15,8 @@ import javax.annotation.Resource;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hslf.model.Sheet;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -23,6 +25,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -660,7 +663,8 @@ public class ProgramController {
 	 * 업로드된 엑셀파일을 등록한다.
 	 * 	 */	
     @RequestMapping(value = "/tms/pg/requestupload.do")
-    public String requestupload1(MultipartHttpServletRequest mtfRequest, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+    @ResponseBody
+    public ArrayList<HashMap<String, String>> requestupload1(MultipartHttpServletRequest mtfRequest, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
     	    	
     	String src = mtfRequest.getParameter("src");
         System.out.println("value : " + src);
@@ -691,15 +695,29 @@ public class ProgramController {
             e.printStackTrace();
         }
         
+        
         //엑셀파일 등록
 		List<ProgramVO> xlsxList = xlsxToCustomerVoList(safeFile);
 		//CustomerExcelReader excelReader = new CustomerExcelReader();
+		
+		ArrayList <HashMap<String, String>> error_hash = new ArrayList <HashMap<String, String>>();
+		
+		if(xlsxList == null) {
+			System.out.println("병합결과!");
+			HashMap<String, String> hash = new HashMap<String, String>();
+			hash.put("problem", "전체 행 등록 실패");
+			hash.put("reason", "엑셀파일 내부의 병합컬럼 존재");
+			error_hash.add(hash);
+			return error_hash;
+		}
+		
 		ProgramVO vo;
 		
 		int j = 0;
 		int result_cnt = 1;
 		
-		ArrayList <HashMap<String, String>> error_hash = new ArrayList <HashMap<String, String>>();
+		
+		
 		
 		for (int i = 0; i < xlsxList.size(); i++) {
 			
@@ -709,8 +727,10 @@ public class ProgramController {
 			
 			try {
 				
+				
 				ProgramService.insertPg(vo);
 				ProgramService.deletePg(vo);
+				
 				model.addAttribute("result", "true");
 				model.addAttribute("result2", "true");
 			}catch(Exception e) {
@@ -767,7 +787,30 @@ public class ProgramController {
 				result_cnt = 0;
 			}
 			
-		}  
+		}
+		
+		if(result_cnt == 1)
+		{
+			if(xlsxList.size() == 0) {
+				System.out.println("공백!");
+	        	
+	        	HashMap<String, String> hash = new HashMap<String, String>();
+				hash.put("problem", "등록 오류");
+				hash.put("reason", "엑셀파일 내부의 등록할 행 없음");
+				error_hash.add(hash);
+				return error_hash;
+			}
+			
+			for (int i = 0; i < xlsxList.size(); i++) {
+				vo = xlsxList.get(i);
+				ProgramService.insertPg(vo);
+			}
+		}
+		
+		
+		//System.out.println(error_hash.toString());
+		return error_hash;
+		/*
 		model.addAttribute("error_hashs", error_hash);
 		model.addAttribute("result", result_cnt);
 		
@@ -780,6 +823,7 @@ public class ProgramController {
 		}
 		
 		return "/tms/pg/ExcelFileNmSearch";
+		*/
     }
     
 	@RequestMapping(value = "/tms/pg/ExcelFileListSearch.do")
@@ -789,7 +833,7 @@ public class ProgramController {
 
 	}
     
-    
+	
 	/**
 	 * XLSX 파일을 분석하여 List<ProgramVO> 객체로 반환
 	 * @param filePath
@@ -818,6 +862,13 @@ public class ProgramController {
 			for(int sheetIndex = 0 ; sheetIndex < workbook.getNumberOfSheets(); sheetIndex++) {
 				// 현재 Sheet 반환
 				curSheet = workbook.getSheetAt(sheetIndex);
+				
+				// 병합 검출 테스트
+				if(curSheet.getNumMergedRegions() > 0) {
+					return null;
+				}
+					
+				
 				// row 탐색 for문
 				for(int rowIndex=0; rowIndex < curSheet.getPhysicalNumberOfRows(); rowIndex++) {
 					// row 0은 헤더정보이기 때문에 무시
