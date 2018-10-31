@@ -112,23 +112,6 @@ ul.tabs li.last {
 	border: 1px solid #fff;
 }
 
-.lineStyle{
-	border-bottom: solid 1px #00000054;
-	border-top: solid 1px #00000054;
-	background: #E0F2F7;
-	font-weight:bold;
-}
-
-.lineStyle2{
-	border-bottom: solid 1px #00000054;
-	border-top: solid 1px #00000054;
-	background: #CEE3F6;
-	font-weight:bolder;
-}
-
-.borderLine{
-	border-right: 1px solid #81B1D5;
-}
 
 th,td{
 	border-left : 1px solid #81B1D5;
@@ -185,10 +168,10 @@ th,td{
 					<li class="tab-link" data-tab="tab-2">통합</li>
 					<li class="tab-link last" data-tab="tab-3" style="float:right">
 						<div class="buttons" id="StatsByUtcToExcel" style="display:inline">
-							<a href="#" onclick="javascript:statsToExel('TC1'); return false;">엑셀 다운로드</a>
+							<a href="#" onclick="javascript:statsToExel('TC1'); return false;"><spring:message code="tms.test.exelDownload" /></a>
 						</div>
 						<div class="buttons" id="StatsByTtcToExcel" style="display:none">
-							<a href="#" onclick="javascript:statsToExel('TC2'); return false;">엑셀 다운로드</a>
+							<a href="#" onclick="javascript:statsToExel('TC2'); return false;"><spring:message code="tms.test.exelDownload" /></a>
 						</div>
 					</li>
 				</ul>             
@@ -212,23 +195,23 @@ th,td{
 			        				<col width="8%"/>
 			        		</colgroup>
 		        			<tr>
-		        				<th align="center" rowspan="2">시스템구분</th>
-		        				<th align="center" rowspan="2">업무구분</th>
-		        				<th align="center" rowspan="2">프로그램 본수</th>
-		        				<th align="center" rowspan="2">테스트케이스 개수</th>
-					        	<th align="center" colspan="3">테스트 진행</th>
-					        	<th align="center" rowspan="2">진행률(%)</th>
-					        	<th align="center" colspan="3">테스트 결과</th>
-					        	<th align="center" rowspan="2" class="borderLine" >완료율(%)</th>
+		        				<th align="center" rowspan="2"><spring:message code="tms.test.sysGb" /></th>
+		        				<th align="center" rowspan="2"><spring:message code="tms.test.taskGb" /></th>
+		        				<th align="center" rowspan="2"><spring:message code="tms.test.pgCnt" /></th>
+		        				<th align="center" rowspan="2"><spring:message code="tms.test.testcaseCnt" /></th>
+					        	<th align="center" colspan="3"><spring:message code="tms.test.testProgress" /></th>
+					        	<th align="center" rowspan="2"><spring:message code="tms.test.progressPct" />(%)</th>
+					        	<th align="center" colspan="3"><spring:message code="tms.test.testResultYn" /></th>
+					        	<th align="center" rowspan="2" class="borderLine" ><spring:message code="tms.test.completeYPct" />(%)</th>
 		        			</tr>
 		        			
 		        			<tr>
-					        	<th align="center">미진행</th>
-					        	<th align="center">1차</th>
-					        	<th align="center">2차</th>
-					        	<th align="center">완료</th>
-					        	<th align="center">미완료</th>
-					        	<th align="center">합계</th>
+					        	<th align="center"><spring:message code="tms.test.notStartTest" /></th>
+					        	<th align="center"><spring:message code="tms.test.firstTest" /></th>
+					        	<th align="center"><spring:message code="tms.test.secondTest" /></th>
+					        	<th align="center"><spring:message code="tms.test.resultY" /></th>
+					        	<th align="center"><spring:message code="tms.test.resultN" /></th>
+					        	<th align="center"><spring:message code="tms.test.totCnt" /></th>
 		        			</tr>
 		        			
 		        			<c:forEach var="result" items="${testStatsByUtc}" varStatus="status">
@@ -237,18 +220,18 @@ th,td{
 		           					<c:choose>
 		           					
 		           						<c:when test="${result.sysGb eq '합계'}">
-		            						<td align="center" class="lineStyle2"><c:out value="${result.sysGb}"/></td>            					
-		            						<td align="center" class="lineStyle2"><c:out value="${result.taskGb}"/></td>
-											<td align="center" class="lineStyle2"><c:out value="${result.pgCnt}"/></td> 
-				            				<td align="center" class="lineStyle2"><c:out value="${result.tcWriteYCnt}"/></td> 
-				            				<td align="center" class="lineStyle2"><c:out value="${result.notTestCnt}"/></td>
-				            				<td align="center" class="lineStyle2"><c:out value="${result.firstTestCnt}"/></td>
-				            				<td align="center" class="lineStyle2"><c:out value="${result.secondTestCnt}"/></td>
-				            				<td align="center" class="lineStyle2"><c:out value="${result.tcProgressPct}"/></td>
-				            				<td align="center" class="lineStyle2"><c:out value="${result.tcResultYCnt}"/></td>
-				            				<td align="center" class="lineStyle2"><c:out value="${result.tcResultNCnt}"/></td>
-				            				<td align="center" class="lineStyle2"><c:out value="${result.tcWriteYCnt}"/></td>
-				            				<td align="center" class="borderLine lineStyle2"><c:out value="${result.tcResultPct}"/></td>
+		            						<td align="center" class="lineStyle2 line"><c:out value="${result.sysGb}"/></td>            					
+		            						<td align="center" class="lineStyle2 line"><c:out value="${result.taskGb}"/></td>
+											<td align="center" class="lineStyle2 line"><c:out value="${result.pgCnt}"/></td> 
+				            				<td align="center" class="lineStyle2 line"><c:out value="${result.tcWriteYCnt}"/></td> 
+				            				<td align="center" class="lineStyle2 line"><c:out value="${result.notTestCnt}"/></td>
+				            				<td align="center" class="lineStyle2 line"><c:out value="${result.firstTestCnt}"/></td>
+				            				<td align="center" class="lineStyle2 line"><c:out value="${result.secondTestCnt}"/></td>
+				            				<td align="center" class="lineStyle2 line"><c:out value="${result.tcProgressPct}"/></td>
+				            				<td align="center" class="lineStyle2 line"><c:out value="${result.tcResultYCnt}"/></td>
+				            				<td align="center" class="lineStyle2 line"><c:out value="${result.tcResultNCnt}"/></td>
+				            				<td align="center" class="lineStyle2 line"><c:out value="${result.tcWriteYCnt}"/></td>
+				            				<td align="center" class="borderLine lineStyle2 line"><c:out value="${result.tcResultPct}"/></td>
 		           						</c:when>
 		           						
 		         						<c:otherwise>
@@ -313,22 +296,22 @@ th,td{
 			        				<col width="8%"/>
 			        		</colgroup>
 		        			<tr>
-		        				<th align="center" rowspan="2">시스템구분</th>
-		        				<th align="center" rowspan="2">업무구분</th>
-		        				<th align="center" rowspan="2">테스트케이스 개수</th>
-					        	<th align="center" colspan="3">테스트 진행</th>
-					        	<th align="center" rowspan="2">진행률(%)</th>
-					        	<th align="center" colspan="3">테스트 결과</th>
-					        	<th align="center" rowspan="2" class="borderLine">완료율(%)</th>
+					        	<th align="center" rowspan="2"><spring:message code="tms.test.sysGb" /></th>
+		        				<th align="center" rowspan="2"><spring:message code="tms.test.taskGb" /></th>
+		        				<th align="center" rowspan="2"><spring:message code="tms.test.testcaseCnt" /></th>
+					        	<th align="center" colspan="3"><spring:message code="tms.test.testProgress" /></th>
+					        	<th align="center" rowspan="2"><spring:message code="tms.test.progressPct" />(%)</th>
+					        	<th align="center" colspan="3"><spring:message code="tms.test.testResultYn" /></th>
+					        	<th align="center" rowspan="2" class="borderLine" ><spring:message code="tms.test.completeYPct" />(%)</th>
 		        			</tr>
 		        			
 		        			<tr>
-					        	<th align="center">미진행</th>
-					        	<th align="center">1차</th>
-					        	<th align="center">2차</th>
-					        	<th align="center">완료</th>
-					        	<th align="center">미완료</th>
-					        	<th align="center">합계</th>
+					        	<th align="center"><spring:message code="tms.test.notStartTest" /></th>
+					        	<th align="center"><spring:message code="tms.test.firstTest" /></th>
+					        	<th align="center"><spring:message code="tms.test.secondTest" /></th>
+					        	<th align="center"><spring:message code="tms.test.resultY" /></th>
+					        	<th align="center"><spring:message code="tms.test.resultN" /></th>
+					        	<th align="center"><spring:message code="tms.test.totCnt" /></th>
 		        			</tr>
 		        			
 		        			<c:forEach var="result" items="${testStatsByTtc}" varStatus="status">
