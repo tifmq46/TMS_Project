@@ -96,11 +96,6 @@ public interface DevPlanService {
 	 * @exception Exception
 	 */
 	public void deleteDevResult(DevPlanVO vo) throws Exception;
-	
-	/**
-	 * 개발통계 기간 조회
-	 */
-	public List<?> selectDevPeriod() throws Exception;
 
 	public void insertWeek(int i);
 
@@ -131,8 +126,6 @@ public interface DevPlanService {
 	public List<String> selectPeriod();
 	
 	public List<?> selectDevPlanByMainStats();
-	
-	public List<?> selectSysAllByStats();
 	
 	public List<?> selectSysByStats();
 

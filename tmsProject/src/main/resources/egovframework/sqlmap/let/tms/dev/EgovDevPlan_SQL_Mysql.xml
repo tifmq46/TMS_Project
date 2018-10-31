@@ -323,33 +323,6 @@
         ]]>
     </update>
     
-	<select id="DevPlanDAO.selectDevPeriod" resultClass="egovMap">
-		<![CDATA[
-			select
- 				date_add('2018-09-17', interval n.no week) as weeks,
-				 date_format(
-				    if(
-				      weekday(
-				        date_add('2018-09-17', interval n.no week)
-				      ) = 4, 
-				      date_add('2018-09-17', interval n.no week), 
-				      date_add(
-				        date_add('2018-09-17', interval n.no week), 
-				        interval (
-				          4 + weekday(
-				            date_add('2018-09-17', interval n.no week)
-				          )
-				        ) DAY
-				      )
-				    ), 
-				    '%m/%d'
-				  ) AS formatFriday
-				  from NUMBERS as n
-				WHERE 
-				  n.no < 6;
-				]]>				
-	</select> 
-	
 	<insert id="DevPlanDAO.insertDates" parameterClass="java.lang.String" >
 		<![CDATA[
 			INSERT INTO PERIOD
@@ -626,14 +599,6 @@
 							(SELECT P.SYS_GB,COUNT(*) CNTB FROM DEV_PLAN_TB AS D, PG_TB AS P
 								WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND WEEKOFYEAR(D.DEV_END_DT) <= WEEKOFYEAR(NOW())GROUP BY SYS_GB)AS D
 						ON C.SYS_GB = D.SYS_GB
-	    ]]>
-	</select>
-	
-	<select id="DevPlanDAO.selectSysAllByStats" resultClass="java.util.HashMap">
-	    <![CDATA[
-	    	SELECT IFNULL(COUNT(CASE WHEN D.ACHIEVEMENT_RATE=100 THEN 1 END),0) AS achieveAllCnt, IFNULL(COUNT(P.SYS_GB),0) AS sysAll
-			FROM DEV_PLAN_TB AS D, PG_TB AS P
-			WHERE D.PG_ID = P.PG_ID AND P.USE_YN = 'Y'
 	    ]]>
 	</select>
 	

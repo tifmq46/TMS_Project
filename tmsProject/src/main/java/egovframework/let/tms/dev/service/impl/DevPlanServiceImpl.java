@@ -139,12 +139,7 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<?> selectDevResult(DevPlanDefaultVO defaultVO) throws Exception {
 		return devPlanDAO.selectDevResult(defaultVO);
 	}
-
-	@Override
-	public List<?> selectDevPeriod() throws Exception {
-		return devPlanDAO.selectDevPeriod();
-	}
-
+	
 	@Override
 	public void insertWeek(int i) {
 		devPlanDAO.insertWeek(i);
@@ -224,12 +219,6 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	public List<?> selectDevPlanByMainStats() {
 		// TODO Auto-generated method stub
 		return devPlanDAO.selectDevPlanByMainStats();
-	}
-
-	@Override
-	public List<?> selectSysAllByStats() {
-		// TODO Auto-generated method stub
-		return devPlanDAO.selectSysAllByStats();
 	}
 
 	@Override

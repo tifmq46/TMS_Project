@@ -380,14 +380,25 @@ function searchFileNm() {
               
                 <table width="85%" cellspacing="0" summary="기준일자 표시하는 테이블" style="padding-top:10px;">
                  <caption style="visibility:hidden">기준일자 표시하는 테이블</caption>
-                 
-                 <tr>
-                 	<td align="center" width="510"></td>
-                 	<td align="center" width="130" style="font-size:13px; color:red; font-weight:bolder">[계획기준일자 :</td>
-                  	<td align="left" width="100" style="font-size:13px; color: red; font-weight:bolder">${ps}</td>
-                  	<td align="left" width="30" style="font-size:13px; color: red; font-weight:bolder">~</td>
-                  	<td align="left" style="font-size:13px; color: red; font-weight:bolder">${pe}]</td>
-                 </tr>        
+                 <c:choose>
+                 	<c:when test="${tms eq null}">
+	                 <tr>
+	                 	<td align="center" width="250"></td>
+	                 	<td align="left" width="130" style="font-size:13px; color:red; font-weight:bolder">[계획기준일자가 없습니다.]</td>
+	                  	
+	                 </tr>                 	
+                 	</c:when>
+                 	<c:otherwise>
+	                 <tr>
+	                 	<td align="center" width="510"></td>
+	                 	<td align="center" width="130" style="font-size:13px; color:red; font-weight:bolder">[계획기준일자 :</td>
+	                  	<td align="left" width="100" style="font-size:13px; color: red; font-weight:bolder">${ps}</td>
+	                  	<td align="left" width="30" style="font-size:13px; color: red; font-weight:bolder">~</td>
+	                  	<td align="left" style="font-size:13px; color: red; font-weight:bolder">${pe}]</td>
+	                 </tr>                 	
+                 	</c:otherwise>
+                 </c:choose>
+                       
              	</table><br/>
                 	<input type="hidden" id="ps" name="ps" value="${ps}"/>
                 	<input type="hidden" id="pe" name="pe" value="${pe}"/>                

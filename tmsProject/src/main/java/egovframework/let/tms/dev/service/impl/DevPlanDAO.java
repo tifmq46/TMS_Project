@@ -121,10 +121,6 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		update("DevPlanDAO.deleteDevResult", vo);
 	}
 
-	public List<?> selectDevPeriod() throws Exception{
-		return list("DevPlanDAO.selectDevPeriod");
-	}
-
 	public void insertWeek(int i) {
 		insert("DevPlanDAO.insertWeek", i);
 	}
@@ -184,10 +180,6 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	
 	public List<?> selectDevPlanByMainStats() {
 		return list("DevPlanDAO.selectDevPlanByMainStats");
-	}
-	
-	public List<?> selectSysAllByStats() {
-		return list("DevPlanDAO.selectSysAllByStats");
 	}
 	
 	public List<?> selectSysByStats() {

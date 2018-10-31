@@ -228,7 +228,7 @@ function pagePrint(){
                   	<td align="right" width="50" style="font-size:13px; font-weight:bolder">달성률 : </td>
                  	<td style="font-size:15px; font-weight:bolder">
                  	<c:choose>
-                 		<c:when test="${r.rateAvg ne '0' }">
+                 		<c:when test="${r.rateAvg ne null }">
                  			<div class="progress" style="height: 1.5rem; width:400px;"><div class="progress-bar" style="width:${r.rateAvg}%" > <strong><c:out value=" ${r.rateAvg}"></c:out>%</strong></div></div>
                  		</c:when>
                  		<c:otherwise>

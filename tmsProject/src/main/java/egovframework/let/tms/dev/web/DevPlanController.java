@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -171,40 +172,46 @@ public class DevPlanController {
 		Date currentTime = new Date ();
 		String mTime = sdf.format (currentTime);
 		Date currentDate = sdf.parse(mTime);
-		System.out.println("sdate"+currentDate);
-		
-		String start = devPlanService.selectSTART();
-		Date sDate = sdf.parse(start);
-		String end =devPlanService.selectEND();
-		Date eDate = sdf.parse(end);
-		
-		int compare = currentDate.compareTo(sDate);
-		int compare2 = currentDate.compareTo(eDate);
-		
-		boolean d_result = true;
-		
-		if((compare >= 0) && (compare2 <=0) ){
-			d_result = false;
-		}else{
-			d_result = true;
-		}
-		model.addAttribute("start", sDate);
-		model.addAttribute("end", eDate);
-		model.addAttribute("d_test", d_result);
-		
-		//기준일자
-		TmsProjectManageVO tmsPrj = TmsProgrmManageService.selectProject();
-		Date ps = tmsPrj.getDevStartDt();
-		String formatPs = sdf.format(ps);
 
-		Date pe = tmsPrj.getDevEndDt();
-		String formatPe = sdf.format(pe);
+		String start = String.valueOf(devPlanService.selectSTART());
+		String end =String.valueOf(devPlanService.selectEND());
 		
-		model.addAttribute("ps", formatPs);
-		model.addAttribute("pe", formatPe);
+		TmsProjectManageVO tmsPrj = TmsProgrmManageService.selectProject();
 		
-		model.addAttribute("tms", tmsPrj);
+		model.addAttribute("tms", tmsPrj);	
 		
+		//********************
+		if(!Objects.equals(tmsPrj, null)){
+			System.out.println("널아님");
+			Date ps = tmsPrj.getDevStartDt();
+			String formatPs = sdf.format(ps);
+
+			Date pe = tmsPrj.getDevEndDt();
+			String formatPe = sdf.format(pe);
+			
+			model.addAttribute("ps", formatPs);
+			model.addAttribute("pe", formatPe);
+		//}
+		
+		//if( !(start.equals("null")) && !(end.equals("null"))){
+			Date sDate = sdf.parse(start);
+			Date eDate = sdf.parse(end);
+			
+			int compare = currentDate.compareTo(sDate);
+			int compare2 = currentDate.compareTo(eDate);
+			
+			boolean d_result = true;
+			
+			if((compare >= 0) && (compare2 <=0) ){
+				d_result = false;
+			}else{
+				d_result = true;
+			}
+			model.addAttribute("start", sDate);
+			model.addAttribute("end", eDate);
+			model.addAttribute("d_test", d_result);
+			
+		}
 		model.addAttribute("page", searchVO.getPageIndex());
 		
 		return "tms/dev/devPlanList";
@@ -422,73 +429,74 @@ public class DevPlanController {
 		model.addAttribute("tt", tt);
 		
 		/*프로젝트 개발계획 기간(주말 제외)*/
-		Date startDate = tt.getDevStartDt();
-		Date endDate = tt.getDevEndDt();
+		if(!Objects.equals(tt, null)){
 		
-		devPlanService.deleteDates();
-		
-		ArrayList<String> dates = betweenDate(startDate, endDate);
-		for(String date : dates){
-			devPlanService.insertDates(date);
-		}
-		
-		List<?> devPeriod = devPlanService.selectDevPeriod();
-		model.addAttribute("resultP", devPeriod);
-		
-		List<String> userList = devPlanService.selectUserList();
-		List<String> taskGbList = devPlanService.selectTaskGbList();
-		
-		List<String> periodList = devPlanService.selectPeriodWeek();
-		
-		List<String> periodMonthWeek = devPlanService.selectPeriodMonthWeek();
-		model.addAttribute("monthWeek",periodMonthWeek);
-		
-		int s = Integer.parseInt(String.valueOf(periodList.get(0)));
-		int e = Integer.parseInt(String.valueOf(periodList.get(periodList.size()-1)));
-		
-		
-		//개발자별 통계 
-		List<Map<String,Object>> userStats = stats("user", userList, periodList);
-		int sumUserPlan =0;
-		int sumUserDev =0;
-		int sumUserDiff = 0;
-		JSONArray userSumArray = new JSONArray();
-		JSONObject userSumObj = new JSONObject();
-		
-		for(int j=s; j<=e; j++){
-			userSumObj = new JSONObject();
-			sumUserPlan =0;
-			sumUserDev =0;
-			sumUserDiff = 0;
+			Date startDate = tt.getDevStartDt();
+			Date endDate = tt.getDevEndDt();
 			
-			for(int i =0; i<userStats.size(); i++){
-				sumUserPlan += Integer.parseInt(String.valueOf(userStats.get(i).get("a"+j)));
-				sumUserDev += Integer.parseInt(String.valueOf(userStats.get(i).get("b"+j)));
-				sumUserDiff += Integer.parseInt(String.valueOf(userStats.get(i).get("sub"+j)));
-				}
-			userSumObj.put("sumUserPlan"+j, sumUserPlan);
-			userSumObj.put("sumUserDev"+j, sumUserDev);
-			userSumObj.put("sumUserDiff"+j, sumUserDiff);
-			userSumArray.add(userSumObj);
+			devPlanService.deleteDates();
+			
+			ArrayList<String> dates = betweenDate(startDate, endDate);
+			for(String date : dates){
+				devPlanService.insertDates(date);
+			}
+		
+		
+			List<String> userList = devPlanService.selectUserList();
+			List<String> taskGbList = devPlanService.selectTaskGbList();
+			
+			List<String> periodList = devPlanService.selectPeriodWeek();
+			
+			List<String> periodMonthWeek = devPlanService.selectPeriodMonthWeek();
+			System.out.println("기간==========="+periodMonthWeek);
+			model.addAttribute("monthWeek",periodMonthWeek);
+			
+			int s = Integer.parseInt(String.valueOf(periodList.get(0)));
+			int e = Integer.parseInt(String.valueOf(periodList.get(periodList.size()-1)));
+			
+			
+			//개발자별 통계 
+			List<Map<String,Object>> userStats = stats("user", userList, periodList);
+			int sumUserPlan =0;
+			int sumUserDev =0;
+			int sumUserDiff = 0;
+			JSONArray userSumArray = new JSONArray();
+			JSONObject userSumObj = new JSONObject();
+			
+			for(int j=s; j<=e; j++){
+				userSumObj = new JSONObject();
+				sumUserPlan =0;
+				sumUserDev =0;
+				sumUserDiff = 0;
+				
+				for(int i =0; i<userStats.size(); i++){
+					sumUserPlan += Integer.parseInt(String.valueOf(userStats.get(i).get("a"+j)));
+					sumUserDev += Integer.parseInt(String.valueOf(userStats.get(i).get("b"+j)));
+					sumUserDiff += Integer.parseInt(String.valueOf(userStats.get(i).get("sub"+j)));
+					}
+				userSumObj.put("sumUserPlan"+j, sumUserPlan);
+				userSumObj.put("sumUserDev"+j, sumUserDev);
+				userSumObj.put("sumUserDiff"+j, sumUserDiff);
+				userSumArray.add(userSumObj);
+			}
+			
+			JsonUtil jsU = new JsonUtil();
+			List<Map<String,Object>> userSum = jsU.getListMapFromJsonArray(userSumArray);
+			
+			model.addAttribute("userSum",userSum);
+			model.addAttribute("userStats",userStats);
+			
+			model.addAttribute("begin", periodList.get(0));
+			model.addAttribute("end", periodList.get(periodList.size()-1));
+			
+			//업무별 통계 
+			List<Map<String,Object>> taskStats = stats("task", taskGbList, periodList);
+			model.addAttribute("taskStats",taskStats);
+			
+			//전체 통계
+			List<EgovMap> totalTable = devPlanService.selectStatsTable();
+			model.addAttribute("totalTable", totalTable);
 		}
-		
-		JsonUtil jsU = new JsonUtil();
-		List<Map<String,Object>> userSum = jsU.getListMapFromJsonArray(userSumArray);
-		
-		model.addAttribute("userSum",userSum);
-		model.addAttribute("userStats",userStats);
-		
-		model.addAttribute("begin", periodList.get(0));
-		model.addAttribute("end", periodList.get(periodList.size()-1));
-		
-		//업무별 통계 
-		List<Map<String,Object>> taskStats = stats("task", taskGbList, periodList);
-System.out.println("테스크통계::::"+taskStats);
-		model.addAttribute("taskStats",taskStats);
-		
-		List<EgovMap> totalTable = devPlanService.selectStatsTable();
-		model.addAttribute("totalTable", totalTable);
-		
 		return "/tms/dev/devStatsTable";
 	}
 	
@@ -561,9 +569,7 @@ System.out.println("테스크통계::::"+taskStats);
 			int sumTaskDev=0;
 			int sumDiff = 0;
 			
-			System.out.println("사이즈test"+taskStatsList.size());
 			int sysCnt = devPlanService.selectSysGbCnt();
-			
 
 			for(int i=0; i<list.size()+sysCnt+1; i++){
 				taskObj = new JSONObject();
@@ -589,7 +595,6 @@ System.out.println("테스크통계::::"+taskStats);
 				taskArray.add(taskObj);
 			}
 			
-			System.out.println("Array______"+taskArray);
 			JsonUtil jsU = new JsonUtil();
 			List<Map<String,Object>> taskStats = jsU.getListMapFromJsonArray(taskArray);
 			
@@ -737,16 +742,12 @@ System.out.println("테스크통계::::"+taskStats);
 			
 		}else if(statsGb.equals("user")){
 			List<Map<String,Object>> userStats = stats("user", userList, periodList);
-			
 			xlsxWiter(null, statsGb, response, userStats, null);
 			
 		}else if(statsGb.equals("task")){
 			List<Map<String,Object>> taskStats = stats("task", taskList, periodList);
-			System.out.println("업무별ㄹㄹㄹㄹㄹㄹ"+ taskStats);
 			xlsxWiter(null, statsGb, response, taskStats, null);
 		}
-		
-		
 		
 		return "/tms/dev/devStatsTable";
 	}
