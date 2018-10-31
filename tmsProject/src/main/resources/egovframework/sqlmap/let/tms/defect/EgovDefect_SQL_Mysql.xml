@@ -118,7 +118,7 @@
         
         <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000000">
          		     <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000001">
-           		   	AND (USER_DEV_ID = #sessionId# OR USER_TEST_ID = #sessionId#) ORDER BY ACTION_CODE 
+           		   	AND (USER_DEV_ID = #sessionId# OR USER_TEST_ID = #sessionId#)
            		   	 </isNotEqual>
 		</isNotEqual>
       
@@ -147,6 +147,11 @@
                 AND ENROLL_DT BETWEEN DATE(#searchByStartDt#) AND DATE(#searchByEndDt#)
             </isNotEmpty>
         </isNotEmpty>
+         <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000000">
+         		     <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000001">
+           		   		ORDER BY ACTION_CODE
+           		   	 </isNotEqual>
+		</isNotEqual>
            LIMIT 
             #recordCountPerPage# OFFSET #firstIndex#
          

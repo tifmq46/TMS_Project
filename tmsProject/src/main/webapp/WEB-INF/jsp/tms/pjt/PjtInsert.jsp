@@ -41,7 +41,18 @@ function checkForm() {
 	}
 		
 	else{
-		document.TmsProjectManageVO.submit();;
+		alert(document.getElementById("PJT_ID").value);
+		alert(document.getElementById("PJT_NM").value);
+		alert(document.getElementById("PJT_TYPE").value);
+		alert(document.getElementById("PJT_ST").value);
+		alert(document.getElementById("PJT_PM").value);
+		alert(document.getElementById("PJT_PRICE").value);
+		alert(document.getElementById("DEV_START_DT").value);
+		alert(document.getElementById("DEV_END_DT").value);
+		alert(document.getElementById("PJT_START_DT").value);
+		alert(document.getElementById("PJT_END_DT").value);
+		alert(document.getElementById("PJT_CONTENT").value);
+		document.TmsProjectManageVO.submit();
 	}
 }
 			
@@ -81,22 +92,21 @@ function checkForm() {
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="menuNo">프로젝트ID</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="50%" nowrap="nowrap">
 						      &nbsp;
-						      <input id="PJT_ID" name="PJT_ID" size="30" maxlength="30" title="메뉴No"/>
-						      <span style="padding-left:10px;"id="result"></span>
+						      <input id="PJT_ID" name="PJT_ID" size="30" maxlength="30" title="프로젝트ID"/>
 						    </td>
 						  </tr>
 						  <tr>
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="menuOrdr">프로젝트명</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						      &nbsp;
-						      <input id="PJT_NM" name="PJT_NM" size="30"  maxlength="30" title="메뉴순서" />
+						      <input id="PJT_NM" name="PJT_NM" size="30"  maxlength="30" title="프로젝트명" />
 						    </td>
 						  </tr>  
 						  <tr> 
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="menuNm">사업유형</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						      &nbsp;
-						      <input name="PJT_TYPE" id="PJT_TYPE" size="20"  maxlength="20" title="메뉴명" />
+						      <input name="PJT_TYPE" id="PJT_TYPE" size="20"  maxlength="20" title="사업유형" />
 						    </td>
 						  </tr>
 						  
@@ -116,7 +126,7 @@ function checkForm() {
 						     <th width="15%" height="23" class="required_text" scope="row"><label for="menuNm">PM</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						      &nbsp;
-						      <input id="PJT_PM" name="PJT_PM" size="20"  maxlength="20" title="메뉴명" />
+						      <input id="PJT_PM" name="PJT_PM" size="20"  maxlength="20" title="PM" />
 						    </td>
 						  </tr>
 						   <tr> 
@@ -151,14 +161,14 @@ function checkForm() {
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">금액</label><img src="/ebt_webapp/images/required.gif" width="15" height="15" alt="필수"></th>
 						    <td width="35%" nowrap="nowrap">
 						          &nbsp;
-						          <input id="PJT_PRICE" name="PJT_PRICE" size="20"  maxlength="20" title="관련이미지명" placeholder="숫자만 입력하십시오."/>
+						          <input id="PJT_PRICE" name="PJT_PRICE" size="20"  maxlength="20" title="금액" placeholder="숫자만 입력하십시오."/>
 						    </td>
 						  </tr>
 						  <tr> 
 						    <th width="15%" height="23" class="required_text" scope="row"><label for="relateImageNm">프로젝트 설명</label></th>
 						    <td width="35%" nowrap="nowrap">
 						          &nbsp;
-						          <textarea name="PJT_CONTENT" title="관련이미지명" cols="50" rows="7"/></textarea>
+						          <textarea id="PJT_CONTENT" name="PJT_CONTENT" title="프로젝트 설명" cols="50" rows="7"/></textarea>
 						    </td>
 						  </tr>
                         </table>

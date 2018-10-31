@@ -180,7 +180,28 @@ window.onload = function() {
     <div class="row mt30" style="font-family:'Malgun Gothic';">
     <!-- 프로젝트 생성 시작 -->
 	<c:if test="${tmsProjectManageVO.pjtId == null }">
-		<a href="<c:url value='/sym/prm/insertProjectView.do'/>">프로젝트 생성</a>
+	<div class="myBsnsList" class="col-md-6" style="height: 260px; margin-bottom:30px; font-family:'Malgun Gothic';">
+    		<div class="widget">
+    			<div class="widget-header">
+    				<div class="header-name" style="margin:10px;">
+	    					프로젝트 정보
+    				</div>
+    			</div>
+    			<div class="widget-content box">
+    				<div class="default_tablestyle">
+    				<table class="table table-search-head table-size-th4" style="height:215px; font-family:'Malgun Gothic';">
+					<tr>
+					<td>
+						<font size="3px" style="font-weight:bold;">
+							<a href="<c:url value='/sym/prm/insertProjectView.do'/>">프로젝트 생성</a>
+						</font>
+					</td>
+					</tr>
+					</table>
+					</div>
+    			</div>
+    		</div>
+    	</div>
 	</c:if>
 	
 	<!-- 프로젝트 생성 끝 -->
@@ -262,20 +283,8 @@ window.onload = function() {
 			                <th scope="col" nowrap="nowrap">재요청</th>
 			            </tr>
 			            </thead>
-			            <tbody>                 
-			            
-			            <%-- <c:forEach var="result" items="${list_progrmmanage}" varStatus="status">
-			            <!-- loop 시작 -->                                
-			              <tr>
-						    <td nowrap="nowrap"><c:out value="${result.SYS_GB}"/></td>
-						    <td nowrap="nowrap"><c:out value="${result.TASK_GB}"/></td>
-						    <td nowrap="nowrap">
-						        <span class="link"><a href="#LINK" style="color:blue;"onclick="choisProgramListSearch('<c:out value="${result.PG_ID}"/>','<c:out value="${result.USER_DEV_ID}"/>','<c:out value="${result.PG_NM}"/>','<c:out value="${result.SYS_GB}"/>','<c:out value="${result.TASK_GB}"/>'); return false;">
-						      <c:out value="${result.PG_ID}"/></a></span></td>
-						    <td nowrap="nowrap"><c:out value="${result.PG_NM}"/></td>
-						    <td nowrap="nowrap"><c:out value="${result.USER_DEV_ID}"/></td>
-			              </tr>
-			            </c:forEach> --%>
+			            <tbody>          
+			                   
 			             <c:forEach var="pjtMemberList" items="${pjtMemberList}" varStatus="status">
 			            <!-- loop 시작 -->                                
 			              <tr>
@@ -287,6 +296,13 @@ window.onload = function() {
 						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA4 }"/></td>
 			              </tr>
 			            </c:forEach> 
+			            <c:if test="${fn:length(pjtMemberList) == 0 }">
+			            <tr>
+							<td colspan="6">
+							자료가 없습니다.
+							</td>
+						</tr>			            
+			            </c:if>
 			            </tbody> 
     				</table>
     			</div>

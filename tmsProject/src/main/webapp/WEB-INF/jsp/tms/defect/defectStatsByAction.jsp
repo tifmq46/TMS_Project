@@ -47,9 +47,11 @@ function handleClick(event, array){
 			str += "<table>";
 			str += "<tr></tr><tr>";
 			if(result.length == 0) {
-				str += "<td align='center' valign='middle'>";
+				str += "<br/><br/><td>";
+				str += "<div class='default_tablestyle'>";
+				str += "<table class='table table-search-head table-size-th4' style='height:215px; font-family:'Malgun Gothic';'><tr><td>";
 				str += "자료가 없습니다.";
-				str += "</td>";
+				str += "</td></tr></table></div></td>";
 			} else {
 				$.each(result, function(index,item){
 					str += "<td><br/><br/>&nbsp;&nbsp;";
@@ -342,7 +344,7 @@ window.onload = function() {
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
-	    					시스템별 조치율
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;시스템별 조치율
     				</div>
     			</div>
     			<div class="widget-content" style="height:212px; overflow:auto;  overflow-y:hidden;">
@@ -388,7 +390,7 @@ window.onload = function() {
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
-	    					업무별 조치율
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;업무별 조치율
     				</div>
     			</div>
     			<div class="widget-content" style="overflow:auto; overflow-y:hidden;">
@@ -403,7 +405,15 @@ window.onload = function() {
 						</c:forEach>
 						<c:if test="${fn:length(taskByActionCnt) == 0 }">
 								<td>
-								자료가 없습니다.
+								<div class="default_tablestyle">
+									<table class="table table-search-head table-size-th4" style="height:215px; font-family:'Malgun Gothic';">
+									<tr>
+									<td>
+									자료가 없습니다.
+									</td>
+									</tr>
+									</table>
+								</div>
 								</td>
 						</c:if>
 					</tr>

@@ -85,7 +85,7 @@ public interface TmsProgrmManageService {
 	List<?> selectUserList() throws Exception;
 	List<?> TmsCommonCodeListSearch(ComDefaultVO searchVO);
 	int TmsCommonCodeListSearchTotCnt(ComDefaultVO searchVO);
-	Object insertProject(TmsProjectManageVO tmsProjectManageVO) throws Exception;
+	void insertProject(TmsProjectManageVO tmsProjectManageVO) throws Exception;
 	List<?> selectTestList();
 	List<HashMap<String, String>> selectProgrmList1(int a);
 }
