@@ -162,13 +162,11 @@ function fn_rate_change(pgId, event, obj, maxByte) {
 			var idVal3 = document.getElementById(pgId+3).id;
 			$("#"+idVal3).removeClass("disabled");
 			$("#"+idVal3).addClass("abled");
-			var rate = document.getElementById(pgId+4).value;
+			var rate = obj.value;//document.getElementById(pgId+4).value;
 			
-			 if(rate.length > 3){
-					if(rate > 100){
-					alert("100이상은 입력할 수 없습니다.");
+			 if(rate.length >= 3 && rate >= 100){
+					alert("100이상 입력할 수 없습니다.");
 					document.getElementById(pgId+4).value = null;
-					}
 			    }
 			
 			var strValue = obj.value;
@@ -195,7 +193,9 @@ function fn_rate_change(pgId, event, obj, maxByte) {
 	        if (totalByte > maxByte) {
 	            alert(maxByte + "자를 초과 입력 할 수 없습니다.");
 	            str2 = strValue.substr(0, len);
-	            obj.value = str2;
+
+	            obj.value = null;
+	            //obj.value = str2;
 	            fn_rate_change(obj, 4000);
 	            return false;
 	        }

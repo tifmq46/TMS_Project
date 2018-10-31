@@ -182,7 +182,6 @@ public class DevPlanController {
 		
 		//********************
 		if(!Objects.equals(tmsPrj, null)){
-			System.out.println("널아님");
 			Date ps = tmsPrj.getDevStartDt();
 			String formatPs = sdf.format(ps);
 
@@ -251,23 +250,6 @@ public class DevPlanController {
 			devPlanService.insertDevPlan(dvo);
 		}
 
-		return "redirect:/tms/dev/devPlans.do";
-	}
-	
-	@RequestMapping("/tms/dev/inputDevPlan.do")
-	public String inputDevPlan(@RequestParam String s1, @RequestParam String s2, @ModelAttribute("searchVO") DevPlanDefaultVO searchVO, @ModelAttribute("devPlan") DevPlanVO dvo, ModelMap model, BindingResult bindingResult,
-			SessionStatus status) throws Exception {
-
-		String[] strs1 = s1.split(",");
-		String[] strs2 = s2.split(",");
-		
-		System.out.println(strs1[0]);
-		System.out.println(strs2[0]);
-		
-		devPlanService.updateinput1(strs1[0]);
-		devPlanService.updateinput2(strs2[0]);
-		
-		
 		return "redirect:/tms/dev/devPlans.do";
 	}
 	

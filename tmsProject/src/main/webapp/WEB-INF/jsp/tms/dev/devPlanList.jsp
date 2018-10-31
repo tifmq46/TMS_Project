@@ -114,11 +114,11 @@ function fn_result_regist(t){
 			
 }
 
-function fn_result_reset(pgId){
+function fn_result_reset(pgId, th){
 	
 	var startDate = document.getElementById(pgId).value;
 	var endDate = document.getElementById(pgId+1).value;
-	var bnt = document.getElementById(pgId+3).id;
+	var bnt = th.id;
 	
 	var page = document.listForm.page.value;
 	var sys = document.listForm.Sys.value;
@@ -128,7 +128,15 @@ function fn_result_reset(pgId){
 	var end = document.listForm.searchByPlanEndDt.value;
 	var id = document.listForm.TmsProgrmFileNm_pg_id.value;
 	
-	if(startDate != "" && endDate != ""){
+	if(bnt == "reset1"){
+		document.getElementById(pgId).value = "";
+		document.getElementById(pgId+1).value = "";
+		
+		$("#dayDiffLoc"+pgId).empty();
+	}
+
+	if(bnt == "reset2"){
+	//if(startDate != "" && endDate != ""){
 		document.getElementById(pgId).value = "";
 		document.getElementById(pgId+1).value = "";
 		
@@ -150,23 +158,6 @@ function fn_searchList(pageNo){
     document.listForm.searchBySysGb.value = document.listForm.Sys.value;
     document.listForm.searchByTaskGb.value = document.listForm.task.value;
     document.listForm.action = "<c:url value='/tms/dev/devPlans.do'/>";
-    document.listForm.submit();
-}
-
-function fn_input_result(pageNo) {
-	
-	document.listForm.pageIndex.value = pageNo;
-	document.listForm.searchBySysGb.value = document.listForm.Sys.value;
-    document.listForm.searchByTaskGb.value = document.listForm.task.value;
-    
-	document.listForm.s1.value = ""+document.listForm.InputStartDt.value;
-	document.listForm.s2.value = ""+document.listForm.InputEndDt.value;
-	
-	var s1 = ""+document.listForm.InputStartDt.value;
-	var s2 = ""+document.listForm.InputEndDt.value;
-	
-	
-	document.listForm.action = "<c:url value='/tms/dev/inputDevPlan.do?s1="+document.listForm.s1.value+"&s2="+s2+"'/>";
     document.listForm.submit();
 }
 
@@ -486,13 +477,13 @@ function searchFileNm() {
             			  	<td align="center" class="listtd"><div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:5px;">
 			            		<a id="${result.PG_ID}2" class="abled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a></div></td>
 			            		<td align="center" class="listtd"><div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:3px;">
-			            		<a id="reset" href="#LINK" onclick="fn_result_reset('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">초기화</a></div></td>
+			            		<a id="reset1" href="#LINK" onclick="fn_result_reset('${result.PG_ID}', this);" style="selector-dummy:expression(this.hideFocus=false);">초기화</a></div></td>
 			            	</c:if>
 			            	<c:if test="${result.PLAN_START_DT ne null || result.PLAN_END_DT ne null}">
 			            	<td align="center" class="listtd"><div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:5px;">
 			            		<a id="${result.PG_ID}3" class="disabled" href="#LINK" onclick="fn_result_regist('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">저장</a></div></td>
 			            		<td align="center" class="listtd"><div class="buttons" style="padding-top:5px;padding-bottom:35px;padding-left:3px;">
-			            		<a id="reset" href="#LINK" onclick="fn_result_reset('${result.PG_ID}');" style="selector-dummy:expression(this.hideFocus=false);">초기화</a></div></td>
+			            		<a id="reset2" href="#LINK" onclick="fn_result_reset('${result.PG_ID}',this);" style="selector-dummy:expression(this.hideFocus=false);">초기화</a></div></td>
 			            	</c:if>
             			  </c:otherwise>
             			</c:choose>

@@ -117,18 +117,7 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 		devPlanDAO.updateDevResult(vo);
 		
 	}
-	@Override
-	public void updateinput1(String s) throws Exception {
-		devPlanDAO.updateinput1(s);
-		
-	}
 	
-	@Override
-	public void updateinput2(String s) throws Exception {
-		devPlanDAO.updateinput2(s);
-		
-	}
-
 	@Override
 	public void deleteDevResult(DevPlanVO vo) throws Exception {
 		devPlanDAO.deleteDevResult(vo);
@@ -203,11 +192,6 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	@Override
 	public List<String> selectUserList() {
 		return devPlanDAO.selectUserList();
-	}
-
-	@Override
-	public List<HashMap<String, String>> selectTempList() {
-		return devPlanDAO.selectTempList();
 	}
 
 	@Override

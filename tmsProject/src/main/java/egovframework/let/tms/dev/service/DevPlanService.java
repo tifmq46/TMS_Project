@@ -27,9 +27,6 @@ public interface DevPlanService {
 	 */
 	public void updateDevPlan(DevPlanVO vo) throws Exception;
 
-	public void updateinput1(String s) throws Exception;
-	
-	public void updateinput2(String s) throws Exception;
 	
 	/**
 	 * 개발계획을 삭제한다.
@@ -120,8 +117,6 @@ public interface DevPlanService {
 	public void insertDayDiff(DevPlanDefaultVO searchVO);
 
 	public List<String> selectUserList();
-
-	public List<HashMap<String, String>> selectTempList();
 
 	public List<String> selectPeriod();
 	

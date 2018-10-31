@@ -46,7 +46,6 @@
 			    AND TASK_GB = #searchByTaskGb# 
 			</isNotEmpty>
              
-             
 			<!-- 화면ID로 검색 -->
 			<isNotEmpty property="searchByPgId">
 			    AND PG_ID LIKE CONCAT ('%', #searchByPgId#, '%')
@@ -60,7 +59,7 @@
 			<!-- 계획시작일로 검색 -->
 			<isNotEmpty property="searchByPlanStartDt">
 			    <isNotEmpty property="searchByPlanEndDt">
-			        AND PLAN_START_DT BETWEEN DATE(#searchByPlanStartDt#) AND DATE(#searchByPlanEndDt#)
+			        AND PLAN_END_DT BETWEEN DATE(#searchByPlanStartDt#) AND DATE(#searchByPlanEndDt#)
 			    </isNotEmpty>
 			</isNotEmpty>
 			        
@@ -117,7 +116,7 @@
 			<!-- 계획시작일로 검색 -->
 			<isNotEmpty property="searchByPlanStartDt">
 			    <isNotEmpty property="searchByPlanEndDt">
-			        AND PLAN_START_DT BETWEEN DATE(#searchByPlanStartDt#) AND DATE(#searchByPlanEndDt#)
+			        AND PLAN_END_DT BETWEEN DATE(#searchByPlanStartDt#) AND DATE(#searchByPlanEndDt#)
 			    </isNotEmpty>
 			</isNotEmpty>
 
@@ -292,18 +291,7 @@
 			
 				]]>				
 	</select> 
-    
-<!-- 	
-	<insert id="DevPlanDAO.insertDevResult" parameterClass="DevPlanVO" >
-		<![CDATA[
-			INSERT INTO DEV_PLAN_TB
-				(PG_ID, PLAN_START_DT, PLAN_END_DT,DEV_START_DT, DEV_END_DT, ENROLL_DT)
-			VALUES
-			( #pgId#, #planStartDt#, #planEndDt#, #devStartDt#, #devEndDt#, '2018-09-09'
-			 )			
-		]]>
-	</insert>
-	 -->
+
 	<update id="DevPlanDAO.updateDevResult" parameterClass="DevPlanVO">
         <![CDATA[
             UPDATE DEV_PLAN_TB 
@@ -339,7 +327,7 @@
     </delete>
     
 	
-	<select id="devPlanDAO.selectDevCurrent" parameterClass="searchVO" resultClass="java.util.HashMap" remapResults="true">
+	<select id="DevPlanDAO.selectDevCurrent" parameterClass="searchVO" resultClass="java.util.HashMap" remapResults="true">
 			<![CDATA[
 				SELECT * FROM (
 					SELECT
@@ -526,47 +514,12 @@
 		]]>
    	</select>
    	
-	<select id="DevPlanDAO.selectTempList" resultClass="java.util.HashMap" remapResults="true">
-			<!-- <![CDATA[
-				SELECT P.PG_ID
-					,P.USER_DEV_ID
-					,(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = P.USER_DEV_ID) AS USER_DEV_NM
-					,D.PLAN_END_DT
-				FROM PG_TB AS P, DEV_PLAN_TB AS D
-				WHERE P.PG_ID = D.PG_ID AND P.USER_DEV_ID=#userList#
-         ]]> -->
-         
-         <![CDATA[
-			SELECT A.PG_ID, A.USER_DEV_ID
-					,(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = A.USER_DEV_ID) AS USER_DEV_NM
-					,B.PLAN_END_DT
-					,B.DEV_END_DT
-				FROM
-				(select * from PG_TB) AS A
-				LEFT JOIN
-				(SELECT * FROM DEV_PLAN_TB) AS B
-				ON A.PG_ID = B.PG_ID
-		]]>
-   	</select>
-	
-    
 	<select id="DevPlanDAO.selectPeriod" resultClass="java.lang.String">
 			<![CDATA[
 			SELECT dates
          		FROM PERIOD
 		]]>
    	</select>
-    
-   	<update id="DevPlanDAO.updateinput1" parameterClass="java.lang.String" >
-		<![CDATA[
-			update PJT_TB SET INPUT_START_DT=#INPUT_START_DT# WHERE PJT_ID = '1';
-		]]>
-	</update>
-	<update id="DevPlanDAO.updateinput2" parameterClass="java.lang.String" >
-		<![CDATA[
-			update PJT_TB SET INPUT_END_DT=#INPUT_END_DT# WHERE PJT_ID = '1';
-		]]>
-	</update>
 	
 	<select id="DevPlanDAO.selectSTART" resultClass="java.lang.String">
 			<![CDATA[
@@ -627,8 +580,7 @@
 			LEFT OUTER JOIN
 			(SELECT USER_DEV_ID, WEEKOFYEAR(PLAN_END_DT) AS WP, WEEKOFYEAR(DEV_END_DT) AS WD
 				FROM DEV_PLAN_TB D, PG_TB P
-				WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y'
-			GROUP BY USER_DEV_ID) AS B
+				WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y') AS B
 			ON A.EMPLYR_ID = B.USER_DEV_ID
 			GROUP BY USER_NM
 			ORDER BY USER_NM
@@ -678,8 +630,7 @@
 					
 					(SELECT SYS_GB, TASK_GB, WEEKOFYEAR(PLAN_END_DT) AS WP, WEEKOFYEAR(DEV_END_DT) AS WD
 						FROM DEV_PLAN_TB D, PG_TB P
-						WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y'
-					GROUP BY SYS_GB, TASK_GB) AS D
+						WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y') AS D
 					ON C.SYS_GB = D.SYS_GB AND C.TASK_GB = D.TASK_GB
 					GROUP BY C.SYS_GB, C.TASK_GB
 					ORDER BY C.SYS_GB, C.TASK_GB)AS W
