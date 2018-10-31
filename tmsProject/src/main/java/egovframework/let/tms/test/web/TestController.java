@@ -1227,19 +1227,6 @@ public class TestController {
 		cell.setCellValue("테스트 진행");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 		
-/*		
-		cell = row.createCell(4);
-		cell.setCellValue("미진행");
-		cell.setCellStyle(HeadStyle); // 제목스타일
-
-		cell = row.createCell(5);
-		cell.setCellValue("1차");
-		cell.setCellStyle(HeadStyle); // 제목스타일
-
-		cell = row.createCell(6);
-		cell.setCellValue("2차");
-		cell.setCellStyle(HeadStyle); // 제목스타일
-*/
 		cell = row.createCell(7);
 		cell.setCellValue("진행률(%)");
 		cell.setCellStyle(HeadStyle); // 제목스타일
@@ -1247,19 +1234,7 @@ public class TestController {
 		cell = row.createCell(8);
 		cell.setCellValue("테스트 결과");
 		cell.setCellStyle(HeadStyle); // 제목스타일		
-/*		
-		cell = row.createCell(8);
-		cell.setCellValue("완료");
-		cell.setCellStyle(HeadStyle); // 제목스타일
 
-		cell = row.createCell(9);
-		cell.setCellValue("미완료");
-		cell.setCellStyle(HeadStyle); // 제목스타일
-
-		cell = row.createCell(10);
-		cell.setCellValue("합계");
-		cell.setCellStyle(HeadStyle); // 제목스타일
-*/
 		cell = row.createCell(11);
 		cell.setCellValue("완료율(%)");
 		cell.setCellStyle(HeadStyle); // 제목스타일

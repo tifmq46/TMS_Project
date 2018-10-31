@@ -26,49 +26,80 @@
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
-<title>테스트케이스 상세</title>
+<title>테스트케이스 등록</title>
+
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="testCaseUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>
+<validator:javascript formName="testCaseVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javaScript" language="javascript" defer="defer">
 
-function updateTestCase(){
+
+function insertTestCaseImpl(){
 	
-	if (!validateTestCaseUpdate(document.testCaseVO)){
-        return;
-    }
-		 swal({
-			text: '<spring:message code="common.update.msg" />'
-			,buttons : true
-		})
-		.then((result) => {
-			if(result) {
-				
-				document.testCaseVO.action = "<c:url value='/tms/test/updateTestCaseImpl.do'/>";
-		   	 	document.testCaseVO.submit();
-			}else {
-				
-			}
-		}); 
+	
+	if($("#testcaseGb").val() == 'TC1' && $("#TmsProgrmFileNm_pg_id").val() == ""){
+		alert("단위 테스트케이스 등록시 화면ID를 선택해야합니다.")
+	} else {
+		
+	var inputTestcaseId = $("#testcaseIdDuplicationCheck").val();
+	
+	/* 특수문자 포함여부 체크 */
+	var stringRegx = /[~!@\#$%<>^&*\()\-=+_\’]/gi; 
+	var isValid = true; 
+    if(stringRegx.test(inputTestcaseId)) { 
+       isValid = false;
+       alert("테스트케이스ID에 특수문자는 사용할 수 없습니다.");
+     } 
+	     
+	   if(isValid){
+		   $.ajax({
+			   	 type :"POST"
+			   	,url  : "<c:url value='/tms/test/checkTestCaseIdDuplication.do'/>"
+			   	,dataType : "json"
+			   	,data : {testcaseId:inputTestcaseId}
+			   	,success :  function(result){
+			   		
+			   		if(!result){
+			   			alert("중복된 테스트케이스ID 입니다.")
+			   		} else {
+			   			
+			   			if (!validateTestCaseVO(document.testCaseVO)){
+			   		        return;
+			   		    }
+			   		    
+			   			swal({
+			   				text: '등록하시겠습니까?'
+			   				,buttons : true
+			   			})
+			   			.then((result) => {
+			   				if(result) {
+			   					
+			   					document.testCaseVO.action = "<c:url value='/tms/test/insertTestCaseImpl.do'/>";
+				   		        document.testCaseVO.submit();  
+			   				}else {
+			   					
+			   				}
+			   			});
+			   			
+			   		}
+			   	}
+			   	, error :  function(request,status,error){
+			   		 alert("에러");
+				         alert("code:"+request.status+"\n"+"error:"+error);
+			   	}
+			   		
+			   });
+	   } else {
+		   
+	   }
+	     
+	}
+	
 }
 
-function deleteTestCase() {
-	
-	swal({
-		text: '<spring:message code="common.delete.msg" />'
-		,buttons : true
-	})
-	.then((result) => {
-		if(result) {
-			 
-			document.testCaseVO.action = "<c:url value='/tms/test/deleteTestCaseImpl.do'/>";
-	   	 	document.testCaseVO.submit(); 
-		}else {
-			
-		}
-	});
-	 
+function searchFileNm() {
+    window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
 }
 
 </script>
@@ -80,9 +111,6 @@ function deleteTestCase() {
 
 <!-- 전체 레이어 시작 -->
 
-<c:if test="${!empty message and fn:length(message) > 0}">
-	<script type="text/javascript"> alert("${message}");</script>
-</c:if>
 
 <div id="wrap">
     <!-- header 시작 -->
@@ -102,18 +130,23 @@ function deleteTestCase() {
 							<li>&gt;</li>
 							<li>테스트관리</li>
 							<li>&gt;</li>
-							<li><strong>테스트케이스 상세</strong></li>
+							<li><strong>테스트케이스 등록</strong></li>
                         </ul>
                     </div>
                 </div>
               
-                <div id="page_info"><div id="page_info_align"></div></div>      
-                             
-                             
-               <form:form commandName="testCaseVO" name="testCaseVO" method="post" action="/tms/test/updateTestCaseImpl.do">           
-                 
+              
+              
+                <div id="page_info"><div id="page_info_align" style="font-family:'Malgun Gothic';"></div></div>      
+                <br>
+               <div id="search_field_loc"><h2><strong>테스트케이스 등록</strong></h2></div>
+                        
+                              
+             <form:form commandName="testCaseVO" name="testCaseVO" method="post" >          
+                        
                  <div id="border" class="modify_user" >
                       <table>
+                      
                       	<tr>
                               <th width="20%" height="23" class="required_text" nowrap >
                                     <label for="testcaseGb"> 
@@ -122,8 +155,12 @@ function deleteTestCase() {
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                </th>
                                 <td width="80%" nowrap colspan="3">
-                                	<c:out value='${testVoMap.testcaseGbNm}'/>
-                                	<input type="hidden" name="testcaseGb" value="${testVoMap.testcaseGbCode}">
+                                
+	                                <select name="testcaseGb" id="testcaseGb">
+										<c:forEach var="cmCode" items="${tcGbCode}">
+										<option value="${cmCode.code}">${cmCode.codeNm}</option>
+										</c:forEach>
+									</select>
 									<br/><form:errors path="testcaseGb" />
                                 </td>
                           </tr>
@@ -134,8 +171,7 @@ function deleteTestCase() {
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
-                                    <c:out value='${testVoMap.testcaseId}'/>
-                                    <input type="hidden" name="testcaseId" value="${testVoMap.testcaseId}" >
+                                    <form:input id="testcaseIdDuplicationCheck" type="text" title="게시판명입력" path="testcaseId"  cssStyle="width:50%" />
                                     <br/><form:errors path="testcaseId" /> 
                                 </td>
                           </tr>
@@ -146,7 +182,7 @@ function deleteTestCase() {
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="50%" nowrap colspan="3">
-                                      <input type="text" title="게시판명입력" name="testcaseContent" style="width:99%" value="${testVoMap.testcaseContent}"/>
+                                    <form:input type="text" title="게시판명입력" path="testcaseContent" cssStyle="width:99%" />
                                     <br/><form:errors path="testcaseContent" />
                                 </td>
                           </tr>
@@ -157,7 +193,9 @@ function deleteTestCase() {
                                 </label>    
                             </th>
                             <td colspan="3">
-                           		 <c:out value='${testVoMap.pgId}'/>
+                                <form:input type="text" readonly="true" title="게시판명입력" path="pgId" id="TmsProgrmFileNm_pg_id"  size="60" cssStyle="width:50%" />
+                           		<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+	                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
                             </td>
                           </tr>
                            <tr> 
@@ -167,7 +205,7 @@ function deleteTestCase() {
                                 </label>    
                             </th>
                             <td colspan="3">
-                            	<c:out value='${testVoMap.pgNm}'/>
+                                <form:input type="text" title="게시판명입력" path="" readonly="true" id="TmsProgrmFileNm_pg_nm"  size="60" cssStyle="width:50%" />
                             </td>
                           </tr>
                           <tr>
@@ -177,18 +215,38 @@ function deleteTestCase() {
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
-                                	<c:out value='${testVoMap.taskGbNm}'/>
+                                
+	                                 <select name="taskGb" id="TmsProgrmFileNm_task_gb_code">
+										<c:forEach var="cmCode" items="${taskGbCode}">
+										<option value="${cmCode.code}">${cmCode.codeNm}</option>
+										</c:forEach>
+									</select>
 									<br/><form:errors path="taskGb" />
                                 </td>
                           </tr>
+                          
+                          				<%
+									LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO");
+										if (loginVO == null) {
+								%>
+
+								<%
+									} else {
+								%>
+								<c:set var="loginId" value="<%=loginVO.getId()%>" />
+									<%
+								}
+								%>
+					
                            <tr>
                               <th width="20%" height="23" class="required_text" nowrap >
                                     <label for="userId"> 
-                                    	<spring:message code="tms.test.userWriterId" />
+                                    	<spring:message code="tms.test.userWriterRealId" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
-                                	<c:out value='${testVoMap.userNm}'/>
+                                    <form:input type="text" readonly="true" path="userId" value="${loginId}" title="게시판명입력" id="TmsProgrmFileNm_user_real_id" size="30" cssStyle="width:50%"/>
+                                    <form:hidden title="게시판명입력" path="" id="TmsProgrmFileNm_user_dev_id" />
                                     <br/><form:errors path="userId" />
                                 </td> 
                           </tr>
@@ -199,52 +257,34 @@ function deleteTestCase() {
                                 </label>    
                             </th>
                             <td colspan="3">
-                            	 <textarea type="textarea" rows="3" style="width:100%"  name="precondition"><c:out value='${testVoMap.precondition}'/></textarea>
+                               <form:textarea type="textarea" title="게시판소개입력" path="precondition" cols="75" rows="4" cssStyle="width:100%" />
                             	<br/><form:errors path="precondition" />
                             </td>
                           </tr>
-                           <tr> 
-                            <th height="23" class="required_text" >
-                                <label for="enrollDt">
-                                	<spring:message code="tms.test.enrollDt" />
-                                </label>    
-                            </th>
-                            <td colspan="3">
-                            	<c:out value='${testVoMap.enrollDt}'/>
-                            	<br/><form:errors path="enrollDt" />
-                            </td>
-                          </tr>
+                         	<form:hidden path=""  id="TmsProgrmFileNm_sys_gb"/>
+                         	<form:hidden path=""  id="TmsProgrmFileNm_task_gb"/>
+                         	<form:hidden path=""  id="TmsProgrmFileNm_pg_full"/>
                        </table>
                     </div>
-                    
-                    <div class="tmsTestButton" style="margin-bottom:30px;">
-	                  	<ul>        
+             	
+			</form:form>             	
+             	
+             		<div class="tmsTestButton" >
+	                    <ul>        
 	           				<li>
-								<div id="buttonDiv" class="buttons">
-	                                <a href="#" onclick="updateTestCase(); return false;"><spring:message code="button.save" /> </a>
-	                                <a href="#" onclick="deleteTestCase(); return false;"><spring:message code="button.delete" /> </a>
-	                                <a href="<c:url value='/tms/test/selectTestCaseList.do?testcaseGb=${testVoMap.testcaseGbCode}'/>"><spring:message code="button.list" /> </a>
+								<div class="buttons">
+				   					<a href="#" onclick="insertTestCaseImpl(); return false;"><spring:message code="button.save" /></a>
+				   					<a href= "<c:url value="/tms/test/insertTestCase.do" />"><spring:message code="button.reset" /></a>
+				   					<a href="javascript:history.go(-1);"><spring:message code="button.list" /></a>
 								</div>	  				  			
 		  					</li>             
-	                    </ul>   
-                	</div>
-                	</form:form>
-                
+	                    </ul>        
+                   </div>      
 
 
-                <!-- 페이지 네비게이션 시작 -->
-                <c:if test="${!empty loginPolicyVO.pageIndex }">
-                    <div id="paging_div">
-                        <ul class="paging_align">
-                       <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage" />
-                        </ul>
-                    </div>
-                <!-- //페이지 네비게이션 끝 -->
-                </c:if>
 
             </div>
             <!-- //content 끝 -->
-            
         </div>
         <!-- //container 끝 -->
         <!-- footer 시작 -->

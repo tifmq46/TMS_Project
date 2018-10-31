@@ -281,13 +281,6 @@ $(document).ready(function(){
 				</div>
 				<br/><br/><br/><br/> 
                              
-                             
-                             
-                             
-                             
-                             
-                             
-                             
 			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
     			<div class="widget">
     				<div class="widget-header">
