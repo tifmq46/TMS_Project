@@ -159,7 +159,7 @@ th,td{
 						</h2>
 					</div>
 				</div>
-				<br/><br/><br/><br/>
+				<br/><br/><br/>
 				
 				<ul class="tabs">
 					<li class="tab-link current" data-tab="tab-1">시스템별</li>

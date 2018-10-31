@@ -125,10 +125,9 @@ public class TmsProgrmManageServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	@Override
-	public Object insertProject(TmsProjectManageVO tmsProjectManageVO) throws Exception {
+	public void insertProject(TmsProjectManageVO tmsProjectManageVO) throws Exception {
 		// TODO Auto-generated method stub
 		TmsProgrmManageDAO.insertProject(tmsProjectManageVO);
-		return null;
 	}
 	@Override
 	public List<?> selectTestList() {

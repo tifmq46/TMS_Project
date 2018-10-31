@@ -183,7 +183,7 @@ window.onload = function() {
     			<div class="widget">
     				<div class="widget-header">
     					<div class="header-name" style="margin:10px;">
-	    					시스템별 결함건수
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;시스템별 결함건수
     					</div>
     				</div>
     				<div class="widget-content" style="overflow:auto; overflow-y:hidden;">
@@ -197,7 +197,7 @@ window.onload = function() {
     			<div class="widget">
     				<div class="widget-header">
     					<div class="header-name" style="margin:10px;">
-	    					업무별 결함건수
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;업무별 결함건수
     					</div>
     				</div>
     				<div class="widget-content" style="overflow:auto; overflow-y:hidden;">

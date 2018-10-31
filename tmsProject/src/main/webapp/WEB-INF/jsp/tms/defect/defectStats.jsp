@@ -33,8 +33,8 @@
 <script type="text/javascript">
 
 window.onload = function() {
-		
-		/** 일자별 결함 등록건수 조치건수*/
+
+	/** 일자별 결함 등록건수 조치건수*/
 		var dayByDefectCnt = JSON.parse('${dayByDefectCnt}');
 		var dayByDefectCntDays = new Array();
 		var dayByDefectCntEnrollDtCnt = new Array();
@@ -192,7 +192,7 @@ window.onload = function() {
     			<div class="widget">
     				<div class="widget-header">
     					<div class="header-name" style="margin:10px;">
-	    					조치율&nbsp;
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;조치율
 						<font style="font-weight:bold">( 전체 <c:out value="${defectStats.actionStAll}"/>건 중 </font> 
 						<font style="font-weight:bold" color="#007BFF" ><c:out value="${defectStats.actionStA3}"/></font><font style="font-weight:bold">건 완료 )</font> 
     					</div>
@@ -202,7 +202,7 @@ window.onload = function() {
 							<tr>
 								<td width="90%">
 									<c:choose>
-									<c:when test="${actionStAll eq 0 }">
+									<c:when test="${actionStAll eq 0 || empty actionStAll}">
 									<div class="progress" style="height: 2rem;">
 										<div class="progress-bar" style="width:0%">
 											<font style="font-size: 15px; font-weight: bolder">
@@ -238,7 +238,7 @@ window.onload = function() {
     			<div class="widget">
     				<div class="widget-header">
     					<div class="header-name" style="margin:10px;">
-	    					상태별 결함건수
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;상태별 결함건수
     				</div>
     			</div>
     				
@@ -277,7 +277,7 @@ window.onload = function() {
     			<div class="widget">
     				<div class="widget-header">
     					<div class="header-name" style="margin:10px;">
-	    					사용자별 결함건수 / 조치건수
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;사용자별 결함건수 / 조치건수
     					</div>
     				</div>
     				
@@ -290,7 +290,7 @@ window.onload = function() {
     			<div class="widget">
     				<div class="widget-header">
     					<div class="header-name" style="margin:10px;">
-	    					일자별 등록건수 / 조치건수
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;일자별 등록건수 / 조치건수
     					</div>
     				</div>
     				

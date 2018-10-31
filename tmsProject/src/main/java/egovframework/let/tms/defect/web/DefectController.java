@@ -597,6 +597,14 @@ public class DefectController {
 			
 			row = sheet.createRow(1);
 			
+			cell = row.createCell(0);
+			cell.setCellValue("시스템구분");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(1);
+			cell.setCellValue("업무구분");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
 			cell = row.createCell(2);
 			cell.setCellValue("오류");
 			cell.setCellStyle(TitleStyle); // 제목스타일 
@@ -612,6 +620,18 @@ public class DefectController {
 			cell = row.createCell(5);
 			cell.setCellValue("기타");
 			cell.setCellStyle(TitleStyle); // 제목스타일 
+			
+			cell = row.createCell(6);
+			cell.setCellValue("조치건수");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(7);
+			cell.setCellValue("미조치건수");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(8);
+			cell.setCellValue("조치율(%)");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			for(int i=0; i < list.size(); i++) {
 				row = sheet.createRow(i+2);
@@ -704,6 +724,22 @@ public class DefectController {
 			
 			row = sheet.createRow(1);
 			
+			cell = row.createCell(0);
+			cell.setCellValue("개발자");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(1);
+			cell.setCellValue("화면ID");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+
+			cell = row.createCell(2);
+			cell.setCellValue("화면명");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(3);
+			cell.setCellValue("결함건수");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+
 			cell = row.createCell(3);
 			cell.setCellValue("오류");
 			cell.setCellStyle(TitleStyle); // 제목스타일 
@@ -720,6 +756,18 @@ public class DefectController {
 			cell.setCellValue("기타");
 			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
+			cell = row.createCell(7);
+			cell.setCellValue("조치건수");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(8);
+			cell.setCellValue("미조치건수");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(9);
+			cell.setCellValue("조치율(%)");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
 			for(int i=0; i<list.size(); i++) {
 				row = sheet.createRow(i+2);
 				
@@ -732,6 +780,11 @@ public class DefectController {
 					sheet.addMergedRegion(new CellRangeAddress(i+2,i+2,1, 2));
 					cell.setCellValue(String.valueOf(list.get(i).get("pgId")));
 					cell.setCellStyle(BodyStyle); // 본문스타일 
+					
+					cell = row.createCell(2);
+					cell.setCellValue(String.valueOf(list.get(i).get("pgNm")));
+					cell.setCellStyle(BodyStyle); // 본문스타일 
+					
 				} else {
 					cell = row.createCell(1);
 					cell.setCellValue(String.valueOf(list.get(i).get("pgId")));
