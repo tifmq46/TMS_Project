@@ -337,12 +337,12 @@ function pagePrint(){
             				
             				<c:choose>
             					<c:when test="${status eq '완료'}">
-            						<td align="center" class="listtd" style="background-color:#819FF7;">
+            						<td align="center" class="listtd" style="background-color:#007bff;">
             						<font color="#ffffff" style="font-weight:bold">
             						<c:out value="${status}"/></td>
             					</c:when>
             					<c:when test="${status eq '지연'}">
-            						<td align="center" class="listtd" style="background-color:#F78181;">
+            						<td align="center" class="listtd" style="background-color:#CC3C39;;">
             						<font color="#ffffff" style="font-weight:bold">
             						<c:out value="${status}"/></td>
             					</c:when>

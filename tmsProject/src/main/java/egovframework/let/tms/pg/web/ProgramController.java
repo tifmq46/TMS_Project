@@ -691,18 +691,15 @@ public class ProgramController {
             e.printStackTrace();
         }
         
-        
         //엑셀파일 등록
 		List<ProgramVO> xlsxList = xlsxToCustomerVoList(safeFile);
 		//CustomerExcelReader excelReader = new CustomerExcelReader();
-		
 		ProgramVO vo;
 		
 		int j = 0;
 		int result_cnt = 1;
 		
 		ArrayList <HashMap<String, String>> error_hash = new ArrayList <HashMap<String, String>>();
-		
 		
 		for (int i = 0; i < xlsxList.size(); i++) {
 			
@@ -712,10 +709,8 @@ public class ProgramController {
 			
 			try {
 				
-				
 				ProgramService.insertPg(vo);
 				ProgramService.deletePg(vo);
-				
 				model.addAttribute("result", "true");
 				model.addAttribute("result2", "true");
 			}catch(Exception e) {
@@ -794,145 +789,7 @@ public class ProgramController {
 
 	}
     
-    /**
-	 * XLS 파일을 분석하여 List<CustomerVo> 객체로 반환
-	 * @param filePath
-	 * @return
-	 */
-	@SuppressWarnings("resource")
-	public List<ProgramVO> xlsToCustomerVoList(String filePath) {
-		
-		// 반환할 객체를 생성
-		List<ProgramVO> list = new ArrayList<ProgramVO>();
-		
-		FileInputStream fis = null;
-		HSSFWorkbook workbook = null;
-		
-		try {
-			
-			fis= new FileInputStream(filePath);
-			// HSSFWorkbook은 엑셀파일 전체 내용을 담고 있는 객체
-			workbook = new HSSFWorkbook(fis);
-			
-			// 탐색에 사용할 Sheet, Row, Cell 객체
-			HSSFSheet curSheet;
-			HSSFRow   curRow;
-			HSSFCell  curCell;
-			ProgramVO vo;
-			
-			// Sheet 탐색 for문
-			for(int sheetIndex = 0 ; sheetIndex < workbook.getNumberOfSheets(); sheetIndex++) {
-				// 현재 Sheet 반환
-				curSheet = workbook.getSheetAt(sheetIndex);
-				// row 탐색 for문
-				for(int rowIndex=0; rowIndex < curSheet.getPhysicalNumberOfRows(); rowIndex++) {
-					// row 0은 헤더정보이기 때문에 무시
-					if(rowIndex != 0) {
-						// 현재 row 반환
-						curRow = curSheet.getRow(rowIndex);
-						vo = new ProgramVO();
-						String value;
-						
-						// row의 첫번째 cell값이 비어있지 않은 경우 만 cell탐색
-						if(!"".equals(curRow.getCell(0).getStringCellValue())) {
-							
-							// cell 탐색 for 문
-							for(int cellIndex=0;cellIndex<curRow.getPhysicalNumberOfCells(); cellIndex++) {
-								curCell = curRow.getCell(cellIndex);
-								
-								if(true) {
-									value = "";
-									// cell 스타일이 다르더라도 String으로 반환 받음
-									switch (curCell.getCellType()){
-					                case HSSFCell.CELL_TYPE_FORMULA:
-					                	value = curCell.getCellFormula();
-					                    break;
-					                case HSSFCell.CELL_TYPE_NUMERIC:
-					                	value = curCell.getNumericCellValue()+"";
-					                    break;
-					                case HSSFCell.CELL_TYPE_STRING:
-					                    value = curCell.getStringCellValue()+"";
-					                    break;
-					                case HSSFCell.CELL_TYPE_BLANK:
-					                    value = curCell.getBooleanCellValue()+"";
-					                    break;
-					                case HSSFCell.CELL_TYPE_ERROR:
-					                    value = curCell.getErrorCellValue()+"";
-					                    break;
-					                default:
-					                	value = new String();
-										break;
-					                }
-									
-									// 현재 column index에 따라서 vo에 입력
-									switch (cellIndex) {
-									case 0: // 프로그램 id
-										vo.setPgId(value);
-										break;
-										
-									case 1: // 프로그램 명
-										vo.setPgNm(value);
-										break;
-										
-									case 2: // 개발자 ID
-										vo.setUserDevId(value);
-										break;
-										
-									case 3: // 시스템구분
-										vo.setSysGb(value);
-										break;
-										
-									case 4: // 업무구분
-										vo.setTaskGb(value);
-										
-										break;
-									case 5: // 사용여부
-										vo.setUseYn(value);										
-										break;
-										
-									case 6: // 프로젝트 id			
-										if(value.contains("."))
-										{
-											String[] str = value.split("\\.");
-											vo.setPjtId(""+str[0]);										
-											break;
-										}else {
-											vo.setPjtId(""+value);										
-											break;
-										}			
-		
-									default:
-										break;
-									}
-								}
-							}
-							// cell 탐색 이후 vo 추가
-							list.add(vo);
-						}
-					}
-				}
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		} finally {
-			try {
-				// 사용한 자원은 finally에서 해제
-				if( workbook!= null) //workbook.close();
-				if( fis!= null) fis.close();
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return list;
-	}
-	
+    
 	/**
 	 * XLSX 파일을 분석하여 List<ProgramVO> 객체로 반환
 	 * @param filePath

@@ -219,7 +219,7 @@ window.onload = function() {
 							}
 			});		
 			
-			} //window.onload
+} //window.onload
 			
 
 $(document).ready(function(){
@@ -227,13 +227,19 @@ $(document).ready(function(){
 	$(".imageArrowUtc").click(function (){
 		$('img',this).toggle();
 		$("#detail_bar_utc").toggle(); 
+		
+		var offset = $("#board1").offset();
+		$("html, body").animate({scrollTop:offset.top},400);
 			
 	});
 	
 	$(".imageArrowTtc").click(function (){
 		$('img',this).toggle();
 		$("#detail_bar_ttc").toggle();
-});
+		
+		var offset = $("#board2").offset();
+		$("html, body").animate({scrollTop:offset.top},400);
+	});
 	
 });
 			
@@ -282,13 +288,7 @@ $(document).ready(function(){
 				<br/><br/><br/><br/> 
                              
                              
-                             
-                             
-                             
-                             
-                             
-                             
-			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+			<div class="recentBoardList" id="board1" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
     			<div class="widget">
     				<div class="widget-header">
     					<div class="header-name" style="margin:10px;">
@@ -344,7 +344,7 @@ $(document).ready(function(){
     		
 
                  
-			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+			<div class="recentBoardList" id="board2" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
     			<div class="widget">
     				<div class="widget-header">
     					<div class="header-name" style="margin:10px;">

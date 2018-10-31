@@ -1317,7 +1317,7 @@ public class TestController {
 
 			cell = row.createCell(0);
 			cell.setCellValue((String) recode.get("sysGb"));
-			if(((String) recode.get("sysGb")).equals("합계")) {
+			if(((String) recode.get("taskGb")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
 			}else {
 				cell.setCellStyle(BodyStyle); // 본문스타일
