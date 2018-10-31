@@ -155,12 +155,15 @@ function handleClick(event, array){
 		success : function(result){
 			$("#taskByProgressRateLoc").empty();
 			var str = "";
-			str += "<br/><br/><div style='overflow:auto; overflow-y:hidden;'>";
-			str += "<table style='border-style:inset; border-width:0.1px; border-color:rgba(0, 123, 255, 0.3);'>";
-			str += "<tr></tr><tr>";
-			$.each(result, function(index,item){
-				
-				str += "<td><br/><br/>&nbsp;&nbsp;";
+			str += "<br/><table>";
+			str += "<tr>";
+			if(result.length == 0) {
+				str += "<td align='center' valign='middle'>";
+				str += "자료가 없습니다.";
+				str += "</td>";
+			} else {
+				$.each(result, function(index,item){
+				str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;";
 				if(temp == "sysGb") {
 					str += "<canvas id='" + item.sysGb + item.taskGb + "'";
 				} else {
@@ -169,7 +172,8 @@ function handleClick(event, array){
 				str += "width='180' height='120' style='display:inline !important;'>";
 				str += "</canvas>"
 				str += "</td>";
-			});
+				});
+			}
 			str += "</tr>";
 			str += "<tr>";
 			$.each(result, function(index,item){
@@ -178,16 +182,16 @@ function handleClick(event, array){
 				str += "<font color='#007BFF'>&nbsp;&nbsp;" + item.cntB;
 				str += "</font>";
 				str += " / " + item.cntA;
-				str += "(" + item.rate + "%)<br/>&nbsp;&nbsp;";
+				str += "(" + item.rate + "%)<br/>";
 				if(temp == "sysGb") {
 					str += item.sysNm + "(" + item.taskNm + ")";
 				} else {
 					str += item.taskNm;
 				}
-				str += "<br/><br/><br/><br/></td>";
+				str += "</div></td>";
 			});
 			str += "</tr>";
-			str += "</table></div><br/><br/>";
+			str += "</table></div>";
 			$("#taskByProgressRateLoc").append(str);
 			
 			var taskByProgressRate = result;
@@ -302,46 +306,46 @@ function handleClick(event, array){
 	    						시스템별 진척률
     						</div>
     					</div>
-    					
-            			<table>
-            				<tr>
-            					<td>&nbsp;&nbsp;
-            						<canvas id="progressRateTotal" width="250" height="120" style="display: inline"></canvas>&nbsp;&nbsp;
-             					</td>
-            					<c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
-            					<td>&nbsp;&nbsp;
-            						<canvas id="<c:out value="${sysByProgressRate.sysGb}"/>"  
-            							width="180" height="120" style="display: inline"></canvas>
-								</td>            
-            					</c:forEach>
-            				</tr>
-							<tr>
-            					<td align="center" valign="middle">
-             						<div style="font-size:15px; font-weight:bolder;">
-            						<font color="#007BFF">&nbsp;&nbsp;<c:out value="${progressRateTotal.cntB}"/></font>	/ <c:out value="${progressRateTotal.cntA}"/> 
-                 					(<c:out value=" ${progressRateTotal.rate}"></c:out>%)
-                 					<br/>&nbsp;&nbsp; 전체<br/>
-             						</div>
-            					</td>
-            					<c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
-            					<td align="center" valign="middle">
-            						<div style="font-size:13px; font-weight:bolder;">
-            							<font color="#007BFF"><c:out value="${sysByProgressRate.cntB}"/></font> / 
-            							<c:out value="${sysByProgressRate.cntA}"/>
-                 						(<c:out value=" ${sysByProgressRate.rate}"></c:out>%)
-                 						<br/>&nbsp;&nbsp;
-										<c:out value="${sysByProgressRate.sysNm}"/>
-                 						<br/>
-                 					</div>
-            					</td>
-            					</c:forEach>
-            				</tr>
-            			</table>
+    					<div class="widget-content" style="height:212px; overflow:auto;  overflow-y:hidden;">
+    						<br/><br/>
+	            			<table>
+	            				<tr>
+	            					<td>&nbsp;&nbsp;
+	            						<canvas id="progressRateTotal" width="250" height="120" style="display: inline !important;"></canvas>
+	             					</td>
+	            					<c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
+	            					<td>&nbsp;&nbsp;
+	            						<canvas id="<c:out value="${sysByProgressRate.sysGb}"/>"  
+	            							width="180" height="120" style="display: inline !important;"></canvas>
+									</td>            
+	            					</c:forEach>
+	            				</tr>
+								<tr>
+	            					<td align="center" valign="middle">
+	             						<div style="font-size:15px; font-weight:bolder;">
+		            						<font color="#007BFF">&nbsp;&nbsp;<c:out value="${progressRateTotal.cntB}"/></font>	/ <c:out value="${progressRateTotal.cntA}"/> 
+		                 					(<c:out value=" ${progressRateTotal.rate}"></c:out>%)
+		                 					<br/>전체
+	             						</div>
+	            					</td>
+	            					<c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
+	            					<td align="center" valign="middle">
+	            						<div style="font-size:15px; font-weight:bolder;">
+	            							<font color="#007BFF"><c:out value="${sysByProgressRate.cntB}"/></font> / 
+	            							<c:out value="${sysByProgressRate.cntA}"/>
+	                 						(<c:out value=" ${sysByProgressRate.rate}"></c:out>%)
+	                 						<br/><c:out value="${sysByProgressRate.sysNm}"/>
+	                 					</div>
+	            					</td>
+	            					</c:forEach>
+	            				</tr>
+	            			</table>
+            			</div>
     				</div>    	  
     			
     			</div>
     			
-    			
+    	
 			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
     			<div class="widget">
     				<div class="widget-header">
@@ -349,16 +353,21 @@ function handleClick(event, array){
 	    					업무별 진척률
     					</div>
     				</div>
-					<div id="taskByProgressRateLoc" ><br/><br/>
-					<div style="overflow:auto;  overflow-y:hidden;">
+					<div style="overflow:auto; overflow-y:hidden;">
+					<div id="taskByProgressRateLoc" ><br/>
 						<table>
 							<tr>
 								<c:forEach var="taskByProgressRate" items="${taskByProgressRate}" varStatus="status">
-								<td><br/><br/>&nbsp;&nbsp;
-									<canvas	id="<c:out value="${taskByProgressRate.sysGb}"/><c:out value="${taskByProgressRate.taskGb}"/>"
+									<td>
+										&nbsp;&nbsp;<canvas	id="<c:out value="${taskByProgressRate.sysGb}"/><c:out value="${taskByProgressRate.taskGb}"/>"
 										width="180" height="120" style="display: inline !important;"></canvas>
-								</td>
+									</td>
 								</c:forEach>
+								<c:if test="${fn:length(taskByProgressRate) == 0 }">
+									<td>
+									자료가 없습니다.
+									</td>
+								</c:if>
 							</tr>
 							<tr>
 								<c:forEach var="taskByProgressRate" items="${taskByProgressRate}" varStatus="status">
@@ -367,15 +376,15 @@ function handleClick(event, array){
 										<font color="#007BFF">&nbsp;&nbsp;<c:out value="${taskByProgressRate.cntB}" /></font> /
 										<c:out value="${taskByProgressRate.cntA}" />
 										(<c:out value=" ${taskByProgressRate.rate}"/>%)
-										<br/>&nbsp;&nbsp;<c:out value="${taskByProgressRate.sysNm}"/>(<c:out value="${taskByProgressRate.taskNm}"/>)
+										<br/><c:out value="${taskByProgressRate.sysNm}"/>(<c:out value="${taskByProgressRate.taskNm}"/>)
 									</div>
+									</td>
 								</c:forEach>
 							</tr>
-						</table></div>
-				
+						</table>
+						</div>
             		</div>
     			</div>    	  
-    			
     		</div>    			
 				
 
