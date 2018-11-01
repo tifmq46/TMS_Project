@@ -24,9 +24,6 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 
 public class TmsProjectManageVO implements Serializable{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8274004534207618049L;
 	/** 아이디 */
 	private String pjtId;
@@ -52,6 +49,18 @@ public class TmsProjectManageVO implements Serializable{
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")	
 	private Date pjtEndDt;
+
+	@DateTimeFormat(pattern="yyyy-MM-dd")	
+	private Date inputStartDt;
+	
+	@DateTimeFormat(pattern="yyyy-MM-dd")	
+	private Date inputEndDt;
+
+	@DateTimeFormat(pattern="yyyy-MM-dd")	
+	private Date planStartDt;
+	
+	@DateTimeFormat(pattern="yyyy-MM-dd")	
+	private Date planEndDt;
 	
 	private String pjtContent;
 
@@ -59,107 +68,134 @@ public class TmsProjectManageVO implements Serializable{
 		return pjtId;
 	}
 
-	public void setPjtId(String pJT_ID) {
-		pjtId = pJT_ID;
+	public void setPjtId(String pjtId) {
+		this.pjtId = pjtId;
 	}
 
 	public String getPjtNm() {
 		return pjtNm;
 	}
 
-	public void setPjtNm(String pJT_NM) {
-		pjtNm = pJT_NM;
+	public void setPjtNm(String pjtNm) {
+		this.pjtNm = pjtNm;
 	}
 
 	public String getPjtType() {
 		return pjtType;
 	}
 
-	public void setPjtType(String pJT_TYPE) {
-		pjtType = pJT_TYPE;
+	public void setPjtType(String pjtType) {
+		this.pjtType = pjtType;
 	}
 
 	public String getPjtSt() {
 		return pjtSt;
 	}
 
-	public void setPjtSt(String pJT_ST) {
-		pjtSt = pJT_ST;
+	public void setPjtSt(String pjtSt) {
+		this.pjtSt = pjtSt;
 	}
 
 	public String getPjtPm() {
 		return pjtPm;
 	}
 
-	public void setPjtPm(String pJT_PM) {
-		pjtPm = pJT_PM;
+	public void setPjtPm(String pjtPm) {
+		this.pjtPm = pjtPm;
 	}
 
 	public int getPjtPrice() {
 		return pjtPrice;
 	}
 
-	public void setPjtPrice(int pJT_PRICE) {
-		pjtPrice = pJT_PRICE;
+	public void setPjtPrice(int pjtPrice) {
+		this.pjtPrice = pjtPrice;
 	}
 
 	public Date getDevStartDt() {
 		return devStartDt;
 	}
 
-	public void setDevStartDt(Date dEV_START_DT) {
-		devStartDt = dEV_START_DT;
+	public void setDevStartDt(Date devStartDt) {
+		this.devStartDt = devStartDt;
 	}
 
 	public Date getDevEndDt() {
 		return devEndDt;
 	}
 
-	public void setDevEndDt(Date dEV_END_DT) {
-		devEndDt = dEV_END_DT;
+	public void setDevEndDt(Date devEndDt) {
+		this.devEndDt = devEndDt;
 	}
 
 	public Date getPjtStartDt() {
 		return pjtStartDt;
 	}
 
-	public void setPjtStartDt(Date pJT_START_DT) {
-		pjtStartDt = pJT_START_DT;
+	public void setPjtStartDt(Date pjtStartDt) {
+		this.pjtStartDt = pjtStartDt;
 	}
 
 	public Date getPjtEndDt() {
 		return pjtEndDt;
 	}
 
-	public void setPjtEndDt(Date pJT_END_DT) {
-		pjtEndDt = pJT_END_DT;
+	public void setPjtEndDt(Date pjtEndDt) {
+		this.pjtEndDt = pjtEndDt;
 	}
 
 	public String getPjtContent() {
 		return pjtContent;
 	}
 
-	public void setPjtContent(String pJT_CONTENT) {
-		pjtContent = pJT_CONTENT;
+	public void setPjtContent(String pjtContent) {
+		this.pjtContent = pjtContent;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	@Override
-	public String toString() {
-		return "TmsProjectManageVO [pjtId=" + ", PJT_NM=" + pjtNm + ", PJT_TYPE=" + pjtType + ", PJT_ST="
-				+ pjtSt + ", PJT_PM=" + pjtPm + ", PJT_PRICE=" + pjtPrice + ", DEV_START_DT=" + devStartDt
-				+ ", DEV_END_DT=" + devEndDt + ", PJT_START_DT=" + pjtStartDt + ", PJT_END_DT=" + pjtEndDt
-				+ ", PJT_CONTENT=" + pjtContent + "]";
+	public Date getInputStartDt() {
+		return inputStartDt;
 	}
 
-	
-	
-	
-	
-	
-	
+	public void setInputStartDt(Date inputStartDt) {
+		this.inputStartDt = inputStartDt;
+	}
+
+	public Date getInputEndDt() {
+		return inputEndDt;
+	}
+
+	public void setInputEndDt(Date inputEndDt) {
+		this.inputEndDt = inputEndDt;
+	}
+
+	public Date getPlanStartDt() {
+		return planStartDt;
+	}
+
+	public void setPlanStartDt(Date planStartDt) {
+		this.planStartDt = planStartDt;
+	}
+
+	public Date getPlanEndDt() {
+		return planEndDt;
+	}
+
+	public void setPlanEndDt(Date planEndDt) {
+		this.planEndDt = planEndDt;
+	}
+
+	@Override
+	public String toString() {
+		return "TmsProjectManageVO [pjtId=" + pjtId + ", pjtNm=" + pjtNm + ", pjtType=" + pjtType + ", pjtSt=" + pjtSt
+				+ ", pjtPm=" + pjtPm + ", pjtPrice=" + pjtPrice + ", devStartDt=" + devStartDt + ", devEndDt="
+				+ devEndDt + ", pjtStartDt=" + pjtStartDt + ", pjtEndDt=" + pjtEndDt + ", inputStartDt=" + inputStartDt
+				+ ", inputEndDt=" + inputEndDt + ", planStartDt=" + planStartDt + ", planEndDt=" + planEndDt
+				+ ", pjtContent=" + pjtContent + "]";
+	}
+
 	
 }

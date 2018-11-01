@@ -252,10 +252,10 @@ function searchFileNm() {
                      <tr>
                         <td align="center" class="listtd" style="font-weight:bold"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.defectIdSq}"/></td>
-                        <td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
-                        <td align="center" class="listtd" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
+                        <td align="center" class="listtd" title="<c:out value="${result.pgId}"/>"><c:out value="${result.pgId}"/></td>
+                        <td align="center" class="listtd" title="<c:out value="${result.pgNm}"/>" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
                         
-                        <td align="center" class="listtd"><c:out value="${result.taskGb}"/></td>
+                        <td align="center" class="listtd" title="<c:out value="${result.taskGb}"/>"><c:out value="${result.taskGb}"/></td>
                          <td align="center" class="listtd" style="text-align:left;">
                         <a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>&amp;boardNo=<c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/>"
                         title="<c:out value="${result.defectTitle}"/>">
@@ -263,25 +263,25 @@ function searchFileNm() {
                         </a>
                         </td>
                         
-                        <td align="center" class="listtd"><c:out value="${result.defectGb}"/></td>
-                        <td align="center" class="listtd"><c:out value="${result.userTestId}"/></td>
+                        <td align="center" class="listtd" title="<c:out value="${result.defectGb}"/>"><c:out value="${result.defectGb}"/></td>
+                        <td align="center" class="listtd" title="<c:out value="${result.userTestId}"/>"><c:out value="${result.userTestId}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.enrollDt}"/></td>
                     
                         <c:choose>
                         <c:when test="${result.actionSt == '조치중' }">
-                        <td align="center" class="listtd">
+                        <td align="center" class="listtd" title="<c:out value="${result.actionSt}"/>">
                         <font style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
                         </c:when>
                         <c:when test="${result.actionSt == '재요청'}">
-                        <td align="center" class="listtd" style="background-color:#CC3C39;">
+                        <td align="center" class="listtd" title="<c:out value="${result.actionSt}"/>" style="background-color:#CC3C39;">
                          <font color="#ffffff" style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
                         </c:when>
                         <c:when test="${result.actionSt == '조치완료' }">
-                        <td align="center" class="listtd" style="background-color:#007bff;">
+                        <td align="center" class="listtd" title="<c:out value="${result.actionSt}"/>" style="background-color:#007bff;">
                         <font color="#ffffff" style="font-weight:bold"><c:out value="${result.actionSt}"/></font></td>
                         </c:when>
                         <c:otherwise>
-                        <td align="center" class="listtd"><c:out value="${result.actionSt}"/>&nbsp;</td>
+                        <td align="center" class="listtd" title="<c:out value="${result.actionSt}"/>"><c:out value="${result.actionSt}"/>&nbsp;</td>
                         </c:otherwise>
                         </c:choose>
                         

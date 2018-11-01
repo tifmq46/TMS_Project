@@ -213,7 +213,14 @@ window.onload = function() {
                 </div>
                 
 				<form:form commandName="defectVO" name="defectVO" enctype="multipart/form-data" method="post" >
-					<% LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO"); %>
+					<% LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO");
+							if (loginVO != null) {
+						%>
+						<c:set var="loginName" value="<%=loginVO.getName()%>" />
+						<c:set var="uniqId" value="<%=loginVO.getUniqId()%>" />
+						<%
+							}
+						%>
 					<c:forEach var="defectOne" items="${defectOne}" varStatus="status">
 					<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 					<input type="hidden" name="param_trgetType" value="" />
@@ -257,12 +264,14 @@ window.onload = function() {
 					        </th>
 					        <td width="12.5%" nowrap >
 					       
-							  <input list="userTestList" name="userNm" id="userTestNm" value="<c:out value="${defectOne.userTestId}"/>"  autocomplete="off" style="text-align:center; width:85%;"/>
+							  <input list="userTestList" name="userNm" id="userTestNm" value="<c:out value="${defectOne.userTestId}"/>"  autocomplete="off" style="text-align:center; width:90%;"/>
+					        	<c:if test="${loginName == defectOne.userTestId || uniqId == 'USRCNFRM_00000000000' || uniqId == 'USRCNFRM_00000000001' }">
 					        	<datalist id="userTestList">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
 									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
 									    </c:forEach>
 					        	</datalist>
+					        	</c:if>
 					        	<form:errors path="userNm" />
 					        </td>
 					        <th width="12.5%" height="23" class="" nowrap >결함유형
@@ -352,7 +361,7 @@ window.onload = function() {
 					        		<c:when test="${!empty defectImgOne}">
 					        		<img src="<c:url value='/images/tms/fileclip.JPG' />" width="12" height="12" alt="required"/>
 					        	<font color="#666666">
-					        	   <a href="<c:url value='/tms/defect/selectListOneDetail.do'/>?defectIdSq=<c:out value="${defectOne.defectIdSq}"/>" target="_blank" title="새창으로" onclick="javascript:searchFileImg(${defectOne.defectIdSq}); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
+					        	   <a href="<c:url value='/tms/defect/selectListOneDetail.do'/>?defectIdSq=<c:out value="${defectOne.defectIdSq}"/>" target="_blank" title="미리보기" onclick="javascript:searchFileImg(${defectOne.defectIdSq}); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 									<c:out value="${defectImgOne.fileNm}" />
 									</a>
 									<input type="hidden" id="fileNm" name="fileNm" value="<c:out value="${defectImgOne.fileNm}" />"  readonly="readonly" style="border:none; width:; text-align:right"/>
@@ -379,17 +388,6 @@ window.onload = function() {
                         </table>
                     </div>
 
-						<%
-							if (loginVO != null) {
-						%>
-						<c:set var="loginName" value="<%=loginVO.getName()%>" />
-						<c:set var="uniqId" value="<%=loginVO.getUniqId()%>" />
-						<%
-							}
-						%>
-						<input type="hidden" id="loginNm" value="<c:out value='${loginName }'/>" />
-						<input type="hidden" id="uniqId" value="<c:out value='${uniqId }'/>" />
-						
 						<!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
                     

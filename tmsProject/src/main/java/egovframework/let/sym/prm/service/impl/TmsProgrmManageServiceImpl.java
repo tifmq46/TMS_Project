@@ -139,5 +139,10 @@ public class TmsProgrmManageServiceImpl extends EgovAbstractServiceImpl implemen
 		// TODO Auto-generated method stub
 		return TmsProgrmManageDAO.selectProgrmList1(a);
 	}
+	@Override
+	public void updateProject(TmsProjectManageVO TmsProjectManageVO) throws Exception {
+		// TODO Auto-generated method stub
+		TmsProgrmManageDAO.updateProject(TmsProjectManageVO);
+	}
 	
 }

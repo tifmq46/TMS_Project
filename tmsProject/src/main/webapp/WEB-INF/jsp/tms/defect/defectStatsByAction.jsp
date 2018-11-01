@@ -26,7 +26,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<title>결함처리통계(그래프)</title>
+<title>결함처리통계(대시보드3)</title>
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

@@ -112,7 +112,7 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
     }
 
 	public void insertProject(TmsProjectManageVO tmsProjectManageVO) {
-		select("TmsProgrmManageDAO.select");
+		insert("TmsProgrmManageDAO.insertProject", tmsProjectManageVO);
 	}
 
 	public List<?> selectTestList() {
@@ -123,6 +123,9 @@ public class TmsProgrmManageDAO extends EgovAbstractDAO {
 	public List<HashMap<String,String>> selectProgrmList1(int a) {
 	      return (List<HashMap<String,String>>)list("TmsProgrmManageDAO.selectTestList1",a);
 	   }
-
+	
+	public void updateProject(TmsProjectManageVO TmsProjectManageVO) {
+		update("TmsProgrmManageDAO.updateProject", TmsProjectManageVO);
+	}
 	
 }
