@@ -220,7 +220,7 @@
 		         ) 
 		    VALUES  
 		         (  #pgId#
-		         ,  (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM LIKE CONCAT(#userDevId#))
+		         ,  #userDevId#
 		         ,  #pgNm#
 		         ,  (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysGb#)
 		         ,  (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #taskGb# AND PARENT = (SELECT CODE 
