@@ -47,7 +47,7 @@
         top:50%;
         left:50%;
         margin-left: -80px;
-        margin-top: -80px;
+        margin-top: -60px;
     }
     .display-none{ /*감추기*/
         display:none;
@@ -152,19 +152,23 @@ function window_close() {
 <input type="submit" id="test" class="invisible"/>
     <!-- 검색 필드 박스 시작 -->
     <div id="search_field" style="width:100%">
-        <div id="search_field_loc" class="h_title">엑셀파일 등록</div>
-            <fieldset style="overflow-y : scroll; height : 250px; border-bottom: 1px solid #81B1D5; border-top: 1px solid #81B1D5;"><legend>조건정보 영역</legend>    
-            <div class="sf_start">
-                <ul id="search_first_ul">
-                    <li>
-                        <input type="file" id="file" name="file" />
+        <div id="search_field_loc" class="h_title">엑셀파일 등록</div><br>
+        	<ul id="search_first_ul">
+            	<li>
+                	<input type="file" id="file" name="file" />
                         
-                        <div class="buttons" style="float:right;">
-                        	<a id="listButton" name="listButton" href="#LINK" >등록 </a>
-                        	<input type="hidden" id="change" name="change" value="<c:out value='${result}'/>" onclick="test(); return false;">
-                        </div>
-                    </li>       
-                </ul>
+                    <div class="buttons" style="float:right;">
+                    	<a id="listButton" name="listButton" href="#LINK" >등록 </a>
+                    	<input type="hidden" id="change" name="change" value="<c:out value='${result}'/>" onclick="test(); return false;">
+                    </div>
+                </li>       
+            </ul>        
+        
+        
+        
+            <fieldset style="overflow-y : scroll; height : 235px; border-bottom: 1px solid #81B1D5; border-top: 1px solid #81B1D5;"><legend>조건정보 영역</legend>    
+            <div class="sf_start">
+
                 
                 <div class="default_tablestyle">
             			<table id="tb1" width="100%" border="0" cellpadding="0" cellspacing="0" >

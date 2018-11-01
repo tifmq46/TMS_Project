@@ -30,6 +30,20 @@
 <script type="text/javascript">
     
     function pg_update(){
+    	var page = document.programVO.page.value;
+    	var pgid = document.programVO.pgid.value;
+    	var sys = document.programVO.sys.value;
+    	var task = document.programVO.task.value;
+    	var dev = document.programVO.dev.value;
+    	var yn = document.programVO.yn.value;
+    	
+    	alert(page);
+    	alert(pgid);
+    	alert(sys);
+    	alert(task);
+    	alert(dev);
+    	alert(yn);
+    	
     	
     	if (!validateProgramVO(document.programVO)) {
 			return;
@@ -41,7 +55,8 @@
    		})
    		.then((result) => {
    			if(result) {
-   				document.programVO.action = "<c:url value='/tms/pg/Pgupdate.do'/>";
+   				document.programVO.action = "<c:url value='/tms/pg/Pgupdate.do?pageIndex="+page+"&searchByPgId="+pgid+"&searchBySysGb="
+   						+sys+"&searchByTaskGb="+task+"&searchByUserDevId="+dev+"&searchUseYn="+yn+"'/>";
    		        document.programVO.submit(); 
    			}else {
    					
@@ -127,6 +142,12 @@
                     <div id="search_field_loc"><h2><strong>프로그램 상세</strong></h2></div>
                 </div>
                 <form:form commandName="programVO" id="programVO" name="programVO" method="post" >
+				<input type="hidden" name="page" id="page" value="${page}"/>
+				<input type="hidden" name="pgid" id="pgid" value="${pgid}"/>
+				<input type="hidden" name="sys" id="sys" value="${sys}"/>
+				<input type="hidden" name="task" id="task" value="${task}"/>
+				<input type="hidden" name="dev" id="dev" value="${dev}"/>
+				<input type="hidden" name="yn" id="yn" value="${yn}"/>
 
                     <div class="modify_user" >
                         <table >

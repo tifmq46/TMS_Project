@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.sym.prm.service.TmsProgrmManageService;
@@ -129,6 +130,13 @@ public class ProgramController {
 		List<?> userList = defectService.selectUser();
 		model.addAttribute("userList", userList);
 
+		model.addAttribute("pgid", searchVO.getSearchByPgId());
+		model.addAttribute("page", searchVO.getPageIndex());
+		model.addAttribute("sys", searchVO.getSearchBySysGb());
+		model.addAttribute("task", searchVO.getSearchByTaskGb());
+		model.addAttribute("dev", searchVO.getSearchByUserDevId());
+		model.addAttribute("yn", searchVO.getSearchUseYn());
+		
 		return "tms/pg/PgManage";
 	}
 
@@ -140,8 +148,15 @@ public class ProgramController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/tms/pg/selectPgInf.do")
-	public String selectPgInf(@ModelAttribute("programVO") ProgramVO searchVO, ModelMap model) throws Exception {
+	public String selectPgInf(@ModelAttribute("programVO") ProgramVO searchVO, @ModelAttribute("searchVO") ProgramDefaultVO defaultVO, ModelMap model) throws Exception {
 
+		System.out.println("페이지:" + defaultVO.getPageIndex());
+		System.out.println("페이지:" + defaultVO.getSearchByPgId());
+		System.out.println("페이지:" + defaultVO.getSearchBySysGb());
+		System.out.println("페이지:" + defaultVO.getSearchByTaskGb());
+		System.out.println("페이지:" + defaultVO.getSearchByUserDevId());
+		System.out.println("페이지:" + defaultVO.getSearchUseYn());
+		
 		ProgramVO VO = ProgramService.selectProgramInf(searchVO);		
 		model.addAttribute("programVO", VO);
 
@@ -157,7 +172,14 @@ public class ProgramController {
 		List<?> user_dev_List = TmsProgrmManageService.selectUserList();
 		model.addAttribute("dev_List", user_dev_List);
 		// 공통코드 끝 시작 -------------------------------	
+		model.addAttribute("sysGb", sysGbList);
 		
+		model.addAttribute("page", defaultVO.getPageIndex());
+		model.addAttribute("pgid", defaultVO.getSearchByPgId());
+		model.addAttribute("sys", defaultVO.getSearchBySysGb());
+		model.addAttribute("task", defaultVO.getSearchByTaskGb());
+		model.addAttribute("dev", defaultVO.getSearchByUserDevId());
+		model.addAttribute("yn", defaultVO.getSearchUseYn());	
 		
 		return "tms/pg/PgUpdate";
 	}
@@ -281,11 +303,19 @@ public class ProgramController {
 	 * 프로그램 정보를 수정한다.	 
 	 */	
 	@RequestMapping(value = "/tms/pg/Pgupdate.do")
-	public String updatePgList(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
+	public String updatePgList(final RedirectAttributes redirectAttributes, @ModelAttribute("programVO") ProgramVO programVO, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 
+		System.out.println("페이지3:" + searchVO.getPageIndex());
+		System.out.println("페이지3:" + searchVO.getSearchByPgId());
+		System.out.println("페이지3:" + searchVO.getSearchBySysGb());
+		System.out.println("페이지3:" + searchVO.getSearchByTaskGb());
+		System.out.println("페이지3:" + searchVO.getSearchByUserDevId());
+		System.out.println("페이지3:" + searchVO.getSearchUseYn());
 		
 		ProgramService.updatePg(programVO);
-			
+		
+		redirectAttributes.addFlashAttribute("searchVO", searchVO);
+		
 		return "redirect:/tms/pg/PgManage.do";
 		//return "redirect:/tms/pg/selectPgInf.do?pgId="+programVO.getPgId();
 		
