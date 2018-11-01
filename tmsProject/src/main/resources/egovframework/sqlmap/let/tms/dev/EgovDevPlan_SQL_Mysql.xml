@@ -191,7 +191,7 @@
 			<!-- 개발시작일로 검색 -->
 			<isNotEmpty property="searchByDevStartDt">
 			    <isNotEmpty property="searchByDevEndDt">
-			        AND DEV_START_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
+			        AND DEV_END_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
 			    </isNotEmpty>
 			</isNotEmpty>
 			        
@@ -245,7 +245,7 @@
 			<!-- 개발시작일로 검색 -->
 			<isNotEmpty property="searchByDevStartDt">
 			    <isNotEmpty property="searchByDevEndDt">
-			        AND DEV_START_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
+			        AND DEV_END_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
 			    </isNotEmpty>
 			</isNotEmpty>
 	</select>	
@@ -266,31 +266,6 @@
              WHERE PG_ID=#pgId#
         ]]>
     </delete>
-    
-	
-	<select id="DevPlanDAO.selectDevResult" parameterClass="searchVO" resultClass="egovMap">
-		<![CDATA[
-			SELECT * FROM (
-					SELECT
-						b.PG_ID
-						,(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = b.USER_DEV_ID ) USER_DEV_ID
-						,b.PG_NM
-						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.SYS_GB) AS SYS_GB
-						,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = b.TASK_GB) TASK_GB
-						,a.PLAN_START_DT
-						,a.PLAN_END_DT
-						,(select DATEDIFF(a.PLAN_END_DT, a.PLAN_START_DT )+1 )as dayDiff
-						,a.DEV_START_DT
-						,a.DEV_END_DT
-						
-					FROM DEV_PLAN_TB a
-					INNER JOIN PG_TB b
-					ON a.PG_ID = b.PG_ID
-					where a.PG_ID = #pgId#
-					)AS resultOne
-			
-				]]>				
-	</select> 
 
 	<update id="DevPlanDAO.updateDevResult" parameterClass="DevPlanVO">
         <![CDATA[
@@ -374,7 +349,7 @@
 			<!-- 개발시작일로 검색 -->
 			<isNotEmpty property="searchByDevStartDt">
 			    <isNotEmpty property="searchByDevEndDt">
-			        AND DEV_START_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
+			        AND DEV_END_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
 			    </isNotEmpty>
 			</isNotEmpty>
 
@@ -430,7 +405,7 @@
 			<!-- 개발시작일로 검색 -->
 			<isNotEmpty property="searchByDevStartDt">
 			    <isNotEmpty property="searchByDevEndDt">
-			        AND DEV_START_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
+			        AND DEV_END_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
 			    </isNotEmpty>
 			</isNotEmpty>
 
@@ -492,9 +467,9 @@
 			</isNotEmpty>
 			
 			<!-- 개발시작일로 검색 -->
-			<isNotEmpty property="devStartDt">
-			    <isNotEmpty property="devEndDt">
-			        AND DEV_START_DT BETWEEN DATE(#devStartDt#) AND DATE(#devEndDt#)
+			<isNotEmpty property="searchByDevStartDt">
+			    <isNotEmpty property="searchByDevEndDt">
+			        AND DEV_END_DT BETWEEN DATE(#searchByDevStartDt#) AND DATE(#searchByDevEndDt#)
 			    </isNotEmpty>
 			</isNotEmpty>
 	</select>

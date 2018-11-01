@@ -146,13 +146,6 @@ function fn_result_reset(pgId, th){
 	}
 }
 
-function linkPage1(pageNo){
-	
-	   document.listForm.pageIndex.value = pageNo;
-	   document.listForm.action = "<c:url value='/tms/dev/devPlans.do'/>";
-	   document.listForm.submit();
-	}
-
 function fn_searchList(pageNo){
     document.listForm.pageIndex.value = pageNo;
     document.listForm.searchBySysGb.value = document.listForm.Sys.value;
@@ -359,13 +352,8 @@ function searchFileNm() {
       			        		</td>
       			        	</tr>
       			        	</table>
-					  				
 						</div>
-						
 						</fieldset>
-						
-			
-			
 				</div> <br/>
 				<!-- //검색 필드 박스 끝 -->
               

@@ -339,16 +339,6 @@ public class DevPlanController {
 		return "tms/dev/devResultList";
 	}
 	
-	@RequestMapping(value = "/tms/dev/selectDevResult.do")
-	public String selectDevResult(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
-		
-		List<?> vo = devPlanService.selectDevResult(searchVO);
-
-		model.addAttribute("result", vo);
-
-		return "/tms/dev/devResultUpdt";
-	}
-	
 	@RequestMapping(value = "/tms/dev/updateDevResult.do")
 	public String updateDevResult(final RedirectAttributes redirectAttributes, @ModelAttribute("searchVO") DevPlanDefaultVO dvo,@RequestParam String flag, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 
@@ -392,15 +382,6 @@ public class DevPlanController {
 			return "redirect:/tms/dev/devResultList.do";
 	}
 	
-	@RequestMapping(value = "/tms/dev/deleteDevResult.do")
-	public String deleteDevResult(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
-
-		devPlanService.deleteDevResult(dvo);
-		status.setComplete();
-		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
-		return "forward:/tms/dev/selectDevResult.do";
-	}
-	
 	@SuppressWarnings({ "unchecked", "static-access" })
 	@RequestMapping(value = "/tms/dev/devStatsTable.do")
 	public String devStatsTable(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
@@ -430,7 +411,6 @@ public class DevPlanController {
 			List<String> periodList = devPlanService.selectPeriodWeek();
 			
 			List<String> periodMonthWeek = devPlanService.selectPeriodMonthWeek();
-			System.out.println("기간==========="+periodMonthWeek);
 			model.addAttribute("monthWeek",periodMonthWeek);
 			
 			int s = Integer.parseInt(String.valueOf(periodList.get(0)));
@@ -627,8 +607,9 @@ public class DevPlanController {
 		model.addAttribute("paginationInfo", paginationInfo);
 		
 		HashMap<String,String> devPlanAvg = devPlanService.DevPlanAvg(searchVO);
+		System.out.println(searchVO.getPgId());
+		System.out.println("dddddd01;;"+searchVO.getSearchByDevStartDt()+"~"+searchVO.getSearchByDevEndDt());
 		model.addAttribute("r", devPlanAvg);
-		System.out.println(devPlanAvg);
 		
 		return "tms/dev/devCurrent";
 	}

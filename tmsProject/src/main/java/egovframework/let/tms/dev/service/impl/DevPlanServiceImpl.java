@@ -123,11 +123,6 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 		devPlanDAO.deleteDevResult(vo);
 		
 	}
-
-	@Override
-	public List<?> selectDevResult(DevPlanDefaultVO defaultVO) throws Exception {
-		return devPlanDAO.selectDevResult(defaultVO);
-	}
 	
 	@Override
 	public void insertWeek(int i) {

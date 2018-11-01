@@ -67,15 +67,8 @@ public interface DevPlanService {
 	
 	public List<HashMap<String, String>> selectDevResultList(DevPlanDefaultVO searchVO) throws Exception;
 	
-	/**
-	 * 개발결과에 대한 상세정보를 조회한다.
-	 * @param vo - 조회할 정보가 담긴 DevPlanVO
-	 * @return 조회한 글
-	 * @exception Exception
-	 */
-	public List<?> selectDevResult(DevPlanDefaultVO defaultVO) throws Exception; 
-	
 	public String selectSTART() throws Exception;
+
 	public String selectEND() throws Exception;
 	
 	/**
