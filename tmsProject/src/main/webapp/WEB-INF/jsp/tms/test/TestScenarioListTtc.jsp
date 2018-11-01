@@ -324,6 +324,11 @@ function selectTestScenario() {
 	            				
 	            			</tr>
 	        			</c:forEach>
+        				<c:if test="${fn:length(testCaseList) == 0}">
+                     		<tr>
+                       			<td nowrap colspan="8" ><spring:message code="common.nodata.msg" /></td>  
+                     		</tr>      
+              			</c:if>	 	        			
         			</tbody>
               </table>        
            </div>

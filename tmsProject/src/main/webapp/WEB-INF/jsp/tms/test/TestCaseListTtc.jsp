@@ -368,6 +368,14 @@ function fDeleteMenuList() {
 	            				</td>
 	            			</tr>
 	        			</c:forEach>
+	        			
+        				<c:if test="${fn:length(testCaseList) == 0}">
+                     		<tr>
+                       			<td nowrap colspan="11" ><spring:message code="common.nodata.msg" /></td>  
+                     		</tr>      
+              			</c:if>	        			
+	        			
+	        			
 	              </table>        
 	           </div>
           
