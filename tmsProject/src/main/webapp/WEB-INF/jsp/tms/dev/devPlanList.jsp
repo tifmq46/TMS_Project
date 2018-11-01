@@ -47,7 +47,7 @@ function fn_result_change(asd, t) {
 	  var flag = true;
 	  	
 	   if((prjStartDate >  t.value || prjEndDate <  t.value) && t.value != ""){
-		   alert("계획기준일자의 기간이 아닙니다. 다시 입력하십시오.\n[계획기준일자:2018-10-02~2018-10-28]");
+		   alert("계획기준일자의 기간이 아닙니다. 다시 입력하십시오.\n[계획기준일자:"+prjStartDate+"~"+prjEndDate+"]");
 		   document.getElementById(t.id).value = null;
 		   flag = false;
 		   return;

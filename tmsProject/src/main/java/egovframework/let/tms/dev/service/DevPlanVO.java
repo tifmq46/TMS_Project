@@ -35,15 +35,6 @@ public class DevPlanVO implements Serializable{
 	/**  개발완료여부 */
 	private String devEndYn;
 	
-	/**  1차테스트결과 */
-	private String firstTestResultYn;
-	
-	/**  2차테스트결과 */
-	private String secondTestResultYn;
-	
-	/**  3차테스트결과 */
-	private String thirdTestResultYn;
-	
 	/**  달성률 */
 	private Integer achievementRate;
 	
@@ -112,30 +103,6 @@ public class DevPlanVO implements Serializable{
 
 	public void setDevEndYn(String devEndYn) {
 		this.devEndYn = devEndYn;
-	}
-
-	public String getFirstTestResultYn() {
-		return firstTestResultYn;
-	}
-
-	public void setFirstTestResultYn(String firstTestResultYn) {
-		this.firstTestResultYn = firstTestResultYn;
-	}
-
-	public String getSecondTestResultYn() {
-		return secondTestResultYn;
-	}
-
-	public void setSecondTestResultYn(String secondTestResultYn) {
-		this.secondTestResultYn = secondTestResultYn;
-	}
-
-	public String getThirdTestResultYn() {
-		return thirdTestResultYn;
-	}
-
-	public void setThirdTestResultYn(String thirdTestResultYn) {
-		this.thirdTestResultYn = thirdTestResultYn;
 	}
 
 	public Integer getDayDiff() {
