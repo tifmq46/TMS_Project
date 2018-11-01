@@ -345,29 +345,9 @@
 				SELECT COUNT(*) totcnt 
 				FROM (
 					SELECT * FROM (
-						SELECT 
-							  a. TESTCASE_ID
-							, a.TESTCASE_CONTENT
-							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TESTCASE_GB ) AS TESTCASE_GB_NM
-							, a.TESTCASE_GB AS TESTCASE_GB_CODE
-							, a.PG_ID
-							, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
-							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
-							, a.TASK_GB AS TASK_GB_CODE
-							, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = a.USER_ID ) AS USER_NM
-							, a.USER_ID
-							, a.ENROLL_DT
-							, a.PRECONDITION
-							, a.FIRST_TEST_RESULT_YN 
-							, a.SECOND_TEST_RESULT_YN 
-							, a.THIRD_TEST_RESULT_YN 
-							, ( SELECT COUNT(*) FROM TESTSCENARIO_TB WHERE TESTCASE_ID = a.TESTCASE_ID ) AS SCENARIO_CNT
-							, ( SELECT COUNT(*) FROM TESTSCENARIO_TB WHERE TESTCASE_ID = a.TESTCASE_ID AND TEST_RESULT_YN = 'P' ) AS P_CNT
-							, a.COMPLETE_YN
-							, a.COMPLETE_DT
-							
-							FROM TESTCASE_TB AS a
-							WHERE TESTCASE_GB = #searchByTestcaseGb#
+						SELECT * 
+						FROM TESTCASE_TB AS a
+						WHERE TESTCASE_GB = #searchByTestcaseGb#
 						) AS b
 				WHERE 1=1
 		]]>
@@ -383,7 +363,7 @@
 			
 			<!-- 업무구분으로 검색 -->
 			<isNotEmpty property="searchByTaskGb">
-			    AND TASK_GB_CODE = #searchByTaskGb#
+			    AND TASK_GB_NM = #searchByTaskGb#
 			</isNotEmpty> 
 			
 			<!-- 완료여부로 검색 -->
@@ -439,7 +419,7 @@
 			
 			<!-- 업무구분으로 검색 -->
 			<isNotEmpty property="searchByTaskGb">
-			    AND TASK_GB_CODE = #searchByTaskGb#
+			    AND TASK_GB_NM = #searchByTaskGb#
 			</isNotEmpty> 
 			
 			<!-- 완료여부로 검색 -->
@@ -513,19 +493,7 @@
 			<![CDATA[
 				SELECT COUNT(*) totcnt 
 				FROM (
-					SELECT 
-						TESTSCENARIO_ID
-						,TESTSCENARIO_ORD
-						,TESTSCENARIO_CONTENT
-						,TESTCASE_ID
-						, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = USER_TEST_ID) AS USER_TEST_ID
-						,TEST_CONDITION
-						,EXPECTED_RESULT
-						,ENROLL_DT
-						,TEST_RESULT_YN
-						,TEST_DT
-						,TEST_RESULT_CONTENT 
-						
+					SELECT *
 					FROM TESTSCENARIO_TB AS a 
 					WHERE TESTCASE_ID = #testcaseId#
 		
@@ -638,7 +606,7 @@
 				
 				<!-- 업무구분으로 검색 -->
 				<isNotEmpty property="searchByTaskGb">
-				    AND TASK_GB_CODE = #searchByTaskGb#
+				    AND TASK_GB_NM = #searchByTaskGb#
 				</isNotEmpty> 
 				
 				<!-- 완료여부로 검색 -->
@@ -738,7 +706,7 @@
 			
 			<!-- 업무구분으로 검색 -->
 			<isNotEmpty property="searchByTaskGb">
-			    AND TASK_GB_CODE = #searchByTaskGb#
+			    AND TASK_GB_NM = #searchByTaskGb#
 			</isNotEmpty> 
 			
 			<!-- 완료여부로 검색 -->
@@ -839,7 +807,7 @@
 			
 			<!-- 업무구분으로 검색 -->
 			<isNotEmpty property="searchByTaskGb">
-			    AND TASK_GB_CODE = #searchByTaskGb#
+			    AND TASK_GB_NM = #searchByTaskGb#
 			</isNotEmpty> 
 			
 			<!-- 완료여부로 검색 -->

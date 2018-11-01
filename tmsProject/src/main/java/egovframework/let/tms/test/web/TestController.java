@@ -100,25 +100,6 @@ public class TestController {
 		return "tms/test/TestScenarioDetail";
 	}
 
-	/**
-	 * 테스트시나리오의 결과를 가져온다
-	 * @param String testscenarioId
-	 * @param model
-	 * @return String
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "/tms/test/selectTestScenarioResult.do")
-	public String selectTestScenarioResult(@RequestParam("testscenarioId") String testscenarioId, ModelMap model)
-			throws Exception {
-
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-		
-		if (isAuthenticated) {
-		TestScenarioVO testScenarioVO = testService.selectTestScenario(testscenarioId);
-		model.addAttribute("testScenarioVO", testScenarioVO);
-		}
-		return "tms/test/TestScenarioResult";
-	}
 
 	/**
 	 * 테스트케이스 등록 페이지로 이동한다.

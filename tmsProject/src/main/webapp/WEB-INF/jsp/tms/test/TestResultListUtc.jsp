@@ -134,16 +134,13 @@ function searchFileNm() {
 									<select name="searchByTaskGb" id="searchByTaskGb" style="width:90%;text-align-last:center;">
 										<option value="">전체</option>
 										<c:forEach var="cmCode" items="${taskGbCode}">
-										<option value="${cmCode.code}"  <c:if test="${searchVO.searchByTaskGb == cmCode.code}">selected="selected"</c:if>>${cmCode.codeNm}</option>
+										<option value="${cmCode.codeNm}"  <c:if test="${searchVO.searchByTaskGb == cmCode.codeNm}">selected="selected"</c:if>>${cmCode.codeNm}</option>
 										</c:forEach>
 									</select>						
       			        	</td>
-      			        	<td>
-      			        	</td>
-      			        	<td>
-      			        	</td>
-      			        	<td>
-      			        	</td>
+      			        	<td></td>
+      			        	<td></td>
+      			        	<td></td>
       			        </tr>
       			        <tr>
       			        <td style="padding-top:15px; font-weight:bold;color:#666666;font-size:110%;">
