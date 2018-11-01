@@ -15,6 +15,8 @@ import javax.annotation.Resource;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hslf.model.Sheet;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -23,6 +25,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -38,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.sym.prm.service.TmsProgrmManageService;
@@ -126,6 +130,13 @@ public class ProgramController {
 		List<?> userList = defectService.selectUser();
 		model.addAttribute("userList", userList);
 
+		model.addAttribute("pgid", searchVO.getSearchByPgId());
+		model.addAttribute("page", searchVO.getPageIndex());
+		model.addAttribute("sys", searchVO.getSearchBySysGb());
+		model.addAttribute("task", searchVO.getSearchByTaskGb());
+		model.addAttribute("dev", searchVO.getSearchByUserDevId());
+		model.addAttribute("yn", searchVO.getSearchUseYn());
+		
 		return "tms/pg/PgManage";
 	}
 
@@ -137,8 +148,15 @@ public class ProgramController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/tms/pg/selectPgInf.do")
-	public String selectPgInf(@ModelAttribute("programVO") ProgramVO searchVO, ModelMap model) throws Exception {
+	public String selectPgInf(@ModelAttribute("programVO") ProgramVO searchVO, @ModelAttribute("searchVO") ProgramDefaultVO defaultVO, ModelMap model) throws Exception {
 
+		System.out.println("페이지:" + defaultVO.getPageIndex());
+		System.out.println("페이지:" + defaultVO.getSearchByPgId());
+		System.out.println("페이지:" + defaultVO.getSearchBySysGb());
+		System.out.println("페이지:" + defaultVO.getSearchByTaskGb());
+		System.out.println("페이지:" + defaultVO.getSearchByUserDevId());
+		System.out.println("페이지:" + defaultVO.getSearchUseYn());
+		
 		ProgramVO VO = ProgramService.selectProgramInf(searchVO);		
 		model.addAttribute("programVO", VO);
 
@@ -154,7 +172,14 @@ public class ProgramController {
 		List<?> user_dev_List = TmsProgrmManageService.selectUserList();
 		model.addAttribute("dev_List", user_dev_List);
 		// 공통코드 끝 시작 -------------------------------	
+		model.addAttribute("sysGb", sysGbList);
 		
+		model.addAttribute("page", defaultVO.getPageIndex());
+		model.addAttribute("pgid", defaultVO.getSearchByPgId());
+		model.addAttribute("sys", defaultVO.getSearchBySysGb());
+		model.addAttribute("task", defaultVO.getSearchByTaskGb());
+		model.addAttribute("dev", defaultVO.getSearchByUserDevId());
+		model.addAttribute("yn", defaultVO.getSearchUseYn());	
 		
 		return "tms/pg/PgUpdate";
 	}
@@ -278,11 +303,19 @@ public class ProgramController {
 	 * 프로그램 정보를 수정한다.	 
 	 */	
 	@RequestMapping(value = "/tms/pg/Pgupdate.do")
-	public String updatePgList(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
+	public String updatePgList(final RedirectAttributes redirectAttributes, @ModelAttribute("programVO") ProgramVO programVO, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 
+		System.out.println("페이지3:" + searchVO.getPageIndex());
+		System.out.println("페이지3:" + searchVO.getSearchByPgId());
+		System.out.println("페이지3:" + searchVO.getSearchBySysGb());
+		System.out.println("페이지3:" + searchVO.getSearchByTaskGb());
+		System.out.println("페이지3:" + searchVO.getSearchByUserDevId());
+		System.out.println("페이지3:" + searchVO.getSearchUseYn());
 		
 		ProgramService.updatePg(programVO);
-			
+		
+		redirectAttributes.addFlashAttribute("searchVO", searchVO);
+		
 		return "redirect:/tms/pg/PgManage.do";
 		//return "redirect:/tms/pg/selectPgInf.do?pgId="+programVO.getPgId();
 		
@@ -660,7 +693,8 @@ public class ProgramController {
 	 * 업로드된 엑셀파일을 등록한다.
 	 * 	 */	
     @RequestMapping(value = "/tms/pg/requestupload.do")
-    public String requestupload1(MultipartHttpServletRequest mtfRequest, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
+    @ResponseBody
+    public ArrayList<HashMap<String, String>> requestupload1(MultipartHttpServletRequest mtfRequest, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
     	    	
     	String src = mtfRequest.getParameter("src");
         System.out.println("value : " + src);
@@ -691,15 +725,29 @@ public class ProgramController {
             e.printStackTrace();
         }
         
+        
         //엑셀파일 등록
 		List<ProgramVO> xlsxList = xlsxToCustomerVoList(safeFile);
 		//CustomerExcelReader excelReader = new CustomerExcelReader();
+		
+		ArrayList <HashMap<String, String>> error_hash = new ArrayList <HashMap<String, String>>();
+		
+		if(xlsxList == null) {
+			System.out.println("병합결과!");
+			HashMap<String, String> hash = new HashMap<String, String>();
+			hash.put("problem", "전체 행 등록 실패");
+			hash.put("reason", "엑셀파일 내부의 병합컬럼 존재");
+			error_hash.add(hash);
+			return error_hash;
+		}
+		
 		ProgramVO vo;
 		
 		int j = 0;
 		int result_cnt = 1;
 		
-		ArrayList <HashMap<String, String>> error_hash = new ArrayList <HashMap<String, String>>();
+		
+		
 		
 		for (int i = 0; i < xlsxList.size(); i++) {
 			
@@ -709,8 +757,10 @@ public class ProgramController {
 			
 			try {
 				
+				
 				ProgramService.insertPg(vo);
 				ProgramService.deletePg(vo);
+				
 				model.addAttribute("result", "true");
 				model.addAttribute("result2", "true");
 			}catch(Exception e) {
@@ -767,7 +817,30 @@ public class ProgramController {
 				result_cnt = 0;
 			}
 			
-		}  
+		}
+		
+		if(result_cnt == 1)
+		{
+			if(xlsxList.size() == 0) {
+				System.out.println("공백!");
+	        	
+	        	HashMap<String, String> hash = new HashMap<String, String>();
+				hash.put("problem", "등록 오류");
+				hash.put("reason", "엑셀파일 내부의 등록할 행 없음");
+				error_hash.add(hash);
+				return error_hash;
+			}
+			
+			for (int i = 0; i < xlsxList.size(); i++) {
+				vo = xlsxList.get(i);
+				ProgramService.insertPg(vo);
+			}
+		}
+		
+		
+		//System.out.println(error_hash.toString());
+		return error_hash;
+		/*
 		model.addAttribute("error_hashs", error_hash);
 		model.addAttribute("result", result_cnt);
 		
@@ -780,6 +853,7 @@ public class ProgramController {
 		}
 		
 		return "/tms/pg/ExcelFileNmSearch";
+		*/
     }
     
 	@RequestMapping(value = "/tms/pg/ExcelFileListSearch.do")
@@ -789,7 +863,7 @@ public class ProgramController {
 
 	}
     
-    
+	
 	/**
 	 * XLSX 파일을 분석하여 List<ProgramVO> 객체로 반환
 	 * @param filePath
@@ -818,6 +892,13 @@ public class ProgramController {
 			for(int sheetIndex = 0 ; sheetIndex < workbook.getNumberOfSheets(); sheetIndex++) {
 				// 현재 Sheet 반환
 				curSheet = workbook.getSheetAt(sheetIndex);
+				
+				// 병합 검출 테스트
+				if(curSheet.getNumMergedRegions() > 0) {
+					return null;
+				}
+					
+				
 				// row 탐색 for문
 				for(int rowIndex=0; rowIndex < curSheet.getPhysicalNumberOfRows(); rowIndex++) {
 					// row 0은 헤더정보이기 때문에 무시

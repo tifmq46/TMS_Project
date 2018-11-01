@@ -726,14 +726,20 @@ public class DevPlanController {
 		XSSFCell cell;
 			
 		Font defaultFont = workbook.createFont();        
+		defaultFont.setColor(HSSFColor.WHITE.index);
+		defaultFont.setBoldweight(Font.BOLDWEIGHT_BOLD); 
 		defaultFont.setFontHeightInPoints((short) 11); 
 		defaultFont.setFontName("맑은 고딕");
+
+		Font contentFont = workbook.createFont();      
+		contentFont.setFontHeightInPoints((short) 11); 
+		contentFont.setFontName("맑은 고딕");
 		
 		//제목 스타일 
 		CellStyle HeadStyle = workbook.createCellStyle(); 
 		HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
 		HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
-		HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index); 
+		HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index);
 		HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
 		HeadStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
 		HeadStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
@@ -760,7 +766,7 @@ public class DevPlanController {
 		BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
 		BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
 		BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
-		BodyStyle.setFont(defaultFont);   
+		BodyStyle.setFont(contentFont);   
 		
 		if(statsGb.equals("taskTotal")){
 			// 헤더 정보 구성
@@ -986,6 +992,12 @@ public class DevPlanController {
 			cell.setCellStyle(HeadStyle);
 			
 			row = sheet.createRow(1);
+			
+			cell = row.createCell(0);
+			cell.setCellStyle(TitleStyle);
+			cell = row.createCell(1);
+			cell.setCellStyle(TitleStyle);
+			
 			for(int i =0; i<periodList.size()+1; i++){
 				cell = row.createCell(2+(3*i));
 				cell.setCellValue("계획");

@@ -321,10 +321,10 @@
             					<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
             					<c:if test="${result.useYn == 'Y'}">
-            						<td align="center" class="listtd" style="background-color:#819FF7;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
+            						<td align="center" class="listtd" style="background-color:#007bff;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
             					</c:if>
             					<c:if test="${result.useYn == 'N'}">
-            						<td align="center" class="listtd" style="background-color:#F78181;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
+            						<td align="center" class="listtd" style="background-color:#CC3C39;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
             					</c:if>
             				</tr>
         				</c:forEach>

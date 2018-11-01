@@ -478,7 +478,7 @@ $(function(){
             					<td align="center" class="listtd"><font style="font-weight:bold"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></font></td>
             					<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
             					<td align="left" class="listtd">
-            						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?pgId=<c:out value='${result.pgId}'/>">
+            						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?pgId=<c:out value='${result.pgId}'/>&searchByPgId=<c:out value='${pgid}'/>&pageIndex=<c:out value='${page}'/>&searchBySysGb=<c:out value='${sys}'/>&searchByTaskGb=<c:out value='${task}'/>&searchByUserDevId=<c:out value='${dev}'/>&searchUseYn=<c:out value='${yn}'/>">
             							<font color="#0F438A" style="font-weight:bold"><c:out value="${result.pgNm}"/></font>
             						</a></td>
             					<td align="center" class="listtd"><c:out value="${result.sysGb}"/>&nbsp;</td>
