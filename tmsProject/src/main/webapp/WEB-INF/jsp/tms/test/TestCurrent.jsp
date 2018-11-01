@@ -158,7 +158,7 @@ function currentToExel(pageNo) {
       			        <select name="searchByTaskGb" id="searchByTaskGb" style="width:82%;text-align-last:center;" value="<c:out value='${searchVO.searchByTaskGb}'/>">
 										<option value="">전체</option>
 										<c:forEach var="cmCode" items="${taskGbCode}">
-										<option value="${cmCode.code}" <c:if test="${searchVO.searchByTaskGb == cmCode.code}">selected="selected"</c:if>>${cmCode.codeNm}</option>
+										<option value="${cmCode.codeNm}" <c:if test="${searchVO.searchByTaskGb == cmCode.codeNm}">selected="selected"</c:if>>${cmCode.codeNm}</option>
 										</c:forEach>
 									</select>	
       			        </td>

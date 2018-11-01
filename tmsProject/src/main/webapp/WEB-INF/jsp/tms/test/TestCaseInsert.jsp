@@ -35,6 +35,25 @@
 <script type="text/javaScript" language="javascript" defer="defer">
 
 
+window.onload = function(){
+	
+	document.getElementById('testcaseGb').onchange =  function(){
+		var testcaseGbValue = $("#testcaseGb").val();
+		$("#taskGbFormTd").empty();
+		var str = ""
+		if(testcaseGbValue == 'TC1'){
+			str += "<input type='text' readonly='true' id='TmsProgrmFileNm_task_gb'  size='62' cssStyle='width:50%' />";
+			$("#taskGbFormTd").append(str);
+		}  else {
+			$("#TmsProgrmFileNm_pg_id").val(null);
+			$("#TmsProgrmFileNm_pg_nm").val(null);
+			str += "<select name='taskGb' id='TmsProgrmFileNm_task_gb_code' ><c:forEach var='cmCode' items='${taskGbCode}'><option value='${cmCode.code}'>${cmCode.codeNm}</option></c:forEach></select>";
+			$("#taskGbFormTd").append(str);
+		} 
+	};
+};
+ 
+ 
 function insertTestCaseImpl(){
 	
 	
@@ -53,6 +72,7 @@ function insertTestCaseImpl(){
      } 
 	     
 	   if(isValid){
+		   $("#TmsProgrmFileNm_task_gb_code option").attr("disabled", "");
 		   $.ajax({
 			   	 type :"POST"
 			   	,url  : "<c:url value='/tms/test/checkTestCaseIdDuplication.do'/>"
@@ -100,6 +120,7 @@ function insertTestCaseImpl(){
 
 function searchFileNm() {
     window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
+   
 }
 
 </script>
@@ -193,7 +214,7 @@ function searchFileNm() {
                                 </label>    
                             </th>
                             <td colspan="3">
-                                <form:input type="text" readonly="true" title="게시판명입력" path="pgId" id="TmsProgrmFileNm_pg_id"  size="60" cssStyle="width:50%" />
+                                <form:input type="text"  readonly="true" title="게시판명입력" path="pgId" id="TmsProgrmFileNm_pg_id"  size="60" cssStyle="width:50%" />
                            		<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
                             </td>
@@ -214,14 +235,8 @@ function searchFileNm() {
                                     	<spring:message code="tms.test.taskGb" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td width="80%" nowrap colspan="3">
-                                
-	                                 <select name="taskGb" id="TmsProgrmFileNm_task_gb_code">
-										<c:forEach var="cmCode" items="${taskGbCode}">
-										<option value="${cmCode.code}">${cmCode.codeNm}</option>
-										</c:forEach>
-									</select>
-									<br/><form:errors path="taskGb" />
+                                <td width="80%" nowrap colspan="3" id="taskGbFormTd">
+									<input type='text' title='게시판명입력' readonly='true' id='TmsProgrmFileNm_task_gb'  size='62' cssStyle='width:50%' />
                                 </td>
                           </tr>
                           
@@ -262,8 +277,8 @@ function searchFileNm() {
                             </td>
                           </tr>
                          	<form:hidden path=""  id="TmsProgrmFileNm_sys_gb"/>
-                         	<form:hidden path=""  id="TmsProgrmFileNm_task_gb"/>
                          	<form:hidden path=""  id="TmsProgrmFileNm_pg_full"/>
+                         	<form:hidden path="taskGb"  id="TmsProgrmFileNm_task_gb_code"/>
                        </table>
                     </div>
              	
