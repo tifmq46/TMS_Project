@@ -27,9 +27,6 @@ public interface DevPlanService {
 	 */
 	public void updateDevPlan(DevPlanVO vo) throws Exception;
 
-	public void updateinput1(String s) throws Exception;
-	
-	public void updateinput2(String s) throws Exception;
 	
 	/**
 	 * 개발계획을 삭제한다.
@@ -70,15 +67,8 @@ public interface DevPlanService {
 	
 	public List<HashMap<String, String>> selectDevResultList(DevPlanDefaultVO searchVO) throws Exception;
 	
-	/**
-	 * 개발결과에 대한 상세정보를 조회한다.
-	 * @param vo - 조회할 정보가 담긴 DevPlanVO
-	 * @return 조회한 글
-	 * @exception Exception
-	 */
-	public List<?> selectDevResult(DevPlanDefaultVO defaultVO) throws Exception; 
-	
 	public String selectSTART() throws Exception;
+
 	public String selectEND() throws Exception;
 	
 	/**
@@ -120,8 +110,6 @@ public interface DevPlanService {
 	public void insertDayDiff(DevPlanDefaultVO searchVO);
 
 	public List<String> selectUserList();
-
-	public List<HashMap<String, String>> selectTempList();
 
 	public List<String> selectPeriod();
 	

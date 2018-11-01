@@ -19,20 +19,6 @@
 
 <script type="text/javaScript" language="javascript">
 
-function linkPage1(pageNo){
-	   document.listForm.pageIndex.value = pageNo;
-	   document.listForm.action = "<c:url value='/tms/dev/devCurrent.do'/>";
-	   document.listForm.submit();
-	}
-
-function fn_result_change(asd) {
-	var idVal3 = document.getElementById(asd+3).id;
-	$("#"+idVal3).removeClass("disabled");
-	$("#"+idVal3).addClass("abled");
-}
-
-
-
 function fn_searchList(pageNo){
     document.listForm.pageIndex.value = pageNo;
     document.listForm.searchBySysGb.value = document.listForm.Sys.value;
@@ -170,14 +156,7 @@ function pagePrint(){
 									</select>				
 									<input type="hidden" name="searchByTaskGb" value="">
       			        		</td>
-      			        		<td>
-      			        		</td>
-      			        		<td>
-      			        		</td>
-      			        		<td>
-      			        		</td>
-      			        		<td>
-      			        		</td>
+      			        		<td></td><td></td><td></td><td></td>
       			        	</tr>
       			        	<tr>
       			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
@@ -190,7 +169,7 @@ function pagePrint(){
 									</c:forEach>
 									</datalist>
       			        		</td>
-      			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">계획일자
+      			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발일자
       			        		</td>
       			        		<td colspan="3" style="padding-top:15px;">
 								<input type="date" id="searchByDevStartDt" name="searchByDevStartDt" 
@@ -253,6 +232,7 @@ function pagePrint(){
               
               
               <colgroup>
+              	<col width="15" >
         			<col width="40" >
                     <col width="40" >  
                     <col width="80" >
@@ -267,6 +247,7 @@ function pagePrint(){
         			</colgroup>
         			
         			<tr>
+        				<th align="center">번호</th>
         				<th align="center">시스템구분</th>
         				<th align="center">업무구분</th>
         				<th align="center">화면ID</th>
@@ -283,13 +264,10 @@ function pagePrint(){
         			<c:forEach var="result" items="${resultList}" varStatus="status">
         			
             			<tr>
+            			 	<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
             				<td align="center" class="listtd" name="sys"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
-            				<td align="center" class="listtd">
-            					<%-- <a href="<c:url value='/tms/dev/selectDevResult.do'/>?pgId=<c:out value='${result.pgId}'/>"> --%>
-                                <c:out value="${result.PG_ID}"/><!-- </a> -->
-                                <input type="hidden" id="pgId" name="pgId" value='<c:out value="${result.PG_ID}"/>' >
-                            </td>
+            				<td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
             				<td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_START_DT}"/>&nbsp;</td>
@@ -347,8 +325,8 @@ function pagePrint(){
             						<c:out value="${status}"/></td>
             					</c:when>
             					<c:when test="${status eq '진행'}">
-            						<td align="center" class="listtd" style="background-color:#BEF781;">
-            						<font style="font-weight:bold">
+            						<td align="center" class="listtd" style="background-color:#3ADF00;">
+            						<font color="#ffffff" style="font-weight:bold">
             						<c:out value="${status}"/></td>
             					</c:when>
             					<c:when test="${status eq '대기'}">

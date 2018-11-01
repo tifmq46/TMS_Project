@@ -81,18 +81,6 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	public List<HashMap<String, String>> selectDevResultList(DevPlanDefaultVO searchVO) throws Exception {
 		return (List<HashMap<String, String>>) list("devPlanDAO.selectDevResultList", searchVO);
 	}
-	
-	/**
-	 * 개발결과의 상세정보를 조회한다.
-	 * @param vo - 조회할 정보가 담긴 DevPlanVO
-	 * @return 조회한 글
-	 * @exception Exception
-	 */
-	public List<?> selectDevResult(DevPlanDefaultVO defaultVO) throws Exception {
-		return list("DevPlanDAO.selectDevResult", defaultVO);
-	}
-	
-	
 
 	/**
 	 * 개발결과를 수정한다.
@@ -102,13 +90,6 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	 */
 	public void updateDevResult(DevPlanVO vo) throws Exception {
 		update("DevPlanDAO.updateDevResult", vo);
-	}
-
-	public void updateinput1(String s) throws Exception {
-		update("DevPlanDAO.updateinput1", s);
-	}
-	public void updateinput2(String s) throws Exception {
-		update("DevPlanDAO.updateinput2", s);
 	}
 	
 	/**
@@ -139,7 +120,7 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	}
 
 	public List<HashMap<String, String>> selectDevCurrent(DevPlanDefaultVO searchVO) {
-		return (List<HashMap<String, String>>) list("devPlanDAO.selectDevCurrent",searchVO);
+		return (List<HashMap<String, String>>) list("DevPlanDAO.selectDevCurrent",searchVO);
 	}
 
 	public void updateRate(DevPlanDefaultVO searchVO) {
@@ -169,11 +150,7 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	public List<String> selectUserList() {
 		return (List<String>) list("DevPlanDAO.selectUserList");
 	}
-
-	public List<HashMap<String, String>> selectTempList() {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectTempList");
-	}
-
+	
 	public List<String> selectPeriod() {
 		return (List<String>) list("DevPlanDAO.selectPeriod");
 	}
