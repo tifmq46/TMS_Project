@@ -55,9 +55,6 @@ public class TmsProgrmManageController {
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
 
-	// 방금 전화했는데 서류 제출하고 9월말부터 확실하진 않지만 3년형 예싼이 들어올수는 있다고 
-	// 혹시 들어오면 3년형 대기자로 올려도 되는데 어떻게 하겠냐고 하대
-//	
 	/**
 	 * 프로그램파일명을 조회한다.
 	 * @param searchVO ComDefaultVO
@@ -147,18 +144,33 @@ public class TmsProgrmManageController {
 
 	}
 	
-	 @RequestMapping(value="/sym/prm/insertProjectView.do")
-	    public String insertProjectView(ModelMap model)throws Exception {
-
-	      	return "tms/pjt/PjtInsert";
+		@RequestMapping(value="/sym/prm/insertProject.do")
+	    public String insertProject(ModelMap model)throws Exception {
+	      	return "tms/pjt/pjtRegist";
 	    }
+		
 	    
-	    @RequestMapping(value="/sym/prm/insertProject.do")
-	    public String insertProject(@ModelAttribute("TmsProjectManageVO") TmsProjectManageVO TmsProjectManageVO)throws Exception {
-	    	System.out.println("###"+TmsProjectManageVO);
+	    @RequestMapping(value="/sym/prm/insertProjectImpl.do")
+	    public String insertProjectImpl(@ModelAttribute("TmsProjectManageVO") TmsProjectManageVO TmsProjectManageVO)throws Exception {
 	    	TmsProgrmManageService.insertProject(TmsProjectManageVO);
-
 	      	return "redirect:/cmm/main/mainPage.do";
 	    }
+
+	    @RequestMapping(value="/sym/prm/updateProject.do")
+	    public String updateProject(ModelMap model)throws Exception {
+	    	TmsProjectManageVO tmsProjectManageVO = TmsProgrmManageService.selectProject();
+	    	System.out.println("###1" + tmsProjectManageVO);
+	    	model.addAttribute("tmsProjectManageVO", tmsProjectManageVO);
+	    	return "tms/pjt/pjtUpdate";
+	    }
+	    
+	    @RequestMapping(value="/sym/prm/updateProjectImpl.do")
+	    public String updateProjectImpl(@ModelAttribute("TmsProjectManageVO") TmsProjectManageVO TmsProjectManageVO ,ModelMap model)throws Exception {
+	    	System.out.println("###2" + TmsProjectManageVO);
+	    	TmsProgrmManageService.updateProject(TmsProjectManageVO);
+	    	return "redirect:/cmm/main/mainPage.do";
+	    }
+	    
+	    
 
 }

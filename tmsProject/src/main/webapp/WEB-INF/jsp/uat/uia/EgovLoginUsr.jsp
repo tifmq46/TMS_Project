@@ -24,7 +24,6 @@
 <title>로그인</title>
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <link href="<c:url value='/'/>css/login.css" rel="stylesheet" type="text/css" >
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 <!--
 function actionLogin() {
@@ -80,9 +79,6 @@ function getid(form) {
 
 function fnInit() {
     var message = document.loginForm.message.value;
-    if (message != "") {
-        swal(message);
-    }
     getid(document.loginForm);
 }
 //-->
@@ -107,9 +103,7 @@ function fnInit() {
                         <ul>
                             <li>HOME</li>
                             <li>&gt;</li>
-                            <li>사용자관리</li>
-                            <li>&gt;</li>
-                            <li><strong>사용자 로그인</strong></li>
+                            <li><strong>로그인</strong></li>
                         </ul>
                     </div>                  
                 </div>
@@ -129,7 +123,7 @@ function fnInit() {
                                                onkeydown="javascript:if (event.keyCode == 13) { actionLogin(); }"/>
                                         </li>
                                         <li style="margin-left:10px;">
-                                        	<a href="<c:url value='/uat/uia/viewAddUsr.do'/>">회원가입</a>
+                                        	<a href="<c:url value='/uat/uia/viewAddUsr.do'/>" title="회원가입">회원가입</a>
                                         </li> 
                                         <li>
                                             <input type="checkbox" name="checkId" title="로그인ID 저장여부" onclick="javascript:saveid(this.form);" id="checkId" />ID저장

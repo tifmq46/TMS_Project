@@ -10,6 +10,7 @@
     author   : 실행환경개발팀 JJY
     since    : 2011.08.31 
 --%>
+<%@ page import="egovframework.com.cmm.LoginVO"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -20,7 +21,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Language" content="ko" >
-<title>표준프레임워크 경량환경 내부업무템플릿</title>
+<title>KCC TMS</title>
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 </head>
 <body>
@@ -143,24 +144,14 @@ window.onload = function() {
 	<!-- //header 끝 -->	
 	<!-- container 시작 -->
 	<div id="main_container">
-	    <!-- 프로그램리스트 검색 시작 -->
-		 <%--  <div>
-         	<ul>
-            	<li>
-                	<div>
-                    	<input type="text" id="TmsProgrmFileNm_pg_id" size="20" disabled="disabled">
-                    	<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
-	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" />검색</a>
-	                	<input type="text" id="TmsProgrmFileNm_user_dev_id" size="20" disabled="disabled">
-	                	<input type="text" id="TmsProgrmFileNm_pg_nm" size="20" disabled="disabled">
-	                	<input type="text" id="TmsProgrmFileNm_sys_gb" size="20" disabled="disabled">
-	                	<input type="text" id="TmsProgrmFileNm_task_gb" size="20" disabled="disabled">
-	                	<input type="text" id="TmsProgrmFileNm_user_real_id" size="20" disabled="disabled">
-                    </div>
-                </li>	
-            </ul>           
-         </div>  --%>
-        <!-- 프로그램리스트 검색 끝 --> 
+								<%
+									LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO");
+										if (loginVO != null) {
+								%>
+										<c:set var="loginUniqId" value="<%=loginVO.getUniqId()%>" />
+								<% 
+										}
+								%>
         <div class="container" style="padding:0 15px; 0 15px; font-family:'Malgun Gothic';">
 	    	<div class="page-title">
 	    			<b style="font-size:14px;"><i class="icon-bar-chart"></i>&nbsp;프로젝트 상세</b>
@@ -168,11 +159,6 @@ window.onload = function() {
 	    	
 	    	<div class="crumbs">
 	    		<ul id="breadcrumbs" class="breadcrumb"> 
-	    			<!-- <li>영업관리</li>
-	    			<li>
-	    				::before
-	    				"사업관리"
-	    			</li> -->
 	    		</ul>
 	    	</div>
     	</div>
@@ -192,9 +178,17 @@ window.onload = function() {
     				<table class="table table-search-head table-size-th4" style="height:215px; font-family:'Malgun Gothic';">
 					<tr>
 					<td>
+						<c:choose>
+						<c:when test="${loginUniqId == 'USRCNFRM_00000000000'}">
 						<font size="3px" style="font-weight:bold;">
-							<a href="<c:url value='/sym/prm/insertProjectView.do'/>">프로젝트 생성</a>
+							<a href="<c:url value='/sym/prm/insertProject.do'/>">프로젝트 생성</a>
 						</font>
+						</c:when>
+						<c:otherwise>
+						<font size="3px" style="font-weight:bold;">관리자에게 문의하십시오.
+						</font>
+						</c:otherwise>
+						</c:choose>
 					</td>
 					</tr>
 					</table>
@@ -217,37 +211,48 @@ window.onload = function() {
     				<table class="table table-search-head table-size-th4" style="height:215px; font-family:'Malgun Gothic';">
     					<tbody>
     						 <tr class="last">
-    							<th>프로젝트 명</th>
-    							<td id="empName" name="empName" align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtNm}</td>
+    							<th style="font-weight:bold;color:#0F438A;font-size:110%;">프로젝트명</th>
+    							<td colspan="4" id="empName" name="empName" align="left" style="font-size:110%; padding-left:60px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" valign="middle">${tmsProjectManageVO.pjtNm}</td>
     						</tr>
     						<tr class="last">
-    						    <th>사업 유형</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtType}</td>
-    						    <th>프로젝트 상태</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtSt}</td>
+    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">사업유형</th>
+    						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtType}</td>
+    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">사업상태</th>
+    						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtSt}</td>
     						</tr>
     						<tr class="last">
-    						    <th>PM</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtPm}</td>
-    						    <th>가격</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatNumber value="${tmsProjectManageVO.pjtPrice}" pattern="#,###"/>원</td>
+    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">PM</th>
+    						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtPm}</td>
+    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">사업비</th>
+    						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle"><fmt:formatNumber value="${tmsProjectManageVO.pjtPrice}" pattern="#,###"/>원</td>
     						</tr>
     						<tr class="last">
-    						    <th>계획시작일</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.devStartDt}" pattern="yyyy-MM-dd" /></td>
-    						    <th>계획완료일</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.devEndDt}" pattern="yyyy-MM-dd" /></td>
+    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">사업시작일</th>
+    						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.pjtStartDt}" pattern="yyyy-MM-dd" /></td>
+    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">사업종료일</th>
+    						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.pjtEndDt}" pattern="yyyy-MM-dd" /></td>
     						</tr>
     						<tr class="last">
-    						    <th>개발시작일</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.pjtStartDt}" pattern="yyyy-MM-dd" /></td>
-    						    <th>개발완료일</th>
-    						    <td align="left" style="padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.pjtEndDt}" pattern="yyyy-MM-dd" /></td>
+    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">개발시작일</th>
+    						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.devStartDt}" pattern="yyyy-MM-dd" /></td>
+    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">개발종료일</th>
+    						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.devEndDt}" pattern="yyyy-MM-dd" /></td>
     						</tr>
     						<tr class="last">
-    							<th>프로젝트 설명</th>
-    							<td id="empName" name="empName" align="left" style="padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtContent}</td>
+    							<th style="font-weight:bold;color:#0F438A;font-size:110%;">프로젝트 설명</th>
+    							<td colspan="4" id="empName" name="empName" align="left" title="<c:out value='${tmsProjectManageVO.pjtContent}'/>" style="font-size:110%; padding-left:60px;
+    							 white-space:nowrap; overflow:hidden;	text-overflow:ellipsis;" valign="middle">${tmsProjectManageVO.pjtContent}</td>
     						</tr>
+    					
+							<c:if test="${loginUniqId == 'USRCNFRM_00000000000'}">
+    						<tr>
+    						<td colspan="4">
+    						<div class="buttons" style="float:right;">
+    							<a href="<c:url value='/sym/prm/updateProject.do'/>">수정</a>
+    						</div>
+    						</td>
+    						</tr>
+    						</c:if>
     					</tbody>
     				</table>
     				
@@ -275,12 +280,12 @@ window.onload = function() {
 			            </colgroup>
 			            <thead>
 			            <tr>
-			                <th scope="col" class="f_field" nowrap="nowrap">이름</th>
-			                <th scope="col" nowrap="nowrap">역할</th>
-			                <th scope="col" nowrap="nowrap">대기</th>
-			                <th scope="col" nowrap="nowrap">조치중</th>
-			                <th scope="col" nowrap="nowrap">조치완료</th>
-			                <th scope="col" nowrap="nowrap">재요청</th>
+			                <th scope="col" class="f_field" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">이름</th>
+			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">역할</th>
+			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">대기</th>
+			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">조치중</th>
+			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">조치완료</th>
+			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">재요청</th>
 			            </tr>
 			            </thead>
 			            <tbody>          
@@ -288,12 +293,12 @@ window.onload = function() {
 			             <c:forEach var="pjtMemberList" items="${pjtMemberList}" varStatus="status">
 			            <!-- loop 시작 -->                                
 			              <tr>
-						    <td id="icl" nowrap="nowrap"  style="color:blue;"><i class="icon-user" style="font-size: 2em; color: rgb(80, 80, 80)"></i>　<c:out value="${pjtMemberList.userNm}"/></td>
-						    <td nowrap="nowrap"><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000000'}">관리자</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000001'}">PL</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000002'}">개발자</c:if></td>
-						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA1 }"/></td>
-						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA2 }"/></td>
-						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA3 }"/></td>
-						    <td nowrap="nowrap"><c:out value="${pjtMemberList.actionStA4 }"/></td>
+						    <td id="icl" nowrap="nowrap"  style="font-weight:bold;color:#0F438A;font-size:110%;"><i class="icon-user" style="font-size: 2em; color: rgb(80, 80, 80)"></i>　<c:out value="${pjtMemberList.userNm}"/></td>
+						    <td nowrap="nowrap" style="font-size:110%;"><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000000'}">관리자</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000001'}">PL</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000002'}">개발자</c:if></td>
+						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${pjtMemberList.actionStA1 }"/></td>
+						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${pjtMemberList.actionStA2 }"/></td>
+						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${pjtMemberList.actionStA3 }"/></td>
+						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${pjtMemberList.actionStA4 }"/></td>
 			              </tr>
 			            </c:forEach> 
 			            <c:if test="${fn:length(pjtMemberList) == 0 }">
@@ -319,7 +324,7 @@ window.onload = function() {
     			<br/><br/>
     			<c:choose>
     			<c:when test="${devPlanByMainStats != null}">
-    				<canvas id="devPlanByMainStats" width="100%" height="30"></canvas>
+    				<canvas id="devPlanByMainStats" width="100%" height="28"></canvas>
     			</c:when>
     			<c:otherwise>
     			등록된 개발계획이 없습니다.
@@ -338,7 +343,7 @@ window.onload = function() {
     			<br/><br/>
     			<c:choose>
     			<c:when test="${sysByMainStats != null }">
-    			<canvas id="sysByMainStats" width="100%" height="30"></canvas>
+    			<canvas id="sysByMainStats" width="100%" height="28"></canvas>
     			</c:when>
     			<c:otherwise>
     			 등록된 결함이 없습니다.

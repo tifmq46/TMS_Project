@@ -37,11 +37,15 @@
 		<result property="pjtSt"        column="PJT_ST"        columnIndex="4"/>
 		<result property="pjtPm"             column="PJT_PM"             columnIndex="5"/>
 		<result property="pjtPrice"             column="PJT_PRICE"             columnIndex="6"/>
-		<result property="devStartDt"             column="DEV_START_DT"             columnIndex="7"/>
-		<result property="devEndDt"             column="DEV_END_DT"             columnIndex="8"/>
-		<result property="pjtStartDt"             column="PJT_START_DT"             columnIndex="9"/>
-		<result property="pjtEndDt"             column="PJT_END_DT"             columnIndex="10"/>
-		<result property="pjtContent"             column="PJT_CONTENT"             columnIndex="11"/>
+		<result property="pjtContent"             column="PJT_CONTENT"             columnIndex="7"/>
+		<result property="pjtStartDt"             column="PJT_START_DT"             columnIndex="8"/>
+		<result property="pjtEndDt"             column="PJT_END_DT"             columnIndex="9"/>
+		<result property="devStartDt"             column="DEV_START_DT"             columnIndex="10"/>
+		<result property="devEndDt"             column="DEV_END_DT"             columnIndex="11"/>
+		<result property="planStartDt"             column="PLAN_START_DT"             columnIndex="12"/>
+		<result property="planEndDt"             column="PLAN_END_DT"             columnIndex="13"/>
+		<result property="inputStartDt"             column="INPUT_START_DT"             columnIndex="14"/>
+		<result property="inputEndDt"             column="INPUT_END_DT"             columnIndex="15"/>
 	</resultMap>	
 	
 	<select id="TmsProgrmManageDAO.selectProgrmList_D" parameterClass="comDefaultVO" resultMap="TmsProgrmManage">
@@ -85,11 +89,15 @@
 				  PJT_ST,
 				  PJT_PM,
 				  PJT_PRICE,
-				  DEV_START_DT,
-				  DEV_END_DT,
+				  PJT_CONTENT,
 				  PJT_START_DT,
 				  PJT_END_DT,
-				  PJT_CONTENT
+				  DEV_START_DT,
+				  DEV_END_DT,
+				  PLAN_START_DT,
+				  PLAN_END_DT,
+				  INPUT_START_DT,
+				  INPUT_END_DT
 			FROM PJT_TB
 		 ]]>
 	</select>
@@ -194,19 +202,33 @@
 	<insert id="TmsProgrmManageDAO.insertProject"  parameterClass="TmsProjectManageVO">
 			<![CDATA[
             INSERT INTO PJT_TB
-        	(PJT_ID, PJT_NM, PJT_TYPE, PJT_ST, PJT_PM, PJT_PRICE, DEV_START_DT, DEV_END_DT, PJT_START_DT, PJT_END_DT, PJT_CONTENT)
+        	(PJT_ID, PJT_NM, PJT_TYPE, PJT_ST, PJT_PM, PJT_PRICE, PJT_CONTENT, PJT_START_DT, PJT_END_DT, DEV_START_DT, DEV_END_DT, PLAN_START_DT, PLAN_END_DT, INPUT_START_DT, INPUT_END_DT)
         	VALUES
-        	(#pjtId#,#pjtNm#, #pjtType#, #pjtSt#, #pjtPm#, #pjtPrice#,#devStartDt#,#devEndDt#,#pjtStartDt#,#pjtEndDt#,#pjtContent#
+        	(#pjtId#,#pjtNm#, #pjtType#, #pjtSt#, #pjtPm#, #pjtPrice#,#pjtContent#,#pjtStartDt#,#pjtEndDt#,#devStartDt#,#devEndDt#,NULL,NULL,NULL,NULL
         	)
 			]]>
 	</insert>
-	<insert id="TmsProgrmManageDAO.select"  parameterClass="TmsProjectManageVO">
-			<![CDATA[
-           SELECT *
-           FROM PJT_TB
-           LIMIT 1
-			]]>
-	</insert>
 	
+	<update id="TmsProgrmManageDAO.updateProject" parameterClass="TmsProjectManageVO">
+	    <![CDATA[
+	    	UPDATE PJT_TB
+	    	SET
+	    		PJT_NM = #pjtNm#,
+	    		PJT_TYPE = #pjtType#,
+	    		PJT_ST = #pjtSt#,
+	    		PJT_PM = #pjtPm#,
+	    		PJT_PRICE = #pjtPrice#,
+	    		PJT_CONTENT = #pjtContent#,
+	    		PJT_START_DT = #pjtStartDt#,
+	    		PJT_END_DT = #pjtEndDt#,
+	    		DEV_START_DT = #devStartDt#,
+	    		DEV_END_DT = #devEndDt#,
+	    		PLAN_START_DT = #planStartDt#,
+	    		PLAN_END_DT = #planEndDt#,
+	    		INPUT_START_DT = #inputStartDt#,
+	    		INPUT_END_DT = #inputEndDt#
+	    	WHERE PJT_ID = #pjtId#
+	    ]]>
+	</update>	
 
 </sqlMap>                            

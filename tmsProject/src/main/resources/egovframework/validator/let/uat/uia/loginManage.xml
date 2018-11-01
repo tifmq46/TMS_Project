@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+    <formset>
+        <form name="TmsLoginVO">
+			<field property="EMPLYR_ID" depends="required, maxlength">
+        		<arg0 key="회원ID" />
+        		<arg1 key="20" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>20</var-value>
+				</var>
+			</field> 
+			<field property="USER_NM" depends="required, maxlength">
+        		<arg0 key="회원이름" />
+        		<arg1 key="60" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>60</var-value>
+				</var>
+			</field>
+			<field property="PASSWORD" depends="required, maxlength">
+        		<arg0 key="비밀번호" />
+        		<arg1 key="200" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>200</var-value>
+				</var>
+			</field>
+			<field property="CONFIRM_PASSWORD" depends="required, maxlength">
+        		<arg0 key="비밀번호 확인" />
+        		<arg1 key="200" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>200</var-value>
+				</var>
+			</field>
+			<field property="ESNTL_ID" depends="required, maxlength">
+        		<arg0 key="역할" />
+        		<arg1 key="20" resource="false"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>20</var-value>
+				</var>
+			</field>
+		</form>
+    </formset>
+</form-validation>

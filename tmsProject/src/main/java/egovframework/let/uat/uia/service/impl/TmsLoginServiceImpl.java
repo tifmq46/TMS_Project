@@ -49,15 +49,4 @@ public class TmsLoginServiceImpl extends EgovAbstractServiceImpl implements TmsL
 		
 	}
 
-    ///** EgovSndngMailRegistService */
-	//@Resource(name = "sndngMailRegistService")
-    //private EgovSndngMailRegistService sndngMailRegistService;
-
-    /**
-	 * 일반 로그인을 처리한다
-	 * @param vo LoginVO
-	 * @return LoginVO
-	 * @exception Exception
-	 */
-    
 }

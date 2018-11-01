@@ -88,4 +88,5 @@ public interface TmsProgrmManageService {
 	void insertProject(TmsProjectManageVO tmsProjectManageVO) throws Exception;
 	List<?> selectTestList();
 	List<HashMap<String, String>> selectProgrmList1(int a);
+	void updateProject(TmsProjectManageVO TmsProjectManageVO) throws Exception;
 }
