@@ -206,9 +206,18 @@ window.onload = function() {
     	<div class="myBsnsList" class="col-md-6" style="height: 260px; margin-bottom:30px; font-family:'Malgun Gothic';">
     		<div class="widget">
     			<div class="widget-header">
-    				<div class="header-name" style="margin:10px;">
+    				<ul>
+    					<li>
+    					<div style="float:left;" class="header-name" style="margin:10px;">
 	    					프로젝트 정보
-    				</div>
+    					</div>
+    					</li>
+    					<li>
+    					<div class="buttons" style="float:right;">
+    							<a href="<c:url value='/sym/prm/updateProject.do'/>">수정</a>
+    						</div>
+    					</li>
+    				</ul>
     			</div>
     			<div class="widget-content box">
     				<table class="table table-search-head table-size-th4" style="height:215px; font-family:'Malgun Gothic';">
@@ -249,11 +258,7 @@ window.onload = function() {
     					
 							<c:if test="${loginUniqId == 'USRCNFRM_00000000000'}">
     						<tr>
-    						<td colspan="4">
-    						<div class="buttons" style="float:right;">
-    							<a href="<c:url value='/sym/prm/updateProject.do'/>">수정</a>
-    						</div>
-    						</td>
+    						
     						</tr>
     						</c:if>
     					</tbody>
