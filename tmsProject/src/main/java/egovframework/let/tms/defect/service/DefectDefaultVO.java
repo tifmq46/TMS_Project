@@ -233,7 +233,7 @@ public class DefectDefaultVO extends DefectVO implements Serializable{
 	}
 
 	public void setId(String id) {
-		Id = id;
+		this.Id = id;
 	}
 	
 	
