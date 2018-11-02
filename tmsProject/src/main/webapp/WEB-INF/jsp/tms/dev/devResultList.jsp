@@ -495,7 +495,7 @@ $(function(){
             				<td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
             				<td align="center" class="listtd" name="sys"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_START_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_END_DT}"/>&nbsp;</td>
             				

@@ -213,7 +213,7 @@ function StatsToExcel(statsGb) {
 	           			
 		                    <tr>
 		                   		
-		                    	<td><c:out value="${us.DevNm}" /></td>
+		                    	<td><c:out value="${us.userDevNm}(${us.userDevId})" /></td>
 		                    	
 		                    	<td><strong>${us.sumUserPlan}</strong></td>
 								<c:set var = "totSum1" value="${us.sumUserPlan}" />

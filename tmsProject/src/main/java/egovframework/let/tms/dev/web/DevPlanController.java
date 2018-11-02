@@ -182,14 +182,16 @@ public class DevPlanController {
 		
 		//********************
 		if(!Objects.equals(tmsPrj, null)){
-			Date ps = tmsPrj.getDevStartDt();
-			String formatPs = sdf.format(ps);
-
-			Date pe = tmsPrj.getDevEndDt();
-			String formatPe = sdf.format(pe);
-			
-			model.addAttribute("ps", formatPs);
-			model.addAttribute("pe", formatPe);
+			if(!Objects.equals(tmsPrj.getPlanStartDt(), null) && !Objects.equals(tmsPrj.getPlanEndDt(), null)){
+				Date ps = tmsPrj.getPlanStartDt();
+				String formatPs = sdf.format(ps);
+	
+				Date pe = tmsPrj.getPlanEndDt();
+				String formatPe = sdf.format(pe);
+				
+				model.addAttribute("ps", formatPs);
+				model.addAttribute("pe", formatPe);
+			}
 		//}
 		
 		//if( !(start.equals("null")) && !(end.equals("null"))){
@@ -222,9 +224,6 @@ public class DevPlanController {
 	public String selectBetweenDate(String start, String end) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-		System.out.println("start:"+start+"//end:"+end);
-		/*
-		*/
 		if(start.equals("") || end.equals("")){
 			return null;
 		}else{
@@ -316,7 +315,6 @@ public class DevPlanController {
 		
 		String a = String.valueOf(searchVO.getSearchBySysGb());
 		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
-			//System.out.println("ddddd");
 			List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
 			model.addAttribute("taskGb2", taskGbList2);
 		}
@@ -349,7 +347,6 @@ public class DevPlanController {
 		devEndDt = String.valueOf(dvo.getDevEndDt());
 		devAchRate = String.valueOf(dvo.getAchievementRate());
 			
-			System.out.println("날짜값"+devStartDt);
 			if(flag.equals("auto")){
 				if(!devStartDt.equals("null")){
 					if(!devEndDt.equals("null")){
@@ -469,12 +466,11 @@ public class DevPlanController {
 			List<HashMap<String,String>> userStatsList = new ArrayList<HashMap<String,String>>();
 			HashMap<String,String> userMap = new HashMap<String,String>();
 			
-		
 			for(int j=0; j<periodList.size(); j++){
 				userMap.put("dt",String.valueOf(periodList.get(j)));
 				userStatsList.addAll(devPlanService.selectUserWeekStats(userMap));
 			}
-			
+				
 			JSONArray userArray = new JSONArray();
 			JSONObject userObj = new JSONObject();
 			
@@ -491,7 +487,8 @@ public class DevPlanController {
 				sumDiff = 0;
 				
 				for(int j=0; j<periodList.size();j++){
-					userObj.put("DevNm", userStatsList.get(temp).get("userDevNm"));
+					userObj.put("userDevId", userStatsList.get(temp).get("userDevId"));
+					userObj.put("userDevNm", userStatsList.get(temp).get("userDevNm"));
 					userObj.put("a"+periodList.get(j), userStatsList.get(temp).get(periodList.get(j)));
 					userObj.put( "b"+periodList.get(j), userStatsList.get(temp).get("b"+periodList.get(j)));
 					userObj.put( "sub"+periodList.get(j), userStatsList.get(temp).get("sub"+periodList.get(j)));
@@ -507,7 +504,7 @@ public class DevPlanController {
 				userObj.put("sumDiff", sumDiff);
 				userArray.add(userObj);
 			}
-
+			
 			JsonUtil jsU = new JsonUtil();
 			List<Map<String,Object>> userStats = jsU.getListMapFromJsonArray(userArray);
 			
@@ -566,6 +563,7 @@ public class DevPlanController {
 			return null;
 		}
 	}
+	
 	@RequestMapping(value = "/tms/dev/devCurrent.do")
 	public String selectDevCurrent(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
 		
@@ -607,13 +605,22 @@ public class DevPlanController {
 		model.addAttribute("paginationInfo", paginationInfo);
 		
 		HashMap<String,String> devPlanAvg = devPlanService.DevPlanAvg(searchVO);
-		System.out.println(searchVO.getPgId());
-		System.out.println("dddddd01;;"+searchVO.getSearchByDevStartDt()+"~"+searchVO.getSearchByDevEndDt());
 		model.addAttribute("r", devPlanAvg);
 		
 		return "tms/dev/devCurrent";
 	}
 	
+	@RequestMapping(value = "/tms/dev/devCurListPrint.do")
+	public String selectDevCurListPrint(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
+		
+		searchVO.setPrintOpt("printPage");
+		searchVO.setRecordCountPerPage(56);
+		searchVO.setFirstIndex(0);
+		List<HashMap<String,String>> devCurrentList = devPlanService.selectDevCurrent(searchVO);
+		model.addAttribute("resultList", devCurrentList);
+		
+		return "tms/dev/devCurListPrint";
+	}
 	/*주말 제외한 두 날짜 사이의 기간 가져오기*/
 	public ArrayList<String> betweenDate(Date startDate, Date endDate){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -672,13 +679,10 @@ public class DevPlanController {
 	public List<?> selectDevStatsAsyn(String sysGb) throws Exception {
 		List<?> taskByProgressRate;
 		if(sysGb.equals("sysGb")){
-			System.out.println("전체로 나옴");
 			taskByProgressRate = devPlanService.selectTaskTotalProgressRate();
 		} else {
-			System.out.println("업무별로 나옴");
 			taskByProgressRate = devPlanService.selectTaskByProgressRate(sysGb);
 		}
-		System.out.println("값 확인"+taskByProgressRate);
 		
 		return taskByProgressRate;
 	}
@@ -921,7 +925,7 @@ public class DevPlanController {
 				row = sheet.createRow(i+2);
 				
 				cell = row.createCell(0);
-				cell.setCellValue(String.valueOf(otherList.get(i).get("DevNm")));
+				cell.setCellValue(String.valueOf(otherList.get(i).get("userDevNm"))+"("+String.valueOf(otherList.get(i).get("userDevId"))+")");
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
 				int temp2 = 1;
