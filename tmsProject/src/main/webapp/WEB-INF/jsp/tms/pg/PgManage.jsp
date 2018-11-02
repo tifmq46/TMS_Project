@@ -300,7 +300,9 @@ $(function(){
 <body>
 
 <!-- 전체 레이어 시작 -->
-
+<c:if test="${!empty message and fn:length(message) > 0}">
+	<script type="text/javascript"> swal("${message}");</script>
+</c:if>
 
 <div id="wrap" style="font-family:'Malgun Gothic';">
     <!-- header 시작 -->

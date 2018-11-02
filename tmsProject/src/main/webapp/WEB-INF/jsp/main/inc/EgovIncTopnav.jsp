@@ -50,17 +50,27 @@
     }
 
 </script>
+<style>
+#menu_login:hover {
+	
+	background-color: #C8D7FF;
+}
+#menu:hover {
+	
+	background-color: rgba( 255, 255, 255, 0.05 );
+}
+</style>
 <fieldset><legend>조건정보 영역</legend>
 <div class="nav_container" style="padding:0 20px; font-family:'Malgun Gothic';">
 	<ul>
-	    <a href="<c:url value='/'/>uat/uia/actionMain.do" style="float:left; border-right:1px solid rgba(0, 0, 0, 0.21); padding-top:15px; padding-bottom:16px; padding-left:18px;">
-		    <strong style="font-size:15px; text-shadow:0 1px 0 #000000; margin-right:91.5px;">KCC TMS</strong>
-		    <i class="icon-reorder"></i>
+	    <a href="<c:url value='/'/>uat/uia/actionMain.do" style="float:left; border-right:1px solid rgba(0, 0, 0, 0.21); padding-top:15px; padding-bottom:16px; padding-left:18px;" >
+		    <strong style="font-size:15px; text-shadow:0 1px 0 #000000; margin-right:90px;">KCC TMS</strong>
+		    <i style="padding-top:5px; padding-bottom:5px; padding-left:5px;" class="icon-reorder"></i>
 	    </a>
 		<c:forEach var="result" items="${list_headmenu}" varStatus="status">
-	        <li><a href="#LINK" style="padding-top:18px; font-size:12px; float:left; padding-bottom:18px; padding-left:18px;" onclick="javascript:goMenuPage('<c:out value="${result.menuNo}"/>')"><c:out value="${result.menuNm}"/></a></li>  
+	        <li><a id="menu" href="#LINK" style="padding-top:18px; font-size:12px; float:left; padding-bottom:18px; padding-left:18px;" onclick="javascript:goMenuPage('<c:out value="${result.menuNo}"/>')"><c:out value="${result.menuNm}"/></a></li>  
 	    </c:forEach>
-	     <div class="dropdown" style="float:right; border-left:1px solid rgba(0, 0, 0, 0.20); padding-top:18px; padding-bottom:18px; padding-left:18px;">
+	     <div id="menu" class="dropdown" style="float:right; border-left:1px solid rgba(0, 0, 0, 0.20); padding-top:18px; padding-bottom:18px; padding-left:18px;">
 		    <li style="color:white; font-size:12px; text-shadow:0 1px 0 #000000;">
 		<%
         LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
@@ -70,10 +80,12 @@
 	  	<%
         }else{
 	  	%>
-	  	    <c:set var="loginName" value="<%= loginVO.getName()%>"/>
-            <font style="font-size:12px;">KCC정보통신 ㅣ <c:out value="${loginName}"/> 님</font></li>
+	  	    	<c:set var="loginName" value="<%= loginVO.getName()%>"/>
+            	<font style="font-size:12px;">KCC정보통신 ㅣ <c:out value="${loginName}"/> 님</font></li>
             <div class="dropdown-content" style="float:left; font-size:12px;">
-		    	<a href="<c:url value='/uat/uia/actionLogout.do'/>">로그아웃</a>
+		    	<div id="menu_login" style="width:100%;height:100%;padding-top:5px; padding-bottom:5px;">
+		    		<a href="<c:url value='/uat/uia/actionLogout.do'/>">로그아웃</a>
+		    	</div>		    	
 		    </div>
 	  	<%
 	  	} 

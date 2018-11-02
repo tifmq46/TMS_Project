@@ -23,6 +23,9 @@
 <meta http-equiv="Content-Language" content="ko" >
 <title>KCC TMS</title>
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
+<style>
+	tr.row:hover { background-color: lightyellow; } 
+</style>
 </head>
 <body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
@@ -203,9 +206,18 @@ window.onload = function() {
     	<div class="myBsnsList" class="col-md-6" style="height: 260px; margin-bottom:30px; font-family:'Malgun Gothic';">
     		<div class="widget">
     			<div class="widget-header">
-    				<div class="header-name" style="margin:10px;">
+    				<ul>
+    					<li>
+    					<div style="float:left;" class="header-name" style="margin:10px;">
 	    					프로젝트 정보
-    				</div>
+    					</div>
+    					</li>
+    					<li>
+    					<div class="buttons" style="float:right;">
+    							<a href="<c:url value='/sym/prm/updateProject.do'/>">수정</a>
+    						</div>
+    					</li>
+    				</ul>
     			</div>
     			<div class="widget-content box">
     				<table class="table table-search-head table-size-th4" style="height:215px; font-family:'Malgun Gothic';">
@@ -246,11 +258,7 @@ window.onload = function() {
     					
 							<c:if test="${loginUniqId == 'USRCNFRM_00000000000'}">
     						<tr>
-    						<td colspan="4">
-    						<div class="buttons" style="float:right;">
-    							<a href="<c:url value='/sym/prm/updateProject.do'/>">수정</a>
-    						</div>
-    						</td>
+    						
     						</tr>
     						</c:if>
     					</tbody>
@@ -292,7 +300,7 @@ window.onload = function() {
 			                   
 			             <c:forEach var="pjtMemberList" items="${pjtMemberList}" varStatus="status">
 			            <!-- loop 시작 -->                                
-			              <tr>
+			              <tr class="row">
 						    <td id="icl" nowrap="nowrap"  style="font-weight:bold;color:#0F438A;font-size:110%;"><i class="icon-user" style="font-size: 2em; color: rgb(80, 80, 80)"></i>　<c:out value="${pjtMemberList.userNm}"/></td>
 						    <td nowrap="nowrap" style="font-size:110%;"><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000000'}">관리자</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000001'}">PL</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000002'}">개발자</c:if></td>
 						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${pjtMemberList.actionStA1 }"/></td>

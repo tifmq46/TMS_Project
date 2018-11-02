@@ -162,7 +162,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="sysGb" name="sysGb" class="select" title="시스템구분">
+                            <select id="sysGb" name="sysGb" class="select" title="시스템구분" style="width:25%; text-align-last:center;">
 									   <option value="" >선택하세요</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
 									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${SYSGB == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
@@ -183,7 +183,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="taskGb" name="taskGb" class="select" title="업무구분">
+                            <select id="taskGb" name="taskGb" class="select" title="업무구분" style="width:25%; text-align-last:center;">
 									   <option value="" >선택하세요</option>
                                 			<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
 									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${TASKGB == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
@@ -201,10 +201,10 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                            <select id="userDevId" name="userDevId" class="select" title="개발자">
+                            <select id="userDevId" name="userDevId" class="select" title="개발자" style="width:25%; text-align-last:center;">
 									   <option value="" >선택하세요</option>
 									      <c:forEach var="DEV_ID" items="${dev_List}" varStatus="status">
-									    	<option value="<c:out value="${DEV_ID.USER_NM}"/>" <c:if test="${DEV_ID.USER_NM == USERDEVID}">selected="selected"</c:if> ><c:out value="${DEV_ID.USER_NM}" /></option>
+									    	<option value="<c:out value="${DEV_ID.EMPLYR_ID}"/>" <c:if test="${DEV_ID.USER_NM == USERDEVID}">selected="selected"</c:if> ><c:out value="${DEV_ID.USER_NM}(${DEV_ID.EMPLYR_ID})" /></option>
 									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
@@ -221,7 +221,7 @@
                                 </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
-                            <td width="80%" nowrap="nowrap">
+                            <td width="80%" nowrap="nowrap" >
                                 Y : <input type="radio" id="useYn" name="useYn" class="radio2" value="Y" checked>&nbsp;
                                 N : <input type="radio" id="useYn" name="useYn" class="radio2" value="N" >
                                 <br/>
