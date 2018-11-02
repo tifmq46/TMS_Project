@@ -11,7 +11,6 @@
     author   : 공통서비스 개발팀 lee.m.j
     since    : 2009.02.01
 --%>
-<%@ page import="egovframework.com.cmm.LoginVO"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
@@ -120,12 +119,12 @@ td.listtd {
       			        	<td style="font-weight:bold;color:#666666;font-size:110%;">업무구분
       			        	</td>
       			        	<td>
-                           <select name="searchByTaskGb" id="searchByTaskGb" style="width:82%;text-align-last:center;">
-                               <option value="" selected="selected" >전체</option>
-                               <c:forEach var="taskGb" items="${taskGb}" varStatus="status">
-                                  <option value="<c:out value="${taskGb.codeNm}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb.codeNm}">selected="selected"</c:if> ><c:out value="${taskGb.codeNm}" /></option>
-                               </c:forEach>
-                           </select>   
+                           <input list="taskGbList" name="searchByTaskGb" id="searchByTaskGb" style="width:80%;text-align-last:center;" value="<c:out value='${searchVO.searchByTaskGb}'/>"/>
+                               <datalist id="taskGbList">
+									    <c:forEach var="taskGb" items="${taskGb}" varStatus="status">
+									    	<option value="<c:out value="${taskGb.codeNm}"/>"  style="text-align:center;"></option>
+									    </c:forEach>
+					        	</datalist>
       			        	</td>
       			        	<td style="font-weight:bold;color:#666666;font-size:110%;">결함유형
       			        	</td>
@@ -263,7 +262,7 @@ td.listtd {
                         	</a>
             				</td>
             				<td align="center" class="listtd" title="<c:out value="${result.defectGb}"/>"><c:out value="${result.defectGb}"/></td>
-            				<td align="center" class="listtd" title="<c:out value="${result.userTestId}"/>"><c:out value="${result.userTestId}"/></td>
+            				<td align="center" class="listtd" title="<c:out value="${result.userTestId}"/>"><c:out value="${result.userTestNm}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/></td>
             			<c:choose>
             			<c:when test="${result.actionSt == '조치중' }">

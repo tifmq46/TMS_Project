@@ -38,7 +38,8 @@ function fn_egov_update_updateDefect(){
 	if (!validateDefectVOUpdate(document.defectVO)){
         return;
     } else {
-	document.getElementById("defectGb").disabled = "";
+
+    document.getElementById("defectGb").disabled = "";
 	document.getElementById("actionSt").disabled = "";
 	document.getElementById("defectContent").disabled = "";
 	document.getElementById("actionContent").disabled = "";
@@ -86,6 +87,13 @@ function fn_egov_delete_defectImg() {
 		document.defectVO.submit();
 	}
 }
+function changeUserTestNm() {
+	var userNm = $('#userTestNm').val();
+	var pre = userNm.split('(');
+	var next = pre[1].split(')');
+	document.getElementById("userTestNm").value = pre[0];
+	document.getElementById("userTestId").value = next[0];
+}
 
 window.onload = function() {
 	if (document.getElementById("uniqId").value == "USRCNFRM_00000000000"
@@ -113,7 +121,7 @@ window.onload = function() {
 	} else {
 		// 일반 로그인
 		// 테스터 로그인 - 결함 관련 내용 abled
-		if (document.getElementById("loginNm").value == document.getElementById("userTestNm").value) {
+		if (document.getElementById("loginId").value == document.getElementById("userTestId").value) {
 			document.getElementById("defectTitle").readOnly = false;
 			document.getElementById("defectTitle").style.border = "1";
 			document.getElementById("defectContent").readOnly = false;
@@ -147,7 +155,7 @@ window.onload = function() {
 			}
 		}
 		// 개발자 로그인 - 조치 관련 내용 abled
-		if (document.getElementById("loginNm").value == document.getElementById("userDevNm").value) {
+		if (document.getElementById("loginId").value == document.getElementById("userDevId").value) {
 			document.getElementById("actionContent").readOnly = false;
 			document.getElementById("actionContent").style.border = "1";
 			document.getElementById("actionContent").disabled = "";
@@ -217,6 +225,7 @@ window.onload = function() {
 							if (loginVO != null) {
 						%>
 						<c:set var="loginName" value="<%=loginVO.getName()%>" />
+						<c:set var="loginId" value="<%=loginVO.getId()%>" />
 						<c:set var="uniqId" value="<%=loginVO.getUniqId()%>" />
 						<%
 							}
@@ -231,31 +240,31 @@ window.onload = function() {
 					      <tr>   
 					        <th width="12.5%" height="23" nowrap >결함번호
 					        </th>
-					        <td width="12.5%" nowrap >
+					        <td width="12.5%" nowrap>
 					          <input type="hidden" name="boardNo" size="5" readonly="readonly" value="<c:out value="${boardNo}"/>"  maxlength="40" title="결함번호"
 					          style="text-align:center; border:none; width:90%;" /> 
-					          <input type="text" name="defectIdSq" size="5" readonly="readonly" value="<c:out value="${defectOne.defectIdSq}"/>"  maxlength="40" title="결함번호"
-					          style="text-align:center; border:none; width:90%;" /> 
+					          <input type="text" name="defectIdSq" size="5" readonly="readonly" value="<c:out value="${defectOne.defectIdSq}"/>"  maxlength="40" title="<c:out value="${defectOne.defectIdSq}"/>"
+					           style="text-align:center; border:none; width:90%;" /> 
 					          <form:errors path="defectIdSq" />
 					        </td>
 					         <th width="12.5%" height="23" nowrap >업무구분
 					        </th>
 					        <td width="12.5%" nowrap >
-					          <input type="text" size="10" readonly="readonly" value="<c:out value="${defectOne.taskGb}"/>"  maxlength="40" title="업무구분"  
-					           style="text-align:center; border:none; width:80%;"/> 
+					          <input type="text" size="10" readonly="readonly" value="<c:out value="${defectOne.taskGb}"/>"  maxlength="40" title="<c:out value="${defectOne.taskGb}"/>"  
+					           style="text-align:center; border:none; width:80%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"/> 
 					        </td>
 					         <th width="12.5%" height="23" nowrap >화면ID
 					        </th>
 					        <td width="12.5%" nowrap >
-					          <input name="pgId" type="text" size="10" readonly="readonly" value="<c:out value="${defectOne.pgId}"/>"  maxlength="40" title="화면ID" 
-					          style="text-align:center; border:none; width:90%;" /> 
+					          <input name="pgId" type="text" size="10" readonly="readonly" value="<c:out value="${defectOne.pgId}"/>"  maxlength="40" title="<c:out value="${defectOne.pgId}"/>" 
+					          style="text-align:center; border:none; width:90%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" /> 
 					          <form:errors path="pgId" />
 					        </td>
 					        <th width="12.5%" height="23" nowrap >화면명
 					        </th>
 					        <td width="12.5%" nowrap >
-					          <input size="5" readonly="readonly" value="<c:out value="${defectOne.pgNm}"/>"  maxlength="40" title="화면명"
-					          style="text-align:center; border:none; width:90%;" /> 
+					          <input size="5" readonly="readonly" value="<c:out value="${defectOne.pgNm}"/>"  maxlength="40" title="<c:out value="${defectOne.pgNm}"/>"
+					          style="text-align:center; border:none; width:90%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" /> 
 					        </td>
 					       </tr>
 					       
@@ -264,15 +273,17 @@ window.onload = function() {
 					        </th>
 					        <td width="12.5%" nowrap >
 					       
-							  <input list="userTestList" name="userNm" id="userTestNm" value="<c:out value="${defectOne.userTestId}"/>"  autocomplete="off" style="text-align:center; width:90%;"/>
-					        	<c:if test="${loginName == defectOne.userTestId || uniqId == 'USRCNFRM_00000000000' || uniqId == 'USRCNFRM_00000000001' }">
+							  <input list="userTestList" name="userNm" id="userTestNm" value="<c:out value="${defectOne.userTestNm}"/>"  autocomplete="off" style="text-align:center; width:90%;"
+							  onchange="javascript:changeUserTestNm()"/>
+					        	<c:if test="${loginId == defectOne.userTestId || uniqId == 'USRCNFRM_00000000000' || uniqId == 'USRCNFRM_00000000001' }">
 					        	<datalist id="userTestList">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
-									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+									    	<option value="<c:out value="${userList.userNm}"/>(<c:out value="${userList.emplyrId}"/>)"  style="text-align:center;"></option>
 									    </c:forEach>
 					        	</datalist>
 					        	</c:if>
 					        	<form:errors path="userNm" />
+					        	<input type="hidden" id="userTestId" name="userTestId" value="<c:out value="${defectOne.userTestId }"/>"/>
 					        </td>
 					        <th width="12.5%" height="23" class="" nowrap >결함유형
 					        </th>
@@ -289,8 +300,9 @@ window.onload = function() {
 					         <th width="12.5%" height="23" nowrap >개발자
 					        </th>
 					        <td width="12.5%" nowrap >
-					          <input type="text" id="userDevNm" size="10" readonly="readonly" value="<c:out value="${defectOne.userDevId}"/>"  maxlength="40" title="개발자" 
+					          <input type="text" id="userDevNm" size="10" readonly="readonly" value="<c:out value="${defectOne.userDevNm}"/>"  maxlength="40" title="<c:out value="${defectOne.userDevId}"/>" 
 					          style="text-align:center; border:none; width:90%;" /> 
+					        <input type="hidden" id="userDevId" name="userDevId" value="${defectOne.userDevId }"/>
 					        </td>
 					         <th width="12.5%" height="23" nowrap >조치상태
 					        </th>
@@ -317,7 +329,7 @@ window.onload = function() {
 					        <th width="12.5%" height="23" nowrap >등록일자
 					        </th>
 					        <td width="12.5%" nowrap >
-					          <input name="enrollDt" size="5" readonly="readonly" value="<c:out value="${defectOne.enrollDt}"/>"  maxlength="40" title="등록일자"
+					          <input name="enrollDt" size="5" readonly="readonly" value="<c:out value="${defectOne.enrollDt}"/>"  maxlength="40" title="<c:out value="${defectOne.enrollDt}"/>"
 					          style="text-align:center; border:none; width:90%;" /> 
 					        </td>
 					         <th width="12.5%" height="23" nowrap >조치일자
@@ -326,7 +338,7 @@ window.onload = function() {
 					        <c:choose>
 					        <c:when test="${defectOne.actionDt eq null }">
 					          <input id="actionDt" name="actionDt" type="text" size="10" readonly="readonly" 
-					          value="${defectOne.curDate}"  maxlength="40" title="조치일자" style="text-align:center; border:none; width:90%;" /> 
+					          value="<c:out value="${defectOne.curDate}"/>"  maxlength="40" title="조치일자" style="text-align:center; border:none; width:90%;" /> 
 					        </c:when>
 					        <c:otherwise>
 					          <input id="actionDt" name="actionDt" type="text" size="10" readonly="readonly" 
@@ -387,7 +399,9 @@ window.onload = function() {
 					       </tr>
                         </table>
                     </div>
-
+					<input type="hidden" id="loginNm" value="<c:out value='${loginName }'/>" />
+					<input type="hidden" id="loginId" value="<c:out value='${loginId }'/>" />
+					<input type="hidden" id="uniqId" value="<c:out value='${uniqId }'/>" />
 						<!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
                     

@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import egovframework.com.cmm.EgovMessageSource;
 import org.apache.poi.hslf.model.Sheet;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -77,6 +77,9 @@ public class ProgramController {
 	@Resource(name = "TmsProgrmManageService")
 	private TmsProgrmManageService TmsProgrmManageService;
 	
+	/** EgovMessageSource */
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;	
 	
 	/**
 	 * 글 목록을 조회한다. (pageing)
@@ -127,7 +130,7 @@ public class ProgramController {
 		model.addAttribute("useYnList", useYnList);
 		// 공통코드 끝 시작 -------------------------------	
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 
 		model.addAttribute("pgid", searchVO.getSearchByPgId());
@@ -150,13 +153,6 @@ public class ProgramController {
 	@RequestMapping("/tms/pg/selectPgInf.do")
 	public String selectPgInf(@ModelAttribute("programVO") ProgramVO searchVO, @ModelAttribute("searchVO") ProgramDefaultVO defaultVO, ModelMap model) throws Exception {
 
-		System.out.println("페이지:" + defaultVO.getPageIndex());
-		System.out.println("페이지:" + defaultVO.getSearchByPgId());
-		System.out.println("페이지:" + defaultVO.getSearchBySysGb());
-		System.out.println("페이지:" + defaultVO.getSearchByTaskGb());
-		System.out.println("페이지:" + defaultVO.getSearchByUserDevId());
-		System.out.println("페이지:" + defaultVO.getSearchUseYn());
-		
 		ProgramVO VO = ProgramService.selectProgramInf(searchVO);		
 		model.addAttribute("programVO", VO);
 
@@ -260,7 +256,7 @@ public class ProgramController {
 		List<String> useYnList = TmsProgrmManageService.selectUseYn();
 		model.addAttribute("useYnList", useYnList);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 		
 		int use_y = ProgramService.selectTotCntUseYn(searchVO);
@@ -290,11 +286,13 @@ public class ProgramController {
 		
 	}
 	@RequestMapping(value = "/tms/pg/Pginsert.do")
-	public String insertPgList(@ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
+	public String insertPgList(RedirectAttributes redirectAttributes, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
 		programVO.setPjtId("1");
 		ProgramService.insertPg(programVO);
 			
+		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.insert"));
+		
 		return "redirect:/tms/pg/PgManage.do";
 		
 	}
@@ -315,6 +313,7 @@ public class ProgramController {
 		ProgramService.updatePg(programVO);
 		
 		redirectAttributes.addFlashAttribute("searchVO", searchVO);
+		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.update"));
 		
 		return "redirect:/tms/pg/PgManage.do";
 		//return "redirect:/tms/pg/selectPgInf.do?pgId="+programVO.getPgId();
@@ -367,11 +366,8 @@ public class ProgramController {
 	 */
 	@RequestMapping(value = "/tms/pg/deleteListAction.do")
 	@ResponseBody
-	public List<?> deleteListAction(@RequestParam("returnValue") String returnValue, String searchData,ModelMap model) throws Exception {
-		
-		List<String> selectTaskGbSearch = TmsProgrmManageService.selectTaskGbSearch(searchData);
-		model.addAttribute("selectTaskGbSearch", selectTaskGbSearch);
-		
+	public void deleteListAction(@RequestParam("returnValue") String returnValue, String searchData,ModelMap model) throws Exception {
+				
 		String[] strDelCodes = returnValue.split(";");
 		for (int i = 0; i < strDelCodes.length; i++) {
 			ProgramVO vo = new ProgramVO();
@@ -379,12 +375,9 @@ public class ProgramController {
 			ProgramService.deletePg(vo);
 			
 		}
-		
 		/** 프로그램 삭제시 결함 시퀀스 초기화 */
 		defectService.updateDefectIdSq();
 		
-		return selectTaskGbSearch;
-
 	}
 	
 	

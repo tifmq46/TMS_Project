@@ -35,6 +35,7 @@
 
 </style>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script language="javascript1.2"  type="text/javaScript"> 
 
 
@@ -46,16 +47,13 @@ $(function(){
 			         
 			         type:"POST",
 			         url: "<c:url value='/tms/pg/deleteListAction.do?returnValue="+deleteList+"'/>",
-			         data : {searchData : this.value},
-			         async: false,
-			         dataType : "json",
-			         success : function(str){
-			        	 opener.location.reload();
+			         success : function(){
+			        	 opener.location.reload();			        	 
 			        	 window.close();
 			            
 			         },
 			         error : function(request,status,error){
-			            alert("삭제할 수 없습니다.");
+			            swal("삭제할 수 없습니다.");
 			            //alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 
 			         }

@@ -67,9 +67,10 @@ function afterPrint(){
 	document.body.innerHTML = initBody;
 }
 function pagePrint(){
-	window.onbeforeprint = beforePrint;
-	window.onafterprint = afterPrint;
-	window.print();
+	window.open("<c:url value='/tms/dev/devCurListPrint.do'/>",'','width=1000,height=600');
+	//window.onbeforeprint = beforePrint;
+	//window.onafterprint = afterPrint;
+	//window.print();
 }
 </script>
 
@@ -269,7 +270,7 @@ function pagePrint(){
             				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
             				<td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_START_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_END_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.DEV_START_DT}"/>&nbsp;</td>

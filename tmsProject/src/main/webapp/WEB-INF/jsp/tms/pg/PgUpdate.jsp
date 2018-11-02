@@ -37,20 +37,12 @@
     	var dev = document.programVO.dev.value;
     	var yn = document.programVO.yn.value;
     	
-    	alert(page);
-    	alert(pgid);
-    	alert(sys);
-    	alert(task);
-    	alert(dev);
-    	alert(yn);
-    	
-    	
     	if (!validateProgramVO(document.programVO)) {
 			return;
 		}
     	
 		swal({
-   			text: '저장하시겠습니까?'
+   			text: '수정하시겠습니까?'
    			,buttons : true
    		})
    		.then((result) => {
@@ -186,7 +178,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="sysGb" name="sysGb" class="select" title="시스템구분" onchange="selectChange();" readonly>
+                            <select id="sysGb" name="sysGb" class="select" title="시스템구분" style="width:25%; text-align-last:center;" onchange="selectChange();" readonly >
 									   <option selected value="" >선택하세요</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
 									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${programVO.sysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
@@ -207,7 +199,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td>
-                            <select id="taskGb" name="taskGb" class="select" title="업무구분">
+                            <select id="taskGb" name="taskGb" class="select" title="업무구분" style="width:25%; text-align-last:center;">
 									   <option value="">선택하세요</option>
 					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
 									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${programVO.taskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
@@ -224,10 +216,10 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                            <select id="userDevId" name="userDevId" class="select" title="개발자">
+                            <select id="userDevId" name="userDevId" class="select" title="개발자" style="width:25%; text-align-last:center;">
 									   <option value="" >선택하세요</option>
 									      <c:forEach var="DEV_ID" items="${dev_List}" varStatus="status">
-									    	<option value="<c:out value="${DEV_ID.USER_NM}"/>" <c:if test="${programVO.userDevId == DEV_ID.USER_NM}">selected="selected"</c:if>><c:out value="${DEV_ID.USER_NM}" /></option>
+									    	<option value="<c:out value="${DEV_ID.EMPLYR_ID}"/>" <c:if test="${programVO.userDevId == DEV_ID.USER_NM}">selected="selected"</c:if>><c:out value="${DEV_ID.USER_NM}(${DEV_ID.EMPLYR_ID})" /></option>
 									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>

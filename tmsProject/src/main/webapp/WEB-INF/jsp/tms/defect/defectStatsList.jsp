@@ -11,7 +11,6 @@
     author   : 공통서비스 개발팀 lee.m.j
     since    : 2009.02.01
 --%>
-<%@ page import="egovframework.com.cmm.LoginVO"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -228,7 +227,7 @@ th,td{
 										<c:otherwise>
 											<c:choose>
 											<c:when test="${sysGbByStats.taskNm == '소계'}">
-												<td class="lineStyle">${sysGbByStats.sysNm }</td>
+												<td class="lineStyle" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="<c:out value="${sysGbByStats.sysNm }"/>">${sysGbByStats.sysNm }</td>
 												<td class="lineStyle">${sysGbByStats.taskNm }</td>
 												<td class="lineStyle">${sysGbByStats.defectGbD1 }</td>
 												<td class="lineStyle">${sysGbByStats.defectGbD2 }</td>
@@ -239,8 +238,8 @@ th,td{
 												<td class="lineStyle borderLine">${sysGbByStats.actionPer }%</td>
 											</c:when>
 											<c:otherwise>
-												<td>${sysGbByStats.sysNm }</td>
-												<td>${sysGbByStats.taskNm }</td>
+												<td style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="<c:out value="${sysGbByStats.sysNm }"/>">${sysGbByStats.sysNm }</td>
+												<td style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="<c:out value="${sysGbByStats.taskNm }"/>">${sysGbByStats.taskNm }</td>
 												<td>${sysGbByStats.defectGbD1 }</td>
 												<td>${sysGbByStats.defectGbD2 }</td>
 												<td>${sysGbByStats.defectGbD3 }</td>
@@ -276,16 +275,16 @@ th,td{
 
 
 								<colgroup>
-									<col width="10%" />
 									<col width="15%" />
 									<col width="15%" />
-									<col width="10.8%" />
-									<col width="10.8%" />
-									<col width="10.8%" />
-									<col width="10.8%" />
-									<col width="10.8%" />
-									<col width="10.8%" />
-									<col width="10.8%" />
+									<col width="15%" />
+									<col width="7.85%" />
+									<col width="7.85%" />
+									<col width="7.85%" />
+									<col width="7.85%" />
+									<col width="7.85%" />
+									<col width="7.85%" />
+									<col width="7.85%" />
 								</colgroup>
 								<tr>
 									<th align="center" rowspan="2">개발자</th>
@@ -321,7 +320,7 @@ th,td{
 									<c:otherwise>
 										<c:choose>
 										<c:when test="${userDevPgIdByStats.pgId == '소계'}">
-											<td class="lineStyle">${userDevPgIdByStats.userNm }</td>
+											<td class="lineStyle">${userDevPgIdByStats.userNm }(${userDevPgIdByStats.userDevId })</td>
 											<td class="lineStyle" colspan="2">${userDevPgIdByStats.pgId }</td>
 											<td class="lineStyle">${userDevPgIdByStats.defectGbD1 }</td>
 											<td class="lineStyle">${userDevPgIdByStats.defectGbD2 }</td>
@@ -333,8 +332,8 @@ th,td{
 										</c:when>
 										<c:otherwise>
 											<td>${userDevPgIdByStats.userNm }</td>
-											<td>${userDevPgIdByStats.pgId }</td>
-											<td>${userDevPgIdByStats.pgNm }</td>
+											<td title="<c:out value="${userDevPgIdByStats.pgId }"/>" style="white-space:nowrap;	overflow:hidden; text-overflow:ellipsis;">${userDevPgIdByStats.pgId }</td>
+											<td title="<c:out value="${userDevPgIdByStats.pgNm }"/>" style="white-space:nowrap;	overflow:hidden; text-overflow:ellipsis;">${userDevPgIdByStats.pgNm }</td>
 											<td>${userDevPgIdByStats.defectGbD1 }</td>
 											<td>${userDevPgIdByStats.defectGbD2 }</td>
 											<td>${userDevPgIdByStats.defectGbD3 }</td>

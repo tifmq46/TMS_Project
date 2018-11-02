@@ -117,12 +117,12 @@ function searchFileNm() {
       			        	<td style="font-weight:bold;color:#666666;font-size:110%;">업무구분
       			        	</td>
       			        	<td>
-                           <select name="searchByTaskGb" id="searchByTaskGb" style="width:82%;text-align-last:center;">
-                               <option value="" selected="selected" >전체</option>
-                               <c:forEach var="taskGb" items="${taskGb}" varStatus="status">
-                                  <option value="<c:out value="${taskGb.codeNm}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb.codeNm}">selected="selected"</c:if> ><c:out value="${taskGb.codeNm}" /></option>
-                               </c:forEach>
-                           </select>   
+                           <input list="taskGbList" name="searchByTaskGb" id="searchByTaskGb" style="width:80%;text-align-last:center;" value="<c:out value='${searchVO.searchByTaskGb}'/>"/>
+                               <datalist id="taskGbList">
+									    <c:forEach var="taskGb" items="${taskGb}" varStatus="status">
+									    	<option value="<c:out value="${taskGb.codeNm}"/>"  style="text-align:center;"></option>
+									    </c:forEach>
+					        	</datalist>
       			        	</td>
       			        	<td style="font-weight:bold;color:#666666;font-size:110%;">결함유형
       			        	</td>
@@ -158,6 +158,7 @@ function searchFileNm() {
 								%>
 
 										<c:set var="loginName" value="<%=loginVO.getName()%>" />
+										<c:set var="loginId" value="<%=loginVO.getId()%>" />
 										<c:set var="loginUniqId" value="<%=loginVO.getUniqId()%>" />
       			        <tr>
       			        <c:choose>
@@ -264,7 +265,7 @@ function searchFileNm() {
                         </td>
                         
                         <td align="center" class="listtd" title="<c:out value="${result.defectGb}"/>"><c:out value="${result.defectGb}"/></td>
-                        <td align="center" class="listtd" title="<c:out value="${result.userTestId}"/>"><c:out value="${result.userTestId}"/></td>
+                        <td align="center" class="listtd" title="<c:out value="${result.userTestId}"/>"><c:out value="${result.userTestNm}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.enrollDt}"/></td>
                     
                         <c:choose>

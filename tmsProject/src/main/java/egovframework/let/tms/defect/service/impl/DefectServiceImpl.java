@@ -102,9 +102,9 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 	}
 
 	@Override
-	public List<?> selectUser() {
+	public List<?> selectUser(int status) {
 		// TODO Auto-generated method stub
-		return defectDAO.selectUser();
+		return defectDAO.selectUser(status);
 	}
 
 

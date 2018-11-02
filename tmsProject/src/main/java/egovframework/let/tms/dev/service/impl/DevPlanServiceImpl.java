@@ -39,15 +39,6 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	
 	@Override
 	public void insertDevPlan(DevPlanVO vo) throws Exception {
-		/*LOGGER.debug(vo.toString());
-
-		*//** ID Generation Service *//*
-		//String id = egovIdGnrService.getNextStringId();
-		vo.setPgId(vo.getPgId());
-		LOGGER.debug(vo.toString());
-
-		devPlanDAO.insertDevPlan(vo);*/
-		
 		devPlanDAO.insertDevPlan(vo);
 	}
 
@@ -60,7 +51,6 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	@Override
 	public void deleteDevPlan(DevPlanVO vo) throws Exception {
 		devPlanDAO.deleteDevPlan(vo);
-		
 	}
 
 	/**

@@ -352,8 +352,8 @@ b{font-weight: 1000;}
 		position: relative;
 		min-height: 1px;
 		padding:0 15px 20px 15px;
-		border:1.2px solid #ddd;
-		border-radius: 5px;
+		/* border:1.2px solid #ddd; */
+		/* border-radius: 5px; */
 		margin-right: 50px;
 		float:left;
 }
@@ -362,8 +362,8 @@ b{font-weight: 1000;}
 		position: relative;
 		min-height: 1px;
 		padding:0 15px 20px 15px;
-		border:1.2px solid #ddd;
-		border-radius: 5px;
+		/* border:1.2px solid #ddd; */
+		/* border-radius: 5px; */
 		margin:0 !important;
 		float:left;
 }

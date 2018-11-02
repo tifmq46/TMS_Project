@@ -11,7 +11,6 @@
     author   : 공통서비스 개발팀 lee.m.j
     since    : 2009.02.01
 --%>
-<%@ page import="egovframework.com.cmm.LoginVO"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
@@ -73,7 +72,7 @@ function handleClick(event, array){
 				str += "<font color='#007BFF'>&nbsp;&nbsp;" + item.actionStA3Cnt;
 				str += "</font>";
 				str += " / " + item.taskCnt;
-				str += " ( " + item.actionPer + " %)<br/>";
+				str += " ( " + item.actionPer + " % )<br/>";
 				if(temp == "sysGb") {
 					str += item.sysNm + "(" + item.taskNm + ")";
 				} else {
@@ -375,7 +374,7 @@ window.onload = function() {
 							<div style="font-size: 15px; font-weight: bolder;">
 								<font color="#007BFF">&nbsp;&nbsp;<c:out value="${sysByActionCnt.actionStA3Cnt}" /></font> /
 								<c:out value="${sysByActionCnt.sysCnt}" />
-								(<c:out value=" ${sysByActionCnt.actionPer}"/>%)
+								( <c:out value=" ${sysByActionCnt.actionPer}"/>% )
 								<br/><c:out value="${sysByActionCnt.sysNm}"/><br/>
 							</div>
 						</td>
@@ -423,7 +422,7 @@ window.onload = function() {
 							<div style="font-size: 15px; font-weight: bolder;">
 								<font color="#007BFF">&nbsp;&nbsp;<c:out value="${taskByActionCnt.actionStA3Cnt}" /></font> /
 								<c:out value="${taskByActionCnt.taskCnt}" />
-								(<c:out value=" ${taskByActionCnt.actionPer}"/>%)
+								( <c:out value=" ${taskByActionCnt.actionPer}"/>% )
 								<br/><c:out value="${taskByActionCnt.sysNm}"/>(<c:out value="${taskByActionCnt.taskNm}"/>)
 							</div>
 						</td>
