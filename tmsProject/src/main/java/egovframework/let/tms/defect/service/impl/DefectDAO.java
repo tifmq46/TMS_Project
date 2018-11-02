@@ -87,8 +87,12 @@ public class DefectDAO extends EgovAbstractDAO{
 		return list("defectDAO.selectTaskGb2");
 	}
 	
-	public List<?> selectUser() {
-		return list("defectDAO.selectUser");
+	public List<?> selectUser(int status) {
+		if(status == 0) { // 중복된거 제거
+			return list("defectDAO.selectUserDistinct");
+		} else { 
+			return list("defectDAO.selectUser");
+		}
 	}
 	
 	public List<?> searchDefect(DefectDefaultVO searchVO) {

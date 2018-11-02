@@ -127,7 +127,7 @@ public class ProgramController {
 		model.addAttribute("useYnList", useYnList);
 		// 공통코드 끝 시작 -------------------------------	
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 
 		model.addAttribute("pgid", searchVO.getSearchByPgId());
@@ -260,7 +260,7 @@ public class ProgramController {
 		List<String> useYnList = TmsProgrmManageService.selectUseYn();
 		model.addAttribute("useYnList", useYnList);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 		
 		int use_y = ProgramService.selectTotCntUseYn(searchVO);

@@ -179,18 +179,14 @@
 								%>
 
 								<c:set var="loginName" value="<%=loginVO.getName()%>" />
+								<c:set var="loginId" value="<%=loginVO.getId()%>" />
 									<%
 								}
 								%>
-
 								<td width="16.6%" nowrap >
-					        	<input list="userTestId" name="userNm" value='${loginName}'  autocomplete="off" style="text-align:center; width:85%; " />
-					        	<datalist id="userTestId">
-									    <c:forEach var="userList" items="${userList}" varStatus="status">
-									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
-									    </c:forEach>
-					        	</datalist>
+					        	<input name="userNm" value='${loginName}'  autocomplete="off" readOnly="readOnly" style="text-align:center;" />
 					        	<form:errors path="userNm" />
+								<input type="hidden" name="userTestId" value="${loginId }"/>
 					        </td>
 					       </tr>
 

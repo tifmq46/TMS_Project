@@ -134,7 +134,7 @@ public class DevPlanController {
 		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 		
 		List<HashMap<String,String>> devList = devPlanService.selectDevPlans(searchVO);
@@ -324,7 +324,7 @@ public class DevPlanController {
 		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 		
 		List<HashMap<String,String>> devResultList = devPlanService.selectDevResultList(searchVO);
@@ -599,7 +599,7 @@ public class DevPlanController {
 		List<HashMap<String,String>> devCurrentList = devPlanService.selectDevCurrent(searchVO);
 		model.addAttribute("resultList", devCurrentList);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 		
 		int totCnt = devPlanService.selectDevCurrentTotCnt(searchVO);
