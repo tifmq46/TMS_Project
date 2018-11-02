@@ -173,9 +173,6 @@ public class DevPlanController {
 		String mTime = sdf.format (currentTime);
 		Date currentDate = sdf.parse(mTime);
 
-		String start = String.valueOf(devPlanService.selectSTART());
-		String end =String.valueOf(devPlanService.selectEND());
-		
 		TmsProjectManageVO tmsPrj = TmsProgrmManageService.selectProject();
 		
 		model.addAttribute("tms", tmsPrj);	
@@ -192,26 +189,25 @@ public class DevPlanController {
 				model.addAttribute("ps", formatPs);
 				model.addAttribute("pe", formatPe);
 			}
-		//}
 		
-		//if( !(start.equals("null")) && !(end.equals("null"))){
-			Date sDate = sdf.parse(start);
-			Date eDate = sdf.parse(end);
-			
-			int compare = currentDate.compareTo(sDate);
-			int compare2 = currentDate.compareTo(eDate);
-			
-			boolean d_result = true;
-			
-			if((compare >= 0) && (compare2 <=0) ){
-				d_result = false;
-			}else{
-				d_result = true;
+			if(!Objects.equals(tmsPrj.getInputStartDt(), null) && !Objects.equals(tmsPrj.getInputEndDt(), null)){
+				Date sDate = tmsPrj.getInputStartDt();
+				Date eDate = tmsPrj.getInputEndDt();
+
+				int compare = currentDate.compareTo(sDate);
+				int compare2 = currentDate.compareTo(eDate);
+				
+				boolean d_result = true;
+				
+				if((compare >= 0) && (compare2 <=0) ){
+					d_result = false;
+				}else{
+					d_result = true;
+				}
+				model.addAttribute("start", sDate);
+				model.addAttribute("end", eDate);
+				model.addAttribute("d_test", d_result);
 			}
-			model.addAttribute("start", sDate);
-			model.addAttribute("end", eDate);
-			model.addAttribute("d_test", d_result);
-			
 		}
 		model.addAttribute("page", searchVO.getPageIndex());
 		
@@ -614,9 +610,8 @@ public class DevPlanController {
 	public String selectDevCurListPrint(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
 		
 		searchVO.setPrintOpt("printPage");
-		searchVO.setRecordCountPerPage(56);
-		searchVO.setFirstIndex(0);
 		List<HashMap<String,String>> devCurrentList = devPlanService.selectDevCurrent(searchVO);
+		System.out.println("??????????"+searchVO.getSearchBySysGb()+searchVO.getSearchByUserDevId());
 		model.addAttribute("resultList", devCurrentList);
 		
 		return "tms/dev/devCurListPrint";

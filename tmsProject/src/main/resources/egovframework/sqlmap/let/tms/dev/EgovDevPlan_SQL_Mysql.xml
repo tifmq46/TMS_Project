@@ -54,7 +54,7 @@
 			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID LIKE CONCAT ('%', #searchByUserDevId#, '%')
+			    AND USER_DEV_NM LIKE CONCAT ('%', #searchByUserDevId#, '%')
 			</isNotEmpty>
 			
 			<!-- 계획시작일로 검색 -->
@@ -97,7 +97,7 @@
 			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID LIKE CONCAT ('%', #searchByUserDevId#, '%')
+			    AND USER_DEV_NM LIKE CONCAT ('%', #searchByUserDevId#, '%')
 			</isNotEmpty>    
 			
 			<!-- 화면ID로 검색 -->
@@ -188,7 +188,7 @@
 			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID LIKE CONCAT ('%', #searchByUserDevId#, '%')
+			    AND USER_DEV_NM LIKE CONCAT ('%', #searchByUserDevId#, '%')
 			</isNotEmpty>
 			
 			<!-- 개발시작일로 검색 -->
@@ -228,7 +228,7 @@
 			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID = #searchByUserDevId#
+			    AND USER_DEV_NM = #searchByUserDevId#
 			</isNotEmpty>    
 			
 			<!-- 화면ID로 검색 -->
@@ -325,6 +325,13 @@
 						,a.ENROLL_DT
 						,a.DEV_END_YN
 						,a.ACHIEVEMENT_RATE
+						,(CASE(a.ACHIEVEMENT_RATE) WHEN 100 THEN '완료'
+							ELSE (CASE WHEN ( ((DATE_FORMAT(NOW(), "%Y-%m-%d")<=PLAN_START_DT) && (DEV_START_DT=DEV_START_DT IS NULL))) THEN '대기' 
+							ELSE (CASE WHEN ( (DEV_START_DT=DEV_START_DT IS NOT NULL) && (PLAN_START_DT<=DEV_START_DT) && (DEV_START_DT<=PLAN_END_DT) && (DEV_END_DT=DEV_END_DT IS NULL) && ((DATE_FORMAT(NOW(), "%Y-%m-%d"))<=PLAN_END_DT)   ) THEN '진행'
+									ELSE '지연'
+							 END)
+							 END) 
+							END) AS ST
 					FROM DEV_PLAN_TB a
 					INNER JOIN PG_TB b
 					ON a.PG_ID = b.PG_ID
@@ -348,7 +355,7 @@
 			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID LIKE CONCAT ('%', #searchByUserDevId#, '%')
+			    AND USER_DEV_NM LIKE CONCAT ('%', #searchByUserDevId#, '%')
 			</isNotEmpty>
 			
 			<!-- 개발시작일로 검색 -->
@@ -360,7 +367,11 @@
 
 			        
 			ORDER BY PG_ID ASC
+			
+			<isNotEqual property="printOpt" compareValue="printPage">
 			LIMIT #recordCountPerPage# OFFSET #firstIndex#
+			</isNotEqual>
+			
 	</select>
 	
 	<select id="DevPlanDAO.selectDevCurrentTotCnt" parameterClass="searchVO" resultClass="java.lang.Integer" >
@@ -405,7 +416,7 @@
 			
 			<!-- 개발자명으로 검색 -->
 			<isNotEmpty property="searchByUserDevId">
-			    AND USER_DEV_ID LIKE CONCAT ('%', #searchByUserDevId#, '%')
+			    AND USER_DEV_NM LIKE CONCAT ('%', #searchByUserDevId#, '%')
 			</isNotEmpty>
 			
 			<!-- 개발시작일로 검색 -->

@@ -456,23 +456,23 @@ $(function(){
               
               
               <colgroup>
-              		<col width="20" > 
-                    <col width="10%" >
-                    <col width="10%" >
-        			<col width="70" >
+              		<col width="40" > 
+                    <col width="70" >
+                    <col width="135" >
+        			<col width="50" >
                     <col width="60" > 
                     <col width="40" >
-                    <col width="90" >
-                    <col width="90" >
-                    <col width="10%" >
-                    <col width="10%" >
-                    <col width="5%" >
-                    <col width="5%" >
+                    <col width="60" >
+                    <col width="60" >
+                    <col width="95" >
+                    <col width="95" >
+                    <col width="40" >
+                    <col width="50" >
         			</colgroup>
         			<tr>
         				<th align="center">번호</th>
-        				<th align="center">화면ID</th>
-        				<th align="center">화면명</th>
+        				<th align="left">화면ID</th>
+        				<th align="left">화면명</th>
         				<th align="center">시스템구분</th>
         				<th align="center">업무구분</th>
         				<th align="center">개발자</th>
@@ -480,7 +480,7 @@ $(function(){
         				<th align="center">계획종료일자</th>
 			        	<th align="center">개발시작일자</th>
         				<th align="center">개발종료일자</th>
-        				<th align="center">달성률(%)</th>
+        				<th align="center">완료율(%)</th>
         				<th align="center"></th>
         			</tr>
         			
@@ -488,7 +488,7 @@ $(function(){
         			
             			<tr>
             				<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            				<td align="center" class="listtd">
+            				<td align="left" class="listtd">
                                 <c:out value="${result.PG_ID}"/>
                                 <input type="hidden" id="pgId" name="pgId" value='<c:out value="${result.PG_ID}"/>' >
                             </td>
@@ -506,10 +506,10 @@ $(function(){
             				
             				<c:choose>
 	            				<c:when test="${result.ACHIEVEMENT_RATE eq 100 || result.ACHIEVEMENT_RATE eq 0}" >
-	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event, this ,3);"  class="disabled" /></td>
+	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:30px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event, this ,3);"  class="disabled" /></td>
 	            				</c:when>
 	            				<c:otherwise>
-	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:40px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event, this ,3);" /></td>
+	            					<td><input name="${result.PG_ID}4" id="${result.PG_ID}4" style="text-align:right; width:30px;" value="${result.ACHIEVEMENT_RATE}" onkeyup="fn_rate_change('${result.PG_ID}', event, this ,3);" /></td>
 	            				</c:otherwise>
             				</c:choose>
           

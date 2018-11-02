@@ -53,7 +53,7 @@ function pagePrint(){
     <div id="page_info"><div id="page_info_align"></div></div>                    
     <!-- table add start -->
     <div id="printBox">
-<div class="default_tablestyle">
+                <div class="default_tablestyle">
                 <%
 				 java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
 				 String today = formatter.format(new java.util.Date());
@@ -91,7 +91,7 @@ function pagePrint(){
         				<th align="center">계획종료일자</th>
 			        	<th align="center">개발시작일자</th>
         				<th align="center">개발종료일자</th>
-        				<th align="center">달성률(%)</th>
+        				<th align="center">완료율(%)</th>
         				<th align="center">진행상태</th>
         			</tr>
         			
@@ -109,66 +109,20 @@ function pagePrint(){
             				<td align="center" class="listtd"><c:out value="${result.DEV_START_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.DEV_END_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.ACHIEVEMENT_RATE}"/>%&nbsp;</td>
-            				
             				<c:choose>
-	            				<c:when test="${result.ACHIEVEMENT_RATE eq 100 }">
-	            					<c:set var="status" value="완료"></c:set>
-	            				</c:when>
-	            				<c:otherwise>
-	            					<c:choose>
-	            						<c:when test="${result.PLAN_END_DT lt today }">
-	            							<c:choose>
-		            							<c:when test="${result.DEV_START_DT eq null }">
-		            								<c:set var="status" value="지연"></c:set>
-		            							</c:when>
-		            							<c:otherwise>
-		            								<c:choose>
-		            									<c:when test="${result.PLAN_END_DT lt result.DEV_START_DT}">
-		            										<c:set var="status" value="지연"></c:set>
-		            									</c:when>
-		            									<c:otherwise>
-		            										<c:set var="status" value="진행"></c:set>
-		            									</c:otherwise>
-		            								</c:choose>
-		            							</c:otherwise>
-	            							</c:choose>
-	            						</c:when>
-	            						
-	            						<c:otherwise>
-	            							<c:if test="${result.DEV_START_DT ne null }">
-	            								<c:set var="status" value="진행"></c:set>
-	            							</c:if>
-	            							<c:if test="${result.DEV_START_DT eq null }">
-	            								<c:set var="status" value="대기"></c:set>
-	            							</c:if>
-	            						</c:otherwise>
-	            					</c:choose>
-	            					
-	            				</c:otherwise>
-            				</c:choose>
-            				
-            				<c:choose>
-            					<c:when test="${status eq '완료'}">
-            						<td align="center" class="listtd" style="background-color:#007bff;">
-            						<font color="#ffffff" style="font-weight:bold">
-            						<c:out value="${status}"/></td>
+            					<c:when test="${result.ST eq '완료'}">
+            					<td align="center" class="listtd" style="background-color:#007bff;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.ST}"/></font></td>
             					</c:when>
-            					<c:when test="${status eq '지연'}">
-            						<td align="center" class="listtd" style="background-color:#CC3C39;;">
-            						<font color="#ffffff" style="font-weight:bold">
-            						<c:out value="${status}"/></td>
+            					<c:when test="${result.ST eq '지연'}">
+            					<td align="center" class="listtd" style="background-color:#CC3C39;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.ST}"/></font></td>
             					</c:when>
-            					<c:when test="${status eq '진행'}">
-            						<td align="center" class="listtd" style="background-color:#3ADF00;">
-            						<font color="#ffffff" style="font-weight:bold">
-            						<c:out value="${status}"/></td>
+            					<c:when test="${result.ST eq '진행'}">
+            					<td align="center" class="listtd" style="background-color:#3ADF00;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.ST}"/></font></td>
             					</c:when>
-            					<c:when test="${status eq '대기'}">
-            						<td align="center" class="listtd" >
-            						<c:out value="${status}"/></td>
+            					<c:when test="${result.ST eq '대기'}">
+            					<td align="center" class="listtd"><c:out value="${result.ST}"/></td>
             					</c:when>
             				</c:choose>
-            				
             			</tr>
         			</c:forEach>
              	<c:if test="${fn:length(resultList) == 0}">
