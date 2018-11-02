@@ -86,7 +86,7 @@ public class DefectController {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		searchVO.setSessionId(user.getName());
 		searchVO.setUniqId(user.getUniqId());
-		
+		searchVO.setId(user.getId());
 		
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -121,7 +121,7 @@ public class DefectController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 		
 		List<?> taskGbList = defectService.selectTaskGb();
@@ -150,9 +150,6 @@ public class DefectController {
 		List<?> defectGbList = defectService.selectDefectGb();
 		model.addAttribute("defectGb", defectGbList);
 		
-		List<?> userList = defectService.selectUser();
-		model.addAttribute("userList", userList);
-		
 		return "tms/defect/defectRegist";
 	}
 	
@@ -165,9 +162,7 @@ public class DefectController {
 			return "redirect:/tms/defect/selectDefect.do"; 
 		} else {
 			MultipartFile defectFileImg = mtpRequest.getFile("fileImg");
-			String userTestId = defectService.selectUserNm(defectVO.getUserNm());
 			if(defectFileImg.getOriginalFilename() == "") {
-				defectVO.setUserTestId(userTestId);
 				defectService.insertDefect(defectVO);
 			} else { // 파일 이미지를 등록했을 경우
 				Map<String, Object> hmap = new HashMap<String, Object>();
@@ -178,7 +173,7 @@ public class DefectController {
 				hmap.put("DEFECT_TITLE", defectVO.getDefectTitle());
 				hmap.put("DEFECT_CONTENT", defectVO.getDefectContent());
 				hmap.put("PG_ID", defectVO.getPgId());
-				hmap.put("USER_TEST_ID", userTestId);
+				hmap.put("USER_TEST_ID", defectVO.getUserTestId());
 				hmap.put("DEFECT_GB", defectVO.getDefectGb());
 				hmap.put("ENROLL_DT", defectVO.getEnrollDt());
 				hmap.put("ACTION_CONTENT", defectVO.getActionContent());
@@ -206,7 +201,7 @@ public class DefectController {
 		List<?> defectGbList = defectService.selectDefectGb();
 		model.addAttribute("defectGb", defectGbList);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(1);
 		model.addAttribute("userList", userList);
 		
 		List<?> actionStList = defectService.selectActionSt();
@@ -222,8 +217,6 @@ public class DefectController {
 	/** 결함조치 수정*/
 	@RequestMapping("/tms/defect/updateDefect.do")
 	public String updateDefect(HttpServletRequest request,@ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) throws Exception{
-		String userTestId = defectService.selectUserNm(defectVO.getUserNm());
-		defectVO.setUserTestId(userTestId);
 		int result = defectService.updateDefect(defectVO);
 		MultipartHttpServletRequest mtpRequest = (MultipartHttpServletRequest) request;
 		MultipartFile defectFileImg = mtpRequest.getFile("fileImg");
@@ -245,7 +238,7 @@ public class DefectController {
 		List<?> defectGbList = defectService.selectDefectGb();
 		model.addAttribute("defectGb", defectGbList);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(1);
 		model.addAttribute("userList", userList);
 		
 		List<?> actionStList = defectService.selectActionSt();
@@ -310,7 +303,7 @@ public class DefectController {
 		List<?> actionStList = defectService.selectActionSt();
 		model.addAttribute("actionSt", actionStList);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 		
 		int actionComplete = defectService.selectActionComplete(searchVO);
@@ -382,7 +375,7 @@ public class DefectController {
 		List<?> defectGbList = defectService.selectDefectGb();
 		model.addAttribute("defectGb", defectGbList);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(1);
 		model.addAttribute("userList", userList);
 		
 		List<?> actionStList = defectService.selectActionSt();

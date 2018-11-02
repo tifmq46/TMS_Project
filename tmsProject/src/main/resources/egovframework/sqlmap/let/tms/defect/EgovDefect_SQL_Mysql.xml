@@ -104,11 +104,13 @@
                  P.PG_NM,
                  D.DEFECT_TITLE,
                  (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.DEFECT_GB) AS DEFECT_GB,
-                 (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_ID,
+                 D.USER_TEST_ID,
+                 (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_NM,
                  D.ENROLL_DT,
                 (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST,
                 D.ACTION_ST AS ACTION_CODE,
-                (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID
+                P.USER_DEV_ID,
+                (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_NM
               FROM DEFECT_TB AS D, PG_TB AS P
               WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y'
               ORDER BY D.DEFECT_ID_SQ
@@ -118,7 +120,7 @@
         
         <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000000">
          		     <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000001">
-           		   	AND (USER_DEV_ID = #sessionId# OR USER_TEST_ID = #sessionId#)
+           		   	AND (USER_DEV_ID = #id# OR USER_TEST_ID = #id#)
            		   	 </isNotEqual>
 		</isNotEqual>
       
@@ -127,10 +129,10 @@
         </isNotEmpty>        
         <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000002">
       		<isNotEmpty property="searchByUserTestId" >
-         	       AND USER_TEST_ID LIKE CONCAT('%' , #searchByUserTestId#, '%')
+         	       AND USER_TEST_NM LIKE CONCAT('%' , #searchByUserTestId#, '%')
       	  </isNotEmpty>    
        	 <isNotEmpty property="searchByUserDevId" >
-        	        AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+        	        AND USER_DEV_NM LIKE CONCAT('%' , #searchByUserDevId#, '%')
         	</isNotEmpty>
         </isNotEqual>
         <isNotEmpty property="searchByTaskGb" >
@@ -167,10 +169,12 @@
                  P.PG_NM,
                  D.DEFECT_TITLE,
                  (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.DEFECT_GB) AS DEFECT_GB,
-                 (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_ID,
+                 D.USER_TEST_ID,
+                 (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_NM,
                  D.ENROLL_DT,
                 (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST,
-                (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID
+                P.USER_DEV_ID,
+                (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_NM
               FROM DEFECT_TB AS D, PG_TB AS P
               WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y'
               ORDER BY D.DEFECT_ID_SQ
@@ -182,10 +186,10 @@
                 AND PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
         </isNotEmpty>        
       <isNotEmpty property="searchByUserTestId" >
-                AND USER_TEST_ID LIKE CONCAT('%' , #searchByUserTestId#, '%')
+                AND USER_TEST_NM LIKE CONCAT('%' , #searchByUserTestId#, '%')
         </isNotEmpty>    
         <isNotEmpty property="searchByUserDevId" >
-                AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+                AND USER_DEV_NM LIKE CONCAT('%' , #searchByUserDevId#, '%')
         </isNotEmpty>
         <isNotEmpty property="searchByTaskGb" >
                 AND TASK_GB LIKE CONCAT('%' , #searchByTaskGb#, '%')
@@ -216,10 +220,12 @@
                  P.PG_NM,
                  D.DEFECT_TITLE,
                  (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.DEFECT_GB) AS DEFECT_GB,
-                 (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_ID,
+                 D.USER_TEST_ID,
+                 (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_NM,
                  D.ENROLL_DT,
                 (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST,
-                (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID
+                P.USER_DEV_ID,
+                (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_NM
                   FROM DEFECT_TB AS D, PG_TB AS P
               WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y'
               ORDER BY D.DEFECT_ID_SQ
@@ -231,7 +237,7 @@
 			<isNull property="searchByUserTestId">
          		 <isNull property="searchByUserDevId">
          		     <isNotEqual property="uniqId" compareValue="USRCNFRM_00000000001">
-           		   	AND USER_DEV_ID = #sessionId# OR USER_TEST_ID = #sessionId#
+           		   	AND USER_DEV_ID = #id# OR USER_TEST_ID = #id#
            		   	 </isNotEqual>
          		 </isNull>
 			</isNull>
@@ -241,10 +247,10 @@
                 AND PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
         </isNotEmpty>        
       <isNotEmpty property="searchByUserTestId" >
-                AND USER_TEST_ID LIKE CONCAT('%' , #searchByUserTestId#, '%')
+                AND USER_TEST_NM LIKE CONCAT('%' , #searchByUserTestId#, '%')
         </isNotEmpty>    
         <isNotEmpty property="searchByUserDevId" >
-                AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+                AND USER_DEV_NM LIKE CONCAT('%' , #searchByUserDevId#, '%')
         </isNotEmpty>
         <isNotEmpty property="searchByTaskGb" >
                 AND TASK_GB LIKE CONCAT('%' , #searchByTaskGb#, '%')
@@ -272,10 +278,12 @@
                  P.PG_NM,
                  D.DEFECT_TITLE,
                  (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.DEFECT_GB) AS DEFECT_GB,
-                 (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_ID,
+                 D.USER_TEST_ID,
+                 (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_NM,
                  D.ENROLL_DT,
                 (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST,
-                (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID
+                P.USER_DEV_ID,
+                (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_NM
                   FROM DEFECT_TB AS D, PG_TB AS P
               WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y'
               ORDER BY D.DEFECT_ID_SQ
@@ -287,10 +295,10 @@
                 AND PG_ID LIKE CONCAT('%' , #searchByPgId#, '%')
         </isNotEmpty>        
       <isNotEmpty property="searchByUserTestId" >
-                AND USER_TEST_ID LIKE CONCAT('%' , #searchByUserTestId#, '%')
+                AND USER_TEST_NM LIKE CONCAT('%' , #searchByUserTestId#, '%')
         </isNotEmpty>    
         <isNotEmpty property="searchByUserDevId" >
-                AND USER_DEV_ID LIKE CONCAT('%' , #searchByUserDevId#, '%')
+                AND USER_DEV_NM LIKE CONCAT('%' , #searchByUserDevId#, '%')
         </isNotEmpty>
         <isNotEmpty property="searchByTaskGb" >
                 AND TASK_GB LIKE CONCAT('%' , #searchByTaskGb#, '%')
@@ -317,14 +325,16 @@
               D.DEFECT_TITLE,
               D.DEFECT_CONTENT,
               D.PG_ID,
-              (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_ID,
+              D.USER_TEST_ID,
+              (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE D.USER_TEST_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_TEST_NM,
               (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.DEFECT_GB) AS DEFECT_GB,
               D.ENROLL_DT,
               D.ACTION_CONTENT,
               (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_ST,
               D.ACTION_DT,
               D.TESTSCENARIO_ID,
-              (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID,
+              P.USER_DEV_ID,
+              (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_NM,
               P.PG_NM,
               P.SYS_GB,
               (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = P.TASK_GB) AS TASK_GB,
@@ -363,13 +373,19 @@
     
     <select id="defectDAO.selectTaskGb" resultClass="egovMap">
         <![CDATA[
-         SELECT CODE_NM, CODE FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'TASKGB'   
+         SELECT DISTINCT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'TASKGB'   
         ]]>
     </select>
     
     <select id="defectDAO.selectUser" resultClass="egovMap">
         <![CDATA[
            SELECT USER_NM, EMPLYR_ID FROM LETTNEMPLYRINFO
+        ]]>
+    </select>
+    
+    <select id="defectDAO.selectUserDistinct" resultClass="egovMap">
+        <![CDATA[
+        	SELECT DISTINCT USER_NM FROM LETTNEMPLYRINFO
         ]]>
     </select>
     
@@ -754,7 +770,7 @@
     
     <select id="defectDAO.selectUserByDefectCnt" resultClass="egovMap">
         <![CDATA[
-        	SELECT IFNULL(B.USER_DEV_ID,(SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM = A.USER_NM)) AS userDevId, A.USER_NM AS userNm, IFNULL(B.DEFECTCNT,0) AS defectCnt, IFNULL(B.ACTIONA3CNT,0) AS actionA3Cnt
+        	SELECT A.EMPLYR_ID AS userDevId, A.USER_NM AS userNm, IFNULL(B.DEFECTCNT,0) AS defectCnt, IFNULL(B.ACTIONA3CNT,0) AS actionA3Cnt
 			FROM LETTNEMPLYRINFO AS A LEFT JOIN
 				(SELECT P.USER_DEV_ID, D.ACTION_ST, COUNT(*) AS DEFECTCNT, COUNT(CASE WHEN D.ACTION_ST = 'A3' THEN 1 END) AS ACTIONA3CNT
 				FROM DEFECT_TB AS D, PG_TB AS P
@@ -846,7 +862,7 @@
     
     <select id="defectDAO.selectUserDevPgIdByStats" resultClass="egovMap">
         <![CDATA[
-        	SELECT IFNULL(USER_NM,"합계") AS userNm, IF(ISNULL(pgNm),"소계",pgId) AS pgId, IFNULL(pgNm,"소계") AS pgNm, IFNULL(SUM(defectGbD1),0) AS defectGbD1, IFNULL(SUM(defectGbD2), 0) AS defectGbD2, IFNULL(SUM(defectGbD3), 0) AS defectGbD3, IFNULL(SUM(defectGbD4), 0) AS defectGbD4, IFNULL(SUM(actionStA3), 0) AS actionStA3, IFNULL(SUM(actionStA3Not), 0) AS actionStA3Not, IFNULL(ROUND(IFNULL(SUM(actionStA3)/(SUM(actionStA3)+SUM(actionStA3Not)),0)*100,1),0) AS actionPer
+        	SELECT IFNULL(USER_NM,"합계") AS userNm, C.USER_DEV_ID AS userDevId, IF(ISNULL(pgNm),"소계",pgId) AS pgId, IFNULL(pgNm,"소계") AS pgNm, IFNULL(SUM(defectGbD1),0) AS defectGbD1, IFNULL(SUM(defectGbD2), 0) AS defectGbD2, IFNULL(SUM(defectGbD3), 0) AS defectGbD3, IFNULL(SUM(defectGbD4), 0) AS defectGbD4, IFNULL(SUM(actionStA3), 0) AS actionStA3, IFNULL(SUM(actionStA3Not), 0) AS actionStA3Not, IFNULL(ROUND(IFNULL(SUM(actionStA3)/(SUM(actionStA3)+SUM(actionStA3Not)),0)*100,1),0) AS actionPer
 			FROM
 				(SELECT A.USER_DEV_ID, A.USER_NM, B.pgId, B.pgNm, B.defectGbD1, B.defectGbD2, B.defectGbD3, B.defectGbD4, B.actionStA3, B.actionStA3Not, B.actionPer
 				FROM

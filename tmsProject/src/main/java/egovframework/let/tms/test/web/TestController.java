@@ -526,7 +526,7 @@ public class TestController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 		
 		return link;
@@ -587,7 +587,7 @@ public class TestController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 		
 		return link;
@@ -649,7 +649,7 @@ public class TestController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 		
 		return link;
@@ -763,7 +763,7 @@ public class TestController {
 		model.addAttribute("selectTestCurrentCnt", selectTestCurrentCnt);
 		}
 		
-		List<?> userList = defectService.selectUser();
+		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 		
 		return "tms/test/TestCurrent";

@@ -24,7 +24,7 @@ public interface DefectService {
 	
 	public List<?> selectActionSt();
 	
-	public List<?> selectUser();
+	public List<?> selectUser(int status);
 	
 	public List<?> searchDefect(DefectDefaultVO searchVO);
 	

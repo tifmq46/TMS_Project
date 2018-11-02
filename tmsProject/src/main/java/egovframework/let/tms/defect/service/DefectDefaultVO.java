@@ -68,6 +68,9 @@ public class DefectDefaultVO extends DefectVO implements Serializable{
 	/** 로그인 권한ID(ESNTL_ID)*/
 	private String uniqId;
 	
+	/** 로그인ID(세션)-사용자Id*/
+	private String Id;
+	
 	public String getSearchCondition() {
 		return searchCondition;
 	}
@@ -223,6 +226,14 @@ public class DefectDefaultVO extends DefectVO implements Serializable{
 
 	public void setUniqId(String uniqId) {
 		this.uniqId = uniqId;
+	}
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
 	}
 	
 	

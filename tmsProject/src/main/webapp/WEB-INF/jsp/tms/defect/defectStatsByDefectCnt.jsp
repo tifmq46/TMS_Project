@@ -11,7 +11,6 @@
     author   : 공통서비스 개발팀 lee.m.j
     since    : 2009.02.01
 --%>
-<%@ page import="egovframework.com.cmm.LoginVO"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
@@ -93,7 +92,7 @@ window.onload = function() {
 						}	
 					}],
 					xAxes: [{
-			            barPercentage: 0.8
+			            barPercentage: 0.7
 			        }]
 				}
 			}
@@ -127,7 +126,7 @@ window.onload = function() {
 						}	
 					}],
 					xAxes: [{
-			            barPercentage: 0.8
+			            barPercentage: 0.7
 			        }]
 				}
 			}
