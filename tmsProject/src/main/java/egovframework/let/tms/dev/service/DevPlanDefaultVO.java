@@ -68,6 +68,9 @@ public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
 	/** 로그인ID(세션)*/
 	private String sessionId;
 	
+	/** 프린트 옵션*/
+	private String printOpt="";
+	
 	public String getSessionId() {
 		return sessionId;
 	}
@@ -215,6 +218,14 @@ public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+
+	public String getPrintOpt() {
+		return printOpt;
+	}
+
+	public void setPrintOpt(String printOpt) {
+		this.printOpt = printOpt;
 	}
 
 }

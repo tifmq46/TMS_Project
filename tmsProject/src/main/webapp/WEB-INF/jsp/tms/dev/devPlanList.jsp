@@ -360,7 +360,7 @@ function searchFileNm() {
                 <table width="85%" cellspacing="0" summary="기준일자 표시하는 테이블" style="padding-top:10px;">
                  <caption style="visibility:hidden">기준일자 표시하는 테이블</caption>
                  <c:choose>
-                 	<c:when test="${tms eq null}">
+                 	<c:when test="${ps eq null or pe eq null}">
 	                 <tr>
 	                 	<td align="center" width="250"></td>
 	                 	<td align="left" width="130" style="font-size:13px; color:red; font-weight:bolder">[계획기준일자가 없습니다.]</td>
@@ -423,11 +423,10 @@ function searchFileNm() {
                       
                       <td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
             		  <td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
-            		  <%-- <td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td> --%>
             		  <td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
-            		  <td align="center" class="listtd"><c:out value="${result.USER_DEV_ID}"/>&nbsp;</td>
+            		  <td align="center" class="listtd"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
             		  <%-- <td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td> --%>
             		  <td><input type="date"  id="${result.PG_ID}" 
