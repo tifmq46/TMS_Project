@@ -187,7 +187,7 @@ function deleteTestCase() {
                                     	<spring:message code="tms.test.userWriterId" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td width="80%" nowrap colspan="3">
+                                <td width="80%" nowrap colspan="3" title="${testVoMap.userId}">
                                 	<c:out value='${testVoMap.userNm}'/>
                                     <br/><form:errors path="userId" />
                                 </td> 

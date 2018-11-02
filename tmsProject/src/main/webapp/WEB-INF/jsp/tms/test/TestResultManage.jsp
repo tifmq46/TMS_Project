@@ -296,7 +296,7 @@ function insertDefect() {
 			            					<c:out value="${result.testDt}"/>
 			            				</div>
 		            				</td>
-		            				<td align="center"  class="listtd"><c:out value="${result.userTestId}"/>&nbsp;</td>
+		            				<td align="center"  class="listtd" title="${result.userTestId}"><c:out value="${result.userTestNm}"/>&nbsp;</td>
 		            				<td align="center"  class="listtd">
 		            					<c:out value="${result.testResultYn}"/>
 		            				</td>

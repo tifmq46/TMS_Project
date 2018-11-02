@@ -298,7 +298,7 @@ function currentToExel(pageNo) {
             				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.testcaseId}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.testcaseContent}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
+            				<td align="center" class="listtd" title="${result.userId}"><c:out value="${result.userNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.completeDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.firstTestResultYn}"/>&nbsp;</td>
@@ -360,7 +360,7 @@ function currentToExel(pageNo) {
 	        				</c:if>
 	        				
             				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
+            				<td align="center" class="listtd" title="${result.userId}"><c:out value="${result.userNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.completeDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.firstTestResultYn}"/>&nbsp;</td>
