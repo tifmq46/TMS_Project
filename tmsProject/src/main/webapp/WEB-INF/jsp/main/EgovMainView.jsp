@@ -206,18 +206,49 @@ window.onload = function() {
     	<div class="myBsnsList" class="col-md-6" style="height: 260px; margin-bottom:30px; font-family:'Malgun Gothic';">
     		<div class="widget">
     			<div class="widget-header">
-    				<ul>
-    					<li>
-    					<div style="float:left;" class="header-name" style="margin:10px;">
-	    					프로젝트 정보
-    					</div>
-    					</li>
-    					<li>
-    					<div class="buttons" style="float:right;">
-    							<a href="<c:url value='/sym/prm/updateProject.do'/>">수정</a>
-    						</div>
-    					</li>
-    				</ul>
+)
+    			<c:if test="${loginUniqId == 'USRCNFRM_00000000000'}">
+    				<table style="width:100%;margin-bottom:8px;">
+    					<colgroup>
+                  		<col width="20%"/> 
+                  		<col width="20%"/> 
+                  		<col width="20%"/> 
+                  		<col width="20%"/> 
+                  		<col width="20%"/>
+      			        </colgroup>
+    					<tr>
+    						<td style="font-weight:bold;color:#666666;font-size:100%;">프로젝트 정보</td>
+    						<td></td>
+    						<td></td>
+    						<td></td>
+    						<td>
+    						<c:if test="${loginUniqId == 'USRCNFRM_00000000000'}">
+    							<div class="buttons" style="float:right; font-size:10px;">
+    								<a href="<c:url value='/sym/prm/updateProject.do'/>">수정</a>
+    							</div>
+    						</c:if>
+    						</td>
+    					</tr>
+    				</table>
+    			</c:if>
+    			<c:if test="${loginUniqId != 'USRCNFRM_00000000000'}">
+    				<table style="width:100%;margin-bottom:7px;margin-top:10px;">
+    					<colgroup>
+                  		<col width="20%"/> 
+                  		<col width="20%"/> 
+                  		<col width="20%"/> 
+                  		<col width="20%"/> 
+                  		<col width="20%"/>
+      			        </colgroup>
+    					<tr>
+    						<td style="font-weight:bold;color:#666666;font-size:100%;">프로젝트 정보</td>
+    						<td></td>
+    						<td></td>
+    						<td></td>
+    						<td></td>
+    					</tr>
+    				</table>    					
+    			</c:if>
     			</div>
     			<div class="widget-content box">
     				<table class="table table-search-head table-size-th4" style="height:215px; font-family:'Malgun Gothic';">
@@ -256,11 +287,6 @@ window.onload = function() {
     							 white-space:nowrap; overflow:hidden;	text-overflow:ellipsis;" valign="middle">${tmsProjectManageVO.pjtContent}</td>
     						</tr>
     					
-							<c:if test="${loginUniqId == 'USRCNFRM_00000000000'}">
-    						<tr>
-    						
-    						</tr>
-    						</c:if>
     					</tbody>
     				</table>
     				
