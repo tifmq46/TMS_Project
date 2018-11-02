@@ -317,7 +317,7 @@ function selectTestScenario() {
 		            				</a>
 	            				</td>
 	            				<td align="center" class="listtd"><c:out value="${result.scenarioCnt}"/>&nbsp;</td>
-	            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
+	            				<td align="center" class="listtd" title="${result.userId}"><c:out value="${result.userNm}"/>&nbsp;</td>
 	            				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
 	            				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
 	            				<td align="center" class="listtd"><c:out value="${result.completeYn}"/>&nbsp;</td>

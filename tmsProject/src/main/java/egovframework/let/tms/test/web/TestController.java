@@ -499,7 +499,7 @@ public class TestController {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("TASKGB"); //업무구분
-		List<CmmnDetailCode> codeResult = egovCmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> codeResult = egovCmmUseService.selectCmmCodeDetailDistinctCodeNm(vo);
 		model.addAttribute("taskGbCode", codeResult);
 
 		vo.setCodeId("SYSGB"); //시스템구분
@@ -560,7 +560,7 @@ public class TestController {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("TASKGB"); //업무구분
-		List<CmmnDetailCode> codeResult = egovCmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> codeResult = egovCmmUseService.selectCmmCodeDetailDistinctCodeNm(vo);
 		model.addAttribute("taskGbCode", codeResult);
 
 		vo.setCodeId("SYSGB"); //시스템구분
@@ -622,7 +622,7 @@ public class TestController {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("TASKGB"); //업무구분
-		List<CmmnDetailCode> codeResult = egovCmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> codeResult = egovCmmUseService.selectCmmCodeDetailDistinctCodeNm(vo);
 		model.addAttribute("taskGbCode", codeResult);
 
 		vo.setCodeId("SYSGB"); //시스템구분
@@ -738,7 +738,7 @@ public class TestController {
 		if (isAuthenticated) {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("TASKGB"); // '업무구분'
-		List<CmmnDetailCode> codeResult = egovCmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> codeResult = egovCmmUseService.selectCmmCodeDetailDistinctCodeNm(vo);
 		model.addAttribute("taskGbCode", codeResult);
 
 		vo.setCodeId("TCGB"); // '테스트케이스 구분'

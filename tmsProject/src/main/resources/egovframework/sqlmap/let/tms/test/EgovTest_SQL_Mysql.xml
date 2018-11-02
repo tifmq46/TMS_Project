@@ -342,14 +342,22 @@
 	
 	<select id="TestDAO.selectTestCaseListTotCnt" parameterClass="TestDefaultVO" resultClass="java.lang.Integer" >
 			<![CDATA[
-				SELECT COUNT(*) totcnt 
-				FROM (
-					SELECT * FROM (
-						SELECT * 
-						FROM TESTCASE_TB AS a
-						WHERE TESTCASE_GB = #searchByTestcaseGb#
-						) AS b
-				WHERE 1=1
+				SELECT COUNT(*) totcnt 					
+				FROM (					
+					SELECT * FROM (						
+						SELECT 							 
+							  a. TESTCASE_ID							
+							, a.PG_ID	
+							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM	
+							, a.TASK_GB AS TASK_GB_CODE	
+							, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = a.USER_ID ) AS USER_NM	
+							, a.ENROLL_DT	
+							, a.COMPLETE_YN	
+								
+							FROM TESTCASE_TB AS a	
+							WHERE TESTCASE_GB = #searchByTestcaseGb#
+							) AS b
+							WHERE 1=1
 		]]>
 			<!-- 테스트케이스 ID로 검색 -->
 			<isNotEmpty property="searchByTestcaseId">
@@ -370,6 +378,18 @@
 			<isNotEmpty property="searchByResultYn">
 			    AND COMPLETE_YN = #searchByResultYn#
 			</isNotEmpty> 
+			
+			<!-- 작성자로 검색 -->
+			<isNotEmpty property="searchByUserDevId">
+			    AND USER_NM = #searchByUserDevId#
+			</isNotEmpty> 
+			
+			<!-- 등록 일자로 검색 -->
+			<isNotEmpty property="searchByStartDt" >
+            <isNotEmpty property="searchByEndDt">
+                AND ENROLL_DT BETWEEN DATE(#searchByStartDt#) AND DATE(#searchByEndDt#)
+            </isNotEmpty>
+            </isNotEmpty>
 			
 			<![CDATA[          
 			) AS c
@@ -439,7 +459,7 @@
             </isNotEmpty>
             </isNotEmpty>
 			
-			ORDER BY ENROLL_DT ASC
+			ORDER BY ENROLL_DT DESC
 			LIMIT #recordCountPerPage# OFFSET #firstIndex#
 	</select>
 	
@@ -474,7 +494,8 @@
 						,TESTSCENARIO_ORD
 						,TESTSCENARIO_CONTENT
 						,TESTCASE_ID
-						, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = USER_TEST_ID) AS USER_TEST_ID
+						, (SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = USER_TEST_ID) AS USER_TEST_NM
+						, USER_TEST_ID
 						,TEST_CONDITION
 						,EXPECTED_RESULT
 						,ENROLL_DT
@@ -547,6 +568,7 @@
 							, B.TESTCASE_ID
 							, B.TESTCASE_CONTENT
 							, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = B.USER_ID ) AS USER_NM
+							, B.USER_ID
 							, B.ENROLL_DT
 							, B.COMPLETE_DT
 							, B.FIRST_TEST_RESULT_YN
@@ -641,15 +663,12 @@
 								A.PG_ID
 								, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB ) AS TASK_GB_NM
 								, A.TASK_GB AS TASK_GB_CODE
-								, B.TESTCASE_GB
 								, B.TESTCASE_ID
-								, B.TESTCASE_CONTENT
 								, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = B.USER_ID ) AS USER_NM
 								, B.ENROLL_DT
 								, B.COMPLETE_DT
 								, B.FIRST_TEST_RESULT_YN
 								, B.SECOND_TEST_RESULT_YN
-								, B.THIRD_TEST_RESULT_YN
 								, B.COMPLETE_YN
 							FROM PG_TB AS A
 							LEFT OUTER JOIN
@@ -669,9 +688,6 @@
 						SELECT * FROM (
 							SELECT 
 							  a. TESTCASE_ID
-							, a.TESTCASE_CONTENT
-							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TESTCASE_GB ) AS TESTCASE_GB_NM
-							, a.TESTCASE_GB
 							, a.PG_ID
 							, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
 							, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
@@ -679,10 +695,8 @@
 							, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = a.USER_ID ) AS USER_NM
 							, a.USER_ID
 							, a.ENROLL_DT
-							, a.PRECONDITION
 							, a.FIRST_TEST_RESULT_YN 
 							, a.SECOND_TEST_RESULT_YN 
-							, a.THIRD_TEST_RESULT_YN 
 							, a.COMPLETE_YN
 							, a.COMPLETE_DT
 							
@@ -739,15 +753,12 @@
 										A.PG_ID
 										, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = A.TASK_GB ) AS TASK_GB_NM
 										, A.TASK_GB AS TASK_GB_CODE
-										, B.TESTCASE_GB
 										, B.TESTCASE_ID
-										, B.TESTCASE_CONTENT
 										, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = B.USER_ID ) AS USER_NM
 										, B.ENROLL_DT
 										, B.COMPLETE_DT
 										, B.FIRST_TEST_RESULT_YN
 										, B.SECOND_TEST_RESULT_YN
-										, B.THIRD_TEST_RESULT_YN
 										, B.COMPLETE_YN
 									FROM PG_TB AS A
 									LEFT OUTER JOIN
@@ -770,20 +781,14 @@
 							SELECT * FROM (
 								SELECT 
 								  a. TESTCASE_ID
-								, a.TESTCASE_CONTENT
-								, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TESTCASE_GB ) AS TESTCASE_GB_NM
-								, a.TESTCASE_GB
 								, a.PG_ID
-								, ( SELECT PG_NM FROM PG_TB WHERE PG_ID = a.PG_ID ) AS PG_NM
 								, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB ) AS TASK_GB_NM
 								, a.TASK_GB AS TASK_GB_CODE
 								, ( SELECT USER_NM FROM LETTNEMPLYRINFO WHERE EMPLYR_ID = a.USER_ID ) AS USER_NM
 								, a.USER_ID
 								, a.ENROLL_DT
-								, a.PRECONDITION
 								, a.FIRST_TEST_RESULT_YN 
 								, a.SECOND_TEST_RESULT_YN 
-								, a.THIRD_TEST_RESULT_YN 
 								, a.COMPLETE_YN
 								, a.COMPLETE_DT
 								

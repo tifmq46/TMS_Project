@@ -354,7 +354,7 @@ function fDeleteMenuList() {
 		            					<font color="#0F438A" style="font-weight:bold"><c:out value="${result.testcaseContent}"/></font>
 		            				</a>
 	            				</td>
-	            				<td align="center" class="listtd"><c:out value="${result.userNm}"/>&nbsp;</td>
+	            				<td align="center" class="listtd" title="${result.userId}"><c:out value="${result.userNm}"/>&nbsp;</td>
 	            				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
 	            				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
 	            				<td align="center" class="listtd"><c:out value="${result.firstTestResultYn}"/>&nbsp;</td>

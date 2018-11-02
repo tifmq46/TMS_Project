@@ -24,6 +24,24 @@
 			AND CODE_ID = #codeId#
 		]]>
 	</select>
+	
+	<select id="CmmUseDAO.selectCmmCodeDetailDistinctCodeNm" parameterClass="ComDefaultCodeVO" resultMap="CmmCodeDetail">
+		<![CDATA[ 
+			
+			SELECT 
+			MAX(CODE_NM) AS CODE_NM, CODE_ID, CODE, CODE_DC
+			FROM 
+			LETTCCMMNDETAILCODE F
+			WHERE 
+			USE_AT = 'Y'
+			AND CODE_ID = #codeId#
+			GROUP BY F.CODE_NM
+			
+		]]>
+	</select>
+	
+	
+	
 
     <select id="CmmUseDAO.selectOgrnztIdDetail" parameterClass="ComDefaultCodeVO" resultMap="CmmCodeDetail">
             <![CDATA[ 

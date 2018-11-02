@@ -48,6 +48,20 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
 		return cmmUseDAO.selectCmmCodeDetail(vo);
 	}
 
+	
+	/**
+	 * 공통코드(코드이름 중복 제외 )를 조회한다.
+	 *
+	 * @param vo
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public List<CmmnDetailCode> selectCmmCodeDetailDistinctCodeNm(ComDefaultCodeVO vo) throws Exception {
+		return cmmUseDAO.selectCmmCodeDetailDistinctCodeNm(vo);
+	}
+
+	
 	/**
 	 * ComDefaultCodeVO의 리스트를 받아서 여러개의 코드 리스트를 맵에 담아서 리턴한다.
 	 *
