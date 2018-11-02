@@ -36,7 +36,11 @@ public class CmmUseDAO extends EgovComAbstractDAO {
 	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO vo) throws Exception {
 		return (List<CmmnDetailCode>) list("CmmUseDAO.selectCmmCodeDetail", vo);
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<CmmnDetailCode> selectCmmCodeDetailDistinctCodeNm(ComDefaultCodeVO vo) throws Exception {
+		return (List<CmmnDetailCode>) list("CmmUseDAO.selectCmmCodeDetailDistinctCodeNm", vo);
+	}
 	/**
 	 * 공통코드로 사용할 조직정보를 를 불러온다.
 	 *
