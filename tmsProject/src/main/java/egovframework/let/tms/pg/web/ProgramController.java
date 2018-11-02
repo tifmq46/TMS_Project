@@ -153,13 +153,6 @@ public class ProgramController {
 	@RequestMapping("/tms/pg/selectPgInf.do")
 	public String selectPgInf(@ModelAttribute("programVO") ProgramVO searchVO, @ModelAttribute("searchVO") ProgramDefaultVO defaultVO, ModelMap model) throws Exception {
 
-		System.out.println("페이지:" + defaultVO.getPageIndex());
-		System.out.println("페이지:" + defaultVO.getSearchByPgId());
-		System.out.println("페이지:" + defaultVO.getSearchBySysGb());
-		System.out.println("페이지:" + defaultVO.getSearchByTaskGb());
-		System.out.println("페이지:" + defaultVO.getSearchByUserDevId());
-		System.out.println("페이지:" + defaultVO.getSearchUseYn());
-		
 		ProgramVO VO = ProgramService.selectProgramInf(searchVO);		
 		model.addAttribute("programVO", VO);
 

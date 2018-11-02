@@ -191,7 +191,7 @@
                             <select id="userDevId" name="userDevId" class="select" title="개발자" style="width:25%; text-align-last:center;">
 									   <option disabled="disabled" value="" >선택하세요</option>
 									      <c:forEach var="DEV_ID" items="${dev_List}" varStatus="status">
-									    	<option disabled="disabled" value="<c:out value="${DEV_ID.USER_NM}"/>" <c:if test="${programVO.userDevId == DEV_ID.USER_NM}">selected="selected"</c:if>><c:out value="${DEV_ID.USER_NM}" /></option>
+									    	<option disabled="disabled" value="<c:out value="${DEV_ID.USER_NM}"/>" <c:if test="${programVO.userDevId == DEV_ID.USER_NM}">selected="selected"</c:if>><c:out value="${DEV_ID.USER_NM}(${DEV_ID.EMPLYR_ID})" /></option>
 									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>

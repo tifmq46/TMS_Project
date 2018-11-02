@@ -23,6 +23,9 @@
 <meta http-equiv="Content-Language" content="ko" >
 <title>KCC TMS</title>
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
+<style>
+	tr.row:hover { background-color: lightyellow; } 
+</style>
 </head>
 <body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
@@ -292,7 +295,7 @@ window.onload = function() {
 			                   
 			             <c:forEach var="pjtMemberList" items="${pjtMemberList}" varStatus="status">
 			            <!-- loop 시작 -->                                
-			              <tr>
+			              <tr class="row">
 						    <td id="icl" nowrap="nowrap"  style="font-weight:bold;color:#0F438A;font-size:110%;"><i class="icon-user" style="font-size: 2em; color: rgb(80, 80, 80)"></i>　<c:out value="${pjtMemberList.userNm}"/></td>
 						    <td nowrap="nowrap" style="font-size:110%;"><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000000'}">관리자</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000001'}">PL</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000002'}">개발자</c:if></td>
 						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${pjtMemberList.actionStA1 }"/></td>
