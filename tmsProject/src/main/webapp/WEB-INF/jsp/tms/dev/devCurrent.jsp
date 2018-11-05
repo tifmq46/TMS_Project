@@ -199,13 +199,18 @@ function pagePrint(){
 					<%-- </form> --%>
 				</div>
 				<!-- //검색 필드 박스 끝 -->
-
-                <table width="85%" cellspacing="0" summary="총 건수, 달성률 표시하는 테이블">
+                <table width="100%" cellspacing="5" summary="총 건수, 달성률 표시하는 테이블">
                  <caption style="visibility:hidden">총 건수, 달성률 표시하는 테이블</caption>
                  
                  <tr>
-                 	<td align="center" width="100" style="font-size:13px; font-weight:bolder">총 : <c:out value="${r.cnt}"/></td>
-                  	<td align="right" width="50" style="font-size:13px; font-weight:bolder">완료율 : </td>
+                 
+                 	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">[ 대상본수: <c:out value="${r.cnt}"/></td>
+                  	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">대기건수 : <c:out value="${r.s1}"/></td>
+                  	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">진행건수 : <c:out value="${r.s2}"/></td>
+                  	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">지연건수 : <c:out value="${r.s3}"/></td>
+                  	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">완료건수 : <c:out value="${r.s4} ]"/></td>
+                  	
+                  	<td align="right" width="100" style="font-size:1.2em; font-weight:bolder">완료율 : </td>
                  	<td style="font-size:15px; font-weight:bolder">
                  	<c:choose>
                  		<c:when test="${r.rateAvg ne null }">
@@ -233,10 +238,10 @@ function pagePrint(){
               
               
               <colgroup>
-              	<col width="15" >
-        			<col width="40" >
+              		<col width="15" >
+        			<col width="30" >
                     <col width="40" >  
-                    <col width="80" >
+                    <col width="50" >
                     <col width="100" >
                     <col width="40" >
                     <col width="50" >
@@ -268,7 +273,7 @@ function pagePrint(){
             			 	<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
             				<td align="center" class="listtd" name="sys"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
+            				<td align="left" class="listtd"><c:out value="${result.PG_ID}"/></td>
             				<td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_START_DT}"/>&nbsp;</td>

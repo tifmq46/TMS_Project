@@ -255,6 +255,7 @@ function StatsToExcel(statsGb) {
 	                   <col width="60">
 	                   <col width="100">
 	                   <col width="50">
+	                   <col width="50">
 		               <col width="50">
 		                <col width="50">
 	                   <c:forEach var="mw" items="${monthWeek}" varStatus="status">
@@ -268,6 +269,7 @@ function StatsToExcel(statsGb) {
 	          			<tr>
 	          				<th align="center" rowspan="2">시스템구분</th>
 	          				<th align="center" rowspan="2">업무구분</th>
+	          				<th align="center" rowspan="2">총 본수</th>
 	          				<th align="center" colspan="3"><strong>합계</strong></th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
 		                    	<th class='borderLine' scope="col" align="center" colspan="3">${status.count}주(${mw})</th>
@@ -297,6 +299,7 @@ function StatsToExcel(statsGb) {
 	                    		<c:when test="${ts.taskGbNm eq '소계' && ts.sysGbNm ne '합계'}">
 	                    			<td class='lineStyle'><strong><c:out value="${ts.sysGbNm}" /></strong></td>
 		                    		<td class='lineStyle'><strong><c:out value="${ts.taskGbNm}" /></strong></td>
+		                    		<td class='lineStyle'><strong></strong>${ts.totCnt}</td>
 		                    		<td class='lineStyle'><strong>${ts.sumTaskPlan}</strong></td>
 									<td class='lineStyle'><strong>${ts.sumTaskDev}</strong></td>
 									<td class='lineStyle'><strong>${ts.sumDiff}</strong></td>
@@ -313,6 +316,7 @@ function StatsToExcel(statsGb) {
 	                    		<c:when test="${ts.sysGbNm eq '합계'}">
 	                    			<td class='lineStyle2'><strong><c:out value="${ts.sysGbNm}" /></strong></td>
 		                    		<td class='lineStyle2'><strong><c:out value="${ts.taskGbNm}" /></strong></td>
+		                    		<td class='lineStyle2'><strong></strong>${ts.totCnt}</td>
 		                    		<td class='lineStyle2'><strong>${ts.sumTaskPlan}</strong></td>
 									<td class='lineStyle2'><strong>${ts.sumTaskDev}</strong></td>
 									<td class='lineStyle2'><strong>${ts.sumDiff}</strong></td>
@@ -329,6 +333,7 @@ function StatsToExcel(statsGb) {
 	                    		<c:otherwise>
 	                    			<td><c:out value="${ts.sysGbNm}" /></td>
 		                    		<td><c:out value="${ts.taskGbNm}" /></td>
+		                    		<td><strong></strong>${ts.totCnt}</td>
 		                    		<td><strong>${ts.sumTaskPlan}</strong></td>
 									<td><strong>${ts.sumTaskDev}</strong></td>
 									<td><strong>${ts.sumDiff}</strong></td>
@@ -343,13 +348,6 @@ function StatsToExcel(statsGb) {
 									</c:forEach>
 	                    		</c:otherwise>
 	                    	</c:choose>
-	                    	
-		                   
-		                    		
-									
-			                    	
-			                    	
-							
 	                    </tr>
                     </c:forEach>
                     
@@ -368,6 +366,7 @@ function StatsToExcel(statsGb) {
 	                    <colgroup>
 	                    	<col width="100">
 	                    	<col width="50">
+	                    	<col width="50">
 		                   <col width="50">
 		                   <col width="50">
 	                    	<c:forEach var="mw" items="${monthWeek}" varStatus="status">
@@ -380,6 +379,7 @@ function StatsToExcel(statsGb) {
 	          			<thead>
 	          			<tr>
 	          				<th scope="col" align="center" rowspan="2">개발자</th>
+	          				<th scope="col" align="center" rowspan="2">총 본수</th>
 	          				<th class='borderLine' scope="col" align="center" colspan="3"><strong>합계</strong></th>
 		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
 		                    	<th class='borderLine' scope="col" align="center" colspan="3">${status.count}주(${mw})</th>
@@ -400,12 +400,18 @@ function StatsToExcel(statsGb) {
 	           			
 	           			<%int totSum1=0;
            			      int totSum2=0;
-           			  	  int totSum3=0;%>
+           			  	  int totSum3=0;
+           			  	  int sumTotCnt=0;%>
 	           			<c:forEach var="us" items="${userStats}" varStatus="status">
 	           			
 		                    <tr>
 		                   		
 		                    	<td><c:out value="${us.userDevNm}(${us.userDevId})" /></td>
+		                    	<td><c:out value="${us.totCnt}" /></td>
+		                    	<c:set var = "sumTotCnt" value="${us.totCnt}" />
+								<% sumTotCnt += (Integer)pageContext.getAttribute("sumTotCnt");
+									pageContext.setAttribute("sumTotCnt", sumTotCnt);
+								%>
 		                    	
 		                    	<td><strong>${us.sumUserPlan}</strong></td>
 								<c:set var = "totSum1" value="${us.sumUserPlan}" />
@@ -438,7 +444,7 @@ function StatsToExcel(statsGb) {
 	                    </c:forEach>
 	                    <tr>
 	                    	<td class='lineStyle2'><strong><c:out value="합계" /></strong></td>
-	                  
+	                  		<td class='lineStyle2'><strong>${sumTotCnt}</strong></td>
 	                    	<td class='lineStyle2'><strong>${totSum1}</strong></td>
 		                  	<td class='lineStyle2'><strong>${totSum2}</strong></td>
 		                  	<td class='borderLine lineStyle2'><strong>${totSum3}</strong></td>

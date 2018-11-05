@@ -148,7 +148,7 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	}
 
 	@Override
-	public HashMap<String, String> DevPlanAvg(DevPlanDefaultVO searchVO) {
+	public HashMap<String,String> DevPlanAvg(DevPlanDefaultVO searchVO) {
 		return devPlanDAO.DevPlanAvg(searchVO);
 	}
 

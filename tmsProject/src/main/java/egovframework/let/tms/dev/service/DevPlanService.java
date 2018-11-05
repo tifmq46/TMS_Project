@@ -99,7 +99,7 @@ public interface DevPlanService {
 
 	public void updateRate(DevPlanDefaultVO searchVO);
 
-	public HashMap<String, String> DevPlanAvg(DevPlanDefaultVO searchVO);
+	public HashMap<String,String> DevPlanAvg(DevPlanDefaultVO searchVO);
 
 	public int selectDevCurrentTotCnt(DevPlanDefaultVO searchVO);
 

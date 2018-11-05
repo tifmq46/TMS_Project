@@ -398,8 +398,8 @@ function searchFileNm() {
                     <thead>
                     <tr>
                     	<th align="center">번호</th>
-        				<th align="left">화면ID</th>
-        				<th align="left">화면명</th>
+        				<th align="center">화면ID</th>
+        				<th align="center">화면명</th>
         				<th align="center">시스템구분</th>
         				<th align="center">업무구분</th>
         				<th align="center">개발자</th>
