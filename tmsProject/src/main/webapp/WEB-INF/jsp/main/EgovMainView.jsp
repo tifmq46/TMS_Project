@@ -272,12 +272,12 @@ window.onload = function() {
     		<div class="widget">
     			<div class="widget-header">
     				<div class="header-name" style="margin:10px;">
-	    					프로젝트 멤버
+	    					개발자별 개발현황
     				</div>
     			</div>
     			<div class="widget-content default_tablestyle" style="height:212px; overflow:auto; ">
     				<table width="100%" cellspacing="0" cellpadding="0" class="table table-search-head table-size-th4">
-			    					<caption>프로젝트 멤버</caption>
+			    					<caption>개발자별 개발현황</caption>
 			            <colgroup>
 			            <col width="20%" >
 			            <col width="20%" >
@@ -289,27 +289,27 @@ window.onload = function() {
 			            <thead>
 			            <tr>
 			                <th scope="col" class="f_field" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">이름</th>
-			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">역할</th>
+			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">총 본수</th>
 			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">대기</th>
-			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">조치중</th>
-			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">조치완료</th>
-			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">재요청</th>
+			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">진행</th>
+			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">지연</th>
+			                <th scope="col" nowrap="nowrap" style="font-weight:bold;color:#0F438A;font-size:110%;">완료</th>
 			            </tr>
 			            </thead>
 			            <tbody>          
 			                   
-			             <c:forEach var="pjtMemberList" items="${pjtMemberList}" varStatus="status">
+			             <c:forEach var="stats" items="${userDevByDevStats}" varStatus="status">
 			            <!-- loop 시작 -->                                
 			              <tr>
-						    <td id="icl" nowrap="nowrap"  style="font-weight:bold;color:#0F438A;font-size:110%;" title="${pjtMemberList.emplyrId }"><i class="icon-user" style="font-size: 2em; color: rgb(80, 80, 80)" ></i>　<c:out value="${pjtMemberList.userNm}"/></td>
-						    <td nowrap="nowrap" style="font-size:110%;"><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000000'}">관리자</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000001'}">PL</c:if><c:if test="${pjtMemberList.esntlId eq 'USRCNFRM_00000000002'}">개발자</c:if></td>
-						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${pjtMemberList.actionStA1 }"/></td>
-						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${pjtMemberList.actionStA2 }"/></td>
-						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${pjtMemberList.actionStA3 }"/></td>
-						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${pjtMemberList.actionStA4 }"/></td>
+						    <td id="icl" nowrap="nowrap"  style="font-weight:bold;color:#0F438A;font-size:110%;" title="${stats.userId }"><i class="icon-user" style="font-size: 2em; color: rgb(80, 80, 80)" ></i>　<c:out value="${stats.userNm}"/></td>
+						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${stats.totCnt }"/></td>
+						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${stats.s1 }"/></td>
+						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${stats.s2 }"/></td>
+						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${stats.s3 }"/></td>
+						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${stats.s4 }"/></td>
 			              </tr>
 			            </c:forEach> 
-			            <c:if test="${fn:length(pjtMemberList) == 0 }">
+			            <c:if test="${fn:length(userDevByDevStats) == 0 }">
 			            <tr>
 							<td colspan="6">
 							자료가 없습니다.

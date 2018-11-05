@@ -115,6 +115,11 @@ public class EgovMainController {
 		model.addAttribute("pjtMemberList", pjtMemberList);
 		// 프로젝트 멤버 부분 끝 ----------------------------
 		
+		// 개발자별 개발현황 부분 시작 --------------------------
+		List<?> userDevByDevStats = devPlanService.selectUserDevByDevStats();
+		model.addAttribute("userDevByDevStats", userDevByDevStats);
+		// 개발자별 개발현황 부분 끝 ----------------------------
+		
 		// 결함 진행상태 부분 시작 --------------------------
 		
 		List<?> sysByMainStats = defectService.selectSysByMainStats();

@@ -272,4 +272,9 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 		return devPlanDAO.selectTaskTotalProgressRate();
 	}
 
+	@Override
+	public List<?> selectUserDevByDevStats() {
+		return devPlanDAO.selectUserDevByDevStats();
+	}
+
 }

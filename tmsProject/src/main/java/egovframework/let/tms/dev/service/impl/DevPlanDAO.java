@@ -223,5 +223,9 @@ public class DevPlanDAO extends EgovAbstractDAO{
 	public List<?> selectTaskTotalProgressRate() {
 		return list("DevPlanDAO.selectTaskTotalProgressRate");
 	}
+
+	public List<?> selectUserDevByDevStats() {
+		return list("DevPlanDAO.selectUserDevByDevStats");
+	}
 	
 }

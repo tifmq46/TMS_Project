@@ -203,14 +203,7 @@ function pagePrint(){
                  <caption style="visibility:hidden">총 건수, 달성률 표시하는 테이블</caption>
                  
                  <tr>
-                 
-                 	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">[ 대상본수: <c:out value="${r.cnt}"/></td>
-                  	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">대기건수 : <c:out value="${r.s1}"/></td>
-                  	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">진행건수 : <c:out value="${r.s2}"/></td>
-                  	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">지연건수 : <c:out value="${r.s3}"/></td>
-                  	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">완료건수 : <c:out value="${r.s4} ]"/></td>
-                  	
-                  	<td align="right" width="100" style="font-size:1.2em; font-weight:bolder">완료율 : </td>
+                 <td align="right" width="100" style="font-size:1.2em; font-weight:bolder">완료율 : </td>
                  	<td style="font-size:15px; font-weight:bolder">
                  	<c:choose>
                  		<c:when test="${r.rateAvg ne null }">
@@ -221,6 +214,13 @@ function pagePrint(){
                  		</c:otherwise>
                  	</c:choose>
                  	</td>
+                 	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">[ 대상본수: <c:out value="${r.cnt}"/>개</td>
+                  	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">대기건수 : <c:out value="${r.s1}"/>개</td>
+                  	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">진행건수 : <c:out value="${r.s2}"/>개</td>
+                  	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">지연건수 : <c:out value="${r.s3}"/>개</td>
+                  	<td align="center" width="110" style="font-size:1.2em; font-weight:bolder">완료건수 : <c:out value="${r.s4}"/>개]</td>
+                  	
+                  	
                  </tr>        
              	</table>
                 
@@ -275,7 +275,7 @@ function pagePrint(){
             				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             				<td align="left" class="listtd"><c:out value="${result.PG_ID}"/></td>
             				<td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
+            				<td align="center" class="listtd" title="<c:out value="${result.USER_DEV_ID}"/>"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_START_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_END_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.DEV_START_DT}"/>&nbsp;</td>

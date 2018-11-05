@@ -619,38 +619,6 @@
 		]]>
    	</select>
    	
-   <!-- <select id="DevPlanDAO.selectTaskWeekStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
-			<![CDATA[
-				SELECT IFNULL(W.sysGbNm,"합계")AS sysGbNm
-						,IFNULL(W.taskGbNm,"소계")AS taskGbNm
-						,IFNULL(SUM(a),NULL) AS '$dt$'
-						,IFNULL(SUM(b),NULL) AS 'b$dt$'
-						,IFNULL(SUM(c),NULL) AS 'sub$dt$'
-					from
-				(
-					SELECT C.SYS_GB AS sysGb,IFNULL(C.SYS_NM, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID="SYSGB" AND CODE = C.SYS_GB)) AS sysGbNm
-						,C.TASK_GB AS taskGb,IFNULL(C.TASK_NM, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID="TASKGB" AND CODE = C.TASK_GB)) AS taskGbNm
-						 ,IFNULL((COUNT(CASE WHEN WP=#dt# THEN 1 END)),0) AS a
-						 ,IFNULL ((COUNT(CASE WHEN WD=#dt# THEN 1 END)),0) AS b
-						,IFNULL ((COUNT(CASE WHEN WD=#dt# THEN 1 END)),0) - IFNULL ((COUNT(CASE WHEN WP=#dt# THEN 1 END)),0) as c
-						 FROM
-					(SELECT SYS_GB, SYS_NM, TASK_GB, TASK_NM FROM 
-						(SELECT CODE AS SYS_GB, CODE_NM AS SYS_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'SYSGB')AS A
-					INNER JOIN
-						(SELECT CODE AS TASK_GB, CODE_NM AS TASK_NM, PARENT FROM LETTCCMMNDETAILCODE) AS B 
-					ON A.SYS_GB = B.PARENT) AS C
-					LEFT OUTER JOIN
-					
-					(SELECT SYS_GB, TASK_GB, WEEKOFYEAR(PLAN_END_DT) AS WP, WEEKOFYEAR(DEV_END_DT) AS WD
-						FROM DEV_PLAN_TB D, PG_TB P
-						WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y') AS D
-					ON C.SYS_GB = D.SYS_GB AND C.TASK_GB = D.TASK_GB
-					GROUP BY C.SYS_GB, C.TASK_GB
-					ORDER BY C.SYS_GB, C.TASK_GB)AS W
-					GROUP BY W.sysGbNm, W.taskGbNm WITH ROLLUP
-         ]]>
-   	</select>  -->
-   	
     <select id="DevPlanDAO.selectTaskWeekStats" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" remapResults="true">
 			<![CDATA[
 				SELECT IFNULL(W.sysGbNm,"합계")AS sysGbNm
@@ -819,6 +787,35 @@
          ]]>
    	</select>
    	
-	
+	<select id="DevPlanDAO.selectUserDevByDevStats" resultClass="egovMap">
+			<![CDATA[
+				SELECT EMPLYR_ID AS userId, USER_NM AS userNm, TOT_CNT AS totCnt, s1,s2,s3,s4 FROM
+				(SELECT EMPLYR_ID, USER_NM , TOT_CNT FROM 		
+							(SELECT EMPLYR_ID, USER_NM FROM LETTNEMPLYRINFO WHERE ESNTL_ID='USRCNFRM_00000000002' OR ESNTL_ID='USRCNFRM_00000000001') AS Z 
+								INNER JOIN 
+							(SELECT USER_DEV_ID,COUNT(*) AS TOT_CNT FROM PG_TB WHERE USE_YN='Y' GROUP BY USER_DEV_ID) AS X
+							ON EMPLYR_ID = USER_DEV_ID ORDER BY USER_NM) AS A
+				LEFT OUTER JOIN			
+							(select USER_DEV_ID,
+								COUNT(CASE WHEN ST='대기' THEN 1 END) AS s1,
+								COUNT(CASE WHEN ST='진행' THEN 1 END) AS s2,
+								COUNT(CASE WHEN ST='지연' THEN 1 END) AS s3,
+								COUNT(CASE WHEN ST='완료' THEN 1 END) AS s4
+							from (
+								SELECT b.USER_DEV_ID
+											,(CASE(a.ACHIEVEMENT_RATE) WHEN 100 THEN '완료'
+											ELSE (CASE WHEN ( ((DATE_FORMAT(NOW(), "%Y-%m-%d")<=PLAN_START_DT) && (DEV_START_DT=DEV_START_DT IS NULL))) THEN '대기' 
+											ELSE (CASE WHEN ( ((DEV_START_DT=DEV_START_DT IS NOT NULL) && (PLAN_START_DT<=DEV_START_DT) && (DEV_START_DT<=PLAN_END_DT) && (DEV_END_DT=DEV_END_DT IS NULL) && ((DATE_FORMAT(NOW(), "%Y-%m-%d"))<=PLAN_END_DT) ) 
+											|| ((DEV_START_DT=DEV_START_DT IS NOT NULL) && (DEV_START_DT<PLAN_START_DT))&& ((DATE_FORMAT(NOW(), "%Y-%m-%d"))<=PLAN_END_DT) ) THEN '진행'
+													ELSE '지연' END) END) END) AS ST
+									FROM DEV_PLAN_TB a
+									INNER JOIN PG_TB b
+									ON a.PG_ID = b.PG_ID
+									WHERE USE_YN ='Y') AS C 
+									GROUP BY USER_DEV_ID) AS Q
+				ON A.EMPLYR_ID = Q.USER_DEV_ID
+				ORDER BY USER_NM,EMPLYR_ID
+         ]]>
+   	</select>
 	
 </sqlMap>

@@ -147,4 +147,6 @@ public interface DevPlanService {
 
 	public List<?> selectTaskTotalProgressRate();
 
+	public List<?> selectUserDevByDevStats();
+
 }
