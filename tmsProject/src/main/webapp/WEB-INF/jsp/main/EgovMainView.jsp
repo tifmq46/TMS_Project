@@ -206,7 +206,6 @@ window.onload = function() {
     	<div class="myBsnsList" class="col-md-6" style="height: 260px; margin-bottom:30px; font-family:'Malgun Gothic';">
     		<div class="widget">
     			<div class="widget-header">
-)
     			<c:if test="${loginUniqId == 'USRCNFRM_00000000000'}">
     				<table style="width:100%;margin-bottom:8px;">
     					<colgroup>
