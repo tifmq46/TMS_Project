@@ -192,6 +192,7 @@
 
 					       <tr >
 					       <th width="16.6%" height="23" class="required_text" nowrap >결함제목
+					       <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="49.8%" nowrap colspan="3">
 					          <input id="defectTitle" name="defectTitle" type="text" value=""  autocomplete="off" maxlength="40" title="결함제목" 
@@ -200,6 +201,7 @@
 					          &nbsp;
 					        </td>
 					       <th width="16.6%" height="23" class="required_text" nowrap >결함유형
+					       <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					        <td width="16.6%" nowrap>
 									<select name="defectGb" id="defectGb" style="width:90%; text-align-last:center;">
@@ -214,6 +216,7 @@
 
 					       <tr>
 					        <th width="100%" height="23" class="required_text" colspan="6" nowrap >결함내용
+					        <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 					       </tr>
 

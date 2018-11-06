@@ -28,7 +28,7 @@ public interface DefectService {
 	
 	public List<?> searchDefect(DefectDefaultVO searchVO);
 	
-	public int selectActionComplete(DefectDefaultVO searchVO);
+	public HashMap<String, Object> selectActionComplete(DefectDefaultVO searchVO);
 	
 	public int selectActionNotComplete();
 	

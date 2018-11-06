@@ -186,18 +186,20 @@ th,td{
 								<colgroup>
 									<col width="12%" />
 									<col width="13%" />
-									<col width="10.7%" />
-									<col width="10.7%" />
-									<col width="10.7%" />
-									<col width="10.7%" />
-									<col width="10.7%" />
-									<col width="10.7%" />
-									<col width="10.7%" />
+									<col width="9.37%" />
+									<col width="9.37%" />
+									<col width="9.37%" />
+									<col width="9.37%" />
+									<col width="9.37%" />
+									<col width="9.37%" />
+									<col width="9.37%" />
+									<col width="9.37%" />
 								</colgroup>
 								<tr>
 									<th align="center" rowspan="2">시스템구분</th>
 									<th align="center" rowspan="2">업무구분</th>
 									<th align="center" colspan="4" style="font-weight:bold">결함건수</th>
+									<th align="center" rowspan="2" style="font-weight:bold">합계</th>
 									<th align="center" rowspan="2" style="font-weight:bold">조치건수</th>
 									<th align="center" rowspan="2" style="font-weight:bold">미조치건수</th>
 									<th align="center" rowspan="2" class="borderLine" style="font-weight:bold">조치율(%)</th>
@@ -220,6 +222,7 @@ th,td{
 											<td class="lineStyle2">${sysGbByStats.defectGbD2 }</td>
 											<td class="lineStyle2">${sysGbByStats.defectGbD3 }</td>
 											<td class="lineStyle2">${sysGbByStats.defectGbD4 }</td>
+											<td class="lineStyle2">${sysGbByStats.actionStAll }</td>
 											<td class="lineStyle2">${sysGbByStats.actionStA3 }</td>
 											<td class="lineStyle2">${sysGbByStats.actionStA3Not }</td>
 											<td class="lineStyle2 borderLine">${sysGbByStats.actionPer }%</td>
@@ -233,6 +236,7 @@ th,td{
 												<td class="lineStyle">${sysGbByStats.defectGbD2 }</td>
 												<td class="lineStyle">${sysGbByStats.defectGbD3 }</td>
 												<td class="lineStyle">${sysGbByStats.defectGbD4 }</td>
+												<td class="lineStyle">${sysGbByStats.actionStAll }</td>
 												<td class="lineStyle">${sysGbByStats.actionStA3 }</td>
 												<td class="lineStyle">${sysGbByStats.actionStA3Not }</td>
 												<td class="lineStyle borderLine">${sysGbByStats.actionPer }%</td>
@@ -244,6 +248,7 @@ th,td{
 												<td>${sysGbByStats.defectGbD2 }</td>
 												<td>${sysGbByStats.defectGbD3 }</td>
 												<td>${sysGbByStats.defectGbD4 }</td>
+												<td>${sysGbByStats.actionStAll }</td>
 												<td>${sysGbByStats.actionStA3 }</td>
 												<td>${sysGbByStats.actionStA3Not }</td>
 												<td class="borderLine">${sysGbByStats.actionPer }%</td>
@@ -276,21 +281,19 @@ th,td{
 
 								<colgroup>
 									<col width="15%" />
-									<col width="15%" />
-									<col width="15%" />
-									<col width="7.85%" />
-									<col width="7.85%" />
-									<col width="7.85%" />
-									<col width="7.85%" />
-									<col width="7.85%" />
-									<col width="7.85%" />
-									<col width="7.85%" />
+									<col width="10.62%" />
+									<col width="10.62%" />
+									<col width="10.62%" />
+									<col width="10.62%" />
+									<col width="10.62%" />
+									<col width="10.62%" />
+									<col width="10.62%" />
+									<col width="10.62%" />
 								</colgroup>
 								<tr>
-									<th align="center" rowspan="2">개발자</th>
-									<th align="center" rowspan="2">화면ID</th>
-									<th align="center" rowspan="2">화면명</th>
+									<th align="center" rowspan="2" style="font-weight:bold">개발자</th>
 									<th align="center" colspan="4" style="font-weight:bold">결함건수</th>
+									<th align="center" rowspan="2" style="font-weight:bold">합계</th>
 									<th align="center" rowspan="2" style="font-weight:bold">조치건수</th>
 									<th align="center" rowspan="2" style="font-weight:bold">미조치건수</th>
 									<th align="center" rowspan="2" style="font-weight:bold" class="borderLine">조치율(%)</th>
@@ -306,43 +309,27 @@ th,td{
 									varStatus="status">
 									<tr>
 									<c:choose>
-									<c:when test="${ userDevPgIdByStats.userNm == '합계'}">
-											<td class="lineStyle2">${userDevPgIdByStats.userNm }</td>
-											<td class="lineStyle2" colspan="2">${userDevPgIdByStats.pgId }</td>
+									<c:when test="${ userDevPgIdByStats.userDevId == '합계'}">
+											<td class="lineStyle2">${userDevPgIdByStats.userDevId }</td>
 											<td class="lineStyle2">${userDevPgIdByStats.defectGbD1 }</td>
 											<td class="lineStyle2">${userDevPgIdByStats.defectGbD2 }</td>
 											<td class="lineStyle2">${userDevPgIdByStats.defectGbD3 }</td>
 											<td class="lineStyle2">${userDevPgIdByStats.defectGbD4 }</td>
+											<td class="lineStyle2">${userDevPgIdByStats.actionStAll }</td>
 											<td class="lineStyle2">${userDevPgIdByStats.actionStA3 }</td>
 											<td class="lineStyle2">${userDevPgIdByStats.actionStA3Not }</td>
 											<td class="lineStyle2 borderLine">${userDevPgIdByStats.actionPer }%</td>
 									</c:when>
 									<c:otherwise>
-										<c:choose>
-										<c:when test="${userDevPgIdByStats.pgId == '소계'}">
-											<td class="lineStyle">${userDevPgIdByStats.userNm }(${userDevPgIdByStats.userDevId })</td>
-											<td class="lineStyle" colspan="2">${userDevPgIdByStats.pgId }</td>
-											<td class="lineStyle">${userDevPgIdByStats.defectGbD1 }</td>
-											<td class="lineStyle">${userDevPgIdByStats.defectGbD2 }</td>
-											<td class="lineStyle">${userDevPgIdByStats.defectGbD3 }</td>
-											<td class="lineStyle">${userDevPgIdByStats.defectGbD4 }</td>
-											<td class="lineStyle">${userDevPgIdByStats.actionStA3 }</td>
-											<td class="lineStyle">${userDevPgIdByStats.actionStA3Not }</td>
-											<td class="lineStyle borderLine">${userDevPgIdByStats.actionPer }%</td>
-										</c:when>
-										<c:otherwise>
-											<td>${userDevPgIdByStats.userNm }</td>
-											<td title="<c:out value="${userDevPgIdByStats.pgId }"/>" style="white-space:nowrap;	overflow:hidden; text-overflow:ellipsis;">${userDevPgIdByStats.pgId }</td>
-											<td title="<c:out value="${userDevPgIdByStats.pgNm }"/>" style="white-space:nowrap;	overflow:hidden; text-overflow:ellipsis;">${userDevPgIdByStats.pgNm }</td>
+											<td style="text-align:left; padding-left:40px">${userDevPgIdByStats.userNm }(${userDevPgIdByStats.userDevId })</td>
 											<td>${userDevPgIdByStats.defectGbD1 }</td>
 											<td>${userDevPgIdByStats.defectGbD2 }</td>
 											<td>${userDevPgIdByStats.defectGbD3 }</td>
 											<td>${userDevPgIdByStats.defectGbD4 }</td>
+											<td>${userDevPgIdByStats.actionStAll }</td>
 											<td>${userDevPgIdByStats.actionStA3 }</td>
 											<td>${userDevPgIdByStats.actionStA3Not }</td>
 											<td class="borderLine">${userDevPgIdByStats.actionPer }%</td>
-										</c:otherwise>
-										</c:choose>
 									</c:otherwise>
 									</c:choose>
 									</tr>

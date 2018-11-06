@@ -116,7 +116,7 @@ public class DefectServiceImpl extends EgovAbstractServiceImpl implements Defect
 
 
 	@Override
-	public int selectActionComplete(DefectDefaultVO searchVO) {
+	public HashMap<String, Object> selectActionComplete(DefectDefaultVO searchVO) {
 		// TODO Auto-generated method stub
 		return defectDAO.selectActionComplete(searchVO);
 	}

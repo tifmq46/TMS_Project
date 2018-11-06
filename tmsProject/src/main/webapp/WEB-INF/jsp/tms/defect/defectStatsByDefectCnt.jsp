@@ -34,6 +34,7 @@
 var taskByDefectCntChart;
 
 function handleClick(event, array){
+	var sysNm = this.data.labels[array[0]._index];
 	$.ajax({
 		type:"POST",
 		url: "<c:url value='/tms/defect/selectDefectStatsByDefectCntAsyn.do'/>",
@@ -42,15 +43,28 @@ function handleClick(event, array){
 		dataType : 'json',
 		success : function(result){
 			var taskByDefectCnt = result;
-			var taskByDefectCntTaskNm = new Array();
+			if(sysNm == "전체") {
+				var taskByDefectCntConcatNm = new Array();
+			} else {
+				var taskByDefectCntTaskNm = new Array();
+			}
 			var taskByDefectCntTaskGbCnt = new Array();
 			for (var i = 0; i < taskByDefectCnt.length; i++) {
-				taskByDefectCntTaskNm.push(taskByDefectCnt[i].taskNm);
+				if(sysNm == "전체") {
+					taskByDefectCntConcatNm.push(taskByDefectCnt[i].sysNm+"("+taskByDefectCnt[i].taskNm+")");
+				} else {
+					taskByDefectCntTaskNm.push(taskByDefectCnt[i].taskNm);
+				}
 				taskByDefectCntTaskGbCnt.push(taskByDefectCnt[i].taskGbCnt);
 			}
 			var data = taskByDefectCntChart.config.data;
 			data.datasets[0].data = taskByDefectCntTaskGbCnt;
-			data.labels = taskByDefectCntTaskNm;
+			if(sysNm == "전체") {
+				data.labels = taskByDefectCntConcatNm;
+			} else {
+				data.labels = taskByDefectCntTaskNm;
+			}
+			taskByDefectCntChart.config.options.scales.yAxes[0].ticks.suggestedMax = taskByDefectCntTaskGbCnt[0]+1;
 			taskByDefectCntChart.update();
 			
 		},
@@ -85,32 +99,57 @@ window.onload = function() {
 			},
 			options : {
 				onClick:handleClick,
+				legend: {
+					display: false,
+				},
 				scales:{
 					yAxes:[{
 						ticks:{
+							suggestedMax: sysByDefectCntSysCnt[0]+1,
 							beginAtZero:true
 						}	
 					}],
 					xAxes: [{
 			            barPercentage: 0.7
 			        }]
+				},
+				animation: {
+				      duration: 700,
+				      onComplete: function() {
+				        var chartInstance = this.chart,
+				        ctx = chartInstance.ctx;
+				        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
+				        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+				        ctx.textAlign = 'center';
+				        ctx.textBaseline = 'bottom';
+
+				        this.data.datasets.forEach(function(dataset, i) {
+					          var meta = chartInstance.controller.getDatasetMeta(i);
+					          meta.data.forEach(function(bar, index) {
+					            var data = dataset.data[index];
+					            if(data != 0){
+						            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+					            }
+					          });
+				        });
+				      }
+				    }
 				}
-			}
 		});
-		
+
 		/** 업무별 결함건수*/
 		var taskByDefectCnt = JSON.parse('${taskByDefectCnt}');
-		var taskByDefectCntTaskNm = new Array();
+		var taskByDefectCntConcatNm = new Array();
 		var taskByDefectCntTaskGbCnt = new Array();
 		for (var i = 0; i < taskByDefectCnt.length; i++) {
-			taskByDefectCntTaskNm.push(taskByDefectCnt[i].taskNm);
+			taskByDefectCntConcatNm.push(taskByDefectCnt[i].sysNm+"("+taskByDefectCnt[i].taskNm+")");
 			taskByDefectCntTaskGbCnt.push(taskByDefectCnt[i].taskGbCnt);
 		}
 		var ctx2 = document.getElementById('taskByDefectCnt');
 		taskByDefectCntChart = new Chart(ctx2, {
 			type : 'bar',
 			data : {
-				labels : taskByDefectCntTaskNm,
+				labels : taskByDefectCntConcatNm,
 				barThickness : '0.9',
 				datasets : [ {
 					label : '결함건수',
@@ -119,16 +158,41 @@ window.onload = function() {
 				}]
 			},
 			options : {
+				legend: {
+					display: false,
+				},
 				scales:{
 					yAxes:[{
 						ticks:{
+							suggestedMax:taskByDefectCntTaskGbCnt[0]+1,
 							beginAtZero:true
 						}	
 					}],
 					xAxes: [{
 			            barPercentage: 0.7
 			        }]
-				}
+				},
+				animation: {
+				      duration: 700,
+				      onComplete: function() {
+				        var chartInstance = this.chart,
+				        ctx = chartInstance.ctx;
+				        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
+				        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+				        ctx.textAlign = 'center';
+				        ctx.textBaseline = 'bottom';
+
+				        this.data.datasets.forEach(function(dataset, i) {
+					          var meta = chartInstance.controller.getDatasetMeta(i);
+					          meta.data.forEach(function(bar, index) {
+					            var data = dataset.data[index];
+					            if(data != 0){
+						            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+					            }
+					          });
+				        });
+				      }
+				    }
 			}
 		});
 		
@@ -186,7 +250,7 @@ window.onload = function() {
     					</div>
     				</div>
     				<div class="widget-content" style="overflow:auto; overflow-y:hidden;">
-					<canvas id="sysByDefectCnt" width="100%" height="20"></canvas>
+					<canvas id="sysByDefectCnt" width="100%" height="20" style="padding-top:30px"></canvas>
 					</div>
     			</div>    	  
     			
@@ -201,7 +265,7 @@ window.onload = function() {
     				</div>
     				<div class="widget-content" style="overflow:auto; overflow-y:hidden;">
     				<div id="taskByActionCntLoc" >
-						<canvas id="taskByDefectCnt" width="100%" height="20"></canvas>
+						<canvas id="taskByDefectCnt" width="100%" height="20" style="padding-top:30px"></canvas>
 					</div>
 					</div>
     			</div>    	  

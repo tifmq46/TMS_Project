@@ -198,8 +198,8 @@ function searchFileNm() {
       			        	<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">등록일자
       			        	</td>
       			        	<td colspan="3" style="padding-top:15px;">
-                        <input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+                        <input type="date" name="searchByStartDt" id="searchByStartDt" style="text-align:center; width:38%" value="<c:out value='${ST_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" style="text-align:center; width:38%" value="<c:out value='${EN_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
       			        	</td>
       			        	<td style="padding-top:15px;">
                            <div class="buttons" style="float:right;">
@@ -222,10 +222,10 @@ function searchFileNm() {
               <colgroup>
                     <col width="5%"/> 
                     <col width="5%"/>
-                    <col width="15%"/>
+                    <col width="10%"/>
                     <col width="15%"/>
                     <col width="8%"/>
-                    <col width="24%"/>
+                    <col width="29%"/>
                     <col width="5%"/>
                     <col width="5%"/>
                     <col width="10%"/>
@@ -253,12 +253,12 @@ function searchFileNm() {
                      <tr>
                         <td align="center" class="listtd" style="font-weight:bold"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.defectIdSq}"/></td>
-                        <td align="center" class="listtd" title="<c:out value="${result.pgId}"/>"><c:out value="${result.pgId}"/></td>
+                        <td align="center" class="listtd" title="<c:out value="${result.pgId}"/>" style="text-align:left;"><c:out value="${result.pgId}"/></td>
                         <td align="center" class="listtd" title="<c:out value="${result.pgNm}"/>" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
                         
                         <td align="center" class="listtd" title="<c:out value="${result.taskGb}"/>"><c:out value="${result.taskGb}"/></td>
                          <td align="center" class="listtd" style="text-align:left;">
-                        <a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>&amp;boardNo=<c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/>"
+                        <a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>&amp;status=0"
                         title="<c:out value="${result.defectTitle}"/>">
                         <font color="#0F438A" style="font-weight:bold"><c:out value="${result.defectTitle}"/></font>
                         </a>

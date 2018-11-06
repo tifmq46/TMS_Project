@@ -29,6 +29,17 @@
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<style type="text/css">
+.legendRect {
+  display: inline-block;
+  width: 40px;
+  height: 14px;
+  margin-right: 16px;
+}
+.legendText{
+	display: inline-block;
+}
+</style>
 <script type="text/javascript">
 
 window.onload = function() {
@@ -60,7 +71,7 @@ window.onload = function() {
 					data : dayByDefectCntActionDtCnt,
 					backgroundColor : '#00B3E6',
 				}, {
-					label : '누적건수',
+					label : '미조치건수',
 					data : dayByDefectCntAccumulCnt,
 					type : 'line',
 					fill : false,
@@ -68,6 +79,10 @@ window.onload = function() {
 				}]
 			},
 			options : {
+				legend: {
+					display:true,
+					position:'bottom'
+				},
 				scales:{
 					yAxes:[{
 						ticks:{
@@ -79,7 +94,7 @@ window.onload = function() {
 			        }]
 				},
 			animation: {
-			      duration: 0,
+			      duration: 700,
 			      onComplete: function() {
 			        var chartInstance = this.chart,
 			        ctx = chartInstance.ctx;
@@ -133,9 +148,13 @@ window.onload = function() {
 				}]
 			},
 			options : {
+				legend: {
+					display:false,
+				},
 				scales:{
 					yAxes:[{
 						ticks:{
+							suggestedMax:userByDefectCntDefectAll[0]+1,
 							beginAtZero:true
 						}	
 					}],
@@ -143,12 +162,34 @@ window.onload = function() {
 			            barPercentage: 0.9
 			        }]
 				}	
+			,animation: {
+			      duration: 700,
+			      onComplete: function() {
+			        var chartInstance = this.chart,
+			        ctx = chartInstance.ctx;
+			        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
+			        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+			        ctx.textAlign = 'center';
+			        ctx.textBaseline = 'bottom';
+
+			        this.data.datasets.forEach(function(dataset, i) {
+				          var meta = chartInstance.controller.getDatasetMeta(i);
+				          meta.data.forEach(function(bar, index) {
+				            var data = dataset.data[index];
+				            if(data != 0){
+					            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+				            }
+				          });
+			        });
+			      }
+			    }
 			}
 		});
 		
 		$('html').scrollTop(0);
 	}
 </script>
+
 </head>
 
 
@@ -223,7 +264,7 @@ window.onload = function() {
 								</td>
 							</tr>
 							<tr>
-								<td align="right">
+								<td align="left" style="padding-left:10px">
 									<img src="<c:url value='/images/tms/icon_pop_blue.gif' />"
 										width="10" height="10" alt="yCnt" />&nbsp;조치율
 								</td>
@@ -272,7 +313,7 @@ window.onload = function() {
     			</div>    
     		</div>
 			
-			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
+			<div class="recentBoardList" class="col-md-6" style="width:800px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
     			<div class="widget">
     				<div class="widget-header">
     					<div class="header-name" style="margin:10px;">
@@ -280,7 +321,8 @@ window.onload = function() {
     					</div>
     				</div>
     				
-					<canvas id="userByDefectCnt" width="100%" height="20"></canvas>
+					<canvas id="userByDefectCnt" width="100%" height="20" style="padding-top:30px"></canvas>
+					<div id="userByDefectCntLegend"></div>
     			</div>    	  
     			
     		</div>
@@ -293,7 +335,7 @@ window.onload = function() {
     					</div>
     				</div>
     				
-					<canvas id="dayByDefectCnt" width="100%" height="20"></canvas>
+					<canvas id="dayByDefectCnt" width="100%" height="20" style="padding-top:30px"></canvas>
     			</div>    	  
     			
     		</div>
