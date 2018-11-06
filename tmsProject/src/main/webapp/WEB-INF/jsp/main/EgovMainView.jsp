@@ -87,16 +87,41 @@ window.onload = function() {
 				}]
 			},
 			options : {
+				legend:{
+					position:'bottom'
+				},
 				scales:{
 					yAxes:[{
 						ticks:{
+							suggestedMax:sysByMainStatsSysCnt[0]+1,
 							beginAtZero:true
 						}	
 					}],
 					xAxes: [{
 			            barPercentage: 0.9
 			        }]
-				}	
+				},
+				animation: {
+				      duration: 700,
+				      onComplete: function() {
+				        var chartInstance = this.chart,
+				        ctx = chartInstance.ctx;
+				        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
+				        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+				        ctx.textAlign = 'center';
+				        ctx.textBaseline = 'bottom';
+
+				        this.data.datasets.forEach(function(dataset, i) {
+					          var meta = chartInstance.controller.getDatasetMeta(i);
+					          meta.data.forEach(function(bar, index) {
+					            var data = dataset.data[index];
+					            if(data != 0){
+						            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+					            }
+					          });
+				        });
+				      }
+				    }	
 			}
 		});
 		/** 결함 진행상태 통계 끝*/

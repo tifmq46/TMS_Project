@@ -42,7 +42,6 @@ function handleClick(event, array){
 		success : function(result){
 			$("#taskByActionCntLoc").empty();
 			var str = "";
-			str += "<div style='overflow:auto; overflow-y:hidden;'>";
 			str += "<table>";
 			str += "<tr></tr><tr>";
 			if(result.length == 0) {
@@ -72,7 +71,7 @@ function handleClick(event, array){
 				str += "<font color='#007BFF'>&nbsp;&nbsp;" + item.actionStA3Cnt;
 				str += "</font>";
 				str += " / " + item.taskCnt;
-				str += " ( " + item.actionPer + " % )<br/>";
+				str += " ( " + item.actionPer + "% )<br/>";
 				if(temp == "sysGb") {
 					str += item.sysNm + "(" + item.taskNm + ")";
 				} else {
@@ -81,7 +80,7 @@ function handleClick(event, array){
 				str += "</td>";
 			});
 			str += "</tr>";
-			str += "</table></div><br/><br/>";
+			str += "</table><br/><br/>";
 			$("#taskByActionCntLoc").append(str);
 			
 			var taskByActionCnt = result;
@@ -113,7 +112,7 @@ function handleClick(event, array){
 			var myDoughnutChart = new Chart(ctx, {
 		    	type : 'doughnut',
 		    	data : {
-		    		  labels: ['완료건수','미완료건수'],
+		    		  labels: ['조치건수','미조치건수'],
 		    			datasets : [ {
 		    				data : [taskByActionCntActionStA3Cnt[j],
 		    				        taskByActionCntTaskCnt[j]-taskByActionCntActionStA3Cnt[j]],
@@ -182,7 +181,7 @@ window.onload = function() {
 	var myDoughnutChart = new Chart(ctx, {
 		type : 'doughnut',
 		data : {
-			  labels: ['완료건수','미완료건수'],
+			  labels: ['조치건수','미조치건수'],
 				datasets : [{
 					label : ['sysGb'],
 					data : [sysAllByActionCntActionStA3CntAll,
@@ -219,7 +218,7 @@ window.onload = function() {
 	var myDoughnutChart = new Chart(ctx, {
     	type : 'doughnut',
     	data : {
-    		  labels: ['완료건수','미완료건수'],
+    		  labels: ['조치건수','미조치건수'],
     			datasets : [ {
     				label : [sysByActionCntSysGb[j]],
     				data : [sysByActionCntActionStA3Cnt[j],
@@ -258,6 +257,9 @@ window.onload = function() {
 	var taskByActionCntActionStA3Cnt = new Array();
 	var taskByActionCntSysGbTaskGb = new Array();
 	for (var i = 0; i < taskByActionCnt.length; i++) {
+		if(taskByActionCnt[i].taskCnt == 0) {
+			taskByActionCnt[i].taskCnt = 0.1;
+		}
 		taskByActionCntTaskCnt.push(taskByActionCnt[i].taskCnt);
 		taskByActionCntActionStA3Cnt.push(taskByActionCnt[i].actionStA3Cnt);
 		taskByActionCntSysGbTaskGb.push(taskByActionCnt[i].sysGb+taskByActionCnt[i].taskGb);
@@ -267,7 +269,7 @@ window.onload = function() {
 	var myDoughnutChart = new Chart(ctx, {
     	type : 'doughnut',
     	data : {
-    		  labels: ['완료건수','미완료건수'],
+    		  labels: ['조치건수','미조치건수'],
     			datasets : [ {
     				data : [taskByActionCntActionStA3Cnt[j],
     				        taskByActionCntTaskCnt[j]-taskByActionCntActionStA3Cnt[j]],

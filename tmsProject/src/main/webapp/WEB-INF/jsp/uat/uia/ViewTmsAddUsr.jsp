@@ -78,7 +78,7 @@ $(document).on('keyup','#CONFIRM_PASSWORD',function(){
 		  }
 		  else{
 			  $("#CONFIRM_PASSWORD_SPAN").css('color','blue');
-			  $("#CONFIRM_PASSWORD_SPAN").text("암호가 확인되었습니다.");
+			  $("#CONFIRM_PASSWORD_SPAN").text("비밀번호가 확인되었습니다.");
 		  }
 	
 });

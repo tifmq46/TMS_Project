@@ -201,14 +201,12 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
+                            
                             <select id="userDevId" name="userDevId" class="select" title="개발자" style="width:25%; text-align-last:center;">
 									   <option value="" >선택하세요</option>
 									      <c:forEach var="DEV_ID" items="${dev_List}" varStatus="status">
 									    	<option value="<c:out value="${DEV_ID.EMPLYR_ID}"/>" <c:if test="${DEV_ID.USER_NM == USERDEVID}">selected="selected"</c:if> ><c:out value="${DEV_ID.USER_NM}(${DEV_ID.EMPLYR_ID})" /></option>
 									      </c:forEach>
-                                <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
-                                    <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
-                                </c:forEach>  --%>   
                             </select>&nbsp;<span id="sometext"></span>
                             <form:errors path="userDevId" style="color: red"/>
                               <br/>

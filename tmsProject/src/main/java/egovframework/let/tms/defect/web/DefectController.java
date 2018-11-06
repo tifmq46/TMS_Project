@@ -191,9 +191,10 @@ public class DefectController {
 	
 	/** 결함 상세 조회*/
 	@RequestMapping("/tms/defect/selectDefectInfo.do")
-	public String selectDefectInfo(@ModelAttribute("defectVO") DefectVO defectVO,ModelMap model) throws Exception {
+	public String selectDefectInfo(@ModelAttribute("defectVO") DefectVO defectVO, HttpServletRequest request, ModelMap model) throws Exception {
 		
-		model.addAttribute("boardNo", defectVO.getBoardNo());
+		String pageStatus = request.getParameter("status");
+		model.addAttribute("pageStatus", pageStatus);
 		
 		List<?> list = defectService.selectOneDefect(defectVO);
 		model.addAttribute("defectOne", list);
@@ -306,9 +307,9 @@ public class DefectController {
 		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
 		
-		int actionComplete = defectService.selectActionComplete(searchVO);
+		HashMap<String, Object> actionStCnt = defectService.selectActionComplete(searchVO);
 		model.addAttribute("actionTotCnt",totCnt);
-		model.addAttribute("actionComplete",actionComplete);
+		model.addAttribute("actionStCnt",actionStCnt);
 		
 		return "tms/defect/defectListCurrent";
 	}
@@ -574,18 +575,23 @@ public class DefectController {
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 
 			cell = row.createCell(6);
-			cell.setCellValue("조치건수");
+			cell.setCellValue("합계");
 			sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
-			
+
 			cell = row.createCell(7);
-			cell.setCellValue("미조치건수");
+			cell.setCellValue("조치건수");
 			sheet.addMergedRegion(new CellRangeAddress(0, 1, 7, 7));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			cell = row.createCell(8);
-			cell.setCellValue("조치율(%)");
+			cell.setCellValue("미조치건수");
 			sheet.addMergedRegion(new CellRangeAddress(0, 1, 8, 8));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(9);
+			cell.setCellValue("조치율(%)");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 9, 9));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			row = sheet.createRow(1);
@@ -615,14 +621,18 @@ public class DefectController {
 			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
 			cell = row.createCell(6);
+			cell.setCellValue("합계");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+
+			cell = row.createCell(7);
 			cell.setCellValue("조치건수");
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
-			cell = row.createCell(7);
+			cell = row.createCell(8);
 			cell.setCellValue("미조치건수");
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
-			cell = row.createCell(8);
+			cell = row.createCell(9);
 			cell.setCellValue("조치율(%)");
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
@@ -654,14 +664,18 @@ public class DefectController {
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
 				cell = row.createCell(6);
+				cell.setCellValue(String.valueOf(list.get(i).get("actionStAll")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+
+				cell = row.createCell(7);
 				cell.setCellValue(String.valueOf(list.get(i).get("actionStA3")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
-				cell = row.createCell(7);
+				cell = row.createCell(8);
 				cell.setCellValue(String.valueOf(list.get(i).get("actionStA3Not")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
-				cell = row.createCell(8);
+				cell = row.createCell(9);
 				cell.setCellValue(String.valueOf(list.get(i).get("actionPer")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
@@ -675,9 +689,10 @@ public class DefectController {
 			}
 			sheet.setColumnWidth(0, "시스템구분".length()*500 + 1000);
 			sheet.setColumnWidth(1, "업무구분".length()*500 + 1000);
-			sheet.setColumnWidth(6, "조치건수".length()*500 + 1000);
-			sheet.setColumnWidth(7, "미조치건수".length()*500 + 1000);
-			sheet.setColumnWidth(8, "조치율(%)".length()*500 + 1000);
+			sheet.setColumnWidth(6, "합계".length()*500 + 1000);
+			sheet.setColumnWidth(7, "조치건수".length()*500 + 1000);
+			sheet.setColumnWidth(8, "미조치건수".length()*500 + 1000);
+			sheet.setColumnWidth(9, "조치율(%)".length()*500 + 1000);
 			
 		} else {
 			cell = row.createCell(0);
@@ -686,33 +701,28 @@ public class DefectController {
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			cell = row.createCell(1);
-			cell.setCellValue("화면ID");
-			sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
+			cell.setCellValue("결함건수");
+			sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 4));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 
-			cell = row.createCell(2);
-			cell.setCellValue("화면명");
-			sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
+			cell = row.createCell(5);
+			cell.setCellValue("합계");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 5, 5));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+
+			cell = row.createCell(6);
+			cell.setCellValue("조치건수");
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
-			cell = row.createCell(3);
-			cell.setCellValue("결함건수");
-			sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 6));
-			cell.setCellStyle(HeadStyle); // 제목스타일 
-
 			cell = row.createCell(7);
-			cell.setCellValue("조치건수");
+			cell.setCellValue("미조치건수");
 			sheet.addMergedRegion(new CellRangeAddress(0, 1, 7, 7));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			cell = row.createCell(8);
-			cell.setCellValue("미조치건수");
-			sheet.addMergedRegion(new CellRangeAddress(0, 1, 8, 8));
-			cell.setCellStyle(HeadStyle); // 제목스타일 
-			
-			cell = row.createCell(9);
 			cell.setCellValue("조치율(%)");
-			sheet.addMergedRegion(new CellRangeAddress(0, 1, 9, 9));
+			sheet.addMergedRegion(new CellRangeAddress(0, 1, 8, 8));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			row = sheet.createRow(1);
@@ -722,97 +732,83 @@ public class DefectController {
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			cell = row.createCell(1);
-			cell.setCellValue("화면ID");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
-
-			cell = row.createCell(2);
-			cell.setCellValue("화면명");
-			cell.setCellStyle(HeadStyle); // 제목스타일 
-			
-			cell = row.createCell(3);
 			cell.setCellValue("결함건수");
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 
-			cell = row.createCell(3);
+			cell = row.createCell(1);
 			cell.setCellValue("오류");
 			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
-			cell = row.createCell(4);
+			cell = row.createCell(2);
 			cell.setCellValue("개선");
 			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
-			cell = row.createCell(5);
+			cell = row.createCell(3);
 			cell.setCellValue("문의");
 			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
-			cell = row.createCell(6);
+			cell = row.createCell(4);
 			cell.setCellValue("기타");
 			cell.setCellStyle(TitleStyle); // 제목스타일 
 			
-			cell = row.createCell(7);
+			cell = row.createCell(5);
+			cell.setCellValue("합계");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+
+			cell = row.createCell(6);
 			cell.setCellValue("조치건수");
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
-			cell = row.createCell(8);
+			cell = row.createCell(7);
 			cell.setCellValue("미조치건수");
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
-			cell = row.createCell(9);
+			cell = row.createCell(8);
 			cell.setCellValue("조치율(%)");
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
 			for(int i=0; i<list.size(); i++) {
 				row = sheet.createRow(i+2);
 				
-				cell = row.createCell(0);
-				cell.setCellValue(String.valueOf(list.get(i).get("userNm")));
-				cell.setCellStyle(BodyStyle); // 본문스타일 
-				
-				if((list.get(i).get("pgId")).toString().equals("소계")) {
-					cell = row.createCell(1);
-					sheet.addMergedRegion(new CellRangeAddress(i+2,i+2,1, 2));
-					cell.setCellValue(String.valueOf(list.get(i).get("pgId")));
+				if(list.get(i).get("userDevId").toString().equals("합계")) {
+					cell = row.createCell(0);
+					cell.setCellValue(String.valueOf(list.get(i).get("userDevId")));
 					cell.setCellStyle(BodyStyle); // 본문스타일 
-					
-					cell = row.createCell(2);
-					cell.setCellValue(String.valueOf(list.get(i).get("pgNm")));
-					cell.setCellStyle(BodyStyle); // 본문스타일 
-					
 				} else {
-					cell = row.createCell(1);
-					cell.setCellValue(String.valueOf(list.get(i).get("pgId")));
-					cell.setCellStyle(BodyStyle); // 본문스타일 
-					
-					cell = row.createCell(2);
-					cell.setCellValue(String.valueOf(list.get(i).get("pgNm")));
+					cell = row.createCell(0);
+					cell.setCellValue(String.valueOf(list.get(i).get("userNm")));
 					cell.setCellStyle(BodyStyle); // 본문스타일 
 				}
 				
-				cell = row.createCell(3);
+				cell = row.createCell(1);
 				cell.setCellValue(String.valueOf(list.get(i).get("defectGbD1")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
-				cell = row.createCell(4);
+				cell = row.createCell(2);
 				cell.setCellValue(String.valueOf(list.get(i).get("defectGbD2")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
-				cell = row.createCell(5);
+				cell = row.createCell(3);
 				cell.setCellValue(String.valueOf(list.get(i).get("defectGbD3")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
-				cell = row.createCell(6);
+				cell = row.createCell(4);
 				cell.setCellValue(String.valueOf(list.get(i).get("defectGbD4")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
-				cell = row.createCell(7);
+				cell = row.createCell(5);
+				cell.setCellValue(String.valueOf(list.get(i).get("actionStAll")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+
+				cell = row.createCell(6);
 				cell.setCellValue(String.valueOf(list.get(i).get("actionStA3")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
-				cell = row.createCell(8);
+				cell = row.createCell(7);
 				cell.setCellValue(String.valueOf(list.get(i).get("actionStA3Not")));
 				cell.setCellStyle(BodyStyle); // 본문스타일
 				
-				cell = row.createCell(9);
+				cell = row.createCell(8);
 				cell.setCellValue(String.valueOf(list.get(i).get("actionPer")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 			}
@@ -823,9 +819,10 @@ public class DefectController {
 				sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
 			}
 			sheet.setColumnWidth(0, "개발자".length()*500 + 1000);
-			sheet.setColumnWidth(7, "조치건수".length()*500 + 1000);
-			sheet.setColumnWidth(8, "미조치건수".length()*500 + 1000);
-			sheet.setColumnWidth(9, "조치율(%)".length()*500 + 1000);
+			sheet.setColumnWidth(5, "합계".length()*500 + 1000);
+			sheet.setColumnWidth(6, "조치건수".length()*500 + 1000);
+			sheet.setColumnWidth(7, "미조치건수".length()*500 + 1000);
+			sheet.setColumnWidth(8, "조치율(%)".length()*500 + 1000);
 		}
 		
 		// 입력된 내용 파일로 쓰기

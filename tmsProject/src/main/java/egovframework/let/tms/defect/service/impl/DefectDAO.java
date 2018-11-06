@@ -99,8 +99,9 @@ public class DefectDAO extends EgovAbstractDAO{
 		return list("defectDAO.searchDefect", searchVO);
 	}
 	
-	public int selectActionComplete(DefectDefaultVO searchVO) {
-		return (int) select("defectDAO.selectActionComplete", searchVO);
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> selectActionComplete(DefectDefaultVO searchVO) {
+		return (HashMap<String, Object>) select("defectDAO.selectActionComplete", searchVO);
 	}
 	
 	public int selectActionNotComplete() {

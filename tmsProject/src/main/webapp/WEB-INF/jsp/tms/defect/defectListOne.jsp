@@ -29,6 +29,7 @@
 <title>결함관리상세</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="defectVOUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 function searchFileImg(defectIdSq) {
     window.open("<c:url value='/tms/defect/selectListOneDetail.do'/>?defectIdSq="+defectIdSq,'','width=800,height=600');
@@ -96,7 +97,9 @@ function changeUserTestNm() {
 }
 
 window.onload = function() {
-	if (document.getElementById("uniqId").value == "USRCNFRM_00000000000"
+	// 결함관리에서 상세페이지로 이동
+	if($('#pageStatus').val() == "0") {
+		if (document.getElementById("uniqId").value == "USRCNFRM_00000000000"
 			|| document.getElementById("uniqId").value == "USRCNFRM_00000000001") {
 		// 관리자, 업무PL 로그인할 경우
 		document.getElementById("defectTitle").readOnly = false;
@@ -169,6 +172,26 @@ window.onload = function() {
 			$(saveBtn).addClass("disabled");
 		}
 
+	}
+	// 결함처리현황에서 상세페이지로 이동
+	} else {
+		$("#saveBtn").css("display", "none");
+		$("#deleteBtn").css("display", "none");
+		$("#userTestNm").attr("readOnly", "readOnly");
+		$("#userTestNm").css("border", "0");
+		$("#defectGb").attr("disabled", "disable");
+		$("#actionSt").attr("disabled", "disable");
+		$("#defectTitle").attr("readOnly", "readOnly");
+		$("#defectTitle").css("border", "0");
+		$("#defectContent").attr("disabled", "disable");
+		$("#defectContent").css("border", "0");
+		$("#actionContent").attr("disabled", "disable");
+		$("#actionContent").css("border", "0");
+		if($("#fileCheck").val() == "0") {
+			$("#fileImg").css("display","none");
+		} else {
+			$("#deleteFileBtn").css("display","none");
+		}
 	}
 }
 </script>
@@ -272,15 +295,16 @@ window.onload = function() {
 					         <th width="12.5%" height="23" class="" nowrap >테스터
 					        </th>
 					        <td width="12.5%" nowrap >
-					       
 							  <input list="userTestList" name="userNm" id="userTestNm" value="<c:out value="${defectOne.userTestNm}"/>"  autocomplete="off" style="text-align:center; width:90%;"
 							  onchange="javascript:changeUserTestNm()"/>
 					        	<c:if test="${loginId == defectOne.userTestId || uniqId == 'USRCNFRM_00000000000' || uniqId == 'USRCNFRM_00000000001' }">
+					        	<c:if test="${pageStatus == '0' }">
 					        	<datalist id="userTestList">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
 									    	<option value="<c:out value="${userList.userNm}"/>(<c:out value="${userList.emplyrId}"/>)"  style="text-align:center;"></option>
 									    </c:forEach>
 					        	</datalist>
+					        	</c:if>
 					        	</c:if>
 					        	<form:errors path="userNm" />
 					        	<input type="hidden" id="userTestId" name="userTestId" value="<c:out value="${defectOne.userTestId }"/>"/>
@@ -323,7 +347,7 @@ window.onload = function() {
 					        </th>
 					        <td width="37.5%" nowrap colspan="3">
 					          <input id="defectTitle" name="defectTitle" size="5"  value="<c:out value="${defectOne.defectTitle}"/>" autocomplete="off" maxlength="40" title="결함명"
-					          style="text-align:center; width:90%;" /> 
+					          style="width:90%;" /> 
 					          <form:errors path="defectTitle" />
 					        </td>
 					        <th width="12.5%" height="23" nowrap >등록일자
@@ -402,12 +426,13 @@ window.onload = function() {
 					<input type="hidden" id="loginNm" value="<c:out value='${loginName }'/>" />
 					<input type="hidden" id="loginId" value="<c:out value='${loginId }'/>" />
 					<input type="hidden" id="uniqId" value="<c:out value='${uniqId }'/>" />
+					<input type="hidden" id="pageStatus" value="<c:out value='${pageStatus }'/>" />
 						<!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
                     
                     <a href="#LINK" id="saveBtn" onclick="javaScript:fn_egov_update_updateDefect(); return false;">저장</a>
                      <a href="#LINK" id="deleteBtn" onclick="javaScript:fn_egov_delete_deleteDefect(); return false;">삭제</a>
-                    <a href="<c:url value='/tms/defect/selectDefect.do'/>">목록</a>
+                    <a href="<c:url value='/tms/defect/selectDefect.do'/>" onclick="javascript:window.history.back(-1); return false;">목록</a>
                     </div>
                     <!-- 버튼 끝 -->  
                   </c:forEach>

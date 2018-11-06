@@ -169,8 +169,8 @@ td.listtd {
       			        	<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">등록일자
       			        	</td>
       			        	<td colspan="3" style="padding-top:15px;">
-                        <input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+                        <input type="date" name="searchByStartDt" id="searchByStartDt" style="text-align:center; width:38%" value="<c:out value='${ST_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" style="text-align:center; width:38%" value="<c:out value='${EN_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
       			        	</td>
       			        	<td style="padding-top:15px;">
                            <div class="buttons" style="float:right;">
@@ -184,22 +184,15 @@ td.listtd {
           	  </div>
           	  <!-- //검색 필드 박스 끝 -->
                 
-                 <table width="85%" cellspacing="0" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
+                 <table width="100%" cellspacing="0" summary="총 건수, 완료건수, 미완료, 진행률 표시하는 테이블">
                  <caption style="visibility:hidden">총 건수, 완료건수, 미완료, 진행률 표시하는 테이블</caption>
                  
                  <tr>
-                 	<td align="center" width="100" style="font-size:1.2em; font-weight:bolder">총 : <c:out value="${actionTotCnt}"/></td>
-                  <td align="center" width="100" style="font-size:1.2em; font-weight:bolder">완료 : <font color="#007BFF"><c:out value="${actionComplete}"/></font></td>
-                 	<td align="center" width="100" style="font-size:1.2em; font-weight:bolder">미완료 : <c:out value="${actionTotCnt - actionComplete}"/></td>
-                 	<td align="right" width="100" style="font-size:1.2em; font-weight:bolder">조치율 : </td>
-                 	<c:choose>
-                 		<c:when test="${actionTotCnt ne '0' }">
-                 		<fmt:parseNumber var="actionProgression" integerOnly="true" value="${actionComplete / actionTotCnt * 100}"/>
-                 		</c:when>
-                 		<c:otherwise>
-                 		</c:otherwise>
-                 	</c:choose>
-                 	<td style="font-size:15px; font-weight:bolder">
+                 	<td align="right" width="7%" style="font-size:1.2em; font-weight:bolder">조치율 : </td>
+                 	<c:if test="${actionTotCnt ne '0' }">
+                 		<fmt:parseNumber var="actionProgression" integerOnly="true" value="${actionStCnt.actionStA3 / actionTotCnt * 100}"/>
+                 	</c:if>
+                 	<td width="53%" style="font-size:15px; font-weight:bolder">
                  	<c:choose>
                  		<c:when test="${actionTotCnt ne '0' }">
                  			<div class="progress" style="height: 1.5rem;"><div class="progress-bar" style="width:${actionProgression}%" > <strong><c:out value=" ${actionProgression}"></c:out>%</strong></div></div>
@@ -208,6 +201,12 @@ td.listtd {
                  			<div class="progress" style="height: 1.5rem;"><div class="progress-bar" style="width:0%"> <strong><c:out value="0"></c:out>%</strong></div></div>
                  		</c:otherwise>
                  	</c:choose>
+                 	</td>
+                 	<td align="left" width="40%" style="font-size:1.2em; font-weight:bolder"> &nbsp;전체 : <c:out value="${actionTotCnt}"/>&nbsp;
+                 	대기 : <c:out value="${actionStCnt.actionStA1}"/>&nbsp;
+                 	조치중 : <c:out value="${actionStCnt.actionStA2}"/>&nbsp;
+                 	조치완료 : <font color="#007BFF"><c:out value="${actionStCnt.actionStA3}"/></font>&nbsp;
+                 	재요청 : <c:out value="${actionStCnt.actionStA4}"/>
                  	</td>
                  </tr>        
              	</table>
@@ -222,10 +221,10 @@ td.listtd {
               <colgroup>
                     <col width="5%"/> 
                     <col width="5%"/>
-                    <col width="15%"/>
+                    <col width="10%"/>
                     <col width="15%"/>
                     <col width="8%"/>
-                    <col width="24%"/>
+                    <col width="29%"/>
                     <col width="5%"/>
                     <col width="5%"/>
                     <col width="10%"/>
@@ -252,11 +251,11 @@ td.listtd {
             			<tr>
             				<td align="center" class="listtd" style="font-weight:bold"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
             				<td align="center" class="listtd"><c:out value="${result.defectIdSq}"/></td>
-            				<td align="center" class="listtd" title="<c:out value="${result.pgId}"/>"><c:out value="${result.pgId}"/></td>
+            				<td align="center" class="listtd" title="<c:out value="${result.pgId}"/>" style="text-align:left;"><c:out value="${result.pgId}"/></td>
             				<td align="center" class="listtd" title="<c:out value="${result.pgNm}"/>" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
             				<td align="center" class="listtd" title="<c:out value="${result.taskGb}"/>"><c:out value="${result.taskGb}"/></td>
             				<td align="center" class="listtd" style="text-align:left;">
-            				<a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>&amp;boardNo=<c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/>"
+            				<a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>&amp;status=1"
                        			 title="<c:out value="${result.defectTitle}"/>">
                        			 <font color="0F438A" style="font-weight:bold"><c:out value="${result.defectTitle}"/></font>
                         	</a>
