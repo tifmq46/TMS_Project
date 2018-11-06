@@ -48,6 +48,8 @@ public interface TestService {
 
 	public HashMap<String, Integer> selectTestCaseStats(String testcaseGb)throws Exception;
 	
+	public HashMap<String, Integer> selectTestScenarioStats(String testcaseId)throws Exception;
+	
 	public List<?> selectTestCaseStatsListByTaskGb(String sysNm)  throws Exception;
 	
 	public List<?> selectTestCaseStatsListBySysGb()  throws Exception;

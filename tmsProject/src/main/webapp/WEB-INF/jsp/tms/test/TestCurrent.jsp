@@ -120,7 +120,7 @@ function currentToExel(pageNo) {
       			        	</colgroup>
       			        <tr>
       			        <td style="font-weight:bold;color:#666666;font-size:110%;">
-      			        <spring:message code="tms.test.testcaseGb" />
+      			        <spring:message code="tms.test.testGb" />
       			        </td>
       			        <td>
       			        <select name="searchByTestcaseGb" id="searchByTestcaseGb"  style="width:82%;text-align-last:center;" value="<c:out value='${searchVO.searchByTestcaseGb}'/>" >
@@ -147,9 +147,15 @@ function currentToExel(pageNo) {
 									<td></td>
 						  			<td></td>
 					  			</c:if>
-      			        <td colspan="3">
+      			        <td colspan="2" style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
+      			        	<input type="radio" name="asOf" value="pgId" <c:if test="${searchVO.asOf == 'pgId'}">checked="checked"</c:if>/>&nbsp;<label><spring:message code="tms.test.pgId" /></label> &nbsp;
+					  				<input type="radio" name="asOf" value="testcaseId" <c:if test="${searchVO.asOf == 'testcaseId'}">checked="checked"</c:if>/>&nbsp;<label><spring:message code="tms.test.testcaseId" /></label>
       			        </td>
+      			        
+      			         <td></td>
       			        </tr>
+      			        
+      			        
       			        <tr>
       			        <td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
       			        <spring:message code="tms.test.taskGb" />
@@ -184,18 +190,17 @@ function currentToExel(pageNo) {
 										</c:forEach>
 									</select>	
       			        </td>
-      			        <td colspan="2" style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
-					  				<input type="radio" name="asOf" value="pgId" <c:if test="${searchVO.asOf == 'pgId'}">checked="checked"</c:if>/>&nbsp;<label><spring:message code="tms.test.pgId" /></label> &nbsp;
-					  				<input type="radio" name="asOf" value="testcaseId" <c:if test="${searchVO.asOf == 'testcaseId'}">checked="checked"</c:if>/>&nbsp;<label><spring:message code="tms.test.testcaseId" /></label>
-      			        </td>
-      			        <td style="padding-top:15px;">
+      			        
+      			        <td colspan="2" style="padding-top:15px;">
       			        	<div class="buttons" style="float:right;">
-									    
-	                                       <a href="<c:url value='/tms/test/selectTestCurrent.do'/>" onclick="selectTestCurrent('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
-											<spring:message code="button.inquire" /></a>
-											<a href="#" onclick="currentToExel('${searchVO.pageIndex}'); return false;">엑셀</a>
-									</div>
+	                            <a href="<c:url value='/tms/test/selectTestCurrent.do'/>" onclick="selectTestCurrent('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
+								<spring:message code="button.inquire" /></a>
+								<a href="#" onclick="currentToExel('${searchVO.pageIndex}'); return false;"><spring:message code="tms.test.exelDownload" /></a>
+							</div> 
       			        </td>
+      			        
+      			        <td></td>
+      			        
       			        </tr>
       			        </table>
 					  				
@@ -230,15 +235,14 @@ function currentToExel(pageNo) {
 	                 <caption style="visibility:hidden">총 건수, 완료건수, 미완료, 진행률 표시하는 테이블</caption>
 	                 
 	                 <tr>
-	                 	<td align="center" width="200" style="font-size:15px; font-weight:bolder">총 프로그램 본수 : <c:out value="${selectTestCurrentCnt.totCnt}"></c:out></td>
-	                  	<td align="center" width="200" style="font-size:15px; font-weight:bolder">테스트 케이스 개수 : <c:out value="${selectTestCurrentCnt.testcaseCnt}"></c:out></td>
-	                 	<td align="center" width="100" style="font-size:15px; font-weight:bolder">완료 : <c:out value="${selectTestCurrentCnt.yCnt}"></c:out></td>
-	                 	<td align="right" width="100" style="font-size:15px; font-weight:bolder">미완료 : <c:out value="${selectTestCurrentCnt.nCnt}"></c:out></td>
-	                 	<td align="right" width="100" style="font-size:15px; font-weight:bolder">진행률 : 
-	                 	
+	                 	<td align="right" width="80" style="font-size:15px; font-weight:bolder">진행률 : 
 	                 	<td style="font-size:15px; font-weight:bolder">
 	                 			<div class="progress" style="height: 1.5rem;"><div class="progress-bar" style="width:${testPct}%" > <strong><c:out value=" ${testPct}"></c:out>%</strong></div></div>
 	                 	</td>
+	                 	<td align="center" width="180" style="font-size:15px; font-weight:bolder">총 프로그램 본수 : <c:out value="${selectTestCurrentCnt.totCnt}"></c:out></td>
+	                  	<td align="center" width="180" style="font-size:15px; font-weight:bolder">테스트 케이스 개수 : <c:out value="${selectTestCurrentCnt.testcaseCnt}"></c:out></td>
+	                 	<td align="center" width="80" style="font-size:15px; font-weight:bolder">완료 : <c:out value="${selectTestCurrentCnt.yCnt}"></c:out></td>
+	                 	<td align="right" width="80" style="font-size:15px; font-weight:bolder">미완료 : <c:out value="${selectTestCurrentCnt.nCnt}"></c:out></td>
 	                 </tr>        
              	</table>
              	
@@ -276,7 +280,7 @@ function currentToExel(pageNo) {
         				<th align="center" rowspan="2"><spring:message code="tms.test.testcaseId" /></th>
         				<th align="center" rowspan="2"><spring:message code="tms.test.testcaseContent" /></th>
         				<th align="center" rowspan="2"><spring:message code="tms.test.userWriterId" /></th>
-			        	<th align="center" rowspan="2" ><spring:message code="tms.test.enrollDt" /></th>
+			        	<th align="center" rowspan="2" ><spring:message code="tms.test.pgNm" /></th>
 			        	<th align="center" rowspan="2"><spring:message code="tms.test.completeDt" /></th>
 			        	<th align="center" colspan="2"><spring:message code="tms.test.testLevel" /></th>
         				<th align="center" rowspan="2"><spring:message code="tms.test.completeYn" /></th>
@@ -297,9 +301,9 @@ function currentToExel(pageNo) {
 	        				
             				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.testcaseId}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.testcaseContent}"/>&nbsp;</td>
+            				<td align="center" class="listtd" title="${result.testcaseContent}"><c:out value="${result.testcaseContent}"/>&nbsp;</td>
             				<td align="center" class="listtd" title="${result.userId}"><c:out value="${result.userNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.pgNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.completeDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.firstTestResultYn}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.secondTestResultYn}"/>&nbsp;</td>
@@ -337,7 +341,7 @@ function currentToExel(pageNo) {
         				</c:if>
         				<th align="center" rowspan="2"><spring:message code="tms.test.taskGb" /></th>
         				<th align="center" rowspan="2"><spring:message code="tms.test.userWriterId" /></th>
-			        	<th align="center" rowspan="2" ><spring:message code="tms.test.enrollDt" /></th>
+			        	<th align="center" rowspan="2" ><spring:message code="tms.test.pgNm" /></th>
 			        	<th align="center" rowspan="2"><spring:message code="tms.test.completeDt" /></th>
 			        	<th align="center" colspan="2"><spring:message code="tms.test.testLevel" /></th>
         				<th align="center" rowspan="2"><spring:message code="tms.test.completeYn" /></th>
@@ -354,14 +358,14 @@ function currentToExel(pageNo) {
             				<td align="center" class="listtd" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>  
             				
             				<td align="center" class="listtd"><c:out value="${result.testcaseId}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.testcaseContent}"/>&nbsp;</td>
+            				<td align="center" class="listtd" title="${result.testcaseContent}"><c:out value="${result.testcaseContent}"/>&nbsp;</td>
             				<c:if test="${result.pgId != '' && result.pgId ne null}"> 
 	        					<td align="center" class="listtd"><c:out value="${result.pgId}"/>&nbsp;</td>
 	        				</c:if>
 	        				
             				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
             				<td align="center" class="listtd" title="${result.userId}"><c:out value="${result.userNm}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.enrollDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.pgNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.completeDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.firstTestResultYn}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.secondTestResultYn}"/>&nbsp;</td>
@@ -370,20 +374,6 @@ function currentToExel(pageNo) {
         			</c:forEach>
 	              	
 	              	</c:if>
-	              	
-	              	
-	              	
-	              	
-	              	
-	              	
-	              	
-	              	
-	              	
-	              	
-	              	
-	              	
-	              	
-	              	
 	              	
               </table>        
            </div>

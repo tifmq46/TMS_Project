@@ -42,7 +42,7 @@ window.onload = function(){
 		$("#taskGbFormTd").empty();
 		var str = ""
 		if(testcaseGbValue == 'TC1'){
-			str += "<input type='text' readonly='true' id='TmsProgrmFileNm_task_gb'  size='62' cssStyle='width:50%' />";
+			str += "<input type='text' readonly='readonly' id='TmsProgrmFileNm_task_gb'  size='62' style='width:20%' />";
 			$("#taskGbFormTd").append(str);
 		}  else {
 			$("#TmsProgrmFileNm_pg_id").val(null);
@@ -56,11 +56,9 @@ window.onload = function(){
  
 function insertTestCaseImpl(){
 	
-	
 	if($("#testcaseGb").val() == 'TC1' && $("#TmsProgrmFileNm_pg_id").val() == ""){
-		alert("단위 테스트케이스 등록시 화면ID를 선택해야합니다.")
+		swal('단위 테스트케이스 등록시 화면ID를 선택해야합니다.')
 	} else {
-		
 	var inputTestcaseId = $("#testcaseIdDuplicationCheck").val();
 	
 	/* 특수문자 포함여부 체크 */
@@ -68,7 +66,7 @@ function insertTestCaseImpl(){
 	var isValid = true; 
     if(stringRegx.test(inputTestcaseId)) { 
        isValid = false;
-       alert("테스트케이스ID에 특수문자는 사용할 수 없습니다.");
+       swal("테스트케이스ID에 특수문자는 사용할 수 없습니다.");
      } 
 	     
 	   if(isValid){
@@ -81,7 +79,7 @@ function insertTestCaseImpl(){
 			   	,success :  function(result){
 			   		
 			   		if(!result){
-			   			alert("중복된 테스트케이스ID 입니다.")
+			   			swal("중복된 테스트케이스ID 입니다.")
 			   		} else {
 			   			
 			   			if (!validateTestCaseVO(document.testCaseVO)){
@@ -105,8 +103,8 @@ function insertTestCaseImpl(){
 			   		}
 			   	}
 			   	, error :  function(request,status,error){
-			   		 alert("에러");
-				         alert("code:"+request.status+"\n"+"error:"+error);
+			   		 swal("에러");
+				         swal("code:"+request.status+"\n"+"error:"+error);
 			   	}
 			   		
 			   });
@@ -177,7 +175,7 @@ function searchFileNm() {
                                </th>
                                 <td width="80%" nowrap colspan="3">
                                 
-	                                <select name="testcaseGb" id="testcaseGb">
+	                                <select name="testcaseGb" id="testcaseGb" >
 										<c:forEach var="cmCode" items="${tcGbCode}">
 										<option value="${cmCode.code}">${cmCode.codeNm}</option>
 										</c:forEach>
@@ -192,7 +190,7 @@ function searchFileNm() {
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
-                                    <form:input id="testcaseIdDuplicationCheck" type="text" title="게시판명입력" path="testcaseId"  cssStyle="width:50%" />
+                                    <form:input id="testcaseIdDuplicationCheck" type="text" title="게시판명입력" path="testcaseId"  cssStyle="width:20%" />
                                     <br/><form:errors path="testcaseId" /> 
                                 </td>
                           </tr>
@@ -214,7 +212,7 @@ function searchFileNm() {
                                 </label>    
                             </th>
                             <td colspan="3">
-                                <form:input type="text"  readonly="true" title="게시판명입력" path="pgId" id="TmsProgrmFileNm_pg_id"  size="60" cssStyle="width:50%" />
+                                <form:input type="text"  readonly="true" title="게시판명입력" path="pgId" id="TmsProgrmFileNm_pg_id"  size="60" cssStyle="width:20%" />
                            		<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
                             </td>
@@ -226,7 +224,7 @@ function searchFileNm() {
                                 </label>    
                             </th>
                             <td colspan="3">
-                                <form:input type="text" title="게시판명입력" path="" readonly="true" id="TmsProgrmFileNm_pg_nm"  size="60" cssStyle="width:50%" />
+                                <form:input type="text" title="게시판명입력" path="" readonly="true" id="TmsProgrmFileNm_pg_nm"  size="60" cssStyle="width:20%" />
                             </td>
                           </tr>
                           <tr>
@@ -236,7 +234,7 @@ function searchFileNm() {
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3" id="taskGbFormTd">
-									<input type='text' title='게시판명입력' readonly='true' id='TmsProgrmFileNm_task_gb'  size='62' cssStyle='width:50%' />
+									<input type='text' title='게시판명입력' readonly="readonly" id='TmsProgrmFileNm_task_gb'  size='62' style='width:20%' />
                                 </td>
                           </tr>
                           
@@ -260,7 +258,7 @@ function searchFileNm() {
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
                                 <td width="80%" nowrap colspan="3">
-                                    <form:input type="text" readonly="true" path="userId" value="${loginId}" title="게시판명입력" id="TmsProgrmFileNm_user_real_id" size="30" cssStyle="width:50%"/>
+                                    <form:input type="text" readonly="true" path="userId" value="${loginId}" title="게시판명입력" id="TmsProgrmFileNm_user_real_id" size="30" cssStyle="width:20%"/>
                                     <form:hidden title="게시판명입력" path="" id="TmsProgrmFileNm_user_dev_id" />
                                     <br/><form:errors path="userId" />
                                 </td> 

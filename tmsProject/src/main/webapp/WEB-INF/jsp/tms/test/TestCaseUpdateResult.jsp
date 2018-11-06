@@ -28,6 +28,7 @@
 
 <title>테스트케이스 상세</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 
 function updateTestCase(){
@@ -44,7 +45,7 @@ function completeYnValidator(evt) {
 	var secondTestResult = $('input[name="secondTestResultYn"]:checked').val();
 	
 	if(firstTestResult != 'Y' || secondTestResult != 'Y'){
-		alert("1차와 2차가 완료되지 않은 상태에서는 최종완료여부를 선택하실 수 없습니다.");
+		swal("1차와 2차가 완료되지 않은 상태에서는 최종완료여부를 선택하실 수 없습니다.");
 		evt.preventDefault();
 		return false;
 	} else {
@@ -63,7 +64,7 @@ function completeYnValidator(evt) {
 <!-- 전체 레이어 시작 -->
 
 <c:if test="${!empty message and fn:length(message) > 0}">
-	<script type="text/javascript"> alert("${message}");</script>
+	<script type="text/javascript"> swal("${message}");</script>
 </c:if>
 
 <div id="wrap">

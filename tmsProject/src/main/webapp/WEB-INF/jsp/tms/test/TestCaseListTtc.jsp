@@ -26,7 +26,7 @@
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <title>통합 테스트 케이스 목록 조회</title>
 
@@ -63,9 +63,9 @@ function selectTestCase(){
 	    }   
 	    
 	    if(checkedCount > 1){
-	    	alert("한개의 테스트케이스만 선택하여주시기바랍니다.");
+	    	swal("한개의 테스트케이스만 선택하여주시기바랍니다.");
 	    } else if(checkedCount < 1) {
-	    	alert("수정할 테스트케이스를 선택하여주시기바랍니다.");
+	    	swal("수정할 테스트케이스를 선택하여주시기바랍니다.");
 	    } else {
 	    	 document.testCaseVO.action = "<c:url value='/tms/test/selectTestCase.do?testcaseId=" +  checkMenuNos  + "&returnPg=TestCaseDetail'/>";
 			 document.testCaseVO.submit();
@@ -127,7 +127,7 @@ function fDeleteMenuList() {
 		    }  
 		    
 		    if(checkedCount == 0) {
-		    	alert("삭제할 테스트케이스를 선택하여주시기바랍니다.");
+		    	swal("삭제할 테스트케이스를 선택하여주시기바랍니다.");
 		    	return false;
 		    	
 		    } else {
@@ -142,12 +142,21 @@ function fDeleteMenuList() {
 				    	,success :  function(totalCount){
 				    		
 				    		if(totalCount > 0) {
-				    			if (confirm('삭제하려는 케이스 중 ' + totalCount + '개의 케이스에 시나리오가 존재하고 있습니다. 그래도 삭제하시겠습니까')) {
 				    			
-				    				 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
-				    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
-				    				 document.testCaseVO.submit(); 
-				    			}
+				    			swal({
+				    				text: '삭제하려는 케이스 중 ' + totalCount + '개의 케이스에 시나리오가 존재하고 있습니다. 그래도 삭제하시겠습니까'
+				    				,buttons : true
+				    			})
+				    			.then((result) => {
+				    				if(result) {
+					    				 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
+					    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
+					    				 document.testCaseVO.submit(); 
+				    				}else {
+				    					
+				    				}
+				    			});
+				    			
 				    		} else {
 				    			 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
 			    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
@@ -156,8 +165,8 @@ function fDeleteMenuList() {
 				    		
 				    	}
 				    	, error :  function(request,status,error){
-				    		 alert("에러");
-					         alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				    		 swal("에러");
+					         swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 				    	}
 				    		
 				    });
@@ -178,7 +187,7 @@ function fDeleteMenuList() {
 <!-- 전체 레이어 시작 -->
 
 <c:if test="${!empty message and fn:length(message) > 0}">
-	<script type="text/javascript"> alert("${message}");</script>
+	<script type="text/javascript"> swal("${message}");</script>
 </c:if>
 
 
@@ -349,7 +358,7 @@ function fDeleteMenuList() {
 							    </td>
 	            			    <td nowrap="nowrap" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
 	            				<td align="left" class="listtd"><c:out value="${result.testcaseId}"/></td>
-	            				<td align="left" class="listtd" >
+	            				<td align="left" class="listtd" title="${result.testcaseContent}">
 	            					<a href= "<c:url value='/tms/test/selectTestCase.do?testcaseId=${result.testcaseId}&returnPg=TestCaseDetail'/>">
 		            					<font color="#0F438A" style="font-weight:bold"><c:out value="${result.testcaseContent}"/></font>
 		            				</a>

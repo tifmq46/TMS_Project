@@ -37,13 +37,32 @@
 
 window.onload = function(){
 	 	var checkField = document.testScenarioList.checkField;
-    	
+	 	
     	if(checkField === null || typeof checkField === 'undefined'){
     	} else {
-    		var firstTr = (checkField.length > 1) ? checkField[0].parentNode.parentNode : checkField.parentNode.parentNode;
-    		$(firstTr).children("td").css( "background-color", "rgba(0, 0, 0, 0.08)" );
-			$(firstTr).children("td").css( "color", "#666666" );
+    		
+    		if(checkField.length >= 2) {
+    			checkField[0].checked = true;
+    		}else {
+    			checkField.checked = true;
+    		}
     	}
+    	
+    	var date = new Date(); 
+    	var year = date.getFullYear(); 
+    	var month = new String(date.getMonth()+1); 
+    	var day = new String(date.getDate()); 
+
+    	// 한자리수일 경우 0을 채워준다. 
+    	if(month.length == 1){ 
+    	  month = "0" + month; 
+    	} 
+    	if(day.length == 1){ 
+    	  day = "0" + day; 
+    	} 
+
+    	$("#regDate").html(year + "-" + month + "-" + day);
+    	
 }
 
 function deleteTestCase() {
@@ -57,25 +76,18 @@ function deleteTestCase() {
 
 function testScenarioResultForm(target) {
 	testscenarioId = scenarioId;
-	var tbody = target.parentNode;
-	var trs = tbody.getElementsByTagName('tr');
-	for ( var i = 0; i < trs.length; i++ ) {
-	if ( trs[i] != target ) {
-		$(trs[i]).children("td").css( "background-color", "#ffffff" );
-		$(trs[i]).children("td").css( "color", "#666666" );
-		} else {
-			$(trs[i]).children("td").css( "background-color", "rgba(0, 0, 0, 0.08)" );
-			$(trs[i]).children("td").css( "color", "#666666" );
-	}}  
 	
-	var scenarioId = $(target).children("td")[0].children.testscenarioId.value
-	var resultContent = $(target).children("td")[0].children.testResultContent.value
-	var resultYn = $(target).children("td")[0].children.testResultYn.value
+	var td = target.parentNode;
+	var inputs = td.getElementsByTagName('input');
+	
+	var scenarioId = inputs.testscenarioId.value
+	var resultContent = inputs.testResultContent.value
+	var resultYn = inputs.testResultYn.value
 	document.testScenarioResultInsert.testscenarioId.value = scenarioId;
 	document.testScenarioResultInsert.testResultContent.value = resultContent;
 	
 	if(resultYn != null && resultYn.length > 0){
-		$('input:radio[name=testResultYn]:radio[value='+ resultYn +']').prop("checked",true);
+		$("#testResultYn").val(resultYn).attr("selected","selected");
 	}
 }
 
@@ -229,8 +241,17 @@ function insertDefect() {
                    </form:form>
                     <br>
                 
+                
+	                <div style="width:91%; ">
+	                	<span style="float:right; margin-bottom:5px;">
+	                		<strong>총 <span style="color:#0f438a;">${scenarioStatsMap.scenarioCnt}</span>개 시나리오 중 <span style="color:#0f438a;">${scenarioStatsMap.testCnt}</span>개 결과 등록  
+	                		<span>( Pass : ${scenarioStatsMap.resultPCnt} / Fail : ${scenarioStatsMap.resultFCnt} )</span>
+	                		</strong>
+	                	</span>
+	               	</div>
+                
                 	<form:form style="visibility:visible; margin-top:20px;" commandName="testScenarioList" name="testScenarioList" method="post" action="/tms/test/updateTestScenarioResultImpl.do">           
-					<div id="border" class="modify_user" style="height:200px; width:92%; overflow:auto;" >
+					<div id="border" class="modify_user" style="height:280px; width:92%; overflow:auto;" >
 						
                         <table>
                         	<colgroup>
@@ -244,7 +265,7 @@ function insertDefect() {
 	        				</colgroup>
                         
                             <tr>
-                                <th height="23" rowspan="2"><label for="nttSj"><spring:message code="tms.test.ord" /></label>
+                                <th height="23" rowspan="2"><label for="nttSj"></label>
                                 </th>
                                 <th height="23" rowspan="2"><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
                                 </th>
@@ -265,39 +286,37 @@ function insertDefect() {
                             <tbody>
                             <c:forEach var="result" items="${testScenarioList}" varStatus="status">
         			
-		            			<tr onclick="testScenarioResultForm(this);">
-							    	<td align="center" class="listtd"><c:out value="${result.testscenarioOrd}"/>&nbsp;
-							    		<input type="hidden" name="checkField" class="check2" title="선택"/>
-							       		<input type="hidden" name="checkMenuNo"  value="<c:out value='${result.testscenarioId}'/>"/>
+		            			<tr>
+		            			
+							    	<td align="center" >
+							    		<input type="radio" name="checkField" class="check2" onclick="testScenarioResultForm(this);"/>
 							       		<input type="hidden" name="testscenarioId" value="${result.testscenarioId}"/>
 		            					<input type="hidden" name="testResultContent" value="${result.testResultContent}"/>
 		            					<input type="hidden" name="testResultYn" value="${result.testResultYn}"/>
 							    	</td>
-		            				<td align="center" class="listtd">
+		            				<td align="left">
 			            				<div>
-			            					<a href="#" >
-			            					<strong><c:out value="${result.testscenarioContent}"/></strong>
-			            					</a>
+			            					<c:out value="${result.testscenarioContent}"/>
 			            				</div>
 			            				<input class="checkScenarioId" type="hidden" value="<c:out value='${result.testscenarioId}'/>"/>
 		            				</td>
-		            				<td align="center"  class="listtd">
+		            				<td align="left">
 			            				<div >
 			            					<c:out value="${result.testCondition}"/>
 			            				</div>
 		            				</td>
-		            				<td align="center" class="listtd">
+		            				<td align="left">
 		            					<div >
 		            						<c:out value="${result.expectedResult}"/>
 		            					</div>
 		            				</td>
-		            				<td align="center" class="listtd">
+		            				<td align="center">
 			            				<div >
 			            					<c:out value="${result.testDt}"/>
 			            				</div>
 		            				</td>
-		            				<td align="center"  class="listtd" title="${result.userTestId}"><c:out value="${result.userTestNm}"/>&nbsp;</td>
-		            				<td align="center"  class="listtd">
+		            				<td align="center" title="${result.userTestId}"><c:out value="${result.userTestNm}"/>&nbsp;</td>
+		            				<td align="center">
 		            					<c:out value="${result.testResultYn}"/>
 		            				</td>
 		            			</tr>
@@ -307,8 +326,9 @@ function insertDefect() {
                     </div>
                     </form:form>
 				
+				
+			<!-- 한 시나리오에 대한 결과 등록 폼 -->	
 			<form:form style="visibility:visible; margin-top:20px;" commandName="testScenarioVO" name="testScenarioResultInsert" method="post" action="/tms/test/updateTestScenarioResultImpl.do">           
-					
 								<%
 									LoginVO loginVO = (LoginVO) session.getAttribute("LoginVO");
 										if (loginVO == null) {
@@ -323,22 +343,30 @@ function insertDefect() {
 								%>
 					
 					
-					<div id="border" class="modify_user" >
+					<div id="border" class="modify_user"  style="height:120px; width:93%;"  >
 						<input type="hidden" name="testscenarioId" value="${testScenarioList[0].testscenarioId}">
 						<input type="hidden" name="testcaseId" value="${testVoMap.testcaseId}">
 						<input type="hidden" name="userTestId" value="${loginId}"/>
 						
                         <table>
                         	<colgroup>
-		        				<col width="180"/>
-		        				<col width="100"/>
+		        				<col width="75%"/>
+		        				<col width="10%"/>
+		        				<col width="7%"/>
+		        				<col width="6%"/>
 	        				</colgroup>
                         
                             <tr>
-                                <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.testResultContent" /></label>
+                                <th height="23"  rowspan="2" nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.testResultContent" /></label>
                                 </th>
-                                <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.testResultYn" /></label>
+                                <th height="23" colspan="3"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.testResultYn" /></label>
                                 </th>
+                            </tr>
+                            
+                            <tr>
+                            	<th><spring:message code="tms.test.testDt" /></th>
+                            	<th><spring:message code="tms.test.userTestId" /></th>
+                            	<th><spring:message code="tms.test.result" /></th>
                             </tr>
                             
 	            			<tr>
@@ -347,12 +375,22 @@ function insertDefect() {
                             		<br/><form:errors path="testResultContent" />
                             	</td>
                             	
-	            				<td align="center" class="listtd">
-	            					<input type="radio" name="testResultYn" value="P" <c:if test="${testScenarioList[0].testResultYn == 'P'}">checked="checked"</c:if>>Pass&nbsp;
-	  								<input type="radio" name="testResultYn" value="F" <c:if test="${testScenarioList[0].testResultYn == 'F'}">checked="checked"</c:if>>Fail&nbsp;
+	            				<td align="center" >
+	            					<div id="regDate"></div>
 	  							</td>
+	  							
+	            				<td align="center"  title="${testScenarioList[0].userTestId}" style="padding-left: 2px;">
+	            					${loginId}
+	            				</td>
+	            				
+	            				<td align="center" style="padding-left: 2px;">
+	            					<select id="testResultYn" name="testResultYn">
+	            						<option value="P" <c:if test="${testScenarioList[0].testResultYn == 'P'}">selected="selected"</c:if>>Pass</option>
+	            						<option value="F" <c:if test="${testScenarioList[0].testResultYn == 'F'}">selected="selected"</c:if>>Fail</option>
+	            					</select>
+	            				
+	            				</td>
 	            			</tr>
-                            
                         </table>
                     </div>
 
@@ -367,9 +405,8 @@ function insertDefect() {
 								</div>	  				  			
 		  					</li>             
 	                    </ul>        
-                </div>
+                </div> <!-- tmsTestButton -->
 				
-
 			</form:form>
 				
             </div>

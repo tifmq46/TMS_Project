@@ -148,6 +148,16 @@ function selectTestScenario() {
 }
 
 
+function selectTestScenarioDetail(scenarioId) {
+	 document.testScenarioVO.action = "<c:url value='/tms/test/selectTestScenario.do?testscenarioId=" +  scenarioId + "'/>";
+	 document.testScenarioVO.submit();
+}
+
+function insertTestScenario(){
+	document.testCaseVO.action = "<c:url value='/tms/test/insertTestScenario.do'/>";
+	document.testCaseVO.submit();       
+}
+
 </script>
 
 </head>
@@ -204,7 +214,7 @@ function selectTestScenario() {
                                 </th>
                                 <td width="49.8%" nowrap colspan="3">
                                  <c:out value='${testVoMap.testcaseContent}'/>
-                                  <br/><form:errors path="testcaseContent" />
+                                 <input type="hidden" name="testcaseContent" value="${testVoMap.testcaseContent}" >
                                 </td>
                             </tr>
                             
@@ -254,7 +264,6 @@ function selectTestScenario() {
                                 </th>
                                 <td width="83%" nowrap colspan="5">
                                    <c:out value='${testVoMap.precondition}'/>
-                                   <br/><form:errors path="precondition" /> 
                                 </td>
                             </tr>
                 
@@ -284,25 +293,31 @@ function selectTestScenario() {
                     <br>
                 	</form:form>
                 	
+                	<div style="width:91%; ">
+                	<span style="float:right; margin-bottom:5px;"><strong>총 ${scenarioCnt}개</strong></span>
+                	</div>
+                	
                 	<form:form commandName="testScenarioVO" name="testScenarioVO" method="post" action="/tms/test/deleteMultiTestScenario.do">           
-					<div id="border" class="modify_user" style="height:200px; width:92%; overflow:auto;">
+					<div id="border" class="modify_user" style="height:320px; width:92%; overflow:auto;">
 						<input type="hidden" name="testcaseId" value="${testVoMap.testcaseId}" >
+						<input type="hidden" name="testcaseContent" value="${testVoMap.testcaseContent}" >
 						<input name="checkedMenuNoForDel" type="hidden" />
+						
                         <table>
                         
 	                        <colgroup>
 		             		 	<col width="4%"/>
-		        				<col width="4%"/> 
-		        				<col width="47%"/>
-		        				<col width="18%"/>
-		        				<col width="27%"/>
+		        				<col width="11%"/> 
+		        				<col width="43%"/>
+		        				<col width="16%"/>
+		        				<col width="26%"/>
         					</colgroup>
         					
                             <tr>
                             	<th height="23"  nowrap="nowrap" scope="col" class="f_field" nowrap="nowrap">
                             		<input type="checkbox" name="checkAll" class="check2" onclick="javascript:fCheckAll();" title="전체선택"/>
                             	</th>
-                                <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.ord" /></label>
+                                <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.testscenarioIdSrt" /></label>
                                 </th>
                                 <th height="23"  nowrap="nowrap" ><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
                                 </th>
@@ -319,23 +334,21 @@ function selectTestScenario() {
 							       		<input type="checkbox" name="checkField" class="check2" title="선택"/>
 							       		<input name="checkMenuNo" type="hidden" value="<c:out value='${result.testscenarioId}'/>"/>
 							    	</td>
-							    	<td align="center" class="listtd" ><c:out value="${result.testscenarioOrd}"/>&nbsp;</td>
+							    	<td align="center" class="listtd" >
+							    		<c:out value="${result.testscenarioId}"/>&nbsp;
+							    	</td>
 							    	
-		            				<td align="center" class="listtd" >
-		            						<a href= "<c:url value='/tms/test/selectTestScenario.do?testscenarioId=${result.testscenarioId}'/>">
-				            				<strong><c:out value="${result.testscenarioContent}"/></strong>
-				            				</a>
+		            				<td align="left" class="listtd" >
+	            						<a href="#LINK" onclick="selectTestScenarioDetail('${result.testscenarioId}'); return false;">
+			            				<strong><c:out value="${result.testscenarioContent}"/></strong>
+			            				</a>
 		            				</td>
-	            					<td align="center" class="listtd" >
-	            						
+	            					<td align="left" class="listtd" >
 	            						<c:out value="${result.testCondition}"/>&nbsp;
-	            						
 	            					</td>
 	            					
-	            					<td align="center" class="listtd" >
-	            						
+	            					<td align="left" class="listtd" >
 	            						<c:out value="${result.expectedResult}"/>&nbsp;
-	            						
 	            					</td>
 		            			</tr>
         			</c:forEach>
@@ -348,7 +361,7 @@ function selectTestScenario() {
 	                    <ul>        
 	           				<li>
 								<div class="buttons">
-				   					<a href= "<c:url value='/tms/test/insertTestScenario.do?testcaseId=${testVoMap.testcaseId} '/>"><spring:message code="button.create" /></a>
+				   					<a href="#LINK" onclick="insertTestScenario(); return false;"><spring:message code="button.create" /></a>
 				   					<a href="#LINK" onclick="selectTestScenario(); return false;"><spring:message code="button.update" /></a>
 									<a href="#LINK" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
 									<a href= "<c:url value='/tms/test/selectTestScenarioList.do?testcaseGb=${testVoMap.testcaseGbCode} '/>"><spring:message code="button.list" /></a>
