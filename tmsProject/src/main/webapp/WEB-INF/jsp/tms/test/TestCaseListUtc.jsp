@@ -61,9 +61,9 @@ function selectTestCase(){
 	    }   
 	    
 	    if(checkedCount > 1){
-	    	alert("한개의 테스트케이스만 선택하여주시기바랍니다.");
+	    	swal("한개의 테스트케이스만 선택하여주시기바랍니다.");
 	    } else if(checkedCount < 1) {
-	    	alert("수정할 테스트케이스를 선택하여주시기바랍니다.");
+	    	swal("수정할 테스트케이스를 선택하여주시기바랍니다.");
 	    } else {
 	    	 document.testCaseVO.action = "<c:url value='/tms/test/selectTestCase.do?testcaseId=" +  checkMenuNos  + "&returnPg=TestCaseDetail'/>";
 			 document.testCaseVO.submit();
@@ -125,43 +125,60 @@ function fDeleteMenuList() {
 		    }  
 		    
 		    if(checkedCount == 0) {
-		    	alert("삭제할 테스트케이스를 선택하여주시기바랍니다.");
+		    	swal("삭제할 테스트케이스를 선택하여주시기바랍니다.");
 		    	return false;
 		    	
 		    } else {
 		    	
-		    	if (confirm('<spring:message code="common.delete.msg" />')) {
-		    	
-		    		$.ajax({
-				    	
-				    	 type :"POST"
-				    	,url  : "<c:url value='/tms/test/selectScenarioCntReferringToCase.do'/>"
-				    	,data : {checkedMenuNoForDel:checkMenuNos}
-				    	,success :  function(totalCount){
-				    		
-				    		if(totalCount > 0) {
-				    			if (confirm('삭제하려는 케이스 중 ' + totalCount + '개의 케이스에 시나리오가 존재하고 있습니다. 그래도 삭제하시겠습니까')) {
-				    			
-				    				 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
+		    	swal({
+		    		text: '<spring:message code="common.delete.msg" />'
+		    		,buttons : true
+		    	})
+		    	.then((result) => {
+		    		if(result) {
+		    			 
+		    			$.ajax({
+					    	
+					    	 type :"POST"
+					    	,url  : "<c:url value='/tms/test/selectScenarioCntReferringToCase.do'/>"
+					    	,data : {checkedMenuNoForDel:checkMenuNos}
+					    	,success :  function(totalCount){
+					    		
+					    		if(totalCount > 0) {
+					    			
+					    			swal({
+					    				text: '삭제하려는 케이스 중 ' + totalCount + '개의 케이스에 시나리오가 존재하고 있습니다. 그래도 삭제하시겠습니까'
+					    				,buttons : true
+					    			})
+					    			.then((result) => {
+					    				if(result) {
+					    					 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
+						    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
+						    				 document.testCaseVO.submit();
+					    				}else {
+					    					
+					    				}
+					    			});
+					    			
+					    			
+					    		} else {
+					    			 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
 				    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
-				    				 document.testCaseVO.submit(); 
-				    			}
-				    		} else {
-				    			 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
-			    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
-			    				 document.testCaseVO.submit();
-				    		}
-				    		
-				    	}
-				    	, error :  function(request,status,error){
-				    		 alert("에러");
-					         alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				    	}
-				    		
-				    });
-		    	
-		    	}
-		    }
+				    				 document.testCaseVO.submit();
+					    		}
+					    		
+					    	}
+					    	, error :  function(request,status,error){
+					    		 swal("에러");
+						         swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					    	}
+					    		
+					    });
+		    		}else {
+		    			
+		    		}
+		    	});
+		    }//
    
 }
 
@@ -244,30 +261,39 @@ function fDeleteMenuList() {
       			        	<td>
 					  			<input type="text" name="searchByTestcaseId" id="searchByTestcaseId" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByTestcaseId}'/>" />
       			        	</td>
-      			        	<td style="font-weight:bold;color:#666666;font-size:110%;">
-					  			<spring:message code="tms.test.pgId" />
-      			        	</td>
       			        	<td>
-					  			<input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id"  style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+					  			
+      			        	</td>
+      			        	
+      			        	<td>
+					  			
+      			        	</td>
+      			        	
+      			        	<td style="font-weight:bold;color:#666666;font-size:110%;">
+								<spring:message code="tms.test.pgId" />				
+      			        	</td>
+      			        	
+      			        	<td>
+      			        		<input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id"  style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByPgId}'/>"/>
 					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
       			        	</td>
+      			        	
       			        	<td style="font-weight:bold;color:#666666;font-size:110%;">
-      			        	<spring:message code="tms.test.taskGb" />					  			
+      			        		<spring:message code="tms.test.taskGb" />
       			        	</td>
+      			        	
       			        	<td>
-									<select name="searchByTaskGb" id="searchByTaskGb" style="width:90%;text-align-last:center;">
+      			        		<select name="searchByTaskGb" id="searchByTaskGb" style="width:90%;text-align-last:center;">
 										<option value="">전체</option>
 										<c:forEach var="cmCode" items="${taskGbCode}">
 										<option value="${cmCode.codeNm}"  <c:if test="${searchVO.searchByTaskGb == cmCode.codeNm}">selected="selected"</c:if>>${cmCode.codeNm}</option>
 										</c:forEach>
-									</select>						
+								</select>		
+      			        	
       			        	</td>
       			        	<td>
-      			        	</td>
-      			        	<td>
-      			        	</td>
-      			        	<td>
+      			        						  			
       			        	</td>
       			        </tr>
       			        <tr>
@@ -339,10 +365,10 @@ function fDeleteMenuList() {
 	             		 	<col width="4%" >
 	             		 	<col width="4%"/>
 	        				<col width="12%"/> 
-	        				<col width="35%"/>
+	        				<col width="39%"/>
 	        				<col width="6%"/>
-	        				<col width="9%"/>
-	        				<col width="9%"/>
+	        				<col width="7%"/>
+	        				<col width="7%"/>
 	        				<col width="5%"/>
 	        				<col width="5%"/>
 	        				<col width="6%"/>
@@ -372,7 +398,7 @@ function fDeleteMenuList() {
 							    </td>
 	            			    <td nowrap="nowrap" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
 	            				<td align="left" class="listtd"><c:out value="${result.testcaseId}"/></td>
-	            				<td align="left" class="listtd" >
+	            				<td align="left" class="listtd" title="${result.testcaseContent}">
 	            					<a href= "<c:url value='/tms/test/selectTestCase.do?testcaseId=${result.testcaseId}&returnPg=TestCaseDetail'/>">
 		            					<font color="#0F438A" style="font-weight:bold"><c:out value="${result.testcaseContent}"/></font>
 		            				</a>

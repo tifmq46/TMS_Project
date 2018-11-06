@@ -98,58 +98,63 @@ function deleteTestScenario() {
                  		<input type="hidden" name="testcaseGb" value="${testcaseGb}" />
                         <table>
                            	<tr>
-                             	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testcaseId" /></label>
+                             	<th width="20%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testcaseId" /></label>
                              	<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
-								<td width="75%" colspan="3">
+								<td width="20%" >
 									<c:out value="${testScenarioVO.testcaseId}" ></c:out>
 									<input type="hidden" name="testcaseId" value="${testScenarioVO.testcaseId}" />
                             	</td>
+                            	
+                            	<th width="20%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testcaseContent" /></label>
+                                </th>
+                                <td width="40%" nowrap >
+                                	<c:out value="${testcaseContent}" ></c:out>
+                                </td>
                             </tr>
                         
                             <tr>
-                                <th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testscenarioId" /></label>
+                                <th width="20%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testscenarioId" /></label>
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
-                                <td width="25%" nowrap >
+                                <td width="20%" nowrap >
                                   <c:out value='${testScenarioVO.testscenarioId}'/>
                                   <input type="hidden" name="testscenarioId" value="${testScenarioVO.testscenarioId}" />
                                 </td>
                                 
-                                <th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testscenarioOrd" /></label>
+                                <th width="20%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testscenarioOrd" /></label>
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
-                                <td width="25%" nowrap >
-                                	<input id="testscenarioOrd" name="testscenarioOrd" type="text" size="25" value="<c:out value='${testScenarioVO.testscenarioOrd}'/>" > 
+                                <td width="40%" nowrap >
+                                	<input id="testscenarioOrd" name="testscenarioOrd" type="text" style="width:50%;" value="<c:out value='${testScenarioVO.testscenarioOrd}'/>" > 
                                 </td>
                             </tr>
                             
                              <tr>
-                             	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testCondition" /></label>
-                                </th>
-								<td width="75%" colspan="3">
-                                	<textarea type="textarea" rows="2" style="width:100%" id="testCondition" name="testCondition"><c:out value='${testScenarioVO.testCondition}'/></textarea>
-                            	</td>
-                            </tr>
-                            
-                            
-                            <tr>
-                             	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
+                             	<th width="20%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
                              	<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
-								<td width="75%" colspan="3">
+								<td width="80%" colspan="3">
                             		<textarea type="textarea" rows="5" style="width:100%" id="testscenarioContent" name="testscenarioContent"><c:out value='${testScenarioVO.testscenarioContent}'/></textarea>
                             	</td>
                             </tr>
-                            
+                           
                             <tr>
-                            	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.expectedResult" /></label>
+                            	<th width="20%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.expectedResult" /></label>
                             	<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
-                                <td width="75%" colspan="3">
+                                <td width="80%" colspan="3">
                                 	<textarea type="textarea" rows="5" style="width:100%" id="expectedResult" name="expectedResult"><c:out value='${testScenarioVO.expectedResult}'/></textarea>
                             	</td>
-                            </tr>
+                            </tr> 
+                            
+                            <tr>
+                            	<th width="20%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testCondition" /></label>
+                               </th>
+								<td width="80%" colspan="3">
+	                               	<textarea type="textarea" rows="2" style="width:100%" id="testCondition" name="testCondition"><c:out value='${testScenarioVO.testCondition}'/></textarea>
+	                           </td>
+                           </tr>
                             
                         </table>
                     </div>

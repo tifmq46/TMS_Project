@@ -89,13 +89,15 @@ public class TestController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/selectTestScenario.do")
-	public String selectTestScenario(@ModelAttribute("testScenarioVO") TestScenarioVO testScenarioVO, ModelMap model) throws Exception {
+	public String selectTestScenario(@ModelAttribute("testScenarioVO") TestScenarioVO testScenarioVO, 
+			@RequestParam("testcaseContent") String testcaseContent, ModelMap model) throws Exception {
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
 		if (isAuthenticated) {
 		TestScenarioVO vo = testService.selectTestScenario((String)testScenarioVO.getTestscenarioId());
 		model.addAttribute("testScenarioVO", vo);
+		model.addAttribute("testcaseContent", testcaseContent);
 		}
 		return "tms/test/TestScenarioDetail";
 	}
@@ -161,9 +163,10 @@ public class TestController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/insertTestScenario.do")
-	public String insertTestScenario(@RequestParam("testcaseId") String testcaseId, ModelMap model) throws Exception {
+	public String insertTestScenario(@ModelAttribute("testCaseVO") TestCaseVO testCaseVO, ModelMap model) throws Exception {
 
-		model.addAttribute("testcaseId", testcaseId);
+		model.addAttribute("testcaseId", testCaseVO.getTestcaseId());
+		model.addAttribute("testcaseContent", testCaseVO.getTestcaseContent());
 		return "tms/test/TestScenarioInsert";
 	}
 
@@ -442,6 +445,9 @@ public class TestController {
 		if (isAuthenticated) {
 		HashMap<String, Object> testVoMap = testService.selectTestCase(testcaseId);
 		List<?> testScenarioList = testService.selectTestScenarioList(testcaseId);
+		int scenarioCnt = testService.selectTestScenarioListTotCnt(testcaseId);
+		
+		model.addAttribute("scenarioCnt", scenarioCnt);
 		model.addAttribute("testScenarioList", testScenarioList);
 		model.addAttribute("testVoMap", testVoMap);
 		}
@@ -464,6 +470,9 @@ public class TestController {
 		if (isAuthenticated) {
 		HashMap<String, Object> testVoMap = testService.selectTestCase(testcaseId);
 		List<?> testScenarioList = testService.selectTestScenarioList(testcaseId);
+		HashMap<String, Integer> scenarioStatsMap = testService.selectTestScenarioStats(testcaseId);
+		
+		model.addAttribute("scenarioStatsMap", scenarioStatsMap);
 		model.addAttribute("testScenarioList", testScenarioList);
 		model.addAttribute("testVoMap", testVoMap);
 		}

@@ -324,7 +324,7 @@ function selectTestScenario() {
 	            			<tr>
 	            			    <td align="center" class="listtd" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
 	            				<td align="left" class="listtd"><c:out value="${result.testcaseId}"/></td>
-	            				<td align="left" class="listtd">
+	            				<td align="left" class="listtd" title="${result.testcaseContent}">
 	            					<a href="<c:url value='/tms/test/selectTestCaseWithScenario.do?testcaseId=${result.testcaseId}' />">
 		            					<font color="#0F438A" style="font-weight:bold"><c:out value="${result.testcaseContent}"/></font>
 		            				</a>

@@ -27,7 +27,7 @@
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 
 <title>단위 테스트 결과 목록 조회</title>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 
 function fn_egov_select_testCaseList(pageNo){
@@ -50,7 +50,7 @@ function searchFileNm() {
 <!-- 전체 레이어 시작 -->
 
 <c:if test="${!empty message and fn:length(message) > 0}">
-	<script type="text/javascript"> alert("${message}");</script>
+	<script type="text/javascript"> swal("${message}");</script>
 </c:if>
 
 
@@ -224,7 +224,7 @@ function searchFileNm() {
             			<tr>
             			    <td align="center" class="listtd" ><strong><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></strong></td>          
             				<td align="left" class="listtd"><c:out value="${result.testcaseId}"/></td>
-            				<td align="left" class="listtd">
+            				<td align="left" class="listtd" title="${result.testcaseContent}">
             					<a href= "<c:url value='/tms/test/selectTestResult.do?testcaseId=${result.testcaseId}'/>">
 	            					<font color="#0F438A" style="font-weight:bold"><c:out value="${result.testcaseContent}"/></font>
 	            				</a>

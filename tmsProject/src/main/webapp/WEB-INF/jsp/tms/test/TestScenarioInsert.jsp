@@ -125,58 +125,63 @@ function insertTestScenarioImpl(){
                         <table>
                         
                         	<tr>
-                             	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testcaseId" /></label>
+                             	<th width="20%" height="23"  nowrap="nowrap"><label for="testcaseId"><spring:message code="tms.test.testcaseId" /></label>
                              	<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
-								<td width="75%" colspan="3">
+								<td width="20%" >
 									<c:out value="${testcaseId}" ></c:out>
 									<input type="hidden" name="testcaseId" value="${testcaseId}"/>
                             	</td>
-                            </tr>
-                            <tr>
-                                <th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testscenarioId" /></label>
+                            	
+                            	<th width="20%" height="23"  nowrap="nowrap"><label for="testcaseContent"><spring:message code="tms.test.testcaseContent" /></label>
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
-                                <td width="25%" nowrap >
-                                  <input id="testscenarioIdDuplicationCheck" name="testscenarioId" type="text" size="25"  >
+                                <td width="40%" nowrap >
+                                	<c:out value="${testcaseContent}" ></c:out>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="20%" height="23"  nowrap="nowrap"><label for="testscenarioId"><spring:message code="tms.test.testscenarioId" /></label>
+                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+                                </th>
+                                <td width="20%" nowrap >
+                                  <input id="testscenarioIdDuplicationCheck" name="testscenarioId" type="text" style="width:90%;" >
                                   <br/><form:errors path="testscenarioId" />
                                 </td>
                                 
-                                <th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testscenarioOrd" /></label>
+                                <th width="20%" height="23"  nowrap="nowrap"><label for="testscenarioOrd"><spring:message code="tms.test.testscenarioOrd" /></label>
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
-                                <td width="25%" nowrap >
-                                	<input id="testscenarioOrd" name="testscenarioOrd" type="text" size="25"  >
+                                <td width="40%" nowrap >
+                                	<input id="testscenarioOrd" name="testscenarioOrd" type="text" style="width:50%;"   >
                                 	<br/><form:errors path="testscenarioOrd" /> 
                                 </td>
                             </tr>
                             
                              <tr>
-                             	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testCondition" /></label>
+                             	<th width="20%" height="23"  nowrap="nowrap"><label for="testscenarioContent"><spring:message code="tms.test.testscenarioContent" /></label>
                                 </th>
-								<td width="75%" colspan="3">
-                                	<textarea type="textarea" rows="2" style="width:100%" id="testCondition" name="testCondition"></textarea>
-                                	<br/><form:errors path="testCondition" /> 
-                            	</td>
-                            </tr>
-                            
-                            
-                            <tr>
-                             	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.testscenarioContent" /></label>
-                             	<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
-                                </th>
-								<td width="75%" colspan="3">
+								<td width="80%" colspan="3">
                             		<textarea type="textarea" rows="5" style="width:100%" id="testscenarioContent" name="testscenarioContent"></textarea>
                             		<br/><form:errors path="testscenarioContent" />
                             	</td>
                             </tr>
                             
                             <tr>
-                            	<th width="25%" height="23"  nowrap="nowrap"><label for="nttSj"><spring:message code="tms.test.expectedResult" /></label>
+                            	<th width="20%" height="23"  nowrap="nowrap"><label for="expectedResult"><spring:message code="tms.test.expectedResult" /></label>
                             	<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                 </th>
-                                <td width="75%" colspan="3">
+                                <td width="80%" colspan="3">
                                 	<textarea type="textarea" rows="5" style="width:100%" id="expectedResult" name="expectedResult"></textarea>
+                            	</td>
+                            </tr>
+                            
+                            <tr>
+                             	<th width="20%" height="23"  nowrap="nowrap"><label for="testCondition"><spring:message code="tms.test.testCondition" /></label>
+                                </th>
+								<td width="80%" colspan="3">
+                                	<textarea type="textarea" rows="2" style="width:100%" id="testCondition" name="testCondition"></textarea>
+                                	<br/><form:errors path="testCondition" /> 
                             	</td>
                             </tr>
                         </table>

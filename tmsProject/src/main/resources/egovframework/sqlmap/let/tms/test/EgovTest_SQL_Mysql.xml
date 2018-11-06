@@ -64,6 +64,15 @@
 	    <result property="yCnt" column="Y_CNT" columnIndex="2" javaType="int" jdbcType="NUMERIC"/>
 	</resultMap>
 	
+		
+	<resultMap id="testScenarioStatsMap" class="java.util.HashMap">
+	    <result property="scenarioCnt" column="SCENARIO_CNT" columnIndex="1" javaType="int" jdbcType="NUMERIC" />
+	    <result property="testCnt" column="TEST_CNT" columnIndex="2" javaType="int" jdbcType="NUMERIC"/>
+	    <result property="resultPCnt" column="RESULT_P_CNT" columnIndex="3" javaType="int" jdbcType="NUMERIC"/>
+	    <result property="resultFCnt" column="RESULT_F_CNT" columnIndex="4" javaType="int" jdbcType="NUMERIC"/>
+	</resultMap>
+	
+	
 	<resultMap id="testCaseCurrentMap" class="java.util.HashMap">
 	    <result property="totCnt" column="TOT_CNT" columnIndex="1" javaType="int" jdbcType="NUMERIC"/>
 	    <result property="testcaseCnt" column="TESTCASE_CNT" columnIndex="2" javaType="int" jdbcType="NUMERIC"/>
@@ -533,6 +542,26 @@
 		   , ( SELECT COUNT(*) FROM ( SELECT * FROM TESTCASE_TB WHERE TESTCASE_GB = #testcaseGb# AND COMPLETE_YN = 'Y' ) AS c ) AS Y_CNT
 		]]>
 	</select>
+	
+	
+	<select id="TestDAO.selectTestScenarioStats" parameterClass="java.lang.String" resultMap="testScenarioStatsMap">
+	    
+	    <![CDATA[
+	    
+	    SELECT 
+			COUNT(*) AS SCENARIO_CNT
+			, COUNT(IF(TEST_RESULT_YN = 'P' OR TEST_RESULT_YN = 'F',1,NULL)) AS TEST_CNT
+			, COUNT(IF(TEST_RESULT_YN = 'P',1,NULL)) AS RESULT_P_CNT
+			, COUNT(IF(TEST_RESULT_YN = 'F',1,NULL)) AS RESULT_F_CNT
+		FROM TESTSCENARIO_TB
+		WHERE TESTCASE_ID = #testcaseId#
+					
+		]]>
+	</select>
+	
+	
+	
+	
 	
 	
 	<select id="TestDAO.selectTestCaseProgressStatus" parameterClass="java.lang.String"  resultMap="testCaseProgressStatusMap">

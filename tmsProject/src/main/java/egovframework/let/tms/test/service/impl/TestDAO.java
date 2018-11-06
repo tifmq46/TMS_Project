@@ -179,6 +179,18 @@ public class TestDAO extends EgovAbstractDAO{
 	
 	
 	/**
+	 * 한 케이스에 대한 테스트 시나리오 통계 정보를 가져온다
+	 * @param String - 조회할 정보가 담긴 testcaseId
+	 * @return HashMap<String,Integer> 
+	 * @exception Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public HashMap<String,Integer> selectTestScenarioStats(String testcaseId) throws Exception {
+		return  (HashMap<String, Integer>) select("TestDAO.selectTestScenarioStats", testcaseId);
+	}
+	
+	
+	/**
 	 * 업무별 '전체' 단위 테스트 케이스 통계 정보를 가져온다
 	 * @param 
 	 * @return List<?>
