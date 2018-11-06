@@ -29,17 +29,6 @@
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<style type="text/css">
-.legendRect {
-  display: inline-block;
-  width: 40px;
-  height: 14px;
-  margin-right: 16px;
-}
-.legendText{
-	display: inline-block;
-}
-</style>
 <script type="text/javascript">
 
 window.onload = function() {
@@ -75,13 +64,22 @@ window.onload = function() {
 					data : dayByDefectCntAccumulCnt,
 					type : 'line',
 					fill : false,
-					borderColor : '#97BBCD'
+					backgroundColor : '#97BBCD'
 				}]
 			},
 			options : {
 				legend: {
-					display:true,
-					position:'bottom'
+					display:false,
+				},
+				legendCallback: function(chart) {
+					var text = [];
+					for (var i = 0; i < chart.data.datasets.length; i++) {
+						text.push('<span class="legendRect" style="background-color:' + chart.data.datasets[i].backgroundColor + '"></span>');
+						if (chart.data.datasets[i].label) {
+							text.push('<span class="legendText">' + chart.data.datasets[i].label + '</span>');
+						}
+					}
+					return text.join('');
 				},
 				scales:{
 					yAxes:[{
@@ -119,7 +117,8 @@ window.onload = function() {
 			    },
 			}
 		});
-
+		$("#dayByDefectCntLegend").html(dayByDefectCntChart.generateLegend());
+		
 		/** 사용자별 결함건수*/
 		var userByDefectCnt = JSON.parse('${userByDefectCnt}');
 		var userByDefectCntUserNm = new Array();
@@ -150,6 +149,16 @@ window.onload = function() {
 			options : {
 				legend: {
 					display:false,
+				},
+				legendCallback: function(chart) {
+					var text = [];
+					for (var i = 0; i < chart.data.datasets.length; i++) {
+						text.push('<span class="legendRect" style="background-color:' + chart.data.datasets[i].backgroundColor + '"></span>');
+						if (chart.data.datasets[i].label) {
+							text.push('<span class="legendText">' + chart.data.datasets[i].label + '</span>');
+						}
+					}
+					return text.join('');
 				},
 				scales:{
 					yAxes:[{
@@ -185,6 +194,7 @@ window.onload = function() {
 			    }
 			}
 		});
+		$("#userByDefectCntLegend").html(userByDefectCntChart.generateLegend());
 		
 		$('html').scrollTop(0);
 	}
@@ -264,9 +274,9 @@ window.onload = function() {
 								</td>
 							</tr>
 							<tr>
-								<td align="left" style="padding-left:10px">
-									<img src="<c:url value='/images/tms/icon_pop_blue.gif' />"
-										width="10" height="10" alt="yCnt" />&nbsp;조치율
+								<td align="left" style="padding-left:10px;">
+									<span style="display: inline-block; width: 10px; height: 10px; margin-left:2px; background-color:#007BFF;"></span>
+									<span style="display: inline-block; vertical-align:bottom;">조치율</span>
 								</td>
 							</tr>
 						</table>
@@ -322,7 +332,7 @@ window.onload = function() {
     				</div>
     				
 					<canvas id="userByDefectCnt" width="100%" height="20" style="padding-top:30px"></canvas>
-					<div id="userByDefectCntLegend"></div>
+					<div id="userByDefectCntLegend" style="margin-top:10px"></div>
     			</div>    	  
     			
     		</div>
@@ -336,6 +346,7 @@ window.onload = function() {
     				</div>
     				
 					<canvas id="dayByDefectCnt" width="100%" height="20" style="padding-top:30px"></canvas>
+					<div id="dayByDefectCntLegend" style="margin-top:10px"></div>
     			</div>    	  
     			
     		</div>

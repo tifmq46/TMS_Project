@@ -48,6 +48,19 @@ select {
     height: 21px;
     vertical-align: middle;
 }
+.legendRect {
+  display: inline-block;
+  width: 40px;
+  height: 14px;
+  margin-right:5px;
+  margin-left:8px;
+}
+.legendText{
+	display: inline-block;
+	height: 14px;
+	vertical-align:bottom;
+}
+
 #LoginStatus { border-style: solid; border-color: #4d7496; margin-right:10px;margin-top:20px; margin-left:10px;}
 #LoginStatus fieldset{  padding:15px 10px 10px 15px; width:200px; height:60px;;display:inline;}
 #LoginStatus ul li{padding-bottom:5px;}

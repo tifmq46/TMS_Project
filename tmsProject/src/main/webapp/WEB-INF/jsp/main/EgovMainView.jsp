@@ -88,7 +88,17 @@ window.onload = function() {
 			},
 			options : {
 				legend:{
-					position:'bottom'
+					display:false
+				},
+				legendCallback: function(chart) {
+					var text = [];
+					for (var i = 0; i < chart.data.datasets.length; i++) {
+						text.push('<span class="legendRect" style="background-color:' + chart.data.datasets[i].backgroundColor + '"></span>');
+						if (chart.data.datasets[i].label) {
+							text.push('<span class="legendText">' + chart.data.datasets[i].label + '</span>');
+						}
+					}
+					return text.join('');
 				},
 				scales:{
 					yAxes:[{
@@ -124,6 +134,7 @@ window.onload = function() {
 				    }	
 			}
 		});
+		$("#sysByMainStatsLegend").html(sysByMainStatsChart.generateLegend());
 		/** 결함 진행상태 통계 끝*/
 		
 		/** 개발 진척상태 통계 시작*/
@@ -402,6 +413,7 @@ window.onload = function() {
     			<c:choose>
     			<c:when test="${sysByMainStats != null }">
     			<canvas id="sysByMainStats" width="100%" height="28"></canvas>
+    			<div id="sysByMainStatsLegend" style="margin-top:10px"></div>
     			</c:when>
     			<c:otherwise>
     			 등록된 결함이 없습니다.
