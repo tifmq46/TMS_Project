@@ -231,8 +231,6 @@ public class DefectController {
 			hmap.put("status", 1);
 			defectService.insertDefectImageMap(hmap);
 		}
-		model.addAttribute("boardNo", defectVO.getBoardNo());
-		
 		List<?> list = defectService.selectOneDefect(defectVO);
 		model.addAttribute("defectOne", list);
 		
@@ -248,6 +246,8 @@ public class DefectController {
 		DefectFileVO defectImgOne = defectService.selectDefectImgOne(defectVO.getDefectIdSq());
 		model.addAttribute("defectImgOne", defectImgOne);
 		
+		model.addAttribute("pageStatus", "0");
+		
 		return "tms/defect/defectListOne";
 	}	
 	
@@ -255,6 +255,7 @@ public class DefectController {
 	@RequestMapping("/tms/defect/deleteDefect.do")
 	public String deleteDefect(@ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) {
 		int result = defectService.deleteDefect(defectVO);
+		
 		return "redirect:/tms/defect/selectDefect.do";
 	}
 	
@@ -368,8 +369,6 @@ public class DefectController {
 	public String deleteDefectImg(@ModelAttribute ("defectVO") DefectVO defectVO, ModelMap model ) throws Exception {
 		defectService.deleteDefectImg(defectVO.getDefectIdSq());
 		
-		model.addAttribute("boardNo", defectVO.getBoardNo());
-		
 		List<?> list = defectService.selectOneDefect(defectVO);
 		model.addAttribute("defectOne", list);
 		
@@ -384,6 +383,9 @@ public class DefectController {
 		
 		DefectFileVO defectImgOne = defectService.selectDefectImgOne(defectVO.getDefectIdSq());
 		model.addAttribute("defectImgOne", defectImgOne);
+		
+		model.addAttribute("pageStatus", "0");
+		
 		return "tms/defect/defectListOne";
 	}
 	

@@ -202,11 +202,11 @@ td.listtd {
                  		</c:otherwise>
                  	</c:choose>
                  	</td>
-                 	<td align="left" width="40%" style="font-size:1.2em; font-weight:bold"> (&nbsp;전체 : <c:out value="${actionTotCnt}"/>건&nbsp;
+                 	<td align="left" width="40%" style="font-size:1.2em; font-weight:bold"> [&nbsp;전체 : <c:out value="${actionTotCnt}"/>건&nbsp;
                  	대기 : <c:out value="${actionStCnt.actionStA1}"/>건&nbsp;
                  	조치중 : <c:out value="${actionStCnt.actionStA2}"/>건&nbsp;
                  	조치완료 : <font color="#007BFF"><c:out value="${actionStCnt.actionStA3}"/></font>건&nbsp;
-                 	재요청 : <c:out value="${actionStCnt.actionStA4}"/>건 )
+                 	재요청 : <c:out value="${actionStCnt.actionStA4}"/>건 ]
                  	</td>
                  </tr>        
              	</table>

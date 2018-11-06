@@ -39,7 +39,6 @@ function fn_egov_update_updateDefect(){
 	if (!validateDefectVOUpdate(document.defectVO)){
         return;
     } else {
-
     document.getElementById("defectGb").disabled = "";
 	document.getElementById("actionSt").disabled = "";
 	document.getElementById("defectContent").disabled = "";
@@ -99,6 +98,8 @@ function changeUserTestNm() {
 window.onload = function() {
 	// 결함관리에서 상세페이지로 이동
 	if($('#pageStatus').val() == "0") {
+		$("#backBtn").removeAttr('onclick');
+		
 		if (document.getElementById("uniqId").value == "USRCNFRM_00000000000"
 			|| document.getElementById("uniqId").value == "USRCNFRM_00000000001") {
 		// 관리자, 업무PL 로그인할 경우
@@ -175,6 +176,7 @@ window.onload = function() {
 	}
 	// 결함처리현황에서 상세페이지로 이동
 	} else {
+		$("#backBtn").attr('onclick',"javascript:window.history.back(-1); return false;");
 		$("#saveBtn").css("display", "none");
 		$("#deleteBtn").css("display", "none");
 		$("#userTestNm").attr("readOnly", "readOnly");
@@ -264,8 +266,6 @@ window.onload = function() {
 					        <th width="12.5%" height="23" nowrap >결함번호
 					        </th>
 					        <td width="12.5%" nowrap>
-					          <input type="hidden" name="boardNo" size="5" readonly="readonly" value="<c:out value="${boardNo}"/>"  maxlength="40" title="결함번호"
-					          style="text-align:center; border:none; width:90%;" /> 
 					          <input type="text" name="defectIdSq" size="5" readonly="readonly" value="<c:out value="${defectOne.defectIdSq}"/>"  maxlength="40" title="<c:out value="${defectOne.defectIdSq}"/>"
 					           style="text-align:center; border:none; width:90%;" /> 
 					          <form:errors path="defectIdSq" />
@@ -432,7 +432,7 @@ window.onload = function() {
                     
                     <a href="#LINK" id="saveBtn" onclick="javaScript:fn_egov_update_updateDefect(); return false;">저장</a>
                      <a href="#LINK" id="deleteBtn" onclick="javaScript:fn_egov_delete_deleteDefect(); return false;">삭제</a>
-                    <a href="<c:url value='/tms/defect/selectDefect.do'/>" onclick="javascript:window.history.back(-1); return false;">목록</a>
+                    <a href="<c:url value='/tms/defect/selectDefect.do'/>" id="backBtn" >목록</a>
                     </div>
                     <!-- 버튼 끝 -->  
                   </c:forEach>
