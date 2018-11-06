@@ -99,7 +99,7 @@ public interface DevPlanService {
 
 	public void updateRate(DevPlanDefaultVO searchVO);
 
-	public HashMap<String, String> DevPlanAvg(DevPlanDefaultVO searchVO);
+	public HashMap<String,String> DevPlanAvg(DevPlanDefaultVO searchVO);
 
 	public int selectDevCurrentTotCnt(DevPlanDefaultVO searchVO);
 
@@ -146,5 +146,7 @@ public interface DevPlanService {
 	public List<?> selectTaskByProgressRate(String sysGb);
 
 	public List<?> selectTaskTotalProgressRate();
+
+	public List<?> selectUserDevByDevStats();
 
 }

@@ -173,9 +173,6 @@ public class DevPlanController {
 		String mTime = sdf.format (currentTime);
 		Date currentDate = sdf.parse(mTime);
 
-		String start = String.valueOf(devPlanService.selectSTART());
-		String end =String.valueOf(devPlanService.selectEND());
-		
 		TmsProjectManageVO tmsPrj = TmsProgrmManageService.selectProject();
 		
 		model.addAttribute("tms", tmsPrj);	
@@ -192,26 +189,25 @@ public class DevPlanController {
 				model.addAttribute("ps", formatPs);
 				model.addAttribute("pe", formatPe);
 			}
-		//}
 		
-		//if( !(start.equals("null")) && !(end.equals("null"))){
-			Date sDate = sdf.parse(start);
-			Date eDate = sdf.parse(end);
-			
-			int compare = currentDate.compareTo(sDate);
-			int compare2 = currentDate.compareTo(eDate);
-			
-			boolean d_result = true;
-			
-			if((compare >= 0) && (compare2 <=0) ){
-				d_result = false;
-			}else{
-				d_result = true;
+			if(!Objects.equals(tmsPrj.getInputStartDt(), null) && !Objects.equals(tmsPrj.getInputEndDt(), null)){
+				Date sDate = tmsPrj.getInputStartDt();
+				Date eDate = tmsPrj.getInputEndDt();
+
+				int compare = currentDate.compareTo(sDate);
+				int compare2 = currentDate.compareTo(eDate);
+				
+				boolean d_result = true;
+				
+				if((compare >= 0) && (compare2 <=0) ){
+					d_result = false;
+				}else{
+					d_result = true;
+				}
+				model.addAttribute("start", sDate);
+				model.addAttribute("end", eDate);
+				model.addAttribute("d_test", d_result);
 			}
-			model.addAttribute("start", sDate);
-			model.addAttribute("end", eDate);
-			model.addAttribute("d_test", d_result);
-			
 		}
 		model.addAttribute("page", searchVO.getPageIndex());
 		
@@ -470,7 +466,7 @@ public class DevPlanController {
 				userMap.put("dt",String.valueOf(periodList.get(j)));
 				userStatsList.addAll(devPlanService.selectUserWeekStats(userMap));
 			}
-				
+			
 			JSONArray userArray = new JSONArray();
 			JSONObject userObj = new JSONObject();
 			
@@ -486,12 +482,14 @@ public class DevPlanController {
 				sumUserDev = 0;
 				sumDiff = 0;
 				
+				
 				for(int j=0; j<periodList.size();j++){
 					userObj.put("userDevId", userStatsList.get(temp).get("userDevId"));
 					userObj.put("userDevNm", userStatsList.get(temp).get("userDevNm"));
+					userObj.put("totCnt",userStatsList.get(temp).get("totCnt"));
 					userObj.put("a"+periodList.get(j), userStatsList.get(temp).get(periodList.get(j)));
-					userObj.put( "b"+periodList.get(j), userStatsList.get(temp).get("b"+periodList.get(j)));
-					userObj.put( "sub"+periodList.get(j), userStatsList.get(temp).get("sub"+periodList.get(j)));
+					userObj.put("b"+periodList.get(j), userStatsList.get(temp).get("b"+periodList.get(j)));
+					userObj.put("sub"+periodList.get(j), userStatsList.get(temp).get("sub"+periodList.get(j)));
 					
 					sumUserPlan += Integer.parseInt(String.valueOf(userStatsList.get(temp).get(periodList.get(j))));
 					sumUserDev += Integer.parseInt(String.valueOf(userStatsList.get(temp).get("b"+periodList.get(j))));
@@ -508,7 +506,6 @@ public class DevPlanController {
 			JsonUtil jsU = new JsonUtil();
 			List<Map<String,Object>> userStats = jsU.getListMapFromJsonArray(userArray);
 			
-			
 			return userStats;
 			
 		}else if(statsGb.equals("task")){
@@ -520,6 +517,7 @@ public class DevPlanController {
 				taskMap.put("dt",String.valueOf(periodList.get(j)));
 				taskStatsList.addAll(devPlanService.selectTaskWeekStats(taskMap));
 			}
+			System.out.println("=========="+taskStatsList);
 			
 			JSONArray taskArray = new JSONArray();
 			JSONObject taskObj = new JSONObject();
@@ -536,24 +534,25 @@ public class DevPlanController {
 				sumTaskPlan=0;
 				sumTaskDev=0;
 				sumDiff = 0;
-				
 				for(int j=0; j<periodList.size();j++){
 					taskObj.put("sysGbNm", taskStatsList.get(temp).get("sysGbNm"));
 					taskObj.put("taskGbNm", taskStatsList.get(temp).get("taskGbNm"));
+					taskObj.put("totCnt", String.valueOf(taskStatsList.get(temp).get("totCnt")));
 					taskObj.put("a"+periodList.get(j), taskStatsList.get(temp).get(periodList.get(j)));
 					taskObj.put("b"+periodList.get(j), taskStatsList.get(temp).get("b"+periodList.get(j)));
 					taskObj.put("sub"+periodList.get(j), taskStatsList.get(temp).get("sub"+periodList.get(j)));
+					
 					sumTaskPlan += Integer.parseInt(String.valueOf(taskStatsList.get(temp).get(periodList.get(j))));
 					sumTaskDev += Integer.parseInt(String.valueOf(taskStatsList.get(temp).get("b"+periodList.get(j))));
 					sumDiff += Integer.parseInt(String.valueOf(taskStatsList.get(temp).get("sub"+periodList.get(j))));
 					temp+=list.size()+sysCnt+1;
+					System.out.println("temp"+temp);
 				}
 				taskObj.put("sumTaskPlan", sumTaskPlan);
 				taskObj.put("sumTaskDev", sumTaskDev);
 				taskObj.put("sumDiff", sumDiff);
 				taskArray.add(taskObj);
 			}
-			
 			JsonUtil jsU = new JsonUtil();
 			List<Map<String,Object>> taskStats = jsU.getListMapFromJsonArray(taskArray);
 			
@@ -614,8 +613,6 @@ public class DevPlanController {
 	public String selectDevCurListPrint(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
 		
 		searchVO.setPrintOpt("printPage");
-		searchVO.setRecordCountPerPage(56);
-		searchVO.setFirstIndex(0);
 		List<HashMap<String,String>> devCurrentList = devPlanService.selectDevCurrent(searchVO);
 		model.addAttribute("resultList", devCurrentList);
 		

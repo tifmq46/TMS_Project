@@ -357,23 +357,18 @@ function searchFileNm() {
 				</div> <br/>
 				<!-- //검색 필드 박스 끝 -->
               
-                <table width="85%" cellspacing="0" summary="기준일자 표시하는 테이블" style="padding-top:10px;">
+                <table width="100%" cellspacing="0" summary="기준일자 표시하는 테이블" style="padding-top:10px;">
                  <caption style="visibility:hidden">기준일자 표시하는 테이블</caption>
                  <c:choose>
                  	<c:when test="${ps eq null or pe eq null}">
 	                 <tr>
 	                 	<td align="center" width="250"></td>
 	                 	<td align="left" width="130" style="font-size:13px; color:red; font-weight:bolder">[계획기준일자가 없습니다.]</td>
-	                  	
 	                 </tr>                 	
                  	</c:when>
                  	<c:otherwise>
 	                 <tr>
-	                 	<td align="center" width="510"></td>
-	                 	<td align="center" width="130" style="font-size:13px; color:red; font-weight:bolder">[계획기준일자 :</td>
-	                  	<td align="left" width="100" style="font-size:13px; color: red; font-weight:bolder">${ps}</td>
-	                  	<td align="left" width="30" style="font-size:13px; color: red; font-weight:bolder">~</td>
-	                  	<td align="left" style="font-size:13px; color: red; font-weight:bolder">${pe}]</td>
+	                 	<td align="right" style="font-size:13px; color:red; font-weight:bolder">[&nbsp;계획기준일자 :&nbsp;&nbsp;${ps}&nbsp;~&nbsp;${pe}&nbsp;]</td>
 	                 </tr>                 	
                  	</c:otherwise>
                  </c:choose>
@@ -388,11 +383,11 @@ function searchFileNm() {
                     <caption>게시판 템플릿 목록</caption>
                    
                     <colgroup>
-                    <col width="20" >
-                    <col width="10%" >
-                    <col width="13%" >
+                    <col width="40" >
+                    <col width="70">
+                    <col width="180" >
                     <col width="70" >
-                    <col width="60" > 
+                    <col width="50" > 
                     <col width="70" >
                     <col width="120" >
                     <col width="120" >
@@ -422,13 +417,11 @@ function searchFileNm() {
                       <tr>
                       
                       <td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            		  <td align="center" class="listtd"><c:out value="${result.PG_ID}"/></td>
+            		  <td align="left" class="listtd"><c:out value="${result.PG_ID}"/></td>
             		  <td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
-            		  <td align="center" class="listtd"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
-            		  <%-- <td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
-            		  <td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td> --%>
+            		  <td align="center" class="listtd" title="<c:out value="${result.USER_DEV_ID}"/>"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
             		  <td><input type="date"  id="${result.PG_ID}" 
             		  <c:if test="${d_test}"> class="disabled" </c:if> 
             		  	onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value='${result.PLAN_START_DT}' pattern="yyyy-MM-dd"/>"

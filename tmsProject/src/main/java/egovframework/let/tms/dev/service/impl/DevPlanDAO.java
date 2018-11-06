@@ -127,8 +127,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		update("DevPlanDAO.updateRate", searchVO);
 	}
 
-	public HashMap<String, String> DevPlanAvg(DevPlanDefaultVO searchVO) {
-		return (HashMap<String, String>)select("DevPlanDAO.DevPlanAvg",searchVO);
+	public HashMap<String,String> DevPlanAvg(DevPlanDefaultVO searchVO) {
+		return (HashMap<String,String>) select("DevPlanDAO.DevPlanAvg",searchVO);
 	}
 
 	public int selectDevCurrentTotCnt(DevPlanDefaultVO searchVO) {
@@ -224,5 +224,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return list("DevPlanDAO.selectTaskTotalProgressRate");
 	}
 
+	public List<?> selectUserDevByDevStats() {
+		return list("DevPlanDAO.selectUserDevByDevStats");
+	}
 	
 }

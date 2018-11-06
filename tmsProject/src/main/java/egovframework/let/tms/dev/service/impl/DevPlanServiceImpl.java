@@ -148,7 +148,7 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	}
 
 	@Override
-	public HashMap<String, String> DevPlanAvg(DevPlanDefaultVO searchVO) {
+	public HashMap<String,String> DevPlanAvg(DevPlanDefaultVO searchVO) {
 		return devPlanDAO.DevPlanAvg(searchVO);
 	}
 
@@ -270,6 +270,11 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	@Override
 	public List<?> selectTaskTotalProgressRate() {
 		return devPlanDAO.selectTaskTotalProgressRate();
+	}
+
+	@Override
+	public List<?> selectUserDevByDevStats() {
+		return devPlanDAO.selectUserDevByDevStats();
 	}
 
 }

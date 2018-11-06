@@ -147,14 +147,14 @@ function StatsToExcel(statsGb) {
 				 <!-- 프로젝트 개발 기간 박스 끝-->
                 
                 <ul class="tabs">
-					<li class="tab-link current" data-tab="tab-1">개발자별</li>
+					<li class="tab-link current" data-tab="tab-1">전체</li>
 					<li class="tab-link" data-tab="tab-2">업무별</li>
-					<li class="tab-link" data-tab="tab-3">전체</li>
+					<li class="tab-link" data-tab="tab-3">개발자별</li>
 					<li class="tab-link last" data-tab="tab-5" style="float:right">
 					
 						<div class="buttons" id="StatsByUserToExcel" style="display:inline">
 								<a href="<c:url value='/tms/dev/StatsToExcel.do'/>"
-									onclick="javascript:StatsToExcel('user'); return false;">엑셀 다운로드</a>
+									onclick="javascript:StatsToExcel('taskTotal'); return false;">엑셀 다운로드</a>
 						</div>
 						<div class="buttons" id="StatsByTaskToExcel" style="display:none">
 							<a href="<c:url value='/tms/dev/StatsToExcel.do'/>"
@@ -162,228 +162,13 @@ function StatsToExcel(statsGb) {
 						</div>
 						<div class="buttons" id="StatsByTaskTotalToExcel" style="display:none">
 							<a href="<c:url value='/tms/dev/StatsToExcel.do'/>"
-								onclick="javascript:StatsToExcel('taskTotal'); return false;">엑셀 다운로드</a>
+								onclick="javascript:StatsToExcel('user'); return false;">엑셀 다운로드</a>
 						</div>
 					</li>
 				</ul>
                 
                 <div id="tab-1" class="tab-content current">
-                                    
-	                <div class="default_tablestyle table1">
-	                    <table summary="개발자별 통계 테이블입니다" cellpadding="0" cellspacing="0" >
-	                    <caption>통계(개발자별) 테이블</caption>
-	                    
-	                    <colgroup>
-	                    	<col width="100">
-	                    	<col width="50">
-		                   <col width="50">
-		                   <col width="50">
-	                    	<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<col width="50">
-		                    	<col width="50">
-		                    	<col width="50">
-		                    </c:forEach>
-	                    </colgroup>
-	           
-	          			<thead>
-	          			<tr>
-	          				<th scope="col" align="center" rowspan="2">개발자</th>
-	          				<th class='borderLine' scope="col" align="center" colspan="3"><strong>합계</strong></th>
-		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<th class='borderLine' scope="col" align="center" colspan="3">${status.count}주(${mw})</th>
-		                    </c:forEach>
-	          			</tr>
-	          			<tr>
-	          				 <th scope="col" align="center"><strong>계획</strong></th>
-		                     <th scope="col" align="center" ><strong>실적</strong></th>
-		                     <th class='borderLine' scope="col" align="center" ><strong>차이</strong></th>
-		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<th scope="col" align="center">계획</th>
-		                    	<th scope="col" align="center">실적</th>
-		                    	<th class='borderLine' scope="col" align="center">차이</th>
-		                    </c:forEach>
-	          			</tr>
-	                    </thead>
-           			
-	           			
-	           			<%int totSum1=0;
-           			      int totSum2=0;
-           			  	  int totSum3=0;%>
-	           			<c:forEach var="us" items="${userStats}" varStatus="status">
-	           			
-		                    <tr>
-		                   		
-		                    	<td><c:out value="${us.userDevNm}(${us.userDevId})" /></td>
-		                    	
-		                    	<td><strong>${us.sumUserPlan}</strong></td>
-								<c:set var = "totSum1" value="${us.sumUserPlan}" />
-								<% totSum1 += (Integer)pageContext.getAttribute("totSum1");
-									pageContext.setAttribute("totSum1", totSum1);
-								%>
-								
-								<td><strong>${us.sumUserDev}</strong></td>
-								<c:set var = "totSum2" value="${us.sumUserDev}" />
-								<% totSum2 += (Integer)pageContext.getAttribute("totSum2");
-									pageContext.setAttribute("totSum2", totSum2);
-								%>
-								
-								<td class='borderLine'><strong>${us.sumDiff}</strong></td>
-								<c:set var = "totSum3" value="${us.sumDiff}" />
-								<% totSum3 += (Integer)pageContext.getAttribute("totSum3");
-									pageContext.setAttribute("totSum3", totSum3);
-								%>
-		                    
-		                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
-				           			<c:set var ="t"  value="a${i}"></c:set>
-				           			<td>${us[t]}</td>
-				           			<c:set var ="t2"  value="b${i}"></c:set>
-				           			<td>${us[t2]}</td>
-				           			<c:set var ="t3"  value="sub${i}"></c:set>
-				           			<td class='borderLine'>${us[t3]}</td>
-								</c:forEach>
-								
-		                    </tr>
-	                    </c:forEach>
-	                    <tr>
-	                    	<td class='lineStyle2'><strong><c:out value="합계" /></strong></td>
-	                  
-	                    	<td class='lineStyle2'><strong>${totSum1}</strong></td>
-		                  	<td class='lineStyle2'><strong>${totSum2}</strong></td>
-		                  	<td class='borderLine lineStyle2'><strong>${totSum3}</strong></td>
-		                  	
-			               	<c:forEach var="userSum" items="${userSum}" varStatus="status">
-					           	<c:set var = "b" value="${begin+status.index}"></c:set>
-					           			<c:set var ="t"  value="sumUserPlan${b}"></c:set>
-					           			<td class='lineStyle2'>${userSum[t]}</td>
-					           			<c:set var ="t2"  value="sumUserDev${b}"></c:set>
-					           			<td class='lineStyle2'>${userSum[t2]}</td>
-					           			<c:set var ="t3"  value="sumUserDiff${b}"></c:set>
-					           			<td class='borderLine lineStyle2'>${userSum[t3]}</td>
-								</c:forEach>
-		               	
-	                    </tr>
-	                    </table>
-	                </div>
-	                
-	                <div id="search_field"> <div id="search_field_loc"></div></div>
-	               
-                </div>
-                <div id="tab-2" class="tab-content">
-                <div class="default_tablestyle table1" >
-                    <table summary="업무별 통계 테이블입니다" cellpadding="0" cellspacing="0">
-                    <caption>통계(업무별)테이블</caption>
-           
-           			<colgroup>
-	                   <col width="60">
-	                   <col width="100">
-	                   <col width="50">
-		               <col width="50">
-		                <col width="50">
-	                   <c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                   <col width="50">
-		                   <col width="50">
-		                   <col width="50">
-		                </c:forEach>
-	               </colgroup>
-           
-          			<thead>
-	          			<tr>
-	          				<th align="center" rowspan="2">시스템구분</th>
-	          				<th align="center" rowspan="2">업무구분</th>
-	          				<th align="center" colspan="3"><strong>합계</strong></th>
-		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<th class='borderLine' scope="col" align="center" colspan="3">${status.count}주(${mw})</th>
-		                    </c:forEach>
-		                    
-	          			</tr>
-	          			<tr>
-	          				 <th align="center" ><strong>계획</strong></th>
-		                     <th align="center" ><strong>실적</strong></th>
-		                     <th class='borderLine' scope="col" align="center"><strong>차이</strong></th>
-		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
-		                    	<th align="center">계획</th>
-		                    	<th align="center">실적</th>
-		                    	<th class='borderLine' scope="col" align="center">차이</th>
-		                    </c:forEach>
-
-	          			</tr>
-	                  </thead>
-           			
-           			<%int totSum4=0;
-           			  int totSum5=0;
-           			  int totSum6=0;
-           			  %>
-           			<c:forEach var="ts" items="${taskStats}" varStatus="status">
-	                    <tr>
-	                    	<c:choose>
-	                    		<c:when test="${ts.taskGbNm eq '소계' && ts.sysGbNm ne '합계'}">
-	                    			<td class='lineStyle'><strong><c:out value="${ts.sysGbNm}" /></strong></td>
-		                    		<td class='lineStyle'><strong><c:out value="${ts.taskGbNm}" /></strong></td>
-		                    		<td class='lineStyle'><strong>${ts.sumTaskPlan}</strong></td>
-									<td class='lineStyle'><strong>${ts.sumTaskDev}</strong></td>
-									<td class='lineStyle'><strong>${ts.sumDiff}</strong></td>
-									
-									<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
-					           			<c:set var ="t"  value="a${i}"></c:set>
-					           			<td class='lineStyle'><strong>${ts[t]}</strong></td>
-					           			<c:set var ="t2"  value="b${i}"></c:set>
-					           			<td class='lineStyle'><strong>${ts[t2]}</strong></td>
-					           			<c:set var ="t3"  value="sub${i}"></c:set>
-					           			<td class='borderLine lineStyle'><strong>${ts[t3]}</strong></td>
-									</c:forEach>
-	                    		</c:when>
-	                    		<c:when test="${ts.sysGbNm eq '합계'}">
-	                    			<td class='lineStyle2'><strong><c:out value="${ts.sysGbNm}" /></strong></td>
-		                    		<td class='lineStyle2'><strong><c:out value="${ts.taskGbNm}" /></strong></td>
-		                    		<td class='lineStyle2'><strong>${ts.sumTaskPlan}</strong></td>
-									<td class='lineStyle2'><strong>${ts.sumTaskDev}</strong></td>
-									<td class='lineStyle2'><strong>${ts.sumDiff}</strong></td>
-									
-									<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
-					           			<c:set var ="t"  value="a${i}"></c:set>
-					           			<td class='lineStyle2'><strong>${ts[t]}</strong></td>
-					           			<c:set var ="t2"  value="b${i}"></c:set>
-					           			<td class='lineStyle2'><strong>${ts[t2]}</strong></td>
-					           			<c:set var ="t3"  value="sub${i}"></c:set>
-					           			<td class='borderLine lineStyle2'><strong>${ts[t3]}</strong></td>
-									</c:forEach>
-	                    		</c:when>
-	                    		<c:otherwise>
-	                    			<td><c:out value="${ts.sysGbNm}" /></td>
-		                    		<td><c:out value="${ts.taskGbNm}" /></td>
-		                    		<td><strong>${ts.sumTaskPlan}</strong></td>
-									<td><strong>${ts.sumTaskDev}</strong></td>
-									<td><strong>${ts.sumDiff}</strong></td>
-									
-									<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
-					           			<c:set var ="t"  value="a${i}"></c:set>
-					           			<td>${ts[t]}</td>
-					           			<c:set var ="t2"  value="b${i}"></c:set>
-					           			<td>${ts[t2]}</td>
-					           			<c:set var ="t3"  value="sub${i}"></c:set>
-					           			<td class='borderLine'>${ts[t3]}</td>
-									</c:forEach>
-	                    		</c:otherwise>
-	                    	</c:choose>
-	                    	
-		                   
-		                    		
-									
-			                    	
-			                    	
-							
-	                    </tr>
-                    </c:forEach>
-                    
-                    </table>
-                </div>
-                
-                 <div id="search_field"> <div id="search_field_loc"></div></div>
-               
-                 </div>
-                 
-                 <div id="tab-3" class="tab-content">
-	                 <div class="default_tablestyle">
+                    <div class="default_tablestyle">
 	                    <table summary="전체 통계 테이블입니다" cellpadding="0" cellspacing="0">
 	                    <caption>통계 테이블</caption>
 	           
@@ -456,6 +241,225 @@ function StatsToExcel(statsGb) {
 		                    	
 		                    </tr>
 	                    </c:forEach>
+	                    </table>
+	                </div>          
+	                
+	               
+                </div>
+                <div id="tab-2" class="tab-content">
+                <div class="default_tablestyle table1" >
+                    <table summary="업무별 통계 테이블입니다" cellpadding="0" cellspacing="0">
+                    <caption>통계(업무별)테이블</caption>
+           
+           			<colgroup>
+	                   <col width="60">
+	                   <col width="100">
+	                   <col width="50">
+	                   <col width="50">
+		               <col width="50">
+		                <col width="50">
+	                   <c:forEach var="mw" items="${monthWeek}" varStatus="status">
+		                   <col width="50">
+		                   <col width="50">
+		                   <col width="50">
+		                </c:forEach>
+	               </colgroup>
+           
+          			<thead>
+	          			<tr>
+	          				<th align="center" rowspan="2">시스템구분</th>
+	          				<th align="center" rowspan="2">업무구분</th>
+	          				<th align="center" rowspan="2">총 본수</th>
+	          				<th align="center" colspan="3"><strong>합계</strong></th>
+		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
+		                    	<th class='borderLine' scope="col" align="center" colspan="3">${status.count}주(${mw})</th>
+		                    </c:forEach>
+		                    
+	          			</tr>
+	          			<tr>
+	          				 <th align="center" ><strong>계획</strong></th>
+		                     <th align="center" ><strong>실적</strong></th>
+		                     <th class='borderLine' scope="col" align="center"><strong>차이</strong></th>
+		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
+		                    	<th align="center">계획</th>
+		                    	<th align="center">실적</th>
+		                    	<th class='borderLine' scope="col" align="center">차이</th>
+		                    </c:forEach>
+
+	          			</tr>
+	                  </thead>
+           			
+           			<%int totSum4=0;
+           			  int totSum5=0;
+           			  int totSum6=0;
+           			  %>
+           			<c:forEach var="ts" items="${taskStats}" varStatus="status">
+	                    <tr>
+	                    	<c:choose>
+	                    		<c:when test="${ts.taskGbNm eq '소계' && ts.sysGbNm ne '합계'}">
+	                    			<td class='lineStyle'><strong><c:out value="${ts.sysGbNm}" /></strong></td>
+		                    		<td class='lineStyle'><strong><c:out value="${ts.taskGbNm}" /></strong></td>
+		                    		<td class='lineStyle'><strong></strong>${ts.totCnt}</td>
+		                    		<td class='lineStyle'><strong>${ts.sumTaskPlan}</strong></td>
+									<td class='lineStyle'><strong>${ts.sumTaskDev}</strong></td>
+									<td class='lineStyle'><strong>${ts.sumDiff}</strong></td>
+									
+									<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+					           			<c:set var ="t"  value="a${i}"></c:set>
+					           			<td class='lineStyle'><strong>${ts[t]}</strong></td>
+					           			<c:set var ="t2"  value="b${i}"></c:set>
+					           			<td class='lineStyle'><strong>${ts[t2]}</strong></td>
+					           			<c:set var ="t3"  value="sub${i}"></c:set>
+					           			<td class='borderLine lineStyle'><strong>${ts[t3]}</strong></td>
+									</c:forEach>
+	                    		</c:when>
+	                    		<c:when test="${ts.sysGbNm eq '합계'}">
+	                    			<td class='lineStyle2'><strong><c:out value="${ts.sysGbNm}" /></strong></td>
+		                    		<td class='lineStyle2'><strong><c:out value="${ts.taskGbNm}" /></strong></td>
+		                    		<td class='lineStyle2'><strong></strong>${ts.totCnt}</td>
+		                    		<td class='lineStyle2'><strong>${ts.sumTaskPlan}</strong></td>
+									<td class='lineStyle2'><strong>${ts.sumTaskDev}</strong></td>
+									<td class='lineStyle2'><strong>${ts.sumDiff}</strong></td>
+									
+									<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+					           			<c:set var ="t"  value="a${i}"></c:set>
+					           			<td class='lineStyle2'><strong>${ts[t]}</strong></td>
+					           			<c:set var ="t2"  value="b${i}"></c:set>
+					           			<td class='lineStyle2'><strong>${ts[t2]}</strong></td>
+					           			<c:set var ="t3"  value="sub${i}"></c:set>
+					           			<td class='borderLine lineStyle2'><strong>${ts[t3]}</strong></td>
+									</c:forEach>
+	                    		</c:when>
+	                    		<c:otherwise>
+	                    			<td><c:out value="${ts.sysGbNm}" /></td>
+		                    		<td><c:out value="${ts.taskGbNm}" /></td>
+		                    		<td><strong></strong>${ts.totCnt}</td>
+		                    		<td><strong>${ts.sumTaskPlan}</strong></td>
+									<td><strong>${ts.sumTaskDev}</strong></td>
+									<td><strong>${ts.sumDiff}</strong></td>
+									
+									<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+					           			<c:set var ="t"  value="a${i}"></c:set>
+					           			<td>${ts[t]}</td>
+					           			<c:set var ="t2"  value="b${i}"></c:set>
+					           			<td>${ts[t2]}</td>
+					           			<c:set var ="t3"  value="sub${i}"></c:set>
+					           			<td class='borderLine'>${ts[t3]}</td>
+									</c:forEach>
+	                    		</c:otherwise>
+	                    	</c:choose>
+	                    </tr>
+                    </c:forEach>
+                    
+                    </table>
+                </div>
+                
+                 <div id="search_field"> <div id="search_field_loc"></div></div>
+               
+                 </div>
+                 
+                 <div id="tab-3" class="tab-content">
+	                 <div class="default_tablestyle table1">
+	                    <table summary="개발자별 통계 테이블입니다" cellpadding="0" cellspacing="0" >
+	                    <caption>통계(개발자별) 테이블</caption>
+	                    
+	                    <colgroup>
+	                    	<col width="100">
+	                    	<col width="50">
+	                    	<col width="50">
+		                   <col width="50">
+		                   <col width="50">
+	                    	<c:forEach var="mw" items="${monthWeek}" varStatus="status">
+		                    	<col width="50">
+		                    	<col width="50">
+		                    	<col width="50">
+		                    </c:forEach>
+	                    </colgroup>
+	           
+	          			<thead>
+	          			<tr>
+	          				<th scope="col" align="center" rowspan="2">개발자</th>
+	          				<th scope="col" align="center" rowspan="2">총 본수</th>
+	          				<th class='borderLine' scope="col" align="center" colspan="3"><strong>합계</strong></th>
+		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
+		                    	<th class='borderLine' scope="col" align="center" colspan="3">${status.count}주(${mw})</th>
+		                    </c:forEach>
+	          			</tr>
+	          			<tr>
+	          				 <th scope="col" align="center"><strong>계획</strong></th>
+		                     <th scope="col" align="center" ><strong>실적</strong></th>
+		                     <th class='borderLine' scope="col" align="center" ><strong>차이</strong></th>
+		          			<c:forEach var="mw" items="${monthWeek}" varStatus="status">
+		                    	<th scope="col" align="center">계획</th>
+		                    	<th scope="col" align="center">실적</th>
+		                    	<th class='borderLine' scope="col" align="center">차이</th>
+		                    </c:forEach>
+	          			</tr>
+	                    </thead>
+           			
+	           			
+	           			<%int totSum1=0;
+           			      int totSum2=0;
+           			  	  int totSum3=0;
+           			  	  int sumTotCnt=0;%>
+	           			<c:forEach var="us" items="${userStats}" varStatus="status">
+	           			
+		                    <tr>
+		                   		
+		                    	<td><c:out value="${us.userDevNm}(${us.userDevId})" /></td>
+		                    	<td><c:out value="${us.totCnt}" /></td>
+		                    	<c:set var = "sumTotCnt" value="${us.totCnt}" />
+								<% sumTotCnt += (Integer)pageContext.getAttribute("sumTotCnt");
+									pageContext.setAttribute("sumTotCnt", sumTotCnt);
+								%>
+		                    	
+		                    	<td><strong>${us.sumUserPlan}</strong></td>
+								<c:set var = "totSum1" value="${us.sumUserPlan}" />
+								<% totSum1 += (Integer)pageContext.getAttribute("totSum1");
+									pageContext.setAttribute("totSum1", totSum1);
+								%>
+								
+								<td><strong>${us.sumUserDev}</strong></td>
+								<c:set var = "totSum2" value="${us.sumUserDev}" />
+								<% totSum2 += (Integer)pageContext.getAttribute("totSum2");
+									pageContext.setAttribute("totSum2", totSum2);
+								%>
+								
+								<td class='borderLine'><strong>${us.sumDiff}</strong></td>
+								<c:set var = "totSum3" value="${us.sumDiff}" />
+								<% totSum3 += (Integer)pageContext.getAttribute("totSum3");
+									pageContext.setAttribute("totSum3", totSum3);
+								%>
+		                    
+		                    	<c:forEach begin="${begin}" end="${end}" var="i" varStatus="s">
+				           			<c:set var ="t"  value="a${i}"></c:set>
+				           			<td>${us[t]}</td>
+				           			<c:set var ="t2"  value="b${i}"></c:set>
+				           			<td>${us[t2]}</td>
+				           			<c:set var ="t3"  value="sub${i}"></c:set>
+				           			<td class='borderLine'>${us[t3]}</td>
+								</c:forEach>
+								
+		                    </tr>
+	                    </c:forEach>
+	                    <tr>
+	                    	<td class='lineStyle2'><strong><c:out value="합계" /></strong></td>
+	                  		<td class='lineStyle2'><strong>${sumTotCnt}</strong></td>
+	                    	<td class='lineStyle2'><strong>${totSum1}</strong></td>
+		                  	<td class='lineStyle2'><strong>${totSum2}</strong></td>
+		                  	<td class='borderLine lineStyle2'><strong>${totSum3}</strong></td>
+		                  	
+			               	<c:forEach var="userSum" items="${userSum}" varStatus="status">
+					           	<c:set var = "b" value="${begin+status.index}"></c:set>
+					           			<c:set var ="t"  value="sumUserPlan${b}"></c:set>
+					           			<td class='lineStyle2'>${userSum[t]}</td>
+					           			<c:set var ="t2"  value="sumUserDev${b}"></c:set>
+					           			<td class='lineStyle2'>${userSum[t2]}</td>
+					           			<c:set var ="t3"  value="sumUserDiff${b}"></c:set>
+					           			<td class='borderLine lineStyle2'>${userSum[t3]}</td>
+								</c:forEach>
+		               	
+	                    </tr>
 	                    </table>
 	                </div>
                  </div>
