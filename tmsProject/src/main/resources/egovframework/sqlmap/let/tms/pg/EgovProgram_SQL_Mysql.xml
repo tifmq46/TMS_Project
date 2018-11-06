@@ -247,18 +247,25 @@
  		]]>
  	</update>
  	
-	<!-- 삭제 -> 사용여부 변경 -->
+	<!-- 삭제 -> -->
 	<update id="ProgramDAO.deletePg" parameterClass="ProgramVO">
  		<![CDATA[
  			DELETE FROM PG_TB
  			WHERE PG_ID = #pgId#
  		]]>
  	</update>
+ 	<!-- 전체삭제 -> -->
+	<update id="ProgramDAO.full_deletePg">
+ 		<![CDATA[
+ 			DELETE FROM PG_TB
+ 			WHERE 1 = 1
+ 		]]>
+ 	</update>
 	
    <select id="ProgramDAO.count1" parameterClass="java.lang.String" resultClass="java.lang.Integer" >
          <![CDATA[
             select COUNT(*)
-			from PG_TB
+			from DEV_PLAN_TB
 			where PG_ID = #pgId#
          ]]>
    </select>

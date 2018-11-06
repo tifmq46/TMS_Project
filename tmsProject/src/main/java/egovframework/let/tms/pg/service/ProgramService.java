@@ -30,6 +30,7 @@ public interface ProgramService {
 	 */
 	void deletePg(ProgramVO vo) throws Exception;
 
+	void full_deletePg() throws Exception;
 	/**
 	 * 개발계획을 조회한다.
 	 * @param vo - 조회할 정보가 담긴 DevPlanVO

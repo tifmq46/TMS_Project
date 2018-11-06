@@ -94,19 +94,25 @@ function window_close() {
         				<div class="searchT">
         				<c:forEach var="result" items="${Pg_Relation_List}" varStatus="status">
         				
-        				<label style="color:#0f438a;" for="searchByPgId"><strong>화면ID : ${result.PG_ID}</strong></label>
+        					<label style="color:#0f438a;" for="searchByPgId"><strong>화면ID : ${result.PG_ID}</strong></label>
         				
-        				<table id="searchT" width="100%" border="0" cellpadding="0" cellspacing="0" style="border-bottom: 1px solid #dddddd; border-top: 1px solid #dddddd;
+        					<table id="searchT" width="100%" border="0" cellpadding="0" cellspacing="0" style="border-bottom: 1px solid #dddddd; border-top: 1px solid #dddddd;
     color:#0f438a;">
-            				<tr>
-            					<td align="center" class="listtd"><strong><c:out value="계획 :"/></strong></td>
-            					<td align="center" class="listtd"><strong><c:out value="(${result.dev})"/></strong></td>
-            					<td align="center" class="listtd"><strong><c:out value="테스트 :"/></strong></td>
-            					<td align="center" class="listtd"><strong><c:out value="(${result.test})"/></strong></td>
-            					<td align="center" class="listtd"><strong><c:out value="결함 :"/></strong></td>
-            					<td align="center" class="listtd"><strong><c:out value="(${result.defect})"/></strong></td>
-            				</tr>
-            			</table>
+            					<tr>
+            						<td align="left" class="listtd">
+            						<c:if test="${result.dev > 0}">
+            							<strong><c:out value="[계획] "/></strong>
+            						</c:if>
+            						<c:if test="${result.test > 0}">
+            							<strong><c:out value="[테스트] "/></strong>
+            						</c:if>
+            						<c:if test="${result.defect > 0}">
+            							<strong><c:out value="[결함] "/></strong>
+            						</c:if>
+            						<strong><c:out value="관련 데이터 가 존재해 삭제가 불가능합니다! "/></strong>
+            						</td>
+            					</tr>
+            				</table>
             			
         				</c:forEach>
 						</div>
@@ -117,14 +123,15 @@ function window_close() {
             <br>
 
 
-
-            <ul id="search_second_ul">            		  
+			<c:if test="${fn:length(Pg_Relation_List) == 0}">
+            	<ul id="search_second_ul">            		  
                     <li>
                         <div style="float:right;">      
                         	<font style="color:#0f438a;" size="3px"><strong>삭제하시겠습니까? </strong></font>                  
                         </div>                              
                     </li>                    
-            </ul> 
+            	</ul> 
+            </c:if>  
             
             <ul id="search_second_ul">            		  
                     <li>
@@ -134,8 +141,13 @@ function window_close() {
                     </li>   
                     <li>
                         <div class="buttons" style="float:right;"> 
-                        	<a id="listButton" name="listButton" href="#LINK" >삭제 </a>                    
-                            <a href="#LINK" onclick="javascript:window_close(); return false;">취소 </a>
+                        	<c:if test="${fn:length(Pg_Relation_List) == 0}">
+                        		<a id="listButton" name="listButton" href="#LINK" >삭제 </a> 
+                        		<a href="#LINK" onclick="javascript:window_close(); return false;">취소 </a>
+                        	</c:if>  
+                        	<c:if test="${fn:length(Pg_Relation_List) > 0}">
+                        		<a href="#LINK" onclick="javascript:window_close(); return false;">닫기 </a>
+                        	</c:if>                                             
                         </div>                              
                     </li>                     
             </ul> 

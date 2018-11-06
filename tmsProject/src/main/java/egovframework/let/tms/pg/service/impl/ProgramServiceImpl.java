@@ -54,7 +54,13 @@ public class ProgramServiceImpl extends EgovAbstractServiceImpl implements Progr
 		// TODO Auto-generated method stub
 		ProgramDAO.deletePg(vo);
 	}
-
+	
+	@Override
+	public void full_deletePg() throws Exception {
+		// TODO Auto-generated method stub
+		ProgramDAO.full_deletePg();
+	}
+	
 	@Override
 	public ProgramVO selectPg(ProgramVO vo) throws Exception {
 		ProgramVO resultVO = ProgramDAO.selectPg(vo);

@@ -41,7 +41,9 @@ public class ProgramDAO extends EgovAbstractDAO{
 	public void deletePg(ProgramVO vo) throws Exception {
 		delete("ProgramDAO.deletePg", vo);
 	}
-
+	public void full_deletePg() throws Exception {
+		delete("ProgramDAO.full_deletePg");
+	}
 	/**
 	 * 개발계획을 조회한다.
 	 * @param vo - 조회할 정보가 담긴 DevPlanVO

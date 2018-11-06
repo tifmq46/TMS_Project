@@ -85,6 +85,108 @@ $(function(){
 	      });
 	   })
 	})
+	
+$(function(){
+	   $('#delete').click(function() {
+			var checkField = document.frm.delYn;
+	        var checkId = document.frm.checkId;
+	        var returnValue = "";
+	        var returnBoolean = false;
+	        var checkCount = 0;
+	        if(checkField) {
+	            if(checkField.length > 1) {
+	                for(var i=0; i<checkField.length; i++) {
+	                    if(checkField[i].checked) {
+	                        checkField[i].value = checkId[i].value;
+	                        if(returnValue == "")
+	                            returnValue = checkField[i].value;
+	                        else 
+	                            returnValue = returnValue + ";" + checkField[i].value;
+	                        checkCount++;
+	                    }
+	                }
+	                if(checkCount > 0) 
+	                    returnBoolean = true;
+	                else {
+	                    swal("삭제할 화면ID를 선택해주십시오.");
+	                    returnBoolean = false;
+	                    return;
+	                }
+	            } else {
+	                if(document.frm.delYn.checked == false) {
+	                    swal("선택된 권한이 없습니다.");
+	                    returnBoolean = false;
+	                }
+	                else {
+	                    returnValue = checkId.value;
+	                    returnBoolean = true;
+	                }
+	            }
+	        } else {
+	        	swal("삭제할 화면ID를 선택해주십시오.");
+	            returnBoolean = false;
+	            return;
+	        }		   
+		   
+			$.ajax({
+			         
+			         type:"POST",
+			         url: "<c:url value='/tms/pg/deletePgList2.do?returnValue="+returnValue+"'/>",
+			         success : function(str){
+			        	 if(str.length == 0) {
+			        		 $.ajax({
+						         
+						         type:"POST",
+						         url: "<c:url value='/tms/pg/deleteListAction.do?returnValue="+returnValue+"'/>",
+						         success : function(){
+						        	location.reload();
+						        	swal("정상적으로 삭제되었습니다.");
+						         },
+						         error : function(request,status,error){
+						            swal("삭제할 수 없습니다.");
+						         }
+						      });
+			        	 }else {
+			        		 window.open("<c:url value='/tms/pg/deletePgList.do?result="+returnValue+"'/>",'','width=500, height=300, left=350, top=200');
+			        	 }
+			         },
+			         error : function(request,status,error){
+			            swal("삭제할 수 없습니다.");
+
+			         }
+			      });
+			   })
+			})	
+$(function(){
+	   $('#full_delete').click(function() {
+			swal({
+	   			text: '프로그램 일괄삭제를 하시겠습니까?'
+	   			,buttons : true
+	   		})
+	   		.then((result) => {
+	   			if(result) {
+   					$.ajax({			         
+   			         	type:"POST",
+   			         	url: "<c:url value='/tms/pg/full_deleteListAction.do'/>",
+   			         	success : function(){
+   			        		location.reload();
+   			        	 	//swal("프로그램 일괄삭제가 정상적으로 처리되었습니다.");
+   			         	},
+   			         	error : function(request,status,error){
+   			            	swal("삭제할 수 없습니다.");
+   			         	}
+   			  		});
+	   			}else {
+	   					
+	   			}
+	   		});
+		   
+	   })
+	})	
+	
+	
+	
+	
 	function setting() {
 		document.frm.searchBySysGb.value = document.frm.bbb.value;
 		document.frm.searchByTaskGb.value = document.frm.task.value;
@@ -92,58 +194,10 @@ $(function(){
 	}
 	
 	function searchExcelFileNm() {
-    	window.open("<c:url value='/tms/pg/ExcelFileListSearch.do'/>",'','width=500, height=400, left=350, top=200');
+    	window.open("<c:url value='/tms/pg/ExcelFileListSearch.do'/>",'','location=no, width=500, height=400, left=350, top=200');
 	}
 	
-	function Pg_Delete_Search() {
-		
-		var checkField = document.frm.delYn;
-        var checkId = document.frm.checkId;
-        var returnValue = "";
-        var returnBoolean = false;
-        var checkCount = 0;
-        if(checkField) {
-            if(checkField.length > 1) {
-                for(var i=0; i<checkField.length; i++) {
-                    if(checkField[i].checked) {
-                        checkField[i].value = checkId[i].value;
-                        if(returnValue == "")
-                            returnValue = checkField[i].value;
-                        else 
-                            returnValue = returnValue + ";" + checkField[i].value;
-                        checkCount++;
-                    }
-                }
-                if(checkCount > 0) 
-                    returnBoolean = true;
-                else {
-                    swal("삭제할 화면ID를 선택해주십시오.");
-                    returnBoolean = false;
-                    return;
-                }
-            } else {
-                if(document.frm.delYn.checked == false) {
-                    swal("선택된 권한이 없습니다.");
-                    returnBoolean = false;
-                }
-                else {
-                    returnValue = checkId.value;
-                    returnBoolean = true;
-                }
-            }
-        } else {
-        	swal("삭제할 화면ID를 선택해주십시오.");
-            returnBoolean = false;
-            return;
-        }
-		
-        document.frm.del.value = returnValue;
-        //document.frm.action = "<c:url value='/tms/pg/deletePg2.do'/>";
-        //document.frm.submit();
-        
-        
-    	window.open("<c:url value='/tms/pg/deletePgList.do?result="+returnValue+"'/>",'','width=500, height=300, left=350, top=200');
-	}
+
 	function Pg_select(pageNo){
 		document.frm.cnt.value = "a";
 		document.frm.searchBySysGb.value = document.frm.bbb.value;
@@ -385,11 +439,10 @@ $(function(){
 									</select>				
 									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value=""/>
       			        		</td>
-      			        		<td>
-      			        		</td>
-      			        		<td>
-      			        		</td>
-      			        		<td>
+      			        		<td colspan="3">
+      			        			<div class="buttons" style="float:right;">
+                                    	<a id="full_delete" href="#Link" >프로그램 일괄삭제</a>
+                                    </div>
       			        		</td>
       			        	</tr>
       			        	<tr>
@@ -406,7 +459,7 @@ $(function(){
       			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">사용여부
       			        		</td>
       			        		<td style="padding-top:15px;">
-      			        		<select name="searchUseYn" id="searchUseYn" style="width:90%;text-align-last:center;">
+      			        			<select name="searchUseYn" id="searchUseYn" style="width:90%;text-align-last:center;">
 									   <option value="">전체</option>
 					      					<c:forEach var="useYn" items="${useYnList}" varStatus="status">
 					      						<c:if test="${useYn == 'Y'}">
@@ -419,9 +472,9 @@ $(function(){
 									</select>			
       			        		</td>
       			        		<td colspan="5" style="padding-top:15px;">
-      			        		<div class="buttons" style="float:right;">                              			
+      			        			<div class="buttons" style="float:right;">                              			
                                     	<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                                    	<a href="#Link" onclick="Pg_Delete_Search(); return false;">삭제</a>
+                                    	<a id="delete" href="#Link" >삭제</a>
                                     	<a href="<c:url value='/tms/pg/PgInsert.do'/>" >등록</a>
                                     	<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀등록</a>
                                     </div>
@@ -487,10 +540,10 @@ $(function(){
             					<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
             					<td align="center" class="listtd"><c:out value="${result.userDevId}"/>&nbsp;</td>
             					<c:if test="${result.useYn == 'Y'}">
-            						<td align="center" class="listtd" style="background-color:#007bff;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
+            						<td align="center" class="listtd""><font style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
             					</c:if>
             					<c:if test="${result.useYn == 'N'}">
-            						<td align="center" class="listtd" style="background-color:#CC3C39;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
+            						<td align="center" class="listtd""><font style="font-weight:bold"><c:out value="${result.useYn}"/></font></td>
             					</c:if>
             				</tr>
         				</c:forEach>

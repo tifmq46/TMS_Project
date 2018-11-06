@@ -330,6 +330,10 @@ public class ProgramController {
 			
 			ArrayList <HashMap<String, String>> result_hash = new ArrayList <HashMap<String, String>>();
 			
+			int cnt1;
+			int cnt2;
+			int cnt3;
+			
 			String count1 = null;
 			String count2 = null;
 			String count3 = null;
@@ -339,17 +343,24 @@ public class ProgramController {
 				
 				HashMap<String, String> hash = new HashMap<String, String>();
 				
-				count1 = ""+ProgramService.count1(strDelCodes[i]);
-				count2 = ""+ProgramService.count2(strDelCodes[i]);
-				count3 = ""+ProgramService.count3(strDelCodes[i]);
+				cnt1 = ProgramService.count1(strDelCodes[i]);
+				cnt2 = ProgramService.count2(strDelCodes[i]);
+				cnt3 = ProgramService.count3(strDelCodes[i]);
 				
-				hash.put("PG_ID", strDelCodes[i]);
-				hash.put("dev", count1);
-				hash.put("test", count2);
-				hash.put("defect", count3);
+				if(cnt1 == 0 && cnt2 == 0 && cnt3 == 0) {
+					
+				}else {				
+					count1 = ""+cnt1;
+					count2 = ""+cnt2;
+					count3 = ""+cnt3;
 				
-				result_hash.add(hash);
+					hash.put("PG_ID", strDelCodes[i]);
+					hash.put("dev", count1);
+					hash.put("test", count2);
+					hash.put("defect", count3);
 				
+					result_hash.add(hash);
+				}
 			}
 			
 			model.addAttribute("Pg_Relation_List", result_hash);
@@ -360,6 +371,56 @@ public class ProgramController {
 			return "/tms/pg/PgDeleteSearch";
 		
 	}
+	
+	
+	@RequestMapping(value = "/tms/pg/deletePgList2.do")
+	@ResponseBody
+	public ArrayList<HashMap<String, String>> deletePgList2(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, @RequestParam String returnValue, ModelMap model) throws Exception {
+			
+			ArrayList <HashMap<String, String>> result_hash = new ArrayList <HashMap<String, String>>();
+			
+			int cnt1;
+			int cnt2;
+			int cnt3;
+			
+			String count1 = null;
+			String count2 = null;
+			String count3 = null;
+			
+			String[] strDelCodes = returnValue.split(";");
+			for (int i = 0; i < strDelCodes.length; i++) {
+				
+				HashMap<String, String> hash = new HashMap<String, String>();
+				
+				cnt1 = ProgramService.count1(strDelCodes[i]);
+				cnt2 = ProgramService.count2(strDelCodes[i]);
+				cnt3 = ProgramService.count3(strDelCodes[i]);
+				
+				if(cnt1 == 0 && cnt2 == 0 && cnt3 == 0) {
+					
+				}else {				
+					count1 = ""+cnt1;
+					count2 = ""+cnt2;
+					count3 = ""+cnt3;
+				
+					hash.put("PG_ID", strDelCodes[i]);
+					hash.put("dev", count1);
+					hash.put("test", count2);
+					hash.put("defect", count3);
+				
+					result_hash.add(hash);
+				}
+			}
+			
+			model.addAttribute("Pg_Relation_List", result_hash);
+			model.addAttribute("returnValue", returnValue);
+
+			model.addAttribute("status", 0);
+			
+			return result_hash;
+		
+	}
+	
 	
 	/**
 	 * 프로그램을 삭제한다.
@@ -379,7 +440,15 @@ public class ProgramController {
 		defectService.updateDefectIdSq();
 		
 	}
-	
+	@RequestMapping(value = "/tms/pg/full_deleteListAction.do")
+	@ResponseBody
+	public void full_deleteListAction(String searchData,ModelMap model) throws Exception {
+				
+		ProgramService.full_deletePg();
+		/** 프로그램 삭제시 결함 시퀀스 초기화 */
+		defectService.updateDefectIdSq();
+		
+	}
 	
 	/**
 	 * 프로그램 현황을 엑셀파일로 출력한다.	 
@@ -420,7 +489,7 @@ public class ProgramController {
 		
 		//제목 스타일 
 		CellStyle HeadStyle = workbook.createCellStyle(); 
-		HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		//HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
 		HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
 		HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index);
 		HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
@@ -432,7 +501,7 @@ public class ProgramController {
 
 		//본문 스타일 
 		CellStyle BodyStyle = workbook.createCellStyle(); 
-		BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		//BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
 		BodyStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 		BodyStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
 		BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
