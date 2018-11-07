@@ -129,10 +129,31 @@ window.onload = function() {
 		/** 개발 진척상태 통계 시작*/
 		var devPlanByMainStats = JSON.parse('${devPlanByMainStats}');
 		var devPlanByMainStatsSysNm = new Array();
-		var devPlanByMainStatsRate = new Array();
+		var devPlanByMainStatsTp = new Array();
+		var devPlanByMainStatsTd = new Array();
+		var maxValue =0;
+		
 		for (var i = 0; i < devPlanByMainStats.length; i++) {
-			devPlanByMainStatsSysNm.push(devPlanByMainStats[i].sysNm);
-			devPlanByMainStatsRate.push(devPlanByMainStats[i].rate);
+			
+			//값들 중 최대값 구하기(수정중)
+			if(maxValue < devPlanByMainStats[i].tp){
+				maxValue = devPlanByMainStats[i].tp;
+
+				alert(maxValue);
+				alert(devPlanByMainStats[i].td);
+				if(maxValue < devPlanByMainStats[i].td){
+					maxValue = devPlanByMainStats[i].td;
+				}
+			}
+			if(devPlanByMainStats[i].sysGb == 'total'){
+				devPlanByMainStatsSysNm.unshift(devPlanByMainStats[i].sysNm);
+				devPlanByMainStatsTp.unshift(devPlanByMainStats[i].tp);
+				devPlanByMainStatsTd.unshift(devPlanByMainStats[i].td);
+			}else{
+				devPlanByMainStatsSysNm.push(devPlanByMainStats[i].sysNm);
+				devPlanByMainStatsTp.push(devPlanByMainStats[i].tp);
+				devPlanByMainStatsTd.push(devPlanByMainStats[i].td);
+			}
 		}
 		var ctx7 = document.getElementById('devPlanByMainStats');
 		var devPlanByMainStatsChart = new Chart(ctx7, {
@@ -141,22 +162,52 @@ window.onload = function() {
 				labels : devPlanByMainStatsSysNm,
 				barThickness : '0.9',
 				datasets : [ {
-					label : '진척률',
-					data : devPlanByMainStatsRate,
+					label : '계획건수',
+					data : devPlanByMainStatsTp,
 					backgroundColor : '#007bff',
+				},{
+					label : '실적건수',
+					data : devPlanByMainStatsTd,
+					backgroundColor :  '#00B3E6',
 				}]
 			},
 			options : {
+				legend:{
+					position:'bottom'
+				},
 				scales:{
 					yAxes:[{
 						ticks:{
+							suggestedMax:maxValue+1,
 							beginAtZero:true
 						}	
 					}],
 					xAxes: [{
-			            barPercentage: 0.5
+			            barPercentage: 0.9
 			        }]
-				}	
+				},
+				animation: {
+				      duration: 700,
+				      onComplete: function() {
+				        var chartInstance = this.chart,
+				        ctx = chartInstance.ctx;
+				        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
+				        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+				        ctx.textAlign = 'center';
+				        ctx.textBaseline = 'bottom';
+
+				        this.data.datasets.forEach(function(dataset, i) {
+					          var meta = chartInstance.controller.getDatasetMeta(i);
+					          meta.data.forEach(function(bar, index) {
+					            var data = dataset.data[index];
+					            if(data != 0){
+						            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+					            }
+					          });
+				        });
+				      }
+				}
+				
 			}
 		});
 		/** 개발 진척상태 통계 끝*/

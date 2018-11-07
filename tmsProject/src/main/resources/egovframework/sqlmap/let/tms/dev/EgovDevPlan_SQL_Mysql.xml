@@ -310,7 +310,7 @@
     </delete>
     
 	
-	<select id="DevPlanDAO.selectDevCurrent" parameterClass="searchVO" resultClass="java.util.HashMap" remapResults="true">
+	<select id="DevPlanDAO.selectDevCurrent" parameterClass="searchVO" resultClass="egovMap">
 			<![CDATA[
 				SELECT * FROM (
 					SELECT
@@ -374,7 +374,9 @@
 			ORDER BY PG_ID ASC
 			
 			<isNotEqual property="printOpt" compareValue="printPage">
-			LIMIT #recordCountPerPage# OFFSET #firstIndex#
+			   <isNotEqual property="excelOpt" compareValue="excel">
+					LIMIT #recordCountPerPage# OFFSET #firstIndex#
+				</isNotEqual>
 			</isNotEqual>
 			
 	</select>
@@ -543,24 +545,28 @@
 
 	<select id="DevPlanDAO.selectDevPlanByMainStats" resultClass="egovMap">
 	    <![CDATA[
-			SELECT CAST('sysGb' AS CHAR) AS sysGb, CAST('전체' AS CHAR) AS sysNm, ROUND((IFNULL((cntB/cntA),0)*100),1) AS rate
+			SELECT IFNULL(SYS_GB, 'total') AS sysGb
+					,IF(SYS_GB =SYS_GB IS NOT NULL, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = SYS_GB),'전체') as sysNm
+						,IFNULL(SUM(TP),NULL) AS tp
+						,IFNULL(SUM(TD),NULL) AS td
+						,IFNULL(SUM(AP),NULL) AS ap
+						,IFNULL(SUM(AD),NULL) AS ad
 						FROM
-						(SELECT COUNT(*)AS cntA FROM PG_TB WHERE USE_YN ='Y')AS A,
-						(SELECT COUNT(*) cntB FROM DEV_PLAN_TB AS D, PG_TB AS P WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND WEEKOFYEAR(D.DEV_END_DT) <= WEEKOFYEAR(NOW())) AS B
-			union ALL
+			(SELECT A.SYS_GB, SYS_NM, IFNULL(TP,0) AS TP, IFNULL(TD,0) AS TD, IFNULL(AP,0) AS AP, IFNULL(AD,0) AS AD FROM
+			(SELECT CODE AS SYS_GB, CODE_NM AS SYS_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'SYSGB') AS A
 			
-			SELECT C.SYS_GB as sysGb, SYS_NM as sysNm, ROUND((IFNULL((cntB/cntA),0)*100),1) AS rate
-						 FROM 
-							(SELECT A.SYS_GB, A.SYS_NM, IFNULL(TOT_CNT,0)AS cntA FROM
-								(SELECT CODE AS SYS_GB, CODE_NM AS SYS_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'SYSGB') AS A
-								LEFT OUTER JOIN
-								(SELECT SYS_GB,COUNT(*)AS TOT_CNT FROM PG_TB AS P WHERE USE_YN='Y' GROUP BY SYS_GB)AS B
-								ON B.SYS_GB = A.SYS_GB
-							GROUP BY SYS_GB)AS C
-						LEFT OUTER JOIN
-							(SELECT P.SYS_GB,COUNT(*) CNTB FROM DEV_PLAN_TB AS D, PG_TB AS P
-								WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND WEEKOFYEAR(D.DEV_END_DT) <= WEEKOFYEAR(NOW())GROUP BY SYS_GB)AS D
-						ON C.SYS_GB = D.SYS_GB
+			LEFT JOIN
+			(SELECT SYS_GB
+									,COUNT(IF( WEEKOFYEAR(D.PLAN_END_DT)=WEEKOFYEAR(NOW()),1,NULL)) AS TP
+									,COUNT(IF( WEEKOFYEAR(D.DEV_END_DT)=WEEKOFYEAR(NOW()),1,NULL)) AS TD
+									,COUNT(IF( WEEKOFYEAR(D.PLAN_END_DT) <= WEEKOFYEAR(NOW()),1,NULL)) AS AP
+									,COUNT(IF( WEEKOFYEAR(D.DEV_END_DT) <= WEEKOFYEAR(NOW()),1,NULL)) AS AD
+								FROM DEV_PLAN_TB D, PG_TB P
+								WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y'
+								GROUP BY SYS_GB) AS B
+				ON A.SYS_GB = B.SYS_GB)
+				AS X
+				GROUP BY X.SYS_GB WITH ROLLUP
 	    ]]>
 	</select>
 	
@@ -698,15 +704,17 @@
    	
    	<select id="DevPlanDAO.selectTaskTotalProgressRate" resultClass="egovMap">
 			<![CDATA[
-				SELECT SYS_GB as sysGb, SYS_NM as sysNm, C.TASK_GB as taskGb, TASK_NM as taskNm, TOT_CNT AS cntA, IFNULL(cntB,0)AS cntB, ROUND((IFNULL((cntB/TOT_CNT),0)*100),1) AS rate FROM
-					(SELECT SYS_GB,(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = SYS_GB) AS SYS_NM, TASK_GB, CODE_NM AS TASK_NM, TOT_CNT FROM
-					(SELECT SYS_GB, TASK_GB,COUNT(*) AS TOT_CNT, PG_ID FROM PG_TB WHERE USE_YN='Y' GROUP BY TASK_GB) AS A
-					INNER JOIN
-					(SELECT CODE, CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID='TASKGB') AS B
-					ON TASK_GB = CODE) AS C
-					LEFT OUTER JOIN
+				SELECT sysGb, (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = sysGb)AS sysNm,taskGb, taskNm, totCnt AS cntA, IFNULL(cntB,0)AS cntB, ROUND((IFNULL((cntB/totCnt),0)*100),1) AS rate FROM
+				(SELECT IFNULL(SYS_GB,(SELECT PARENT FROM LETTCCMMNDETAILCODE WHERE CODE = gb)) AS sysGb,
+						gb AS taskGb, nm AS taskNm, IFNULL(TOT_CNT,0) AS totCnt FROM
+							(SELECT SYS_GB, TASK_GB,COUNT(*) AS TOT_CNT FROM PG_TB WHERE USE_YN='Y' GROUP BY TASK_GB) AS A
+								RIGHT OUTER JOIN
+							(SELECT CODE AS gb, CODE_NM AS nm FROM LETTCCMMNDETAILCODE WHERE CODE_ID='TASKGB') AS B
+						ON TASK_GB = B.gb) AS C
+						
+				LEFT OUTER JOIN
 					(SELECT COUNT(*) AS cntB, TASK_GB FROM DEV_PLAN_TB AS D, PG_TB AS P WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND WEEKOFYEAR(D.DEV_END_DT) <= WEEKOFYEAR(NOW()) GROUP BY TASK_GB)AS D
-				ON D.TASK_GB = C.TASK_GB
+				ON D.TASK_GB = C.taskGb
 				ORDER BY rate DESC;
          ]]>
    	</select>

@@ -337,7 +337,7 @@ $(function(){
                 </div>
         
              <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="tms/dev/devPlanList.do">   
-                <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
+                <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
                 <input type="hidden" name="flag" value="auto"/>
                 <input type="hidden" name="page" id="page" value="${page}"/>
                 <!-- 검색 필드 박스 시작 -->

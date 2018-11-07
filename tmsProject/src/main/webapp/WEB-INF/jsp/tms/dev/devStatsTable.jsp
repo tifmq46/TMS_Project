@@ -153,16 +153,13 @@ function StatsToExcel(statsGb) {
 					<li class="tab-link last" data-tab="tab-5" style="float:right">
 					
 						<div class="buttons" id="StatsByUserToExcel" style="display:inline">
-								<a href="<c:url value='/tms/dev/StatsToExcel.do'/>"
-									onclick="javascript:StatsToExcel('taskTotal'); return false;">엑셀 다운로드</a>
+								<a href="#LINK" onclick="javascript:StatsToExcel('taskTotal'); return false;">엑셀 다운로드</a>
 						</div>
 						<div class="buttons" id="StatsByTaskToExcel" style="display:none">
-							<a href="<c:url value='/tms/dev/StatsToExcel.do'/>"
-								onclick="javascript:StatsToExcel('task'); return false;">엑셀 다운로드</a>
+							<a href="#LINK" onclick="javascript:StatsToExcel('task'); return false;">엑셀 다운로드</a>
 						</div>
 						<div class="buttons" id="StatsByTaskTotalToExcel" style="display:none">
-							<a href="<c:url value='/tms/dev/StatsToExcel.do'/>"
-								onclick="javascript:StatsToExcel('user'); return false;">엑셀 다운로드</a>
+							<a href="#LINK" onclick="javascript:StatsToExcel('user'); return false;">엑셀 다운로드</a>
 						</div>
 					</li>
 				</ul>
@@ -406,7 +403,7 @@ function StatsToExcel(statsGb) {
 	           			
 		                    <tr>
 		                   		
-		                    	<td><c:out value="${us.userDevNm}(${us.userDevId})" /></td>
+		                    	<td style="text-align:left; padding-left:50px"><c:out value="${us.userDevNm}(${us.userDevId})" /></td>
 		                    	<td><c:out value="${us.totCnt}" /></td>
 		                    	<c:set var = "sumTotCnt" value="${us.totCnt}" />
 								<% sumTotCnt += (Integer)pageContext.getAttribute("sumTotCnt");
