@@ -150,8 +150,6 @@ window.onload = function() {
 			if(maxValue < devPlanByMainStats[i].tp){
 				maxValue = devPlanByMainStats[i].tp;
 
-				alert(maxValue);
-				alert(devPlanByMainStats[i].td);
 				if(maxValue < devPlanByMainStats[i].td){
 					maxValue = devPlanByMainStats[i].td;
 				}
