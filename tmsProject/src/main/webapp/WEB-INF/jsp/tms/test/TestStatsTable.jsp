@@ -176,12 +176,12 @@ th,td{
 					</li>
 				</ul>             
                              
+                   <!-- 단위테스트 -->          
                 <div id="tab-1" class="tab-content current">
 					<div id="StatsByUtc">
 	               	 <div class="default_tablestyle">
 		              	<table width="120%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
 			              	<colgroup>
-			        				<col width="10%"/>
 			        				<col width="10%"/>
 			        				<col width="10%"/>
 			        				<col width="12%"/>
@@ -197,21 +197,21 @@ th,td{
 		        			<tr>
 		        				<th align="center" rowspan="2"><spring:message code="tms.test.sysGb" /></th>
 		        				<th align="center" rowspan="2"><spring:message code="tms.test.taskGb" /></th>
-		        				<th align="center" rowspan="2"><spring:message code="tms.test.pgCnt" /></th>
 		        				<th align="center" rowspan="2"><spring:message code="tms.test.testcaseCnt" /></th>
-					        	<th align="center" colspan="3"><spring:message code="tms.test.testProgress" /></th>
-					        	<th align="center" rowspan="2"><spring:message code="tms.test.progressPct" />(%)</th>
-					        	<th align="center" colspan="3"><spring:message code="tms.test.testResultYn" /></th>
-					        	<th align="center" rowspan="2" class="borderLine" ><spring:message code="tms.test.completeYPct" />(%)</th>
+					        	<th align="center" colspan="4"><spring:message code="tms.test.testProgressCnt" /></th>
+					        	<th align="center" colspan="4" class="borderLine" ><spring:message code="tms.test.testResultCnt" /></th>
+					        	
 		        			</tr>
 		        			
 		        			<tr>
 					        	<th align="center"><spring:message code="tms.test.notStartTest" /></th>
 					        	<th align="center"><spring:message code="tms.test.firstTest" /></th>
 					        	<th align="center"><spring:message code="tms.test.secondTest" /></th>
+					        	<th align="center" class="borderLine"><spring:message code="tms.test.progressPct" />(%)</th>
+					        	<th align="center"><spring:message code="tms.test.totCnt" /></th>
 					        	<th align="center"><spring:message code="tms.test.resultY" /></th>
 					        	<th align="center"><spring:message code="tms.test.resultN" /></th>
-					        	<th align="center"><spring:message code="tms.test.totCnt" /></th>
+					        	<th align="center" class="borderLine"><spring:message code="tms.test.completeYPct" />(%)</th>
 		        			</tr>
 		        			
 		        			<c:forEach var="result" items="${testStatsByUtc}" varStatus="status">
@@ -222,15 +222,14 @@ th,td{
 		           						<c:when test="${result.sysGb eq '합계'}">
 		            						<td align="center" class="lineStyle2 line"><c:out value="${result.sysGb}"/></td>            					
 		            						<td align="center" class="lineStyle2 line"><c:out value="${result.taskGb}"/></td>
-											<td align="center" class="lineStyle2 line"><c:out value="${result.pgCnt}"/></td> 
 				            				<td align="center" class="lineStyle2 line"><c:out value="${result.tcWriteYCnt}"/></td> 
 				            				<td align="center" class="lineStyle2 line"><c:out value="${result.notTestCnt}"/></td>
 				            				<td align="center" class="lineStyle2 line"><c:out value="${result.firstTestCnt}"/></td>
 				            				<td align="center" class="lineStyle2 line"><c:out value="${result.secondTestCnt}"/></td>
 				            				<td align="center" class="lineStyle2 line"><c:out value="${result.tcProgressPct}"/></td>
+				            				<td align="center" class="lineStyle2 line"><c:out value="${result.tcWriteYCnt}"/></td>
 				            				<td align="center" class="lineStyle2 line"><c:out value="${result.tcResultYCnt}"/></td>
 				            				<td align="center" class="lineStyle2 line"><c:out value="${result.tcResultNCnt}"/></td>
-				            				<td align="center" class="lineStyle2 line"><c:out value="${result.tcWriteYCnt}"/></td>
 				            				<td align="center" class="borderLine lineStyle2 line"><c:out value="${result.tcResultPct}"/></td>
 		           						</c:when>
 		           						
@@ -239,30 +238,28 @@ th,td{
 			            						<c:when test="${result.taskGb eq '소계'}">
 				            						<td align="center" class="lineStyle"><c:out value="${result.sysGb}"/></td>            					
 													<td align="center" class="lineStyle"><c:out value="${result.taskGb}"/></td>
-													<td align="center" class="lineStyle"><c:out value="${result.pgCnt}"/></td> 
 						            				<td align="center" class="lineStyle"><c:out value="${result.tcWriteYCnt}"/></td> 
 						            				<td align="center" class="lineStyle"><c:out value="${result.notTestCnt}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.firstTestCnt}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.secondTestCnt}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.tcProgressPct}"/></td>
+						            				<td align="center" class="lineStyle"><c:out value="${result.tcWriteYCnt}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.tcResultYCnt}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.tcResultNCnt}"/></td>
-						            				<td align="center" class="lineStyle"><c:out value="${result.tcWriteYCnt}"/></td>
 						            				<td align="center" class="lineStyle borderLine"><c:out value="${result.tcResultPct}"/></td>
 			           							</c:when>
 			            						
 			            						<c:otherwise>
 				            						<td align="center" ><c:out value="${result.sysGb}"/></td>            					
 													<td align="center" ><c:out value="${result.taskGb}"/></td>
-													<td align="center" ><c:out value="${result.pgCnt}"/></td> 
 						            				<td align="center" ><c:out value="${result.tcWriteYCnt}"/></td> 
 						            				<td align="center" ><c:out value="${result.notTestCnt}"/></td>
 						            				<td align="center" ><c:out value="${result.firstTestCnt}"/></td>
 						            				<td align="center" ><c:out value="${result.secondTestCnt}"/></td>
 						            				<td align="center" ><c:out value="${result.tcProgressPct}"/></td>
+						            				<td align="center" ><c:out value="${result.tcWriteYCnt}"/></td>
 						            				<td align="center" ><c:out value="${result.tcResultYCnt}"/></td>
 						            				<td align="center" ><c:out value="${result.tcResultNCnt}"/></td>
-						            				<td align="center" ><c:out value="${result.tcWriteYCnt}"/></td>
 						            				<td align="center" class="borderLine"><c:out value="${result.tcResultPct}"/></td>
 			            						</c:otherwise>
 			            					</c:choose>
@@ -278,6 +275,7 @@ th,td{
            </div> <!-- tab-1 -->
                 
           
+          	<!-- 통합테스트 -->   
                 <div id="tab-2" class="tab-content">
 					<div id="StatsByTtc">
 	               	 <div class="default_tablestyle">
@@ -299,19 +297,19 @@ th,td{
 					        	<th align="center" rowspan="2"><spring:message code="tms.test.sysGb" /></th>
 		        				<th align="center" rowspan="2"><spring:message code="tms.test.taskGb" /></th>
 		        				<th align="center" rowspan="2"><spring:message code="tms.test.testcaseCnt" /></th>
-					        	<th align="center" colspan="3"><spring:message code="tms.test.testProgress" /></th>
-					        	<th align="center" rowspan="2"><spring:message code="tms.test.progressPct" />(%)</th>
-					        	<th align="center" colspan="3"><spring:message code="tms.test.testResultYn" /></th>
-					        	<th align="center" rowspan="2" class="borderLine" ><spring:message code="tms.test.completeYPct" />(%)</th>
+					        	<th align="center" colspan="4"><spring:message code="tms.test.testProgressCnt" /></th>
+					        	<th align="center" colspan="4"><spring:message code="tms.test.testResultCnt" /></th>
 		        			</tr>
 		        			
 		        			<tr>
 					        	<th align="center"><spring:message code="tms.test.notStartTest" /></th>
 					        	<th align="center"><spring:message code="tms.test.firstTest" /></th>
 					        	<th align="center"><spring:message code="tms.test.secondTest" /></th>
+					        	<th align="center" class="borderLine"><spring:message code="tms.test.progressPct" />(%)</th>
+					        	<th align="center"><spring:message code="tms.test.totCnt" /></th>
 					        	<th align="center"><spring:message code="tms.test.resultY" /></th>
 					        	<th align="center"><spring:message code="tms.test.resultN" /></th>
-					        	<th align="center"><spring:message code="tms.test.totCnt" /></th>
+					        	<th align="center" class="borderLine" ><spring:message code="tms.test.completeYPct" />(%)</th>
 		        			</tr>
 		        			
 		        			<c:forEach var="result" items="${testStatsByTtc}" varStatus="status">
@@ -327,9 +325,9 @@ th,td{
 				            				<td align="center" class="lineStyle2"><c:out value="${result.firstTestCnt}"/></td>
 				            				<td align="center" class="lineStyle2"><c:out value="${result.secondTestCnt}"/></td>
 				            				<td align="center" class="lineStyle2"><c:out value="${result.tcProgressPct}"/></td>
+				            				<td align="center" class="lineStyle2"><c:out value="${result.tcWriteYCnt}"/></td>
 				            				<td align="center" class="lineStyle2"><c:out value="${result.tcResultYCnt}"/></td>
 				            				<td align="center" class="lineStyle2"><c:out value="${result.tcResultNCnt}"/></td>
-				            				<td align="center" class="lineStyle2"><c:out value="${result.tcWriteYCnt}"/></td>
 				            				<td align="center" class="borderLine lineStyle2"><c:out value="${result.tcResultPct}"/></td>
 		           						</c:when>
 		           						
@@ -343,9 +341,9 @@ th,td{
 						            				<td align="center" class="lineStyle"><c:out value="${result.firstTestCnt}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.secondTestCnt}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.tcProgressPct}"/></td>
+						            				<td align="center" class="lineStyle"><c:out value="${result.tcWriteYCnt}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.tcResultYCnt}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.tcResultNCnt}"/></td>
-						            				<td align="center" class="lineStyle"><c:out value="${result.tcWriteYCnt}"/></td>
 						            				<td align="center" class="lineStyle borderLine"><c:out value="${result.tcResultPct}"/></td>
 			           							</c:when>
 			            						
@@ -357,9 +355,9 @@ th,td{
 						            				<td align="center" ><c:out value="${result.firstTestCnt}"/></td>
 						            				<td align="center" ><c:out value="${result.secondTestCnt}"/></td>
 						            				<td align="center" ><c:out value="${result.tcProgressPct}"/></td>
+						            				<td align="center" ><c:out value="${result.tcWriteYCnt}"/></td>
 						            				<td align="center" ><c:out value="${result.tcResultYCnt}"/></td>
 						            				<td align="center" ><c:out value="${result.tcResultNCnt}"/></td>
-						            				<td align="center" ><c:out value="${result.tcWriteYCnt}"/></td>
 						            				<td align="center" class="borderLine"><c:out value="${result.tcResultPct}"/></td>
 			            						</c:otherwise>
 			            					</c:choose>

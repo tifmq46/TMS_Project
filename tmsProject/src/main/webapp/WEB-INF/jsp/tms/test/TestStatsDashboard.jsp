@@ -94,7 +94,7 @@ window.onload = function() {
        type : 'bar',
        data : {
           labels : sysByTestcaseCntSysNm,
-          barThickness : '0.9',
+          barThickness : '0.2',
           datasets : [ {
              label : '테스트 케이스 건수',
              data : sysByTestcaseCntSysCnt,
@@ -221,29 +221,7 @@ window.onload = function() {
 			
 } //window.onload
 			
-
-$(document).ready(function(){
 	
-	$(".imageArrowUtc").click(function (){
-		$('img',this).toggle();
-		$("#detail_bar_utc").toggle(); 
-		
-		var offset = $("#board1").offset();
-		$("html, body").animate({scrollTop:offset.top},400);
-			
-	});
-	
-	$(".imageArrowTtc").click(function (){
-		$('img',this).toggle();
-		$("#detail_bar_ttc").toggle();
-		
-		var offset = $("#board2").offset();
-		$("html, body").animate({scrollTop:offset.top},400);
-	});
-	
-});
-			
-			
 </script>
 
 </head>
@@ -293,10 +271,7 @@ $(document).ready(function(){
     				<div class="widget-header">
     					<div class="header-name" style="margin:10px;">
                       		<span style="font-size:20px; font-weight: bold;">단위테스트 현황</span>&nbsp;
-                      		<span class="imageArrowUtc">
-	                      		<a href="#"><img src="<c:url value='/images/tms/blue_arrow_down.gif' />" width="15" height="15" alt="down"/></a>
-	                      		<a href="#"><img src="<c:url value='/images/tms/blue_arrow_up.gif' />"   style="display:none;" width="15" height="15" alt="up"/></a>
-                      		</span>
+                      		
     					</div>
     					
     					<div id="progress_bar_utc" class="progess_bar_section" >                      	
@@ -313,8 +288,6 @@ $(document).ready(function(){
 	                   					<fmt:parseNumber var="tc1_Pct" value="${(tc1_yCnt/tc1_totCnt)*100}" type="number"  integerOnly="true" ></fmt:parseNumber>
 	                   				</c:otherwise>
 	                   			</c:choose>
-	                      
-	                      		<span style="font-size: 15px;"><strong><c:out value="${tc1_yCnt}"></c:out>&nbsp;/&nbsp;<c:out value="${tc1_totCnt}"></c:out></strong></span>
 							</div>
 						
                       		<div class="progress">
@@ -324,7 +297,7 @@ $(document).ready(function(){
     				</div>
 
 				
-					<div id="detail_bar_utc" style="display:none;" class="progess_bar_section" >
+					<div id="detail_bar_utc" class="progess_bar_section" >
 				
 				 	<%--  <div class="progess_bar_section"><canvas id="ProgressStatusUtcChart" width="100%" height="14"></canvas></div> --%>
                   		<div class="progess_bar_section" style="font-size:15px; font-weight: bold;">
@@ -349,10 +322,6 @@ $(document).ready(function(){
     				<div class="widget-header">
     					<div class="header-name" style="margin:10px;">
                 			<span style="font-size:20px; font-weight: bold;">통합테스트 현황</span>&nbsp;
-               				<span class="imageArrowTtc">
-	                      		<a href="#"><img src="<c:url value='/images/tms/blue_arrow_down.gif' />" width="15" height="15" alt="down"/></a>
-	                      		<a href="#"><img src="<c:url value='/images/tms/blue_arrow_up.gif' />"   style="display:none;" width="15" height="15" alt="up"/></a>
-                      		</span>
     					</div>
     					
                   		<div id="progress_bar_ttc" class="progess_bar_section" >
@@ -382,9 +351,6 @@ $(document).ready(function(){
                  		</div>    					
     				</div>
                    
-                 	<div id="detail_bar_ttc" style="display:none;" class="progess_bar_section" >
-                    	<canvas id="ProgressStatusTtcChart" width="100%" height="14"></canvas>
-					</div>
     			</div>    	  
     			
     		</div>       

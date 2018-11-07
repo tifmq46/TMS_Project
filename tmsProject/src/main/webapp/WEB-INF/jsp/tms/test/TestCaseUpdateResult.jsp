@@ -210,6 +210,11 @@ function completeYnValidator(evt) {
 	                                		<input type="radio" name="firstTestResultYn" value="Y" >Y&nbsp;
 	  										<input type="radio" name="firstTestResultYn" value="N" checked>N&nbsp;
                                 		</c:when>
+                                		
+                                		<c:otherwise>
+                                			<input type="radio" name="firstTestResultYn" value="Y" >Y&nbsp;
+	  										<input type="radio" name="firstTestResultYn" value="N" >N&nbsp;
+                                		</c:otherwise>
                                	</c:choose>
                             </td>
                           
@@ -229,6 +234,11 @@ function completeYnValidator(evt) {
 	                                		<input type="radio" name="secondTestResultYn" value="Y" >Y&nbsp;
 	  										<input type="radio" name="secondTestResultYn" value="N" checked>N&nbsp;
                                 		</c:when>
+                                		
+                                		<c:otherwise>
+                                			<input type="radio" name="secondTestResultYn" value="Y" >Y&nbsp;
+	  										<input type="radio" name="secondTestResultYn" value="N" >N&nbsp;
+                                		</c:otherwise>
                                	</c:choose>
                             </td>
                           
@@ -248,6 +258,11 @@ function completeYnValidator(evt) {
 	                                		<input type="radio" name="completeYn" value="Y" onclick="completeYnValidator(event);" >Y&nbsp;
 	  										<input type="radio" name="completeYn" value="N" checked>N&nbsp;
                                 		</c:when>
+                                		
+                                		<c:otherwise>
+                                			<input type="radio" name="completeYn" value="Y" >Y&nbsp;
+	  										<input type="radio" name="completeYn" value="N" >N&nbsp;
+                                		</c:otherwise>
                                	</c:choose>
                             </td>
                           </tr>
