@@ -113,6 +113,9 @@ window.onload = function() {
 		var taskByProgressRateCntb = new Array();
 		var sysGbTaskGb = new Array();
 		for (var i = 0; i < taskByProgressRate.length; i++) {
+			if(taskByProgressRate[i].cntA == 0){
+				taskByProgressRate[i].cntA = 0.1;
+			}
 			taskByProgressRateCnta.push(taskByProgressRate[i].cntA);
 			taskByProgressRateCntb.push(taskByProgressRate[i].cntB);
 			sysGbTaskGb.push(taskByProgressRate[i].sysGb+taskByProgressRate[i].taskGb);
@@ -136,7 +139,19 @@ window.onload = function() {
 	    			rotation: 1 * Math.PI,
 	    	        circumference: 1 * Math.PI,
 	    			percentageInnerCutout : 50,
-	    			responsive:false
+	    			responsive:false,
+	    			tooltips: {
+						callbacks: {
+						label: function(tooltipItem, data) {
+									var value = data.datasets[0].data[tooltipItem.index];
+			            			var label = data.labels[tooltipItem.index];
+						            if (value === 0.1) {
+						            	value = 0;
+						            }
+						            return label + ' : ' + value;
+						          }
+							}
+						}
 	    			}
 	    	});
 		}
@@ -158,9 +173,11 @@ function handleClick(event, array){
 			str += "<br/><table>";
 			str += "<tr>";
 			if(result.length == 0) {
-				str += "<td align='center' valign='middle'>";
+				str += "<td>";
+				str += "<div class='default_tablestyle'>";
+				str += "<table class='table table-search-head table-size-th4' style='height:215px; font-family:'Malgun Gothic';'><tr><td>";
 				str += "자료가 없습니다.";
-				str += "</td>";
+				str += "</td></tr></table></div></td>";
 			} else {
 				$.each(result, function(index,item){
 				str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -365,7 +382,15 @@ function handleClick(event, array){
 								</c:forEach>
 								<c:if test="${fn:length(taskByProgressRate) == 0 }">
 									<td>
-									자료가 없습니다.
+									<div class="default_tablestyle">
+										<table class="table table-search-head table-size-th4" style="height:215px; font-family:'Malgun Gothic';">
+										<tr>
+										<td>
+										자료가 없습니다.
+										</td>
+										</tr>
+										</table>
+									</div>
 									</td>
 								</c:if>
 							</tr>

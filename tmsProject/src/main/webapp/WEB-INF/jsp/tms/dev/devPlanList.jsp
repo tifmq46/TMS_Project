@@ -250,7 +250,7 @@ function searchFileNm() {
                 <!-- 검색 필드 박스 시작 -->
                 <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="<c:url value='/tms/dev/devPlanList.do'/>" >   
 				 
-                <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
+                <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
                 <input type="hidden" id="s1" name="s1" />
                 <input type="hidden" id="s2" name="s2" />
 				<input type="hidden" name="page" id="page" value="${page}"/>

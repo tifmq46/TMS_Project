@@ -58,19 +58,25 @@ $(function(){
     window.open("<c:url value='/sym/prm/TmsProgramListSearch.do'/>",'','width=800,height=600');
 }
 
-var initBody;
-function beforePrint(){
-	initBody = document.body.innerHTML;
-	document.body.innerHTML = printBox.innerHTML;
-}
-function afterPrint(){
-	document.body.innerHTML = initBody;
-}
 function pagePrint(){
+	 /* var myForm = document.listForm;
+	 var url = "<c:url value='/tms/dev/devCurListPrint.do'/>";
+
+	 window.open(url ,'printForm',"width=1000, height=600");
+	 myForm.action =url; 
+	 myForm.method="post";
+	 myForm.target="printForm";
+	 myForm.submit(); */
 	window.open("<c:url value='/tms/dev/devCurListPrint.do'/>",'','width=1000,height=600');
-	//window.onbeforeprint = beforePrint;
-	//window.onafterprint = afterPrint;
-	//window.print();
+	//document.listForm.action = "<c:url value='/tms/dev/devCurListPrint.do'/>";
+	//document.listForm.submit(); 
+}
+
+function StatsToExcel() {
+	document.listForm.searchBySysGb.value = document.listForm.Sys.value;
+    document.listForm.searchByTaskGb.value = document.listForm.task.value;
+	document.listForm.action = "<c:url value='/tms/dev/devCurrentExcel.do'/>";
+    document.listForm.submit(); 
 }
 </script>
 
@@ -107,7 +113,7 @@ function pagePrint(){
                 </div>
         
              <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="tms/dev/devPlanList.do">   
-                <input type="hidden" name="pageIndex" value="<c:out value='${devPlanVO.pageIndex}'/>"/>
+                <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
                 <!-- 검색 필드 박스 시작 -->
 				<div id="search_field" style="font-family:'Malgun Gothic';">
 					<div id="search_field_loc"><h2><strong>개발진척현황</strong></h2></div>
@@ -181,14 +187,11 @@ function pagePrint(){
 					  				value="<fmt:formatDate value="${searchVO.searchByDevEndDt}" pattern="yyyy-MM-dd"/>"/>
 					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
       			        		</td>
-      			        		<td>
-      			        		</td>
-      			        		<td>
-      			        		</td>
-      			        		<td style="padding-top:15px;">
+      			        		<td colspan="3" style="padding-top:15px;">
 									<div class="buttons" style="float:right;">
-										<a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-										<a href="#LINK" onclick="pagePrint()" style="selector-dummy:expression(this.hideFocus=false);">인쇄</a>
+										<a href="#LINK" onclick="javascript:fn_searchList('1')" ><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+										<a href="#LINK" onclick="pagePrint();">인쇄</a>
+										<a href="#" onclick="StatsToExcel(); return false;">엑셀 다운로드</a>
 									</div>	  				  			
       			        		</td>
       			        	</tr>
@@ -196,7 +199,7 @@ function pagePrint(){
 					  				
 						</div>			
 						</fieldset>
-					<%-- </form> --%>
+					</form:form>
 				</div>
 				<!-- //검색 필드 박스 끝 -->
                 <table width="100%" cellspacing="5" summary="총 건수, 달성률 표시하는 테이블">
@@ -271,28 +274,28 @@ function pagePrint(){
         			
             			<tr>
             			 	<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            				<td align="center" class="listtd" name="sys"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
-            				<td align="left" class="listtd"><c:out value="${result.PG_ID}"/></td>
-            				<td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
-            				<td align="center" class="listtd" title="<c:out value="${result.USER_DEV_ID}"/>"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.PLAN_START_DT}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.PLAN_END_DT}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.DEV_START_DT}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.DEV_END_DT}"/>&nbsp;</td>
-            				<td align="center" class="listtd"><c:out value="${result.ACHIEVEMENT_RATE}"/>%&nbsp;</td>
+            				<td align="center" class="listtd" name="sys"><c:out value="${result.sysGb}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
+            				<td align="left" class="listtd"><c:out value="${result.pgId}"/></td>
+            				<td align="left" class="listtd"><c:out value="${result.pgNm}"/>&nbsp;</td>
+            				<td align="center" class="listtd" title="<c:out value="${result.userDevId}"/>"><c:out value="${result.userDevNm}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.devStartDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.devEndDt}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${result.achievementRate}"/>%&nbsp;</td>
             				<c:choose>
-            					<c:when test="${result.ST eq '완료'}">
-            					<td align="center" class="listtd" style="background-color:#007bff;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.ST}"/></font></td>
+            					<c:when test="${result.st eq '완료'}">
+            					<td align="center" class="listtd" style="background-color:#007bff;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.st}"/></font></td>
             					</c:when>
-            					<c:when test="${result.ST eq '지연'}">
-            					<td align="center" class="listtd" style="background-color:#CC3C39;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.ST}"/></font></td>
+            					<c:when test="${result.st eq '지연'}">
+            					<td align="center" class="listtd" style="background-color:#CC3C39;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.st}"/></font></td>
             					</c:when>
-            					<c:when test="${result.ST eq '진행'}">
-            					<td align="center" class="listtd" style="background-color:#3ADF00;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.ST}"/></font></td>
+            					<c:when test="${result.st eq '진행'}">
+            					<td align="center" class="listtd" style="background-color:#3ADF00;"><font color="#ffffff" style="font-weight:bold"><c:out value="${result.st}"/></font></td>
             					</c:when>
-            					<c:when test="${result.ST eq '대기'}">
-            					<td align="center" class="listtd"><c:out value="${result.ST}"/></td>
+            					<c:when test="${result.st eq '대기'}">
+            					<td align="center" class="listtd"><c:out value="${result.st}"/></td>
             					</c:when>
             				</c:choose>
             			</tr>
@@ -326,7 +329,7 @@ function pagePrint(){
 
 
 
- 		</form:form>
+ 		
 
             </div>
             <!-- //content 끝 -->

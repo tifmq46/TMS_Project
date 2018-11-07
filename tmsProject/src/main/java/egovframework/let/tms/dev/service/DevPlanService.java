@@ -95,7 +95,7 @@ public interface DevPlanService {
 
 	public int selectDevResultListTotCnt(DevPlanDefaultVO searchVO)throws Exception;
 
-	public List<HashMap<String, String>> selectDevCurrent(DevPlanDefaultVO searchVO);
+	public List<EgovMap> selectDevCurrent(DevPlanDefaultVO searchVO);
 
 	public void updateRate(DevPlanDefaultVO searchVO);
 

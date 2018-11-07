@@ -137,7 +137,7 @@ public class DevPlanServiceImpl extends EgovAbstractServiceImpl implements DevPl
 	}
 
 	@Override
-	public List<HashMap<String, String>> selectDevCurrent(DevPlanDefaultVO searchVO) {
+	public List<EgovMap> selectDevCurrent(DevPlanDefaultVO searchVO) {
 		return devPlanDAO.selectDevCurrent(searchVO);
 	}
 

@@ -119,8 +119,8 @@ public class DevPlanDAO extends EgovAbstractDAO{
 		return (Integer) select("DevPlanDAO.selectDevResultListTotCnt" ,searchVO);
 	}
 
-	public List<HashMap<String, String>> selectDevCurrent(DevPlanDefaultVO searchVO) {
-		return (List<HashMap<String, String>>) list("DevPlanDAO.selectDevCurrent",searchVO);
+	public List<EgovMap> selectDevCurrent(DevPlanDefaultVO searchVO) {
+		return (List<EgovMap>) list("DevPlanDAO.selectDevCurrent",searchVO);
 	}
 
 	public void updateRate(DevPlanDefaultVO searchVO) {

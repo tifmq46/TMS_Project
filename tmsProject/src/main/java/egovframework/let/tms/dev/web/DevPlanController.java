@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -517,7 +519,6 @@ public class DevPlanController {
 				taskMap.put("dt",String.valueOf(periodList.get(j)));
 				taskStatsList.addAll(devPlanService.selectTaskWeekStats(taskMap));
 			}
-			System.out.println("=========="+taskStatsList);
 			
 			JSONArray taskArray = new JSONArray();
 			JSONObject taskObj = new JSONObject();
@@ -593,7 +594,7 @@ public class DevPlanController {
 		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
 		model.addAttribute("taskGb", taskGbList);
 		
-		List<HashMap<String,String>> devCurrentList = devPlanService.selectDevCurrent(searchVO);
+		List<EgovMap> devCurrentList = devPlanService.selectDevCurrent(searchVO);
 		model.addAttribute("resultList", devCurrentList);
 		
 		List<?> userList = defectService.selectUser(0);
@@ -609,11 +610,22 @@ public class DevPlanController {
 		return "tms/dev/devCurrent";
 	}
 	
+	@RequestMapping(value = "/tms/dev/devCurrentExcel.do")
+	public String selectDevCurrentExcel(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model, HttpServletResponse response) throws Exception {
+		
+		searchVO.setExcelOpt("excel");
+		List<EgovMap> devCurrentList = devPlanService.selectDevCurrent(searchVO);
+		xlsxWiter(devCurrentList, "current", response, null, null);
+		
+		return "redirect:/tms/dev/devCurrent.do";
+	}
+	
 	@RequestMapping(value = "/tms/dev/devCurListPrint.do")
 	public String selectDevCurListPrint(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
-		
+		System.out.println("hererererere"+searchVO.getSearchByPgId());
 		searchVO.setPrintOpt("printPage");
-		List<HashMap<String,String>> devCurrentList = devPlanService.selectDevCurrent(searchVO);
+		
+		List<EgovMap> devCurrentList = devPlanService.selectDevCurrent(searchVO);
 		model.addAttribute("resultList", devCurrentList);
 		
 		return "tms/dev/devCurListPrint";
@@ -699,8 +711,9 @@ public class DevPlanController {
 		List<String> taskList = devPlanService.selectTaskGbList();
 		List<String> periodList = devPlanService.selectPeriodWeek();
 		
+		//String returnValue = "/tms/dev/devStatsTable";
+		
 		if(statsGb.equals("taskTotal")){
-			
 			List<EgovMap> totalTable = devPlanService.selectStatsTable();
 			xlsxWiter(totalTable, statsGb, response, null, null);
 			
@@ -956,8 +969,7 @@ public class DevPlanController {
 				}
 				
 			}
-		}
-		else if(statsGb.equals("task")){
+		}else if(statsGb.equals("task")){
 			// 헤더 정보 구성
 			cell = row.createCell(0);
 			cell.setCellValue("시스템구분");
@@ -1054,7 +1066,118 @@ public class DevPlanController {
 					
 					temp2 +=3;
 				}
+			}
+			
+		}else if(statsGb.equals("current")){
+			// 헤더 정보 구성
+			cell = row.createCell(0);
+			cell.setCellValue("시스템구분");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+
+			cell = row.createCell(1);
+			cell.setCellValue("업무구분");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+								
+			cell = row.createCell(2);
+			cell.setCellValue("화면ID");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+								
+			cell = row.createCell(3);
+			cell.setCellValue("화면명");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+								
+			cell = row.createCell(4);
+			cell.setCellValue("개발자");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+								
+			cell = row.createCell(5);
+			cell.setCellValue("계획시작일자");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+								
+			cell = row.createCell(6);
+			cell.setCellValue("계획종료일자");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(7);
+			cell.setCellValue("개발시작일자");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+								
+			cell = row.createCell(8);
+			cell.setCellValue("개발종료일자");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(9);
+			cell.setCellValue("완료율(%)");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+								
+			cell = row.createCell(10);
+			cell.setCellValue("진행상태");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			// 리스트의 size 만큼 row를 생성
+			for(int i=0; i < list.size(); i++) {
+				// 행 생성
+		
+				row = sheet.createRow(i+1);
+				
+				cell = row.createCell(0);
+				cell.setCellValue(String.valueOf(list.get(i).get("sysGb")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(1);
+				cell.setCellValue(String.valueOf(list.get(i).get("taskGb")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(2);
+				cell.setCellValue(String.valueOf(list.get(i).get("pgId")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(3);
+				cell.setCellValue(String.valueOf(list.get(i).get("pgNm")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(4);
+				cell.setCellValue(String.valueOf(list.get(i).get("userDevNm")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(5);
+				cell.setCellValue(String.valueOf(list.get(i).get("planStartDt")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(6);
+				cell.setCellValue(String.valueOf(list.get(i).get("planEndDt")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(7);
+				if(String.valueOf(list.get(i).get("devStartDt")).equals("null")){
+					cell.setCellValue("");
+				}else{
+					cell.setCellValue(String.valueOf(list.get(i).get("devStartDt")));
 				}
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(8);
+				if(String.valueOf(list.get(i).get("devEndDt")).equals("null")){
+					cell.setCellValue("");
+				}else{
+					cell.setCellValue(String.valueOf(list.get(i).get("devEndDt")));
+				}
+				cell.setCellStyle(BodyStyle); // 본문스타일
+				
+				cell = row.createCell(9);
+				cell.setCellValue(String.valueOf(list.get(i).get("achievementRate")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				cell = row.createCell(10);
+				cell.setCellValue(String.valueOf(list.get(i).get("st")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+			}
+			
+			/** 3. 컬럼 Width */ 
+			for (int i = 0; i <  list.size(); i++){ 
+				sheet.autoSizeColumn(i); 
+				sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000); 
+			}
 			
 		}
 

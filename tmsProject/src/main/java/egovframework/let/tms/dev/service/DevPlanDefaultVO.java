@@ -71,6 +71,9 @@ public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
 	/** 프린트 옵션*/
 	private String printOpt="";
 	
+	/** 엑셀 옵션*/
+	private String excelOpt="";
+	
 	public String getSessionId() {
 		return sessionId;
 	}
@@ -226,6 +229,14 @@ public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
 
 	public void setPrintOpt(String printOpt) {
 		this.printOpt = printOpt;
+	}
+
+	public String getExcelOpt() {
+		return excelOpt;
+	}
+
+	public void setExcelOpt(String excelOpt) {
+		this.excelOpt = excelOpt;
 	}
 
 }
