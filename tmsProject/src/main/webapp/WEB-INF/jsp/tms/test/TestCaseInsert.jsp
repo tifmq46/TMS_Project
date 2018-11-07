@@ -167,7 +167,7 @@ function searchFileNm() {
                       <table>
                       
                       	<tr>
-                              <th width="20%" height="23" class="required_text" nowrap >
+                              <th width="30%" height="23" class="required_text" nowrap >
                                     <label for="testcaseGb"> 
                                     	<spring:message code="tms.test.testcaseGb" />
                                     </label>    

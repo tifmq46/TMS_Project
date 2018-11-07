@@ -52,11 +52,11 @@ function handleClick(event, array){
 				str += "</td></tr></table></div></td>";
 			} else {
 				$.each(result, function(index,item){
-					str += "<td><br/><br/>&nbsp;&nbsp;";
+					str += "<td>";
 					if(temp == "sysGb") {
-						str += "<canvas id='" + item.sysGb + item.taskGb + "'"; 				
+						str += "<br/>&nbsp;&nbsp;<canvas id='" + item.sysGb + item.taskGb + "'"; 				
 					} else {
-						str += "<canvas id='" + item.taskGb + "'";
+						str += "<br/><br/>&nbsp;&nbsp;<canvas id='" + item.taskGb + "'";
 					}
 					str += "width='180' height='120' style='display:inline !important;'>";
 					str += "</canvas>"
@@ -348,7 +348,7 @@ window.onload = function() {
 	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;시스템별 조치율
     				</div>
     			</div>
-    			<div class="widget-content" style="height:212px; overflow:auto;  overflow-y:hidden;">
+    			<div class="widget-content" style="overflow:auto;  overflow-y:hidden;">
 						<br/><br/>
     				<table>
 					<tr>
@@ -382,7 +382,7 @@ window.onload = function() {
 						</td>
 						</c:forEach>
 					</tr>
-				</table>
+				</table><br/><br/>
     			</div>		
     		</div>    	  
     			
