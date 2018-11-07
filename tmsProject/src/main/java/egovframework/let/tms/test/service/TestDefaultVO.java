@@ -44,7 +44,7 @@ public class TestDefaultVO extends TestCaseVO implements Serializable{
 	private String searchUseYn = "";
 	
 	/** 기준(화면ID/테스트케이스ID) */
-	private String asOf = "pgId";
+	private String asOf = "testcaseId";
 	
 	/** 등록일자로 검색*/
 	@DateTimeFormat(pattern="yyyy-MM-dd")

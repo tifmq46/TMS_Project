@@ -35,26 +35,8 @@
 <script type="text/javaScript" language="javascript" defer="defer">
 
 
-window.onload = function(){
-	
-	document.getElementById('testcaseGb').onchange =  function(){
-		var testcaseGbValue = $("#testcaseGb").val();
-		$("#taskGbFormTd").empty();
-		var str = ""
-		if(testcaseGbValue == 'TC1'){
-			str += "<input type='text' readonly='readonly' id='TmsProgrmFileNm_task_gb'  size='62' style='width:20%' />";
-			$("#taskGbFormTd").append(str);
-		}  else {
-			$("#TmsProgrmFileNm_pg_id").val(null);
-			$("#TmsProgrmFileNm_pg_nm").val(null);
-			str += "<select name='taskGb' id='TmsProgrmFileNm_task_gb_code' ><c:forEach var='cmCode' items='${taskGbCode}'><option value='${cmCode.code}'>${cmCode.codeNm}</option></c:forEach></select>";
-			$("#taskGbFormTd").append(str);
-		} 
-	};
-};
- 
- 
 function insertTestCaseImpl(){
+
 	
 	if($("#testcaseGb").val() == 'TC1' && $("#TmsProgrmFileNm_pg_id").val() == ""){
 		swal('단위 테스트케이스 등록시 화면ID를 선택해야합니다.')
@@ -68,9 +50,7 @@ function insertTestCaseImpl(){
        isValid = false;
        swal("테스트케이스ID에 특수문자는 사용할 수 없습니다.");
      } 
-	     
 	   if(isValid){
-		   $("#TmsProgrmFileNm_task_gb_code option").attr("disabled", "");
 		   $.ajax({
 			   	 type :"POST"
 			   	,url  : "<c:url value='/tms/test/checkTestCaseIdDuplication.do'/>"
@@ -92,7 +72,6 @@ function insertTestCaseImpl(){
 			   			})
 			   			.then((result) => {
 			   				if(result) {
-			   					
 			   					document.testCaseVO.action = "<c:url value='/tms/test/insertTestCaseImpl.do'/>";
 				   		        document.testCaseVO.submit();  
 			   				}else {
@@ -165,7 +144,7 @@ function searchFileNm() {
                         
                  <div id="border" class="modify_user" >
                       <table>
-                      
+                    
                       	<tr>
                               <th width="30%" height="23" class="required_text" nowrap >
                                     <label for="testcaseGb"> 
@@ -173,14 +152,16 @@ function searchFileNm() {
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                </th>
-                                <td width="80%" nowrap colspan="3">
-                                
-	                                <select name="testcaseGb" id="testcaseGb" >
-										<c:forEach var="cmCode" items="${tcGbCode}">
-										<option value="${cmCode.code}">${cmCode.codeNm}</option>
-										</c:forEach>
-									</select>
-									<br/><form:errors path="testcaseGb" />
+                                <td width="80%" nowrap >
+	                                <c:if test="${testcaseGb == 'TC1'}">
+	                                	<form:hidden path="testcaseGb" value="TC1"/>
+	                                	단위
+	                                	
+	                                </c:if>
+	                                <c:if test="${testcaseGb == 'TC2'}">
+	                               	 	<form:hidden path="testcaseGb" value="TC2"/>
+	                                	통합
+	                                </c:if>
                                 </td>
                           </tr>
                          <tr>
@@ -189,7 +170,7 @@ function searchFileNm() {
                                     	<spring:message code="tms.test.testcaseId" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td width="80%" nowrap colspan="3">
+                                <td width="80%" nowrap >
                                     <form:input id="testcaseIdDuplicationCheck" type="text" title="게시판명입력" path="testcaseId"  cssStyle="width:20%" />
                                     <br/><form:errors path="testcaseId" /> 
                                 </td>
@@ -200,7 +181,7 @@ function searchFileNm() {
                                     	<spring:message code="tms.test.testcaseContent" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td width="50%" nowrap colspan="3">
+                                <td width="50%" nowrap >
                                     <form:input type="text" title="게시판명입력" path="testcaseContent" cssStyle="width:99%" />
                                     <br/><form:errors path="testcaseContent" />
                                 </td>
@@ -232,10 +213,25 @@ function searchFileNm() {
                                     <label for="taskGb"> 
                                     	<spring:message code="tms.test.taskGb" />
                                     </label>    
-                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td width="80%" nowrap colspan="3" id="taskGbFormTd">
-									<input type='text' title='게시판명입력' readonly="readonly" id='TmsProgrmFileNm_task_gb'  size='62' style='width:20%' />
-                                </td>
+                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+                             </th>
+                             <td width="80%" nowrap>
+									<c:choose>
+									
+										<c:when test="${testcaseGb == 'TC1' }">
+											<input type='text' title='게시판명입력' readonly="readonly" id='TmsProgrmFileNm_task_gb'  size='62' style='width:20%' />
+											<form:hidden path="taskGb"  id="TmsProgrmFileNm_task_gb_code"/>
+										</c:when>
+										<c:when test="${testcaseGb == 'TC2' }">
+											<select name='taskGb'>
+												<c:forEach var='cmCode' items='${taskGbCode}'>
+													<option value='${cmCode.code}'>${cmCode.codeNm}</option>
+												</c:forEach>
+											</select> 
+										</c:when>
+									</c:choose>
+									
+                              </td>
                           </tr>
                           
                           				<%
@@ -276,7 +272,7 @@ function searchFileNm() {
                           </tr>
                          	<form:hidden path=""  id="TmsProgrmFileNm_sys_gb"/>
                          	<form:hidden path=""  id="TmsProgrmFileNm_pg_full"/>
-                         	<form:hidden path="taskGb"  id="TmsProgrmFileNm_task_gb_code"/>
+                         	
                        </table>
                     </div>
              	

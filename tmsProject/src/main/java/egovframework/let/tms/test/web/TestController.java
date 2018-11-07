@@ -111,7 +111,7 @@ public class TestController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/tms/test/insertTestCase.do")
-	public String insertTestCase(@ModelAttribute("testCaseVO") TestCaseVO testCaseVO, ModelMap model) throws Exception {
+	public String insertTestCase(@ModelAttribute("testCaseVO") TestCaseVO testCaseVO, @RequestParam("testcaseGb") String testcaseGb, ModelMap model) throws Exception {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("TCGB"); // '테스트케이스구분' 공통코드
@@ -121,7 +121,8 @@ public class TestController {
 		vo.setCodeId("TASKGB"); // '업무구분' 공통코드
 		codeResult = egovCmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("taskGbCode", codeResult);
-
+		model.addAttribute("testcaseGb", testcaseGb);
+		
 		return "tms/test/TestCaseInsert";
 	}
 
@@ -140,6 +141,7 @@ public class TestController {
 			throws Exception {
 
 		String testcaseGb = testCaseVO.getTestcaseGb();
+		System.out.println("업무구분 : " + testCaseVO.getTaskGb());
 
 		beanValidator.validate(testCaseVO, errors);
 		if (errors.hasErrors()) {

@@ -295,7 +295,7 @@ function fDeleteMenuList() {
 									    
 	                                        <a href="<c:url value='/tms/test/selectTestCaseList.do'/>" onclick="fn_egov_select_testCaseList('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
 											<spring:message code="button.inquire" /></a>
-										    <a href= "<c:url value="/tms/test/insertTestCase.do" />" ><spring:message code="button.create" /></a>
+										    <a href= "<c:url value="/tms/test/insertTestCase.do?testcaseGb=TC2" />" ><spring:message code="button.create" /></a>
 										    <a href="#" onclick="selectTestCase(); return false;"><spring:message code="button.update" /></a>
 										    <a href="#" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
 										</div>		  				  			

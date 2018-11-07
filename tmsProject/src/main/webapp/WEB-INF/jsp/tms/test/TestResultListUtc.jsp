@@ -199,18 +199,20 @@ function searchFileNm() {
              		 <colgroup>
              		 	<col width="5%"/>
         				<col width="13%"/> 
-        				<col width="35%"/>
-        				<col width="6%"/>
-        				<col width="10%"/>
+        				<col width="38%"/>
         				<col width="8%"/>
         				<col width="6%"/>
-        				<col width="6%"/>
         				<col width="8%"/>
+        				<col width="8%"/>
+        				<col width="4%"/>
+        				<col width="4%"/>
+        				<col width="6%"/>
         			</colgroup>
         			<tr>
         			    <th align="center"><spring:message code="tms.test.no" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseId" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseContent" /></th>
+        			    <th align="center">시나리오/결과</th>
         			    <th align="center"><spring:message code="tms.test.userWriterId" /></th>
         				<th align="center"><spring:message code="tms.test.taskGb" /></th>
 			        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>
@@ -228,6 +230,9 @@ function searchFileNm() {
             					<a href= "<c:url value='/tms/test/selectTestResult.do?testcaseId=${result.testcaseId}'/>">
 	            					<font color="#0F438A" style="font-weight:bold"><c:out value="${result.testcaseContent}"/></font>
 	            				</a>
+            				</td>
+            				<td align="center" class="listtd">
+            				<c:out value="${result.scenarioCnt}"/>&nbsp; / <c:out value="${result.testYCnt}"/>
             				</td>
             				<td align="center" class="listtd" title="${result.userId}"><c:out value="${result.userNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>
