@@ -75,6 +75,14 @@
 		document.defectVO.submit();
 	}
 	-->
+	
+	$(document).ready(function(){
+		$("#TmsProgrmFileNm_pg_full").focus();	
+		$("#TmsProgrmFileNm_pg_full").on('keyup', function(){
+			searchFileNm();
+		});
+	});
+	
 </script>
 
 <style type="text/css">
@@ -120,53 +128,55 @@
                     <div class="modify_user" >
                         <table summary="결함등록 정보입니다.">
 					      <tr>   
-					        <th width="16.6%" height="23" class="required_text" nowrap >결함번호
+					        <th width="15%" height="23" class="required_text" nowrap >결함번호
 					        <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
-					        <td width="16.6%" nowrap >
+					        <td width="12%" nowrap >
 					          <input id="defectIdSq" name="defectIdSq" size="5" value="${defectIdSq}"  maxlength="40" title="결함번호"
 					          style="text-align:center; border:none; width:90%;" /> 
 					          <form:errors path="defectIdSq" />
 					        </td>
-					         <th width="16.6%" height="23" class="required_text" nowrap >화면ID
+					         <th width="15%" height="23" class="required_text" nowrap >화면ID
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
-					        <td width="16.6%" nowrap >
-					          <input type="text" id="TmsProgrmFileNm_pg_id" name="pgId" size="" value=""  title="화면ID"  
+					        <td width="28%" nowrap >
+					           <input type="text" id="TmsProgrmFileNm_pg_full"
+					           style="text-align:center; width:90%;" onclick="javascript:searchFileNm(); return false;"/>
+					          <input type="hidden" id="TmsProgrmFileNm_pg_id" name="pgId" size="" value=""  title="화면ID"  
 					           style="text-align:center;" readonly="readonly" onclick="javascript:searchFileNm(); return false;"/> 
-					           <input type="hidden" id="TmsProgrmFileNm_pg_full"
-					           style="text-align:center; width:90%;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/>
 					           <form:errors path="pgId" />
 					          <a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
-	                	<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
+	                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
 					        </td>
-					        <th width="16.6%" height="23" class="required_text" nowrap >화면명
+					         <th width="15%" height="23" class="required_text" nowrap >개발자
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
-					        <td width="16.6%" nowrap >
-					          <input type="text" id="TmsProgrmFileNm_pg_nm" name="pgNm" size="" value=""  title="화면명"  
-					           style="text-align:center;" readonly="readonly" onclick="javascript:searchFileNm(); return false;"/> 
-					        </td>
-					       </tr>
-
-					      <tr>   
-					        <th width="16.6%" height="23" class="required_text" nowrap >업무구분
-					        <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
-					        </th>
-					        <td width="16.6%" nowrap >
-					          <input id="TmsProgrmFileNm_task_gb" type="text" size="5" value=""  maxlength="40" title="업무구분" 
-					          style="text-align:center; width:90%;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/> 
-					          &nbsp;
-					        </td>
-					         <th width="16.6%" height="23" class="required_text" nowrap >개발자
-					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
-					        </th>
-					        <td width="16.6%" nowrap >
+					        <td width="15%" nowrap >
 					          <input id="TmsProgrmFileNm_user_dev_id" type="text" size="10" value=""  maxlength="40" title="개발자" 
 					          style="text-align:center; width:90%;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/> 
 					          &nbsp;
 					        </td>
-					         <th width="16.6%" height="23" class="required_text" nowrap >테스터
+					       </tr>
+
+					      <tr>   
+					        <th width="15%" height="23" class="required_text" nowrap >시스템구분
+					        <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+					        </th>
+					        <td width="12%" nowrap >
+					          <input id="TmsProgrmFileNm_sys_gb" type="text" size="5" value=""  maxlength="40" title="업무구분" 
+					          style="text-align:center; width:85%;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/> 
+					          &nbsp;
+					        </td>
+					        <th width="15%" height="23" class="required_text" nowrap >업무구분
+					        <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
+					        </th>
+					        <td width="28%" nowrap >
+					          <input id="TmsProgrmFileNm_task_gb" type="text" size="5" value=""  maxlength="40" title="업무구분" 
+					          style="text-align:center; width:90%;" readonly="readonly" onclick="javascript:pgIdSearch(); return false;"/> 
+					          &nbsp;
+					        </td>
+					        
+					         <th width="15%" height="23" class="required_text" nowrap >테스터
 					         <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
 								<%
@@ -183,28 +193,28 @@
 									<%
 								}
 								%>
-								<td width="16.6%" nowrap >
-					        	<input name="userNm" value='${loginName}'  autocomplete="off" readOnly="readOnly" style="text-align:center;" />
+								<td width="15%" nowrap >
+					        	<input name="userNm" value='${loginName}'  autocomplete="off" readOnly="readOnly" style="text-align:center; width:90%" />
 					        	<form:errors path="userNm" />
 								<input type="hidden" name="userTestId" value="${loginId }"/>
-					        </td>
+					       		 </td>
 					       </tr>
 
 					       <tr >
-					       <th width="16.6%" height="23" class="required_text" nowrap >결함제목
+					       <th width="15%" height="23" class="required_text" nowrap >결함명
 					       <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
-					        <td width="49.8%" nowrap colspan="3">
+					        <td width="55%" nowrap colspan="3">
 					          <input id="defectTitle" name="defectTitle" type="text" value=""  autocomplete="off" maxlength="40" title="결함제목" 
-					          style="width:98%;"/> 
+					          style="width:95%;"/> 
 					          <form:errors path="defectTitle" />
 					          &nbsp;
 					        </td>
-					       <th width="16.6%" height="23" class="required_text" nowrap >결함유형
+					       <th width="15%" height="23" class="required_text" nowrap >결함유형
 					       <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
 					        </th>
-					        <td width="16.6%" nowrap>
-									<select name="defectGb" id="defectGb" style="width:90%; text-align-last:center;">
+					        <td width="15%" nowrap>
+									<select name="defectGb" id="defectGb" style="width:95%; text-align-last:center;">
 									    <option value="" selected="selected">선택</option>
 									    <c:forEach var="defectGb" items="${defectGb}" varStatus="status">
 									    	<option value="<c:out value="${defectGb.code}"/>"><c:out value="${defectGb.codeNm}" /></option>
@@ -222,22 +232,24 @@
 
 					       <tr>
 					       <td width="100%" nowrap colspan="6">
-					          <textarea id="defectContent" name="defectContent" style="height:200px; width:98%;"></textarea>
+					          <textarea id="defectContent" name="defectContent" style="height:200px; width:98%; margin-top:5px;"></textarea>
 					         <form:errors path="defectContent" />
 					          &nbsp;
 					        </td>
 					       </tr>
 
 					       <tr>
-					       <th width="16.6%" height="23" class="required_text" nowrap >첨부파일
+					       <th width="15%" height="23" class="required_text" nowrap >첨부파일
 					        </th>
-					        <td width="83.4%" colspan="5" nowrap >
+					        <td width="85%" colspan="5" nowrap >
 								<input type="file" name="fileImg" id="fileImg" title="첨부파일" accept=".jpg, .jpeg, .png"/>
 					        </td>
 					       </tr>
                         </table>
                     </div>
-					<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
+                     <input type="hidden" id="TmsProgrmFileNm_pg_nm" name="pgNm" size="" value=""  title="화면명"  
+					           style="text-align:center;" readonly="readonly" onclick="javascript:searchFileNm(); return false;"/> 
+					         
 					<input id="TmsProgrmFileNm_user_real_id" type="hidden" />
 					<input id="TmsProgrmFileNm_task_gb_code" type="hidden" />
 					<input type="hidden" id="testscenarioId" name="testscenarioId" value="<c:out value="${testscenarioId}"/>"/>

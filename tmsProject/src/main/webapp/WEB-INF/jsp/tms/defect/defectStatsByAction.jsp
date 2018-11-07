@@ -52,11 +52,11 @@ function handleClick(event, array){
 				str += "</td></tr></table></div></td>";
 			} else {
 				$.each(result, function(index,item){
-					str += "<td><br/><br/>&nbsp;&nbsp;";
+					str += "<td>";
 					if(temp == "sysGb") {
-						str += "<canvas id='" + item.sysGb + item.taskGb + "'"; 				
+						str += "<br/>&nbsp;&nbsp;<canvas id='" + item.sysGb + item.taskGb + "'"; 				
 					} else {
-						str += "<canvas id='" + item.taskGb + "'";
+						str += "<br/><br/>&nbsp;&nbsp;<canvas id='" + item.taskGb + "'";
 					}
 					str += "width='180' height='120' style='display:inline !important;'>";
 					str += "</canvas>"
@@ -348,7 +348,7 @@ window.onload = function() {
 	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;시스템별 조치율
     				</div>
     			</div>
-    			<div class="widget-content" style="height:212px; overflow:auto;  overflow-y:hidden;">
+    			<div class="widget-content" style="overflow:auto;  overflow-y:hidden;">
 						<br/><br/>
     				<table>
 					<tr>
@@ -382,7 +382,7 @@ window.onload = function() {
 						</td>
 						</c:forEach>
 					</tr>
-				</table>
+				</table><br/><br/>
     			</div>		
     		</div>    	  
     			
@@ -390,19 +390,19 @@ window.onload = function() {
 			<div class="recentBoardList" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
     		<div class="widget">
     			<div class="widget-header">
-    				<div class="header-name" style="margin:10px;">
+    				<div class="header-name" style="margin:10px; ">
 	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;업무별 조치율
     				</div>
     			</div>
-    			<div class="widget-content" style="overflow:auto; overflow-y:hidden;">
+    			<div class="widget-content" style="overflow:auto;  overflow-y:hidden;">
     			<div id="taskByActionCntLoc"><br/><br/>
 				<table>
 					<tr>
 						<c:forEach var="taskByActionCnt" items="${taskByActionCnt}" varStatus="status">
-							<td>
-								&nbsp;&nbsp;<canvas	id="<c:out value="${taskByActionCnt.sysGb}"/><c:out value="${taskByActionCnt.taskGb}"/>"
-									width="180" height="120" style="display: inline !important;"></canvas>
-							</td>
+								<td>
+									&nbsp;&nbsp;<canvas	id="<c:out value="${taskByActionCnt.sysGb}"/><c:out value="${taskByActionCnt.taskGb}"/>"
+										width="180" height="120" style="display: inline !important;"></canvas>
+								</td>
 						</c:forEach>
 						<c:if test="${fn:length(taskByActionCnt) == 0 }">
 								<td>

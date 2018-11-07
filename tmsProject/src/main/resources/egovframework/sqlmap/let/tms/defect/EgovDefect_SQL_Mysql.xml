@@ -414,7 +414,7 @@
                 (SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = D.ACTION_ST) AS ACTION_NM,
                 (SELECT LETTNEMPLYRINFO.USER_NM FROM LETTNEMPLYRINFO WHERE P.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID
                   FROM DEFECT_TB AS D, PG_TB AS P
-              WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y' AND D.ACTION_ST='A3'
+              WHERE D.PG_ID = P.PG_ID AND P.USE_YN='Y'
               ORDER BY D.DEFECT_ID_SQ
 			) AS C
 			WHERE 1=1
@@ -435,7 +435,7 @@
                 AND DEFECT_GB LIKE CONCAT('%' , #searchByDefectGb#, '%')
         </isNotEmpty>
         <isNotEmpty property="searchByActionSt" >
-                AND ACTION_ST LIKE CONCAT('%' , #searchByActionSt#, '%')
+                AND ACTION_NM LIKE CONCAT('%' , #searchByActionSt#, '%')
         </isNotEmpty>
         <isNotEmpty property="searchByStartDt" >
             <isNotEmpty property="searchByEndDt">

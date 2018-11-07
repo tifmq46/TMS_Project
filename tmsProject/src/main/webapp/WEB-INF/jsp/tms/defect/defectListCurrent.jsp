@@ -188,11 +188,11 @@ td.listtd {
                  <caption style="visibility:hidden">총 건수, 완료건수, 미완료, 진행률 표시하는 테이블</caption>
                  
                  <tr>
-                 	<td align="right" width="7%" style="font-size:1.2em; font-weight:bolder">조치율 : </td>
+                 	<td align="right" width="6%" style="font-size:1.2em; font-weight:bolder">조치율 : </td>
                  	<c:if test="${actionTotCnt ne '0' }">
                  		<fmt:parseNumber var="actionProgression" integerOnly="true" value="${actionStCnt.actionStA3 / actionTotCnt * 100}"/>
                  	</c:if>
-                 	<td width="53%" style="font-size:15px; font-weight:bolder">
+                 	<td width="50%" style="font-size:15px; font-weight:bolder">
                  	<c:choose>
                  		<c:when test="${actionTotCnt ne '0' }">
                  			<div class="progress" style="height: 1.5rem;"><div class="progress-bar" style="width:${actionProgression}%" > <strong><c:out value=" ${actionProgression}"></c:out>%</strong></div></div>
@@ -202,11 +202,11 @@ td.listtd {
                  		</c:otherwise>
                  	</c:choose>
                  	</td>
-                 	<td align="left" width="40%" style="font-size:1.2em; font-weight:bolder"> &nbsp;전체 : <c:out value="${actionTotCnt}"/>&nbsp;
-                 	대기 : <c:out value="${actionStCnt.actionStA1}"/>&nbsp;
-                 	조치중 : <c:out value="${actionStCnt.actionStA2}"/>&nbsp;
-                 	조치완료 : <font color="#007BFF"><c:out value="${actionStCnt.actionStA3}"/></font>&nbsp;
-                 	재요청 : <c:out value="${actionStCnt.actionStA4}"/>
+                 	<td align="left" width="40%" style="font-size:1.2em; font-weight:bold"> [&nbsp;전체 : <c:out value="${actionTotCnt}"/>건&nbsp;
+                 	대기 : <c:out value="${actionStCnt.actionStA1}"/>건&nbsp;
+                 	조치중 : <c:out value="${actionStCnt.actionStA2}"/>건&nbsp;
+                 	조치완료 : <font color="#007BFF"><c:out value="${actionStCnt.actionStA3}"/></font>건&nbsp;
+                 	재요청 : <c:out value="${actionStCnt.actionStA4}"/>건 ]
                  	</td>
                  </tr>        
              	</table>
