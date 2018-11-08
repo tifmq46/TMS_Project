@@ -31,6 +31,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -411,9 +412,9 @@ public class DevPlanController {
 			int s = Integer.parseInt(String.valueOf(periodList.get(0)));
 			int e = Integer.parseInt(String.valueOf(periodList.get(periodList.size()-1)));
 			
-			
 			//개발자별 통계 
 			List<Map<String,Object>> userStats = stats("user", userList, periodList);
+
 			int sumUserPlan =0;
 			int sumUserDev =0;
 			int sumUserDiff = 0;
@@ -468,7 +469,6 @@ public class DevPlanController {
 				userMap.put("dt",String.valueOf(periodList.get(j)));
 				userStatsList.addAll(devPlanService.selectUserWeekStats(userMap));
 			}
-			
 			JSONArray userArray = new JSONArray();
 			JSONObject userObj = new JSONObject();
 			
@@ -504,6 +504,7 @@ public class DevPlanController {
 				userObj.put("sumDiff", sumDiff);
 				userArray.add(userObj);
 			}
+
 			
 			JsonUtil jsU = new JsonUtil();
 			List<Map<String,Object>> userStats = jsU.getListMapFromJsonArray(userArray);
@@ -547,7 +548,6 @@ public class DevPlanController {
 					sumTaskDev += Integer.parseInt(String.valueOf(taskStatsList.get(temp).get("b"+periodList.get(j))));
 					sumDiff += Integer.parseInt(String.valueOf(taskStatsList.get(temp).get("sub"+periodList.get(j))));
 					temp+=list.size()+sysCnt+1;
-					System.out.println("temp"+temp);
 				}
 				taskObj.put("sumTaskPlan", sumTaskPlan);
 				taskObj.put("sumTaskDev", sumTaskDev);
@@ -620,9 +620,43 @@ public class DevPlanController {
 		return "redirect:/tms/dev/devCurrent.do";
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/tms/dev/devCurListPrint.do")
-	public String selectDevCurListPrint(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
-		System.out.println("hererererere"+searchVO.getSearchByPgId());
+	public String selectDevCurListPrint(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model, @RequestParam("vo") String vo) throws Exception {
+		
+		JSONParser parser = new JSONParser();
+		JSONArray jsonArray = (JSONArray) parser.parse(vo);
+		
+		JSONObject tmpObj = new JSONObject();
+		JSONArray tmpArray = new JSONArray();
+		for(int i=0; i<jsonArray.size(); i++){
+			tmpObj = new JSONObject();
+			
+			JSONObject jo =(JSONObject)jsonArray.get(i);
+			tmpObj.put(jo.get("name"),jo.get("value"));
+			tmpArray.add(tmpObj);
+		}
+		JsonUtil jsU = new JsonUtil();
+		List<Map<String,Object>> voList = jsU.getListMapFromJsonArray(tmpArray);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		boolean nullFlag = true;
+		
+		searchVO.setSearchByPgId(String.valueOf(voList.get(1).get("searchByPgId")));
+		searchVO.setSearchBySysGb(String.valueOf(voList.get(3).get("searchBySysGb")));
+		searchVO.setSearchByTaskGb(String.valueOf(voList.get(5).get("searchByTaskGb")));
+		searchVO.setSearchByUserDevId(String.valueOf(voList.get(6).get("searchByUserDevId")));
+		
+		String startDt = String.valueOf(voList.get(7).get("searchByDevStartDt"));
+		String endDt = String.valueOf(voList.get(8).get("searchByDevEndDt"));
+		if(startDt.equals("")){nullFlag = false;}
+		if(endDt.equals("")){nullFlag = false;}
+		
+		if(nullFlag){
+			searchVO.setSearchByDevStartDt(sdf.parse(String.valueOf(voList.get(7).get("searchByDevStartDt"))));
+			searchVO.setSearchByDevEndDt(sdf.parse(String.valueOf(voList.get(8).get("searchByDevEndDt"))));
+		}
+		
 		searchVO.setPrintOpt("printPage");
 		
 		List<EgovMap> devCurrentList = devPlanService.selectDevCurrent(searchVO);
@@ -630,6 +664,7 @@ public class DevPlanController {
 		
 		return "tms/dev/devCurListPrint";
 	}
+
 	/*주말 제외한 두 날짜 사이의 기간 가져오기*/
 	public ArrayList<String> betweenDate(Date startDate, Date endDate){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -892,14 +927,19 @@ public class DevPlanController {
 			sheet.addMergedRegion(new CellRangeAddress(0,1, 0,0));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
 			
+			cell = row.createCell(1);
+			cell.setCellValue("총본수");
+			sheet.addMergedRegion(new CellRangeAddress(0,1, 1,1));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
 			List<String> periodList = devPlanService.selectPeriodWeek();
 			
-			int temp = 1;
+			int temp = 2;
 			for(int i =0; i<periodList.size(); i++){
 				if(i == 0){
-					cell = row.createCell(i+1);
+					cell = row.createCell(i+2);
 					cell.setCellValue("1주");
-					sheet.addMergedRegion(new CellRangeAddress(0,0, 1,3));
+					sheet.addMergedRegion(new CellRangeAddress(0,0, 2,4));
 					cell.setCellStyle(HeadStyle);
 					
 				}else{
@@ -910,21 +950,21 @@ public class DevPlanController {
 					temp +=3;
 				}
 			}
-			cell = row.createCell(periodList.size()*3+1);
+			cell = row.createCell(periodList.size()*3+2);
 			cell.setCellValue("합계");
-			sheet.addMergedRegion(new CellRangeAddress(0,0, periodList.size()*3+1,periodList.size()*3+3));
+			sheet.addMergedRegion(new CellRangeAddress(0,0, periodList.size()*3+2,periodList.size()*3+4));
 			cell.setCellStyle(HeadStyle);
 			
 			
 			row = sheet.createRow(1);
 			for(int i =0; i<periodList.size()+1; i++){
-				cell = row.createCell(1+(3*i));
+				cell = row.createCell(2+(3*i));
 				cell.setCellValue("계획");
 				cell.setCellStyle(TitleStyle);
-				cell = row.createCell(2+(3*i));
+				cell = row.createCell(3+(3*i));
 				cell.setCellValue("실적");
 				cell.setCellStyle(TitleStyle);
-				cell = row.createCell(3+(3*i));
+				cell = row.createCell(4+(3*i));
 				cell.setCellValue("차이");
 				cell.setCellStyle(TitleStyle);
 			}
@@ -938,7 +978,11 @@ public class DevPlanController {
 				cell.setCellValue(String.valueOf(otherList.get(i).get("userDevNm"))+"("+String.valueOf(otherList.get(i).get("userDevId"))+")");
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
-				int temp2 = 1;
+				cell = row.createCell(1);
+				cell.setCellValue(String.valueOf(String.valueOf(otherList.get(i).get("totCnt"))));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+				
+				int temp2 = 2;
 				for(int j=0; j<periodList.size(); j++){
 					cell = row.createCell(temp2);
 					cell.setCellValue(String.valueOf(otherList.get(i).get("a"+String.valueOf(periodList.get(j)))));
@@ -952,15 +996,15 @@ public class DevPlanController {
 					cell.setCellValue(String.valueOf(otherList.get(i).get("sub"+String.valueOf(periodList.get(j)))));
 					cell.setCellStyle(BodyStyle);
 					
-					cell = row.createCell(periodList.size()*3+1);
+					cell = row.createCell(periodList.size()*3+2);
 					cell.setCellValue(String.valueOf(otherList.get(i).get(String.valueOf("sumUserPlan"))));
 					cell.setCellStyle(BodyStyle);
 					
-					cell = row.createCell(periodList.size()*3+2);
+					cell = row.createCell(periodList.size()*3+3);
 					cell.setCellValue(String.valueOf(otherList.get(i).get(String.valueOf("sumUserDev"))));
 					cell.setCellStyle(BodyStyle);
 					
-					cell = row.createCell(periodList.size()*3+3);
+					cell = row.createCell(periodList.size()*3+4);
 					cell.setCellValue(String.valueOf(otherList.get(i).get(String.valueOf("sumDiff"))));
 					cell.setCellStyle(BodyStyle);
 					
@@ -980,15 +1024,20 @@ public class DevPlanController {
 			cell.setCellValue("업무구분");
 			sheet.addMergedRegion(new CellRangeAddress(0,1, 1,1));
 			cell.setCellStyle(HeadStyle); // 제목스타일 
+			
+			cell = row.createCell(2);
+			cell.setCellValue("총본수");
+			sheet.addMergedRegion(new CellRangeAddress(0,1, 2,2));
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 
 			List<String> periodList = devPlanService.selectPeriodWeek();
 			
-			int temp = 2;
+			int temp = 3;
 			for(int i =1; i<=periodList.size(); i++){
 				if(i == 1){
-					cell = row.createCell(i+1);
+					cell = row.createCell(i+2);
 					cell.setCellValue(i+"주");
-					sheet.addMergedRegion(new CellRangeAddress(0,0, 2,4));
+					sheet.addMergedRegion(new CellRangeAddress(0,0, 3,5));
 					cell.setCellStyle(HeadStyle);
 					
 				}else{
@@ -999,9 +1048,9 @@ public class DevPlanController {
 					temp +=3;
 				}
 			}
-			cell = row.createCell(periodList.size()*3+2);
+			cell = row.createCell(periodList.size()*3+3);
 			cell.setCellValue("합계");
-			sheet.addMergedRegion(new CellRangeAddress(0,0, periodList.size()*3+2,periodList.size()*3+4));
+			sheet.addMergedRegion(new CellRangeAddress(0,0, periodList.size()*3+3,periodList.size()*3+5));
 			cell.setCellStyle(HeadStyle);
 			
 			row = sheet.createRow(1);
@@ -1010,15 +1059,17 @@ public class DevPlanController {
 			cell.setCellStyle(TitleStyle);
 			cell = row.createCell(1);
 			cell.setCellStyle(TitleStyle);
+			cell = row.createCell(2);
+			cell.setCellStyle(TitleStyle);
 			
 			for(int i =0; i<periodList.size()+1; i++){
-				cell = row.createCell(2+(3*i));
+				cell = row.createCell(3+(3*i));
 				cell.setCellValue("계획");
 				cell.setCellStyle(TitleStyle);
-				cell = row.createCell(3+(3*i));
+				cell = row.createCell(4+(3*i));
 				cell.setCellValue("실적");
 				cell.setCellStyle(TitleStyle);
-				cell = row.createCell(4+(3*i));
+				cell = row.createCell(5+(3*i));
 				cell.setCellValue("차이");
 				cell.setCellStyle(TitleStyle);
 			}
@@ -1036,9 +1087,11 @@ public class DevPlanController {
 				cell.setCellValue(String.valueOf(otherList.get(i).get("taskGbNm")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
+				cell = row.createCell(2);
+				cell.setCellValue(String.valueOf(otherList.get(i).get("totCnt")));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
-				
-				int temp2 = 2;
+				int temp2 = 3;
 				for(int j=0; j<periodList.size(); j++){
 					cell = row.createCell(temp2);
 					cell.setCellValue(String.valueOf(otherList.get(i).get("a"+String.valueOf(periodList.get(j)))));
@@ -1052,15 +1105,15 @@ public class DevPlanController {
 					cell.setCellValue(String.valueOf(otherList.get(i).get("sub"+String.valueOf(periodList.get(j)))));
 					cell.setCellStyle(BodyStyle);
 					
-					cell = row.createCell(periodList.size()*3+2);
+					cell = row.createCell(periodList.size()*3+3);
 					cell.setCellValue(String.valueOf(otherList.get(i).get(String.valueOf("sumTaskPlan"))));
 					cell.setCellStyle(BodyStyle);
 					
-					cell = row.createCell(periodList.size()*3+3);
+					cell = row.createCell(periodList.size()*3+4);
 					cell.setCellValue(String.valueOf(otherList.get(i).get(String.valueOf("sumTaskDev"))));
 					cell.setCellStyle(BodyStyle);
 					
-					cell = row.createCell(periodList.size()*3+4);
+					cell = row.createCell(periodList.size()*3+5);
 					cell.setCellValue(String.valueOf(otherList.get(i).get(String.valueOf("sumDiff"))));
 					cell.setCellStyle(BodyStyle);
 					
