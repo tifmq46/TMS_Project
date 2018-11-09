@@ -173,7 +173,12 @@ $(function(){
    			         	type:"POST",
    			         	url: "<c:url value='/tms/pg/full_deleteListAction.do'/>",
    			         	success : function(){
-   			        		location.reload();
+   			         		
+   			         		swal("정상적으로 일괄삭제되었습니다.")
+							.then((value) => {
+								location.reload();
+							});
+   			        		//location.reload();
    			        	 	//swal("프로그램 일괄삭제가 정상적으로 처리되었습니다.");
    			         	},
    			         	error : function(request,status,error){

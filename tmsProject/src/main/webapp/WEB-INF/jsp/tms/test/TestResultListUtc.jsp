@@ -264,7 +264,7 @@ function searchFileNm() {
         			</c:forEach>
         			<c:if test="${fn:length(testCaseList) == 0}">
                      	<tr>
-                       		<td nowrap colspan="9" ><spring:message code="common.nodata.msg" /></td>  
+                       		<td nowrap colspan="10" ><spring:message code="common.nodata.msg" /></td>  
                      	</tr>      
               		</c:if>	         			
               </table>        
