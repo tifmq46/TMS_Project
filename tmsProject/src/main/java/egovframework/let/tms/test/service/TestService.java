@@ -50,9 +50,9 @@ public interface TestService {
 	
 	public HashMap<String, Integer> selectTestScenarioStats(String testcaseId)throws Exception;
 	
-	public List<?> selectTestCaseStatsListByTaskGb(String sysNm)  throws Exception;
+	public List<?> selectTestCaseStatsListByTaskGb(TestDefaultVO searchVO)  throws Exception;
 	
-	public List<?> selectTestCaseStatsListBySysGb()  throws Exception;
+	public List<?> selectTestCaseStatsListBySysGb(TestDefaultVO searchVO)  throws Exception;
 	
 	public List<?> selectTestCurrent(TestDefaultVO searchVO) throws Exception;
 	

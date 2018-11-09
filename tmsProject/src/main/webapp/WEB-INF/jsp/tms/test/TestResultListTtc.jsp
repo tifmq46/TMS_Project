@@ -182,25 +182,28 @@ function searchFileNm() {
               
              		 <colgroup>
              		 	<col width="5%"/>
-        				<col width="9%"/> 
-        				<col width="46%"/>
-        				<col width="5%"/>
-        				<col width="9%"/>
-        				<col width="7%"/>
+        				<col width="13%"/> 
+        				<col width="38%"/>
+        				<col width="8%"/>
         				<col width="6%"/>
+        				<col width="8%"/>
+        				<col width="8%"/>
+        				<col width="4%"/>
+        				<col width="4%"/>
         				<col width="6%"/>
-        				<col width="7%"/>
         			</colgroup>
         			<tr>
-        			    <th align="center"><spring:message code="tms.test.no" /></th>
+        			     <th align="center"><spring:message code="tms.test.no" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseId" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseContent" /></th>
+        			    <th align="center"><spring:message code="tms.test.ScenarioAndResult" /></th>
         			    <th align="center"><spring:message code="tms.test.userWriterId" /></th>
         				<th align="center"><spring:message code="tms.test.taskGb" /></th>
 			        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>
 			        	<th align="center"><spring:message code="tms.test.firstTest" /></th>
 			        	<th align="center"><spring:message code="tms.test.secondTest" /></th>
         				<th align="center"><spring:message code="tms.test.completeYn" /></th>
+        			</tr>
         			</tr>
         			
         			<c:forEach var="result" items="${testCaseList}" varStatus="status">
@@ -212,6 +215,9 @@ function searchFileNm() {
             					<a href= "<c:url value='/tms/test/selectTestResult.do?testcaseId=${result.testcaseId}'/>">
 	            					<font color="#0F438A" style="font-weight:bold"><c:out value="${result.testcaseContent}"/></font>
 	            				</a>
+            				</td>
+            				<td align="center" class="listtd">
+            				<c:out value="${result.scenarioCnt}"/>&nbsp; / <c:out value="${result.testYCnt}"/>
             				</td>
             				<td align="center" class="listtd" title="${result.userId}"><c:out value="${result.userNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.taskGbNm}"/>&nbsp;</td>

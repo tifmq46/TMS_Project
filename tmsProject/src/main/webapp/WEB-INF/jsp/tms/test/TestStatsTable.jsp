@@ -219,9 +219,9 @@ th,td{
 		            			<tr>	
 		           					<c:choose>
 		           					
-		           						<c:when test="${result.sysGb eq '합계'}">
-		            						<td align="center" class="lineStyle2 line"><c:out value="${result.sysGb}"/></td>            					
-		            						<td align="center" class="lineStyle2 line"><c:out value="${result.taskGb}"/></td>
+		           						<c:when test="${result.sysNm eq '합계'}">
+		            						<td align="center" class="lineStyle2 line"><c:out value="${result.sysNm}"/></td>            					
+		            						<td align="center" class="lineStyle2 line"><c:out value="${result.taskNm}"/></td>
 				            				<td align="center" class="lineStyle2 line"><c:out value="${result.tcWriteYCnt}"/></td> 
 				            				<td align="center" class="lineStyle2 line"><c:out value="${result.notTestCnt}"/></td>
 				            				<td align="center" class="lineStyle2 line"><c:out value="${result.firstTestCnt}"/></td>
@@ -235,9 +235,9 @@ th,td{
 		           						
 		         						<c:otherwise>
 			            					<c:choose>
-			            						<c:when test="${result.taskGb eq '소계'}">
-				            						<td align="center" class="lineStyle"><c:out value="${result.sysGb}"/></td>            					
-													<td align="center" class="lineStyle"><c:out value="${result.taskGb}"/></td>
+			            						<c:when test="${result.taskNm eq '소계'}">
+				            						<td align="center" class="lineStyle"><c:out value="${result.sysNm}"/></td>            					
+													<td align="center" class="lineStyle"><c:out value="${result.taskNm}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.tcWriteYCnt}"/></td> 
 						            				<td align="center" class="lineStyle"><c:out value="${result.notTestCnt}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.firstTestCnt}"/></td>
@@ -250,8 +250,8 @@ th,td{
 			           							</c:when>
 			            						
 			            						<c:otherwise>
-				            						<td align="center" ><c:out value="${result.sysGb}"/></td>            					
-													<td align="center" ><c:out value="${result.taskGb}"/></td>
+				            						<td align="center" ><c:out value="${result.sysNm}"/></td>            					
+													<td align="center" ><c:out value="${result.taskNm}"/></td>
 						            				<td align="center" ><c:out value="${result.tcWriteYCnt}"/></td> 
 						            				<td align="center" ><c:out value="${result.notTestCnt}"/></td>
 						            				<td align="center" ><c:out value="${result.firstTestCnt}"/></td>
@@ -317,9 +317,9 @@ th,td{
 		            			<tr>	
 		           					<c:choose>
 		           					
-		           						<c:when test="${result.sysGb eq '합계'}">
-		            						<td align="center" class="lineStyle2"><c:out value="${result.sysGb}"/></td>            					
-											<td align="center" class="lineStyle2"><c:out value="${result.taskGb}"/></td>
+		           						<c:when test="${result.sysNm eq '합계'}">
+		            						<td align="center" class="lineStyle2"><c:out value="${result.sysNm}"/></td>            					
+											<td align="center" class="lineStyle2"><c:out value="${result.taskNm}"/></td>
 				            				<td align="center" class="lineStyle2"><c:out value="${result.tcWriteYCnt}"/></td> 
 				            				<td align="center" class="lineStyle2"><c:out value="${result.notTestCnt}"/></td>
 				            				<td align="center" class="lineStyle2"><c:out value="${result.firstTestCnt}"/></td>
@@ -333,9 +333,9 @@ th,td{
 		           						
 		         						<c:otherwise>
 			            					<c:choose>
-			            						<c:when test="${result.taskGb eq '소계'}">
-				            						<td align="center" class="lineStyle"><c:out value="${result.sysGb}"/></td>            					
-													<td align="center" class="lineStyle"><c:out value="${result.taskGb}"/></td>
+			            						<c:when test="${result.taskNm eq '소계'}">
+				            						<td align="center" class="lineStyle"><c:out value="${result.sysNm}"/></td>            					
+													<td align="center" class="lineStyle"><c:out value="${result.taskNm}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.tcWriteYCnt}"/></td> 
 						            				<td align="center" class="lineStyle"><c:out value="${result.notTestCnt}"/></td>
 						            				<td align="center" class="lineStyle"><c:out value="${result.firstTestCnt}"/></td>
@@ -348,8 +348,8 @@ th,td{
 			           							</c:when>
 			            						
 			            						<c:otherwise>
-				            						<td align="center" ><c:out value="${result.sysGb}"/></td>            					
-				            						<td align="center" ><c:out value="${result.taskGb}"/></td>
+				            						<td align="center" ><c:out value="${result.sysNm}"/></td>            					
+				            						<td align="center" ><c:out value="${result.taskNm}"/></td>
 						            				<td align="center" ><c:out value="${result.tcWriteYCnt}"/></td> 
 						            				<td align="center" ><c:out value="${result.notTestCnt}"/></td>
 						            				<td align="center" ><c:out value="${result.firstTestCnt}"/></td>

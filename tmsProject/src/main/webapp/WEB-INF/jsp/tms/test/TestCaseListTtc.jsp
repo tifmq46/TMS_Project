@@ -324,11 +324,11 @@ function fDeleteMenuList() {
 	             		 <colgroup>
 	             		 	<col width="4%" >
 	             		 	<col width="4%"/>
-	        				<col width="9%"/> 
-	        				<col width="38%"/>
+	        				<col width="12%"/> 
+	        				<col width="39%"/>
 	        				<col width="6%"/>
-	        				<col width="9%"/>
-	        				<col width="9%"/>
+	        				<col width="7%"/>
+	        				<col width="7%"/>
 	        				<col width="5%"/>
 	        				<col width="5%"/>
 	        				<col width="6%"/>

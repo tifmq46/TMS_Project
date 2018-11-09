@@ -207,8 +207,8 @@ public class TestDAO extends EgovAbstractDAO{
 	 * @return List<?>
 	 * @exception Exception
 	 */
-	public List<?> selectTestCaseStatsListByTaskGb(String sysNm) throws Exception {
-		return  list("TestDAO.selectTestCaseStatsListByTaskGb", sysNm);
+	public List<?> selectTestCaseStatsListByTaskGb(TestDefaultVO searchVO) throws Exception {
+		return  list("TestDAO.selectTestCaseStatsListByTaskGb", searchVO);
 	}
 	
 	
@@ -218,8 +218,8 @@ public class TestDAO extends EgovAbstractDAO{
 	 * @return List<?>
 	 * @exception Exception
 	 */
-	public List<?> selectTestCaseStatsListBySysGb() throws Exception {
-		return  list("TestDAO.selectTestCaseStatsListBySysGb");
+	public List<?> selectTestCaseStatsListBySysGb(TestDefaultVO searchVO) throws Exception {
+		return  list("TestDAO.selectTestCaseStatsListBySysGb", searchVO);
 	}
 	
 	
