@@ -65,6 +65,12 @@ public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
 	/** recordCountPerPage */
 	private int recordCountPerPage = 10;
 	
+	/** 로그인 권한ID(ESNTL_ID)*/
+	private String uniqId;
+	
+	/** 로그인ID(세션)-사용자Id*/
+	private String Id;
+	
 	/** 로그인ID(세션)*/
 	private String sessionId;
 	
@@ -238,5 +244,19 @@ public class DevPlanDefaultVO extends DevPlanVO implements Serializable{
 	public void setExcelOpt(String excelOpt) {
 		this.excelOpt = excelOpt;
 	}
+	public String getUniqId() {
+		return uniqId;
+	}
 
+	public void setUniqId(String uniqId) {
+		this.uniqId = uniqId;
+	}
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		this.Id = id;
+	}
 }

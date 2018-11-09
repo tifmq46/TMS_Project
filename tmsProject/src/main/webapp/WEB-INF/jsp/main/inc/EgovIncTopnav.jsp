@@ -64,7 +64,7 @@
 <div class="nav_container" style="padding:0 20px; font-family:'Malgun Gothic';">
 	<ul>
 	    <a href="<c:url value='/'/>uat/uia/actionMain.do" style="float:left; border-right:1px solid rgba(0, 0, 0, 0.21); padding-top:15px; padding-bottom:16px; padding-left:18px;" >
-		    <strong style="font-size:15px; text-shadow:0 1px 0 #000000; margin-right:90px;">KCC TMS</strong>
+		    <strong style="font-size:14.25px; text-shadow:0 1px 0 #000000; margin-right:90px;">KCC TMS</strong>
 		    <i style="padding-top:5px; padding-bottom:5px; padding-left:5px;" class="icon-reorder"></i>
 	    </a>
 		<c:forEach var="result" items="${list_headmenu}" varStatus="status">

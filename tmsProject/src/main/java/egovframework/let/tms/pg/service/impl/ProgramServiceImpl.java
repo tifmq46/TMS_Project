@@ -43,6 +43,12 @@ public class ProgramServiceImpl extends EgovAbstractServiceImpl implements Progr
 	}
 
 	@Override
+	public void insertExcelPg(ProgramVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		ProgramDAO.insertExcelPg(vo);
+	}	
+	
+	@Override
 	public void updatePg(ProgramVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		ProgramDAO.updatePg(vo);

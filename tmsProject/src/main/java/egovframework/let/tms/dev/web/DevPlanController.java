@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -105,6 +106,9 @@ public class DevPlanController {
 	public String selectDevPlans(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
 		
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		searchVO.setSessionId(user.getName());
+		searchVO.setUniqId(user.getUniqId());
+		searchVO.setId(user.getId());
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
 		searchVO.setSessionId(user.getName());
@@ -289,6 +293,9 @@ public class DevPlanController {
 	public String selectDevResultList(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
 		
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		searchVO.setSessionId(user.getName());
+		searchVO.setUniqId(user.getUniqId());
+		searchVO.setId(user.getId());
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
 		searchVO.setSessionId(user.getName());
@@ -1218,7 +1225,9 @@ public class DevPlanController {
         int fSize = (int) uFile.length();
         if (fSize > 0) {  //파일 사이즈가 0보다 클 경우 다운로드
          String mimetype = "application/x-msdownload";  //minetype은 파일확장자에 맞게 설정
-         response.setHeader("Content-Disposition", "attachment; filename=\"devStats.xlsx\"");
+         String fileName = "개발진척통계.xlsx"; //리퀘스트로 넘어온 파일명
+		 String docName = URLEncoder.encode(fileName,"UTF-8"); // UTF-8로 인코딩			
+		 response.setHeader("Content-Disposition", "attachment;filename=" + docName + ";"); 
          response.setContentType(mimetype);
          response.setContentLength(fSize);
          BufferedInputStream in = null;

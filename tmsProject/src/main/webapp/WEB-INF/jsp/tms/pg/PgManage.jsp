@@ -139,8 +139,12 @@ $(function(){
 						         type:"POST",
 						         url: "<c:url value='/tms/pg/deleteListAction.do?returnValue="+returnValue+"'/>",
 						         success : function(){
-						        	location.reload();
-						        	swal("정상적으로 삭제되었습니다.");
+						        	//location.reload();
+						        	//swal("정상적으로 삭제되었습니다.");
+						        	swal("정상적으로 삭제되었습니다.")
+									.then((value) => {
+										location.reload();
+									});
 						         },
 						         error : function(request,status,error){
 						            swal("삭제할 수 없습니다.");

@@ -14,6 +14,8 @@ public interface ProgramService {
 	 */
 	void insertPg(ProgramVO vo) throws Exception;
 
+	void insertExcelPg(ProgramVO vo) throws Exception;
+	
 	/**
 	 * 개발계획을 수정한다.
 	 * @param vo - 수정할 정보가 담긴 DevPlanVO

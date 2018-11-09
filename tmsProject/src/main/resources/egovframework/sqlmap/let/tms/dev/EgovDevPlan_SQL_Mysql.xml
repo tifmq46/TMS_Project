@@ -37,9 +37,8 @@
 			where USE_YN ='Y')AS C
 					WHERE 1=1
 			]]>
-			
-			<isNotEqual property="sessionId" compareValue="관리자">
-			    AND USER_DEV_ID = #sessionId#
+			<isNotEqual property="uniqId" compareValue="USRCNFRM_00000000000">
+				AND USER_DEV_ID = #id#
 			</isNotEqual>
 			
             <!-- 시스템구분으로 검색 -->
@@ -95,8 +94,8 @@
 					WHERE 1=1
 			]]>
 			
-			<isNotEqual property="sessionId" compareValue="관리자">
-			    AND USER_DEV_ID = #sessionId#
+			<isNotEqual property="uniqId" compareValue="USRCNFRM_00000000000">
+				AND USER_DEV_ID = #id#
 			</isNotEqual>
 			
 			<!-- 개발자명으로 검색 -->
@@ -172,8 +171,8 @@
 					WHERE 1=1 
 			]]>
 			
-			<isNotEqual property="sessionId" compareValue="관리자">
-			    AND USER_DEV_ID = #sessionId#
+			<isNotEqual property="uniqId" compareValue="USRCNFRM_00000000000">
+				AND USER_DEV_ID = #id#
 			</isNotEqual>
 			
 			<!-- 시스템구분으로 검색 -->
@@ -226,8 +225,8 @@
 		  		WHERE 1=1
 			]]>
 			
-			<isNotEqual property="sessionId" compareValue="관리자">
-			    AND USER_DEV_ID = #sessionId#
+			<isNotEqual property="uniqId" compareValue="USRCNFRM_00000000000">
+				AND USER_DEV_ID = #id#
 			</isNotEqual>
 			
 			<!-- 개발자명으로 검색 -->
