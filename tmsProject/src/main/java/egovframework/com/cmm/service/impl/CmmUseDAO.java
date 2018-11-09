@@ -38,6 +38,11 @@ public class CmmUseDAO extends EgovComAbstractDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<CmmnDetailCode> selectCmmCodeDetail2(ComDefaultCodeVO vo) throws Exception {
+		return (List<CmmnDetailCode>) list("CmmUseDAO.selectCmmCodeDetail2", vo);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<CmmnDetailCode> selectCmmCodeDetailDistinctCodeNm(ComDefaultCodeVO vo) throws Exception {
 		return (List<CmmnDetailCode>) list("CmmUseDAO.selectCmmCodeDetailDistinctCodeNm", vo);
 	}

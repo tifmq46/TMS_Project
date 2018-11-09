@@ -42,6 +42,12 @@ public class TmsLoginServiceImpl extends EgovAbstractServiceImpl implements TmsL
 	}
 
 	@Override
+	public String searchName(TmsLoginVO tmsLoginVO) throws Exception {
+		// TODO Auto-generated method stub
+		return tmsLoginDAO.searchName(tmsLoginVO);
+	}
+	
+	@Override
 	public Object addUsr(TmsLoginVO tmsloginVO) {
 		// TODO Auto-generated method stub
 		tmsLoginDAO.addUsr(tmsloginVO);

@@ -48,6 +48,10 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
 		return cmmUseDAO.selectCmmCodeDetail(vo);
 	}
 
+	@Override
+	public List<CmmnDetailCode> selectCmmCodeDetail2(ComDefaultCodeVO vo) throws Exception {
+		return cmmUseDAO.selectCmmCodeDetail2(vo);
+	}
 	
 	/**
 	 * 공통코드(코드이름 중복 제외 )를 조회한다.

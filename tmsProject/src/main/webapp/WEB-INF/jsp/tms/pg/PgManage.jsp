@@ -394,10 +394,6 @@ $(function(){
                     <div id="search_field_loc" >
                     <h2><strong>프로그램 관리</strong></h2></div>
 					
-						<input type="hidden" id="del" name="del" value="fncManageChecked()" />
-						<input type="hidden" id="fon" name="fon" />
-                        <input type="submit" value="실행" onclick="fn_egov_select_noticeList('1'); return false;" id="invisible" class="invisible" />
-                        
                          <fieldset><legend>조건정보 영역</legend>     
                   			  <div class="sf_start">
 							<table style="width:100%;padding-bottom:10px;padding-left:10px;padding-top:10px;">
@@ -501,6 +497,11 @@ $(function(){
 				<input id="TmsProgrmFileNm_pg_full" type="hidden" />
 				<input id="TmsProgrmFileNm_task_gb_code" type="hidden" />
 				<input id="cnt" type="hidden" />
+				
+				<input type="hidden" id="del" name="del" value="fncManageChecked()" />
+				<input type="hidden" id="fon" name="fon" />
+                <input type="submit" value="실행" onclick="fn_egov_select_noticeList('1'); return false;" id="invisible" class="invisible" />
+				
                 	<!-- //검색 필드 박스 끝 -->
 
 

@@ -191,7 +191,21 @@ public class EgovLoginController {
 			 return "have";
 		 }
 	    }
+	
+	@RequestMapping(value="/uat/uia/checkName.do")
+	@ResponseBody
+	public String checkName(@ModelAttribute("TmsLoginVO") TmsLoginVO TmsloginVO, String EMPLYR_ID, ModelMap model) throws Exception {
 	 
+		 TmsloginVO.setEMPLYR_ID(EMPLYR_ID);
+		 String Id = tmsLoginService.searchName(TmsloginVO);
+		 System.out.println("확인 : "+Id);
+		 if(Id==null)
+		 {
+			 return "notHave";
+		 }else{
+			 return "have";
+		 }
+	    }
 	 
 }
 

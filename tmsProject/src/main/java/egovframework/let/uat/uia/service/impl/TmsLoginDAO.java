@@ -32,6 +32,11 @@ public class TmsLoginDAO extends EgovAbstractDAO {
 		String a = (String) select("TmsLoginDAO.searchId", tmsLoginVO);
 		return a;
 	}
+	
+	public String searchName(TmsLoginVO tmsLoginVO) throws Exception{
+		String a = (String) select("TmsLoginDAO.searchName", tmsLoginVO);
+		return a;
+	}
 
 	public Object addUsr(TmsLoginVO tmsloginVO) {
 		// TODO Auto-generated method stub

@@ -74,6 +74,10 @@ ul.tabs li.last {
 	display: inherit;
 	border: 1px solid #fff;
 }
+.cor:hover{
+	background-color: #CCCCFF;
+}
+
 </style>
 </head>
 <body>
@@ -513,35 +517,35 @@ function a2(){
     				<table class="table table-search-head table-size-th4" style="height:215px; font-family:'Malgun Gothic';">
     					<tbody>
     						 <tr class="last">
-    							<th style="font-weight:bold;color:#0F438A;font-size:110%;">프로젝트명</th>
+    							<th align="right" style="font-weight:bold;color:#0F438A;font-size:110%;">프로젝트명</th>
     							<td colspan="4" id="empName" name="empName" align="left" style="font-size:110%; padding-left:60px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" valign="middle"><strong>${tmsProjectManageVO.pjtNm}</strong></td>
     						</tr>
     						<tr class="last">
-    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">사업유형</th>
+    						    <th align="right" style="font-weight:bold;color:#0F438A;font-size:110%;">사업유형</th>
     						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtType}</td>
-    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">사업상태</th>
+    						    <th align="right" style="font-weight:bold;color:#0F438A;font-size:110%;">사업상태</th>
     						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtSt}</td>
     						</tr>
     						<tr class="last">
-    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">PM</th>
+    						    <th align="right" style="font-weight:bold;color:#0F438A;font-size:110%;">PM</th>
     						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle">${tmsProjectManageVO.pjtPm}</td>
-    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">사업비</th>
+    						    <th align="right" style="font-weight:bold;color:#0F438A;font-size:110%;">사업비</th>
     						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle"><fmt:formatNumber value="${tmsProjectManageVO.pjtPrice}" pattern="#,###"/>원</td>
     						</tr>
     						<tr class="last">
-    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">사업시작일</th>
+    						    <th align="right" style="font-weight:bold;color:#0F438A;font-size:110%;">사업시작일</th>
     						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.pjtStartDt}" pattern="yyyy-MM-dd" /></td>
-    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">사업종료일</th>
+    						    <th align="right" style="font-weight:bold;color:#0F438A;font-size:110%;">사업종료일</th>
     						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.pjtEndDt}" pattern="yyyy-MM-dd" /></td>
     						</tr>
     						<tr class="last">
-    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">개발시작일</th>
+    						    <th align="right" style="font-weight:bold;color:#0F438A;font-size:110%;">개발시작일</th>
     						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.devStartDt}" pattern="yyyy-MM-dd" /></td>
-    						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">개발종료일</th>
+    						    <th align="right" style="font-weight:bold;color:#0F438A;font-size:110%;">개발종료일</th>
     						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.devEndDt}" pattern="yyyy-MM-dd" /></td>
     						</tr>
     						<tr class="last">
-    							<th style="font-weight:bold;color:#0F438A;font-size:110%;">프로젝트</br>설명</th>
+    							<th align="right" style="font-weight:bold;color:#0F438A;font-size:110%;">프로젝트</br>설명</th>
     							<td colspan="4" id="empName" name="empName" align="left" title="<c:out value='${tmsProjectManageVO.pjtContent}'/>" style="font-size:110%; padding-left:60px;
     							 white-space:nowrap; overflow:hidden;	text-overflow:ellipsis;" valign="middle">${tmsProjectManageVO.pjtContent}</td>
     						</tr>
@@ -585,7 +589,7 @@ function a2(){
 			                   
 			             <c:forEach var="stats" items="${userDevByDevStats}" varStatus="status">
 			            <!-- loop 시작 -->                                
-			              <tr>
+			              <tr class="cor">
 						    <td id="icl" nowrap="nowrap"  style="font-weight:bold;color:#0F438A;font-size:110%;" title="${stats.userId }"><i class="icon-user" style="font-size: 2em; color: rgb(80, 80, 80)" ></i>　<c:out value="${stats.userNm}"/></td>
 						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${stats.totCnt }"/></td>
 						    <td nowrap="nowrap" style="font-size:110%;"><c:out value="${stats.s1 }"/></td>
