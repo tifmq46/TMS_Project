@@ -1301,16 +1301,16 @@ public class TestController {
 			row = sheet.createRow(i + 2);
 
 			cell = row.createCell(0);
-			cell.setCellValue((String) recode.get("sysGb"));
-			if(((String) recode.get("taskGb")).equals("소계")) {
+			cell.setCellValue((String) recode.get("sysNm"));
+			if(((String) recode.get("taskNm")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
 			}else {
 				cell.setCellStyle(BodyStyle); // 본문스타일
 			}
 
 			cell = row.createCell(1);
-			cell.setCellValue((String) recode.get("taskGb"));
-			if(((String) recode.get("taskGb")).equals("소계")) {
+			cell.setCellValue((String) recode.get("taskNm"));
+			if(((String) recode.get("taskNm")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
 			}else {
 				cell.setCellStyle(BodyStyle); // 본문스타일
@@ -1318,7 +1318,7 @@ public class TestController {
 			
 			cell = row.createCell(2);
 			cell.setCellValue(String.valueOf(recode.get("tcWriteYCnt")));
-			if(((String) recode.get("taskGb")).equals("소계")) {
+			if(((String) recode.get("taskNm")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
 			}else {
 				cell.setCellStyle(BodyStyle); // 본문스타일
@@ -1326,7 +1326,7 @@ public class TestController {
 
 			cell = row.createCell(3);
 			cell.setCellValue(String.valueOf(recode.get("notTestCnt")));
-			if(((String) recode.get("taskGb")).equals("소계")) {
+			if(((String) recode.get("taskNm")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
 			}else {
 				cell.setCellStyle(BodyStyle); // 본문스타일
@@ -1334,7 +1334,7 @@ public class TestController {
 
 			cell = row.createCell(4);
 			cell.setCellValue(String.valueOf(recode.get("firstTestCnt")));
-			if(((String) recode.get("taskGb")).equals("소계")) {
+			if(((String) recode.get("taskNm")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
 			}else {
 				cell.setCellStyle(BodyStyle); // 본문스타일
@@ -1342,7 +1342,7 @@ public class TestController {
 
 			cell = row.createCell(5);
 			cell.setCellValue(String.valueOf(recode.get("secondTestCnt")));
-			if(((String) recode.get("taskGb")).equals("소계")) {
+			if(((String) recode.get("taskNm")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
 			}else {
 				cell.setCellStyle(BodyStyle); // 본문스타일
@@ -1350,7 +1350,7 @@ public class TestController {
 
 			cell = row.createCell(6);
 			cell.setCellValue(String.valueOf(recode.get("tcProgressPct")));
-			if(((String) recode.get("taskGb")).equals("소계")) {
+			if(((String) recode.get("taskNm")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
 			}else {
 				cell.setCellStyle(BodyStyle); // 본문스타일
@@ -1358,7 +1358,7 @@ public class TestController {
 
 			cell = row.createCell(7);
 			cell.setCellValue(String.valueOf(recode.get("tcWriteYCnt")));
-			if(((String) recode.get("taskGb")).equals("소계")) {
+			if(((String) recode.get("taskNm")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
 			}else {
 				cell.setCellStyle(BodyStyle); // 본문스타일
@@ -1366,7 +1366,7 @@ public class TestController {
 			
 			cell = row.createCell(8);
 			cell.setCellValue(String.valueOf(recode.get("tcResultYCnt")));
-			if(((String) recode.get("taskGb")).equals("소계")) {
+			if(((String) recode.get("taskNm")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
 			}else {
 				cell.setCellStyle(BodyStyle); // 본문스타일
@@ -1374,7 +1374,7 @@ public class TestController {
 
 			cell = row.createCell(9);
 			cell.setCellValue(String.valueOf(recode.get("tcResultNCnt")));
-			if(((String) recode.get("taskGb")).equals("소계")) {
+			if(((String) recode.get("taskNm")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
 			}else {
 				cell.setCellStyle(BodyStyle); // 본문스타일
@@ -1382,7 +1382,7 @@ public class TestController {
 
 			cell = row.createCell(10);
 			cell.setCellValue(String.valueOf(recode.get("tcResultPct")));
-			if(((String) recode.get("taskGb")).equals("소계")) {
+			if(((String) recode.get("taskNm")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
 			}else {
 				cell.setCellStyle(BodyStyle); // 본문스타일
