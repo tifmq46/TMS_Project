@@ -251,7 +251,7 @@ function fn_result_regist(t){
 	var id = document.listForm.TmsProgrmFileNm_pg_id.value;
 
 	if(rate == null || rate == ""){
-		alert("달성률을 입력해주십시오.");
+		alert("완료율을 입력해주십시오.");
 	}else{
 		location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1+"&achievementRate="+rate+"&flag="+flag
 				+"&pageIndex="+page+"&searchByPgId="+id+"&searchBySysGb="+sys+"&searchByTaskGb="+task
@@ -265,6 +265,12 @@ function fn_searchList(pageNo){
     document.listForm.searchByTaskGb.value = document.listForm.task.value;
     document.listForm.action = "<c:url value='/tms/dev/devResultList.do'/>";
     document.listForm.submit();
+}
+
+function clickEvent(i){
+	$('#'+i.id).removeAttr("readonly");
+	$('#'+i.id).css("border","1");
+	$('#'+i.id).css("text-align","left");
 }
 
 $(function(){
@@ -299,6 +305,11 @@ $(function(){
 }
 </script>
 <style>
+
+input[type=date]{
+	text-align: center;
+}
+
 .disabled {
        pointer-events:none;
        opacity:0.5;
@@ -354,7 +365,7 @@ $(function(){
                   			  <col width="7%"/> 
                   			  <col width="14.4%"/> 
                   			  <col width="7%"/> 
-                  			  <col width="14.4%"/> 
+                  			  <col width="17%"/> 
                   			  <col width="7%"/> 
                   			  <col width="14.4%"/> 
                   			  <col width="14.4%"/>
@@ -381,7 +392,7 @@ $(function(){
       			        		<td style="font-weight:bold;color:#666666;font-size:110%;">업무구분
       			        		</td>
       			        		<td>
-      			        		<select name="task" id="task" style="width:90%;text-align-last:center;">
+      			        		<select name="task" id="task" style="width:77%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 									   <c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
 									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
@@ -423,7 +434,7 @@ $(function(){
 								<input type="date" id="searchByDevStartDt" name="searchByDevStartDt" 
 									value="<fmt:formatDate value="${searchVO.searchByDevStartDt}" pattern="yyyy-MM-dd"/>"/>
 								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-					  			&nbsp;~&nbsp;
+					  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font size="3px">~</font></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					  			<input type="date" id="searchByDevEndDt" name="searchByDevEndDt" 
 					  				value="<fmt:formatDate value="${searchVO.searchByDevEndDt}" pattern="yyyy-MM-dd"/>"/>
 					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
@@ -488,21 +499,34 @@ $(function(){
         			
             			<tr>
             				<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            				<td align="left" class="listtd">
+            				<td align="left" class="listtd" title="<c:out value="${result.PG_ID}"/>">
                                 <c:out value="${result.PG_ID}"/>
                                 <input type="hidden" id="pgId" name="pgId" value='<c:out value="${result.PG_ID}"/>' >
                             </td>
-            				<td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
+            				<td align="left" class="listtd" style="padding-left:5px;" title="<c:out value="${result.PG_NM}"/>"><c:out value="${result.PG_NM}"/>&nbsp;</td>
             				<td align="center" class="listtd" name="sys"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd" title="<c:out value="${result.USER_DEV_ID}"/>"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_START_DT}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.PLAN_END_DT}"/>&nbsp;</td>
             				
-            				<td><input type="date"  id="${result.PG_ID}" onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.DEV_START_DT}" pattern="yyyy-MM-dd" />" style="width:120px;"/>
-                            <img src="images/calendar.gif"  width="19" height="19" alt="" /></td>
-                            <td><input type="date"  id="${result.PG_ID}1" onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.DEV_END_DT}" pattern="yyyy-MM-dd" />" style="width:120px;"/>
-                            <img src="images/calendar.gif" width="19" height="19" alt="" /></td>
+            				 <c:choose>
+		            		  	<c:when test="${result.DEV_START_DT ne null}">
+	            					<td><input type="date"  id="${result.PG_ID}" readOnly style="border:0; text-align:right; width:120px;" onclick="clickEvent(this)" onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.DEV_START_DT}" pattern="yyyy-MM-dd" />"/></td>
+	                            </c:when>
+	                            <c:otherwise>
+	                            	<td><input type="date"  id="${result.PG_ID}" onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.DEV_START_DT}" pattern="yyyy-MM-dd" />" style="width:120px;"/></td>
+	                            </c:otherwise>
+                            </c:choose>
+                            
+                             <c:choose>
+		            		  	<c:when test="${result.DEV_END_DT ne null}">
+                            		<td><input type="date"  id="${result.PG_ID}1" readOnly style="border:0; text-align:right; width:120px;" onclick="clickEvent(this)" onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.DEV_END_DT}" pattern="yyyy-MM-dd" />"/></td>
+            					</c:when>
+            					<c:otherwise>
+	                            	<td><input type="date"  id="${result.PG_ID}1" onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.DEV_END_DT}" pattern="yyyy-MM-dd" />" style="width:120px;"/></td>
+	                            </c:otherwise>
+            				</c:choose>
             				
             				<c:choose>
 	            				<c:when test="${result.ACHIEVEMENT_RATE eq 100 || result.ACHIEVEMENT_RATE eq 0}" >
