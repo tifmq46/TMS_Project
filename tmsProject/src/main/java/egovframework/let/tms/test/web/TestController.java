@@ -519,7 +519,7 @@ public class TestController {
 		model.addAttribute("sysGbCode", codeResult);
 
 		vo.setCodeId("RESULTYN"); //완료여부
-		codeResult = egovCmmUseService.selectCmmCodeDetail(vo);
+		codeResult = egovCmmUseService.selectCmmCodeDetail2(vo);
 		model.addAttribute("resultYnCode", codeResult);
 
 		// 테스트케이스 구분에 따른 jsp페이지 설정(단위/통합)
@@ -580,7 +580,7 @@ public class TestController {
 		model.addAttribute("sysGbCode", codeResult);
 
 		vo.setCodeId("RESULTYN"); //완료여부
-		codeResult = egovCmmUseService.selectCmmCodeDetail(vo);
+		codeResult = egovCmmUseService.selectCmmCodeDetail2(vo);
 		model.addAttribute("resultYnCode", codeResult);
 
 		// 테스트케이스 구분에 따른 jsp페이지 설정(단위/통합)
@@ -642,7 +642,7 @@ public class TestController {
 		model.addAttribute("sysGbCode", codeResult);
 
 		vo.setCodeId("RESULTYN"); //완료여부
-		codeResult = egovCmmUseService.selectCmmCodeDetail(vo);
+		codeResult = egovCmmUseService.selectCmmCodeDetail2(vo);
 		model.addAttribute("resultYnCode", codeResult);
 
 		// 테스트케이스 구분에 따른 jsp페이지 설정(단위/통합)
@@ -776,7 +776,7 @@ public class TestController {
 		model.addAttribute("tcGbCode", codeResult);
 
 		vo.setCodeId("RESULTYN"); // '완료여부'
-		codeResult = egovCmmUseService.selectCmmCodeDetail(vo);
+		codeResult = egovCmmUseService.selectCmmCodeDetail2(vo);
 		model.addAttribute("resultYnCode", codeResult);
 
 		// 테스트 현황 목록 가져오기
@@ -870,7 +870,7 @@ public class TestController {
 		if (isAuthenticated) {
 			searchVO.setExcel(true);
 			List<?> testCurrent = testService.selectTestCurrent(searchVO);
-			testCurrentXlsxWriter(testCurrent, searchVO.getAsOf() ,response);
+			testCurrentXlsxWriter(testCurrent, searchVO.getAsOf() , searchVO.getTestcaseGb(), response);
 		}
 		return "redirect:/tms/test/selectTestCurrent.do";
 	}
@@ -884,7 +884,7 @@ public class TestController {
 	 * @return void
 	 * @throws Exception
 	 */
-	public void testCurrentXlsxWriter(List<?> list, String asOf, HttpServletResponse response) throws Exception {
+	public void testCurrentXlsxWriter(List<?> list, String asOf, String testcaseGb, HttpServletResponse response) throws Exception {
 
 		// 워크북 생성
 		XSSFWorkbook workbook = new XSSFWorkbook();
@@ -1107,7 +1107,9 @@ public class TestController {
 		if (fSize > 0) { // 파일 사이즈가 0보다 클 경우 다운로드
 			String mimetype = "application/x-msdownload"; // minetype은 파일확장자에 맞게
 															// 설정
-			response.setHeader("Content-Disposition", "attachment; filename=\"TMS.xlsx\"");
+			String fileName = "테스트현황.xlsx"; //리퀘스트로 넘어온 파일명
+			String docName = URLEncoder.encode(fileName,"UTF-8"); // UTF-8로 인코딩			
+			response.setHeader("Content-Disposition", "attachment;filename=" + docName + ";"); 
 			response.setContentType(mimetype);
 			response.setContentLength(fSize);
 			BufferedInputStream in = null;

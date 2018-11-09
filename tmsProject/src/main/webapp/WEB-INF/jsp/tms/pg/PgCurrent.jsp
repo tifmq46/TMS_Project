@@ -195,7 +195,7 @@
                   			  <div class="sf_start">
 							<table style="width:100%;padding-bottom:10px;padding-left:10px;padding-top:10px;">
                     		<colgroup>
-                  			  <col width="7%"/> 
+                  			  <col width="9%"/> 
                   			  <col width="14.4%"/> 
                   			  <col width="7%"/> 
                   			  <col width="14.4%"/> 

@@ -51,6 +51,14 @@ function checkForm() {
 				message += "\n아이디가 중복되었습니다.";
 			}
 		}
+		if($('#result2').html() == '중복된 이름입니다.'){
+			if(message == "") {
+				message += "이름이 중복되었습니다.";
+			}
+			else {
+				message += "\n이름이 중복되었습니다.";
+			}
+		}
 		if($('#PASSWORD').val() != $('#CONFIRM_PASSWORD').val()){
 			if(message == "") {
 				message += "비밀번호가 일치하지 않습니다.";
@@ -61,10 +69,10 @@ function checkForm() {
 		}
 		
 		if(message == "") {
-			alert("저장되었습니다.");
+			swal("저장되었습니다.");
 			document.TmsLoginVO.submit();
 		} else{
-			alert(message);
+			swal(message);
 		}
 	}
 }
@@ -110,6 +118,29 @@ $(document).on('keyup','#EMPLYR_ID',function(){
 				}
 			})
 		}
+});
+
+$(document).on('keyup','#USER_NM',function(){
+	
+			$.ajax({
+				data : {USER_NM : this.value},
+				url : "<c:url value='/uat/uia/checkName.do'/>",
+				success : function(Id){
+					if(Id == "notHave")
+						{
+							$("#result2").css('color','blue');
+							$("#result2").text("사용가능한 이름입니다.");
+						}
+					else
+						{
+							$("#result2").css('color','red');
+							$("#result2").text("중복된 이름입니다.");
+						}
+								
+					
+				}
+			})
+		
 });
 			
 </script>
@@ -158,6 +189,7 @@ $(document).on('keyup','#EMPLYR_ID',function(){
 						    <td width="50%" nowrap="nowrap">
 						      &nbsp;
 						      <input id="USER_NM" name="USER_NM" style="width:25%;" size="20"  maxlength="20" title="회원이름" />
+						      <span style="padding-left:10px;"id="result2"></span>
 						    	<form:errors path="USER_NM" />
 						    </td>
 						  </tr>  

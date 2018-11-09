@@ -24,6 +24,8 @@ import egovframework.com.cmm.TmsLoginVO;
 public interface TmsLoginService {
 	
 	String searchId(TmsLoginVO tmsloginVO) throws Exception;
+	
+	String searchName(TmsLoginVO tmsloginVO) throws Exception;
 
 	Object addUsr(TmsLoginVO tmsloginVO);
 	

@@ -299,6 +299,19 @@ public class ProgramController {
 		
 	}
 	
+	@RequestMapping(value = "/tms/pg/checkPgIdDuplication.do")
+	@ResponseBody
+	public boolean checkPgIdDuplication(@RequestParam("PgId") String pgId, ModelMap model) throws Exception {
+		
+		ProgramVO searchVO = new ProgramVO();
+		searchVO.setPgId(pgId);
+		List<?> PgList = ProgramService.selectPgList(searchVO);
+		//HashMap<String, Object> testVoMap = testService.selectTestCase(pgId);
+		//테스크케이스Id 중복시 false
+		if(PgList != null) {return false;}
+		else {return true;}
+	}
+	
 	/**
 	 * 프로그램 정보를 수정한다.	 
 	 */	

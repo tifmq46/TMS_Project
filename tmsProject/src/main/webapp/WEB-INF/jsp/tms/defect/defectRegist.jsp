@@ -33,7 +33,7 @@
 <script type="text/javascript" src="<c:url value='/js/showModalDialog.js'/>" ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/sweetswal/dist/sweetswal.min.js"></script>
 <script type="text/javascript" language="javascript" defer="defer">
 
 	function fn_egov_insert_addDefectImpl() {
@@ -42,19 +42,29 @@
 		} else {
 			var fileLength = document.getElementById('fileImg').files.length;
 			if (fileLength == 0) {
-				alert("저장되었습니다.");
-				document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
-				document.defectVO.submit();
+				swal({
+		   			text: '저장되었습니다.'
+		   			,buttons : true
+		   		})
+		   		.then((result) => {
+		   			ocument.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
+					document.defectVO.submit();		   			
+		   		});
 			} else {
 				var fileName = document.getElementById('fileImg').value;
 				var strArray = fileName.split('.');
 				if (strArray[1] != "jpg" && strArray[1] != "jpeg" && strArray[1] != "png"
 						&& strArray[1] != "JPG" && strArray[1] != "JPEG" && strArray[1] != "PNG") {
-					alert(strArray[1] + " 형식의 파일은 허용하지 않습니다.");
+					swal(strArray[1] + " 형식의 파일은 허용하지 않습니다.");
 				} else {
-					alert("저장되었습니다.");
-					document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
-					document.defectVO.submit();
+					swal({
+			   			text: '저장되었습니다.'
+			   			,buttons : true
+			   		})
+			   		.then((result) => {
+			   			document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
+						document.defectVO.submit();	   			
+			   		});
 				}
 			}
 		}
@@ -66,7 +76,7 @@
 	}
 
 	function pgIdSearch(){
-		alert("화면ID를 검색하십시오.");
+		swal("화면ID를 검색하십시오.");
 	}
 
 	<!--

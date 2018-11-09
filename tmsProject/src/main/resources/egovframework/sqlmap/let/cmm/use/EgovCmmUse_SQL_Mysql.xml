@@ -23,6 +23,21 @@
 			USE_AT = 'Y'
 			AND CODE_ID = #codeId#
 		]]>
+		
+	</select>
+	
+	<select id="CmmUseDAO.selectCmmCodeDetail2" parameterClass="ComDefaultCodeVO" resultMap="CmmCodeDetail">
+		<![CDATA[ 
+			SELECT 
+			CODE_ID, CODE, CODE_NM, CODE_DC
+			FROM 
+			LETTCCMMNDETAILCODE
+			WHERE
+			USE_AT = 'Y'
+			AND CODE_ID = #codeId#
+			ORDER BY CODE DESC
+		]]>
+		
 	</select>
 	
 	<select id="CmmUseDAO.selectCmmCodeDetailDistinctCodeNm" parameterClass="ComDefaultCodeVO" resultMap="CmmCodeDetail">

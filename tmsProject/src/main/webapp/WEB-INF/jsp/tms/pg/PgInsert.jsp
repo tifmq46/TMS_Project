@@ -46,12 +46,37 @@
    			,buttons : true
    		})
    		.then((result) => {
-   			if(result) {
-   				document.programVO.action = "<c:url value='/tms/pg/Pginsert.do'/>";
-   		        document.programVO.submit(); 
-   			}else {
-   					
-   			}
+   			
+   			$.ajax({
+			   	 type :"POST"
+			   	,url  : "<c:url value='/tms/pg/checkPgIdDuplication.do'/>"
+			   	,dataType : "json"
+			   	,data : {PgId:document.programVO.pgId.value}
+			   	,success :  function(result2){
+			   		
+			   		if(!result2){
+			   			swal("중복된 화면ID 입니다.")
+			   		} else {
+			   			if(result) {
+			   				document.programVO.action = "<c:url value='/tms/pg/Pginsert.do'/>";
+			   		        document.programVO.submit(); 
+			   			}else {
+			   					
+			   			}
+			   			
+			   			
+			   		}
+			   	}
+			   	, error :  function(request,status,error){
+			   		 swal("에러");
+				         swal("code:"+request.status+"\n"+"error:"+error);
+			   	}
+			   		
+			   });
+   			
+   			
+   			
+   			
    		});
     
 	}

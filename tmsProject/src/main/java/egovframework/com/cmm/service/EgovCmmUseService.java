@@ -35,6 +35,8 @@ public interface EgovCmmUseService {
      */
     public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO vo) throws Exception;
     
+    public List<CmmnDetailCode> selectCmmCodeDetail2(ComDefaultCodeVO vo) throws Exception;
+    
     /**
      * 공통코드를(코드 이름 중복제외) 조회한다.
      *

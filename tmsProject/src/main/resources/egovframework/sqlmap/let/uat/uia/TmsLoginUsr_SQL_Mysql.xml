@@ -15,6 +15,14 @@
 			]]>
 	</select>
 	
+	<select id="TmsLoginDAO.searchName" parameterClass="TmsloginVO" resultClass="String">
+			<![CDATA[
+            SELECT USER_NM
+              FROM LETTNEMPLYRINFO
+             WHERE USER_NM = #USER_NM#
+			]]>
+	</select>
+	
 	<insert id="TmsLoginDAO.addUsr" parameterClass="TmsloginVO">
 			<![CDATA[
             INSERT INTO LETTNEMPLYRINFO
