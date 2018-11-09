@@ -982,7 +982,7 @@ public class DevPlanController {
 				row = sheet.createRow(i+2);
 				
 				cell = row.createCell(0);
-				cell.setCellValue(String.valueOf(otherList.get(i).get("userDevNm"))+"("+String.valueOf(otherList.get(i).get("userDevId"))+")");
+				cell.setCellValue(String.valueOf(otherList.get(i).get("userDevNm")));
 				cell.setCellStyle(BodyStyle); // 본문스타일 
 				
 				cell = row.createCell(1);

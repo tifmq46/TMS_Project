@@ -83,7 +83,13 @@ function StatsToExcel() {
     document.listForm.submit(); 
 }
 </script>
+<style>
 
+input[type=date]{
+	text-align: center;
+}
+
+</style>
 
 </head>
 
@@ -132,7 +138,7 @@ function StatsToExcel() {
                   			  <col width="7%"/> 
                   			  <col width="14.4%"/> 
                   			  <col width="7%"/> 
-                  			  <col width="14.4%"/> 
+                  			  <col width="17%"/> 
                   			  <col width="7%"/> 
                   			  <col width="14.4%"/> 
                   			  <col width="14.4%"/>
@@ -159,7 +165,7 @@ function StatsToExcel() {
       			        		<td style="font-weight:bold;color:#666666;font-size:110%;">업무구분
       			        		</td>
       			        		<td>
-      			        		<select name="task" id="task" style="width:90%;text-align-last:center;">
+      			        		<select name="task" id="task" style="width:77%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 									   <c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
 									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
@@ -186,7 +192,7 @@ function StatsToExcel() {
 								<input type="date" id="searchByDevStartDt" name="searchByDevStartDt" 
 									value="<fmt:formatDate value="${searchVO.searchByDevStartDt}" pattern="yyyy-MM-dd"/>"/>
 								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-					  			&nbsp;~&nbsp;
+					  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font size="3px">~</font></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					  			<input type="date" id="searchByDevEndDt" name="searchByDevEndDt" 
 					  				value="<fmt:formatDate value="${searchVO.searchByDevEndDt}" pattern="yyyy-MM-dd"/>"/>
 					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
@@ -280,8 +286,8 @@ function StatsToExcel() {
             			 	<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
             				<td align="center" class="listtd" name="sys"><c:out value="${result.sysGb}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
-            				<td align="left" class="listtd"><c:out value="${result.pgId}"/></td>
-            				<td align="left" class="listtd"><c:out value="${result.pgNm}"/>&nbsp;</td>
+            				<td align="left" class="listtd" title="<c:out value="${result.pgId}"/>"><c:out value="${result.pgId}"/></td>
+            				<td align="left" class="listtd" style="padding-left:5px;" title="<c:out value="${result.pgNm}"/>"><c:out value="${result.pgNm}"/>&nbsp;</td>
             				<td align="center" class="listtd" title="<c:out value="${result.userDevId}"/>"><c:out value="${result.userDevNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>

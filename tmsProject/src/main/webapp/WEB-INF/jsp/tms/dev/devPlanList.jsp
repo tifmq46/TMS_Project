@@ -37,7 +37,6 @@ function fn_valid(pgId,flag, start, end){
 }
 
 function fn_result_change(asd, t) {
-		
 	   var idVal0 = document.getElementById(asd).value;
 	   var idVal1 = document.getElementById(asd+1).value;
 	   var prjStartDate = document.getElementById("ps").value;
@@ -49,6 +48,7 @@ function fn_result_change(asd, t) {
 	   if((prjStartDate >  t.value || prjEndDate <  t.value) && t.value != ""){
 		   alert("계획기준일자의 기간이 아닙니다. 다시 입력하십시오.\n[계획기준일자:"+prjStartDate+"~"+prjEndDate+"]");
 		   document.getElementById(t.id).value = null;
+		   $("#dayDiffLoc"+asd).empty();
 		   flag = false;
 		   return;
 	   }
@@ -173,6 +173,11 @@ function fn_date(date){
 	
 }
 
+function clickEvent(i){
+	$('#'+i.id).removeAttr("readonly");
+	$('#'+i.id).css("border","1");
+}
+
 $(function(){
 	
 	   $('#Sys').change(function() {
@@ -207,7 +212,9 @@ function searchFileNm() {
 
 <style>
 
-
+input[type=date]{
+	text-align: center;
+}
 
 .disabled {
        pointer-events:none;
@@ -267,7 +274,7 @@ function searchFileNm() {
                   			  <col width="7%"/> 
                   			  <col width="14.4%"/> 
                   			  <col width="7%"/> 
-                  			  <col width="14.4%"/> 
+                  			  <col width="17%"/> 
                   			  <col width="7%"/> 
                   			  <col width="14.4%"/> 
                   			  <col width="14.4%"/>
@@ -294,7 +301,7 @@ function searchFileNm() {
       			        		<td style="font-weight:bold;color:#666666;font-size:110%;">업무구분
 								</td>
 								<td>
-								<select name="task" id="task" style="width:90%;text-align-last:center;">
+								<select name="task" id="task" style="width:77%;text-align-last:center;">
 									 <option value="">선택하세요</option>
 									 <c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
 											  <option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
@@ -336,7 +343,7 @@ function searchFileNm() {
 								<input type="date" id="searchByPlanStartDt" name="searchByPlanStartDt" 
 									value="<fmt:formatDate value="${searchVO.searchByPlanStartDt}" pattern="yyyy-MM-dd"/>"/>
 								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-					  			&nbsp;~&nbsp;
+					  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font size="3px">~</font></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					  			<input type="date" id="searchByPlanEndDt" name="searchByPlanEndDt" 
 					  				value="<fmt:formatDate value="${searchVO.searchByPlanEndDt}" pattern="yyyy-MM-dd"/>"/>
 					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
@@ -417,19 +424,39 @@ function searchFileNm() {
                       <tr>
                       
                       <td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            		  <td align="left" class="listtd"><c:out value="${result.PG_ID}"/></td>
-            		  <td align="left" class="listtd"><c:out value="${result.PG_NM}"/>&nbsp;</td>
+            		  <td align="left" class="listtd" title="<c:out value="${result.PG_ID}"/>"><c:out value="${result.PG_ID}"/></td>
+            		  <td align="left" class="listtd" style="padding-left:5px;" title="<c:out value="${result.PG_NM}"/>"><c:out value="${result.PG_NM}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             		  <td align="center" class="listtd" title="<c:out value="${result.USER_DEV_ID}"/>"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
             		  
-            		  <td><input type="date"  id="${result.PG_ID}" 
-            		  	<c:if test="${d_test}"> class="disabled" </c:if> 
-            		  	onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value='${result.PLAN_START_DT}' pattern="yyyy-MM-dd"/>"/>
-            		  </td>
-                      <td><input type="date"  id="${result.PG_ID}1" 
-                      	<c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
-                      </td>
+            		  <c:choose>
+	            		  <c:when test="${result.PLAN_START_DT ne null}">
+	            		  <td align="center" class="listtd" ><input type="date"  id="${result.PG_ID}" readOnly style="border:0; " 
+	            		  	<c:if test="${d_test}"> class="disabled" </c:if> onclick="clickEvent(this)"
+	            		  	onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value='${result.PLAN_START_DT}' pattern="yyyy-MM-dd"/>"/>
+	            		  </td>
+	            		  </c:when>
+	            		  <c:otherwise>
+	            		  <td align="center" class="listtd" ><input type="date"  id="${result.PG_ID}"
+	            		  	<c:if test="${d_test}"> class="disabled" </c:if> 
+	            		  	onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value='${result.PLAN_START_DT}' pattern="yyyy-MM-dd"/>"/>
+	            		  </td>
+	            		  </c:otherwise>
+            		  </c:choose>
+            		  
+            		   <c:choose>
+	            		  <c:when test="${result.PLAN_END_DT ne null}">
+		                      <td align="center" class="listtd" ><input type="date"  id="${result.PG_ID}1" readOnly style="border:0;"
+		                      	<c:if test="${d_test}"> class="disabled" </c:if> onclick="clickEvent(this)" onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
+		                      </td>
+                     	</c:when>
+                     	<c:otherwise>
+                     		<td align="center" class="listtd" ><input type="date"  id="${result.PG_ID}1" 
+		                      	<c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
+		                      </td>
+                     	</c:otherwise>
+                     </c:choose>
                      
             		  <td align="center" class="listtd"> <div id="dayDiffLoc${result.PG_ID}"><c:out value="${result.DAY_DIFF}"/> </div></td>
             		 

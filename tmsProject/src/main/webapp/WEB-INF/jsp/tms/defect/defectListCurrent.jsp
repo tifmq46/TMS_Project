@@ -105,7 +105,7 @@ td.listtd {
                   			  <col width="7%"/> 
                   			  <col width="14.4%"/> 
                   			  <col width="7%"/> 
-                  			  <col width="14.4%"/> 
+                  			  <col width="15%"/> 
                   			  <col width="14.4%"/> 
       			        	</colgroup>
       			        <tr>
@@ -139,7 +139,7 @@ td.listtd {
       			        	<td style="font-weight:bold;color:#666666;font-size:110%;">조치상태
       			        	</td>
       			        	<td>
-      			        	<select name="searchByActionSt" id="searchByActionSt" style="width:90%;text-align-last:center;">
+      			        	<select name="searchByActionSt" id="searchByActionSt" style="width:86%;text-align-last:center;">
                                <option value="" selected="selected">전체</option>
                                <c:forEach var="actionSt" items="${actionSt}" varStatus="status">
                                	  <option value="<c:out value="${actionSt.codeNm}"/>" <c:if test="${searchVO.searchByActionSt == actionSt.codeNm}">selected="selected"</c:if> ><c:out value="${actionSt.codeNm}" /></option>
@@ -169,8 +169,9 @@ td.listtd {
       			        	<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">등록일자
       			        	</td>
       			        	<td colspan="3" style="padding-top:15px;">
-                        <input type="date" name="searchByStartDt" id="searchByStartDt" style="text-align:center; width:38%" value="<c:out value='${ST_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" style="text-align:center; width:38%" value="<c:out value='${EN_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+                        <input type="date" name="searchByStartDt" id="searchByStartDt" style="text-align:center;" value="<c:out value='${ST_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font size="3px">~</font></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="date" name="searchByEndDt" id="searchByEndDt" style="text-align:center;" value="<c:out value='${EN_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
       			        	</td>
       			        	<td style="padding-top:15px;">
                            <div class="buttons" style="float:right;">
