@@ -202,7 +202,7 @@
                             </th>
                             <td width="80%" nowrap="nowrap">
                             
-                            <select id="userDevId" name="userDevId" class="select" title="개발자" style="width:25%; text-align-last:center;">
+                            <select id="userDevId" name="userDevId" class="select" title="개발자" style="width:25%;">
 									   <option value="" >선택하세요</option>
 									      <c:forEach var="DEV_ID" items="${dev_List}" varStatus="status">
 									    	<option value="<c:out value="${DEV_ID.EMPLYR_ID}"/>" <c:if test="${DEV_ID.USER_NM == USERDEVID}">selected="selected"</c:if> ><c:out value="${DEV_ID.USER_NM}(${DEV_ID.EMPLYR_ID})" /></option>

@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -289,6 +290,7 @@ public class ProgramController {
 	public String insertPgList(RedirectAttributes redirectAttributes, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
 		programVO.setPjtId("1");
+		System.out.println("확인: "+programVO.getUserDevId());
 		ProgramService.insertPg(programVO);
 			
 		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.insert"));
@@ -615,7 +617,10 @@ public class ProgramController {
 		int fSize = (int) uFile.length();
 		if (fSize > 0) {  //파일 사이즈가 0보다 클 경우 다운로드
 			String mimetype = "application/x-msdownload";  //minetype은 파일확장자에 맞게 설정
-			response.setHeader("Content-Disposition", "attachment; filename=\"TMS.xlsx\"");
+			
+			String fileName = "프로그램현황.xlsx"; //리퀘스트로 넘어온 파일명
+			String docName = URLEncoder.encode(fileName,"UTF-8"); // UTF-8로 인코딩			
+			response.setHeader("Content-Disposition", "attachment;filename=" + docName + ";"); 
 			response.setContentType(mimetype);
 			response.setContentLength(fSize);
 			BufferedInputStream in = null;
@@ -818,9 +823,9 @@ public class ProgramController {
 			vo = xlsxList.get(i);
 			
 			try {
+				System.out.println("확인 : "+vo.getUserDevId());
 				
-				
-				ProgramService.insertPg(vo);
+				ProgramService.insertExcelPg(vo);
 				ProgramService.deletePg(vo);
 				
 				model.addAttribute("result", "true");
@@ -895,7 +900,7 @@ public class ProgramController {
 			
 			for (int i = 0; i < xlsxList.size(); i++) {
 				vo = xlsxList.get(i);
-				ProgramService.insertPg(vo);
+				ProgramService.insertExcelPg(vo);
 			}
 		}
 		

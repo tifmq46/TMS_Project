@@ -514,7 +514,7 @@ function a2(){
     					<tbody>
     						 <tr class="last">
     							<th style="font-weight:bold;color:#0F438A;font-size:110%;">프로젝트명</th>
-    							<td colspan="4" id="empName" name="empName" align="left" style="font-size:110%; padding-left:60px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" valign="middle">${tmsProjectManageVO.pjtNm}</td>
+    							<td colspan="4" id="empName" name="empName" align="left" style="font-size:110%; padding-left:60px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" valign="middle"><strong>${tmsProjectManageVO.pjtNm}</strong></td>
     						</tr>
     						<tr class="last">
     						    <th style="font-weight:bold;color:#0F438A;font-size:110%;">사업유형</th>
@@ -541,7 +541,7 @@ function a2(){
     						    <td align="left" style="font-size:110%; padding-left:60px;" valign="middle"><fmt:formatDate value="${tmsProjectManageVO.devEndDt}" pattern="yyyy-MM-dd" /></td>
     						</tr>
     						<tr class="last">
-    							<th style="font-weight:bold;color:#0F438A;font-size:110%;">프로젝트 설명</th>
+    							<th style="font-weight:bold;color:#0F438A;font-size:110%;">프로젝트</br>설명</th>
     							<td colspan="4" id="empName" name="empName" align="left" title="<c:out value='${tmsProjectManageVO.pjtContent}'/>" style="font-size:110%; padding-left:60px;
     							 white-space:nowrap; overflow:hidden;	text-overflow:ellipsis;" valign="middle">${tmsProjectManageVO.pjtContent}</td>
     						</tr>

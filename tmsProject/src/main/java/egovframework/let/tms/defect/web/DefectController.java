@@ -865,7 +865,9 @@ public class DefectController {
          int fSize = (int) uFile.length();
          if (fSize > 0) {  //파일 사이즈가 0보다 클 경우 다운로드
           String mimetype = "application/x-msdownload";  //minetype은 파일확장자에 맞게 설정
-  		  response.setHeader("Content-Disposition", "attachment; filename=\"TMS.xlsx\"");
+          String fileName = "결함처리통계.xlsx"; //리퀘스트로 넘어온 파일명
+ 		  String docName = URLEncoder.encode(fileName,"UTF-8"); // UTF-8로 인코딩			
+ 		  response.setHeader("Content-Disposition", "attachment;filename=" + docName + ";"); 
           response.setContentType(mimetype);
           response.setContentLength(fSize);
           BufferedInputStream in = null;

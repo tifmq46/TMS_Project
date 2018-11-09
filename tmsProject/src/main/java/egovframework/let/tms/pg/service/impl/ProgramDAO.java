@@ -22,6 +22,9 @@ public class ProgramDAO extends EgovAbstractDAO{
 		insert("ProgramDAO.insertPg", vo);
 	}
 
+	public void insertExcelPg(ProgramVO vo) throws Exception {
+		insert("ProgramDAO.insertExcelPg", vo);
+	}	
 	/**
 	 * 개발계획을 수정한다.
 	 * @param vo - 수정할 정보가 담긴 DevPlanVO

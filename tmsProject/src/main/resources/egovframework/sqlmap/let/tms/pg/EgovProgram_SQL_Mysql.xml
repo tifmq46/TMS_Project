@@ -232,6 +232,34 @@
 		]]>
 	</insert>
 	
+	<!-- 삽입 -->
+	<insert id="ProgramDAO.insertExcelPg" parameterClass="ProgramVO" >
+		<![CDATA[
+		    INSERT 
+		      INTO  PG_TB
+		         (  PG_ID
+		         ,  USER_DEV_ID
+		         ,  PG_NM
+		         ,  SYS_GB
+		         ,  TASK_GB
+		         ,  USE_YN
+		         ,  PJT_ID
+		         ) 
+		    VALUES  
+		         (  #pgId#
+		         ,  (SELECT EMPLYR_ID FROM LETTNEMPLYRINFO WHERE USER_NM = #userDevId#)
+		         ,  #pgNm#
+		         ,  (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #sysGb#)
+		         ,  (SELECT CODE FROM LETTCCMMNDETAILCODE WHERE CODE_NM = #taskGb# AND PARENT = (SELECT CODE 
+		         																			     FROM LETTCCMMNDETAILCODE 
+		         																			     WHERE CODE_NM = #sysGb#))
+		         ,  #useYn#
+		         ,  #pjtId#
+		         ) 
+		]]>
+	</insert>
+	
+	
 	<!-- 수정 -->
 	<update id="ProgramDAO.updatePg" parameterClass="ProgramVO">
  		<![CDATA[
