@@ -249,9 +249,9 @@ function fDeleteMenuList() {
                   			  <col width="7%"/> 
                   			  <col width="14.4%"/> 
                   			  <col width="7%"/> 
-                  			  <col width="14.4%"/> 
+                  			  <col width="17%"/> 
                   			  <col width="7%"/> 
-                  			  <col width="14.4%"/> 
+                  			  <col width="17%"/> 
                   			  <col width="14.4%"/> 
       			        	</colgroup>
       			        <tr>
@@ -259,15 +259,9 @@ function fDeleteMenuList() {
       			        	<spring:message code="tms.test.testcaseId" />
       			        	</td>
       			        	<td colspan="3">
-					  			<input type="text" name="searchByTestcaseId" id="searchByTestcaseId" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByTestcaseId}'/>" />
-      			        	</td>
-      			        	<td>
-					  			
+					  			<input type="text" name="searchByTestcaseId" id="searchByTestcaseId" style="width:92%;text-align:center;" value="<c:out value='${searchVO.searchByTestcaseId}'/>" />
       			        	</td>
       			        	
-      			        	<td>
-					  			
-      			        	</td>
       			        	
       			        	<td style="font-weight:bold;color:#666666;font-size:110%;">
 								<spring:message code="tms.test.pgId" />				
@@ -284,7 +278,7 @@ function fDeleteMenuList() {
       			        	</td>
       			        	
       			        	<td>
-      			        		<select name="searchByTaskGb" id="searchByTaskGb" style="width:90%;text-align-last:center;">
+      			        		<select name="searchByTaskGb" id="searchByTaskGb" style="width:79%;text-align-last:center;">
 										<option value="">전체</option>
 										<c:forEach var="cmCode" items="${taskGbCode}">
 										<option value="${cmCode.codeNm}"  <c:if test="${searchVO.searchByTaskGb == cmCode.codeNm}">selected="selected"</c:if>>${cmCode.codeNm}</option>
@@ -323,10 +317,12 @@ function fDeleteMenuList() {
       			        </td>
       			        <td style="padding-top:15px; font-weight:bold;color:#666666;font-size:110%;">등록일자
       			        </td>
-      			        <td colspan="4" style="padding-top:15px;">
-		                        	<input type="date" name="searchByStartDt" id="searchByStartDt" size="15" style="text-align:center;" value="<c:out value='${ST_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-		                          &nbsp;~&nbsp;<input type="date" name="searchByEndDt" id="searchByEndDt" size="15" style="text-align:center;" value="<c:out value='${EN_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+      			        <td colspan="3" style="padding-top:15px;">
+		                        	<input type="date" name="searchByStartDt" id="searchByStartDt"  style="width:32%; text-align:center;" value="<c:out value='${ST_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
+		                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font size="3px">~</font></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		                          <input type="date" name="searchByEndDt" id="searchByEndDt" style="width:32%; text-align:center;" value="<c:out value='${EN_date}'/>"/>&nbsp;<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
       			        </td>
+      			        <td></td>
       			        </tr>
       			        <tr>
       			        <td colspan="9" style="padding-top:15px;">
