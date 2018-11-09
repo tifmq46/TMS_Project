@@ -187,15 +187,11 @@
                 <div id="search_field" style="font-family:'Malgun Gothic';">
                     <div id="search_field_loc"><h2><strong>프로그램 현황</strong></h2></div>
 					
-						<input type="hidden" id="del" name="del" value="fncManageChecked()" />
-						<input type="hidden" id="fon" name="fon" />
-                        <input type="submit" value="실행" onclick="fn_egov_select_noticeList('1'); return false;" id="invisible" class="invisible" />
-                        
                          <fieldset><legend>조건정보 영역</legend>     
                   			  <div class="sf_start">
 							<table style="width:100%;padding-bottom:10px;padding-left:10px;padding-top:10px;">
                     		<colgroup>
-                  			  <col width="9%"/> 
+                  			  <col width="7%"/> 
                   			  <col width="14.4%"/> 
                   			  <col width="7%"/> 
                   			  <col width="14.4%"/> 
@@ -283,6 +279,7 @@
                         </fieldset>
                  	</div>
                  	<input type="submit" id="invisible" class="invisible"/>
+                 	<input type="submit" value="실행" onclick="fn_egov_select_noticeList('1'); return false;" id="invisible" class="invisible" />
                 	<!-- //검색 필드 박스 끝 -->
 
 				 <div id="page_info"><div id="page_info_align"></div></div>    
