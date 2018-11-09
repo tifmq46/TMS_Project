@@ -212,7 +212,7 @@ function searchFileNm() {
         			    <th align="center"><spring:message code="tms.test.no" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseId" /></th>
         			    <th align="center"><spring:message code="tms.test.testcaseContent" /></th>
-        			    <th align="center">시나리오/결과</th>
+        			    <th align="center"><spring:message code="tms.test.ScenarioAndResult" /></th>
         			    <th align="center"><spring:message code="tms.test.userWriterId" /></th>
         				<th align="center"><spring:message code="tms.test.taskGb" /></th>
 			        	<th align="center"><spring:message code="tms.test.enrollDt" /></th>

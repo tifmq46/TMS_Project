@@ -33,10 +33,63 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
 
+<style type="text/css">
+
+ul.tabs {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+	border-bottom: 1px solid #DDDDDD;
+	
+}
+
+ul.tabs li {
+	background: none;
+	color: #727272;
+	font-weight:bold;
+	display: inline-block;
+	padding: 10px 15px;
+	cursor: pointer;
+	border-right: 1px solid #DDDDDD;
+	border-left: 1px solid #DDDDDD;
+	border-top: 1px solid #DDDDDD;
+}
+
+ul.tabs li.current {
+	background: #007bff;
+	font-weight:bold;
+	color:#ffffff;
+	border-right: 1px  #DDDDDD;
+	border-left: 1px  #DDDDDD;
+	border-top: 1px  #DDDDDD;
+}
+
+ul.tabs li.last {
+	background: #ffffff;
+	font-weight:bold;
+	color:#ffffff;
+	border-right: 0px;
+	border-left: 0px;
+	border-top: 0px;
+	border-bottom: 0px;
+}
+
+.tab-content {
+	display: none;
+	padding: 15px;
+}
+
+.tab-content.current {
+	display: inherit;
+	border: 1px solid #fff;
+}
+
+</style>
 
 <script type="text/javaScript" language="javascript" defer="defer">
 
 var taskByTestcaseCntChart;
+var taskByTestcaseCntChartTtc;
 
 function handleClick(event, array){
 	$("#sysNmLabel").empty();
@@ -45,7 +98,7 @@ function handleClick(event, array){
    $.ajax({
       type:"POST",
       url: "<c:url value='/tms/test/selectTestCaseStatsListByTaskGb.do'/>",
-      data : {sysNm : this.data.labels[array[0]._index]},
+      data : {sysNm : this.data.labels[array[0]._index], testcaseGb : 'TC1'},
       dataType : 'json',
       success : function(result){
     	  
@@ -75,11 +128,64 @@ function handleClick(event, array){
 
 
 
+function handleClickTtc(event, array){
+
+	$("#sysNmLabelTtc").empty();
+	$("#sysNmLabelTtc").html(this.data.labels[array[0]._index]);
+	
+   $.ajax({
+      type:"POST",
+      url: "<c:url value='/tms/test/selectTestCaseStatsListByTaskGb.do'/>",
+      data : {sysNm : this.data.labels[array[0]._index], testcaseGb : 'TC2'},
+      dataType : 'json',
+      success : function(result){
+    	  
+         var taskByTestcaseCntChartTtc = result;
+         var taskByTestcaseCntTaskNmTtc = new Array();
+         var taskByTestcaseCntTaskGbCntTtc = new Array();
+         var taskByTestcaseCntCompleteYCntTtc = new Array();
+         for (var i = 0; i < taskByTestcaseCntTtc.length; i++) {
+            taskByTestcaseCntTaskNmTtc.push(taskByTestcaseCntTtc[i].taskNm);
+            taskByTestcaseCntTaskGbCntTtc.push(taskByTestcaseCntTtc[i].taskGbCnt);
+            taskByTestcaseCntCompleteYCntTtc.push(taskByTestcaseCntTtc[i].completeYCnt);
+         }
+         var data = taskByTestcaseCntChartTtc.config.data;
+         data.datasets[0].data = taskByTestcaseCntTaskGbCntTtc;
+         data.datasets[1].data = taskByTestcaseCntCompleteYCntTtc;
+         data.labels = taskByTestcaseCntTaskNmTtc;
+         taskByTestcaseCntChartTtc.update();
+         
+      },
+      error : function(request,status,error){
+         alert("에러");
+         alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+      }
+   });
+	
+	
+	
+}
+
+
+
 window.onload = function() {
+	
+	$('ul.tabs li').click(function() {
+		var tab_id = $(this).attr('data-tab');
+		if(!(tab_id == "tab-3")){
+			$('ul.tabs li').removeClass('current');
+			$('.tab-content').removeClass('current');
+			
+			$(this).addClass('current');
+			$("#" + tab_id).addClass('current');
+			
+		}
+	})
 	
 	
 	   
-    /** 시스템별 테스트 케이스건수*/
+    /** 시스템별 단위테스트 케이스건수*/
     var sysByTestcaseCnt = JSON.parse('${tcStatsBySysGb}');
     var sysByTestcaseCntSysNm = new Array();
     var sysByTestcaseCntSysCnt = new Array();
@@ -120,10 +226,126 @@ window.onload = function() {
                 }
              }
           ,onClick:handleClick
+          ,legend: {
+				display: false,
+			},
+			scales:{
+				yAxes:[{
+					ticks:{
+						suggestedMax: sysByTestcaseCntSysCnt[0]+1,
+						beginAtZero:true
+					}	
+				}],
+				xAxes: [{
+		            barPercentage: 0.8
+		        }]
+			},
+			animation: {
+			      duration: 700,
+			      onComplete: function() {
+			        var chartInstance = this.chart,
+			        ctx = chartInstance.ctx;
+			        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
+			        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+			        ctx.textAlign = 'center';
+			        ctx.textBaseline = 'bottom';
+
+			        this.data.datasets.forEach(function(dataset, i) {
+				          var meta = chartInstance.controller.getDatasetMeta(i);
+				          meta.data.forEach(function(bar, index) {
+				            var data = dataset.data[index];
+				            if(data != 0){
+					            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+				            }
+				          });
+			        });
+			      }
+			    }
        }
     });
     
-    /** 업무별 테스트 케이스건수*/
+    
+    /** 시스템별 통합테스트 케이스건수*/
+    var sysByTestcaseCntTtc = JSON.parse('${tcStatsBySysGbTtc}');
+    var sysByTestcaseCntSysNmTtc = new Array();
+    var sysByTestcaseCntSysCntTtc = new Array();
+    var sysByTestcaseCntCompleteYCntTtc = new Array();
+    for (var i = 0; i < sysByTestcaseCntTtc.length; i++) {
+       sysByTestcaseCntSysNmTtc.push(sysByTestcaseCntTtc[i].sysNm);
+       sysByTestcaseCntSysCntTtc.push(sysByTestcaseCntTtc[i].sysCnt);
+       sysByTestcaseCntCompleteYCntTtc.push(sysByTestcaseCntTtc[i].completeYCnt);
+    }
+    var ctx2 = document.getElementById('sysByTestcaseCntTtc');
+    var sysByTestcaseCntChartTtc = new Chart(ctx2, {
+       type : 'bar',
+       data : {
+          labels : sysByTestcaseCntSysNmTtc,
+          barThickness : '0.2',
+          datasets : [ {
+             label : '테스트 케이스 건수',
+             data : sysByTestcaseCntSysCntTtc,
+             backgroundColor : '#e9ecef',
+          }, {
+				label : '완료 건수',
+				data : sysByTestcaseCntCompleteYCntTtc,
+				backgroundColor : '#007bff',
+			}]
+       },
+       options : {
+          tooltips: {
+             callbacks: {
+             label: function(tooltipItem, data) {
+                         var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                         var label = data.datasets[tooltipItem.datasetIndex].label;
+                         if (value === 0.1) {
+                            value = 0;
+                         }
+
+                         return label + ' : ' + value;
+                       }
+                }
+             }
+          ,onClick:handleClickTtc
+          ,		legend: {
+				display: false,
+			},
+			scales:{
+				yAxes:[{
+					ticks:{
+						suggestedMax: sysByTestcaseCntSysCntTtc[0]+1,
+						beginAtZero:true
+					}	
+				}],
+				xAxes: [{
+		            barPercentage: 0.8
+		        }]
+			},
+			animation: {
+			      duration: 700,
+			      onComplete: function() {
+			        var chartInstance = this.chart,
+			        ctx = chartInstance.ctx;
+			        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
+			        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+			        ctx.textAlign = 'center';
+			        ctx.textBaseline = 'bottom';
+
+			        this.data.datasets.forEach(function(dataset, i) {
+				          var meta = chartInstance.controller.getDatasetMeta(i);
+				          meta.data.forEach(function(bar, index) {
+				            var data = dataset.data[index];
+				            if(data != 0){
+					            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+				            }
+				          });
+			        });
+			      }
+			    }
+       }
+    });
+    
+    
+    /** 업무별 단위테스트 케이스건수*/
     var taskByTestcaseCnt = JSON.parse('${taskByTestcaseCnt}');
     var taskByTestcaseCntTaskNm = new Array();
     var taskByTestcaseCntTaskGbCnt = new Array();
@@ -134,8 +356,8 @@ window.onload = function() {
        taskByTestcaseCntcompleteYCnt.push(taskByTestcaseCnt[i].completeYCnt);
        
     }
-    var ctx2 = document.getElementById('taskByTestcaseCnt');
-    taskByTestcaseCntChart = new Chart(ctx2, {
+    var ctx3 = document.getElementById('taskByTestcaseCnt');
+    taskByTestcaseCntChart = new Chart(ctx3, {
        type : 'bar',
        data : {
           labels : taskByTestcaseCntTaskNm,
@@ -163,61 +385,124 @@ window.onload = function() {
                        }
                 }
              }
+    	,				legend: {
+			display: false,
+		},
+		scales:{
+			yAxes:[{
+				ticks:{
+					suggestedMax: taskByTestcaseCntTaskGbCnt[0]+1,
+					beginAtZero:true
+				}	
+			}],
+			xAxes: [{
+	            barPercentage: 0.8
+	        }]
+		},
+		animation: {
+		      duration: 700,
+		      onComplete: function() {
+		        var chartInstance = this.chart,
+		        ctx = chartInstance.ctx;
+		        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
+		        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+		        ctx.textAlign = 'center';
+		        ctx.textBaseline = 'bottom';
+
+		        this.data.datasets.forEach(function(dataset, i) {
+			          var meta = chartInstance.controller.getDatasetMeta(i);
+			          meta.data.forEach(function(bar, index) {
+			            var data = dataset.data[index];
+			            if(data != 0){
+				            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+			            }
+			          });
+		        });
+		      }
+		    }   
+	       
+       
        }
     });
     
- 	
-			/* 통합테스트 진행상태 stacked bar */
-			var ProgressStatusTtcData = JSON.parse('${ProgressStatusTtc}');
-			
-			var ProgressStatusTtcNotTestCnt = new Array();
-			var ProgressStatusTtcFirstTestCnt = new Array();
-			var ProgressStatusTtcSecondTestCnt = new Array();
-			var ProgressStatusTtcCompleteYCnt = new Array();
-			
-			ProgressStatusTtcNotTestCnt.push(ProgressStatusTtcData.notTestCnt);
-			ProgressStatusTtcFirstTestCnt.push(ProgressStatusTtcData.firstTestCnt);
-			ProgressStatusTtcSecondTestCnt.push(ProgressStatusTtcData.secondTestCnt);
-			ProgressStatusTtcCompleteYCnt.push(ProgressStatusTtcData.completeYCnt);
-			
-			var ProgressStatusTtcLength = ProgressStatusTtcData.notTestCnt + ProgressStatusTtcData.firstTestCnt +
-						ProgressStatusTtcData.secondTestCnt + ProgressStatusTtcData.completeYCnt;
-			
-			var ctx = document.getElementById("ProgressStatusTtcChart");
-			var ProgressStatusTtcChart = new Chart(ctx, {
-				  type : 'horizontalBar'
-				 ,data : {
-						  barThickness : '0.2'
-						 ,datasets : 
-							[{ label : '미진행',
-								data : ProgressStatusTtcNotTestCnt,
-								backgroundColor : '#B7BDD6'}
-							,{ label : '1차',
-								data : ProgressStatusTtcFirstTestCnt,
-								backgroundColor : '#98D5DC'}
-							,{ label : '2차',
-								data : ProgressStatusTtcSecondTestCnt,
-								backgroundColor : '#3765A4'}
-							,{ label : '최종완료',
-								data : ProgressStatusTtcCompleteYCnt,
-								backgroundColor : '#D57C86'}]
-						}
-				,options : {
-						scales : 
-							 {xAxes : [ {stacked : true,
-										display : true,
-										ticks:{
-										min: 0,
-						    	        max: ProgressStatusTtcLength
-						                 }
-							 	}
-							 	]
-							 ,yAxes : [ {stacked : true,
-								 		barPercentage: 0.5
-								 		} 
-							 ]}
-							}
-			});		
+    
+    /** 업무별 통합테스트 케이스건수*/
+    var taskByTestcaseCntTtc = JSON.parse('${taskByTestcaseCntTtc}');
+    var taskByTestcaseCntTaskNmTtc = new Array();
+    var taskByTestcaseCntTaskGbCntTtc = new Array();
+    var taskByTestcaseCntcompleteYCntTtc = new Array();
+    for (var i = 0; i < taskByTestcaseCntTtc.length; i++) {
+       taskByTestcaseCntTaskNmTtc.push(taskByTestcaseCntTtc[i].taskNm);
+       taskByTestcaseCntTaskGbCntTtc.push(taskByTestcaseCntTtc[i].taskGbCnt);
+       taskByTestcaseCntcompleteYCntTtc.push(taskByTestcaseCntTtc[i].completeYCnt);
+       
+    }
+    var ctx4 = document.getElementById('taskByTestcaseCntTtc');
+    taskByTestcaseCntChartTtc = new Chart(ctx4, {
+       type : 'bar',
+       data : {
+          labels : taskByTestcaseCntTaskNmTtc,
+          barThickness : '0.9',
+          datasets : [ {
+             label : '테스트 케이스 건수',
+             data : taskByTestcaseCntTaskGbCntTtc,
+             backgroundColor : '#e9ecef',
+          }, {
+				label : '완료 건수',
+				data : taskByTestcaseCntcompleteYCntTtc,
+				backgroundColor : '#007bff',
+			}]
+       },
+       options : {
+          tooltips: {
+             callbacks: {
+             label: function(tooltipItem, data) {
+                         var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                         var label = data.datasets[tooltipItem.datasetIndex].label;
+                         if (value === 0.1) {
+                            value = 0;
+                         }
+                         return label + ' : ' + value;
+                       }
+                }
+             }
+       , 				legend: {
+			display: false,
+		},
+		scales:{
+			yAxes:[{
+				ticks:{
+					suggestedMax: taskByTestcaseCntTaskGbCntTtc[0]+1,
+					beginAtZero:true
+				}	
+			}],
+			xAxes: [{
+	            barPercentage: 0.8
+	        }]
+		},
+		animation: {
+		      duration: 700,
+		      onComplete: function() {
+		        var chartInstance = this.chart,
+		        ctx = chartInstance.ctx;
+		        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
+		        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+		        ctx.textAlign = 'center';
+		        ctx.textBaseline = 'bottom';
+
+		        this.data.datasets.forEach(function(dataset, i) {
+			          var meta = chartInstance.controller.getDatasetMeta(i);
+			          meta.data.forEach(function(bar, index) {
+			            var data = dataset.data[index];
+			            if(data != 0){
+				            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+			            }
+			          });
+		        });
+		      }
+		    }
+       }
+    });
 			
 } //window.onload
 			
@@ -265,7 +550,12 @@ window.onload = function() {
 				</div>
 				<br/><br/><br/><br/> 
                              
+               <ul class="tabs">
+					<li class="tab-link current" data-tab="tab-1">단위</li>
+					<li class="tab-link" data-tab="tab-2">통합</li>
+				</ul>                   
                              
+          <div id="tab-1" class="tab-content current">                   
 			<div class="recentBoardList" id="board1" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
     			<div class="widget">
     				<div class="widget-header">
@@ -291,7 +581,7 @@ window.onload = function() {
 							</div>
 						
                       		<div class="progress">
-						    	<div class="progress-bar" style="width:${tc1_Pct}%"> <span style="font-size:25px;"><c:out value=" ${tc1_Pct}"></c:out>%</span></div>
+						    	<div class="progress-bar" style="width:${tc1_Pct}%"> <span style="font-size:20px;"><c:out value=" ${tc1_Pct}"></c:out>%</span></div>
 							</div>
 						</div>
     				</div>
@@ -299,24 +589,32 @@ window.onload = function() {
 				
 					<div id="detail_bar_utc" class="progess_bar_section" >
 				
-				 	<%--  <div class="progess_bar_section"><canvas id="ProgressStatusUtcChart" width="100%" height="14"></canvas></div> --%>
                   		<div class="progess_bar_section" style="font-size:15px; font-weight: bold;">
-	                  		시스템별 단위테스트 현황 (단위:수)
+                  		
+                  		<div class="header-name" style="margin:10px;">
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;시스템별 단위테스트 현황 (단위:수)
+    					</div>
 	                  		<canvas id="sysByTestcaseCnt" width="100%" height="18"></canvas>
                   		</div>
                  
                   		<div class="progess_bar_section" style="font-size:15px; font-weight: bold;">
-	                   		업무별 단위테스트 현황 (단위:수) - <span id="sysNmLabel" >전체</span>
+	                   		
+	                   		<div class="header-name" style="margin:10px;">
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;업무별 단위테스트 현황 (단위:수) - <span id="sysNmLabel" >전체</span>
+    						</div>
+	                   		
 	                  		<canvas id="taskByTestcaseCnt" width="100%" height="30"></canvas>
                   		</div>
-                      
 					</div>
+					
+					
     			</div>    	  
     			
     		</div>            
-    		
+    	</div>	
 
-                 
+          <!-- 통합테스트 -->   
+          <div id="tab-2" class="tab-content">       
 			<div class="recentBoardList" id="board2" class="col-md-6" style="width:500px; margin-bottom:30px !important	; font-family:'Malgun Gothic';">
     			<div class="widget">
     				<div class="widget-header">
@@ -340,20 +638,40 @@ window.onload = function() {
 	                   				</c:otherwise>
 	                   			</c:choose>
 	                      	
-	                      		<span style="font-size: 15px;"><strong><c:out value="${tc2_yCnt}"></c:out>&nbsp;/&nbsp;<c:out value="${tc2_totCnt}"></c:out></strong></span>
 							</div>
                  
                       	
                       		<div class="progress">
-						    	<div class="progress-bar" style="width:${tc2_Pct}%"><span style="font-size:25px;"><c:out value=" ${tc2_Pct}"></c:out>%</span> </div>
+						    	<div class="progress-bar" style="width:${tc2_Pct}%"><span style="font-size:20px;"><c:out value=" ${tc2_Pct}"></c:out>%</span> </div>
 							</div>
 						
                  		</div>    					
     				</div>
+    				
+    				<div id="detail_bar_ttc" class="progess_bar_section" >
+				
+                  		<div class="progess_bar_section" style="font-size:15px; font-weight: bold;">
+                  		
+                  		<div class="header-name" style="margin:10px;">
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;시스템별 통합테스트 현황 (단위:수)
+    					</div>
+	                  		<canvas id="sysByTestcaseCntTtc" width="100%" height="18"></canvas>
+                  		</div>
+                 
+                  		<div class="progess_bar_section" style="font-size:15px; font-weight: bold;">
+	                   		<div class="header-name" style="margin:10px;">
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;업무별 통합테스트 현황 (단위:수) - <span id="sysNmLabel" >전체</span>
+    						</div>
+	                  		<canvas id="taskByTestcaseCntTtc" width="100%" height="30"></canvas>
+                  		</div>
+					</div>
+					
                    
     			</div>    	  
     			
-    		</div>       
+    		</div>      
+    		</div>
+    		 
                    
             </div>
             <!-- //content 끝 -->

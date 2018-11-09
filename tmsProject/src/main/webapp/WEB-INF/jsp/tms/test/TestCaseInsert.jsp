@@ -223,6 +223,8 @@ function searchFileNm() {
 											<form:hidden path="taskGb"  id="TmsProgrmFileNm_task_gb_code"/>
 										</c:when>
 										<c:when test="${testcaseGb == 'TC2' }">
+											<form:hidden path=""  id="TmsProgrmFileNm_task_gb_code"/>
+											<form:hidden path=""  id="TmsProgrmFileNm_task_gb"/>
 											<select name='taskGb'>
 												<c:forEach var='cmCode' items='${taskGbCode}'>
 													<option value='${cmCode.code}'>${cmCode.codeNm}</option>

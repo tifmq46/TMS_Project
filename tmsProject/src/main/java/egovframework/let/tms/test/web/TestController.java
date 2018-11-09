@@ -691,13 +691,27 @@ public class TestController {
 		model.addAttribute("ProgressStatusTtc", JSONObject.toJSONString(ProgressStatusTtc));
 		
 		//특정 시스템에 대한 '업무별' 단위테스트 케이스 
-		String sysNm = null;
-		List<?> taskByTestcaseCnt = testService.selectTestCaseStatsListByTaskGb(sysNm);
+		TestDefaultVO vo = new TestDefaultVO();
+		vo.setSearchByTestcaseGb("TC1");
+		vo.setSearchKeyword(null);
+		List<?> taskByTestcaseCnt = testService.selectTestCaseStatsListByTaskGb(vo);
 		model.addAttribute("taskByTestcaseCnt", JSONArray.fromObject(taskByTestcaseCnt));
 		
+		//특정 시스템에 대한 '업무별' 단위테스트 케이스 
+		vo.setSearchByTestcaseGb("TC2");
+		vo.setSearchKeyword(null);
+		List<?> taskByTestcaseCntTtc = testService.selectTestCaseStatsListByTaskGb(vo);
+		model.addAttribute("taskByTestcaseCntTtc", JSONArray.fromObject(taskByTestcaseCntTtc));
+		
 		//시스템별 단위테스트케이스
-		List<?> tcStatsBySysGb = testService.selectTestCaseStatsListBySysGb();
+		vo.setSearchByTestcaseGb("TC1");
+		List<?> tcStatsBySysGb = testService.selectTestCaseStatsListBySysGb(vo);
 		model.addAttribute("tcStatsBySysGb", JSONArray.fromObject(tcStatsBySysGb));
+		
+		//시스템별 통합테스트케이스
+		vo.setSearchByTestcaseGb("TC2");
+		List<?> tcStatsBySysGbTtc = testService.selectTestCaseStatsListBySysGb(vo);
+		model.addAttribute("tcStatsBySysGbTtc", JSONArray.fromObject(tcStatsBySysGbTtc));
 		
 		}
 		return "tms/test/TestStatsDashboard";
@@ -712,9 +726,13 @@ public class TestController {
 	 */
 	   @RequestMapping("/tms/test/selectTestCaseStatsListByTaskGb.do")
 	   @ResponseBody
-	   public List<?> selectTestCaseStatsListByTaskGb(String sysNm) throws Exception {
+	   public List<?> selectTestCaseStatsListByTaskGb(String sysNm, String testcaseGb) throws Exception {
 		   
-	      List<?> taskByTestcaseCnt = testService.selectTestCaseStatsListByTaskGb(sysNm.equals("전체") ? null : sysNm);
+		   TestDefaultVO vo = new TestDefaultVO();
+		   vo.setSearchKeyword(sysNm.equals("전체") ? null : sysNm);
+		   vo.setSearchByTestcaseGb(testcaseGb);
+		   
+	      List<?> taskByTestcaseCnt = testService.selectTestCaseStatsListByTaskGb(vo);
 	      return taskByTestcaseCnt;
 	   }
 	
@@ -907,17 +925,25 @@ public class TestController {
 			cell = row.createCell(0);
 			cell.setCellValue("화면ID");
 			cell.setCellStyle(HeadStyle); // 제목스타일
-
+			
 			cell = row.createCell(1);
-			cell.setCellValue("업무구분");
+			cell.setCellValue("화면명");
 			cell.setCellStyle(HeadStyle); // 제목스타일
 
 			cell = row.createCell(2);
-			cell.setCellValue("테스트케이스 ID");
+			cell.setCellValue("업무구분");
 			cell.setCellStyle(HeadStyle); // 제목스타일
 
 			cell = row.createCell(3);
+			cell.setCellValue("테스트케이스 ID");
+			cell.setCellStyle(HeadStyle); // 제목스타일
+
+			cell = row.createCell(4);
 			cell.setCellValue("테스트케이스명");
+			cell.setCellStyle(HeadStyle); // 제목스타일
+			
+			cell = row.createCell(5);
+			cell.setCellValue("작성자");
 			cell.setCellStyle(HeadStyle); // 제목스타일
 			
 		} else if(asOf.equals("testcaseId")) {
@@ -929,37 +955,33 @@ public class TestController {
 			cell = row.createCell(1);
 			cell.setCellValue("테스트케이스명");
 			cell.setCellStyle(HeadStyle); // 제목스타일
-
+			
 			cell = row.createCell(2);
-			cell.setCellValue("화면ID");
+			cell.setCellValue("작성자");
 			cell.setCellStyle(HeadStyle); // 제목스타일
-
+			
 			cell = row.createCell(3);
 			cell.setCellValue("업무구분");
 			cell.setCellStyle(HeadStyle); // 제목스타일
-		}
-		
-		cell = row.createCell(4);
-		cell.setCellValue("작성자");
-		cell.setCellStyle(HeadStyle); // 제목스타일
 
-		cell = row.createCell(5);
-		cell.setCellValue("등록일자");
-		cell.setCellStyle(HeadStyle); // 제목스타일
+			cell = row.createCell(4);
+			cell.setCellValue("화면ID");
+			cell.setCellStyle(HeadStyle); // 제목스타일
+
+			cell = row.createCell(5);
+			cell.setCellValue("화면명");
+			cell.setCellStyle(HeadStyle); // 제목스타일
+		}
 
 		cell = row.createCell(6);
-		cell.setCellValue("완료일자");
-		cell.setCellStyle(HeadStyle); // 제목스타일
-
-		cell = row.createCell(7);
 		cell.setCellValue("1차");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 
-		cell = row.createCell(8);
+		cell = row.createCell(7);
 		cell.setCellValue("2차");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 
-		cell = row.createCell(9);
+		cell = row.createCell(8);
 		cell.setCellValue("완료여부");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 
@@ -973,23 +995,33 @@ public class TestController {
 			row = sheet.createRow(i + 1);
 
 			if(asOf.equals("pgId")){
+				
 				cell = row.createCell(0);
 				cell.setCellValue((String) recode.get("pgId"));
 				cell.setCellStyle(BodyStyle); // 본문스타일
 				
 				cell = row.createCell(1);
-				cell.setCellValue((String) recode.get("taskGbNm"));
+				cell.setCellValue((String) recode.get("pgNm"));
 				cell.setCellStyle(BodyStyle); // 본문스타일
 				
 				cell = row.createCell(2);
-				cell.setCellValue((String)recode.get("testcaseId"));
+				cell.setCellValue((String) recode.get("taskGbNm"));
 				cell.setCellStyle(BodyStyle); // 본문스타일
 				
 				cell = row.createCell(3);
+				cell.setCellValue((String)recode.get("testcaseId"));
+				cell.setCellStyle(BodyStyle); // 본문스타일
+				
+				cell = row.createCell(4);
 				cell.setCellValue((String)recode.get("testcaseContent"));
 				cell.setCellStyle(BodyStyle); // 본문스타일
 				
+				cell = row.createCell(5);
+				cell.setCellValue((String)recode.get("userNm"));
+				cell.setCellStyle(BodyStyle); // 본문스타일
+				
 			} else if(asOf.equals("testcaseId")) {
+				
 				cell = row.createCell(0);
 				cell.setCellValue((String) recode.get("testcaseId"));
 				cell.setCellStyle(BodyStyle); // 본문스타일
@@ -999,37 +1031,32 @@ public class TestController {
 				cell.setCellStyle(BodyStyle); // 본문스타일
 				
 				cell = row.createCell(2);
-				cell.setCellValue((String)recode.get("pgId"));
+				cell.setCellValue((String)recode.get("userNm"));
 				cell.setCellStyle(BodyStyle); // 본문스타일
 				
 				cell = row.createCell(3);
 				cell.setCellValue((String)recode.get("taskGbNm"));
 				cell.setCellStyle(BodyStyle); // 본문스타일
+				
+				cell = row.createCell(4);
+				cell.setCellValue((String)recode.get("pgId"));
+				cell.setCellStyle(BodyStyle); // 본문스타일
+				
+				cell = row.createCell(5);
+				cell.setCellValue((String) recode.get("pgNm"));
+				cell.setCellStyle(BodyStyle); // 본문스타일
+				
 			}
 			
-			cell = row.createCell(4);
-			cell.setCellValue((String)recode.get("userNm"));
-			cell.setCellStyle(BodyStyle); // 본문스타일
-			
-			tempSt = (Date)recode.get("enrollDt") != null ? sdft.format((Date)recode.get("enrollDt")) : "";
-			cell = row.createCell(5);
-			cell.setCellValue(tempSt);
-			cell.setCellStyle(BodyStyle); // 본문스타일
-			
-			tempSt = (Date)recode.get("completeDt") != null ? sdft.format((Date)recode.get("completeDt")) : "";
 			cell = row.createCell(6);
-			cell.setCellValue(tempSt);
-			cell.setCellStyle(BodyStyle); // 본문스타일
-			
-			cell = row.createCell(7);
 			cell.setCellValue((String)recode.get("firstTestResultYn"));
 			cell.setCellStyle(BodyStyle); // 본문스타일
 			
-			cell = row.createCell(8);
+			cell = row.createCell(7);
 			cell.setCellValue((String)recode.get("secondTestResultYn"));
 			cell.setCellStyle(BodyStyle); // 본문스타일
 			
-			cell = row.createCell(9);
+			cell = row.createCell(8);
 			cell.setCellValue((String)recode.get("completeYn"));
 			cell.setCellStyle(BodyStyle); // 본문스타일
 		}
@@ -1140,11 +1167,8 @@ public class TestController {
 		sheet.addMergedRegion(new CellRangeAddress(0,1,0,0));
 		sheet.addMergedRegion(new CellRangeAddress(0,1,1,1));
 		sheet.addMergedRegion(new CellRangeAddress(0,1,2,2));
-		sheet.addMergedRegion(new CellRangeAddress(0,1,3,3));
-		sheet.addMergedRegion(new CellRangeAddress(0,0,4,6));
-		sheet.addMergedRegion(new CellRangeAddress(0,1,7,7));
-		sheet.addMergedRegion(new CellRangeAddress(0,0,8,10));
-		sheet.addMergedRegion(new CellRangeAddress(0,1,11,11));
+		sheet.addMergedRegion(new CellRangeAddress(0,0,3,6));
+		sheet.addMergedRegion(new CellRangeAddress(0,0,7,10));
 		
 		// 행 생성
 		XSSFRow row = sheet.createRow(0);
@@ -1208,56 +1232,51 @@ public class TestController {
 		cell.setCellStyle(HeadStyle); // 제목스타일
 		
 		cell = row.createCell(2);
-		cell.setCellValue("프로그램 본수");
+		cell.setCellValue("테스트케이스 수");
 		cell.setCellStyle(HeadStyle); // 제목스타일
-		
+
 		cell = row.createCell(3);
-		cell.setCellValue("테스트케이스 개수");
+		cell.setCellValue("테스트 진행건수");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 
-		cell = row.createCell(4);
-		cell.setCellValue("테스트 진행");
-		cell.setCellStyle(HeadStyle); // 제목스타일
-		
 		cell = row.createCell(7);
-		cell.setCellValue("진행률(%)");
-		cell.setCellStyle(HeadStyle); // 제목스타일
-
-		cell = row.createCell(8);
-		cell.setCellValue("테스트 결과");
+		cell.setCellValue("테스트 완료건수");
 		cell.setCellStyle(HeadStyle); // 제목스타일		
-
-		cell = row.createCell(11);
-		cell.setCellValue("완료율(%)");
-		cell.setCellStyle(HeadStyle); // 제목스타일
 
 		row = sheet.createRow(1);
 		
 		cell = row.createCell(0);
 		cell.setCellValue("시스템구분");
 		cell.setCellStyle(HeadStyle); // 제목스타일
+		
 		cell = row.createCell(1);
 		cell.setCellValue("업무구분");
 		cell.setCellStyle(HeadStyle); // 제목스타일
+		
 		cell = row.createCell(2);
-		cell.setCellValue("프로그램 본수");
-		cell.setCellStyle(HeadStyle); // 제목스타일
-		cell = row.createCell(3);
-		cell.setCellValue("테스트케이스 개수");
+		cell.setCellValue("테스트케이스 수");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 		
-		cell = row.createCell(4);
+		cell = row.createCell(3);
 		cell.setCellValue("미진행");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 
-		cell = row.createCell(5);
+		cell = row.createCell(4);
 		cell.setCellValue("1차");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 
-		cell = row.createCell(6);
+		cell = row.createCell(5);
 		cell.setCellValue("2차");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 		
+		cell = row.createCell(6);
+		cell.setCellValue("진행률(%)");
+		cell.setCellStyle(HeadStyle); // 제목스타일
+		
+		cell = row.createCell(7);
+		cell.setCellValue("합계");
+		cell.setCellStyle(HeadStyle); // 제목스타일	
+	
 		cell = row.createCell(8);
 		cell.setCellValue("완료");
 		cell.setCellStyle(HeadStyle); // 제목스타일
@@ -1267,10 +1286,6 @@ public class TestController {
 		cell.setCellStyle(HeadStyle); // 제목스타일
 
 		cell = row.createCell(10);
-		cell.setCellValue("합계");
-		cell.setCellStyle(HeadStyle); // 제목스타일	
-	
-		cell = row.createCell(11);
 		cell.setCellValue("완료율(%)");
 		cell.setCellStyle(HeadStyle); // 제목스타일
 		
@@ -1299,14 +1314,6 @@ public class TestController {
 			}
 			
 			cell = row.createCell(2);
-			cell.setCellValue(String.valueOf(recode.get("pgCnt")));
-			if(((String) recode.get("taskGb")).equals("소계")) {
-				cell.setCellStyle(HStyle); // 강조스타일
-			}else {
-				cell.setCellStyle(BodyStyle); // 본문스타일
-			}
-
-			cell = row.createCell(3);
 			cell.setCellValue(String.valueOf(recode.get("tcWriteYCnt")));
 			if(((String) recode.get("taskGb")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
@@ -1314,7 +1321,7 @@ public class TestController {
 				cell.setCellStyle(BodyStyle); // 본문스타일
 			}
 
-			cell = row.createCell(4);
+			cell = row.createCell(3);
 			cell.setCellValue(String.valueOf(recode.get("notTestCnt")));
 			if(((String) recode.get("taskGb")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
@@ -1322,7 +1329,7 @@ public class TestController {
 				cell.setCellStyle(BodyStyle); // 본문스타일
 			}
 
-			cell = row.createCell(5);
+			cell = row.createCell(4);
 			cell.setCellValue(String.valueOf(recode.get("firstTestCnt")));
 			if(((String) recode.get("taskGb")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
@@ -1330,7 +1337,7 @@ public class TestController {
 				cell.setCellStyle(BodyStyle); // 본문스타일
 			}
 
-			cell = row.createCell(6);
+			cell = row.createCell(5);
 			cell.setCellValue(String.valueOf(recode.get("secondTestCnt")));
 			if(((String) recode.get("taskGb")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
@@ -1338,7 +1345,7 @@ public class TestController {
 				cell.setCellStyle(BodyStyle); // 본문스타일
 			}
 
-			cell = row.createCell(7);
+			cell = row.createCell(6);
 			cell.setCellValue(String.valueOf(recode.get("tcProgressPct")));
 			if(((String) recode.get("taskGb")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
@@ -1346,6 +1353,14 @@ public class TestController {
 				cell.setCellStyle(BodyStyle); // 본문스타일
 			}
 
+			cell = row.createCell(7);
+			cell.setCellValue(String.valueOf(recode.get("tcWriteYCnt")));
+			if(((String) recode.get("taskGb")).equals("소계")) {
+				cell.setCellStyle(HStyle); // 강조스타일
+			}else {
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
+			
 			cell = row.createCell(8);
 			cell.setCellValue(String.valueOf(recode.get("tcResultYCnt")));
 			if(((String) recode.get("taskGb")).equals("소계")) {
@@ -1363,14 +1378,6 @@ public class TestController {
 			}
 
 			cell = row.createCell(10);
-			cell.setCellValue(String.valueOf(recode.get("tcWriteYCnt")));
-			if(((String) recode.get("taskGb")).equals("소계")) {
-				cell.setCellStyle(HStyle); // 강조스타일
-			}else {
-				cell.setCellStyle(BodyStyle); // 본문스타일
-			}
-
-			cell = row.createCell(11);
 			cell.setCellValue(String.valueOf(recode.get("tcResultPct")));
 			if(((String) recode.get("taskGb")).equals("소계")) {
 				cell.setCellStyle(HStyle); // 강조스타일
@@ -1386,10 +1393,9 @@ public class TestController {
 			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000);
 		}
 		sheet.setColumnWidth(0, "시스템구분".length()*500 + 1000);
-		sheet.setColumnWidth(2, "프로그램 본수".length()*500 + 1000);
-		sheet.setColumnWidth(3, "테스트케이스 개수".length()*500 + 1000);
-		sheet.setColumnWidth(7, "진행률(%)".length()*500 + 1000);
-		sheet.setColumnWidth(11, "완료율(%)".length()*500 + 1000);
+		sheet.setColumnWidth(2, "테스트케이스 수".length()*500 + 1000);
+		sheet.setColumnWidth(6, "진행률(%)".length()*500 + 1000);
+		sheet.setColumnWidth(10, "완료율(%)".length()*500 + 1000);
 		
 		// 입력된 내용 파일로 쓰기
 		File folder = new File("C:\\TMS\\TMS_통계자료");
