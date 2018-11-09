@@ -115,101 +115,101 @@ function deleteTestCase() {
                  <div id="border" class="modify_user" >
                       <table>
                       	<tr>
-                              <th width="20%" height="23" class="required_text" nowrap >
+                              <th width="25%" height="23" class="required_text" nowrap >
                                     <label for="testcaseGb"> 
                                     	<spring:message code="tms.test.testcaseGb" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                                </th>
-                                <td width="80%" nowrap colspan="3">
+                                <td width="75%" nowrap colspan="3">
                                 	<c:out value='${testVoMap.testcaseGbNm}'/>
                                 	<input type="hidden" name="testcaseGb" value="${testVoMap.testcaseGbCode}">
 									<br/><form:errors path="testcaseGb" />
                                 </td>
                           </tr>
                          <tr>
-                              <th width="20%" height="23" class="required_text" nowrap >
+                              <th width="25%" height="23" class="required_text" nowrap >
                                     <label for="testcaseId"> 
                                     	<spring:message code="tms.test.testcaseId" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td width="80%" nowrap colspan="3">
+                                <td width="75%" nowrap colspan="3">
                                     <c:out value='${testVoMap.testcaseId}'/>
                                     <input type="hidden" name="testcaseId" value="${testVoMap.testcaseId}" >
                                     <br/><form:errors path="testcaseId" /> 
                                 </td>
                           </tr>
                           <tr>
-                              <th width="20%" height="23" class="required_text" nowrap >
+                              <th width="25%" height="23" class="required_text" nowrap >
                                     <label for="testcaseContent"> 
                                     	<spring:message code="tms.test.testcaseContent" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td width="50%" nowrap colspan="3">
+                                <td width="75%" nowrap colspan="3">
                                       <input type="text" title="게시판명입력" name="testcaseContent" style="width:99%" value="${testVoMap.testcaseContent}"/>
                                     <br/><form:errors path="testcaseContent" />
                                 </td>
                           </tr>
                           <tr> 
-                            <th height="23" class="required_text" >
+                            <th  width="25%" height="23" class="required_text" >
                                 <label for="pgId">
                                 	<spring:message code="tms.test.pgId" />
                                 </label>    
                             </th>
-                            <td colspan="3">
+                            <td width="75%" colspan="3">
                            		 <c:out value='${testVoMap.pgId}'/>
                             </td>
                           </tr>
                            <tr> 
-                            <th height="23" class="required_text" >
+                            <th  width="25%" height="23" class="required_text" >
                                 <label for="pgNm">
                                 	<spring:message code="tms.test.pgNm" />
                                 </label>    
                             </th>
-                            <td colspan="3">
+                            <td width="75%" colspan="3">
                             	<c:out value='${testVoMap.pgNm}'/>
                             </td>
                           </tr>
                           <tr>
-                              <th width="20%" height="23" class="required_text" nowrap >
+                              <th  width="25%" height="23" class="required_text" nowrap >
                                     <label for="taskGb"> 
                                     	<spring:message code="tms.test.taskGb" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td width="80%" nowrap colspan="3">
+                                <td width="75%" nowrap colspan="3">
                                 	<c:out value='${testVoMap.taskGbNm}'/>
 									<br/><form:errors path="taskGb" />
                                 </td>
                           </tr>
                            <tr>
-                              <th width="20%" height="23" class="required_text" nowrap >
+                              <th  width="25%"  height="23" class="required_text" nowrap >
                                     <label for="userId"> 
                                     	<spring:message code="tms.test.userWriterId" />
                                     </label>    
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/></th>
-                                <td width="80%" nowrap colspan="3" title="${testVoMap.userId}">
+                                <td width="75%" nowrap colspan="3" title="${testVoMap.userId}">
                                 	<c:out value='${testVoMap.userNm}'/>
                                     <br/><form:errors path="userId" />
                                 </td> 
                           </tr>
                           <tr> 
-                            <th height="23" class="required_text" >
+                            <th  width="25%" height="23" class="required_text" >
                                 <label for="precondition">
                                 	<spring:message code="tms.test.precondition" />
                                 </label>    
                             </th>
-                            <td colspan="3">
+                            <td width="75%" colspan="3">
                             	 <textarea type="textarea" rows="3" style="width:100%"  name="precondition"><c:out value='${testVoMap.precondition}'/></textarea>
                             	<br/><form:errors path="precondition" />
                             </td>
                           </tr>
                            <tr> 
-                            <th height="23" class="required_text" >
+                            <th  width="25%" height="23" class="required_text" >
                                 <label for="enrollDt">
                                 	<spring:message code="tms.test.enrollDt" />
                                 </label>    
                             </th>
-                            <td colspan="3">
+                            <td width="75%" colspan="3">
                             	<c:out value='${testVoMap.enrollDt}'/>
                             	<br/><form:errors path="enrollDt" />
                             </td>

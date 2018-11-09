@@ -258,7 +258,7 @@ function fDeleteMenuList() {
       			        	<td style="font-weight:bold;color:#666666;font-size:110%;">
       			        	<spring:message code="tms.test.testcaseId" />
       			        	</td>
-      			        	<td>
+      			        	<td colspan="3">
 					  			<input type="text" name="searchByTestcaseId" id="searchByTestcaseId" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByTestcaseId}'/>" />
       			        	</td>
       			        	<td>
@@ -292,9 +292,11 @@ function fDeleteMenuList() {
 								</select>		
       			        	
       			        	</td>
+      			        	
       			        	<td>
-      			        						  			
+					  			
       			        	</td>
+      			        	
       			        </tr>
       			        <tr>
       			        <td style="padding-top:15px; font-weight:bold;color:#666666;font-size:110%;">

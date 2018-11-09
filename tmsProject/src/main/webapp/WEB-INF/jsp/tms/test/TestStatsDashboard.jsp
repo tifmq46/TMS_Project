@@ -112,6 +112,7 @@ function handleClick(event, array){
             taskByTestcaseCntCompleteYCnt.push(taskByTestcaseCnt[i].completeYCnt);
          }
          var data = taskByTestcaseCntChart.config.data;
+         console.log(data)
          data.datasets[0].data = taskByTestcaseCntTaskGbCnt;
          data.datasets[1].data = taskByTestcaseCntCompleteYCnt;
          data.labels = taskByTestcaseCntTaskNm;
@@ -140,7 +141,7 @@ function handleClickTtc(event, array){
       dataType : 'json',
       success : function(result){
     	  
-         var taskByTestcaseCntChartTtc = result;
+         var taskByTestcaseCntTtc = result;
          var taskByTestcaseCntTaskNmTtc = new Array();
          var taskByTestcaseCntTaskGbCntTtc = new Array();
          var taskByTestcaseCntCompleteYCntTtc = new Array();
@@ -150,6 +151,7 @@ function handleClickTtc(event, array){
             taskByTestcaseCntCompleteYCntTtc.push(taskByTestcaseCntTtc[i].completeYCnt);
          }
          var data = taskByTestcaseCntChartTtc.config.data;
+         console.log(data)
          data.datasets[0].data = taskByTestcaseCntTaskGbCntTtc;
          data.datasets[1].data = taskByTestcaseCntCompleteYCntTtc;
          data.labels = taskByTestcaseCntTaskNmTtc;
@@ -437,22 +439,24 @@ window.onload = function() {
        taskByTestcaseCntcompleteYCntTtc.push(taskByTestcaseCntTtc[i].completeYCnt);
        
     }
-    var ctx4 = document.getElementById('taskByTestcaseCntTtc');
-    taskByTestcaseCntChartTtc = new Chart(ctx4, {
-       type : 'bar',
-       data : {
-          labels : taskByTestcaseCntTaskNmTtc,
-          barThickness : '0.9',
-          datasets : [ {
-             label : '테스트 케이스 건수',
-             data : taskByTestcaseCntTaskGbCntTtc,
-             backgroundColor : '#e9ecef',
-          }, {
-				label : '완료 건수',
-				data : taskByTestcaseCntcompleteYCntTtc,
-				backgroundColor : '#007bff',
-			}]
-       },
+       var ctx4 = document.getElementById('taskByTestcaseCntTtc');
+       taskByTestcaseCntChartTtc = new Chart(ctx4, {
+          type : 'bar',
+          data : {
+             labels : taskByTestcaseCntTaskNmTtc,
+             barThickness : '0.9',
+             datasets : [ {
+                label : '테스트 케이스 건수',
+                data : taskByTestcaseCntTaskGbCntTtc,
+                backgroundColor : '#e9ecef',
+             }, {
+   				label : '완료 건수',
+   				data : taskByTestcaseCntcompleteYCntTtc,
+   				backgroundColor : '#007bff',
+   			}]
+          },
+       
+       
        options : {
           tooltips: {
              callbacks: {
@@ -660,7 +664,7 @@ window.onload = function() {
                  
                   		<div class="progess_bar_section" style="font-size:15px; font-weight: bold;">
 	                   		<div class="header-name" style="margin:10px;">
-	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;업무별 통합테스트 현황 (단위:수) - <span id="sysNmLabel" >전체</span>
+	    					<img src="<c:url value='/images/bl_circle.gif' />" width="5" height="5" alt="dot" style="vertical-align:super" />&nbsp;업무별 통합테스트 현황 (단위:수) - <span id="sysNmLabelTtc" >전체</span>
     						</div>
 	                  		<canvas id="taskByTestcaseCntTtc" width="100%" height="30"></canvas>
                   		</div>
