@@ -25,6 +25,55 @@
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <style>
 	tr.row:hover { background-color: lightyellow; } 
+	
+	ul.tabs {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+	border-bottom: 1px solid #DDDDDD;
+	
+}
+
+ul.tabs li {
+	background: none;
+	color: #727272;
+	font-weight:bold;
+	display: inline-block;
+	padding: 10px 15px;
+	cursor: pointer;
+	border-right: 1px solid #DDDDDD;
+	border-left: 1px solid #DDDDDD;
+	border-top: 1px solid #DDDDDD;
+}
+
+ul.tabs li.current {
+	background: #007bff;
+	font-weight:bold;
+	color:#ffffff;
+	border-right: 1px  #DDDDDD;
+	border-left: 1px  #DDDDDD;
+	border-top: 1px  #DDDDDD;
+}
+
+ul.tabs li.last {
+	background: #ffffff;
+	font-weight:bold;
+	color:#ffffff;
+	border-right: 0px;
+	border-left: 0px;
+	border-top: 0px;
+	border-bottom: 0px;
+}
+
+.tab-content {
+	display: none;
+	padding: 15px;
+}
+
+.tab-content.current {
+	display: inherit;
+	border: 1px solid #fff;
+}
 </style>
 </head>
 <body>
@@ -56,7 +105,25 @@
 				}
 			});
 		})
+		
+		$('ul.tabs li').click(function() {
+		var tab_id = $(this).attr('data-tab');
+		$('ul.tabs li').removeClass('current');
+		$('.tab-content').removeClass('current');
+			
+		$(this).addClass('current');
+		$("#" + tab_id).addClass('current');
+		handleClick(tab_id);
 	})
+})
+
+function handleClick(tab_id){
+		if(tab_id=="tab-1"){
+			a1();
+		}else if(tab_id=="tab-2"){
+			a2();
+		}
+}
 	
 window.onload = function() {
 		
@@ -138,89 +205,197 @@ window.onload = function() {
 		/** 결함 진행상태 통계 끝*/
 		
 		/** 개발 진척상태 통계 시작*/
-		var devPlanByMainStats = JSON.parse('${devPlanByMainStats}');
-		var devPlanByMainStatsSysNm = new Array();
-		var devPlanByMainStatsTp = new Array();
-		var devPlanByMainStatsTd = new Array();
-		var maxValue =0;
-		
-		for (var i = 0; i < devPlanByMainStats.length; i++) {
-			
-			//값들 중 최대값 구하기(수정중)
-			if(maxValue < devPlanByMainStats[i].tp){
-				maxValue = devPlanByMainStats[i].tp;
+		a1();
+}
 
-				if(maxValue < devPlanByMainStats[i].td){
-					maxValue = devPlanByMainStats[i].td;
-				}
-			}
-			if(devPlanByMainStats[i].sysGb == 'total'){
-				devPlanByMainStatsSysNm.unshift(devPlanByMainStats[i].sysNm);
-				devPlanByMainStatsTp.unshift(devPlanByMainStats[i].tp);
-				devPlanByMainStatsTd.unshift(devPlanByMainStats[i].td);
-			}else{
-				devPlanByMainStatsSysNm.push(devPlanByMainStats[i].sysNm);
-				devPlanByMainStatsTp.push(devPlanByMainStats[i].tp);
-				devPlanByMainStatsTd.push(devPlanByMainStats[i].td);
-			}
+function a1(){
+	var devPlanByMainStats = JSON.parse('${devPlanByMainStats}');
+	var devPlanByMainStatsSysNm = new Array();
+	var devPlanByMainStatsTp = new Array();
+	var devPlanByMainStatsTd = new Array();
+	var maxValue =0;
+	
+	for (var i = 0; i < devPlanByMainStats.length; i++) {
+		if(devPlanByMainStats[i].tp >= maxValue){
+			maxValue = devPlanByMainStats[i].tp;
 		}
-		var ctx7 = document.getElementById('devPlanByMainStats');
-		var devPlanByMainStatsChart = new Chart(ctx7, {
-			type : 'bar',
-			data : {
-				labels : devPlanByMainStatsSysNm,
-				barThickness : '0.9',
-				datasets : [ {
-					label : '계획건수',
-					data : devPlanByMainStatsTp,
-					backgroundColor : '#007bff',
-				},{
-					label : '실적건수',
-					data : devPlanByMainStatsTd,
-					backgroundColor :  '#00B3E6',
-				}]
+		if(devPlanByMainStats[i].td >= maxValue){
+			maxValue = devPlanByMainStats[i].td;
+		}
+		
+		if(devPlanByMainStats[i].sysGb == 'total'){
+			devPlanByMainStatsSysNm.unshift(devPlanByMainStats[i].sysNm);
+			devPlanByMainStatsTp.unshift(devPlanByMainStats[i].tp);
+			devPlanByMainStatsTd.unshift(devPlanByMainStats[i].td);
+		}else{
+			devPlanByMainStatsSysNm.push(devPlanByMainStats[i].sysNm);
+			devPlanByMainStatsTp.push(devPlanByMainStats[i].tp);
+			devPlanByMainStatsTd.push(devPlanByMainStats[i].td);
+		}
+	}
+	var ctx7 = document.getElementById('devThisWeekByMainStats');
+	var devPlanByMainStatsChart = new Chart(ctx7, {
+		type : 'bar',
+		data : {
+			labels : devPlanByMainStatsSysNm,
+			barThickness : '0.9',
+			datasets : [ {
+				label : '계획건수',
+				data : devPlanByMainStatsTp,
+				backgroundColor : '#007bff',
+			},{
+				label : '실적건수',
+				data : devPlanByMainStatsTd,
+				backgroundColor :  '#00B3E6',
+			}]
+		},
+		options : {
+			legend:{
+				display:false
 			},
-			options : {
-				legend:{
-					position:'bottom'
-				},
-				scales:{
-					yAxes:[{
-						ticks:{
-							suggestedMax:maxValue+1,
-							beginAtZero:true
-						}	
-					}],
-					xAxes: [{
-			            barPercentage: 0.9
-			        }]
-				},
-				animation: {
-				      duration: 700,
-				      onComplete: function() {
-				        var chartInstance = this.chart,
-				        ctx = chartInstance.ctx;
-				        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
-				        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
-				        ctx.textAlign = 'center';
-				        ctx.textBaseline = 'bottom';
-
-				        this.data.datasets.forEach(function(dataset, i) {
-					          var meta = chartInstance.controller.getDatasetMeta(i);
-					          meta.data.forEach(function(bar, index) {
-					            var data = dataset.data[index];
-					            if(data != 0){
-						            ctx.fillText(data, bar._model.x, bar._model.y - 5);
-					            }
-					          });
-				        });
-				      }
+			legendCallback: function(chart) {
+				var text = [];
+				for (var i = 0; i < chart.data.datasets.length; i++) {
+					text.push('<span class="legendRect" style="background-color:' + chart.data.datasets[i].backgroundColor + '"></span>');
+					if (chart.data.datasets[i].label) {
+						text.push('<span class="legendText">' + chart.data.datasets[i].label + '</span>');
+					}
 				}
-				
+				return text.join('');
+			},
+			scales:{
+				yAxes:[{
+					ticks:{
+						suggestedMax:maxValue+1,
+						beginAtZero:true
+					}	
+				}],
+				xAxes: [{
+		            barPercentage: 0.9
+		        }]
+			},
+			animation: {
+			      duration: 700,
+			      onComplete: function() {
+			        var chartInstance = this.chart,
+			        ctx = chartInstance.ctx;
+			        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
+			        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+			        ctx.textAlign = 'center';
+			        ctx.textBaseline = 'bottom';
+
+			        this.data.datasets.forEach(function(dataset, i) {
+				          var meta = chartInstance.controller.getDatasetMeta(i);
+				          meta.data.forEach(function(bar, index) {
+				            var data = dataset.data[index];
+				            if(data != 0){
+					            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+				            }
+				          });
+			        });
+			      }
 			}
-		});
-		/** 개발 진척상태 통계 끝*/
-}	
+			
+		}
+	});
+	/** 개발 진척상태 통계 끝*/
+	$("#sysByMainStatsDev").html(devPlanByMainStatsChart.generateLegend());
+	
+}
+
+function a2(){
+	var devPlanByMainStats = JSON.parse('${devPlanByMainStats}');
+	var devPlanByMainStatsSysNm = new Array();
+	var devPlanByMainStatsAp = new Array();
+	var devPlanByMainStatsAd = new Array();
+	var accMaxValue =0;
+	
+	for (var i = 0; i < devPlanByMainStats.length; i++) {
+		if(devPlanByMainStats[i].ap >= accMaxValue){
+			accMaxValue = devPlanByMainStats[i].ap;
+		}
+		if(devPlanByMainStats[i].ad >= accMaxValue){
+			accMaxValue = devPlanByMainStats[i].ad;
+		}
+		
+		if(devPlanByMainStats[i].sysGb == 'total'){
+			devPlanByMainStatsSysNm.unshift(devPlanByMainStats[i].sysNm);
+			devPlanByMainStatsAp.unshift(devPlanByMainStats[i].ap);
+			devPlanByMainStatsAd.unshift(devPlanByMainStats[i].ad);
+		}else{
+			devPlanByMainStatsSysNm.push(devPlanByMainStats[i].sysNm);
+			devPlanByMainStatsAp.push(devPlanByMainStats[i].ap);
+			devPlanByMainStatsAd.push(devPlanByMainStats[i].ad);
+		}
+	}
+	
+	var ctx8 = document.getElementById('devAccByMainStats');
+	var devPlanByMainStatsChart = new Chart(ctx8, {
+		type : 'bar',
+		data : {
+			labels : devPlanByMainStatsSysNm,
+			barThickness : '0.9',
+			datasets : [ {
+				label : '계획건수',
+				data : devPlanByMainStatsAp,
+				backgroundColor : '#007bff',
+			},{
+				label : '실적건수',
+				data : devPlanByMainStatsAd,
+				backgroundColor :  '#00B3E6',
+			}]
+		},
+		options : {
+			legend:{
+				display:false
+			},
+			legendCallback: function(chart) {
+				var text = [];
+				for (var i = 0; i < chart.data.datasets.length; i++) {
+					text.push('<span class="legendRect" style="background-color:' + chart.data.datasets[i].backgroundColor + '"></span>');
+					if (chart.data.datasets[i].label) {
+						text.push('<span class="legendText">' + chart.data.datasets[i].label + '</span>');
+					}
+				}
+				return text.join('');
+			},
+			scales:{
+				yAxes:[{
+					ticks:{
+						suggestedMax:accMaxValue+1,
+						beginAtZero:true
+					}	
+				}],
+				xAxes: [{
+		            barPercentage: 0.9
+		        }]
+			},
+			animation: {
+			      duration: 700,
+			      onComplete: function() {
+			        var chartInstance = this.chart,
+			        ctx = chartInstance.ctx;
+			        ctx.fillStyle = 'rgba(0, 123, 255, 1)';
+			        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+			        ctx.textAlign = 'center';
+			        ctx.textBaseline = 'bottom';
+
+			        this.data.datasets.forEach(function(dataset, i) {
+				          var meta = chartInstance.controller.getDatasetMeta(i);
+				          meta.data.forEach(function(bar, index) {
+				            var data = dataset.data[index];
+				            if(data != 0){
+					            ctx.fillText(data, bar._model.x, bar._model.y - 5);
+				            }
+				          });
+			        });
+			      }
+			}
+			
+		}
+	});
+	$("#sysByMainStatsDev2").html(devPlanByMainStatsChart.generateLegend());
+}
 
 </script>
 
@@ -432,22 +607,41 @@ window.onload = function() {
     		</div>    	    	
     	</div>
     	
-    	<div class="myBsnsList" class="col-md-6" style="height:290px; margin-bottom:20px !important	; font-family:'Malgun Gothic';">
+    	<div class="recentBsnsList" class="col-md-6" style="overflow:auto; white-space:nowrap; overflow-y:hidden; height:290px; width:220px; margin-bottom:20px !important	; font-family:'Malgun Gothic';">
     		<div class="widget">
     			<div class="widget-header">
-    				<div class="header-name" style="margin:10px;">
-	    					개발진척 현황
-    				</div>
+					<div class="header-name" style="margin:10px;">개발진척 현황
+					<ul class="tabs" style="float:right; margin-top:-10px">
+						<li class="tab-link current" data-tab="tab-1">금주</li>
+						<li class="tab-link" data-tab="tab-2">누적</li>
+				</ul>
+						</div>
+	    				
     			</div>
     			<br/><br/>
-    			<c:choose>
-    			<c:when test="${devPlanByMainStats != null}">
-    				<canvas id="devPlanByMainStats" width="100%" height="28"></canvas>
-    			</c:when>
-    			<c:otherwise>
-    			등록된 개발계획이 없습니다.
-    			</c:otherwise>
-    			</c:choose>
+    			
+				<div id="tab-1" class="tab-content current">
+	    			<c:choose>
+	    			<c:when test="${devPlanByMainStats != null}">
+	    				<canvas id="devThisWeekByMainStats" width="100%" height="28"></canvas>
+	    				<div id="sysByMainStatsDev" style="margin-top:10px"></div>
+	    			</c:when>
+	    			<c:otherwise>
+	    			등록된 개발계획이 없습니다.
+	    			</c:otherwise>
+	    			</c:choose>
+    			</div>
+    			<div id="tab-2" class="tab-content">
+    				<c:choose>
+	    			<c:when test="${devPlanByMainStats != null}">
+	    				<canvas id="devAccByMainStats" width="100%" height="28"></canvas>
+	    				<div id="sysByMainStatsDev2" style="margin-top:10px"></div>
+	    			</c:when>
+	    			<c:otherwise>
+	    			등록된 개발계획이 없습니다.
+	    			</c:otherwise>
+	    			</c:choose>
+    			</div>
     		</div>    	    	
     	</div>
     	

@@ -59,7 +59,9 @@ $(function(){
 }
 
 function pagePrint(){
-	 /* var myForm = document.listForm;
+	document.listForm.searchBySysGb.value = document.listForm.Sys.value;
+    document.listForm.searchByTaskGb.value = document.listForm.task.value;
+	/*  var myForm = document.listForm;
 	 var url = "<c:url value='/tms/dev/devCurListPrint.do'/>";
 
 	 window.open(url ,'printForm',"width=1000, height=600");
@@ -67,7 +69,9 @@ function pagePrint(){
 	 myForm.method="post";
 	 myForm.target="printForm";
 	 myForm.submit(); */
-	window.open("<c:url value='/tms/dev/devCurListPrint.do'/>",'','width=1000,height=600');
+	 var a = $("#listForm").serializeArray();
+	 var b = JSON.stringify(a);
+	window.open("<c:url value='/tms/dev/devCurListPrint.do'/>?vo="+b,'','width=1000,height=600');
 	//document.listForm.action = "<c:url value='/tms/dev/devCurListPrint.do'/>";
 	//document.listForm.submit(); 
 }

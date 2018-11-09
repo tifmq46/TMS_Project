@@ -32,10 +32,13 @@ function afterPrint(){
 	document.body.innerHTML = initBody;
 }
 window.onload= function(){
+	
 	//window.open("<c:url value='/tms/dev/devCurListPrint.do'/>",'','width=1000,height=600');
 	window.onbeforeprint = beforePrint;
 	window.onafterprint = afterPrint;
 	window.print();
+	setTimeout(function () { window.close(); }, 100);
+	//window.close();
 }
 </script>
 </head>

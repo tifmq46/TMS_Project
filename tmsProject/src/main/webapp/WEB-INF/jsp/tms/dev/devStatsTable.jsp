@@ -108,6 +108,8 @@ $(document).ready(function() {
 function StatsToExcel(statsGb) {
 		location.href = "./StatsToExcel.do?statsGb=" + statsGb;
 	}
+	
+
 </script>
 
 </head>
@@ -357,11 +359,11 @@ function StatsToExcel(statsGb) {
                  
                  <div id="tab-3" class="tab-content">
 	                 <div class="default_tablestyle table1">
-	                    <table summary="개발자별 통계 테이블입니다" cellpadding="0" cellspacing="0" >
+	                    <table summary="개발자별 통계 테이블입니다" cellpadding="0" cellspacing="0">
 	                    <caption>통계(개발자별) 테이블</caption>
 	                    
 	                    <colgroup>
-	                    	<col width="100">
+	                    	<col width="80">
 	                    	<col width="50">
 	                    	<col width="50">
 		                   <col width="50">
@@ -403,7 +405,7 @@ function StatsToExcel(statsGb) {
 	           			
 		                    <tr>
 		                   		
-		                    	<td style="text-align:left; padding-left:50px"><c:out value="${us.userDevNm}(${us.userDevId})" /></td>
+		                    	<td style="text-align:left;" ><c:out value="${us.userDevNm}(${us.userDevId})" /></td>
 		                    	<td><c:out value="${us.totCnt}" /></td>
 		                    	<c:set var = "sumTotCnt" value="${us.totCnt}" />
 								<% sumTotCnt += (Integer)pageContext.getAttribute("sumTotCnt");

@@ -422,14 +422,13 @@ function searchFileNm() {
             		  <td align="center" class="listtd"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             		  <td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             		  <td align="center" class="listtd" title="<c:out value="${result.USER_DEV_ID}"/>"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
+            		  
             		  <td><input type="date"  id="${result.PG_ID}" 
-            		  <c:if test="${d_test}"> class="disabled" </c:if> 
-            		  	onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value='${result.PLAN_START_DT}' pattern="yyyy-MM-dd"/>"
-            		  	/>
-            		  	
-                      </td>
+            		  	<c:if test="${d_test}"> class="disabled" </c:if> 
+            		  	onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value='${result.PLAN_START_DT}' pattern="yyyy-MM-dd"/>"/>
+            		  </td>
                       <td><input type="date"  id="${result.PG_ID}1" 
-                      <c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
+                      	<c:if test="${d_test}"> class="disabled" </c:if> onchange="fn_result_change('${result.PG_ID}',this)" value="<fmt:formatDate value="${result.PLAN_END_DT}" pattern="yyyy-MM-dd" />"/>
                       </td>
                      
             		  <td align="center" class="listtd"> <div id="dayDiffLoc${result.PG_ID}"><c:out value="${result.DAY_DIFF}"/> </div></td>
