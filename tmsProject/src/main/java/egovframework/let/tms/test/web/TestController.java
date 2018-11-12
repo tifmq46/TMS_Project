@@ -863,14 +863,14 @@ public class TestController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/tms/test/currentToExcel.do")
-	public String currentToExcel(ModelMap model, @ModelAttribute("searchVO") TestDefaultVO searchVO, HttpServletResponse response) throws Exception {
+	public String currentToExcel(ModelMap model, @ModelAttribute("searchVO") TestDefaultVO searchVO, @RequestParam(value="testGb") String testGb, HttpServletResponse response) throws Exception {
 		
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
 			searchVO.setExcel(true);
 			List<?> testCurrent = testService.selectTestCurrent(searchVO);
-			testCurrentXlsxWriter(testCurrent, searchVO.getAsOf() , searchVO.getTestcaseGb(), response);
+			testCurrentXlsxWriter(testCurrent, searchVO.getAsOf() , testGb, response);
 		}
 		return "redirect:/tms/test/selectTestCurrent.do";
 	}
@@ -886,6 +886,7 @@ public class TestController {
 	 */
 	public void testCurrentXlsxWriter(List<?> list, String asOf, String testcaseGb, HttpServletResponse response) throws Exception {
 
+		System.out.println("확인 :"+testcaseGb);
 		// 워크북 생성
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// 워크시트 생성
@@ -895,97 +896,322 @@ public class TestController {
 		// 쎌 생성
 		XSSFCell cell;
 
-		Font defaultFont = workbook.createFont();
-		defaultFont.setFontHeightInPoints((short) 11);
+		Font defaultFont = workbook.createFont();        
+		defaultFont.setColor(HSSFColor.WHITE.index);
+		defaultFont.setBoldweight(Font.BOLDWEIGHT_BOLD); 
+		defaultFont.setFontHeightInPoints((short) 11); 
 		defaultFont.setFontName("맑은 고딕");
 
-		// 제목 스타일
-		CellStyle HeadStyle = workbook.createCellStyle();
-		HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		Font contentFont = workbook.createFont();      
+		contentFont.setFontHeightInPoints((short) 11); 
+		contentFont.setFontName("맑은 고딕");
+
+		//제목 스타일 
+		CellStyle HeadStyle = workbook.createCellStyle(); 
+		//HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+		HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
 		HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index);
-		HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-		HeadStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-		HeadStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		HeadStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-		HeadStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+		HeadStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
 		HeadStyle.setFont(defaultFont);
 
 		// 본문 스타일
 		CellStyle BodyStyle = workbook.createCellStyle();
-		BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		//BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 		BodyStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 		BodyStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 		BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
 		BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
 		BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-		BodyStyle.setFont(defaultFont);
+		BodyStyle.setFont(contentFont);
 
+		System.out.println(1);
+		
 		// 헤더 정보 구성
 		if(asOf.equals("pgId")){
-			cell = row.createCell(0);
-			cell.setCellValue("화면ID");
-			cell.setCellStyle(HeadStyle); // 제목스타일
 			
-			cell = row.createCell(1);
-			cell.setCellValue("화면명");
-			cell.setCellStyle(HeadStyle); // 제목스타일
-
-			cell = row.createCell(2);
-			cell.setCellValue("업무구분");
-			cell.setCellStyle(HeadStyle); // 제목스타일
-
-			cell = row.createCell(3);
-			cell.setCellValue("테스트케이스 ID");
-			cell.setCellStyle(HeadStyle); // 제목스타일
-
-			cell = row.createCell(4);
-			cell.setCellValue("테스트케이스명");
-			cell.setCellStyle(HeadStyle); // 제목스타일
+			if(testcaseGb.equals("TC1")) {
+				cell = row.createCell(0);
+				cell.setCellValue("화면ID");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
+				cell.setCellStyle(HeadStyle); // 제목스타일
 			
-			cell = row.createCell(5);
-			cell.setCellValue("작성자");
-			cell.setCellStyle(HeadStyle); // 제목스타일
+				cell = row.createCell(1);
+				cell.setCellValue("화면명");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(2);
+				cell.setCellValue("업무구분");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(3);
+				cell.setCellValue("테스트케이스 ID");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(4);
+				cell.setCellValue("테스트케이스명");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 4, 4));
+				cell.setCellStyle(HeadStyle); // 제목스타일
 			
+				cell = row.createCell(5);
+				cell.setCellValue("작성자");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 5, 5));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(6);
+				cell.setCellValue("테스트단계");
+				sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 7));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(7);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(8);
+				cell.setCellValue("완료여부");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 8, 8));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			}else {
+				cell = row.createCell(0);
+				cell.setCellValue("업무구분");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(1);
+				cell.setCellValue("테스트케이스 ID");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(2);
+				cell.setCellValue("테스트케이스명");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+				
+				cell = row.createCell(3);
+				cell.setCellValue("작성자");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(4);
+				cell.setCellValue("테스트단계");
+				sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 5));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(5);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(6);
+				cell.setCellValue("완료여부");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+			}
 		} else if(asOf.equals("testcaseId")) {
 			
-			cell = row.createCell(0);
-			cell.setCellValue("테스트케이스 ID");
-			cell.setCellStyle(HeadStyle); // 제목스타일
+			if(testcaseGb.equals("TC1")) {
 
-			cell = row.createCell(1);
-			cell.setCellValue("테스트케이스명");
-			cell.setCellStyle(HeadStyle); // 제목스타일
+				cell = row.createCell(0);
+				cell.setCellValue("테스트케이스 ID");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(1);
+				cell.setCellValue("테스트케이스명");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
+				cell.setCellStyle(HeadStyle); // 제목스타일
 			
-			cell = row.createCell(2);
-			cell.setCellValue("작성자");
-			cell.setCellStyle(HeadStyle); // 제목스타일
+				cell = row.createCell(2);
+				cell.setCellValue("작성자");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
+				cell.setCellStyle(HeadStyle); // 제목스타일
 			
-			cell = row.createCell(3);
-			cell.setCellValue("업무구분");
-			cell.setCellStyle(HeadStyle); // 제목스타일
+				cell = row.createCell(3);
+				cell.setCellValue("업무구분");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3));
+				cell.setCellStyle(HeadStyle); // 제목스타일
 
-			cell = row.createCell(4);
-			cell.setCellValue("화면ID");
-			cell.setCellStyle(HeadStyle); // 제목스타일
+				cell = row.createCell(4);	
+				cell.setCellValue("화면ID");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 4, 4));
+				cell.setCellStyle(HeadStyle); // 제목스타일
 
-			cell = row.createCell(5);
-			cell.setCellValue("화면명");
-			cell.setCellStyle(HeadStyle); // 제목스타일
+				cell = row.createCell(5);
+				cell.setCellValue("화면명");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 5, 5));
+				cell.setCellStyle(HeadStyle); // 제목스타일	
+
+				cell = row.createCell(6);
+				cell.setCellValue("테스트단계");
+				sheet.addMergedRegion(new CellRangeAddress(0, 0, 6, 7));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(7);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(8);
+				cell.setCellValue("완료여부");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 8, 8));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+			
+			}else {
+			
+				cell = row.createCell(0);
+				cell.setCellValue("테스트케이스 ID");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(1);
+				cell.setCellValue("테스트케이스명");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(2);
+				cell.setCellValue("작성자");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(3);
+				cell.setCellValue("업무구분");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 3, 3));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(4);
+				cell.setCellValue("테스트단계");
+				sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 5));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(6);
+				cell.setCellValue("완료여부");
+				sheet.addMergedRegion(new CellRangeAddress(0, 1, 6, 6));
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			}
 		}
+		System.out.println(2);
+		row = sheet.createRow(1);
 
-		cell = row.createCell(6);
-		cell.setCellValue("1차");
-		cell.setCellStyle(HeadStyle); // 제목스타일
+		if(asOf.equals("pgId")){
+			
+			if(testcaseGb.equals("TC1")) {
+				cell = row.createCell(0);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(1);
+				cell.setCellStyle(HeadStyle); // 제목스타일
 
-		cell = row.createCell(7);
-		cell.setCellValue("2차");
-		cell.setCellStyle(HeadStyle); // 제목스타일
+				cell = row.createCell(2);
+				cell.setCellStyle(HeadStyle); // 제목스타일
 
-		cell = row.createCell(8);
-		cell.setCellValue("완료여부");
-		cell.setCellStyle(HeadStyle); // 제목스타일
+				cell = row.createCell(3);
+				cell.setCellStyle(HeadStyle); // 제목스타일
 
+				cell = row.createCell(4);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(5);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(6);
+				cell.setCellValue("1차");
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(7);
+				cell.setCellValue("2차");
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(8);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			}else {
+				cell = row.createCell(0);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(1);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(2);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+				
+				cell = row.createCell(3);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(4);
+				cell.setCellValue("1차");
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(5);
+				cell.setCellValue("2차");
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(6);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+			}
+		} else if(asOf.equals("testcaseId")) {
+			
+			if(testcaseGb.equals("TC1")) {
+
+				cell = row.createCell(0);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(1);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(2);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(3);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(4);	
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(5);
+				cell.setCellStyle(HeadStyle); // 제목스타일	
+
+				cell = row.createCell(6);
+				cell.setCellValue("1차");
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(7);
+				cell.setCellValue("2차");
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(8);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+			
+			}else {
+			
+				cell = row.createCell(0);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(1);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(2);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			
+				cell = row.createCell(3);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(4);
+				cell.setCellValue("1차");
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(5);
+				cell.setCellValue("2차");
+				cell.setCellStyle(HeadStyle); // 제목스타일
+
+				cell = row.createCell(6);
+				cell.setCellStyle(HeadStyle); // 제목스타일
+			}
+		}
+		System.out.println(3);
 		String tempSt;
 		SimpleDateFormat sdft = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -993,34 +1219,52 @@ public class TestController {
 		for (int i = 0; i < list.size(); i++) {
 			// 행 생성
 			EgovMap recode = (EgovMap) list.get(i);
-			row = sheet.createRow(i + 1);
+			row = sheet.createRow(i + 2);
 
 			if(asOf.equals("pgId")){
 				
-				cell = row.createCell(0);
-				cell.setCellValue((String) recode.get("pgId"));
-				cell.setCellStyle(BodyStyle); // 본문스타일
+				if(testcaseGb.equals("TC1")) {
+					cell = row.createCell(0);
+					cell.setCellValue((String) recode.get("pgId"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
 				
-				cell = row.createCell(1);
-				cell.setCellValue((String) recode.get("pgNm"));
-				cell.setCellStyle(BodyStyle); // 본문스타일
+					cell = row.createCell(1);
+					cell.setCellValue((String) recode.get("pgNm"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
 				
-				cell = row.createCell(2);
-				cell.setCellValue((String) recode.get("taskGbNm"));
-				cell.setCellStyle(BodyStyle); // 본문스타일
+					cell = row.createCell(2);
+					cell.setCellValue((String) recode.get("taskGbNm"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
 				
-				cell = row.createCell(3);
-				cell.setCellValue((String)recode.get("testcaseId"));
-				cell.setCellStyle(BodyStyle); // 본문스타일
+					cell = row.createCell(3);
+					cell.setCellValue((String)recode.get("testcaseId"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
 				
-				cell = row.createCell(4);
-				cell.setCellValue((String)recode.get("testcaseContent"));
-				cell.setCellStyle(BodyStyle); // 본문스타일
+					cell = row.createCell(4);
+					cell.setCellValue((String)recode.get("testcaseContent"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
 				
-				cell = row.createCell(5);
-				cell.setCellValue((String)recode.get("userNm"));
-				cell.setCellStyle(BodyStyle); // 본문스타일
-				
+					cell = row.createCell(5);
+					cell.setCellValue((String)recode.get("userNm"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
+				}else {
+					
+					cell = row.createCell(0);
+					cell.setCellValue((String) recode.get("taskGbNm"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
+					
+					cell = row.createCell(1);
+					cell.setCellValue((String)recode.get("testcaseId"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
+					
+					cell = row.createCell(2);
+					cell.setCellValue((String)recode.get("testcaseContent"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
+					
+					cell = row.createCell(3);
+					cell.setCellValue((String)recode.get("userNm"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
+				}
 			} else if(asOf.equals("testcaseId")) {
 				
 				cell = row.createCell(0);
@@ -1039,29 +1283,57 @@ public class TestController {
 				cell.setCellValue((String)recode.get("taskGbNm"));
 				cell.setCellStyle(BodyStyle); // 본문스타일
 				
-				cell = row.createCell(4);
-				cell.setCellValue((String)recode.get("pgId"));
-				cell.setCellStyle(BodyStyle); // 본문스타일
+				if(testcaseGb.equals("TC2")) {
+					cell = row.createCell(4);
+					cell.setCellValue((String)recode.get("pgId"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
 				
-				cell = row.createCell(5);
-				cell.setCellValue((String) recode.get("pgNm"));
-				cell.setCellStyle(BodyStyle); // 본문스타일
+					cell = row.createCell(5);
+					cell.setCellValue((String) recode.get("pgNm"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
+				}else {
+					cell = row.createCell(4);
+					cell.setCellValue((String)recode.get("firstTestResultYn"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
+					
+					cell = row.createCell(5);
+					cell.setCellValue((String)recode.get("secondTestResultYn"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
+					
+					cell = row.createCell(6);
+					cell.setCellValue((String)recode.get("completeYn"));
+					cell.setCellStyle(BodyStyle); // 본문스타일
+				}
 				
 			}
+			if(testcaseGb.equals("TC1")) {
+				cell = row.createCell(6);
+				cell.setCellValue((String)recode.get("firstTestResultYn"));
+				cell.setCellStyle(BodyStyle); // 본문스타일
 			
-			cell = row.createCell(6);
-			cell.setCellValue((String)recode.get("firstTestResultYn"));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+				cell = row.createCell(7);
+				cell.setCellValue((String)recode.get("secondTestResultYn"));
+				cell.setCellStyle(BodyStyle); // 본문스타일
 			
-			cell = row.createCell(7);
-			cell.setCellValue((String)recode.get("secondTestResultYn"));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+				cell = row.createCell(8);
+				cell.setCellValue((String)recode.get("completeYn"));
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}else {
+				cell = row.createCell(4);
+				cell.setCellValue((String)recode.get("firstTestResultYn"));
+				cell.setCellStyle(BodyStyle); // 본문스타일
 			
-			cell = row.createCell(8);
-			cell.setCellValue((String)recode.get("completeYn"));
-			cell.setCellStyle(BodyStyle); // 본문스타일
+				cell = row.createCell(5);
+				cell.setCellValue((String)recode.get("secondTestResultYn"));
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			
+				cell = row.createCell(6);
+				cell.setCellValue((String)recode.get("completeYn"));
+				cell.setCellStyle(BodyStyle); // 본문스타일
+			}
 		}
-
+		
+		System.out.println(4);
 		/** 3. 컬럼 Width */
 		for (int i = 0; i < list.size(); i++) {
 			sheet.autoSizeColumn(i);

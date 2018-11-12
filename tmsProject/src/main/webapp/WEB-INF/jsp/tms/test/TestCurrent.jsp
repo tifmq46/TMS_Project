@@ -41,8 +41,10 @@ function selectTestCurrent(pageNo){
 
 function currentToExel(pageNo) {
 	
+	var gb = document.listForm.searchByTestcaseGb.value;
+	
 	document.listForm.pageIndex.value = pageNo; 
-    document.listForm.action = "<c:url value='/tms/test/currentToExcel.do'/>";
+    document.listForm.action = "<c:url value='/tms/test/currentToExcel.do?testGb="+gb+"'/>"
     document.listForm.submit(); 
 }
 
