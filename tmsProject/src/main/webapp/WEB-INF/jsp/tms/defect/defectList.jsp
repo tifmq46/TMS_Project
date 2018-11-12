@@ -36,6 +36,7 @@ td.listtd {
 }
 
 </style>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 
 
@@ -60,7 +61,9 @@ function searchFileNm() {
 <noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 
 <!-- 전체 레이어 시작 -->
-
+<c:if test="${!empty message and fn:length(message) > 0}">
+	<script type="text/javascript"> swal("${message}");</script>
+</c:if>
 
 <div id="wrap">
     <!-- header 시작 -->

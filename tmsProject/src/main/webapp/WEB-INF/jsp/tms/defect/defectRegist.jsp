@@ -43,10 +43,11 @@
 			var fileLength = document.getElementById('fileImg').files.length;
 			if (fileLength == 0) {
 				swal({
-		   			text: '저장되었습니다.'
+		   			text: '등록되었습니다.'
 		   			,buttons : true
 		   		})
 		   		.then((result) => {
+		   			alert("a");
 		   			ocument.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
 					document.defectVO.submit();		   			
 		   		});
@@ -58,10 +59,11 @@
 					swal(strArray[1] + " 형식의 파일은 허용하지 않습니다.");
 				} else {
 					swal({
-			   			text: '저장되었습니다.'
+			   			text: '등록되었습니다.'
 			   			,buttons : true
 			   		})
 			   		.then((result) => {
+			   			alert("n");
 			   			document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
 						document.defectVO.submit();	   			
 			   		});

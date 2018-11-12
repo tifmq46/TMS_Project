@@ -46,8 +46,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
+import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.let.tms.defect.service.DefectDefaultVO;
 import egovframework.let.tms.defect.service.DefectFileVO;
@@ -73,6 +75,10 @@ public class DefectController {
 	/** Validator */
 	@Resource(name = "beanValidator")
 	protected DefaultBeanValidator beanValidator;
+	
+	/** EgovMessageSource */
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;
 	
 	/**
 	 * 전체 목록을 조회한다. (pageing)
@@ -253,9 +259,9 @@ public class DefectController {
 	
 	/** 결함조치 삭제 */
 	@RequestMapping("/tms/defect/deleteDefect.do")
-	public String deleteDefect(@ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) {
+	public String deleteDefect(RedirectAttributes redirectAttributes, @ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) {
 		int result = defectService.deleteDefect(defectVO);
-		
+		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "redirect:/tms/defect/selectDefect.do";
 	}
 	
