@@ -145,11 +145,11 @@ function currentToExel(pageNo) {
 			                			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
       			        			</td>
 					  			</c:if>
-      			        		<c:if test="${testCurrent[0].pgId == '' && testCurrent[0].pgId eq null }">
+      			        		<c:if test="${!(testCurrent[0].pgId != '' && testCurrent[0].pgId ne null)}">
 									<td></td>
 						  			<td></td>
 					  			</c:if>
-      			        <td colspan="3" style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
+      			        <td colspan="3" style="font-weight:bold;color:#666666;font-size:110%;">
       			        	<div style="float:right;">
       			        		<input type="radio" name="asOf" value="testcaseId" onclick="selectTestCurrent('1');" <c:if test="${searchVO.asOf == 'testcaseId'}">checked="checked"</c:if>/>&nbsp;<label><spring:message code="tms.test.testcaseId" /></label>&nbsp;&nbsp;
       			        		<input type="radio" name="asOf" value="pgId" onclick="selectTestCurrent('1');" <c:if test="${searchVO.asOf == 'pgId'}">checked="checked"</c:if>/>&nbsp;<label><spring:message code="tms.test.pgId" /></label> &nbsp;
@@ -162,39 +162,39 @@ function currentToExel(pageNo) {
       			        
       			        
       			        <tr>
-      			        <td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
-      			        <spring:message code="tms.test.taskGb" />
-      			        </td>
-      			        <td style="padding-top:15px;">
-      			        <select name="searchByTaskGb" id="searchByTaskGb" style="width:82%;text-align-last:center;" value="<c:out value='${searchVO.searchByTaskGb}'/>">
-										<option value="">전체</option>
-										<c:forEach var="cmCode" items="${taskGbCode}">
-										<option value="${cmCode.codeNm}" <c:if test="${searchVO.searchByTaskGb == cmCode.codeNm}">selected="selected"</c:if>>${cmCode.codeNm}</option>
-										</c:forEach>
-									</select>	
-      			        </td>
-      			        <td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
-      			        <spring:message code="tms.test.userWriterId" />
-      			        </td>
-      			        <td style="padding-top:15px;">
-      			        <input type="text" name="searchByUserDevId" list="userAllList" autocomplete="off" id="searchByUserDevId"  style="width:80%;text-align:center;"  value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
-      			        <datalist id="userAllList">
-									    <c:forEach var="userList" items="${userList}" varStatus="status">
-									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
-									    </c:forEach>
+      			        	<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
+      			        	<spring:message code="tms.test.taskGb" />
+      			        	</td>
+      			        	<td style="padding-top:15px;">
+      			        		<select name="searchByTaskGb" id="searchByTaskGb" style="width:82%;text-align-last:center;" value="<c:out value='${searchVO.searchByTaskGb}'/>">
+									<option value="">전체</option>
+									<c:forEach var="cmCode" items="${taskGbCode}">
+									<option value="${cmCode.codeNm}" <c:if test="${searchVO.searchByTaskGb == cmCode.codeNm}">selected="selected"</c:if>>${cmCode.codeNm}</option>
+									</c:forEach>
+								</select>	
+      			        	</td>
+      			        	<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
+      			        		<spring:message code="tms.test.userWriterId" />
+      			        	</td>
+      			        	<td style="padding-top:15px;">
+      			        		<input type="text" name="searchByUserDevId" list="userAllList" autocomplete="off" id="searchByUserDevId"  style="width:80%;text-align:center;"  value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+      			        		<datalist id="userAllList">
+								<c:forEach var="userList" items="${userList}" varStatus="status">
+								<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+								</c:forEach>
 					        	</datalist>
-      			        </td>
-      			        <td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
-      			        <spring:message code="tms.test.completeYn" />
-      			        </td>
-      			        <td style="padding-top:15px;">
-      			        <select name="searchByResultYn" id="searchByResultYn" style="width:82%;text-align-last:center;" value="<c:out value='${searchVO.searchByResultYn}'/>">
-										<option value="">전체</option>
-										<c:forEach var="cmCode" items="${resultYnCode}">
-										<option value="${cmCode.code}" <c:if test="${searchVO.searchByResultYn == cmCode.code}">selected="selected"</c:if> >${cmCode.codeNm}</option>
-										</c:forEach>
-									</select>	
-      			        </td>
+      			        	</td>
+      			        	<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">
+      			        		<spring:message code="tms.test.completeYn" />
+      			        	</td>
+      			        	<td style="padding-top:15px;">
+      			        		<select name="searchByResultYn" id="searchByResultYn" style="width:82%;text-align-last:center;" value="<c:out value='${searchVO.searchByResultYn}'/>">
+									<option value="">전체</option>
+									<c:forEach var="cmCode" items="${resultYnCode}">
+									<option value="${cmCode.code}" <c:if test="${searchVO.searchByResultYn == cmCode.code}">selected="selected"</c:if> >${cmCode.codeNm}</option>
+									</c:forEach>
+								</select>	
+      			        	</td>
       			        
       			        <td colspan="3" style="padding-top:15px;" >
       			        	<div class="buttons" style="float:right;">

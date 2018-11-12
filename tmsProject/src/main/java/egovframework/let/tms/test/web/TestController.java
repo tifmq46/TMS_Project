@@ -1340,6 +1340,56 @@ public class TestController {
 			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1000);
 		}
 
+		if(asOf.equals("pgId")){
+
+			if(testcaseGb.equals("TC1")) {
+				sheet.setColumnWidth(0, "____________".length()*500 + 1000);
+				sheet.setColumnWidth(1, "_______________".length()*500 + 1000);
+				sheet.setColumnWidth(2, "___".length()*500 + 1000);
+				sheet.setColumnWidth(3, "____________".length()*500 + 1000);
+				sheet.setColumnWidth(4, "______________________________".length()*500 + 1000);
+				sheet.setColumnWidth(5, "___".length()*500 + 1000);
+				sheet.setColumnWidth(6, "__".length()*500 + 1000);
+				sheet.setColumnWidth(7, "__".length()*500 + 1000);
+				sheet.setColumnWidth(8, "___".length()*500 + 1000);
+			} else {
+				sheet.setColumnWidth(0, "____".length()*500 + 1000);
+				sheet.setColumnWidth(1, "_________".length()*500 + 1000);
+				sheet.setColumnWidth(1, "______________________".length()*500 + 1000);
+				sheet.setColumnWidth(3, "___".length()*500 + 1000);
+				sheet.setColumnWidth(4, "__".length()*500 + 1000);
+				sheet.setColumnWidth(5, "__".length()*500 + 1000);
+				sheet.setColumnWidth(6, "___".length()*500 + 1000);
+			}
+
+		} else if(asOf.equals("testcaseId")) {
+
+			if(testcaseGb.equals("TC1")) {
+				sheet.setColumnWidth(0, "____________".length()*500 + 1000);
+				sheet.setColumnWidth(1, "______________________________".length()*500 + 1000);
+				sheet.setColumnWidth(2, "___".length()*500 + 1000);
+				sheet.setColumnWidth(3, "____".length()*500 + 1000);
+				sheet.setColumnWidth(4, "______".length()*500 + 1000);
+				sheet.setColumnWidth(5, "______".length()*500 + 1000);
+				sheet.setColumnWidth(6, "__".length()*500 + 1000);
+				sheet.setColumnWidth(7, "__".length()*500 + 1000);
+				sheet.setColumnWidth(8, "___".length()*500 + 1000);
+
+			} else {
+				sheet.setColumnWidth(0, "____________".length()*500 + 1000);
+				sheet.setColumnWidth(1, "______________________________".length()*500 + 1000);
+				sheet.setColumnWidth(2, "______".length()*500 + 1000);
+				sheet.setColumnWidth(3, "______".length()*500 + 1000);
+				sheet.setColumnWidth(4, "__".length()*500 + 1000);
+				sheet.setColumnWidth(5, "__".length()*500 + 1000);
+				sheet.setColumnWidth(6, "___".length()*500 + 1000);
+				
+
+			}
+
+		}
+		
+		
 		// 입력된 내용 파일로 쓰기
 		File folder = new File("C:\\TMS\\TMS_통계자료");
 		File file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
