@@ -481,7 +481,7 @@ $(function(){
                                     	<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
                                     	<a id="delete" href="#Link" >삭제</a>
                                     	<a href="<c:url value='/tms/pg/PgInsert.do'/>" >등록</a>
-                                    	<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀등록</a>
+                                    	<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀 등록</a>
                                     </div>
       			        		</td>
       			        	</tr>

@@ -52,19 +52,47 @@ function fn_egov_update_updateDefect(){
 				&& strArray[1] != "JPG" && strArray[1] != "JPEG" && strArray[1] != "PNG") {
 				swal(strArray[1] + " 형식의 파일은 허용하지 않습니다.");
 			} else {
-				swal("저장되었습니다.");
-				document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
-				document.defectVO.submit();
+				
+				swal({
+					text: '수정하시겠습니까?'
+					,buttons : true
+				})
+				.then((result) => {
+					if(result) {
+						document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
+						document.defectVO.submit();
+					}else {
+						
+					}
+				});
 			}
 		} else {
-			swal("저장되었습니다.");
-			document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
-			document.defectVO.submit();
+			swal({
+				text: '수정하시겠습니까?'
+				,buttons : true
+			})
+			.then((result) => {
+				if(result) {
+					document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
+					document.defectVO.submit();
+				}else {
+					
+				}
+			});
 		}
 	} else {
-		swal("저장되었습니다.");
-		document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
-		document.defectVO.submit();
+		swal({
+			text: '수정하시겠습니까?'
+			,buttons : true
+		})
+		.then((result) => {
+			if(result) {
+				document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
+				document.defectVO.submit();
+			}else {
+				
+			}
+		});
 	}
     }
 	

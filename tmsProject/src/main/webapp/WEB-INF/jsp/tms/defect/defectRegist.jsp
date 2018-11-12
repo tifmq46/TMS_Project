@@ -47,8 +47,7 @@
 		   			,buttons : true
 		   		})
 		   		.then((result) => {
-		   			alert("a");
-		   			ocument.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
+		   			document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
 					document.defectVO.submit();		   			
 		   		});
 			} else {
@@ -63,7 +62,6 @@
 			   			,buttons : true
 			   		})
 			   		.then((result) => {
-			   			alert("n");
 			   			document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
 						document.defectVO.submit();	   			
 			   		});

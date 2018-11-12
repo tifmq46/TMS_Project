@@ -187,6 +187,7 @@ public class DefectController {
 				hmap.put("ACTION_DT", defectVO.getActionDt());
 				hmap.put("TESTSCENARIO_ID", defectVO.getTestscenarioId());
 				hmap.put("status", 0);
+				
 				defectService.insertDefectImageMap(hmap);
 				  
 			}	
@@ -223,7 +224,7 @@ public class DefectController {
 	
 	/** 결함조치 수정*/
 	@RequestMapping("/tms/defect/updateDefect.do")
-	public String updateDefect(HttpServletRequest request,@ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) throws Exception{
+	public String updateDefect(HttpServletRequest request, RedirectAttributes redirectAttributes, @ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) throws Exception{
 		int result = defectService.updateDefect(defectVO);
 		MultipartHttpServletRequest mtpRequest = (MultipartHttpServletRequest) request;
 		MultipartFile defectFileImg = mtpRequest.getFile("fileImg");
@@ -240,21 +241,10 @@ public class DefectController {
 		List<?> list = defectService.selectOneDefect(defectVO);
 		model.addAttribute("defectOne", list);
 		
-		List<?> defectGbList = defectService.selectDefectGb();
-		model.addAttribute("defectGb", defectGbList);
-		
-		List<?> userList = defectService.selectUser(1);
-		model.addAttribute("userList", userList);
-		
-		List<?> actionStList = defectService.selectActionSt();
-		model.addAttribute("actionSt", actionStList);
-		
-		DefectFileVO defectImgOne = defectService.selectDefectImgOne(defectVO.getDefectIdSq());
-		model.addAttribute("defectImgOne", defectImgOne);
-		
 		model.addAttribute("pageStatus", "0");
+		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.update"));
 		
-		return "tms/defect/defectListOne";
+		return "redirect:/tms/defect/selectDefect.do";
 	}	
 	
 	/** 결함조치 삭제 */
