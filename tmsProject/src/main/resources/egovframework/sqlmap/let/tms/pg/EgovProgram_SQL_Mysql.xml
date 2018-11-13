@@ -4,7 +4,6 @@
     <typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
     <typeAlias  alias="ProgramDefaultVO" type="egovframework.let.tms.pg.service.ProgramDefaultVO"/>
 	<typeAlias  alias="ProgramVO" type="egovframework.let.tms.pg.service.ProgramVO"/>
-	<typeAlias  alias="PgCurrentVO" type="egovframework.let.tms.pg.service.PgCurrentVO"/>
     
 	<!-- return 결과물을 의미 -->
 	<resultMap id="PgList" class="egovframework.let.tms.pg.service.ProgramVO">
@@ -26,16 +25,6 @@
 	    <result property="pjtId" column="PJT_ID" columnIndex="7"/>
 	</resultMap>
 	
-	<resultMap id="PgCurrent" class="egovframework.let.tms.pg.service.PgCurrentVO">
-	    <result property="pgId" column="PG_ID" columnIndex="1"/>
-	    <result property="pgNm" column="PG_NM" columnIndex="2"/>
-	    <result property="userDevId" column="USER_DEV_ID" columnIndex="3"/>
-	    <result property="devEndDt" column="DEV_END_DT" columnIndex="4"/>
-	    <result property="devEndYn" column="DEV_END_YN" columnIndex="5"/>
-	    <result property="secondTestResultYn" column="SECOND_TEST_RESULT_YN" columnIndex="6"/>
-	    <result property="thirdTestResultYn" column="THIRD_TEST_RESULT_YN" columnIndex="7"/>
-	</resultMap>
-		
 	
 	
 	<select id="ProgramDAO.selectPgList" parameterClass="ProgramDefaultVO" resultMap="PgList2" >

@@ -1429,7 +1429,21 @@ public class TestController {
 		if (fSize > 0) { // 파일 사이즈가 0보다 클 경우 다운로드
 			String mimetype = "application/x-msdownload"; // minetype은 파일확장자에 맞게
 															// 설정
-			String fileName = "테스트현황.xlsx"; //리퀘스트로 넘어온 파일명
+			String fileName = null; //리퀘스트로 넘어온 파일명			
+			if(asOf.equals("pgId")){
+				if(testcaseGb.equals("TC1")) {
+					fileName = "단위_테스트현황.xlsx";
+				} else {
+					fileName = "통합_테스트현황.xlsx";
+				}
+			} else if(asOf.equals("testcaseId")) {
+				if(testcaseGb.equals("TC1")) {
+					fileName = "단위_테스트현황.xlsx";
+				} else {
+					fileName = "통합_테스트현황.xlsx";
+				}
+			}
+			
 			String docName = URLEncoder.encode(fileName,"UTF-8"); // UTF-8로 인코딩			
 			response.setHeader("Content-Disposition", "attachment;filename=" + docName + ";"); 
 			response.setContentType(mimetype);

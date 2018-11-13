@@ -109,7 +109,7 @@ function window_close() {
             						<c:if test="${result.defect > 0}">
             							<strong><c:out value="[결함] "/></strong>
             						</c:if>
-            						<strong><c:out value="관련 데이터 가 존재해 삭제가 불가능합니다! "/></strong>
+            						<strong><c:out value="관련 데이터가 존재해 삭제가 불가능합니다! "/></strong>
             						</td>
             					</tr>
             				</table>
