@@ -26,7 +26,6 @@
 	</resultMap>
 	
 	
-	
 	<select id="ProgramDAO.selectPgList" parameterClass="ProgramDefaultVO" resultMap="PgList2" >
 		<![CDATA[
 			SELECT

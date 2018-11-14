@@ -267,8 +267,8 @@
 
               <!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
-						<a href="#LINK" onclick="javaScript:fn_egov_insert_addDefectImpl(); return false;">저장</a>
-						<a href="<c:url value='/tms/defect/selectDefect.do'/>" >목록</a>
+						<a href="#LINK" onclick="javaScript:fn_egov_insert_addDefectImpl(); return false;"><spring:message code="button.save" /></a>
+						<a href="<c:url value='/tms/defect/selectDefect.do'/>" ><spring:message code="button.list" /></a>
                     </div>
                     <!-- 버튼 끝 -->     
                 </form:form>

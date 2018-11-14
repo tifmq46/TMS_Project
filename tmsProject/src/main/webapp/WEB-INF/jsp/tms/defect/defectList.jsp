@@ -207,8 +207,8 @@ function searchFileNm() {
       			        	</td>
       			        	<td style="padding-top:15px;">
                            <div class="buttons" style="float:right;">
-                            <a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                               <a href="<c:url value='/tms/defect/insertDefect.do'/>?testscenarioId=0">등록</a>
+                            <a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" /><spring:message code="button.inquire" /></a>
+                               <a href="<c:url value='/tms/defect/insertDefect.do'/>?testscenarioId=0"><spring:message code="button.create" /></a>
                            </div>                            
       			        	</td>
       			        </tr>

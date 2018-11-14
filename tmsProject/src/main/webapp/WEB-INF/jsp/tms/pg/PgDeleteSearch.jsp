@@ -142,11 +142,11 @@ function window_close() {
                     <li>
                         <div class="buttons" style="float:right;"> 
                         	<c:if test="${fn:length(Pg_Relation_List) == 0}">
-                        		<a id="listButton" name="listButton" href="#LINK" >삭제 </a> 
-                        		<a href="#LINK" onclick="javascript:window_close(); return false;">취소 </a>
+                        		<a id="listButton" name="listButton" href="#LINK" ><spring:message code="button.delete" /></a> 
+                        		<a href="#LINK" onclick="javascript:window_close(); return false;"><spring:message code="button.reset" /></a>
                         	</c:if>  
                         	<c:if test="${fn:length(Pg_Relation_List) > 0}">
-                        		<a href="#LINK" onclick="javascript:window_close(); return false;">닫기 </a>
+                        		<a href="#LINK" onclick="javascript:window_close(); return false;"><spring:message code="button.close" /></a>
                         	</c:if>                                             
                         </div>                              
                     </li>                     

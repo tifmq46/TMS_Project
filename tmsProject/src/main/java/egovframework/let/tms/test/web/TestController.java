@@ -96,9 +96,9 @@ public class TestController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
 		if (isAuthenticated) {
-		TestScenarioVO vo = testService.selectTestScenario((String)testScenarioVO.getTestscenarioId());
-		model.addAttribute("testScenarioVO", vo);
-		model.addAttribute("testcaseContent", testcaseContent);
+			TestScenarioVO vo = testService.selectTestScenario((String)testScenarioVO.getTestscenarioId());
+			model.addAttribute("testScenarioVO", vo);
+			model.addAttribute("testcaseContent", testcaseContent);
 		}
 		return "tms/test/TestScenarioDetail";
 	}

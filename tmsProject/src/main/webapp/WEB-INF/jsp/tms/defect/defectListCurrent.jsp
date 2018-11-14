@@ -175,7 +175,7 @@ td.listtd {
       			        	</td>
       			        	<td style="padding-top:15px;">
                            <div class="buttons" style="float:right;">
-                            <a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+                            <a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" /><spring:message code="button.inquire" /></a>
                            </div>                            
       			        	</td>
       			        </tr>

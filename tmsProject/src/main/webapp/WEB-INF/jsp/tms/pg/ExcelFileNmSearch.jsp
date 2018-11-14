@@ -158,7 +158,7 @@ function window_close() {
                 	<input type="file" id="file" name="file" />
                         
                     <div class="buttons" style="float:right;">
-                    	<a id="listButton" name="listButton" href="#LINK" >등록 </a>
+                    	<a id="listButton" name="listButton" href="#LINK" ><spring:message code="button.create" /></a>
                     	<input type="hidden" id="change" name="change" value="<c:out value='${result}'/>" onclick="test(); return false;">
                     </div>
                 </li>       
@@ -183,7 +183,7 @@ function window_close() {
             <ul id="search_second_ul">            		  
                     <li>
                         <div class="buttons" style="float:right;">                        
-                            <a href="#LINK" onclick="window_close(); return false;">닫기 </a>
+                            <a href="#LINK" onclick="window_close(); return false;"><spring:message code="button.close" /></a>
                         </div>                              
                     </li>                    
             </ul> 
