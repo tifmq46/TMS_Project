@@ -964,6 +964,12 @@ public class DevPlanController {
 			
 			
 			row = sheet.createRow(1);
+			
+			cell = row.createCell(0);
+			cell.setCellStyle(TitleStyle);
+			cell = row.createCell(1);
+			cell.setCellStyle(TitleStyle);
+			
 			for(int i =0; i<periodList.size()+1; i++){
 				cell = row.createCell(2+(3*i));
 				cell.setCellValue("계획");

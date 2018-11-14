@@ -129,11 +129,11 @@ public class ProgramController {
 		
 		List<String> useYnList = TmsProgrmManageService.selectUseYn();
 		model.addAttribute("useYnList", useYnList);
-		// 공통코드 끝 시작 -------------------------------	
 		
 		List<?> userList = defectService.selectUser(0);
 		model.addAttribute("userList", userList);
-
+		// 공통코드 끝 시작 -------------------------------	
+		
 		model.addAttribute("pgid", searchVO.getSearchByPgId());
 		model.addAttribute("page", searchVO.getPageIndex());
 		model.addAttribute("sys", searchVO.getSearchBySysGb());
@@ -270,7 +270,7 @@ public class ProgramController {
 	}
 	
 	/**
-	 * 프로그램 정보를 등록한다.	 
+	 * 프로그램 등록페이지로 이동한다.
 	 */	
 	@RequestMapping(value = "/tms/pg/PgInsert.do")
 	public String registPgList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
@@ -286,6 +286,9 @@ public class ProgramController {
 		return "tms/pg/PgInsert";
 		
 	}
+	/**
+	 * 프로그램 정보를 등록한다.	 
+	 */	
 	@RequestMapping(value = "/tms/pg/Pginsert.do")
 	public String insertPgList(RedirectAttributes redirectAttributes, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
@@ -298,7 +301,9 @@ public class ProgramController {
 		return "redirect:/tms/pg/PgManage.do";
 		
 	}
-	
+	/**
+	 * 사용자아이디의 중복을 확인한다.	 
+	 */	
 	@RequestMapping(value = "/tms/pg/checkPgIdDuplication.do")
 	@ResponseBody
 	public boolean checkPgIdDuplication(@RequestParam("PgId") String pgId, ModelMap model) throws Exception {
@@ -318,13 +323,6 @@ public class ProgramController {
 	@RequestMapping(value = "/tms/pg/Pgupdate.do")
 	public String updatePgList(final RedirectAttributes redirectAttributes, @ModelAttribute("programVO") ProgramVO programVO, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 
-		System.out.println("페이지3:" + searchVO.getPageIndex());
-		System.out.println("페이지3:" + searchVO.getSearchByPgId());
-		System.out.println("페이지3:" + searchVO.getSearchBySysGb());
-		System.out.println("페이지3:" + searchVO.getSearchByTaskGb());
-		System.out.println("페이지3:" + searchVO.getSearchByUserDevId());
-		System.out.println("페이지3:" + searchVO.getSearchUseYn());
-		
 		ProgramService.updatePg(programVO);
 		
 		redirectAttributes.addFlashAttribute("searchVO", searchVO);
@@ -387,7 +385,9 @@ public class ProgramController {
 		
 	}
 	
-	
+	/**
+	 * 프로그램을 삭제 가능여부를 확인한다.
+	 */
 	@RequestMapping(value = "/tms/pg/deletePgList2.do")
 	@ResponseBody
 	public ArrayList<HashMap<String, String>> deletePgList2(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, @RequestParam String returnValue, ModelMap model) throws Exception {
@@ -455,6 +455,9 @@ public class ProgramController {
 		defectService.updateDefectIdSq();
 		
 	}
+	/**
+	 * 프로그램을 일괄삭제한다.
+	 */
 	@RequestMapping(value = "/tms/pg/full_deleteListAction.do")
 	@ResponseBody
 	public void full_deleteListAction(String searchData,ModelMap model) throws Exception {

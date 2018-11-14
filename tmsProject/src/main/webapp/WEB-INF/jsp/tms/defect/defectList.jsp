@@ -36,6 +36,7 @@ td.listtd {
 }
 
 </style>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 
 
@@ -60,7 +61,9 @@ function searchFileNm() {
 <noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 
 <!-- 전체 레이어 시작 -->
-
+<c:if test="${!empty message and fn:length(message) > 0}">
+	<script type="text/javascript"> swal("${message}");</script>
+</c:if>
 
 <div id="wrap">
     <!-- header 시작 -->
@@ -204,8 +207,8 @@ function searchFileNm() {
       			        	</td>
       			        	<td style="padding-top:15px;">
                            <div class="buttons" style="float:right;">
-                            <a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                               <a href="<c:url value='/tms/defect/insertDefect.do'/>?testscenarioId=0">등록</a>
+                            <a href="#LINK" onclick="javascript:fn_searchList('1')" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/img_search.gif' />" alt="search" /><spring:message code="button.inquire" /></a>
+                               <a href="<c:url value='/tms/defect/insertDefect.do'/>?testscenarioId=0"><spring:message code="button.create" /></a>
                            </div>                            
       			        	</td>
       			        </tr>

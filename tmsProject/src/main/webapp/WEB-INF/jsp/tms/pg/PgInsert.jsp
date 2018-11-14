@@ -259,10 +259,10 @@
                       <table border="0" cellspacing="0" cellpadding="0" align="center">
                         <tr> 
                           <td>
-                              <a onclick="Enroll_PgInfo(); return false;">저장</a> 
+                              <a onclick="Enroll_PgInfo(); return false;"><spring:message code="button.save" /></a> 
                           </td>
                           <td>
-                              <a href="<c:url value='/tms/pg/PgManage.do'/>" >목록</a>
+                              <a href="<c:url value='/tms/pg/PgManage.do'/>" ><spring:message code="button.list" /></a>
                           </td>                       
                         </tr>
                       </table>

@@ -43,11 +43,11 @@
 			var fileLength = document.getElementById('fileImg').files.length;
 			if (fileLength == 0) {
 				swal({
-		   			text: '저장되었습니다.'
+		   			text: '등록되었습니다.'
 		   			,buttons : true
 		   		})
 		   		.then((result) => {
-		   			ocument.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
+		   			document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
 					document.defectVO.submit();		   			
 		   		});
 			} else {
@@ -58,7 +58,7 @@
 					swal(strArray[1] + " 형식의 파일은 허용하지 않습니다.");
 				} else {
 					swal({
-			   			text: '저장되었습니다.'
+			   			text: '등록되었습니다.'
 			   			,buttons : true
 			   		})
 			   		.then((result) => {
@@ -267,8 +267,8 @@
 
               <!-- 버튼 시작(상세지정 style로 div에 지정) -->
                     <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
-						<a href="#LINK" onclick="javaScript:fn_egov_insert_addDefectImpl(); return false;">저장</a>
-						<a href="<c:url value='/tms/defect/selectDefect.do'/>" >목록</a>
+						<a href="#LINK" onclick="javaScript:fn_egov_insert_addDefectImpl(); return false;"><spring:message code="button.save" /></a>
+						<a href="<c:url value='/tms/defect/selectDefect.do'/>" ><spring:message code="button.list" /></a>
                     </div>
                     <!-- 버튼 끝 -->     
                 </form:form>

@@ -50,39 +50,82 @@ function fn_egov_update_updateDefect(){
 			var strArray = fileName.split('.');
 			if (strArray[1] != "jpg" && strArray[1] != "jpeg" && strArray[1] != "png"
 				&& strArray[1] != "JPG" && strArray[1] != "JPEG" && strArray[1] != "PNG") {
-				alert(strArray[1] + " 형식의 파일은 허용하지 않습니다.");
+				swal(strArray[1] + " 형식의 파일은 허용하지 않습니다.");
 			} else {
-				alert("저장되었습니다.");
-				document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
-				document.defectVO.submit();
+				
+				swal({
+					text: '수정하시겠습니까?'
+					,buttons : true
+				})
+				.then((result) => {
+					if(result) {
+						document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
+						document.defectVO.submit();
+					}else {
+						
+					}
+				});
 			}
 		} else {
-			alert("저장되었습니다.");
-			document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
-			document.defectVO.submit();
+			swal({
+				text: '수정하시겠습니까?'
+				,buttons : true
+			})
+			.then((result) => {
+				if(result) {
+					document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
+					document.defectVO.submit();
+				}else {
+					
+				}
+			});
 		}
 	} else {
-		alert("저장되었습니다.");
-		document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
-		document.defectVO.submit();
+		swal({
+			text: '수정하시겠습니까?'
+			,buttons : true
+		})
+		.then((result) => {
+			if(result) {
+				document.defectVO.action="<c:url value='/tms/defect/updateDefect.do'/>";
+				document.defectVO.submit();
+			}else {
+				
+			}
+		});
 	}
     }
 	
 }
 
 function fn_egov_delete_deleteDefect() {
+	
+	swal({
+		text: '삭제하시겠습니까?'
+		,buttons : true
+	})
+	.then((result) => {
+		if(result) {
+			document.defectVO.action="<c:url value='/tms/defect/deleteDefect.do'/>"
+			document.defectVO.submit();
+		}else {
+			
+		}
+	});
+	/* 
 	var con= confirm("삭제하시겠습니까?");
 	if( con == true ) {
-		alert("정상적으로 삭제되었습니다.")
+		swal("정상적으로 삭제되었습니다.")
 		document.defectVO.action="<c:url value='/tms/defect/deleteDefect.do'/>"
 		document.defectVO.submit();
 	}
+	 */
 }
 
 function fn_egov_delete_defectImg() {
 	var con= confirm("삭제하시겠습니까?");
 	if( con == true ) {
-		alert("정상적으로 삭제되었습니다.")
+		swal("정상적으로 삭제되었습니다.")
 		document.defectVO.action = "<c:url value='/tms/defect/deleteDefectImg.do'/>"
 		document.defectVO.submit();
 	}

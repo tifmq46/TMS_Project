@@ -133,7 +133,7 @@ $(function(){
 			         type:"POST",
 			         url: "<c:url value='/tms/pg/deletePgList2.do?returnValue="+returnValue+"'/>",
 			         success : function(str){
-			        	 if(str.length == 0) {
+			        	 if(str.length == 0) {//삭제 가능할 때
 			        		 $.ajax({
 						         
 						         type:"POST",
@@ -150,7 +150,7 @@ $(function(){
 						            swal("삭제할 수 없습니다.");
 						         }
 						      });
-			        	 }else {
+			        	 }else { //삭제 불가능할 때
 			        		 window.open("<c:url value='/tms/pg/deletePgList.do?result="+returnValue+"'/>",'','width=500, height=300, left=350, top=200');
 			        	 }
 			         },
@@ -446,7 +446,7 @@ $(function(){
       			        		</td>
       			        		<td colspan="3">
       			        			<div class="buttons" style="float:right;">
-                                    	<a id="full_delete" href="#Link" >프로그램 일괄삭제</a>
+                                    	<a id="full_delete" href="#Link" ><spring:message code="button.full_delete" /></a>
                                     </div>
       			        		</td>
       			        	</tr>
@@ -478,10 +478,11 @@ $(function(){
       			        		</td>
       			        		<td colspan="5" style="padding-top:15px;">
       			        			<div class="buttons" style="float:right;">                              			
-                                    	<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                                    	<a id="delete" href="#Link" >삭제</a>
-                                    	<a href="<c:url value='/tms/pg/PgInsert.do'/>" >등록</a>
-                                    	<a href="#LINK" onclick="searchExcelFileNm(); return false;">엑셀등록</a>
+                                    	<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
+                                    		<spring:message code="button.inquire" /></a>
+                                    	<a id="delete" href="#Link" ><spring:message code="button.delete" /></a>
+                                    	<a href="<c:url value='/tms/pg/PgInsert.do'/>" ><spring:message code="button.create" /></a>
+                                    	<a href="#LINK" onclick="searchExcelFileNm(); return false;"><spring:message code="button.excel_create" /></a>
                                     </div>
       			        		</td>
       			        	</tr>

@@ -111,15 +111,15 @@ ul.tabs li.last {
 		})
 		
 		$('ul.tabs li').click(function() {
-		var tab_id = $(this).attr('data-tab');
-		$('ul.tabs li').removeClass('current');
-		$('.tab-content').removeClass('current');
+			var tab_id = $(this).attr('data-tab');
+			$('ul.tabs li').removeClass('current');
+			$('.tab-content').removeClass('current');
 			
-		$(this).addClass('current');
-		$("#" + tab_id).addClass('current');
-		handleClick(tab_id);
+			$(this).addClass('current');
+			$("#" + tab_id).addClass('current');
+			handleClick(tab_id);
+		})
 	})
-})
 
 function handleClick(tab_id){
 		if(tab_id=="tab-1"){
@@ -611,7 +611,7 @@ function a2(){
     		</div>    	    	
     	</div>
     	
-    	<div class="recentBsnsList" class="col-md-6" style="overflow:auto; white-space:nowrap; overflow-y:hidden; height:290px; width:220px; margin-bottom:20px !important	; font-family:'Malgun Gothic';">
+    	<div class="myBsnsList" class="col-md-6" style="overflow:auto; white-space:nowrap; overflow-y:hidden; height:290px; width:220px; margin-bottom:20px !important	; font-family:'Malgun Gothic';">
     		<div class="widget">
     			<div class="widget-header">
 					<div class="header-name" style="margin:10px;">개발진척 현황

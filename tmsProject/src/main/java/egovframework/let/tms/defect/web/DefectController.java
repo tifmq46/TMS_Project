@@ -46,8 +46,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
+import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.let.tms.defect.service.DefectDefaultVO;
 import egovframework.let.tms.defect.service.DefectFileVO;
@@ -73,6 +75,10 @@ public class DefectController {
 	/** Validator */
 	@Resource(name = "beanValidator")
 	protected DefaultBeanValidator beanValidator;
+	
+	/** EgovMessageSource */
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;
 	
 	/**
 	 * 전체 목록을 조회한다. (pageing)
@@ -181,6 +187,7 @@ public class DefectController {
 				hmap.put("ACTION_DT", defectVO.getActionDt());
 				hmap.put("TESTSCENARIO_ID", defectVO.getTestscenarioId());
 				hmap.put("status", 0);
+				
 				defectService.insertDefectImageMap(hmap);
 				  
 			}	
@@ -217,7 +224,7 @@ public class DefectController {
 	
 	/** 결함조치 수정*/
 	@RequestMapping("/tms/defect/updateDefect.do")
-	public String updateDefect(HttpServletRequest request,@ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) throws Exception{
+	public String updateDefect(HttpServletRequest request, RedirectAttributes redirectAttributes, @ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) throws Exception{
 		int result = defectService.updateDefect(defectVO);
 		MultipartHttpServletRequest mtpRequest = (MultipartHttpServletRequest) request;
 		MultipartFile defectFileImg = mtpRequest.getFile("fileImg");
@@ -234,28 +241,17 @@ public class DefectController {
 		List<?> list = defectService.selectOneDefect(defectVO);
 		model.addAttribute("defectOne", list);
 		
-		List<?> defectGbList = defectService.selectDefectGb();
-		model.addAttribute("defectGb", defectGbList);
-		
-		List<?> userList = defectService.selectUser(1);
-		model.addAttribute("userList", userList);
-		
-		List<?> actionStList = defectService.selectActionSt();
-		model.addAttribute("actionSt", actionStList);
-		
-		DefectFileVO defectImgOne = defectService.selectDefectImgOne(defectVO.getDefectIdSq());
-		model.addAttribute("defectImgOne", defectImgOne);
-		
 		model.addAttribute("pageStatus", "0");
+		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.update"));
 		
-		return "tms/defect/defectListOne";
+		return "redirect:/tms/defect/selectDefect.do";
 	}	
 	
 	/** 결함조치 삭제 */
 	@RequestMapping("/tms/defect/deleteDefect.do")
-	public String deleteDefect(@ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) {
+	public String deleteDefect(RedirectAttributes redirectAttributes, @ModelAttribute("defectVO") DefectVO defectVO, ModelMap model) {
 		int result = defectService.deleteDefect(defectVO);
-		
+		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "redirect:/tms/defect/selectDefect.do";
 	}
 	

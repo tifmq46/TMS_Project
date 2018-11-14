@@ -199,9 +199,9 @@ input[type=date]{
       			        		</td>
       			        		<td colspan="3" style="padding-top:15px;">
 									<div class="buttons" style="float:right;">
-										<a href="#LINK" onclick="javascript:fn_searchList('1')" ><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-										<a href="#LINK" onclick="pagePrint();">인쇄</a>
-										<a href="#" onclick="StatsToExcel(); return false;">엑셀 다운로드</a>
+										<a href="#LINK" onclick="javascript:fn_searchList('1')" ><img src="<c:url value='/images/img_search.gif' />" alt="search" /><spring:message code="button.inquire" /></a>
+										<a href="#LINK" onclick="pagePrint();"><spring:message code="button.print"/></a>
+										<a href="#" onclick="StatsToExcel(); return false;"><spring:message code="button.excel_down"/></a>
 									</div>	  				  			
       			        		</td>
       			        	</tr>

@@ -266,10 +266,12 @@
 									</select>			
       			        		</td>
       			        		<td colspan="5" style="padding-top:15px;">
-      			        		 <div class="buttons" style="float:right;">                                       
-                                       <a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
-                              <a href="<c:url value='/tms/pg/ExelWrite.do'/>" onclick="setting();fn_egov_insert_addbbsUseInf(); return false;">엑셀 다운로드</a>
-                                    </div>
+      			        		 	<div class="buttons" style="float:right;">                                       
+                                       	<a href="#Link" onclick="setting();Pg_select('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />
+                                       		<spring:message code="button.inquire" /></a>
+                              			<a href="<c:url value='/tms/pg/ExelWrite.do'/>" onclick="setting();fn_egov_insert_addbbsUseInf(); return false;">
+                              				<spring:message code="button.excel_down" /></a>
+                                 	</div>
       			        		</td>
       			        	</tr>
       			        	</table>
