@@ -75,7 +75,6 @@ function insertTestCaseImpl(){
 			   					document.testCaseVO.action = "<c:url value='/tms/test/insertTestCaseImpl.do'/>";
 				   		        document.testCaseVO.submit();  
 			   				}else {
-			   					
 			   				}
 			   			});
 			   			

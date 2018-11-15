@@ -15,6 +15,7 @@ import egovframework.let.tms.pg.service.ProgramService;
 import egovframework.let.tms.pg.service.ProgramVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Service("ProgramService")
 public class ProgramServiceImpl extends EgovAbstractServiceImpl implements ProgramService{
@@ -80,6 +81,10 @@ public class ProgramServiceImpl extends EgovAbstractServiceImpl implements Progr
 		return ProgramDAO.selectPgList(searchVO);
 	}
 	
+	@Override
+	public List<?> checkPgList(ProgramDefaultVO searchVO) throws Exception {
+		return ProgramDAO.checkPgList(searchVO);
+	}
 	
 	@Override
 	public ProgramVO selectProgramInf(ProgramVO vo) throws Exception {

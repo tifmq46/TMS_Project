@@ -54,7 +54,7 @@
 			   	,data : {PgId:document.programVO.pgId.value}
 			   	,success :  function(result2){
 			   		
-			   		if(!result2){
+			   		if(!result2 && result){
 			   			swal("중복된 화면ID 입니다.")
 			   		} else {
 			   			if(result) {
@@ -63,8 +63,6 @@
 			   			}else {
 			   					
 			   			}
-			   			
-			   			
 			   		}
 			   	}
 			   	, error :  function(request,status,error){
@@ -259,10 +257,10 @@
                       <table border="0" cellspacing="0" cellpadding="0" align="center">
                         <tr> 
                           <td>
-                              <a onclick="Enroll_PgInfo(); return false;"><spring:message code="button.save" /></a> 
+                              <a onclick="Enroll_PgInfo(); return false;">저장</a> 
                           </td>
                           <td>
-                              <a href="<c:url value='/tms/pg/PgManage.do'/>" ><spring:message code="button.list" /></a>
+                              <a href="<c:url value='/tms/pg/PgManage.do'/>" >목록</a>
                           </td>                       
                         </tr>
                       </table>

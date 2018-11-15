@@ -286,8 +286,8 @@ input[type=date]{
             			 	<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
             				<td align="center" class="listtd" name="sys"><c:out value="${result.sysGb}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.taskGb}"/>&nbsp;</td>
-            				<td align="left" class="listtd" title="<c:out value="${result.pgId}"/>"><c:out value="${result.pgId}"/></td>
-            				<td align="left" class="listtd" style="padding-left:5px;" title="<c:out value="${result.pgNm}"/>"><c:out value="${result.pgNm}"/>&nbsp;</td>
+            				<td align="left" class="listtd" style="text-overflow:ellipsis;" title="<c:out value="${result.pgId}"/>"><c:out value="${result.pgId}"/></td>
+            				<td align="left" class="listtd" style="padding-left:5px;text-overflow:ellipsis;" title="<c:out value="${result.pgNm}"/>"><c:out value="${result.pgNm}"/>&nbsp;</td>
             				<td align="center" class="listtd" title="<c:out value="${result.userDevId}"/>"><c:out value="${result.userDevNm}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planStartDt}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.planEndDt}"/>&nbsp;</td>

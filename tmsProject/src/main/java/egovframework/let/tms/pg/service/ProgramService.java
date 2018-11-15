@@ -3,6 +3,8 @@ package egovframework.let.tms.pg.service;
 import java.util.HashMap;
 import java.util.List;
 
+import egovframework.rte.psl.dataaccess.util.EgovMap;
+
 
 public interface ProgramService {
 	
@@ -49,6 +51,7 @@ public interface ProgramService {
 	 */
 	List<?> selectPgList(ProgramDefaultVO searchVO) throws Exception;
 
+	List<?> checkPgList(ProgramDefaultVO searchVO) throws Exception;
 	
 	ProgramVO selectProgramInf(ProgramVO vo) throws Exception;
 	

@@ -17,6 +17,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import egovframework.com.cmm.EgovMessageSource;
+
+import org.apache.commons.collections.bag.SynchronizedSortedBag;
 import org.apache.poi.hslf.model.Sheet;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -52,6 +54,7 @@ import egovframework.let.tms.pg.service.ProgramService;
 import egovframework.let.tms.pg.service.ProgramVO;
 import egovframework.let.tms.pg.service.ProgramValidator;
 import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
@@ -194,7 +197,7 @@ public class ProgramController {
 		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
 		
-		System.out.println("here---"+searchVO.getPgId());
+		//System.out.println("here---"+searchVO.getPgId());
 		
 		List<String> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
 		model.addAttribute("taskGb2", taskGbList3);
@@ -308,12 +311,12 @@ public class ProgramController {
 	@ResponseBody
 	public boolean checkPgIdDuplication(@RequestParam("PgId") String pgId, ModelMap model) throws Exception {
 		
-		ProgramVO searchVO = new ProgramVO();
-		searchVO.setPgId(pgId);
-		List<?> PgList = ProgramService.selectPgList(searchVO);
+		ProgramDefaultVO searchVO = new ProgramDefaultVO();
+		searchVO.setSearchByPgId(pgId);
+		List<?> PgList = ProgramService.checkPgList(searchVO);
 		//HashMap<String, Object> testVoMap = testService.selectTestCase(pgId);
 		//테스크케이스Id 중복시 false
-		if(PgList != null) {return false;}
+		if(PgList.size() != 0) {return false;}
 		else {return true;}
 	}
 	
@@ -475,15 +478,12 @@ public class ProgramController {
 	public String ExelWrite(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model,HttpServletRequest request, HttpServletResponse response, ServletResponse ServletResponse) throws Exception {
 
 		// 엑셀로 쓸 데이터 생성		
-		List<ProgramVO> list = new ArrayList<ProgramVO>();
-					
+		List<EgovMap> list = new ArrayList<EgovMap>();
 		// 엑셀 리스트 생성
 		List<?> excelList = ProgramService.selectPgCurrentExcelList(searchVO);
-					
 		// 엑셀 데이터에 엑셀 리스트 추가
 		for(int i=0; i<excelList.size(); i++) {
-			
-			ProgramVO excel = (ProgramVO) excelList.get(i);
+			EgovMap excel = (EgovMap) excelList.get(i);
 			list.add(excel);
 		}
 		// 워크북 생성
@@ -557,7 +557,7 @@ public class ProgramController {
 		cell.setCellStyle(HeadStyle); // 제목스타일 
 							
 		// 리스트의 size 만큼 row를 생성
-		ProgramVO vo;
+		EgovMap vo;
 		for(int rowIdx=0; rowIdx < list.size(); rowIdx++) {
 			vo = list.get(rowIdx);
 								
@@ -565,31 +565,31 @@ public class ProgramController {
 			row = sheet.createRow(rowIdx+1);
 								
 			cell = row.createCell(0);
-			cell.setCellValue(vo.getPgId());
+			cell.setCellValue((String) vo.get("pgId"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 
 			cell = row.createCell(1);
-			cell.setCellValue(vo.getPgNm());
+			cell.setCellValue((String) vo.get("pgNm"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 								
 			cell = row.createCell(2);
-			cell.setCellValue(vo.getUserDevId());
+			cell.setCellValue((String) vo.get("userDevId"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 								
 			cell = row.createCell(3);
-			cell.setCellValue(vo.getSysGb());
+			cell.setCellValue((String) vo.get("sysGb"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 								
 			cell = row.createCell(4);
-			cell.setCellValue(vo.getTaskGb());
+			cell.setCellValue((String) vo.get("taskGb"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 								
 			cell = row.createCell(5);
-			cell.setCellValue(vo.getUseYn());
+			cell.setCellValue((String) vo.get("useYn"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 								
 			cell = row.createCell(6);
-			cell.setCellValue(vo.getPjtId());
+			cell.setCellValue((String) vo.get("pjtId"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 		}
 		/** 3. 컬럼 Width */ 

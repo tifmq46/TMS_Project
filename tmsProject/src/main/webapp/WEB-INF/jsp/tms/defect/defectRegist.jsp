@@ -43,12 +43,15 @@
 			var fileLength = document.getElementById('fileImg').files.length;
 			if (fileLength == 0) {
 				swal({
-		   			text: '등록되었습니다.'
+		   			text: '등록하시겠습니까?'
 		   			,buttons : true
 		   		})
 		   		.then((result) => {
-		   			document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
-					document.defectVO.submit();		   			
+		   			if(result) {
+		   				document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
+						document.defectVO.submit();		
+		   			}
+		   			   			
 		   		});
 			} else {
 				var fileName = document.getElementById('fileImg').value;
@@ -58,12 +61,14 @@
 					swal(strArray[1] + " 형식의 파일은 허용하지 않습니다.");
 				} else {
 					swal({
-			   			text: '등록되었습니다.'
+			   			text: '등록하시겠습니까?'
 			   			,buttons : true
 			   		})
 			   		.then((result) => {
-			   			document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
-						document.defectVO.submit();	   			
+			   			if(result) {
+			   				document.defectVO.action = "<c:url value='/tms/defect/insertDefectImpl.do'/>";
+							document.defectVO.submit();	  
+			   			}
 			   		});
 				}
 			}
