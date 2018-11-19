@@ -63,7 +63,7 @@
 <fieldset><legend>조건정보 영역</legend>
 <div class="nav_container" style="padding:0 20px; font-family:'Malgun Gothic';">
 	<ul>
-	    <a href="<c:url value='/'/>uat/uia/actionMain.do" style="float:left; border-right:1px solid rgba(0, 0, 0, 0.21); padding-top:15px; padding-bottom:16px; padding-left:18px;" >
+	    <a href="<c:url value='/uat/uia/actionMain.do'/>" style="float:left; border-right:1px solid rgba(0, 0, 0, 0.21); padding-top:15px; padding-bottom:16px; padding-left:18px;">
 		    <strong style="font-size:14.25px; text-shadow:0 1px 0 #000000; margin-right:90px;">KCC TMS</strong>
 		    <i style="padding-top:5px; padding-bottom:5px; padding-left:5px;" class="icon-reorder"></i>
 	    </a>
@@ -72,14 +72,13 @@
 	    </c:forEach>
 	     <div id="menu" class="dropdown" style="float:right; border-left:1px solid rgba(0, 0, 0, 0.20); padding-top:18px; padding-bottom:18px; padding-left:18px;">
 		    <li style="color:white; font-size:12px; text-shadow:0 1px 0 #000000;">
-		<%
-        LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
-        if(loginVO == null){
-        %>
-       
-	  	<%
-        }else{
-	  	%>
+			<%
+        		LoginVO loginVO = (LoginVO)session.getAttribute("LoginVO");
+        		if(loginVO == null){
+        	%>       
+	  		<%
+        		}else{
+	  		%>
 	  	    	<c:set var="loginName" value="<%= loginVO.getName()%>"/>
             	<font style="font-size:12px;">KCC정보통신 ㅣ <c:out value="${loginName}"/> 님</font></li>
             <div class="dropdown-content" style="float:left; font-size:12px;">

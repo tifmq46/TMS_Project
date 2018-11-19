@@ -128,37 +128,49 @@ $(function(){
 	            return;
 	        }		   
 		   
-			$.ajax({
-			         
-			         type:"POST",
-			         url: "<c:url value='/tms/pg/deletePgList2.do?returnValue="+returnValue+"'/>",
-			         success : function(str){
-			        	 if(str.length == 0) {//삭제 가능할 때
-			        		 $.ajax({
-						         
-						         type:"POST",
-						         url: "<c:url value='/tms/pg/deleteListAction.do?returnValue="+returnValue+"'/>",
-						         success : function(){
-						        	//location.reload();
-						        	//swal("정상적으로 삭제되었습니다.");
-						        	swal("정상적으로 삭제되었습니다.")
-									.then((value) => {
-										location.reload();
-									});
-						         },
-						         error : function(request,status,error){
-						            swal("삭제할 수 없습니다.");
-						         }
-						      });
-			        	 }else { //삭제 불가능할 때
-			        		 window.open("<c:url value='/tms/pg/deletePgList.do?result="+returnValue+"'/>",'','width=500, height=300, left=350, top=200');
-			        	 }
-			         },
-			         error : function(request,status,error){
-			            swal("삭제할 수 없습니다.");
+	        swal({
+				text: '삭제하시겠습니까?'
+				,buttons : true
+			})
+			.then((result) => {
+				if(result) {
+					$.ajax({
+				         
+				         type:"POST",
+				         url: "<c:url value='/tms/pg/deletePgList2.do?returnValue="+returnValue+"'/>",
+				         success : function(str){
+				        	 if(str.length == 0) {//삭제 가능할 때
+				        		 $.ajax({
+							         
+							         type:"POST",
+							         url: "<c:url value='/tms/pg/deleteListAction.do?returnValue="+returnValue+"'/>",
+							         success : function(){
+							        	//location.reload();
+							        	//swal("정상적으로 삭제되었습니다.");
+							        	swal("정상적으로 삭제되었습니다.")
+										.then((value) => {
+											location.reload();
+										});
+							         },
+							         error : function(request,status,error){
+							            swal("삭제할 수 없습니다.");
+							         }
+							      });
+				        	 }else { //삭제 불가능할 때
+				        		 window.open("<c:url value='/tms/pg/deletePgList.do?result="+returnValue+"'/>",'','width=500, height=300, left=350, top=200');
+				        	 }
+				         },
+				         error : function(request,status,error){
+				            swal("삭제할 수 없습니다.");
 
-			         }
-			      });
+				         }
+				      });
+				}else {
+					
+				}
+			});
+	        
+
 			   })
 			})	
 $(function(){
