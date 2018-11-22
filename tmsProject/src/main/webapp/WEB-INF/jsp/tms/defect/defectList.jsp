@@ -258,14 +258,14 @@ function searchFileNm() {
                         <td align="center" class="listtd" style="font-weight:bold"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
                         <td align="center" class="listtd"><c:out value="${result.defectIdSq}"/></td>
                         <td align="center" class="listtd" title="<c:out value="${result.pgId}"/>" style="text-align:left;"><c:out value="${result.pgId}"/></td>
-                        <td align="center" class="listtd" title="<c:out value="${result.pgNm}"/>" style="text-align:left;"><c:out value="${result.pgNm}"/></td>
+                        <td align="center" class="listtd" title="<c:out value="${result.pgNm}"/>" style="text-align:left;padding-left:3px;"><c:out value="${result.pgNm}"/></td>
                         
                         <td align="center" class="listtd" title="<c:out value="${result.taskGb}"/>"><c:out value="${result.taskGb}"/></td>
-                         <td align="center" class="listtd" style="text-align:left;">
-                        <a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>&amp;status=0"
-                        title="<c:out value="${result.defectTitle}"/>">
-                        <font color="#0F438A" style="font-weight:bold"><c:out value="${result.defectTitle}"/></font>
-                        </a>
+                        <td align="center" class="listtd" style="text-align:left;">
+                        	<a href="<c:url value='/tms/defect/selectDefectInfo.do'/>?pgId=<c:out value='${result.pgId}'/>&amp;defectIdSq=<c:out value='${result.defectIdSq}'/>&amp;status=0"
+                        		title="<c:out value="${result.defectTitle}"/>">
+                        		<font color="#0F438A" style="font-weight:bold"><c:out value="${result.defectTitle}"/></font>
+                        	</a>
                         </td>
                         
                         <td align="center" class="listtd" title="<c:out value="${result.defectGb}"/>"><c:out value="${result.defectGb}"/></td>

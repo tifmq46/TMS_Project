@@ -312,7 +312,7 @@
             				<tr>
             					<td align="center" class="listtd"><font style="font-weight:bold"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></font></td>
             					<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
-            					<td align="left" class="listtd">
+            					<td align="left" class="listtd" style="padding-left:3px;">
             						<a href="<c:url value='/tms/pg/selectPgCheck.do'/>?pgId=<c:out value='${result.pgId}'/>">
             							<font color="#0F438A" style="font-weight:bold"><c:out value="${result.pgNm}"/></font>
             						</a></td>

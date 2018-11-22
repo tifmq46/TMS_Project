@@ -15,18 +15,8 @@
 	    <result property="useYn" column="USE_YN" columnIndex="6"/>
 	</resultMap>
 	
-	<resultMap id="PgList2" class="egovframework.let.tms.pg.service.ProgramVO">
-	    <result property="pgId" column="PG_ID" columnIndex="1"/>
-	    <result property="pgNm" column="PG_NM" columnIndex="2"/>
-	    <result property="userDevId" column="USER_DEV_ID" columnIndex="3"/>
-	    <result property="sysGb" column="SYS_GB" columnIndex="4"/>
-	    <result property="taskGb" column="TASK_GB" columnIndex="5"/>
-	    <result property="useYn" column="USE_YN" columnIndex="6"/>
-	    <result property="pjtId" column="PJT_ID" columnIndex="7"/>
-	</resultMap>
-	
-	
-	<select id="ProgramDAO.selectPgList" parameterClass="ProgramDefaultVO" resultMap="PgList2" >
+
+	<select id="ProgramDAO.selectPgList" parameterClass="ProgramDefaultVO" resultClass="egovMap" >
 		<![CDATA[
 			SELECT
 				a.PG_ID, 
@@ -69,7 +59,24 @@
 	
 	<!-- 조회 검색 -->
 
-	
+	<select id="ProgramDAO.checkPgList" parameterClass="ProgramDefaultVO" resultClass="egovMap" >
+		<![CDATA[
+			SELECT
+				a.PG_ID, 
+				a.PG_NM, 
+				(SELECT USER_NM FROM LETTNEMPLYRINFO WHERE a.USER_DEV_ID = LETTNEMPLYRINFO.EMPLYR_ID) AS USER_DEV_ID,				
+				(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.SYS_GB) AS SYS_GB, 
+				(SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE = a.TASK_GB) AS TASK_GB,
+				a.USE_YN,
+				a.PJT_ID
+			FROM 
+				PG_TB a
+			WHERE 
+				1=1			
+			AND a.PG_ID = #searchByPgId#
+		]]>
+		
+	</select>		
 	
 	
    <select id="ProgramDAO.selectPgListTotCnt" parameterClass="ProgramDefaultVO" resultClass="java.lang.Integer" >
@@ -134,7 +141,7 @@
    </select>
 	
 	<!-- 프로그램현황 조회(엑셀 다운용) -->
-	<select id="ProgramDAO.selectPgCurrentExcelList" parameterClass="ProgramDefaultVO" resultMap="PgList2" >
+	<select id="ProgramDAO.selectPgCurrentExcelList" parameterClass="ProgramDefaultVO" resultClass="egovMap" >
 		<![CDATA[
 			SELECT
 				a.PG_ID, 

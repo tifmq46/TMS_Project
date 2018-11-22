@@ -405,7 +405,7 @@ function StatsToExcel(statsGb) {
 	           			
 		                    <tr>
 		                   		
-		                    	<td style="text-align:left;" ><c:out value="${us.userDevNm}(${us.userDevId})" /></td>
+		                    	<td style="text-align:left; padding-left:10px" rowspan="1"><c:out value="${us.userDevNm}(${us.userDevId})" /></td>
 		                    	<td><c:out value="${us.totCnt}" /></td>
 		                    	<c:set var = "sumTotCnt" value="${us.totCnt}" />
 								<% sumTotCnt += (Integer)pageContext.getAttribute("sumTotCnt");

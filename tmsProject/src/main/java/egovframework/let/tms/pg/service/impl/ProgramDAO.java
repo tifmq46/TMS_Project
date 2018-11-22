@@ -9,6 +9,7 @@ import egovframework.let.tms.pg.service.PgCurrentVO;
 import egovframework.let.tms.pg.service.ProgramDefaultVO;
 import egovframework.let.tms.pg.service.ProgramVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Repository("ProgramDAO")
 public class ProgramDAO extends EgovAbstractDAO{
@@ -66,7 +67,9 @@ public class ProgramDAO extends EgovAbstractDAO{
 	public List<?> selectPgList(ProgramDefaultVO searchVO) throws Exception {
 		return list("ProgramDAO.selectPgList", searchVO);
 	}
-
+	public List<?> checkPgList(ProgramDefaultVO searchVO) throws Exception {
+		return list("ProgramDAO.checkPgList", searchVO);
+	}
 	
 	public ProgramVO selectProgramInf(ProgramVO vo) throws Exception {
 		return (ProgramVO) select("ProgramDAO.selectProgramInf", vo);

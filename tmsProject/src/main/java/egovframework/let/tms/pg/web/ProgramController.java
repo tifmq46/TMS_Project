@@ -17,6 +17,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import egovframework.com.cmm.EgovMessageSource;
+
+import org.apache.commons.collections.bag.SynchronizedSortedBag;
 import org.apache.poi.hslf.model.Sheet;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -52,6 +54,7 @@ import egovframework.let.tms.pg.service.ProgramService;
 import egovframework.let.tms.pg.service.ProgramVO;
 import egovframework.let.tms.pg.service.ProgramValidator;
 import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
@@ -72,7 +75,6 @@ public class ProgramController {
 	/** Validator */
 	@Resource(name = "beanValidator")
 	protected DefaultBeanValidator beanValidator;
-	
 	
 	/** EgovProgrmManageService */
 	@Resource(name = "TmsProgrmManageService")
@@ -194,7 +196,7 @@ public class ProgramController {
 		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
 		model.addAttribute("sysGb", sysGbList);
 		
-		System.out.println("here---"+searchVO.getPgId());
+		//System.out.println("here---"+searchVO.getPgId());
 		
 		List<String> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
 		model.addAttribute("taskGb2", taskGbList3);
@@ -308,12 +310,12 @@ public class ProgramController {
 	@ResponseBody
 	public boolean checkPgIdDuplication(@RequestParam("PgId") String pgId, ModelMap model) throws Exception {
 		
-		ProgramVO searchVO = new ProgramVO();
-		searchVO.setPgId(pgId);
-		List<?> PgList = ProgramService.selectPgList(searchVO);
+		ProgramDefaultVO searchVO = new ProgramDefaultVO();
+		searchVO.setSearchByPgId(pgId);
+		List<?> PgList = ProgramService.checkPgList(searchVO);
 		//HashMap<String, Object> testVoMap = testService.selectTestCase(pgId);
 		//테스크케이스Id 중복시 false
-		if(PgList != null) {return false;}
+		if(PgList.size() != 0) {return false;}
 		else {return true;}
 	}
 	
@@ -475,15 +477,12 @@ public class ProgramController {
 	public String ExelWrite(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model,HttpServletRequest request, HttpServletResponse response, ServletResponse ServletResponse) throws Exception {
 
 		// 엑셀로 쓸 데이터 생성		
-		List<ProgramVO> list = new ArrayList<ProgramVO>();
-					
+		List<EgovMap> list = new ArrayList<EgovMap>();
 		// 엑셀 리스트 생성
 		List<?> excelList = ProgramService.selectPgCurrentExcelList(searchVO);
-					
 		// 엑셀 데이터에 엑셀 리스트 추가
 		for(int i=0; i<excelList.size(); i++) {
-			
-			ProgramVO excel = (ProgramVO) excelList.get(i);
+			EgovMap excel = (EgovMap) excelList.get(i);
 			list.add(excel);
 		}
 		// 워크북 생성
@@ -557,7 +556,7 @@ public class ProgramController {
 		cell.setCellStyle(HeadStyle); // 제목스타일 
 							
 		// 리스트의 size 만큼 row를 생성
-		ProgramVO vo;
+		EgovMap vo;
 		for(int rowIdx=0; rowIdx < list.size(); rowIdx++) {
 			vo = list.get(rowIdx);
 								
@@ -565,31 +564,31 @@ public class ProgramController {
 			row = sheet.createRow(rowIdx+1);
 								
 			cell = row.createCell(0);
-			cell.setCellValue(vo.getPgId());
+			cell.setCellValue((String) vo.get("pgId"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 
 			cell = row.createCell(1);
-			cell.setCellValue(vo.getPgNm());
+			cell.setCellValue((String) vo.get("pgNm"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 								
 			cell = row.createCell(2);
-			cell.setCellValue(vo.getUserDevId());
+			cell.setCellValue((String) vo.get("userDevId"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 								
 			cell = row.createCell(3);
-			cell.setCellValue(vo.getSysGb());
+			cell.setCellValue((String) vo.get("sysGb"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 								
 			cell = row.createCell(4);
-			cell.setCellValue(vo.getTaskGb());
+			cell.setCellValue((String) vo.get("taskGb"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 								
 			cell = row.createCell(5);
-			cell.setCellValue(vo.getUseYn());
+			cell.setCellValue((String) vo.get("useYn"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 								
 			cell = row.createCell(6);
-			cell.setCellValue(vo.getPjtId());
+			cell.setCellValue((String) vo.get("pjtId"));
 			cell.setCellStyle(BodyStyle); // 본문스타일 
 		}
 		/** 3. 컬럼 Width */ 
@@ -681,99 +680,8 @@ public class ProgramController {
 	}
 	
 	
-	
 	/**
-	 * 엑셀파일 출력메소드
-	 * 	 */	
-	public void xlsWiter(List<PgCurrentVO> list) {
-		// 워크북 생성
-		HSSFWorkbook workbook = new HSSFWorkbook();
-		// 워크시트 생성
-		HSSFSheet sheet = workbook.createSheet();
-		// 행 생성
-		HSSFRow row = sheet.createRow(0);
-		// 쎌 생성
-		HSSFCell cell;
-		
-		
-		// 헤더 정보 구성
-		cell = row.createCell(0);
-		cell.setCellValue("프로그램ID");
-
-		cell = row.createCell(1);
-		cell.setCellValue("프로그램명");
-		cell = row.createCell(2);
-		cell.setCellValue("개발자");
-		cell = row.createCell(3);
-		cell.setCellValue("개발완료일자");
-		cell = row.createCell(4);
-		cell.setCellValue("개발여부");
-		cell = row.createCell(5);
-		cell.setCellValue("PL확인");
-		cell = row.createCell(6);
-		cell.setCellValue("단위테스트");
-		
-		// 리스트의 size 만큼 row를 생성
-		PgCurrentVO vo;
-		for(int rowIdx=0; rowIdx < list.size(); rowIdx++) {
-			vo = list.get(rowIdx);
-			
-			
-			
-			// 행 생성
-			row = sheet.createRow(rowIdx+1);
-			
-			
-			cell = row.createCell(0);
-			cell.setCellValue(vo.getPgId());
-			
-			
-			cell = row.createCell(1);
-			cell.setCellValue(vo.getPgNm());
-			
-			cell = row.createCell(2);
-			cell.setCellValue(vo.getUserDevId());
-			
-			cell = row.createCell(3);
-			cell.setCellValue(vo.getDevEndDt());
-			
-			cell = row.createCell(4);
-			cell.setCellValue(vo.getDevEndYn());
-			
-			cell = row.createCell(5);
-			cell.setCellValue(vo.getSecondTestResultYn());
-			
-			cell = row.createCell(6);
-			cell.setCellValue(vo.getThirdTestResultYn());
-		}
-		
-		// 입력된 내용 파일로 쓰기
-		File file = new File("C:\\excel\\testWrite3.xls");
-		FileOutputStream fos = null;
-		
-		try {
-			fos = new FileOutputStream(file);
-			workbook.write(fos);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if(workbook!=null) //workbook.close();
-				if(fos!=null) fos.close();
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	
-	
-	/**
-	 * 업로드된 엑셀파일을 등록한다.
+	 * 엑셀파일을 등록한다.
 	 * 	 */	
     @RequestMapping(value = "/tms/pg/requestupload.do")
     @ResponseBody

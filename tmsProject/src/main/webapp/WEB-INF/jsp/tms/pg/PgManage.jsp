@@ -128,37 +128,49 @@ $(function(){
 	            return;
 	        }		   
 		   
-			$.ajax({
-			         
-			         type:"POST",
-			         url: "<c:url value='/tms/pg/deletePgList2.do?returnValue="+returnValue+"'/>",
-			         success : function(str){
-			        	 if(str.length == 0) {//삭제 가능할 때
-			        		 $.ajax({
-						         
-						         type:"POST",
-						         url: "<c:url value='/tms/pg/deleteListAction.do?returnValue="+returnValue+"'/>",
-						         success : function(){
-						        	//location.reload();
-						        	//swal("정상적으로 삭제되었습니다.");
-						        	swal("정상적으로 삭제되었습니다.")
-									.then((value) => {
-										location.reload();
-									});
-						         },
-						         error : function(request,status,error){
-						            swal("삭제할 수 없습니다.");
-						         }
-						      });
-			        	 }else { //삭제 불가능할 때
-			        		 window.open("<c:url value='/tms/pg/deletePgList.do?result="+returnValue+"'/>",'','width=500, height=300, left=350, top=200');
-			        	 }
-			         },
-			         error : function(request,status,error){
-			            swal("삭제할 수 없습니다.");
+	        swal({
+				text: '삭제하시겠습니까?'
+				,buttons : true
+			})
+			.then((result) => {
+				if(result) {
+					$.ajax({
+				         
+				         type:"POST",
+				         url: "<c:url value='/tms/pg/deletePgList2.do?returnValue="+returnValue+"'/>",
+				         success : function(str){
+				        	 if(str.length == 0) {//삭제 가능할 때
+				        		 $.ajax({
+							         
+							         type:"POST",
+							         url: "<c:url value='/tms/pg/deleteListAction.do?returnValue="+returnValue+"'/>",
+							         success : function(){
+							        	//location.reload();
+							        	//swal("정상적으로 삭제되었습니다.");
+							        	swal("정상적으로 삭제되었습니다.")
+										.then((value) => {
+											location.reload();
+										});
+							         },
+							         error : function(request,status,error){
+							            swal("삭제할 수 없습니다.");
+							         }
+							      });
+				        	 }else { //삭제 불가능할 때
+				        		 window.open("<c:url value='/tms/pg/deletePgList.do?result="+returnValue+"'/>",'','width=500, height=300, left=350, top=200');
+				        	 }
+				         },
+				         error : function(request,status,error){
+				            swal("삭제할 수 없습니다.");
 
-			         }
-			      });
+				         }
+				      });
+				}else {
+					
+				}
+			});
+	        
+
 			   })
 			})	
 $(function(){
@@ -542,8 +554,8 @@ $(function(){
             						<input type="checkbox" name="delYn" class="check2" title="선택">
             						<input type="hidden" name="checkId" value="<c:out value="${result.pgId}"/>" /></td>
             					<td align="center" class="listtd"><font style="font-weight:bold"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></font></td>
-            					<td align="center" class="listtd"><c:out value="${result.pgId}"/></td>
-            					<td align="left" class="listtd">
+            					<td align="center" class="listtd" style="text-overflow:ellipsis;"><c:out value="${result.pgId}"/></td>
+            					<td align="left" class="listtd" style="padding-left:3px;text-overflow:ellipsis;">
             						<a href="<c:url value='/tms/pg/selectPgInf.do'/>?pgId=<c:out value='${result.pgId}'/>&searchByPgId=<c:out value='${pgid}'/>&pageIndex=<c:out value='${page}'/>&searchBySysGb=<c:out value='${sys}'/>&searchByTaskGb=<c:out value='${task}'/>&searchByUserDevId=<c:out value='${dev}'/>&searchUseYn=<c:out value='${yn}'/>">
             							<font color="#0F438A" style="font-weight:bold"><c:out value="${result.pgNm}"/></font>
             						</a></td>

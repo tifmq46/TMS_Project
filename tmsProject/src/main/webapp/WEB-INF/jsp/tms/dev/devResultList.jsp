@@ -499,11 +499,11 @@ input[type=date]{
         			
             			<tr>
             				<td align="center" class="listtd"><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-            				<td align="left" class="listtd" title="<c:out value="${result.PG_ID}"/>">
+            				<td align="left" class="listtd" title="<c:out value="${result.PG_ID}"/>" style="text-overflow:ellipsis;">
                                 <c:out value="${result.PG_ID}"/>
                                 <input type="hidden" id="pgId" name="pgId" value='<c:out value="${result.PG_ID}"/>' >
                             </td>
-            				<td align="left" class="listtd" style="padding-left:5px;" title="<c:out value="${result.PG_NM}"/>"><c:out value="${result.PG_NM}"/>&nbsp;</td>
+            				<td align="left" class="listtd" style="padding-left:5px;text-overflow:ellipsis;" title="<c:out value="${result.PG_NM}"/>"><c:out value="${result.PG_NM}"/>&nbsp;</td>
             				<td align="center" class="listtd" name="sys"><c:out value="${result.SYS_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd"><c:out value="${result.TASK_GB}"/>&nbsp;</td>
             				<td align="center" class="listtd" title="<c:out value="${result.USER_DEV_ID}"/>"><c:out value="${result.USER_DEV_NM}"/>&nbsp;</td>
