@@ -76,7 +76,6 @@ public class ProgramController {
 	@Resource(name = "beanValidator")
 	protected DefaultBeanValidator beanValidator;
 	
-	
 	/** EgovProgrmManageService */
 	@Resource(name = "TmsProgrmManageService")
 	private TmsProgrmManageService TmsProgrmManageService;
