@@ -343,7 +343,7 @@ input[type=date]{
 								<input type="date" id="searchByPlanStartDt" name="searchByPlanStartDt" 
 									value="<fmt:formatDate value="${searchVO.searchByPlanStartDt}" pattern="yyyy-MM-dd"/>"/>
 								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-					  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font size="3px">~</font></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font size="3px">~</font></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					  			<input type="date" id="searchByPlanEndDt" name="searchByPlanEndDt" 
 					  				value="<fmt:formatDate value="${searchVO.searchByPlanEndDt}" pattern="yyyy-MM-dd"/>"/>
 					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />

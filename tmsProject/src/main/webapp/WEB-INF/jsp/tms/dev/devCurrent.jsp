@@ -59,21 +59,11 @@ $(function(){
 }
 
 function pagePrint(){
-	document.listForm.searchBySysGb.value = document.listForm.Sys.value;
-    document.listForm.searchByTaskGb.value = document.listForm.task.value;
-	/*  var myForm = document.listForm;
-	 var url = "<c:url value='/tms/dev/devCurListPrint.do'/>";
-
-	 window.open(url ,'printForm',"width=1000, height=600");
-	 myForm.action =url; 
-	 myForm.method="post";
-	 myForm.target="printForm";
-	 myForm.submit(); */
+	
 	 var a = $("#listForm").serializeArray();
 	 var b = JSON.stringify(a);
 	window.open("<c:url value='/tms/dev/devCurListPrint.do'/>?vo="+b,'','width=1000,height=600');
-	//document.listForm.action = "<c:url value='/tms/dev/devCurListPrint.do'/>";
-	//document.listForm.submit(); 
+	
 }
 
 function StatsToExcel() {
@@ -192,7 +182,7 @@ input[type=date]{
 								<input type="date" id="searchByDevStartDt" name="searchByDevStartDt" 
 									value="<fmt:formatDate value="${searchVO.searchByDevStartDt}" pattern="yyyy-MM-dd"/>"/>
 								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-					  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font size="3px">~</font></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font size="3px">~</font></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					  			<input type="date" id="searchByDevEndDt" name="searchByDevEndDt" 
 					  				value="<fmt:formatDate value="${searchVO.searchByDevEndDt}" pattern="yyyy-MM-dd"/>"/>
 					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />

@@ -638,8 +638,8 @@ public class DevPlanController {
 		JSONArray tmpArray = new JSONArray();
 		for(int i=0; i<jsonArray.size(); i++){
 			tmpObj = new JSONObject();
-			
 			JSONObject jo =(JSONObject)jsonArray.get(i);
+			
 			tmpObj.put(jo.get("name"),jo.get("value"));
 			tmpArray.add(tmpObj);
 		}
