@@ -225,7 +225,7 @@ function fDeleteMenuList() {
 					
 					  	<fieldset><legend>조건정보 영역</legend>	
 					  	
-				  	 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+				  	 	<input name="pageIndex" type="hidden" value="${searchVO.pageIndex}"/>
 					  	 
 					  	<div class="sf_start">
 					  	<table style="width:100%;padding-bottom:10px;padding-left:10px;padding-top:10px;">
@@ -265,7 +265,7 @@ function fDeleteMenuList() {
 						  			<input type="text" name="searchByUserDevId" list="userAllList" autocomplete="off" id="searchByUserDevId" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>" />
 	      			        	<datalist id="userAllList">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
-									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+									    	<option value="${userList.userNm}"  style="text-align:center;"></option>
 									    </c:forEach>
 					        	</datalist>
 	      			        </td>
