@@ -151,7 +151,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="20" style="width:50%" title="화면ID" value="<c:out value='${programVO.pgId}'/>" readonly>
+                              <input id="pgId" name="pgId" type="text" size="60"  maxlength="20" style="width:50%" title="화면ID" value="${programVO.pgId}" readonly>
                               <form:errors path="pgId" style="color: red"/>
                               <br/> 
                             </td>
@@ -164,7 +164,7 @@
                                 <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required"/>
                             </th>
                             <td width="80%" nowrap="nowrap">
-                              <input id="pgNm" name="pgNm" type="text" size="60"  maxlength="100" style="width:50%" title="화면ID" value="<c:out value='${programVO.pgNm}'/>" >&nbsp;<span id="sometext"></span>
+                              <input id="pgNm" name="pgNm" type="text" size="60"  maxlength="100" style="width:50%" title="화면ID" value="${programVO.pgNm}" >&nbsp;<span id="sometext"></span>
                               <form:errors path="pgNm" style="color: red"/>
                               <br/>
                             </td>
@@ -181,7 +181,7 @@
                             <select id="sysGb" name="sysGb" class="select" title="시스템구분" style="width:25%;" onchange="selectChange();" readonly >
 									   <option selected value="" >선택하세요</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${programVO.sysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
+									    	<option value="${sysGb}" <c:if test="${programVO.sysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
@@ -202,7 +202,7 @@
                             <select id="taskGb" name="taskGb" class="select" title="업무구분" style="width:25%;">
 									   <option value="">선택하세요</option>
 					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
-									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${programVO.taskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
+									    		<option value="${taskGb}" <c:if test="${programVO.taskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									    	</c:forEach>	
                             </select>&nbsp;<span id="sometext"></span>
                             <form:errors path="taskGb" style="color: red"/>
@@ -219,7 +219,7 @@
                             <select id="userDevId" name="userDevId" class="select" title="개발자" style="width:25%;">
 									   <option value="" >선택하세요</option>
 									      <c:forEach var="DEV_ID" items="${dev_List}" varStatus="status">
-									    	<option value="<c:out value="${DEV_ID.EMPLYR_ID}"/>" <c:if test="${programVO.userDevId == DEV_ID.USER_NM}">selected="selected"</c:if>><c:out value="${DEV_ID.USER_NM}(${DEV_ID.EMPLYR_ID})" /></option>
+									    	<option value="${DEV_ID.EMPLYR_ID}" <c:if test="${programVO.userDevId == DEV_ID.USER_NM}">selected="selected"</c:if>><c:out value="${DEV_ID.USER_NM}(${DEV_ID.EMPLYR_ID})" /></option>
 									      </c:forEach>
                                 <%-- <c:forEach var="result" items="${resultList}" varStatus="status">
                                     <option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>

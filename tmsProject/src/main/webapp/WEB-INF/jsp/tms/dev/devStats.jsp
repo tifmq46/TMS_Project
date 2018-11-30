@@ -332,7 +332,7 @@ function handleClick(event, array){
 	             					</td>
 	            					<c:forEach var="sysByProgressRate" items="${sysByProgressRate}" varStatus="status">
 	            					<td>&nbsp;&nbsp;
-	            						<canvas id="<c:out value="${sysByProgressRate.sysGb}"/>"  
+	            						<canvas id="${sysByProgressRate.sysGb}"  
 	            							width="180" height="120" style="display: inline !important;"></canvas>
 									</td>            
 	            					</c:forEach>

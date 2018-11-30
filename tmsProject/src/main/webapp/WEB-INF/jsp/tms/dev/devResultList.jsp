@@ -348,7 +348,7 @@ input[type=date]{
                 </div>
         
              <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="tms/dev/devPlanList.do">   
-                <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
+                <input type="hidden" name="pageIndex" value="${searchVO.pageIndex}"/>
                 <input type="hidden" name="flag" value="auto"/>
                 <input type="hidden" name="page" id="page" value="${page}"/>
                 <!-- 검색 필드 박스 시작 -->
@@ -374,7 +374,7 @@ input[type=date]{
       			        		<td style="font-weight:bold;color:#666666;font-size:110%;">화면ID
       			        		</td>
       			        		<td>
-      			        		<input type="text" name="searchByPgId" style="width:80%;text-align:center;" id="TmsProgrmFileNm_pg_id" autocomplete="off" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+      			        		<input type="text" name="searchByPgId" style="width:80%;text-align:center;" id="TmsProgrmFileNm_pg_id" autocomplete="off" value="${searchVO.searchByPgId}"/>
 					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
                       			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
       			        		</td>
@@ -384,7 +384,7 @@ input[type=date]{
       			        		<select name="Sys" id="Sys" style="width:90%;text-align-last:center;">
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
+									    	<option value="${sysGb}" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
 									</select>
 									<input type="hidden" name="searchBySysGb" value="">
@@ -395,7 +395,7 @@ input[type=date]{
       			        		<select name="task" id="task" style="width:77%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 									   <c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
-									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
+									    		<option value="${taskGb}" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									    </c:forEach>	
 									</select>				
 									<input type="hidden" name="searchByTaskGb" value="">
@@ -417,10 +417,10 @@ input[type=date]{
 					  					pageContext.setAttribute("loginNm", loginVO.getName()) ;
 					  				if(loginVO.getName().equals("관리자")){	
 					  			%>
-					  			 <input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+					  			 <input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="${searchVO.searchByUserDevId}"/>
 		                          	<datalist id="userAllList">
 		                          	<c:forEach var="userList" items="${userList}" varStatus="status">
-										<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+										<option value="${userList.userNm}"  style="text-align:center;"></option>
 									</c:forEach>
 									</datalist>
 		                          <%}else{%>
