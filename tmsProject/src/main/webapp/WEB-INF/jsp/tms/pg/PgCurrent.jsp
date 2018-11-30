@@ -91,8 +91,8 @@
 	        	 $("#searchBySysGb").val($("#bbb").val());
 	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
 	            $.each(selectTaskGbSearch, function(i){
-	               (JSON.stringify(selectTaskGbSearch[0])).replace(/"/g, "");
-	            $("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>")
+	            	$("#task").append("<option value='"+selectTaskGbSearch[i]+"'>"
+	            			+selectTaskGbSearch[i]+"</option>");
 	            });
 	            
 	         },
@@ -116,17 +116,13 @@
 		document.frm.cnt.value = "a";
 		document.frm.searchBySysGb.value = document.frm.bbb.value;
 		document.frm.searchByTaskGb.value = document.frm.task.value;
-		//alert(pageNo);
 		document.frm.pageIndex.value = pageNo;
-		//document.frm.searchByTaskGb.value = document.frm.task.value;
-		//document.frm.fon.value = pageNo;
 		var url = "<c:url value='/tms/pg/PgCurrent.do" + "?cnt=" + document.frm.cnt.value + "'/>";
     	document.frm.action = url;
     	document.frm.submit();
 	}
 	
 	function fncSelect_Info() {
-    	/* document.frm.PgID.value = aaa; */
     	document.frm.action = "<c:url value='/tms/pg/selectPgInf.do'/>";
     	document.frm.submit();     
 	}

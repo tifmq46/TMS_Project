@@ -80,7 +80,6 @@ $(function(){
 	         },
 	         error : function(request,status,error){
 	            swal("에러");
-	            //swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 	         }
 	      });
 	   })
@@ -223,18 +222,13 @@ $(function(){
 		document.frm.cnt.value = "a";
 		document.frm.searchBySysGb.value = document.frm.bbb.value;
 		document.frm.searchByTaskGb.value = document.frm.task.value;
-		//alert(pageNo);
 		document.frm.pageIndex.value = pageNo;
-		//document.frm.searchByTaskGb.value = document.frm.task.value;
-		//document.frm.fon.value = pageNo;
 		var url = "<c:url value='/tms/pg/PgManage.do" + "?cnt=" + document.frm.cnt.value + "'/>";
     	document.frm.action = url;
     	document.frm.submit();
 	}
 	
 	function Pg_DeleteList(pageNo) {
-		//alert(pageNo);
-		
 		document.frm.pageIndex.value = pageNo;
 		
 		var checkField = document.frm.delYn;
@@ -306,7 +300,6 @@ $(function(){
 	}
 	
 	function fncSelect_Info() {
-    	/* document.frm.PgID.value = aaa; */
     	document.frm.action = "<c:url value='/tms/pg/selectPgInf.do'/>";
     	document.frm.submit();     
 	}
