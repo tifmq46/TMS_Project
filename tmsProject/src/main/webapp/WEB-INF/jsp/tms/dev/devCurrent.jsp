@@ -40,8 +40,8 @@ $(function(){
 	         success : function(selectTaskGbSearch){
 	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
 	            $.each(selectTaskGbSearch, function(i){
-	               (JSON.stringify(selectTaskGbSearch[0])).replace(/"/g, "");
-	            $("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>")
+	            $("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"
+	            		+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>");
 	            });
 	            
 	         },
@@ -59,21 +59,11 @@ $(function(){
 }
 
 function pagePrint(){
-	document.listForm.searchBySysGb.value = document.listForm.Sys.value;
-    document.listForm.searchByTaskGb.value = document.listForm.task.value;
-	/*  var myForm = document.listForm;
-	 var url = "<c:url value='/tms/dev/devCurListPrint.do'/>";
-
-	 window.open(url ,'printForm',"width=1000, height=600");
-	 myForm.action =url; 
-	 myForm.method="post";
-	 myForm.target="printForm";
-	 myForm.submit(); */
+	
 	 var a = $("#listForm").serializeArray();
 	 var b = JSON.stringify(a);
 	window.open("<c:url value='/tms/dev/devCurListPrint.do'/>?vo="+b,'','width=1000,height=600');
-	//document.listForm.action = "<c:url value='/tms/dev/devCurListPrint.do'/>";
-	//document.listForm.submit(); 
+	
 }
 
 function StatsToExcel() {
@@ -123,7 +113,7 @@ input[type=date]{
                 </div>
         
              <form:form commandName="searchVO" name="listForm" id="listForm" method="post" action="tms/dev/devPlanList.do">   
-                <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
+                <input type="hidden" name="pageIndex" value="${searchVO.pageIndex}"/>
                 <!-- 검색 필드 박스 시작 -->
 				<div id="search_field" style="font-family:'Malgun Gothic';">
 					<div id="search_field_loc"><h2><strong>개발진척현황</strong></h2></div>
@@ -147,7 +137,7 @@ input[type=date]{
       			        		<td style="font-weight:bold;color:#666666;font-size:110%;">화면ID
       			        		</td>
       			        		<td>
-      			        		<input type="text" name="searchByPgId" style="width:80%;text-align:center;" id="TmsProgrmFileNm_pg_id" autocomplete="off" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+      			        		<input type="text" name="searchByPgId" style="width:80%;text-align:center;" id="TmsProgrmFileNm_pg_id" autocomplete="off" value="${searchVO.searchByPgId}"/>
 					  			<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
                       			<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
       			        		</td>
@@ -157,7 +147,7 @@ input[type=date]{
       			        		<select name="Sys" id="Sys" style="width:90%;text-align-last:center;">
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
+									    	<option value="${sysGb}" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									      </c:forEach>
 									</select>
 									<input type="hidden" name="searchBySysGb" value="">
@@ -168,7 +158,7 @@ input[type=date]{
       			        		<select name="task" id="task" style="width:77%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 									   <c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
-									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
+									    		<option value="${taskGb}" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									    </c:forEach>	
 									</select>				
 									<input type="hidden" name="searchByTaskGb" value="">
@@ -179,10 +169,10 @@ input[type=date]{
       			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
       			        		</td>
       			        		<td style="padding-top:15px;">
-					  			 <input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+					  			 <input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="18" style="width:80%;text-align:center;" value="${searchVO.searchByUserDevId}"/>
 		                          	<datalist id="userAllList">
 		                          	<c:forEach var="userList" items="${userList}" varStatus="status">
-										<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+										<option value="${userList.userNm}"  style="text-align:center;"></option>
 									</c:forEach>
 									</datalist>
       			        		</td>
@@ -192,7 +182,7 @@ input[type=date]{
 								<input type="date" id="searchByDevStartDt" name="searchByDevStartDt" 
 									value="<fmt:formatDate value="${searchVO.searchByDevStartDt}" pattern="yyyy-MM-dd"/>"/>
 								<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />
-					  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font size="3px">~</font></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><font size="3px">~</font></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					  			<input type="date" id="searchByDevEndDt" name="searchByDevEndDt" 
 					  				value="<fmt:formatDate value="${searchVO.searchByDevEndDt}" pattern="yyyy-MM-dd"/>"/>
 					  				<img src="<c:url value='/'/>images/calendar.gif" width="19" height="19" alt="" />

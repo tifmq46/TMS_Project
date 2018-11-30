@@ -46,7 +46,7 @@ window.onload= function(){
      <div id="search_field" style="width:100%">
        <div id="search_field_loc" class="h_title">인쇄 페이지
        <div class="buttons" style="float:right;">
-                <a href="#LINK" onclick="pagePrint()">인쇄 </a>
+                
            </div>
        
        </div>

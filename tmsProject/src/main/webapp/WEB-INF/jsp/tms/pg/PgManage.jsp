@@ -70,17 +70,16 @@ $(function(){
 	         async: false,
 	         dataType : "json",
 	         success : function(selectTaskGbSearch){
-	        	 $("#searchBySysGb").val($("#bbb").val());
+	        	$("#searchBySysGb").val($("#bbb").val());
 	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
 	            $.each(selectTaskGbSearch, function(i){
-	               (JSON.stringify(selectTaskGbSearch[0])).replace(/"/g, "");
-	            	$("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>")
+	            	$("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"
+	            			+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>");
 	            });
 	            
 	         },
 	         error : function(request,status,error){
 	            swal("에러");
-	            //swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 	         }
 	      });
 	   })
@@ -223,18 +222,13 @@ $(function(){
 		document.frm.cnt.value = "a";
 		document.frm.searchBySysGb.value = document.frm.bbb.value;
 		document.frm.searchByTaskGb.value = document.frm.task.value;
-		//alert(pageNo);
 		document.frm.pageIndex.value = pageNo;
-		//document.frm.searchByTaskGb.value = document.frm.task.value;
-		//document.frm.fon.value = pageNo;
 		var url = "<c:url value='/tms/pg/PgManage.do" + "?cnt=" + document.frm.cnt.value + "'/>";
     	document.frm.action = url;
     	document.frm.submit();
 	}
 	
 	function Pg_DeleteList(pageNo) {
-		//alert(pageNo);
-		
 		document.frm.pageIndex.value = pageNo;
 		
 		var checkField = document.frm.delYn;
@@ -306,7 +300,6 @@ $(function(){
 	}
 	
 	function fncSelect_Info() {
-    	/* document.frm.PgID.value = aaa; */
     	document.frm.action = "<c:url value='/tms/pg/selectPgInf.do'/>";
     	document.frm.submit();     
 	}
@@ -429,7 +422,7 @@ $(function(){
       			        		<td style="font-weight:bold;color:#666666;font-size:110%;">화면ID
       			        		</td>
       			        		<td>
-					  			<input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByPgId}'/>"/>
+					  			<input type="text" name="searchByPgId" id="TmsProgrmFileNm_pg_id" style="width:80%;text-align:center;" value="${searchVO.searchByPgId}"/>
 					  				<a href="<c:url value='/sym/prm/TmsProgramListSearch.do'/>" target="_blank" title="새창으로" onclick="javascript:searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);" >
 	                				<img src="<c:url value='/images/img_search.gif' />" alt='프로그램파일명 검색' width="15" height="15" /></a>
       			        		</td>
@@ -439,7 +432,7 @@ $(function(){
       			        		<select name="bbb" id="bbb" style="width:90%;text-align-last:center;">
 									   <option value="" >전체</option>
 									      <c:forEach var="sysGb" items="${sysGb}" varStatus="status">
-									    	<option value="<c:out value="${sysGb}"/>" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
+									    	<option value="${sysGb}" <c:if test="${searchVO.searchBySysGb == sysGb}">selected="selected"</c:if> ><c:out value="${sysGb}" /></option>
 									    </c:forEach>
 									</select>
 									
@@ -451,7 +444,7 @@ $(function(){
       			        		<select name="task" id="task" style="width:90%;text-align-last:center;">
 									   <option value="">선택하세요</option>
 					      					<c:forEach var="taskGb" items="${taskGb2}" varStatus="status">
-									    		<option value="<c:out value="${taskGb}"/>" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
+									    		<option value="${taskGb}" <c:if test="${searchVO.searchByTaskGb == taskGb}">selected="selected"</c:if> ><c:out value="${taskGb}" /></option>
 									    	</c:forEach>								   
 									</select>				
 									<input type="hidden" name="searchByTaskGb" id="searchByTaskGb" value=""/>
@@ -466,10 +459,10 @@ $(function(){
       			        		<td style="padding-top:15px;font-weight:bold;color:#666666;font-size:110%;">개발자
       			        		</td>
       			        		<td style="padding-top:15px;">
-      			        		<input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="15" style="width:80%;text-align:center;" value="<c:out value='${searchVO.searchByUserDevId}'/>"/>
+      			        		<input type="text" list="userAllList" autocomplete="off" name="searchByUserDevId" id="searchByUserDevId" size="15" style="width:80%;text-align:center;" value="${searchVO.searchByUserDevId}"/>
       			        		<datalist id="userAllList">
 									    <c:forEach var="userList" items="${userList}" varStatus="status">
-									    	<option value="<c:out value="${userList.userNm}"/>"  style="text-align:center;"></option>
+									    	<option value="${userList.userNm}"  style="text-align:center;"></option>
 									    </c:forEach>
 					        	</datalist>
       			        		</td>
@@ -480,10 +473,10 @@ $(function(){
 									   <option value="">전체</option>
 					      					<c:forEach var="useYn" items="${useYnList}" varStatus="status">
 					      						<c:if test="${useYn == 'Y'}">
-									    			<option value="<c:out value="${useYn}"/>" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >사용</option>
+									    			<option value="${useYn}" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >사용</option>
 									    		</c:if> 
 									    		<c:if test="${useYn == 'N'}">
-									    			<option value="<c:out value="${useYn}"/>" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >미사용</option>
+									    			<option value="${useYn}" <c:if test="${searchVO.searchUseYn == useYn}">selected="selected"</c:if> >미사용</option>
 									    		</c:if> 
 									    	</c:forEach>								   
 									</select>			
@@ -505,7 +498,7 @@ $(function(){
                         </fieldset>
                  	</div>
                  	<input type="submit" id="invisible" class="invisible"/>
-				<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+				<input name="pageIndex" type="hidden" value="${searchVO.pageIndex}"/>
 				
 				<input id="TmsProgrmFileNm_sys_gb" type="hidden" /> 
 				<input id="TmsProgrmFileNm_task_gb" type="hidden" /> 
