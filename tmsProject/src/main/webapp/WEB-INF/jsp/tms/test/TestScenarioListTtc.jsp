@@ -26,7 +26,7 @@
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <title>통합 테스트 시나리오 목록 조회</title>
 
 <script type="text/javaScript" language="javascript" defer="defer">
@@ -95,13 +95,21 @@ function fDeleteMenuList() {
 		    }   
 
 		    if(checkedCount < 1) {
-		    	alert("삭제할 테스트시나리오를 선택하여주시기바랍니다.");
+		    	swal("삭제할 테스트시나리오를 선택하여주시기바랍니다.");
 		    } else {
-		    	if (confirm('<spring:message code="common.delete.msg" />')) {
-		    		document.testScenarioVO.checkedMenuNoForDel.value=checkMenuNos;
-		 		    document.testScenarioVO.action = "<c:url value='/tms/test/deleteMultiTestScenario.do'/>";
-		 		    document.testScenarioVO.submit(); 
-		    	}
+		    	swal({
+	   				text: '<spring:message code="common.delete.msg" />'
+	   				,buttons : true
+	   			})
+	   			.then((result) => {
+	   				if(result) {
+	   					document.testScenarioVO.checkedMenuNoForDel.value=checkMenuNos;
+			 		    document.testScenarioVO.action = "<c:url value='/tms/test/deleteMultiTestScenario.do'/>";
+			 		    document.testScenarioVO.submit();  
+	   				}else {
+	   						
+	   				}
+	   			});
 		    }
 }
 
@@ -129,9 +137,9 @@ function selectTestScenario() {
         }
     }   
     if(checkedCount > 1){
-    	alert("한개의 테스트시나리오만 선택하여주시기바랍니다.");
+    	swal("한개의 테스트시나리오만 선택하여주시기바랍니다.");
     } else if(checkedCount < 1) {
-    	alert("수정할 테스트시나리오를 선택하여주시기바랍니다.");
+    	swal("수정할 테스트시나리오를 선택하여주시기바랍니다.");
     } else {
     	 document.testScenarioVO.action = "<c:url value='/tms/test/selectTestScenario.do?testscenarioId=" +  checkMenuNos + "'/>";
 		 document.testScenarioVO.submit();
@@ -150,7 +158,7 @@ function selectTestScenario() {
 <!-- 전체 레이어 시작 -->
 
 <c:if test="${!empty message and fn:length(message) > 0}">
-	<script type="text/javascript"> alert("${message}");</script>
+	<script type="text/javascript"> swal("${message}");</script>
 </c:if>
 
 

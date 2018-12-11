@@ -15,6 +15,7 @@
 <meta http-equiv="Content-Language" content="ko" >
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 
 function fn_valid(pgId,flag, start, end){
@@ -46,7 +47,7 @@ function fn_result_change(asd, t) {
 	  var flag = true;
 	  	
 	   if((prjStartDate >  t.value || prjEndDate <  t.value) && t.value != ""){
-		   alert("계획기준일자의 기간이 아닙니다. 다시 입력하십시오.\n[계획기준일자:"+prjStartDate+"~"+prjEndDate+"]");
+		   swal("계획기준일자의 기간이 아닙니다. 다시 입력하십시오.\n[계획기준일자:"+prjStartDate+"~"+prjEndDate+"]");
 		   document.getElementById(t.id).value = null;
 		   $("#dayDiffLoc"+asd).empty();
 		   flag = false;
@@ -57,13 +58,13 @@ function fn_result_change(asd, t) {
 	         if(idVal0 > idVal1 && t.id==asd+1)
 	            {
 	               $("#dayDiffLoc"+asd).empty();
-	               alert("계획시작일자보다 큰 값을 입력하시오.");
+	               swal("계획시작일자보다 큰 값을 입력하시오.");
 	               document.getElementById(asd+1).value = null;
 	               flag = false;
 	            }
 	         else if(idVal0 > idVal1 && t.id==asd){
 	             $("#dayDiffLoc"+asd).empty();
-	        	 alert("계획종료일자보다 작은 값을 입력하시오.");
+	        	 swal("계획종료일자보다 작은 값을 입력하시오.");
 	             document.getElementById(asd).value = null;
 	             flag = false;
 	         }
@@ -71,7 +72,7 @@ function fn_result_change(asd, t) {
 	   if(idVal0 == "" && t.id == asd+1)
 	      {
 		   
-	         alert("계획시작일자부터 입력하십시오.")
+	         swal("계획시작일자부터 입력하십시오.")
 	         document.getElementById(asd+1).value = null;
 	         flag = false;
 	      }
@@ -101,10 +102,10 @@ function fn_result_regist(t){
 	var test = JSON.stringify(testForm);
 	
 	if(idVal == ""){
-		alert("계획시작일자를 입력하십시오.");
+		swal("계획시작일자를 입력하십시오.");
 		return;
 	}else if(idVal1 == null || idVal1 == ""){
-		alert("계획종료일자를 입력하십시오."); 
+		swal("계획종료일자를 입력하십시오."); 
 		return;
 	}else{
 		location.href ="<c:url value='/tms/dev/updateDevPlan.do'/>?pgId="+t
@@ -161,8 +162,8 @@ function fn_date(date){
 
 	return true;
 	
-	alert(""+myDate);
-	alert(""+ddDate);
+	swal(""+myDate);
+	swal(""+ddDate);
 	
 	if(myDate < ddDate) {
 		
@@ -197,8 +198,8 @@ $(function(){
 	            
 	         },
 	         error : function(request,status,error){
-	            alert("에러");
-	            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	            swal("에러");
+	            swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 
 	         }
 	      });

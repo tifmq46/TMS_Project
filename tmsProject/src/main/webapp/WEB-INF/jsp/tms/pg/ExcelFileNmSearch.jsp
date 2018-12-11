@@ -85,8 +85,7 @@ $(function(){
 			         processData: false,
 			         contentType: false,
 			         data : formData,
-			         success : function(str){
-			        	 //alert(str.length);			        	 
+			         success : function(str){		        	 
 			        	 $("#tb1").empty();
 			        	 
 			        	 if(str.length == 0) {
@@ -96,10 +95,6 @@ $(function(){
 			        		 
 			        		 $.each(str, function(i){
 			        			 	
-			        			 if(str[0].problem === "병합") {
-					        		 alert("1");
-					        	 }
-			        			 
 					        		$("#tb1").append("<tr><td align='center' class='listtd'><strong>"+str[i].problem+"</strong></td></tr>")
 							        $("#tb1").append("<tr><td align='center' class='listtd'><font style='color:#CC3C39;'><strong>- 원인 : "+str[i].reason+"</strong></font></td></tr>")
 					         });

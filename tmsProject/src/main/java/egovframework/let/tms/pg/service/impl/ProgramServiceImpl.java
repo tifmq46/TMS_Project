@@ -1,21 +1,13 @@
 package egovframework.let.tms.pg.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-
 import javax.annotation.Resource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import egovframework.let.tms.pg.service.PgCurrentVO;
 import egovframework.let.tms.pg.service.ProgramDefaultVO;
 import egovframework.let.tms.pg.service.ProgramService;
 import egovframework.let.tms.pg.service.ProgramVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Service("ProgramService")
 public class ProgramServiceImpl extends EgovAbstractServiceImpl implements ProgramService{

@@ -16,6 +16,7 @@
 <title>개발진척통계</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javaScript">
 
 
@@ -272,8 +273,8 @@ function handleClick(event, array){
 			}
 		},
 		error : function(request,status,error){
-			alert("에러");
-			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			swal("에러");
+			swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 
 		}
 	});

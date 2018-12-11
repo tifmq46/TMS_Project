@@ -81,7 +81,7 @@ function deleteTestCase() {
 <!-- 전체 레이어 시작 -->
 
 <c:if test="${!empty message and fn:length(message) > 0}">
-	<script type="text/javascript"> alert("${message}");</script>
+	<script type="text/javascript"> swal("${message}");</script>
 </c:if>
 
 <div id="wrap">

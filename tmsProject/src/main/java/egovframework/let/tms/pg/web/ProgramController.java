@@ -17,18 +17,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import egovframework.com.cmm.EgovMessageSource;
-
-import org.apache.commons.collections.bag.SynchronizedSortedBag;
-import org.apache.poi.hslf.model.Sheet;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -36,8 +29,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,11 +39,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 import egovframework.let.tms.defect.service.DefectService;
 import egovframework.let.sym.prm.service.TmsProgrmManageService;
-import egovframework.let.tms.pg.service.PgCurrentVO;
 import egovframework.let.tms.pg.service.ProgramDefaultVO;
 import egovframework.let.tms.pg.service.ProgramService;
 import egovframework.let.tms.pg.service.ProgramVO;
-import egovframework.let.tms.pg.service.ProgramValidator;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -61,7 +50,7 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 public class ProgramController {
 
 	/** DevPlanService */
-	@Resource (name = "ProgramService")
+	@Resource
 	private ProgramService ProgramService;
 	
 	/** EgovPropertyService */
@@ -295,7 +284,7 @@ public class ProgramController {
 	public String insertPgList(RedirectAttributes redirectAttributes, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
 		programVO.setPjtId("1");
-		System.out.println("확인: "+programVO.getUserDevId());
+		
 		ProgramService.insertPg(programVO);
 			
 		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.insert"));
@@ -688,7 +677,6 @@ public class ProgramController {
     public ArrayList<HashMap<String, String>> requestupload1(MultipartHttpServletRequest mtfRequest, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
     	    	
     	String src = mtfRequest.getParameter("src");
-        System.out.println("value : " + src);
         
         MultipartFile mf = mtfRequest.getFile("file");
 
@@ -701,9 +689,6 @@ public class ProgramController {
 		}
         String originFileName = mf.getOriginalFilename(); // 원본 파일 명
         long fileSize = mf.getSize(); // 파일 사이즈
-
-        System.out.println("originFileName : " + originFileName);
-        System.out.println("fileSize : " + fileSize);
 
         String safeFile = path + "ex_" + originFileName;
         try {
@@ -828,8 +813,6 @@ public class ProgramController {
 			}
 		}
 		
-		
-		//System.out.println(error_hash.toString());
 		return error_hash;
 		/*
 		model.addAttribute("error_hashs", error_hash);

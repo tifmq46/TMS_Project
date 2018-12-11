@@ -70,7 +70,6 @@ $(function(){
 	         async: false,
 	         dataType : "json",
 	         success : function(selectTaskGbSearch){
-	        	$("#searchBySysGb").val($("#bbb").val());
 	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
 	            $.each(selectTaskGbSearch, function(i){
 	            	$("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"

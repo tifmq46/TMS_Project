@@ -32,6 +32,7 @@
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="testScenarioResultUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 
 
@@ -67,10 +68,18 @@ window.onload = function(){
 
 function deleteTestCase() {
 	
-	if (confirm('<spring:message code="common.delete.msg" />')) {
-    	document.testCaseVO.action = "<c:url value='/tms/test/deleteTestCaseImpl.do'/>";
-   	 	document.testCaseVO.submit();       
-    }
+	swal({
+		text: '<spring:message code="common.delete.msg" />'
+		,buttons : true
+	})
+	.then((result) => {
+		if(result) {
+			document.testCaseVO.action = "<c:url value='/tms/test/deleteTestCaseImpl.do'/>";
+	   	 	document.testCaseVO.submit(); 
+		}else {
+				
+		}
+	});
 }
 	var testscenarioId = ""; //전역변수
 
@@ -94,12 +103,21 @@ function testScenarioResultForm(target) {
 function updateTestScenarioResult () {
 	
 	if(document.testScenarioResultInsert.testscenarioId.value == ""){
-		alert("결과를 등록할 시나리오가 존재하지 않습니다.");
+		swal("결과를 등록할 시나리오가 존재하지 않습니다.");
 	} else {
-	    if (confirm('<spring:message code="common.save.msg" />')) {
-	    	document.testScenarioResultInsert.action = "<c:url value='/tms/test/updateTestScenarioResultImpl.do'/>";
-	        document.testScenarioResultInsert.submit();      
-	    }
+		swal({
+			text: '<spring:message code="common.save.msg" />'
+			,buttons : true
+		})
+		.then((result) => {
+			if(result) {
+				document.testScenarioResultInsert.action = "<c:url value='/tms/test/updateTestScenarioResultImpl.do'/>";
+		        document.testScenarioResultInsert.submit(); 
+			}else {
+					
+			}
+		});
+		
 	}
 }
 
@@ -117,7 +135,7 @@ function insertDefect() {
 <!-- 전체 레이어 시작 -->
 
 <c:if test="${!empty message and fn:length(message) > 0}">
-	<script type="text/javascript"> alert("${message}");</script>
+	<script type="text/javascript"> swal("${message}");</script>
 </c:if>
 
 <div id="wrap">
