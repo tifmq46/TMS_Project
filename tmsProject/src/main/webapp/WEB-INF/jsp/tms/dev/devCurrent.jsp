@@ -16,7 +16,7 @@
 
 <title>개발결과관리</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javaScript" language="javascript">
 
 function fn_searchList(pageNo){
@@ -46,8 +46,8 @@ $(function(){
 	            
 	         },
 	         error : function(request,status,error){
-	            alert("에러");
-	            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	            swal("에러");
+	            swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 
 	         }
 	      });

@@ -29,6 +29,7 @@
 
 <title>테스트시나리오 상세</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <validator:javascript formName="testScenarioUpdate" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript" defer="defer">
 
@@ -38,18 +39,37 @@ function updateTestScenario(){
 	if (!validateTestScenarioUpdate(document.testScenarioVO)){
         return;
     }
-    if (confirm('<spring:message code="common.update.msg" />')) {
-    	document.testScenarioVO.action = "<c:url value='/tms/test/updateTestScenarioImpl.do'/>";
-   	 	document.testScenarioVO.submit();      
-    }
+	
+	swal({
+			text: '<spring:message code="common.update.msg" />'
+			,buttons : true
+		})
+		.then((result) => {
+			if(result) {
+				document.testScenarioVO.action = "<c:url value='/tms/test/updateTestScenarioImpl.do'/>";
+		   	 	document.testScenarioVO.submit();  
+			}else {
+					
+			}
+	});
+	
 }
 
 function deleteTestScenario() {
+
+	swal({
+		text: '<spring:message code="common.delete.msg" />'
+		,buttons : true
+	})
+	.then((result) => {
+		if(result) {
+			document.testScenarioVO.action = "<c:url value='/tms/test/deleteTestScenarioImpl.do'/>";
+	   	 	document.testScenarioVO.submit(); 
+		}else {
+				
+		}
+	});	
 	
-	 if (confirm('<spring:message code="common.delete.msg" />')) {
-	    	document.testScenarioVO.action = "<c:url value='/tms/test/deleteTestScenarioImpl.do'/>";
-	   	 	document.testScenarioVO.submit();      
-	    }
 }
 
 </script>
@@ -62,7 +82,7 @@ function deleteTestScenario() {
 <!-- 전체 레이어 시작 -->
 
 <c:if test="${!empty message and fn:length(message) > 0}">
-	<script type="text/javascript"> alert("${message}");</script>
+	<script type="text/javascript"> swal("${message}");</script>
 </c:if>
 
 
@@ -166,7 +186,7 @@ function deleteTestScenario() {
 	           				<li>
 								<div class="buttons">
 	                                <a href="#" onclick="updateTestScenario(); return false;"><spring:message code="button.save" /></a>
-				   					<a href="#" onclick="fDeleteMenuList(); return false;"><spring:message code="button.delete" /></a>
+				   					<a href="#" onclick="deleteTestScenario(); return false;"><spring:message code="button.delete" /></a>
 				   					<a href="<c:url value='/tms/test/selectTestCaseWithScenario.do?testcaseId=${testScenarioVO.testcaseId}'/>"><spring:message code="button.list" /></a>
 								</div>	  				  			
 		  					</li>             

@@ -79,7 +79,7 @@ Number.prototype.zf = function(len){return this.toString().zf(len);
 	 var flag = true;
 	 
 	 if(date > cDate){
-		 alert("오늘 이후 날짜는 입력할 수 없습니다. 다시 입력하십시오.");
+		 swal("오늘 이후 날짜는 입력할 수 없습니다. 다시 입력하십시오.");
 		 obj.value = null;
 		 if(obj.id != pgId && idVal0 != ""){
 			 document.getElementById(pgId+4).value = "50";
@@ -122,11 +122,11 @@ Number.prototype.zf = function(len){return this.toString().zf(len);
         if(idVal0 > idVal1)
            {
         	if(obj.id==pgId && date <= cDate){
-        		alert("개발종료일자보다 큰 값을 입력하시오.");
+        		swal("개발종료일자보다 큰 값을 입력하시오.");
                 document.getElementById(pgId+1).value = null;
                 document.getElementById(pgId+4).value = "50";
         	}else if(obj.id != pgId && date <= cDate){
-        		alert("개발시작일자보다 큰 값을 입력하시오.");
+        		swal("개발시작일자보다 큰 값을 입력하시오.");
         		if(rateVal != '50'){
         			document.getElementById(pgId+1).value = null;
         			return;
@@ -151,7 +151,7 @@ function fn_rate_change(pgId, event, obj, maxByte) {
 	var idVal1 = document.getElementById(pgId+1).value;
 	
 	if(idVal0 == null || idVal0 == ""){
-		alert("개발시작일자 먼저 입력하십시오."); 
+		swal("개발시작일자 먼저 입력하십시오."); 
 		document.getElementById(pgId+4).value = "0";
 		$("#"+rateId).removeClass("abled");
 		 $("#"+rateId).addClass("disabled");
@@ -165,7 +165,7 @@ function fn_rate_change(pgId, event, obj, maxByte) {
 			var rate = obj.value;//document.getElementById(pgId+4).value;
 			
 			 if(rate.length >= 3 && rate >= 100){
-					alert("100이상 입력할 수 없습니다.");
+					swal("100이상 입력할 수 없습니다.");
 					document.getElementById(pgId+4).value = null;
 			    }
 			
@@ -191,7 +191,7 @@ function fn_rate_change(pgId, event, obj, maxByte) {
 	        }
 	        
 	        if (totalByte > maxByte) {
-	            alert(maxByte + "자를 초과 입력 할 수 없습니다.");
+	            swal(maxByte + "자를 초과 입력 할 수 없습니다.");
 	            str2 = strValue.substr(0, len);
 
 	            obj.value = null;
@@ -251,7 +251,7 @@ function fn_result_regist(t){
 	var id = document.listForm.TmsProgrmFileNm_pg_id.value;
 
 	if(rate == null || rate == ""){
-		alert("완료율을 입력해주십시오.");
+		swal("완료율을 입력해주십시오.");
 	}else{
 		location.href ="<c:url value='/tms/dev/updateDevResult.do'/>?pgId="+t+"&devStartDt="+idVal+"&devEndDt="+idVal1+"&achievementRate="+rate+"&flag="+flag
 				+"&pageIndex="+page+"&searchByPgId="+id+"&searchBySysGb="+sys+"&searchByTaskGb="+task
@@ -292,8 +292,8 @@ $(function(){
 	            
 	         },
 	         error : function(request,status,error){
-	            alert("에러");
-	            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	            swal("에러");
+	            swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 
 	         }
 	      });

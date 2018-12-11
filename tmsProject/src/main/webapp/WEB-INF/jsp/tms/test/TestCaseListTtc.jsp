@@ -132,46 +132,54 @@ function fDeleteMenuList() {
 		    	
 		    } else {
 		    	
-		    	if (confirm('<spring:message code="common.delete.msg" />')) {
+		    	swal({
+		    		text: '<spring:message code="common.delete.msg" />'
+		    		,buttons : true
+		    	})
+		    	.then((result) => {
+		    		if(result) {
+		    			 
+		    			$.ajax({
+					    	
+					    	 type :"POST"
+					    	,url  : "<c:url value='/tms/test/selectScenarioCntReferringToCase.do'/>"
+					    	,data : {checkedMenuNoForDel:checkMenuNos}
+					    	,success :  function(totalCount){
+					    		
+					    		if(totalCount > 0) {
+					    			
+					    			swal({
+					    				text: '삭제하려는 케이스 중 ' + totalCount + '개의 케이스에 시나리오가 존재하고 있습니다. 그래도 삭제하시겠습니까'
+					    				,buttons : true
+					    			})
+					    			.then((result) => {
+					    				if(result) {
+						    				 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
+						    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
+						    				 document.testCaseVO.submit(); 
+					    				}else {
+					    					
+					    				}
+					    			});
+					    			
+					    		} else {
+					    			 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
+				    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
+				    				 document.testCaseVO.submit();
+					    		}
+					    		
+					    	}
+					    	, error :  function(request,status,error){
+					    		 swal("에러");
+						         swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					    	}
+					    		
+					    });
+		    		}else {
+		    			
+		    		}
+		    	});
 		    	
-		    		$.ajax({
-				    	
-				    	 type :"POST"
-				    	,url  : "<c:url value='/tms/test/selectScenarioCntReferringToCase.do'/>"
-				    	,data : {checkedMenuNoForDel:checkMenuNos}
-				    	,success :  function(totalCount){
-				    		
-				    		if(totalCount > 0) {
-				    			
-				    			swal({
-				    				text: '삭제하려는 케이스 중 ' + totalCount + '개의 케이스에 시나리오가 존재하고 있습니다. 그래도 삭제하시겠습니까'
-				    				,buttons : true
-				    			})
-				    			.then((result) => {
-				    				if(result) {
-					    				 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
-					    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
-					    				 document.testCaseVO.submit(); 
-				    				}else {
-				    					
-				    				}
-				    			});
-				    			
-				    		} else {
-				    			 document.testCaseVO.checkedMenuNoForDel.value=checkMenuNos;
-			    				 document.testCaseVO.action = "<c:url value='/tms/test/deleteMultiTestCase.do'/>";
-			    				 document.testCaseVO.submit();
-				    		}
-				    		
-				    	}
-				    	, error :  function(request,status,error){
-				    		 swal("에러");
-					         swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				    	}
-				    		
-				    });
-		    	
-		    	}
 		    }
    
 }

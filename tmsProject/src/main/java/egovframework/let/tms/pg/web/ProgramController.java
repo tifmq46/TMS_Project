@@ -284,7 +284,7 @@ public class ProgramController {
 	public String insertPgList(RedirectAttributes redirectAttributes, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
 
 		programVO.setPjtId("1");
-		System.out.println("확인: "+programVO.getUserDevId());
+		
 		ProgramService.insertPg(programVO);
 			
 		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.insert"));
@@ -677,7 +677,6 @@ public class ProgramController {
     public ArrayList<HashMap<String, String>> requestupload1(MultipartHttpServletRequest mtfRequest, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
     	    	
     	String src = mtfRequest.getParameter("src");
-        System.out.println("value : " + src);
         
         MultipartFile mf = mtfRequest.getFile("file");
 
@@ -690,9 +689,6 @@ public class ProgramController {
 		}
         String originFileName = mf.getOriginalFilename(); // 원본 파일 명
         long fileSize = mf.getSize(); // 파일 사이즈
-
-        System.out.println("originFileName : " + originFileName);
-        System.out.println("fileSize : " + fileSize);
 
         String safeFile = path + "ex_" + originFileName;
         try {
@@ -817,8 +813,6 @@ public class ProgramController {
 			}
 		}
 		
-		
-		//System.out.println(error_hash.toString());
 		return error_hash;
 		/*
 		model.addAttribute("error_hashs", error_hash);

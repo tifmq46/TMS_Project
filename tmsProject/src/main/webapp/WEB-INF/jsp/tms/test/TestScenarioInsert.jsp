@@ -29,6 +29,7 @@
 <title>테스트케이스 목록 조회</title>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <validator:javascript formName="testScenarioVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript" defer="defer">
 
@@ -42,7 +43,7 @@ function insertTestScenarioImpl(){
 	var isValid = true; 
     if(stringRegx.test(inputTestscenarioId)) { 
        isValid = false;
-       alert("테스트시나리오ID에 특수문자는 사용할 수 없습니다.");
+       swal("테스트시나리오ID에 특수문자는 사용할 수 없습니다.");
      } 
 	     
 	   if(isValid){
@@ -55,23 +56,32 @@ function insertTestScenarioImpl(){
 	   	,success :  function(result){
 	   		
 	   		if(!result){
-	   			alert("중복된 테스트시나리오ID 입니다.")
+	   			swal("중복된 테스트시나리오ID 입니다.")
 	   		} else {
 	   			
 	   			if (!validateTestScenarioVO(document.testScenarioVO)){
 	   		        return;
 	   		    }
 	   		    
-	   			if (confirm('<spring:message code="common.regist.msg" />')) {
-	   		    	document.testScenarioVO.action = "<c:url value='/tms/test/insertTestScenarioImpl.do'/>";
-	   		   	    document.testScenarioVO.submit();       
-	   		    }
+	   			swal({
+	   				text: '<spring:message code="common.regist.msg" />'
+	   				,buttons : true
+	   			})
+	   			.then((result) => {
+	   				if(result) {
+	   					document.testScenarioVO.action = "<c:url value='/tms/test/insertTestScenarioImpl.do'/>";
+		   		   	    document.testScenarioVO.submit();  
+	   				}else {
+	   						
+	   				}
+	   			});
+	   			
 	   			
 	   		}
 	   	}
 	   	, error :  function(request,status,error){
-	   		 alert("에러");
-		         alert("code:"+request.status+"\n"+"error:"+error);
+	   		 swal("에러");
+		         swal("code:"+request.status+"\n"+"error:"+error);
 	   	}
 	   		
 	   });

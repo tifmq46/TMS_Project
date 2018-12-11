@@ -112,23 +112,25 @@ function fn_egov_delete_deleteDefect() {
 			
 		}
 	});
-	/* 
-	var con= confirm("삭제하시겠습니까?");
-	if( con == true ) {
-		swal("정상적으로 삭제되었습니다.")
-		document.defectVO.action="<c:url value='/tms/defect/deleteDefect.do'/>"
-		document.defectVO.submit();
-	}
-	 */
+
 }
 
 function fn_egov_delete_defectImg() {
-	var con= confirm("삭제하시겠습니까?");
-	if( con == true ) {
-		swal("정상적으로 삭제되었습니다.")
-		document.defectVO.action = "<c:url value='/tms/defect/deleteDefectImg.do'/>"
-		document.defectVO.submit();
-	}
+	
+	swal({
+		text: '삭제하시겠습니까?'
+		,buttons : true
+	})
+	.then((result) => {
+		if(result) {
+			
+			document.defectVO.action = "<c:url value='/tms/defect/deleteDefectImg.do'/>"
+			document.defectVO.submit();
+		}else {
+				
+		}
+	});
+	
 }
 function changeUserTestNm() {
 	var userNm = $('#userTestNm').val();

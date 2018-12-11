@@ -29,7 +29,7 @@
 <link href="<c:url value='/css/nav_common.css'/>" rel="stylesheet" type="text/css" >
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="<c:url value='/js/Chart.min.js' />" ></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 var taskByDefectCntChart;
 
@@ -69,8 +69,8 @@ function handleClick(event, array){
 			
 		},
 		error : function(request,status,error){
-			alert("에러");
-			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			swal("에러");
+			swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 
 		}
 	});

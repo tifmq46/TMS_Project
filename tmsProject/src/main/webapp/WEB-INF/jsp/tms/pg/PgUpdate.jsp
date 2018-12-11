@@ -85,9 +85,8 @@
 		            
 		         },
 		         error : function(request,status,error){
-		            alert("에러");
-		            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-
+		            swal("에러");
+		            swal("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		         }
 		      });
 		   })

@@ -33,10 +33,18 @@
 
 function updateTestCase(){
 	
-    if (confirm('<spring:message code="common.update.msg" />')) {
-    	document.testCaseVO.action = "<c:url value='/tms/test/updateTestCaseImpl.do'/>";
-   	 	document.testCaseVO.submit();       
-    }
+	swal({
+			text: '<spring:message code="common.update.msg" />'
+			,buttons : true
+		})
+		.then((result) => {
+			if(result) {
+				document.testCaseVO.action = "<c:url value='/tms/test/updateTestCaseImpl.do'/>";
+		   	 	document.testCaseVO.submit(); 
+			}else {
+					
+			}
+	});	
 }
 
 function completeYnValidator(evt) {

@@ -28,6 +28,7 @@
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="tmsProjectManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 
 function checkForm() {
@@ -66,11 +67,11 @@ function checkForm() {
 			} 
 			
 			if(message == "") {
-				alert("저장되었습니다.");
+				swal("저장되었습니다.");
 				document.tmsProjectManageVO.action ="<c:url value='/sym/prm/insertProjectImpl.do'/>";
 				document.tmsProjectManageVO.submit();
 			} else {
-				alert(message);				
+				swal(message);				
 			}
 		}
 }
