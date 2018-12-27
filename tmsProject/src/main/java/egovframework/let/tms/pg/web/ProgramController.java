@@ -12,7 +12,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.annotation.Resource;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +25,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
@@ -43,6 +43,7 @@ import egovframework.let.tms.pg.service.ProgramDefaultVO;
 import egovframework.let.tms.pg.service.ProgramService;
 import egovframework.let.tms.pg.service.ProgramVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -50,27 +51,27 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 public class ProgramController {
 
 	/** DevPlanService */
-	@Resource
+	@Autowired
 	private ProgramService ProgramService;
 	
 	/** EgovPropertyService */
-	@Resource(name = "propertiesService")
+	@Autowired
 	protected EgovPropertyService propertiesService;
 
 	/** DefectService */
-	@Resource (name = "defectService")
+	@Autowired
 	private DefectService defectService;
 	
 	/** Validator */
-	@Resource(name = "beanValidator")
+	@Autowired
 	protected DefaultBeanValidator beanValidator;
 	
 	/** EgovProgrmManageService */
-	@Resource(name = "TmsProgrmManageService")
+	@Autowired
 	private TmsProgrmManageService TmsProgrmManageService;
 	
 	/** EgovMessageSource */
-	@Resource(name = "egovMessageSource")
+	@Autowired
 	EgovMessageSource egovMessageSource;	
 	
 	/**
@@ -79,58 +80,64 @@ public class ProgramController {
 	@RequestMapping(value = "/tms/pg/PgManage.do")
 	public String selectPgList(@RequestParam(value="cnt", defaultValue = "") String cnt, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
-		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		
+		if (isAuthenticated) {
+		
+			/** EgovPropertyService.sample */
+			searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+			searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-		/** pageing setting */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+			/** pageing setting */
+			PaginationInfo paginationInfo = new PaginationInfo();
+			paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+			paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+			paginationInfo.setPageSize(searchVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+			searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+			searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+			searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		
-		if(cnt.equals("")) { 
-			searchVO.setSearchUseYn("Y"); 
+			if(cnt.equals("")) { 
+				searchVO.setSearchUseYn("Y"); 
+			}
+		
+			//화면 리스트
+			List<?> PgList = ProgramService.selectPgList(searchVO);
+			model.addAttribute("resultList", PgList);
+			int totCnt = ProgramService.selectPgListTotCnt(searchVO);
+		
+		
+			paginationInfo.setTotalRecordCount(totCnt);
+			model.addAttribute("paginationInfo", paginationInfo);
+		
+			// 공통코드 부분 시작 -------------------------------	
+			List<String> sysGbList = TmsProgrmManageService.selectSysGb();
+			model.addAttribute("sysGb", sysGbList);
+		
+			if(!searchVO.getSearchBySysGb().isEmpty()) {
+				List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
+				model.addAttribute("taskGb2", taskGbList2);
+			}
+			List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
+			model.addAttribute("taskGb", taskGbList);
+		
+			List<String> useYnList = TmsProgrmManageService.selectUseYn();
+			model.addAttribute("useYnList", useYnList);
+		
+			List<?> userList = defectService.selectUser(0);
+			model.addAttribute("userList", userList);
+			// 공통코드 끝 시작 -------------------------------	
+		
+			model.addAttribute("pgid", searchVO.getSearchByPgId());
+			model.addAttribute("page", searchVO.getPageIndex());
+			model.addAttribute("sys", searchVO.getSearchBySysGb());
+			model.addAttribute("task", searchVO.getSearchByTaskGb());
+			model.addAttribute("dev", searchVO.getSearchByUserDevId());
+			model.addAttribute("yn", searchVO.getSearchUseYn());
+		
 		}
-		
-		//화면 리스트
-		List<?> PgList = ProgramService.selectPgList(searchVO);
-		model.addAttribute("resultList", PgList);
-		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
-		
-		
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
-		
-		// 공통코드 부분 시작 -------------------------------	
-		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
-		model.addAttribute("sysGb", sysGbList);
-		
-		if(!searchVO.getSearchBySysGb().isEmpty()) {
-			List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
-			model.addAttribute("taskGb2", taskGbList2);
-		}
-		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
-		model.addAttribute("taskGb", taskGbList);
-		
-		List<String> useYnList = TmsProgrmManageService.selectUseYn();
-		model.addAttribute("useYnList", useYnList);
-		
-		List<?> userList = defectService.selectUser(0);
-		model.addAttribute("userList", userList);
-		// 공통코드 끝 시작 -------------------------------	
-		
-		model.addAttribute("pgid", searchVO.getSearchByPgId());
-		model.addAttribute("page", searchVO.getPageIndex());
-		model.addAttribute("sys", searchVO.getSearchBySysGb());
-		model.addAttribute("task", searchVO.getSearchByTaskGb());
-		model.addAttribute("dev", searchVO.getSearchByUserDevId());
-		model.addAttribute("yn", searchVO.getSearchUseYn());
 		
 		return "tms/pg/PgManage";
 	}
@@ -145,30 +152,34 @@ public class ProgramController {
 	@RequestMapping("/tms/pg/selectPgInf.do")
 	public String selectPgInf(@ModelAttribute("programVO") ProgramVO searchVO, @ModelAttribute("searchVO") ProgramDefaultVO defaultVO, ModelMap model) throws Exception {
 
-		ProgramVO VO = ProgramService.selectProgramInf(searchVO);		
-		model.addAttribute("programVO", VO);
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		
+		if (isAuthenticated) {
+		
+			ProgramVO VO = ProgramService.selectProgramInf(searchVO);		
+			model.addAttribute("programVO", VO);
 
-		// 공통코드 부분 시작 -------------------------------	
-		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
-		model.addAttribute("sysGb", sysGbList);
+			// 공통코드 부분 시작 -------------------------------	
+			List<String> sysGbList = TmsProgrmManageService.selectSysGb();
+			model.addAttribute("sysGb", sysGbList);
 		
-		List<String> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
-		model.addAttribute("taskGb2", taskGbList3);
+			List<String> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
+			model.addAttribute("taskGb2", taskGbList3);
 		
-		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
-		model.addAttribute("taskGb", taskGbList);
-		List<?> user_dev_List = TmsProgrmManageService.selectUserList();
-		model.addAttribute("dev_List", user_dev_List);
-		// 공통코드 끝 시작 -------------------------------	
-		model.addAttribute("sysGb", sysGbList);
+			List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
+			model.addAttribute("taskGb", taskGbList);
+			List<?> user_dev_List = TmsProgrmManageService.selectUserList();
+			model.addAttribute("dev_List", user_dev_List);
+			// 공통코드 끝 시작 -------------------------------	
+			model.addAttribute("sysGb", sysGbList);
 		
-		model.addAttribute("page", defaultVO.getPageIndex());
-		model.addAttribute("pgid", defaultVO.getSearchByPgId());
-		model.addAttribute("sys", defaultVO.getSearchBySysGb());
-		model.addAttribute("task", defaultVO.getSearchByTaskGb());
-		model.addAttribute("dev", defaultVO.getSearchByUserDevId());
-		model.addAttribute("yn", defaultVO.getSearchUseYn());	
-		
+			model.addAttribute("page", defaultVO.getPageIndex());
+			model.addAttribute("pgid", defaultVO.getSearchByPgId());
+			model.addAttribute("sys", defaultVO.getSearchBySysGb());
+			model.addAttribute("task", defaultVO.getSearchByTaskGb());
+			model.addAttribute("dev", defaultVO.getSearchByUserDevId());
+			model.addAttribute("yn", defaultVO.getSearchUseYn());	
+		}
 		return "tms/pg/PgUpdate";
 	}
 	
@@ -178,24 +189,25 @@ public class ProgramController {
 	@RequestMapping("/tms/pg/selectPgCheck.do")
 	public String selectPgCheck(@ModelAttribute("programVO") ProgramVO searchVO, ModelMap model) throws Exception {
 
-		ProgramVO VO = ProgramService.selectProgramInf(searchVO);		
-		model.addAttribute("programVO", VO);
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		
+		if (isAuthenticated) {
+		
+			ProgramVO VO = ProgramService.selectProgramInf(searchVO);		
+			model.addAttribute("programVO", VO);
 
-		// 공통코드 부분 시작 -------------------------------	
-		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
-		model.addAttribute("sysGb", sysGbList);
+			// 공통코드 부분 시작 -------------------------------	
+			List<String> sysGbList = TmsProgrmManageService.selectSysGb();
+			model.addAttribute("sysGb", sysGbList);
 		
-		//System.out.println("here---"+searchVO.getPgId());
+			List<String> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
+			model.addAttribute("taskGb2", taskGbList3);
 		
-		List<String> taskGbList3 = TmsProgrmManageService.selectTaskGb3(searchVO);
-		model.addAttribute("taskGb2", taskGbList3);
-		
-		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
-		model.addAttribute("taskGb", taskGbList);
-		List<?> user_dev_List = TmsProgrmManageService.selectUserList();
-		model.addAttribute("dev_List", user_dev_List);
-		// 공통코드 끝 시작 -------------------------------	
-		
+			List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
+			model.addAttribute("taskGb", taskGbList);
+			List<?> user_dev_List = TmsProgrmManageService.selectUserList();
+			model.addAttribute("dev_List", user_dev_List);
+		}
 		
 		return "tms/pg/PgCheck";
 	}
@@ -206,56 +218,59 @@ public class ProgramController {
 	@RequestMapping(value = "/tms/pg/PgCurrent.do")
 	public String selectPgCurrenList(@RequestParam(value="cnt", defaultValue = "") String cnt, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
-		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		
+		if (isAuthenticated) {
+			/** EgovPropertyService.sample */
+			searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+			searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-		/** pageing setting */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+			/** pageing setting */
+			PaginationInfo paginationInfo = new PaginationInfo();
+			paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+			paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+			paginationInfo.setPageSize(searchVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+			searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+			searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+			searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-		if(cnt.equals("")) { 
-			searchVO.setSearchUseYn("Y"); 
-		}		
+			if(cnt.equals("")) { 
+				searchVO.setSearchUseYn("Y"); 
+			}		
 		
-		//프로그램 현황
-		List<?> PgList = ProgramService.selectPgList(searchVO);
-		model.addAttribute("resultList", PgList);
-		int totCnt = ProgramService.selectPgListTotCnt(searchVO);
-		model.addAttribute("TotCnt", totCnt);
+			//프로그램 현황
+			List<?> PgList = ProgramService.selectPgList(searchVO);
+			model.addAttribute("resultList", PgList);
+			int totCnt = ProgramService.selectPgListTotCnt(searchVO);
+			model.addAttribute("TotCnt", totCnt);
 		
-		if(cnt.equals("")) { searchVO.setSearchUseYn("Y"); }
-		
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
-		
-		// 공통코드 부분 시작 -------------------------------	
-		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
-		model.addAttribute("sysGb", sysGbList);
-		
-		if(!searchVO.getSearchBySysGb().isEmpty()) {
-			List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
-			model.addAttribute("taskGb2", taskGbList2);
+			if(cnt.equals("")) { searchVO.setSearchUseYn("Y"); }
+			
+			paginationInfo.setTotalRecordCount(totCnt);
+			model.addAttribute("paginationInfo", paginationInfo);
+			
+			// 공통코드 부분 시작 -------------------------------	
+			List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+			model.addAttribute("sysGb", sysGbList);
+			
+			if(!searchVO.getSearchBySysGb().isEmpty()) {
+				List<?> taskGbList2 = TmsProgrmManageService.selectTaskGb2(searchVO);
+				model.addAttribute("taskGb2", taskGbList2);
+			}
+			List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
+			model.addAttribute("taskGb", taskGbList);
+			List<String> useYnList = TmsProgrmManageService.selectUseYn();
+			model.addAttribute("useYnList", useYnList);
+			
+			List<?> userList = defectService.selectUser(0);
+			model.addAttribute("userList", userList);
+			
+			int use_y = ProgramService.selectTotCntUseYn(searchVO);
+			model.addAttribute("USE_Y", use_y);
+			model.addAttribute("USE_N", totCnt-use_y);
+			// 공통코드 끝 시작 -------------------------------	
 		}
-		List<?> taskGbList = TmsProgrmManageService.selectTaskGb();
-		model.addAttribute("taskGb", taskGbList);
-		List<String> useYnList = TmsProgrmManageService.selectUseYn();
-		model.addAttribute("useYnList", useYnList);
-		
-		List<?> userList = defectService.selectUser(0);
-		model.addAttribute("userList", userList);
-		
-		int use_y = ProgramService.selectTotCntUseYn(searchVO);
-		model.addAttribute("USE_Y", use_y);
-		model.addAttribute("USE_N", totCnt-use_y);
-		// 공통코드 끝 시작 -------------------------------	
-		
 
 		return "tms/pg/PgCurrent";
 	}
@@ -266,14 +281,17 @@ public class ProgramController {
 	@RequestMapping(value = "/tms/pg/PgInsert.do")
 	public String registPgList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 		
-		// 공통코드 부분 시작 -------------------------------	
-		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
-		model.addAttribute("sysGb", sysGbList);
-		List<?> user_dev_List = TmsProgrmManageService.selectUserList();
-		model.addAttribute("dev_List", user_dev_List);
-		// 공통코드 끝 시작 -------------------------------
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
+		if (isAuthenticated) {
+			// 공통코드 부분 시작 -------------------------------	
+			List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+			model.addAttribute("sysGb", sysGbList);
+			List<?> user_dev_List = TmsProgrmManageService.selectUserList();
+			model.addAttribute("dev_List", user_dev_List);
+			// 공통코드 끝 시작 -------------------------------
 		
+		}
 		return "tms/pg/PgInsert";
 		
 	}
@@ -282,13 +300,13 @@ public class ProgramController {
 	 */	
 	@RequestMapping(value = "/tms/pg/Pginsert.do")
 	public String insertPgList(RedirectAttributes redirectAttributes, @ModelAttribute("programVO") ProgramVO programVO, ModelMap model) throws Exception {
-
-		programVO.setPjtId("1");
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
-		ProgramService.insertPg(programVO);
-			
-		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.insert"));
-		
+		if (isAuthenticated) {
+			programVO.setPjtId("1");		
+			ProgramService.insertPg(programVO);			
+			redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.insert"));
+		}
 		return "redirect:/tms/pg/PgManage.do";
 		
 	}
@@ -314,14 +332,16 @@ public class ProgramController {
 	@RequestMapping(value = "/tms/pg/Pgupdate.do")
 	public String updatePgList(final RedirectAttributes redirectAttributes, @ModelAttribute("programVO") ProgramVO programVO, @ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model) throws Exception {
 
-		ProgramService.updatePg(programVO);
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
-		redirectAttributes.addFlashAttribute("searchVO", searchVO);
-		redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.update"));
+		if (isAuthenticated) {
 		
+			ProgramService.updatePg(programVO);
+			
+			redirectAttributes.addFlashAttribute("searchVO", searchVO);
+			redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("success.common.update"));
+		}
 		return "redirect:/tms/pg/PgManage.do";
-		//return "redirect:/tms/pg/selectPgInf.do?pgId="+programVO.getPgId();
-		
 	}
 	
 	
@@ -332,6 +352,10 @@ public class ProgramController {
 	@RequestMapping(value = "/tms/pg/deletePgList.do")
 	public String deletePgList(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, @ModelAttribute("programVO") ProgramVO programVO, @RequestParam String result, ModelMap model) throws Exception {
 			
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		
+		if (isAuthenticated) {
+		
 			ArrayList <HashMap<String, String>> result_hash = new ArrayList <HashMap<String, String>>();
 			
 			int cnt1;
@@ -371,8 +395,9 @@ public class ProgramController {
 			model.addAttribute("returnValue", result);
 
 			model.addAttribute("status", 0);
+		}
 			
-			return "/tms/pg/PgDeleteSearch";
+		return "/tms/pg/PgDeleteSearch";
 		
 	}
 	
@@ -465,205 +490,208 @@ public class ProgramController {
 	@RequestMapping(value = "/tms/pg/ExelWrite.do")
 	public String ExelWrite(@ModelAttribute("searchVO") ProgramDefaultVO searchVO, ModelMap model,HttpServletRequest request, HttpServletResponse response, ServletResponse ServletResponse) throws Exception {
 
-		// 엑셀로 쓸 데이터 생성		
-		List<EgovMap> list = new ArrayList<EgovMap>();
-		// 엑셀 리스트 생성
-		List<?> excelList = ProgramService.selectPgCurrentExcelList(searchVO);
-		// 엑셀 데이터에 엑셀 리스트 추가
-		for(int i=0; i<excelList.size(); i++) {
-			EgovMap excel = (EgovMap) excelList.get(i);
-			list.add(excel);
-		}
-		// 워크북 생성
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		// 워크시트 생성
-		XSSFSheet sheet = workbook.createSheet();
-		// 행 생성
-		XSSFRow row = sheet.createRow(0);
-		// 쎌 생성
-		XSSFCell cell;
-							
-		Font defaultFont = workbook.createFont();        
-		defaultFont.setColor(HSSFColor.WHITE.index);
-		defaultFont.setBoldweight(Font.BOLDWEIGHT_BOLD); 
-		defaultFont.setFontHeightInPoints((short) 11); 
-		defaultFont.setFontName("맑은 고딕");
-
-		Font contentFont = workbook.createFont();      
-		contentFont.setFontHeightInPoints((short) 11); 
-		contentFont.setFontName("맑은 고딕");
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
-		//제목 스타일 
-		CellStyle HeadStyle = workbook.createCellStyle(); 
-		//HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
-		HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
-		HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index);
-		HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
-		HeadStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
-		HeadStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
-		HeadStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
-		HeadStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
-		HeadStyle.setFont(defaultFont);
-
-		//본문 스타일 
-		CellStyle BodyStyle = workbook.createCellStyle(); 
-		//BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
-		BodyStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-		BodyStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
-		BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
-		BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
-		BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
-		BodyStyle.setFont(contentFont);   
-
-		// 헤더 정보 구성
-		cell = row.createCell(0);
-		cell.setCellValue("화면ID");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-
-		cell = row.createCell(1);
-		cell.setCellValue("화면명");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-							
-		cell = row.createCell(2);
-		cell.setCellValue("개발자");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-							
-		cell = row.createCell(3);
-		cell.setCellValue("시스템구분");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-							
-		cell = row.createCell(4);
-		cell.setCellValue("업무구분");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-							
-		cell = row.createCell(5);
-		cell.setCellValue("사용여부");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-							
-		cell = row.createCell(6);
-		cell.setCellValue("프로젝트 ID");
-		cell.setCellStyle(HeadStyle); // 제목스타일 
-							
-		// 리스트의 size 만큼 row를 생성
-		EgovMap vo;
-		for(int rowIdx=0; rowIdx < list.size(); rowIdx++) {
-			vo = list.get(rowIdx);
-								
+		if (isAuthenticated) {
+			// 엑셀로 쓸 데이터 생성		
+			List<EgovMap> list = new ArrayList<EgovMap>();
+			// 엑셀 리스트 생성
+			List<?> excelList = ProgramService.selectPgCurrentExcelList(searchVO);
+			// 엑셀 데이터에 엑셀 리스트 추가
+			for(int i=0; i<excelList.size(); i++) {
+				EgovMap excel = (EgovMap) excelList.get(i);
+				list.add(excel);
+			}
+			// 워크북 생성
+			XSSFWorkbook workbook = new XSSFWorkbook();
+			// 워크시트 생성
+			XSSFSheet sheet = workbook.createSheet();
 			// 행 생성
-			row = sheet.createRow(rowIdx+1);
+			XSSFRow row = sheet.createRow(0);
+			// 쎌 생성
+			XSSFCell cell;
 								
+			Font defaultFont = workbook.createFont();        
+			defaultFont.setColor(HSSFColor.WHITE.index);
+			defaultFont.setBoldweight(Font.BOLDWEIGHT_BOLD); 
+			defaultFont.setFontHeightInPoints((short) 11); 
+			defaultFont.setFontName("맑은 고딕");
+	
+			Font contentFont = workbook.createFont();      
+			contentFont.setFontHeightInPoints((short) 11); 
+			contentFont.setFontName("맑은 고딕");
+			
+			//제목 스타일 
+			CellStyle HeadStyle = workbook.createCellStyle(); 
+			//HeadStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+			HeadStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER); 
+			HeadStyle.setFillForegroundColor(HSSFColor.LIGHT_BLUE.index);
+			HeadStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+			HeadStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+			HeadStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+			HeadStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+			HeadStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
+			HeadStyle.setFont(defaultFont);
+	
+			//본문 스타일 
+			CellStyle BodyStyle = workbook.createCellStyle(); 
+			//BodyStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); 
+			BodyStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			BodyStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); 
+			BodyStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN); 
+			BodyStyle.setBorderRight(HSSFCellStyle.BORDER_THIN); 
+			BodyStyle.setBorderTop(HSSFCellStyle.BORDER_THIN); 
+			BodyStyle.setFont(contentFont);   
+	
+			// 헤더 정보 구성
 			cell = row.createCell(0);
-			cell.setCellValue((String) vo.get("pgId"));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
-
+			cell.setCellValue("화면ID");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+	
 			cell = row.createCell(1);
-			cell.setCellValue((String) vo.get("pgNm"));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
+			cell.setCellValue("화면명");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 								
 			cell = row.createCell(2);
-			cell.setCellValue((String) vo.get("userDevId"));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
+			cell.setCellValue("개발자");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 								
 			cell = row.createCell(3);
-			cell.setCellValue((String) vo.get("sysGb"));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
+			cell.setCellValue("시스템구분");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 								
 			cell = row.createCell(4);
-			cell.setCellValue((String) vo.get("taskGb"));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
+			cell.setCellValue("업무구분");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 								
 			cell = row.createCell(5);
-			cell.setCellValue((String) vo.get("useYn"));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
+			cell.setCellValue("사용여부");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
 								
 			cell = row.createCell(6);
-			cell.setCellValue((String) vo.get("pjtId"));
-			cell.setCellStyle(BodyStyle); // 본문스타일 
-		}
-		/** 3. 컬럼 Width */ 
-		for (int i = 0; i <  list.size(); i++){ 
-			sheet.autoSizeColumn(i); 
-			sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 100); 
-		}
-							
-		// 입력된 내용 파일로 쓰기
-		File folder = new File("C:\\TMS\\TMS_통계자료");
-		File file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
-							
-		if(!folder.exists()){
-			//디렉토리 생성 메서드
-			folder.mkdirs();
-		}
-		FileOutputStream fos = null;
-							
-		try {
-			fos = new FileOutputStream(file);
-			workbook.write(fos);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-					if(workbook!=null) //workbook.close();
-					if(fos!=null) fos.close();
+			cell.setCellValue("프로젝트 ID");
+			cell.setCellStyle(HeadStyle); // 제목스타일 
+								
+			// 리스트의 size 만큼 row를 생성
+			EgovMap vo;
+			for(int rowIdx=0; rowIdx < list.size(); rowIdx++) {
+				vo = list.get(rowIdx);
 									
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// 행 생성
+				row = sheet.createRow(rowIdx+1);
+									
+				cell = row.createCell(0);
+				cell.setCellValue((String) vo.get("pgId"));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+	
+				cell = row.createCell(1);
+				cell.setCellValue((String) vo.get("pgNm"));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+									
+				cell = row.createCell(2);
+				cell.setCellValue((String) vo.get("userDevId"));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+									
+				cell = row.createCell(3);
+				cell.setCellValue((String) vo.get("sysGb"));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+									
+				cell = row.createCell(4);
+				cell.setCellValue((String) vo.get("taskGb"));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+									
+				cell = row.createCell(5);
+				cell.setCellValue((String) vo.get("useYn"));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
+									
+				cell = row.createCell(6);
+				cell.setCellValue((String) vo.get("pjtId"));
+				cell.setCellStyle(BodyStyle); // 본문스타일 
 			}
-		}
-				 
-		String path = "C:/TMS/TMS_통계자료/";  // Link의 자바파일에서 excel 파일이 생성된 경로
-		String realFileNm = "프로그램현황.xlsx";
-			  
-		File uFile = new File(path,realFileNm);
-		int fSize = (int) uFile.length();
-		if (fSize > 0) {  //파일 사이즈가 0보다 클 경우 다운로드
-			String mimetype = "application/x-msdownload";  //minetype은 파일확장자에 맞게 설정
-			
-			String fileName = "프로그램현황.xlsx"; //리퀘스트로 넘어온 파일명
-			String docName = URLEncoder.encode(fileName,"UTF-8"); // UTF-8로 인코딩			
-			response.setHeader("Content-Disposition", "attachment;filename=" + docName + ";"); 
-			response.setContentType(mimetype);
-			response.setContentLength(fSize);
-			BufferedInputStream in = null;
-			BufferedOutputStream out = null;
-			   
+			/** 3. 컬럼 Width */ 
+			for (int i = 0; i <  list.size(); i++){ 
+				sheet.autoSizeColumn(i); 
+				sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 100); 
+			}
+								
+			// 입력된 내용 파일로 쓰기
+			File folder = new File("C:\\TMS\\TMS_통계자료");
+			File file = new File("C:\\TMS\\TMS_통계자료\\프로그램현황.xlsx");
+								
+			if(!folder.exists()){
+				//디렉토리 생성 메서드
+				folder.mkdirs();
+			}
+			FileOutputStream fos = null;
+								
 			try {
-				
-				in = new BufferedInputStream(new FileInputStream(uFile));
-				out = new BufferedOutputStream(response.getOutputStream());
-				FileCopyUtils.copy(in, out);
-				out.flush();
-			} catch (Exception ex) {
-				
+				fos = new FileOutputStream(file);
+				workbook.write(fos);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			} finally {
-				String path1 = "C:/TMS/TMS_통계자료/프로그램현황.xlsx";
-				File deleteFolder = new File(path1);
-				deleteFolder.delete();
-				String path2 = "C:/TMS/TMS_통계자료";
-				File deleteFolder2 = new File(path2);
-				deleteFolder2.delete();
-				String path3 = "C:/TMS";
-				File deleteFolder3 = new File(path3);
-				deleteFolder3.delete();
-			    if (in != null) in.close();
-			    if (out != null) out.close();
+				try {
+						if(workbook!=null) //workbook.close();
+						if(fos!=null) fos.close();
+										
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			} else {
-			   response.setContentType("application/x-msdownload");
-			 
-			   PrintWriter printwriter = response.getWriter();
-			   printwriter.println("<html>");
-			   printwriter.println("<br><br><br><h2>Could not get file name:<br>" + realFileNm + "</h2>");
-			   printwriter.println("<br><br><br><center><h3><a href='javascript: history.go(-1)'>Back</a></h3></center>");
-			   printwriter.println("<br><br><br>&copy; webAccess");
-			   printwriter.println("</html>");
-			   printwriter.flush();
-			   printwriter.close();
 			}
-		
+					 
+			String path = "C:/TMS/TMS_통계자료/";  // Link의 자바파일에서 excel 파일이 생성된 경로
+			String realFileNm = "프로그램현황.xlsx";
+				  
+			File uFile = new File(path,realFileNm);
+			int fSize = (int) uFile.length();
+			if (fSize > 0) {  //파일 사이즈가 0보다 클 경우 다운로드
+				String mimetype = "application/x-msdownload";  //minetype은 파일확장자에 맞게 설정
+				
+				String fileName = "프로그램현황.xlsx"; //리퀘스트로 넘어온 파일명
+				String docName = URLEncoder.encode(fileName,"UTF-8"); // UTF-8로 인코딩			
+				response.setHeader("Content-Disposition", "attachment;filename=" + docName + ";"); 
+				response.setContentType(mimetype);
+				response.setContentLength(fSize);
+				BufferedInputStream in = null;
+				BufferedOutputStream out = null;
+				   
+				try {
+					
+					in = new BufferedInputStream(new FileInputStream(uFile));
+					out = new BufferedOutputStream(response.getOutputStream());
+					FileCopyUtils.copy(in, out);
+					out.flush();
+				} catch (Exception ex) {
+					
+				} finally {
+					String path1 = "C:/TMS/TMS_통계자료/프로그램현황.xlsx";
+					File deleteFolder = new File(path1);
+					deleteFolder.delete();
+					String path2 = "C:/TMS/TMS_통계자료";
+					File deleteFolder2 = new File(path2);
+					deleteFolder2.delete();
+					String path3 = "C:/TMS";
+					File deleteFolder3 = new File(path3);
+					deleteFolder3.delete();
+				    if (in != null) in.close();
+				    if (out != null) out.close();
+					}
+				} else {
+				   response.setContentType("application/x-msdownload");
+				 
+				   PrintWriter printwriter = response.getWriter();
+				   printwriter.println("<html>");
+				   printwriter.println("<br><br><br><h2>Could not get file name:<br>" + realFileNm + "</h2>");
+				   printwriter.println("<br><br><br><center><h3><a href='javascript: history.go(-1)'>Back</a></h3></center>");
+				   printwriter.println("<br><br><br>&copy; webAccess");
+				   printwriter.println("</html>");
+				   printwriter.flush();
+				   printwriter.close();
+				}
+			}
 			return "redirect:/tms/pg/PgCurrent.do";
 		
 	}
@@ -814,20 +842,6 @@ public class ProgramController {
 		}
 		
 		return error_hash;
-		/*
-		model.addAttribute("error_hashs", error_hash);
-		model.addAttribute("result", result_cnt);
-		
-		if(result_cnt == 1)
-		{
-			for (int i = 0; i < xlsxList.size(); i++) {
-				vo = xlsxList.get(i);
-				ProgramService.insertPg(vo);
-			}
-		}
-		
-		return "/tms/pg/ExcelFileNmSearch";
-		*/
     }
     
 	@RequestMapping(value = "/tms/pg/ExcelFileListSearch.do")

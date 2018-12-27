@@ -68,12 +68,11 @@ $(function(){
 	         url: "<c:url value='/sym/prm/TaskGbSearch.do'/>",
 	         data : {searchData : this.value},
 	         async: false,
-	         dataType : "json",
 	         success : function(selectTaskGbSearch){
 	            $("#task").find("option").remove().end().append("<option value=''>선택하세요</option>");
 	            $.each(selectTaskGbSearch, function(i){
-	            	$("#task").append("<option value='"+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"'>"
-	            			+JSON.stringify(selectTaskGbSearch[i]).replace(/"/g, "")+"</option>");
+	            	$("#task").append("<option value='"+selectTaskGbSearch[i]+"'>"
+	            			+selectTaskGbSearch[i]+"</option>");
 	            });
 	            
 	         },

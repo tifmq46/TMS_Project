@@ -1,6 +1,5 @@
 package egovframework.let.uat.uia.web;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
