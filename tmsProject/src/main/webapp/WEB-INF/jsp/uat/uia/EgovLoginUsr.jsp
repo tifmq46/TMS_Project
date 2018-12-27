@@ -17,6 +17,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -24,22 +25,22 @@
 <title>로그인</title>
 <link href="<c:url value='/'/>css/nav_common.css" rel="stylesheet" type="text/css" >
 <link href="<c:url value='/'/>css/login.css" rel="stylesheet" type="text/css" >
+<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<validator:javascript formName="loginForm" staticJavascript="false" xhtml="true" cdata="false"/>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 <!--
 function actionLogin() {
 
-    if (document.loginForm.id.value =="") {
-        swal("아이디를 입력하세요");
-        return false;
-    } else if (document.loginForm.password.value =="") {
-        swal("비밀번호를 입력하세요");
-        return false;
-    } else {
-        document.loginForm.action="<c:url value='/uat/uia/actionSecurityLogin.do'/>";
-        //document.loginForm.j_username.value = document.loginForm.userSe.value + document.loginForm.username.value;
-        //document.loginForm.action="<c:url value='/j_spring_security_check'/>";
-        document.loginForm.submit();
-    }
+ 	if (!validateLoginForm(document.loginForm)){
+	    return;
+	}
+	
+    document.loginForm.action="<c:url value='/uat/uia/actionSecurityLogin.do'/>";
+    //document.loginForm.j_username.value = document.loginForm.userSe.value + document.loginForm.username.value;
+    //document.loginForm.action="<c:url value='/j_spring_security_check'/>";
+    document.loginForm.submit();
+    
 }
 
 function setCookie (name, value, expires) {
@@ -109,7 +110,7 @@ function fnInit() {
                 </div>
                     <div id="login_title_div"><img alt="LOGIN 표준프레임워크 경량환경 내부업무 시스템에 오신것을 환영합니다." src="<c:url value='/' />images/login/img_logintitle.gif" /></div>        
                         <div class="user_login">
-                        <form:form id="loginForm" name="loginForm" method="post">
+                        <form:form commandName="loginForm" id="loginForm" name="loginForm" method="post">
                             <fieldset><legend>조건정보 영역</legend>
                                 <div class="user_login_ultop">
                                     <ul style="font-family:'Malgun Gothic';">
@@ -130,7 +131,7 @@ function fnInit() {
                                         </li>
                                        
                                     </ul>
-                                    <input type="image" alt="로그인" onclick="javascript:actionLogin()" src="<c:url value='/'/>images/login/btn_login.gif"  />
+                                    <input type="image" alt="로그인" onclick="javascript:actionLogin();return false;" src="<c:url value='/'/>images/login/btn_login.gif"  />
                                 </div>
                             </fieldset>
                             <input type="hidden" name="message" value="${message}" />

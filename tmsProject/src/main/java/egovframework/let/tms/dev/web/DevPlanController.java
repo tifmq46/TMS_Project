@@ -15,10 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -43,13 +41,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.util.Calendar;
-
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovCmmUseService;
@@ -104,117 +100,123 @@ public class DevPlanController {
 	@RequestMapping(value = "/tms/dev/devPlans.do")
 	public String selectDevPlans(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
 		
-		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		searchVO.setSessionId(user.getName());
-		searchVO.setUniqId(user.getUniqId());
-		searchVO.setId(user.getId());
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
-		searchVO.setSessionId(user.getName());
+		if (isAuthenticated) {
 		
-		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
-		
-		/** pageing setting */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
-		
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
-		//공통코드(시스템, 업무구분)
-		List<?> sysGbList = TmsProgrmManageService.selectSysGb();
-		model.addAttribute("sysGb", sysGbList);
-		
-		String a = String.valueOf(searchVO.getSearchBySysGb());
-		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
-			List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
-			model.addAttribute("taskGb2", taskGbList2);
-		}
-		
-		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
-		model.addAttribute("taskGb", taskGbList);
-		
-		List<?> userList = defectService.selectUser(0);
-		model.addAttribute("userList", userList);
-		
-		List<HashMap<String,String>> devList = devPlanService.selectDevPlans(searchVO);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String inputStartDate, inputEndDate;
-		Date startDate, endDate;
-		int dayDiff; 
-		
-		for(int i=0; i<devList.size(); i++){
-			if(((devList.get(i).get("PLAN_START_DT")) == null || "".equals(devList.get(i).get("PLAN_START_DT")))
-					&&((devList.get(i).get("PLAN_END_DT")) == null || "".equals(devList.get(i).get("PLAN_END_DT")))
-					){
-				
-			}else{
-				inputStartDate =  String.valueOf(devList.get(i).get("PLAN_START_DT"));
-				inputEndDate = String.valueOf(devList.get(i).get("PLAN_END_DT"));
-				startDate = sdf.parse(inputStartDate);
-				endDate = sdf.parse(inputEndDate);
-				dayDiff = betweenDate(startDate,endDate).size();
-				searchVO.setDayDiff(dayDiff);
-				searchVO.setPgId(devList.get(i).get("PG_ID"));
-				devPlanService.insertDayDiff(searchVO);
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			searchVO.setSessionId(user.getName());
+			searchVO.setUniqId(user.getUniqId());
+			searchVO.setId(user.getId());
+			//Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+			
+			searchVO.setSessionId(user.getName());
+			
+			/** EgovPropertyService.sample */
+			searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+			searchVO.setPageSize(propertiesService.getInt("pageSize"));
+			
+			/** pageing setting */
+			PaginationInfo paginationInfo = new PaginationInfo();
+			paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+			paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+			paginationInfo.setPageSize(searchVO.getPageSize());
+			
+			searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+			searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+			searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+			
+			//공통코드(시스템, 업무구분)
+			List<?> sysGbList = TmsProgrmManageService.selectSysGb();
+			model.addAttribute("sysGb", sysGbList);
+			
+			String a = String.valueOf(searchVO.getSearchBySysGb());
+			if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
+				List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
+				model.addAttribute("taskGb2", taskGbList2);
 			}
-		}
-		
-		devList = devPlanService.selectDevPlans(searchVO);
-		model.addAttribute("resultList", devList);
-		
-		int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
-
-		//계획 입력 가능일자
-		Date currentTime = new Date ();
-		String mTime = sdf.format (currentTime);
-		Date currentDate = sdf.parse(mTime);
-
-		TmsProjectManageVO tmsPrj = TmsProgrmManageService.selectProject();
-		
-		model.addAttribute("tms", tmsPrj);	
-		
-		//********************
-		if(!Objects.equals(tmsPrj, null)){
-			if(!Objects.equals(tmsPrj.getPlanStartDt(), null) && !Objects.equals(tmsPrj.getPlanEndDt(), null)){
-				Date ps = tmsPrj.getPlanStartDt();
-				String formatPs = sdf.format(ps);
-	
-				Date pe = tmsPrj.getPlanEndDt();
-				String formatPe = sdf.format(pe);
-				
-				model.addAttribute("ps", formatPs);
-				model.addAttribute("pe", formatPe);
-			}
-		
-			if(!Objects.equals(tmsPrj.getInputStartDt(), null) && !Objects.equals(tmsPrj.getInputEndDt(), null)){
-				Date sDate = tmsPrj.getInputStartDt();
-				Date eDate = tmsPrj.getInputEndDt();
-
-				int compare = currentDate.compareTo(sDate);
-				int compare2 = currentDate.compareTo(eDate);
-				
-				boolean d_result = true;
-				
-				if((compare >= 0) && (compare2 <=0) ){
-					d_result = false;
+			
+			List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
+			model.addAttribute("taskGb", taskGbList);
+			
+			List<?> userList = defectService.selectUser(0);
+			model.addAttribute("userList", userList);
+			
+			List<HashMap<String,String>> devList = devPlanService.selectDevPlans(searchVO);
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String inputStartDate, inputEndDate;
+			Date startDate, endDate;
+			int dayDiff; 
+			
+			for(int i=0; i<devList.size(); i++){
+				if(((devList.get(i).get("PLAN_START_DT")) == null || "".equals(devList.get(i).get("PLAN_START_DT")))
+						&&((devList.get(i).get("PLAN_END_DT")) == null || "".equals(devList.get(i).get("PLAN_END_DT")))
+						){
+					
 				}else{
-					d_result = true;
+					inputStartDate =  String.valueOf(devList.get(i).get("PLAN_START_DT"));
+					inputEndDate = String.valueOf(devList.get(i).get("PLAN_END_DT"));
+					startDate = sdf.parse(inputStartDate);
+					endDate = sdf.parse(inputEndDate);
+					dayDiff = betweenDate(startDate,endDate).size();
+					searchVO.setDayDiff(dayDiff);
+					searchVO.setPgId(devList.get(i).get("PG_ID"));
+					devPlanService.insertDayDiff(searchVO);
 				}
-				model.addAttribute("start", sDate);
-				model.addAttribute("end", eDate);
-				model.addAttribute("d_test", d_result);
 			}
+			
+			devList = devPlanService.selectDevPlans(searchVO);
+			model.addAttribute("resultList", devList);
+			
+			int totCnt = devPlanService.selectDevPlanListTotCnt(searchVO);
+			paginationInfo.setTotalRecordCount(totCnt);
+			model.addAttribute("paginationInfo", paginationInfo);
+	
+			//계획 입력 가능일자
+			Date currentTime = new Date ();
+			String mTime = sdf.format (currentTime);
+			Date currentDate = sdf.parse(mTime);
+	
+			TmsProjectManageVO tmsPrj = TmsProgrmManageService.selectProject();
+			
+			model.addAttribute("tms", tmsPrj);	
+			
+			//********************
+			if(!Objects.equals(tmsPrj, null)){
+				if(!Objects.equals(tmsPrj.getPlanStartDt(), null) && !Objects.equals(tmsPrj.getPlanEndDt(), null)){
+					Date ps = tmsPrj.getPlanStartDt();
+					String formatPs = sdf.format(ps);
+		
+					Date pe = tmsPrj.getPlanEndDt();
+					String formatPe = sdf.format(pe);
+					
+					model.addAttribute("ps", formatPs);
+					model.addAttribute("pe", formatPe);
+				}
+			
+				if(!Objects.equals(tmsPrj.getInputStartDt(), null) && !Objects.equals(tmsPrj.getInputEndDt(), null)){
+					Date sDate = tmsPrj.getInputStartDt();
+					Date eDate = tmsPrj.getInputEndDt();
+	
+					int compare = currentDate.compareTo(sDate);
+					int compare2 = currentDate.compareTo(eDate);
+					
+					boolean d_result = true;
+					
+					if((compare >= 0) && (compare2 <=0) ){
+						d_result = false;
+					}else{
+						d_result = true;
+					}
+					model.addAttribute("start", sDate);
+					model.addAttribute("end", eDate);
+					model.addAttribute("d_test", d_result);
+				}
+			}
+			model.addAttribute("page", searchVO.getPageIndex());
+		
 		}
-		model.addAttribute("page", searchVO.getPageIndex());
 		
 		return "tms/dev/devPlanList";
 	}
@@ -256,32 +258,39 @@ public class DevPlanController {
 	@RequestMapping(value = "/tms/dev/updateDevPlan.do")
 	public String updateDevPlan(final RedirectAttributes redirectAttributes, @ModelAttribute("search") DevPlanVO dvo, @ModelAttribute("searchVO") DevPlanDefaultVO vo, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 
-		String result = devPlanService.ifNullDevPlan(dvo.getPgId());
-		String r = String.valueOf(result);
-		if(r.equals("1")){
-			devPlanService.updateDevPlan(dvo);
-			status.setComplete(); 
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
-		}else{
-			devPlanService.insertDevPlan(dvo);
-		}
-			
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		
+		if (isAuthenticated) {
+		
+			String result = devPlanService.ifNullDevPlan(dvo.getPgId());
+			String r = String.valueOf(result);
+			if(r.equals("1")){
+				devPlanService.updateDevPlan(dvo);
+				status.setComplete(); 
+				model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
+			}else{
+				devPlanService.insertDevPlan(dvo);
+			}
+				
 			model.addAttribute("pageIndex", vo.getPageIndex());
 			redirectAttributes.addFlashAttribute("searchVO", vo);
-			
-			return "redirect:/tms/dev/devPlans.do";
+		}
+		return "redirect:/tms/dev/devPlans.do";
 		
 	}
 
 	@RequestMapping(value = "/tms/dev/deleteDevPlan.do")
 	public String deleteDevPlan(final RedirectAttributes redirectAttributes, @ModelAttribute("searchVO") DevPlanDefaultVO dvo, SessionStatus status, Model model) throws Exception {
 
-		devPlanService.deleteDevPlan(dvo);
-		status.setComplete();
-		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
-		redirectAttributes.addFlashAttribute("searchVO", dvo);
-		
+		if (isAuthenticated) {
+			devPlanService.deleteDevPlan(dvo);
+			status.setComplete();
+			model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
+			
+			redirectAttributes.addFlashAttribute("searchVO", dvo);
+		}
 		return "redirect:/tms/dev/devPlans.do";
 	}
 	
@@ -295,170 +304,180 @@ public class DevPlanController {
 		searchVO.setSessionId(user.getName());
 		searchVO.setUniqId(user.getUniqId());
 		searchVO.setId(user.getId());
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
 		searchVO.setSessionId(user.getName());
 		
-		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
-		/** pageing setting */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
-		
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
-		//공통코드(시스템, 업무구분)
-		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
-		model.addAttribute("sysGb", sysGbList);
-		
-		String a = String.valueOf(searchVO.getSearchBySysGb());
-		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
-			List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
-			model.addAttribute("taskGb2", taskGbList2);
+		if (isAuthenticated) {		
+			/** EgovPropertyService.sample */
+			searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+			searchVO.setPageSize(propertiesService.getInt("pageSize"));
+			
+			/** pageing setting */
+			PaginationInfo paginationInfo = new PaginationInfo();
+			paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+			paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+			paginationInfo.setPageSize(searchVO.getPageSize());
+			
+			searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+			searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+			searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+			
+			//공통코드(시스템, 업무구분)
+			List<String> sysGbList = TmsProgrmManageService.selectSysGb();
+			model.addAttribute("sysGb", sysGbList);
+			
+			String a = String.valueOf(searchVO.getSearchBySysGb());
+			if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
+				List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
+				model.addAttribute("taskGb2", taskGbList2);
+			}
+			
+			List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
+			model.addAttribute("taskGb", taskGbList);
+			
+			List<?> userList = defectService.selectUser(0);
+			model.addAttribute("userList", userList);
+			
+			List<HashMap<String,String>> devResultList = devPlanService.selectDevResultList(searchVO);
+			model.addAttribute("resultList", devResultList);
+			
+			int totCnt = devPlanService.selectDevResultListTotCnt(searchVO);
+			paginationInfo.setTotalRecordCount(totCnt);
+			model.addAttribute("paginationInfo", paginationInfo);
+			
+			model.addAttribute("page", searchVO.getPageIndex());
 		}
-		
-		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
-		model.addAttribute("taskGb", taskGbList);
-		
-		List<?> userList = defectService.selectUser(0);
-		model.addAttribute("userList", userList);
-		
-		List<HashMap<String,String>> devResultList = devPlanService.selectDevResultList(searchVO);
-		model.addAttribute("resultList", devResultList);
-		
-		int totCnt = devPlanService.selectDevResultListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
-		
-		model.addAttribute("page", searchVO.getPageIndex());
-		
 		return "tms/dev/devResultList";
 	}
 	
 	@RequestMapping(value = "/tms/dev/updateDevResult.do")
 	public String updateDevResult(final RedirectAttributes redirectAttributes, @ModelAttribute("searchVO") DevPlanDefaultVO dvo,@RequestParam String flag, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 
-		String devStartDt, devEndDt,devAchRate;
-		int achRate=0;
-
-		devStartDt = String.valueOf(dvo.getDevStartDt());
-		devEndDt = String.valueOf(dvo.getDevEndDt());
-		devAchRate = String.valueOf(dvo.getAchievementRate());
-			
-			if(flag.equals("auto")){
-				if(!devStartDt.equals("null")){
-					if(!devEndDt.equals("null")){
-						achRate=100;
-					}else{
-						if(devAchRate.equals("0")){
-							achRate = 50;
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		
+		if (isAuthenticated) {
+		
+			String devStartDt, devEndDt,devAchRate;
+			int achRate=0;
+	
+			devStartDt = String.valueOf(dvo.getDevStartDt());
+			devEndDt = String.valueOf(dvo.getDevEndDt());
+			devAchRate = String.valueOf(dvo.getAchievementRate());
+				
+				if(flag.equals("auto")){
+					if(!devStartDt.equals("null")){
+						if(!devEndDt.equals("null")){
+							achRate=100;
 						}else{
-							achRate = dvo.getAchievementRate();
+							if(devAchRate.equals("0")){
+								achRate = 50;
+							}else{
+								achRate = dvo.getAchievementRate();
+							}
 						}
+					}else{
+						achRate=0;
 					}
-				}else{
-					achRate=0;
+				}else if(flag.equals("change")){
+					if(!devEndDt.equals("null")){
+						achRate = 100;
+					}else{
+						achRate = dvo.getAchievementRate();
+					}
 				}
-			}else if(flag.equals("change")){
-				if(!devEndDt.equals("null")){
-					achRate = 100;
-				}else{
-					achRate = dvo.getAchievementRate();
-				}
-			}
-			
-			dvo.setAchievementRate(achRate);
-			devPlanService.updateDevResult(dvo);
-			status.setComplete();
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
-			
-			redirectAttributes.addFlashAttribute("searchVO", dvo);
-			
-			return "redirect:/tms/dev/devResultList.do";
+				
+				dvo.setAchievementRate(achRate);
+				devPlanService.updateDevResult(dvo);
+				status.setComplete();
+				model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
+				
+				redirectAttributes.addFlashAttribute("searchVO", dvo);
+		}
+		return "redirect:/tms/dev/devResultList.do";
 	}
 	
 	@SuppressWarnings({ "unchecked", "static-access" })
 	@RequestMapping(value = "/tms/dev/devStatsTable.do")
 	public String devStatsTable(@ModelAttribute("searchVO") DevPlanVO dvo, SessionStatus status, Model model) throws Exception {
 		
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
-		/*프로젝트의 개발기간의 주차 값과 차이를 가져온다.*/
-		TmsProjectManageVO tt = TmsProgrmManageService.selectProject();
-		model.addAttribute("tt", tt);
+		if (isAuthenticated) {
 		
-		/*프로젝트 개발계획 기간(주말 제외)*/
-		if(!Objects.equals(tt, null)){
-		
-			Date startDate = tt.getDevStartDt();
-			Date endDate = tt.getDevEndDt();
+			/*프로젝트의 개발기간의 주차 값과 차이를 가져온다.*/
+			TmsProjectManageVO tt = TmsProgrmManageService.selectProject();
+			model.addAttribute("tt", tt);
 			
-			devPlanService.deleteDates();
+			/*프로젝트 개발계획 기간(주말 제외)*/
+			if(!Objects.equals(tt, null)){
 			
-			ArrayList<String> dates = betweenDate(startDate, endDate);
-			for(String date : dates){
-				devPlanService.insertDates(date);
-			}
-		
-		
-			List<String> userList = devPlanService.selectUserList();
-			List<String> taskGbList = devPlanService.selectTaskGbList();
-			
-			List<String> periodList = devPlanService.selectPeriodWeek();
-			
-			List<String> periodMonthWeek = devPlanService.selectPeriodMonthWeek();
-			model.addAttribute("monthWeek",periodMonthWeek);
-			
-			int s = Integer.parseInt(String.valueOf(periodList.get(0)));
-			int e = Integer.parseInt(String.valueOf(periodList.get(periodList.size()-1)));
-			
-			//개발자별 통계 
-			List<Map<String,Object>> userStats = stats("user", userList, periodList);
-
-			int sumUserPlan =0;
-			int sumUserDev =0;
-			int sumUserDiff = 0;
-			JSONArray userSumArray = new JSONArray();
-			JSONObject userSumObj = new JSONObject();
-			
-			for(int j=s; j<=e; j++){
-				userSumObj = new JSONObject();
-				sumUserPlan =0;
-				sumUserDev =0;
-				sumUserDiff = 0;
+				Date startDate = tt.getDevStartDt();
+				Date endDate = tt.getDevEndDt();
 				
-				for(int i =0; i<userStats.size(); i++){
-					sumUserPlan += Integer.parseInt(String.valueOf(userStats.get(i).get("a"+j)));
-					sumUserDev += Integer.parseInt(String.valueOf(userStats.get(i).get("b"+j)));
-					sumUserDiff += Integer.parseInt(String.valueOf(userStats.get(i).get("sub"+j)));
-					}
-				userSumObj.put("sumUserPlan"+j, sumUserPlan);
-				userSumObj.put("sumUserDev"+j, sumUserDev);
-				userSumObj.put("sumUserDiff"+j, sumUserDiff);
-				userSumArray.add(userSumObj);
+				devPlanService.deleteDates();
+				
+				ArrayList<String> dates = betweenDate(startDate, endDate);
+				for(String date : dates){
+					devPlanService.insertDates(date);
+				}
+			
+			
+				List<String> userList = devPlanService.selectUserList();
+				List<String> taskGbList = devPlanService.selectTaskGbList();
+				
+				List<String> periodList = devPlanService.selectPeriodWeek();
+				
+				List<String> periodMonthWeek = devPlanService.selectPeriodMonthWeek();
+				model.addAttribute("monthWeek",periodMonthWeek);
+				
+				int s = Integer.parseInt(String.valueOf(periodList.get(0)));
+				int e = Integer.parseInt(String.valueOf(periodList.get(periodList.size()-1)));
+				
+				//개발자별 통계 
+				List<Map<String,Object>> userStats = stats("user", userList, periodList);
+	
+				int sumUserPlan =0;
+				int sumUserDev =0;
+				int sumUserDiff = 0;
+				JSONArray userSumArray = new JSONArray();
+				JSONObject userSumObj = new JSONObject();
+				
+				for(int j=s; j<=e; j++){
+					userSumObj = new JSONObject();
+					sumUserPlan =0;
+					sumUserDev =0;
+					sumUserDiff = 0;
+					
+					for(int i =0; i<userStats.size(); i++){
+						sumUserPlan += Integer.parseInt(String.valueOf(userStats.get(i).get("a"+j)));
+						sumUserDev += Integer.parseInt(String.valueOf(userStats.get(i).get("b"+j)));
+						sumUserDiff += Integer.parseInt(String.valueOf(userStats.get(i).get("sub"+j)));
+						}
+					userSumObj.put("sumUserPlan"+j, sumUserPlan);
+					userSumObj.put("sumUserDev"+j, sumUserDev);
+					userSumObj.put("sumUserDiff"+j, sumUserDiff);
+					userSumArray.add(userSumObj);
+				}
+				
+				JsonUtil jsU = new JsonUtil();
+				List<Map<String,Object>> userSum = jsU.getListMapFromJsonArray(userSumArray);
+				
+				model.addAttribute("userSum",userSum);
+				model.addAttribute("userStats",userStats);
+				
+				model.addAttribute("begin", periodList.get(0));
+				model.addAttribute("end", periodList.get(periodList.size()-1));
+				
+				//업무별 통계 
+				List<Map<String,Object>> taskStats = stats("task", taskGbList, periodList);
+				model.addAttribute("taskStats",taskStats);
+				
+				//전체 통계
+				List<EgovMap> totalTable = devPlanService.selectStatsTable();
+				model.addAttribute("totalTable", totalTable);
 			}
-			
-			JsonUtil jsU = new JsonUtil();
-			List<Map<String,Object>> userSum = jsU.getListMapFromJsonArray(userSumArray);
-			
-			model.addAttribute("userSum",userSum);
-			model.addAttribute("userStats",userStats);
-			
-			model.addAttribute("begin", periodList.get(0));
-			model.addAttribute("end", periodList.get(periodList.size()-1));
-			
-			//업무별 통계 
-			List<Map<String,Object>> taskStats = stats("task", taskGbList, periodList);
-			model.addAttribute("taskStats",taskStats);
-			
-			//전체 통계
-			List<EgovMap> totalTable = devPlanService.selectStatsTable();
-			model.addAttribute("totalTable", totalTable);
 		}
 		return "/tms/dev/devStatsTable";
 	}
@@ -572,56 +591,62 @@ public class DevPlanController {
 	@RequestMapping(value = "/tms/dev/devCurrent.do")
 	public String selectDevCurrent(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model) throws Exception {
 		
-		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
-		  
-		/** pageing setting */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
-		//공통코드(시스템, 업무구분)
-		List<String> sysGbList = TmsProgrmManageService.selectSysGb();
-		model.addAttribute("sysGb", sysGbList);
-		
-		String a = String.valueOf(searchVO.getSearchBySysGb());
-		if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
-			List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
-			model.addAttribute("taskGb2", taskGbList2);
+		if (isAuthenticated) {		
+			/** EgovPropertyService.sample */
+			searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+			searchVO.setPageSize(propertiesService.getInt("pageSize"));
+			  
+			/** pageing setting */
+			PaginationInfo paginationInfo = new PaginationInfo();
+			paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+			paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+			paginationInfo.setPageSize(searchVO.getPageSize());
+			
+			searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+			searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+			searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+			
+			//공통코드(시스템, 업무구분)
+			List<String> sysGbList = TmsProgrmManageService.selectSysGb();
+			model.addAttribute("sysGb", sysGbList);
+			
+			String a = String.valueOf(searchVO.getSearchBySysGb());
+			if(searchVO.getSearchBySysGb() != null && searchVO.getSearchBySysGb() != "") {
+				List<String> taskGbList2 = TmsProgrmManageService.selectTaskGb4(searchVO);
+				model.addAttribute("taskGb2", taskGbList2);
+			}
+			
+			List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
+			model.addAttribute("taskGb", taskGbList);
+			
+			List<EgovMap> devCurrentList = devPlanService.selectDevCurrent(searchVO);
+			model.addAttribute("resultList", devCurrentList);
+			
+			List<?> userList = defectService.selectUser(0);
+			model.addAttribute("userList", userList);
+			
+			int totCnt = devPlanService.selectDevCurrentTotCnt(searchVO);
+			paginationInfo.setTotalRecordCount(totCnt);
+			model.addAttribute("paginationInfo", paginationInfo);
+			
+			HashMap<String,String> devPlanAvg = devPlanService.DevPlanAvg(searchVO);
+			model.addAttribute("r", devPlanAvg);
 		}
-		
-		List<String> taskGbList = TmsProgrmManageService.selectTaskGb();
-		model.addAttribute("taskGb", taskGbList);
-		
-		List<EgovMap> devCurrentList = devPlanService.selectDevCurrent(searchVO);
-		model.addAttribute("resultList", devCurrentList);
-		
-		List<?> userList = defectService.selectUser(0);
-		model.addAttribute("userList", userList);
-		
-		int totCnt = devPlanService.selectDevCurrentTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
-		
-		HashMap<String,String> devPlanAvg = devPlanService.DevPlanAvg(searchVO);
-		model.addAttribute("r", devPlanAvg);
-		
 		return "tms/dev/devCurrent";
 	}
 	
 	@RequestMapping(value = "/tms/dev/devCurrentExcel.do")
 	public String selectDevCurrentExcel(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model, HttpServletResponse response) throws Exception {
 		
-		searchVO.setExcelOpt("excel");
-		List<EgovMap> devCurrentList = devPlanService.selectDevCurrent(searchVO);
-		xlsxWiter(devCurrentList, "current", response, null, null);
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
+		if (isAuthenticated) {
+			searchVO.setExcelOpt("excel");
+			List<EgovMap> devCurrentList = devPlanService.selectDevCurrent(searchVO);
+			xlsxWiter(devCurrentList, "current", response, null, null);
+		}
 		return "redirect:/tms/dev/devCurrent.do";
 	}
 	
@@ -630,6 +655,7 @@ public class DevPlanController {
 	public String selectDevCurListPrint(@ModelAttribute("searchVO") DevPlanDefaultVO searchVO, ModelMap model, @RequestParam("vo") String vo) throws Exception {
 		
 		JSONParser parser = new JSONParser();
+		//1. vo가 json형태의 배열이라, jsonArray로 받는다!		
 		JSONArray jsonArray = (JSONArray) parser.parse(vo);
 		
 		JSONObject tmpObj = new JSONObject();
@@ -706,19 +732,22 @@ public class DevPlanController {
 	
 	@RequestMapping("/tms/dev/devStats.do")
 	public String selectDevPlanStats(ModelMap model){
-		//1. 전체
-		//1-1.전체 진척률
-		HashMap<String, Object> progressRateTotal = devPlanService.selectTotalByProgressRate();
-		model.addAttribute("progressRateTotal", progressRateTotal);
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
-		//1-2. 시스템별 진척률
-		List<?> sysByProgressRate = devPlanService.selectSysByProgressRate();
-		model.addAttribute("sysByProgressRate", net.sf.json.JSONArray.fromObject(sysByProgressRate));
-		
-		//1-3. 업무별 진척률
-		List<?> taskByProgressRate = devPlanService.selectTaskTotalProgressRate();
-		model.addAttribute("taskByProgressRate", net.sf.json.JSONArray.fromObject(taskByProgressRate));
-		
+		if (isAuthenticated) {
+			//1. 전체
+			//1-1.전체 진척률
+			HashMap<String, Object> progressRateTotal = devPlanService.selectTotalByProgressRate();
+			model.addAttribute("progressRateTotal", progressRateTotal);
+			
+			//1-2. 시스템별 진척률
+			List<?> sysByProgressRate = devPlanService.selectSysByProgressRate();
+			model.addAttribute("sysByProgressRate", net.sf.json.JSONArray.fromObject(sysByProgressRate));
+			
+			//1-3. 업무별 진척률
+			List<?> taskByProgressRate = devPlanService.selectTaskTotalProgressRate();
+			model.addAttribute("taskByProgressRate", net.sf.json.JSONArray.fromObject(taskByProgressRate));
+		}
 		return "tms/dev/devStats";
 	}
 	
